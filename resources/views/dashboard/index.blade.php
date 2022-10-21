@@ -36,23 +36,67 @@
                 background: #F78A00 !important;
                 border:none;
             }
+            .content-title{
+                font-weight:500;
+                color:#414141;
+            }
+            .content-add{
+                font-weight:500;
+                color:#F78A00;
+                float:right;
+                background:none;
+                border:none;
+                padding:3px 9px;
+                margin:0px;
+                border-radius:6px;
+            }
+            .content-add:hover{
+                color:whitesmoke;
+                background:#F78A00;
+            }
+            .text-primary{
+                color: #F78A00 !important;
+            }
+            .bg-primary{
+                background: #F78A00 !important;
+            }
+
+            /*Custom checkbox*/
+            .form-check-input{
+                height:23px;
+                width:23px;
+                cursor:pointer;
+            }
+            .form-check-input:checked{
+                background-color:#F78A00 !important;
+                border:none;
+            }
         </style>
     </head>
 
     <body>
-    <div class="wrapper d-flex align-items-stretch">
-        <!--Sidebar.-->
-        @include('sidebar.leftbar')
+        <div class="row m-0 p-0">
+            <div class="col-lg-10 col-md-9 col-sm-12 p-0">
+                <div class="wrapper d-flex align-items-stretch">
+                    <!--Sidebar.-->
+                    @include('sidebar.leftbar')
 
-        <!-- Page Content  -->
-        <div id="content" class="p-4">
-            <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                <i class="fa fa-bars"></i>
-                <span class="sr-only">Toggle Menu</span>
-            </button>
+                    <!-- Page Content  -->
+                    <div id="content" class="p-4">
+                        <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                            <i class="fa fa-bars"></i>
+                            <span class="sr-only">Toggle Menu</span>
+                        </button>
 
-            <div class="container-fluid bg-white my-3 p-3 rounded shadow">
-                <h4>Calendar</h4>
+                        <div class="container-fluid bg-white my-3 p-3 rounded shadow">
+                            <h4>Calendar</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-sm-12 p-2">
+                <!--Sidebar.-->
+                @include('sidebar.rightbar')
             </div>
         </div>
 

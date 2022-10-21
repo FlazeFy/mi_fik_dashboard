@@ -25,7 +25,7 @@
         padding: 0;
     }
     #sidebar ul li {
-        font-size: 18px;
+        font-size: 17px;
         padding:4px;
         font-weight:bold;
         margin-bottom:15px;
@@ -125,5 +125,8 @@
         </li>
     </ul>
     <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button>
-    <button class="btn btn-transparent text-danger fw-bolder position-absolute" style='bottom:20px; right:10px;' title="Sign Out"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button>
+    <button class="btn btn-transparent text-danger fw-bolder position-absolute" style='bottom:20px; right:10px;' title="Sign Out"
+        data-bs-toggle="modal" data-bs-target="#sign-out-modal"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button>
 </nav>
+
+@include('popup.signout')
