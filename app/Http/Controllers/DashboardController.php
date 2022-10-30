@@ -1,8 +1,15 @@
 <?php
-
-namespace App\Http\Controllers;
+//For subdomain deploy!!!
+//namespace App\Http\Controllers\Mifik;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Controller;
+
+use App\Models\content;
+use App\Models\tag;
+use App\Models\archieve;
 
 class DashboardController extends Controller
 {
@@ -13,73 +20,37 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        //
         return view ('dashboard.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+
+    public function getAllContent()
     {
-        //
+        $cnt = content::all();
+        //Need pagination?
+        return response()->json($cnt);
+    }
+    
+    public function getContent($id)
+    {
+        $cnt = content::where('id', $id)->get();
+        
+        return response()->json($cnt);
+    }
+    
+    public function getAllTag()
+    {
+        $tag = tag::all();
+        
+        return response()->json($tag);
+    }
+    
+    public function getMyArchieve($id_user)
+    {
+        $ar = archieve::where('id_user', $id_user)->get();
+        
+        return response()->json($ar);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+   
 }
