@@ -1,11 +1,13 @@
 <?php
 //For subdomain deploy!!!
 //namespace App\Http\Controllers\Mifik;
+//use App\Http\Controllers\Controller;
 
+namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Controller;
+
 
 use App\Models\content;
 use App\Models\tag;
@@ -20,7 +22,17 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view ('dashboard.index');
+        $event = DB::table('content')
+            //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
+            ->orderBy('created_at', 'DESC')
+            ->limit(3)->get();
+
+        $mostTag = DB::table('content')
+            ->select('content_tag')
+            ->whereNot('content_tag', null)
+            ->get();
+
+        return view ('dashboard.index')->with('event', $event)->with('mostTag', $mostTag);
     }
 
 
