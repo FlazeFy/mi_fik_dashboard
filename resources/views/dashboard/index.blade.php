@@ -40,7 +40,7 @@
                 font-weight:500;
                 color:#414141;
             }
-            .content-add{
+            .content-add, .content-more{
                 font-weight:500;
                 color:#F78A00;
                 float:right;
@@ -50,7 +50,7 @@
                 margin:0px;
                 border-radius:6px;
             }
-            .content-add:hover{
+            .content-add:hover, .content-more:hover{
                 color:whitesmoke;
                 background:#F78A00;
             }
@@ -88,8 +88,8 @@
                             <span class="sr-only">Toggle Menu</span>
                         </button>
 
-                        <div class="container-fluid bg-white my-3 p-3 rounded shadow">
-                            <h4>Calendar</h4>
+                        <div class="container-fluid bg-transparent my-3 py-3 px-0">
+                            @include('dashboard.event')
                         </div>
                     </div>
                 </div>
