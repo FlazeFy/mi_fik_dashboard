@@ -27,7 +27,12 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'DESC')
             ->limit(3)->get();
 
-        return view ('dashboard.index')->with('event', $event);
+        $mostTag = DB::table('content')
+            ->select('content_tag')
+            ->whereNot('content_tag', null)
+            ->get();
+
+        return view ('dashboard.index')->with('event', $event)->with('mostTag', $mostTag);
     }
 
 

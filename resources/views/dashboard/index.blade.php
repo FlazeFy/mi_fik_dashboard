@@ -20,6 +20,9 @@
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
+        <!--Apex Chart-->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
         <style>
             #content{
                 background:#D9D9D9;
@@ -88,8 +91,34 @@
                             <span class="sr-only">Toggle Menu</span>
                         </button>
 
-                        <div class="container-fluid bg-transparent my-3 py-3 px-0">
+                        <div class="container-fluid bg-transparent my-3 py-2 px-0">
                             @include('dashboard.event')
+                        </div>
+                        <div class="row p-0 m-0">
+                            <div class="col-lg-5 p-1">
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('dashboard.mostTag')
+                                </div>
+                            </div>
+                            <div class="col-lg-7 p-1">
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    <?php
+                                        //For testing the most used tag chart only
+                                        $val = [];
+                                        foreach($mostTag as $mt){
+                                            $tag = json_decode($mt->content_tag);
+                                            
+                                            foreach($tag as $tg){
+                                                //Insert tag name to new array
+                                                array_push($val, $tg->tag_name);
+                                            }   
+                                        }
+                                        foreach($val as $v){
+                                            echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
+                                        }
+                                    ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -14,7 +14,7 @@
         text-align:left;
     }
     .event-box:hover{
-        margin-top:15px;
+        transform: translateY(15px);
     }
     .event-box .event-title{
         font-weight:bold;
