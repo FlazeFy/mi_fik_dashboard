@@ -23,6 +23,11 @@ use App\Http\Controllers\DashboardController;
 Route::prefix('/content')->group(function () {
     Route::get('/', [DashboardController::class, 'getAllContent']);
     Route::get('/{id}', [DashboardController::class, 'getContent']);
+    Route::post('/create/{id_user}', [DashboardController::class, 'addContent']);
+});
+
+Route::prefix('/schedule')->group(function () {
+    Route::get('/{date}', [DashboardController::class, 'getAllSchedule']);
 });
 
 Route::prefix('/tag')->group(function () {

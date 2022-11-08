@@ -74,6 +74,9 @@
                 background-color:#F78A00 !important;
                 border:none;
             }
+            #content{
+                overflow:auto;
+            }
         </style>
     </head>
 
@@ -98,25 +101,36 @@
                             <div class="col-lg-5 p-1">
                                 <div class="container-fluid bg-white rounded my-3 p-2">
                                     @include('dashboard.mostTag')
+                                    <?php
+                                        //For testing the most used tag chart only
+                                        // $val = [];
+                                        // foreach($mostTag as $mt){
+                                        //     $tag = json_decode($mt->content_tag);
+                                            
+                                        //     foreach($tag as $tg){
+                                        //         //Insert tag name to new array
+                                        //         array_push($val, $tg->tag_name);
+                                        //     }   
+                                        // }
+                                        // foreach($val as $v){
+                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
+                                        // }
+                                        // echo "<br><br>";
+                                        // $result = array_count_values($val);
+
+                                        // arsort($result);
+                                        // $new_arr = array_keys($result);
+                                        // $i = 0;
+                                        // foreach($result as $v){
+                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$new_arr[$i]."  </a>";
+                                        //     $i++;
+                                        // }
+                                    ?>
                                 </div>
                             </div>
                             <div class="col-lg-7 p-1">
                                 <div class="container-fluid bg-white rounded my-3 p-2">
-                                    <?php
-                                        //For testing the most used tag chart only
-                                        $val = [];
-                                        foreach($mostTag as $mt){
-                                            $tag = json_decode($mt->content_tag);
-                                            
-                                            foreach($tag as $tg){
-                                                //Insert tag name to new array
-                                                array_push($val, $tg->tag_name);
-                                            }   
-                                        }
-                                        foreach($val as $v){
-                                            echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
-                                        }
-                                    ?>
+                                    @include('dashboard.createdEvent')
                                 </div>
                             </div>
                         </div>
@@ -132,6 +146,5 @@
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
 
-        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>   
     </body>
 </html>

@@ -16,4 +16,10 @@ use App\Http\Controllers\DashboardController;
 |
 */
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+Route::prefix('/dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index']);
+    Route::post('/update_mot/{id}', [DashboardController::class, 'update_mot']);
+    Route::post('/update_ce/{id}', [DashboardController::class, 'update_ce']);
+});
