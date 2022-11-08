@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\content;
 use App\Models\tag;
 use App\Models\archieve;
+use App\Models\Setting;
 
 class DashboardController extends Controller
 {
@@ -27,15 +28,33 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'DESC')
             ->limit(3)->get();
 
-        $mostTag = DB::table('content')
-            ->select('content_tag')
+        $mostTag = Content::select('content_tag')
             ->whereNot('content_tag', null)
             ->get();
 
-        return view ('dashboard.index')->with('event', $event)->with('mostTag', $mostTag);
+        $setting = Setting::select('id', 'MOT_range')
+            ->where('id_user', 1)
+            ->get();
+
+        return view ('dashboard.index')
+            ->with('event', $event)
+            ->with('mostTag', $mostTag)
+            ->with('setting', $setting);
     }
 
+    // ================================= MVC =================================
 
+    public function update_mot(Request $request, $id)
+    {
+        Setting::where('id', $id)->update([
+            'MOT_range' => $request->MOT_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    // ================================= API =================================
     public function getAllContent()
     {
         $cnt = content::orderBy('created_at', 'DESC')

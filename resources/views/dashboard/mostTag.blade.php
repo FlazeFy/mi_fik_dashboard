@@ -1,5 +1,23 @@
 <div class="position-relative">
     <h5 class="text-secondary fw-bold">Most Used Tag</h5>
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-MOT" data-bs-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        <i class="fa-solid fa-ellipsis-vertical more"></i>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
+        <span class="dropdown-item">
+            <!--Chart Setting-->
+            @foreach($setting as $set)
+                <form action="/dashboard/update_mot/{{$set->id}}" method="POST">
+                    @csrf
+                    <label for="floatingInputValue" style="font-size:12px;">Chart Range</label>
+                    <input type="number" class="form-control py-1" name="MOT_range" min="3" max="10" value="{{$set->MOT_range}}" onblur="this.form.submit()" required>
+                </form>
+            @endforeach
+        </span>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
+    </div>
     <div id="chart"></div>
 </div>
 
@@ -9,7 +27,9 @@
             <?php 
                 //Initial variable
                 $val = [];
-                $max = 5; //Tags to show
+                foreach($setting as $set){
+                    $max = $set->MOT_range; //Max tag to show.
+                }
                 $otherTotal = 0;
 
                 foreach($mostTag as $mt){
@@ -50,7 +70,9 @@
         <?php 
             //Initial variable
             $val = [];
-            $max = 5; //Tags to show
+            foreach($setting as $set){
+                $max = $set->MOT_range; //Max tag to show.
+            }
 
             foreach($mostTag as $mt){
                 $tag = json_decode($mt->content_tag);
@@ -61,18 +83,16 @@
                 }   
             }
 
-            //Make unique array
-            sort($val);
-            $result = array_unique($val);
-            $main = array_slice($result, 0, $max);
+            //Count duplicate value w/ DESC keys sorting
+            $result = array_count_values($val);
+            arsort($result);
 
-            foreach($main as $m){
-                echo "'".$m."',";
+            //Get array keys
+            $new_arr = array_keys($result);
+            for($i = 0; $i < $max; $i++){
+                echo "'".$new_arr[$i]."',";
             }
-
-            if(count($result) > $max){
-                echo "'Others'";
-            }
+            echo "'Others'";
         ?>
     ],
     responsive: [{

@@ -116,6 +116,16 @@
                                         foreach($val as $v){
                                             echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
                                         }
+                                        echo "<br><br>";
+                                        // $result = array_count_values($val);
+
+                                        // arsort($result);
+                                        // $new_arr = array_keys($result);
+                                        // $i = 0;
+                                        // foreach($result as $v){
+                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$new_arr[$i]."  </a>";
+                                        //     $i++;
+                                        // }
                                     ?>
                                 </div>
                             </div>
@@ -132,6 +142,5 @@
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
 
-        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>   
     </body>
 </html>
