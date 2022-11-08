@@ -18,7 +18,7 @@
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
-    <div id="chart"></div>
+    <div id="MOT_pie_chart"></div>
 </div>
 
 <script type="text/javascript">
@@ -108,6 +108,6 @@
     }]
     };
 
-    var chart = new ApexCharts(document.querySelector("#chart"), options);
+    var chart = new ApexCharts(document.querySelector("#MOT_pie_chart"), options);
     chart.render();
 </script>

@@ -28,8 +28,15 @@ class DashboardController extends Controller
             ->orderBy('created_at', 'DESC')
             ->limit(3)->get();
 
+        //Chart query
         $mostTag = Content::select('content_tag')
             ->whereNot('content_tag', null)
+            ->get();
+
+        
+        $createdEvent = Content::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
+            ->where('created_at', '>=', date("Y-m-d", strtotime("-6 months")))
+            ->groupByRaw('MONTH(created_at)')
             ->get();
 
         $setting = Setting::select('id', 'MOT_range')
@@ -39,7 +46,8 @@ class DashboardController extends Controller
         return view ('dashboard.index')
             ->with('event', $event)
             ->with('mostTag', $mostTag)
-            ->with('setting', $setting);
+            ->with('setting', $setting)
+            ->with('createdEvent', $createdEvent);
     }
 
     // ================================= MVC =================================

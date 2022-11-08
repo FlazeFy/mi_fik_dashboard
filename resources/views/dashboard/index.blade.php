@@ -74,6 +74,9 @@
                 background-color:#F78A00 !important;
                 border:none;
             }
+            #content{
+                overflow:auto;
+            }
         </style>
     </head>
 
@@ -98,25 +101,21 @@
                             <div class="col-lg-5 p-1">
                                 <div class="container-fluid bg-white rounded my-3 p-2">
                                     @include('dashboard.mostTag')
-                                </div>
-                            </div>
-                            <div class="col-lg-7 p-1">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
                                     <?php
                                         //For testing the most used tag chart only
-                                        $val = [];
-                                        foreach($mostTag as $mt){
-                                            $tag = json_decode($mt->content_tag);
+                                        // $val = [];
+                                        // foreach($mostTag as $mt){
+                                        //     $tag = json_decode($mt->content_tag);
                                             
-                                            foreach($tag as $tg){
-                                                //Insert tag name to new array
-                                                array_push($val, $tg->tag_name);
-                                            }   
-                                        }
-                                        foreach($val as $v){
-                                            echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
-                                        }
-                                        echo "<br><br>";
+                                        //     foreach($tag as $tg){
+                                        //         //Insert tag name to new array
+                                        //         array_push($val, $tg->tag_name);
+                                        //     }   
+                                        // }
+                                        // foreach($val as $v){
+                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
+                                        // }
+                                        // echo "<br><br>";
                                         // $result = array_count_values($val);
 
                                         // arsort($result);
@@ -127,6 +126,11 @@
                                         //     $i++;
                                         // }
                                     ?>
+                                </div>
+                            </div>
+                            <div class="col-lg-7 p-1">
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('dashboard.createdEvent')
                                 </div>
                             </div>
                         </div>
