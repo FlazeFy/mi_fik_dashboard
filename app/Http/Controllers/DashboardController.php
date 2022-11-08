@@ -33,15 +33,16 @@ class DashboardController extends Controller
             ->whereNot('content_tag', null)
             ->get();
 
-        
-        $createdEvent = Content::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
-            ->where('created_at', '>=', date("Y-m-d", strtotime("-6 months")))
-            ->groupByRaw('MONTH(created_at)')
-            ->get();
-
-        $setting = Setting::select('id', 'MOT_range')
+        $setting = Setting::select('id', 'MOT_range', 'CE_range')
             ->where('id_user', 1)
             ->get();
+
+        foreach($setting as $set){
+            $createdEvent = Content::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
+                ->where('created_at', '>=', date("Y-m-d", strtotime("-".$set->CE_range." months")))
+                ->groupByRaw('MONTH(created_at)')
+                ->get();
+        }
 
         return view ('dashboard.index')
             ->with('event', $event)
@@ -56,6 +57,16 @@ class DashboardController extends Controller
     {
         Setting::where('id', $id)->update([
             'MOT_range' => $request->MOT_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    public function update_ce(Request $request, $id)
+    {
+        Setting::where('id', $id)->update([
+            'CE_range' => $request->CE_range,
             'updated_at' => date("Y-m-d h:i"),
         ]);
 

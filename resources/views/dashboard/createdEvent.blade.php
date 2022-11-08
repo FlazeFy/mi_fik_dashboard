@@ -5,8 +5,27 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
-        <button class="dropdown-item btn-transparent" href="">Semester</button>
-        <button class="dropdown-item btn-transparent" href="">Year</button>
+        <!--Chart Setting-->
+        @foreach($setting as $set)
+            <form action="/dashboard/update_ce/{{$set->id}}" method="POST">
+                @csrf
+                <input hidden name="CE_range" value="6">
+                <button class="dropdown-item btn-transparent" type="submit">
+                    @if($set->CE_range == 6)
+                        <i class="fa-solid fa-check text-success"></i>
+                    @endif
+                    Semester</button>
+            </form>
+            <form action="/dashboard/update_ce/{{$set->id}}" method="POST">
+                @csrf
+                <input hidden name="CE_range" value="12">
+                <button class="dropdown-item btn-transparent" type="submit">
+                    @if($set->CE_range == 12)
+                        <i class="fa-solid fa-check text-success"></i>
+                    @endif
+                    Year</button>
+            </form>
+        @endforeach
         <hr>
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
@@ -21,7 +40,9 @@
             name: 'All',
             data: [
                 <?php
-                    $max = 6; //Max month to show
+                    foreach($setting as $set){
+                        $max = $set->CE_range; //Max month to show
+                    }
                     $date = new DateTime(date("Y/m/d")); 
 
                     //Array to store month. First month is the current month.
@@ -63,7 +84,9 @@
         type: 'category',
         categories: [
             <?php
-                $max = 6; //Max month to show
+                foreach($setting as $set){
+                    $max = $set->CE_range; //Max month to show
+                }
                 $date = new DateTime(date("Y/m/d")); 
 
                 //Array to store month. First month is the current month.
