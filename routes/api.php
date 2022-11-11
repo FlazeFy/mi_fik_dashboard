@@ -26,6 +26,12 @@ Route::prefix('/content')->group(function () {
     Route::post('/create/{id_user}', [DashboardController::class, 'addContent']);
 });
 
+Route::prefix('/task')->group(function () {
+    Route::get('/{id_user}', [DashboardController::class, 'getMyTask']);
+    Route::post('/create/{id_user}', [DashboardController::class, 'addTask']);
+    Route::put('/update/{id}', [DashboardController::class, 'updateTask']);
+});
+
 Route::prefix('/schedule')->group(function () {
     Route::get('/{date}', [DashboardController::class, 'getAllSchedule']);
 });
@@ -36,4 +42,5 @@ Route::prefix('/tag')->group(function () {
 
 Route::prefix('/archieve')->group(function () {
     Route::get('/{id_user}', [DashboardController::class, 'getMyArchieve']);
+    Route::post('/create/{id_user}', [DashboardController::class, 'addArchive']);
 });
