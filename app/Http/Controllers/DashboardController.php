@@ -42,6 +42,9 @@ class DashboardController extends Controller
             ->where('id_user', 1)
             ->get();
 
+        //Set active nav
+        session()->put('active_nav', 'dashboard');
+
         foreach($setting as $set){
             $createdEvent = Content::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
                 ->where('created_at', '>=', date("Y-m-d", strtotime("-".$set->CE_range." months")))

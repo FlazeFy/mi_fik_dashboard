@@ -49,6 +49,8 @@
                 float:right;
                 background:none;
                 border:none;
+                text-decoration:none !important;
+                cursor: pointer;
                 padding:3px 9px;
                 margin:0px;
                 border-radius:6px;
