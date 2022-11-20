@@ -34,7 +34,11 @@ class DashboardController extends Controller
             ->whereNot('content_tag', null)
             ->get();
 
-        $setting = Setting::select('id', 'MOT_range', 'CE_range')
+        $mostLoc = Content::select('content_loc')
+            ->whereNot('content_loc', null)
+            ->get();
+
+        $setting = Setting::select('id', 'MOT_range', 'MOL_range', 'CE_range')
             ->where('id_user', 1)
             ->get();
 
@@ -48,6 +52,7 @@ class DashboardController extends Controller
         return view ('dashboard.index')
             ->with('event', $event)
             ->with('mostTag', $mostTag)
+            ->with('mostLoc', $mostLoc)
             ->with('setting', $setting)
             ->with('createdEvent', $createdEvent);
     }
@@ -58,6 +63,16 @@ class DashboardController extends Controller
     {
         Setting::where('id', $id)->update([
             'MOT_range' => $request->MOT_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    public function update_mol(Request $request, $id)
+    {
+        Setting::where('id', $id)->update([
+            'MOL_range' => $request->MOL_range,
             'updated_at' => date("Y-m-d h:i"),
         ]);
 

@@ -127,6 +127,9 @@
                                         // }
                                     ?>
                                 </div>
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('dashboard.mostLoc')
+                                </div>
                             </div>
                             <div class="col-lg-7 p-1">
                                 <div class="container-fluid bg-white rounded my-3 p-2">

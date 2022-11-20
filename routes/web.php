@@ -21,5 +21,6 @@ use App\Http\Controllers\DashboardController;
 Route::prefix('/dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::post('/update_mot/{id}', [DashboardController::class, 'update_mot']);
+    Route::post('/update_mol/{id}', [DashboardController::class, 'update_mol']);
     Route::post('/update_ce/{id}', [DashboardController::class, 'update_ce']);
 });
