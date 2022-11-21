@@ -111,10 +111,10 @@
     </div>
     <!--Main Navbar.-->
     <ul class="list-unstyled components my-5">
-        <li class="active">
+        <li class="<?php if(session()->get('active_nav') == "dashboard"){ echo " active"; }?>">
             <a href="{{ url('/dashboard') }}"><i class="fa-solid fa-table-columns me-3"></i> Dashboard</a>
         </li>
-        <li class="">
+        <li class="<?php if(session()->get('active_nav') == "event"){ echo " active"; }?>">
             <a href="{{ url('/events') }}"><i class="fa-regular fa-calendar me-3"></i> Events</a>
         </li>
         <li class="">

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 //use App\Http\Controllers\Mifik\DashboardController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Event\AllEventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,11 @@ use App\Http\Controllers\DashboardController;
 Route::prefix('/dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
     Route::post('/update_mot/{id}', [DashboardController::class, 'update_mot']);
+    Route::post('/update_mol/{id}', [DashboardController::class, 'update_mol']);
     Route::post('/update_ce/{id}', [DashboardController::class, 'update_ce']);
+});
+
+Route::prefix('/event')->group(function () {
+    Route::get('/page/{page}', [AllEventController::class, 'index']);
+    Route::post('/navigate/{page}', [AllEventController::class, 'navigate_page']);
 });

@@ -49,6 +49,8 @@
                 float:right;
                 background:none;
                 border:none;
+                text-decoration:none !important;
+                cursor: pointer;
                 padding:3px 9px;
                 margin:0px;
                 border-radius:6px;
@@ -126,6 +128,9 @@
                                         //     $i++;
                                         // }
                                     ?>
+                                </div>
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('dashboard.mostLoc')
                                 </div>
                             </div>
                             <div class="col-lg-7 p-1">

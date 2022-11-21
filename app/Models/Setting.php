@@ -11,5 +11,5 @@ class Setting extends Model
 
     protected $table = 'setting';
     protected $primaryKey = 'id';
-    protected $fillable = ['id_user', 'MOT_range', 'CE_range', 'created_at', 'updated_at'];
+    protected $fillable = ['id_user', 'MOT_range', 'MOL_range', 'CE_range', 'created_at', 'updated_at'];
 }
