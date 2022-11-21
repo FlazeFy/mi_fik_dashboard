@@ -27,5 +27,6 @@ Route::prefix('/dashboard')->group(function () {
 });
 
 Route::prefix('/event')->group(function () {
-    Route::get('/all', [AllEventController::class, 'index']);
+    Route::get('/page/{page}', [AllEventController::class, 'index']);
+    Route::post('/navigate/{page}', [AllEventController::class, 'navigate_page']);
 });

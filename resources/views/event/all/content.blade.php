@@ -88,7 +88,19 @@
     } */
 </style>
 
-<div class="row p-0" id="eventHolder">
+<div class="w-100 p-1">
+    <form class="d-inline m-0 p-0" action="/event/navigate/{{session()->get('event_page')}}" method="POST">
+        @csrf
+        <input hidden name="navigate" value="previous">
+        <button class="btn btn-link" type="submit">Previous</button>
+    </form>
+    <div class="row p-0" id="eventHolder">
+    </div>
+    <form class="d-inline m-0 p-0" action="/event/navigate/{{session()->get('event_page')}}" method="POST">
+        @csrf
+        <input hidden name="navigate" value="next">
+        <button class="btn btn-link" type="submit">Next</button>
+    </form>
 </div>
 
 <script type="text/javascript">
@@ -108,7 +120,7 @@
 
     function update(){
         $.ajax({
-            url: 'https://mifik.leonardhors.site/api/content?page=1',
+            url: 'https://mifik.leonardhors.site/api/content?page=<?php echo session()->get('event_page');?>',
             type: 'get',
             dataType: 'json',
             success: function(response){
@@ -121,18 +133,22 @@
                 }
 
                 //Date converter.
-                function convertDate(datetime){
-                    if(datetime == null){
-                        return "-";
+                function convertDate(dateStart, dateEnd){
+                    if(dateStart == null && dateEnd == null){
+                        return "";
                     } else {
-                        const result = new Date(datetime);
-                        return result.getFullYear() + "-" + (result.getMonth() + 1) + "-" + result.getDate();
+                        const ds = new Date(dateStart);
+                        return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> " + ds.getFullYear() + "-" + (ds.getMonth() + 1) + "-" + ("0" + ds.getDate()).slice(-2) + "</a> ";
                     }
                 }
 
                 function getTag(tag){
                     if(tag != null){
-                        return "<a class='btn-detail' title=''><i class='fa-solid fa-hashtag'></i> " + JSON.parse(tag).length + " </a>";
+                        var tag2 = JSON.parse(tag);
+                        var tagList = "";
+                        //Show all tag not finished
+
+                        return "<a class='btn-detail' title=" + tagList + "><i class='fa-solid fa-hashtag'></i> " + JSON.parse(tag).length + " </a>";
                     } else {
                         return "";
                     }
@@ -140,9 +156,10 @@
 
                 function getLoc(loc){
                     if(loc != null){
-                        return 
+                        var jsonLoc = JSON.parse(loc);
+                        return " " +
                             "<span class='loc-limiter px-0 m-0'> " +
-                                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> " + loc[0]->detail + " </a> " +
+                                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> " + jsonLoc[0]['detail'] + " </a> " +
                             "</span> " ;
                     } else {
                         return "";
@@ -156,6 +173,7 @@
                         var content_desc = data[i].content_desc;
                         var content_tag = data[i].content_tag;
                         var content_loc = data[i].content_loc;
+                        var date_start = data[i].content_date_start;
                             
                         var element = 
                             "<div class='col-4'> " +
@@ -176,9 +194,9 @@
                                         "</div> " +
                                         "<div class='row d-inline-block px-2'> " +
 
-                                            getLoc(content_loc)
-                                            "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> - </a> " +
-                                            getTag(content_tag)
+                                            getLoc(content_loc) + " " +
+                                            convertDate(date_start) + " " +
+                                            getTag(content_tag) + " " +
                                     
                                         "</div> " +
                                     "</div> " +

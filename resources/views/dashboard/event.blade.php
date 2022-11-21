@@ -89,7 +89,7 @@
 
 <div class="position-relative">
     <h5 class="text-secondary fw-bold">Today's Event</h5>
-    <a class="content-more position-absolute" style="right:0px; top:0px;" href="/event/all">See More <i class="fa-solid fa-arrow-right"></i></a>
+    <a class="content-more position-absolute" style="right:0px; top:0px;" href="/event/page/1">See More <i class="fa-solid fa-arrow-right"></i></a>
     <div class="event-holder row mt-3">
         @foreach($event as $e)
             <div class="col-4">

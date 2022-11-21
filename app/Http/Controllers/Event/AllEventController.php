@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 use App\Models\Content;
 
@@ -16,22 +17,30 @@ class AllEventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($page)
     {
         //Set active nav
         session()->put('active_nav', 'event');
 
+        //Set initial page
+        if (Session::has('event_page')) {
+            session()->put('event_page', 1);
+        } else {
+            session()->put('event_page', $page);
+        }
+
         return view ('event.all.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function navigate_page(Request $request, $page)
     {
-        //
+        if($request->navigate == "next"){
+            session()->put('event_page', $page + 2);
+        } else {
+            session()->put('event_page', $page - 1);
+        }
+
+        return redirect()->back();
     }
 
     /**
