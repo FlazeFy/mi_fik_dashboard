@@ -114,9 +114,21 @@
         <li class="<?php if(session()->get('active_nav') == "dashboard"){ echo " active"; }?>">
             <a href="{{ url('/dashboard') }}"><i class="fa-solid fa-table-columns me-3"></i> Dashboard</a>
         </li>
-        <li class="<?php if(session()->get('active_nav') == "event"){ echo " active"; }?>">
-            <a href="{{ url('/events') }}"><i class="fa-regular fa-calendar me-3"></i> Events</a>
+        <li class="<?php if(session()->get('active_nav') == "event"){ echo " active"; }?>" data-bs-toggle="collapse" href="#collapseExample">
+            <a><i class="fa-regular fa-calendar me-3"></i> Events</a>
         </li>
+        <div class="collapse ps-4" id="collapseExample">
+            <li class="">
+                <a href="{{ url('/event/browse') }}"><i class="fa-solid fa-magnifying-glass me-3"></i> Browse</a>
+            </li>
+            <li class="">
+                <a href="{{ url('/event/tag') }}"><i class="fa-solid fa-hashtag me-3"></i> Tag</a>
+            </li>
+            <li class="">
+                <a href="{{ url('/event/location') }}"><i class="fa-solid fa-location-dot me-3"></i> Location</a>
+            </li>
+           
+        </div>
         <li class="">
             <a href="{{ url('/statistic') }}"><i class="fa-solid fa-chart-line me-3"></i> Statistic</a>
         </li>

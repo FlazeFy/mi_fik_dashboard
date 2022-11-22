@@ -7,28 +7,34 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\Content;
+use App\Models\content;
+use App\Models\tag;
+use App\Models\Setting;
 
-class AllEventController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($page)
+    public function index()
     {
+        //Chart query
+        $mostTag = Content::select('content_tag')
+            ->whereNot('content_tag', null)
+            ->get();
+
+        $setting = Setting::select('id', 'MOT_range')
+            ->where('id_user', 1)
+            ->get();
+
         //Set active nav
         session()->put('active_nav', 'event');
 
-        //Set initial page
-        if (session()->get('event_page') == null) {
-            session()->put('event_page', 1);
-        } else {
-            session()->put('event_page', $page);
-        }
-
-        return view ('event.all.index');
+        return view ('event.tag.index')
+            ->with('mostTag', $mostTag)
+            ->with('setting', $setting);
     }
 
     /**

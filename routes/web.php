@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\Mifik\DashboardController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Event\AllEventController;
+use App\Http\Controllers\Event\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +30,6 @@ Route::prefix('/dashboard')->group(function () {
 Route::prefix('/event')->group(function () {
     Route::get('/page/{page}', [AllEventController::class, 'index']);
     Route::post('/navigate/{page}', [AllEventController::class, 'navigate_page']);
+
+    Route::get('/tag', [TagController::class, 'index']);
 });
