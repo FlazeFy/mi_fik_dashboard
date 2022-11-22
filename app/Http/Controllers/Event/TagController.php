@@ -20,6 +20,8 @@ class TagController extends Controller
      */
     public function index()
     {
+        $tag = Tag::all();
+
         //Chart query
         $mostTag = Content::select('content_tag')
             ->whereNot('content_tag', null)
@@ -34,6 +36,7 @@ class TagController extends Controller
 
         return view ('event.tag.index')
             ->with('mostTag', $mostTag)
+            ->with('tag', $tag)
             ->with('setting', $setting);
     }
 

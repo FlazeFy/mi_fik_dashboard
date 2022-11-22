@@ -20,6 +20,18 @@
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
+        <!-- Jquery DataTables -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+        <!-- Bootstrap dataTables Javascript -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $('#tagTable').DataTable();
+            });
+        </script>
+
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
@@ -117,7 +129,9 @@
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-7 col-sm-12">
-
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('event.tag.table')
+                            </div>
                         </div>
                     </div>
                 </div>

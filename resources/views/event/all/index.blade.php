@@ -20,9 +20,6 @@
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-        <!--Apex Chart-->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
         <style>
             #content{
                 background:#D9D9D9;
