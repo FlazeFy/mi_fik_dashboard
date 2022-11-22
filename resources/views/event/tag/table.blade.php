@@ -1,3 +1,24 @@
+<style>
+    .form-custom{
+        display:inline;
+        position:relative;
+    }
+    .form-custom i{
+        color:#9c9c9c;
+    }
+
+    .input-custom{
+        border-radius:6px;
+        padding:4px 4px 4px 25px;
+        border:none;
+    }
+    .input-custom:hover, .input-custom:focus{
+        background:#f0f0f0;
+    }
+    
+    /*Icon color must change on input focus*/
+</style>
+
 <div class="text-nowrap table-responsive">
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
@@ -14,7 +35,13 @@
             @foreach($tag as $tg)
                 <tr>
                     <th scope="row">{{$tg->id}}</th>
-                    <td>{{$tg->tag_name}}</td>
+                    <td>
+                        <form class="form-custom" method="POST" action="/event/tag/update/{{$tg->id}}">
+                            @csrf
+                            <i class="fa-solid fa-pencil position-absolute" style="top:3.5px; left:6px;"></i>
+                            <input class="input-custom" name="tag_name" required value="{{$tg->tag_name}}" onblur="this.form.submit()">
+                        </form>
+                    </td>
                     <td>
                         @php($count = 0)
 
@@ -32,8 +59,10 @@
                     </td>
                     <td>{{date("d/m/y h:i", strtotime($tg->created_at))}}</td>
                     <td>{{date("d/m/y h:i", strtotime($tg->updated_at))}}</td>
-                    <td><button class="btn btn-danger"><i class="fa-solid fa-trash"></i></button></td>
+                    <td><button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button></td>
                 </tr>
+
+                @include('event.tag.delete')
             @endforeach
         </tbody>
     </table>

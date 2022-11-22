@@ -40,26 +40,28 @@ class TagController extends Controller
             ->with('setting', $setting);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update_tag(Request $request, $id)
     {
-        //
+        //Validate name avaiability
+        $check = Tag::where('tag_name', $request->tag_name)->get();
+
+        if(count($check) == 0){
+            Tag::where('id', $id)->update([
+                'tag_name' => $request->tag_name,
+                'updated_at' => date("Y-m-d h:i:s"),
+            ]);
+    
+            return redirect()->back()->with('success_message', "'".$request->tag_name."' tag has been successfully created");
+        } else {
+            return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function delete_tag($id)
     {
-        //
+        Tag::destroy($id);
+        
+        return redirect()->back()->with('success_message', 'Tag has been deleted');
     }
 
     /**

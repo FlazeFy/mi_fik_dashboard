@@ -106,6 +106,31 @@
                 color:white;
                 background:#F78A00;
             }
+
+            .modal-content{
+                margin-top:7vh;
+            }
+            .modal-body{
+                position:relative;
+            }
+            .custom-close-modal{
+                position:absolute !important;
+                top:-20px;
+                background:white;
+                width:45px;
+                right:10px;
+                height:45px;
+                padding:6px;
+                color:#F85D59;
+                border-radius:100%;
+                border:none;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transition: all 0.4s;
+            }
+            .custom-close-modal:hover{
+                background:#F85D59;
+                color:whitesmoke;
+            }
         </style>
     </head>
 
