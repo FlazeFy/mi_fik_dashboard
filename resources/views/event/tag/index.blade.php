@@ -150,6 +150,9 @@
                     <div class="row">
                         <div class="col-lg-4 col-md-5 col-sm-12">
                             <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('event.tag.add')
+                            </div>
+                            <div class="container-fluid bg-white rounded my-3 p-2">
                                 @include('dashboard.mostTag')
                             </div>
                         </div>
@@ -162,6 +165,15 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            //Popover
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
+
+        </script>
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>

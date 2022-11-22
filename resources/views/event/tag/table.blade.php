@@ -6,6 +6,14 @@
     .form-custom i{
         color:#9c9c9c;
     }
+    .page-item.active .page-link{
+        background:#F78A00 !important;
+        border:none;
+        color:white;
+    }
+    .page-item .page-link{
+        color:#414141;
+    }
 
     .input-custom{
         border-radius:6px;

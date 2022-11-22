@@ -51,28 +51,35 @@ class TagController extends Controller
                 'updated_at' => date("Y-m-d h:i:s"),
             ]);
     
-            return redirect()->back()->with('success_message', "'".$request->tag_name."' tag has been successfully created");
+            return redirect()->back()->with('success_message', "'".$request->tag_name."' tag has been successfully updated");
         } else {
-            return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
+            return redirect()->back()->with('failed_message', 'Updated tag failed. Please use unique name');
         }
     }
 
     public function delete_tag($id)
     {
         Tag::destroy($id);
-        
+
         return redirect()->back()->with('success_message', 'Tag has been deleted');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function add_tag(Request $request)
     {
-        //
+        //Validate name avaiability
+        $check = Tag::where('tag_name', $request->tag_name)->get();
+
+        if(count($check) == 0){
+            Tag::create([
+                'tag_name' => $request->tag_name,
+                'created_at' => date("Y-m-d h:i:s"),
+                'updated_at' => date("Y-m-d h:i:s"),
+            ]);
+
+            return redirect()->back()->with('success_message', "'".$request->tag_name."'Tag has been created");
+        } else {
+            return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
+        }
     }
 
     /**

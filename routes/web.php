@@ -32,6 +32,7 @@ Route::prefix('/event')->group(function () {
     Route::post('/navigate/{page}', [AllEventController::class, 'navigate_page']);
 
     Route::get('/tag', [TagController::class, 'index']);
+    Route::post('/tag/add', [TagController::class, 'add_tag']);
     Route::post('/tag/update/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 });
