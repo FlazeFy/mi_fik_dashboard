@@ -20,6 +20,21 @@
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
+        <!-- Jquery DataTables -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+        <!-- Bootstrap dataTables Javascript -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $('#tagTable').DataTable();
+            });
+        </script>
+
+        <!--Apex Chart-->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
         <style>
             #content{
                 background:#D9D9D9;
@@ -91,6 +106,31 @@
                 color:white;
                 background:#F78A00;
             }
+
+            .modal-content{
+                margin-top:7vh;
+            }
+            .modal-body{
+                position:relative;
+            }
+            .custom-close-modal{
+                position:absolute !important;
+                top:-20px;
+                background:white;
+                width:45px;
+                right:10px;
+                height:45px;
+                padding:6px;
+                color:#F85D59;
+                border-radius:100%;
+                border:none;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transition: all 0.4s;
+            }
+            .custom-close-modal:hover{
+                background:#F85D59;
+                color:whitesmoke;
+            }
         </style>
     </head>
 
@@ -107,10 +147,33 @@
                 </button>
 
                 <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                    @include('event.all.content')
+                    <div class="row">
+                        <div class="col-lg-4 col-md-5 col-sm-12">
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('event.tag.add')
+                            </div>
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('dashboard.mostTag')
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-7 col-sm-12">
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('event.tag.table')
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <script>
+            //Popover
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
+
+        </script>
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>

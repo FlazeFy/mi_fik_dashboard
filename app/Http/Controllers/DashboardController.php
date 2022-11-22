@@ -27,6 +27,7 @@ class DashboardController extends Controller
         $event = DB::table('content')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
             ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')
             ->limit(3)->get();
 
         //Chart query

@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
 use App\Models\Content;
 
@@ -23,24 +22,13 @@ class AllEventController extends Controller
         session()->put('active_nav', 'event');
 
         //Set initial page
-        if (Session::has('event_page')) {
+        if (session()->get('event_page') == null) {
             session()->put('event_page', 1);
         } else {
             session()->put('event_page', $page);
         }
 
         return view ('event.all.index');
-    }
-
-    public function navigate_page(Request $request, $page)
-    {
-        if($request->navigate == "next"){
-            session()->put('event_page', $page + 2);
-        } else {
-            session()->put('event_page', $page - 1);
-        }
-
-        return redirect()->back();
     }
 
     /**

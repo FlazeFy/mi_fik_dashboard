@@ -88,19 +88,13 @@
     } */
 </style>
 
-<div class="w-100 p-1">
-    <form class="d-inline m-0 p-0" action="/event/navigate/{{session()->get('event_page')}}" method="POST">
-        @csrf
-        <input hidden name="navigate" value="previous">
-        <button class="btn btn-link" type="submit">Previous</button>
-    </form>
+<div class="w-100 p-1 text-center">
+    @if(session()->get('event_page') != 1)
+        <a class="btn-link" href="/event/page/<?php echo session()->get('event_page') - 1; ?>">Previous <i class="fa-solid fa-arrow-up"></i></a>
+    @endif
     <div class="row p-0" id="eventHolder">
     </div>
-    <form class="d-inline m-0 p-0" action="/event/navigate/{{session()->get('event_page')}}" method="POST">
-        @csrf
-        <input hidden name="navigate" value="next">
-        <button class="btn btn-link" type="submit">Next</button>
-    </form>
+    <a class="btn-link" href="/event/page/<?php echo session()->get('event_page') + 1; ?>">Next <i class="fa-solid fa-arrow-down"></i></a>
 </div>
 
 <script type="text/javascript">
@@ -207,7 +201,8 @@
                     }
                 }else{
                     var element = 
-                        "<div>" +
+                        "<div class='container m-2 p-3'>" +
+                            "<img class='img img-fluid' src='{{asset('assets/nodata.png')}}' style='width:60vh;' alt='no data.png'>" +
                             "<h4>Empty Data</h4>" +
                         "</div>";
                     $("#eventHolder").append(element);
