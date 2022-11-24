@@ -30,6 +30,10 @@ class DashboardController extends Controller
             ->orderBy('id', 'DESC')
             ->limit(3)->get();
 
+        $tag = Tag::orderBy('updated_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')->get();
+
         //Chart query
         $mostTag = Content::select('content_tag')
             ->whereNot('content_tag', null)
@@ -58,6 +62,7 @@ class DashboardController extends Controller
             ->with('mostTag', $mostTag)
             ->with('mostLoc', $mostLoc)
             ->with('setting', $setting)
+            ->with('tag', $tag)
             ->with('createdEvent', $createdEvent);
     }
 
