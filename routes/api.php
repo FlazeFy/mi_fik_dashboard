@@ -34,6 +34,7 @@ Route::prefix('/task')->group(function () {
 
 Route::prefix('/schedule')->group(function () {
     Route::get('/{date}', [DashboardController::class, 'getAllSchedule']);
+    Route::get('/my/{id}', [DashboardController::class, 'getMySchedule']);
 });
 
 Route::prefix('/tag')->group(function () {
@@ -43,4 +44,6 @@ Route::prefix('/tag')->group(function () {
 Route::prefix('/archieve')->group(function () {
     Route::get('/{id_user}', [DashboardController::class, 'getMyArchieve']);
     Route::post('/create/{id_user}', [DashboardController::class, 'addArchive']);
+    Route::put('/edit/{id}', [DashboardController::class, 'editArchive']);
+    Route::delete('/delete/{id}', [DashboardController::class, 'deleteArchive']);
 });
