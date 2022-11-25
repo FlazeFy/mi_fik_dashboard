@@ -17,6 +17,11 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>  
 
+        <!-- Include stylesheet -->
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
@@ -183,5 +188,28 @@
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
 
+        <!-- Main Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+        <script>
+            var quill = new Quill('#rich_box', {
+                theme: 'snow'
+            });
+        </script>
+
+        <!--Maps API Key.-->
+        <!--need billing!!!-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRXG9R-3Jj-LghEPIV2f-rNhO2FjuOa7M&callback=initMap&v=weekly" defer></script>
+        <script>
+            let map;
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById("map"), {
+                    center: { lat: -34.397, lng: 150.644 },
+                    zoom: 8,
+                });
+            }
+            
+            window.initMap = initMap;
+        </script>
     </body>
 </html>

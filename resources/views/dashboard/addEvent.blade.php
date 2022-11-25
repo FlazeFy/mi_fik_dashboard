@@ -49,7 +49,39 @@
         padding: 6px 8px;
         border-radius:12px;
         margin:4px;
-        color:whitesmoke;
+        color:whitesmoke !important;
+    }
+
+    /*Richtext header*/
+    .ql-toolbar.ql-snow{
+        border:1.7px solid #F78A00;
+        margin-top:10px;
+        border-radius:10px 10px 0 0;
+    }
+    .ql-snow .ql-stroke {
+        stroke:#414141;
+    }
+    .ql-snow.ql-toolbar button{
+        border-radius:6px;
+        height:25px;
+        width:25px;
+        padding-left:3px;
+        margin-right:10px;
+        transition: all 0.4s;
+    }
+    .ql-snow.ql-toolbar button:hover .ql-stroke{
+        stroke:#F78A00;
+    }
+    button.ql-active{
+        background:#F78A00 !important;
+    }
+    button.ql-active svg .ql-stroke{
+        stroke:white !important;
+    }
+
+    /*Richtext body*/
+    .ql-toolbar.ql-snow + .ql-container.ql-snow{
+        height:30vh;
     }
 </style>
 
@@ -90,19 +122,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="rich_box">
+                            <p>Hello World!</p>
+                            <p>Some initial <strong>bold</strong> text</p>
+                            <p><br></p>
+                        </div>
                         <div class="row mt-2">
                             <div class="col-lg-8">
                                 <label>Event Tag</label>
                                 <div id="tag_holder"></div>
-                            </div>
-                            <div class="col-lg-4">
+
                                 <label>Selected Tag</label>
                                 <div id="slct_holder"></div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-8">
-                                
                             </div>
                             <div class="col-lg-4">
                                 <label>Set Date Start</label>
@@ -112,9 +143,20 @@
                                 <input type="date" name="date_end" class="form-control">
                             </div>
                         </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-8">
+                                
+                            </div>
+                            <div class="col-lg-4">
+                               
+                            </div>
+                        </div>
                     </div>
                     <div class="col-lg-4">
-                        
+                        <label>Event Location</label>
+                        <div id="map"></div>
+
+                        <label>Attachment</label>
                     </div>
                 </div>
                 <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
@@ -123,32 +165,48 @@
         </div>
     </div>
 </div>
-<script>
-    //Initial variable
-    var tag_list = [];
-    var slct_list = [];
+<script type="text/javascript">
+    //Initial variable.
+    var tag_list = []; //Store all tag from db to js arr.
+    var slct_list = []; //Store all tag's id.
 
     tag_list = [
         <?php 
             foreach($tag as $tg){
-                //Insert tag name to new array
+                //Insert tag name to new array.
                 echo '{"id":'.$tg->id.', "tag_name":"'.$tg->tag_name.'"},';
             }
         ?>];
     
     tag_list.map((val, index) => {
-        $("#tag_holder").append("<button class='btn btn-tag' title='Select this tag' onclick='addSelectedTag("+val['id']+", '"+val['tag_name']+"')'>"+val['tag_name']+"</button>");
-    });
-
-    slct_list.map((val, index) => {
-        $("#slct_holder").append("<button class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+val['id']+", '"+val['tag_name']+"')'>"+val['tag_name']+"</button>");
+        $("#tag_holder").append("<button class='btn btn-tag' title='Select this tag' onclick='addSelectedTag("+val['id']+", "+'"'+val['tag_name']+'"'+")'>"+val['tag_name']+"</button>");
     });
 
     function addSelectedTag(id, tag_name){
-        slct_list.push({"id":id, "tag_name":tag_name});
+        var found = false;
+
+        if(slct_list.length > 0){
+            //Check if tag is exist in selected tag.
+            slct_list.map((val, index) => {
+                if(val == id){
+                    found = true;
+                }
+            });
+
+            if(found == false){
+                slct_list.push(id);
+                $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+tag_name+"}'><button class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+id+", "+'"'+tag_name+'"'+")'>"+tag_name+"</button></div>");
+            }
+        } else {
+            slct_list.push(id);
+            $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+tag_name+"}'><button class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+id+")'>"+tag_name+"</button></div>");
+        }
+
     }
 
-    // function removeSelectedTag(id, tag_name){
-
-    // }
+    function removeSelectedTag(id){
+        var tag = document.getElementById('tagger'+id);
+        slct_list = slct_list.filter(function(e) { return e !== id })
+        tag.parentNode.removeChild(tag);
+    }
 </script>
