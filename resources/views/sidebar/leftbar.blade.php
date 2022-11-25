@@ -114,10 +114,10 @@
         <li class="<?php if(session()->get('active_nav') == "dashboard"){ echo " active"; }?>">
             <a href="{{ url('/dashboard') }}"><i class="fa-solid fa-table-columns me-3"></i> Dashboard</a>
         </li>
-        <li class="<?php if(session()->get('active_nav') == "event"){ echo " active"; }?>" data-bs-toggle="collapse" href="#collapseExample">
+        <li class="<?php if(session()->get('active_nav') == "event"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsEvent">
             <a><i class="fa-regular fa-calendar me-3"></i> Events</a>
         </li>
-        <div class="collapse ps-4" id="collapseExample">
+        <div class="collapse ps-4" id="clpsEvent">
             <li class="">
                 <a href="{{ url('/event/browse') }}"><i class="fa-solid fa-magnifying-glass me-3"></i> Browse</a>
             </li>
@@ -129,11 +129,33 @@
             </li>
            
         </div>
+        <li class="<?php if(session()->get('active_nav') == "user"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsUser">
+            <a><i class="fa-solid fa-user me-3"></i> Users</a>
+        </li>
+        <div class="collapse ps-4" id="clpsUser">
+            <li class="">
+                <a href="{{ url('/user/activity') }}"><i class="fa-solid fa-paper-plane me-3"></i> Activity</a>
+            </li>
+            <li class="">
+                <a href="{{ url('/user/manage') }}"><i class="fa-solid fa-user-pen me-3"></i> Manage</a>
+            </li>
+        </div>
+        <li class="<?php if(session()->get('active_nav') == "system"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsSystem">
+            <a><i class="fa-solid fa-globe me-3"></i> System</a>
+        </li>
+        <div class="collapse ps-4" id="clpsSystem">
+            <li class="">
+                <a href="{{ url('/system/maintenance') }}"><i class="fa-solid fa-screwdriver-wrench me-3"></i> Maintenance</a>
+            </li>
+            <li class="">
+                <a href="{{ url('/system/notification') }}"><i class="fa-solid fa-bell me-3"></i> Notification</a>
+            </li>
+        </div>
         <li class="">
             <a href="{{ url('/statistic') }}"><i class="fa-solid fa-chart-line me-3"></i> Statistic</a>
         </li>
         <li class="">
-            <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> History</a>
+            <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> My History</a>
         </li>
     </ul>
     <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button>

@@ -30,6 +30,10 @@ class DashboardController extends Controller
             ->orderBy('id', 'DESC')
             ->limit(3)->get();
 
+        $tag = Tag::orderBy('updated_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->orderBy('id', 'DESC')->get();
+
         //Chart query
         $mostTag = Content::select('content_tag')
             ->whereNot('content_tag', null)
@@ -58,6 +62,7 @@ class DashboardController extends Controller
             ->with('mostTag', $mostTag)
             ->with('mostLoc', $mostLoc)
             ->with('setting', $setting)
+            ->with('tag', $tag)
             ->with('createdEvent', $createdEvent);
     }
 
@@ -91,6 +96,43 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    public function add_event(Request $request)
+    {
+        if($request->content_tag != null){
+            //Initial variable
+            $tag = [];
+            $total_tag = count($request->content_tag);
+
+            //Iterate all selected tag
+            for($i=0; $i < $total_tag; $i++){
+                array_push($tag, $request->content_tag[$i]);
+            }
+
+            //Clean the json from quotes mark
+            $tag = str_replace('"{',"{", json_encode($tag));
+            $tag = str_replace('}"',"}", $tag);
+            $tag = stripslashes($tag);
+        } else {
+            $tag = null;
+        }
+
+        $result = Content::create([
+            'id_user' => 1, //For now
+            'content_title' => $request->content_title,
+            'content_subtitle' => null, //For now
+            'content_desc' => "null",
+            'content_attach' => null, //For now
+            'content_tag' => $tag,
+            'content_loc' => null, //For now
+            'content_date_start' => date("Y-m-d H:i", strtotime($request->content_date_start."".$request->content_time_start)),
+            'content_date_end' => date("Y-m-d H:i", strtotime($request->content_date_end."".$request->content_time_end)),
+            'created_at' => date("Y-m-d H:i"),
+            'updated_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', 'Create content success');
     }
 
     // ================================= API =================================
@@ -134,7 +176,7 @@ class DashboardController extends Controller
         return response()->json($tag);
     }
     
-        public function getMyArchieve($id_user)
+    public function getMyArchieve($id_user)
     {
         // $ar = archieve::where('id_user', $id_user)->get();
         // Old select raw
@@ -147,6 +189,16 @@ class DashboardController extends Controller
             ->groupBy('archieve.id')
             ->orderBy('archieve.created_at', 'DESC')->get();
         return response()->json($ar);
+    }
+
+    public function getMySchedule(Request $request, $id){
+        $sch = content::selectRaw('content.id, content_title, content_subtitle, content_desc, content_attach, content_tag, content_loc, content_date_start, content_date_end, content.created_at, content.updated_at, archieve_relation.id as id_rel')
+            ->join('archieve_relation', 'archieve_relation.content_id', '=', 'content.id')
+            ->where('archieve_relation.archieve_id', $id)
+            ->orderBy('archieve_relation.created_at', 'DESC')
+            ->get();
+        
+        return response()->json($sch);
     }
 
     public function addContent(Request $request, $id_user)
@@ -184,6 +236,45 @@ class DashboardController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Archive successfully added',
+            'result' => $result,
+        ]);
+    }
+
+    public function editArchive(Request $request, $id)
+    {
+        //Validate name avaiability
+        $check = archieve::where('archieve_name', $request->archieve_name)->where('id_user', $request->id_user)->get();
+
+        if(count($check) == 0){
+            $result = archieve::where('id', $id)->update([
+                'archieve_name' => $request->archieve_name,
+                'updated_at' => date("Y-m-d h:i")
+            ]);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Archive successfully updated',
+                'result' => $result,
+            ]);
+        } else {
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Archive name must be unique',
+                'result' => null,
+            ]);
+        }
+    }
+    
+    public function deleteArchive(Request $request, $id)
+    {
+        $result = archieve::destroy($id);
+        
+        //Delete archive relation
+        DB::table('archieve_relation')->where('archieve_id', $id)->where('user_id', $request->user_id)->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Archive successfully deleted',
             'result' => $result,
         ]);
     }

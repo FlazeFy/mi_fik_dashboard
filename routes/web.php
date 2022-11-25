@@ -25,6 +25,8 @@ Route::prefix('/dashboard')->group(function () {
     Route::post('/update_mot/{id}', [DashboardController::class, 'update_mot']);
     Route::post('/update_mol/{id}', [DashboardController::class, 'update_mol']);
     Route::post('/update_ce/{id}', [DashboardController::class, 'update_ce']);
+
+    Route::post('/add_event', [DashboardController::class, 'add_event']);
 });
 
 Route::prefix('/event')->group(function () {
