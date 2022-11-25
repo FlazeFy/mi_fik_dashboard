@@ -36,6 +36,7 @@
             }
             .text-danger{
                 color:#F85D59 !important;
+                text-decoration:none;
             }
             .text-secondary{
                 color: #5B5B5B !important;

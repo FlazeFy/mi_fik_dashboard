@@ -1,4 +1,7 @@
 <style>
+    .input-warning{
+        font-size:14px;
+    }
     .btn-quick-action{
         border-radius:6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -106,10 +109,10 @@
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control nameInput" id="tagNameInput" name="content_title" oninput="validateInput()" maxlength="35" required>
+                                        <input type="text" class="form-control nameInput" id="tagNameInput" name="content_title" oninput="lengValidator('75', 'title')" maxlength="75"  required>
                                         <label for="tagNameInput">Event Title</label>
                                     </div>
-                                    <a id="tagName_msg" class="text-danger"></a>
+                                    <a id="tagName_msg" class="input-warning text-danger"></a>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-floating">
@@ -141,22 +144,24 @@
                                     <label>Set Date Start</label>
                                     <div class="row mt-2">
                                         <div class="col-6">
-                                            <input type="date" name="content_date_start" class="form-control">
+                                            <input type="date" name="content_date_start" id="date_start" onchange="validateDate()" class="form-control">
                                         </div>
                                         <div class="col-6">
-                                            <input type="time" name="content_time_start" class="form-control mb-2">
+                                            <input type="time" name="content_time_start" id="time_start" onchange="validateDate()" class="form-control mb-2">
                                         </div>
                                     </div>
+                                    <a id="dateStart_msg" class="input-warning text-danger"></a>
 
                                     <label>Set Date End</label>
                                     <div class="row mt-2">
                                         <div class="col-6">
-                                            <input type="date" name="content_date_end" class="form-control">
+                                            <input type="date" name="content_date_end" id="date_end" onchange="validateDate()" class="form-control">
                                         </div>
                                         <div class="col-6">
-                                            <input type="time" name="content_time_end" class="form-control mb-2">
+                                            <input type="time" name="content_time_end" id="time_end" onchange="validateDate()" class="form-control mb-2">
                                         </div>
                                     </div>
+                                    <a id="dateEnd_msg" class="input-warning text-danger"></a>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -182,6 +187,88 @@
         </div>
     </div>
 </div>
+
+<script>
+    //Initial variable.
+    var check_title = false;
+
+    //Validator.
+    function lengValidator(len, type){
+        if(type == "title"){
+            if($("#tagNameInput").val().length >= len){
+                $("#tagName_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> You reaches the maximum character");
+                check_title = true;
+            } else {
+                $("#tagName_msg").text("");
+            }
+        }
+    }
+
+    function validateDate(){
+        var today = new Date();
+        var date_start = $("#date_start").val();
+        var date_end = $("#date_end").val();
+        var time_start = $("#time_start").val();
+        var time_end = $("#time_end").val();
+
+        //Check if empty.
+        if(!date_start || !date_end || !time_start || !time_end){
+            //Border style if empty.
+            if(!date_start){
+                $("#date_start").css({"border":"2px solid #F85D59"});
+            } else {
+                $("#date_start").css({"border":"1.5px solid #CCCCCC"});
+            }
+
+            if(!date_end){
+                $("#date_end").css({"border":"2px solid #F85D59"});
+            } else {
+                $("#date_end").css({"border":"1.5px solid #CCCCCC"});
+            }
+
+            if(!time_start){
+                $("#time_start").css({"border":"2px solid #F85D59"});
+            } else {
+                $("#time_start").css({"border":"1.5px solid #CCCCCC"});
+            }
+
+            if(!time_end){
+                $("#time_end").css({"border":"2px solid #F85D59"});
+            } else {
+                $("#time_end").css({"border":"1.5px solid #CCCCCC"});
+            }
+
+            //Event date and today validator
+            if(new Date(date_start) < today){
+                $("#dateStart_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+            } else {
+                $("#dateStart_msg").text("");
+            }
+            if(new Date(date_end) < today){
+                $("#dateEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+            } else {
+                $("#dateEnd_msg").text("");
+            }
+        } else {
+            //Event datetime and today validator
+
+            //not finished......
+            var ds = new Date(date_start+" "+time_start);
+            if(ds < today){
+                $("#dateStart_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+            } else {
+                $("#dateStart_msg").text("");
+            }
+            if(new Date(date_end+" "+time_end) < today){
+                $("#dateEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+            } else {
+                $("#dateEnd_msg").text("");
+            }
+            console.log("tes");
+        }
+    }
+</script>
+
 <script type="text/javascript">
     //Initial variable.
     var tag_list = []; //Store all tag from db to js arr.
