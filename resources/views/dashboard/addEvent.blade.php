@@ -95,73 +95,90 @@
 
 <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content">   
-            <div class="modal-body pt-4">
-                <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>Create Event</h5>
-                <div class="row my-2">
-                    <div class="col-lg-8">
-                        <div class="row">
-                            <div class="col-lg-8">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control nameInput" id="tagNameInput" name="event_title" oninput="validateInput()" maxlength="35" required>
-                                    <label for="tagNameInput">Event Title</label>
+        <div class="modal-content">  
+            <form action="/dashboard/add_event" method="POST">
+                @csrf 
+                <div class="modal-body pt-4">
+                    <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                    <h5>Create Event</h5>
+                    <div class="row my-2">
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control nameInput" id="tagNameInput" name="content_title" oninput="validateInput()" maxlength="35" required>
+                                        <label for="tagNameInput">Event Title</label>
+                                    </div>
+                                    <a id="tagName_msg" class="text-danger"></a>
                                 </div>
-                                <a id="tagName_msg" class="text-danger"></a>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-floating">
-                                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                        <option value="0">None</option>
-                                        <option value="1">1 hr before</option>
-                                        <option value="2">3 hr before</option>
-                                        <option value="3">1 day before</option>
-                                        <option value="4">3 day before</option>
-                                    </select>
-                                    <label for="floatingSelect">Reminder</label>
+                                <div class="col-lg-4">
+                                    <div class="form-floating">
+                                        <select class="form-select" id="floatingSelect" name="content_reminder" aria-label="Floating label select example">
+                                            <option value="0">None</option>
+                                            <option value="1">1 hr before</option>
+                                            <option value="2">3 hr before</option>
+                                            <option value="3">1 day before</option>
+                                            <option value="4">3 day before</option>
+                                        </select>
+                                        <label for="floatingSelect">Reminder</label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div id="rich_box">
-                            <p>Hello World!</p>
-                            <p>Some initial <strong>bold</strong> text</p>
-                            <p><br></p>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-8">
-                                <label>Event Tag</label>
-                                <div id="tag_holder"></div>
-
-                                <label>Selected Tag</label>
-                                <div id="slct_holder"></div>
+                            <div id="rich_box">
+                                <p>Hello World!</p>
+                                <p>Some initial <strong>bold</strong> text</p>
+                                <p><br></p>
                             </div>
-                            <div class="col-lg-4">
-                                <label>Set Date Start</label>
-                                <input type="date" name="date_start" class="form-control mb-2">
+                            <div class="row mt-2">
+                                <div class="col-lg-7">
+                                    <label>Event Tag</label>
+                                    <div id="tag_holder"></div>
 
-                                <label>Set Date End</label>
-                                <input type="date" name="date_end" class="form-control">
+                                    <label>Selected Tag</label>
+                                    <div id="slct_holder"></div>
+                                </div>
+                                <div class="col-lg-5">
+                                    <label>Set Date Start</label>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <input type="date" name="content_date_start" class="form-control">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="time" name="content_time_start" class="form-control mb-2">
+                                        </div>
+                                    </div>
+
+                                    <label>Set Date End</label>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <input type="date" name="content_date_end" class="form-control">
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="time" name="content_time_end" class="form-control mb-2">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-lg-8">
+                            <div class="row mt-2">
+                                <div class="col-lg-8">
+                                    
+                                </div>
+                                <div class="col-lg-4">
                                 
-                            </div>
-                            <div class="col-lg-4">
-                               
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <label>Event Location</label>
-                        <div id="map"></div>
+                        <div class="col-lg-4">
+                            <label>Event Location</label>
+                            <div id="map"></div>
 
-                        <label>Attachment</label>
+                            <label>Attachment</label>
+                        </div>
                     </div>
+                    <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
+                    <button type="submit" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>
                 </div>
-                <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
-            
-            </div>
+            </form>
         </div>
     </div>
 </div>
@@ -179,7 +196,7 @@
         ?>];
     
     tag_list.map((val, index) => {
-        $("#tag_holder").append("<button class='btn btn-tag' title='Select this tag' onclick='addSelectedTag("+val['id']+", "+'"'+val['tag_name']+'"'+")'>"+val['tag_name']+"</button>");
+        $("#tag_holder").append("<a class='btn btn-tag' title='Select this tag' onclick='addSelectedTag("+val['id']+", "+'"'+val['tag_name']+'"'+")'>"+val['tag_name']+"</a>");
     });
 
     function addSelectedTag(id, tag_name){
@@ -195,11 +212,12 @@
 
             if(found == false){
                 slct_list.push(id);
-                $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+tag_name+"}'><button class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+id+", "+'"'+tag_name+'"'+")'>"+tag_name+"</button></div>");
+                //Check this append input value again!
+                $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='content_tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+id+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
             }
         } else {
             slct_list.push(id);
-            $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+tag_name+"}'><button class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+id+")'>"+tag_name+"</button></div>");
+            $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='content_tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+id+")'>"+tag_name+"</a></div>");
         }
 
     }

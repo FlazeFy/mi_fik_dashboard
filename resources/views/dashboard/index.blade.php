@@ -91,6 +91,7 @@
             .modal-body{
                 position:relative;
             }
+
             .custom-close-modal{
                 position:absolute !important;
                 top:-20px;
@@ -105,8 +106,26 @@
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 transition: all 0.4s;
             }
+            .custom-submit-modal{
+                position:absolute !important;
+                bottom:-20px;
+                background:white;
+                right:10px;
+                height:45px;
+                padding:6px 12px;
+                color:#00C363;
+                border-radius:6px;
+                border:none;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transition: all 0.4s;
+            }
+
             .custom-close-modal:hover{
                 background:#F85D59;
+                color:whitesmoke;
+            }
+            .custom-submit-modal:hover{
+                background:#00C363;
                 color:whitesmoke;
             }
         </style>

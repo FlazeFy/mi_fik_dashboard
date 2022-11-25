@@ -98,6 +98,43 @@ class DashboardController extends Controller
         return redirect()->back()->with('success_message', 'Chart range updated');
     }
 
+    public function add_event(Request $request)
+    {
+        if($request->content_tag != null){
+            //Initial variable
+            $tag = [];
+            $total_tag = count($request->content_tag);
+
+            //Iterate all selected tag
+            for($i=0; $i < $total_tag; $i++){
+                array_push($tag, $request->content_tag[$i]);
+            }
+
+            //Clean the json from quotes mark
+            $tag = str_replace('"{',"{", json_encode($tag));
+            $tag = str_replace('}"',"}", $tag);
+            $tag = stripslashes($tag);
+        } else {
+            $tag = null;
+        }
+
+        $result = Content::create([
+            'id_user' => 1, //For now
+            'content_title' => $request->content_title,
+            'content_subtitle' => null, //For now
+            'content_desc' => "null",
+            'content_attach' => null, //For now
+            'content_tag' => $tag,
+            'content_loc' => null, //For now
+            'content_date_start' => date("Y-m-d H:i", strtotime($request->content_date_start."".$request->content_time_start)),
+            'content_date_end' => date("Y-m-d H:i", strtotime($request->content_date_end."".$request->content_time_end)),
+            'created_at' => date("Y-m-d H:i"),
+            'updated_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', 'Create content success');
+    }
+
     // ================================= API =================================
     public function getAllContent()
     {
