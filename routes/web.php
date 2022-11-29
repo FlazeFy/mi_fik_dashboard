@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 
 //use App\Http\Controllers\Mifik\DashboardController;
 use App\Http\Controllers\DashboardController;
+
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
+use App\Http\Controllers\Event\DetailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,4 +39,6 @@ Route::prefix('/event')->group(function () {
     Route::post('/tag/add', [TagController::class, 'add_tag']);
     Route::post('/tag/update/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
+
+    Route::get('/detail/{id}', [DetailController::class, 'index']);
 });

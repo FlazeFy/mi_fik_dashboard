@@ -93,7 +93,7 @@
     <div class="event-holder row mt-3">
         @foreach($event as $e)
             <div class="col-4">
-                <button class="card shadow event-box">
+                <button class="card shadow event-box" onclick="location.href='/event/detail/{{$e->id}}';">
                     <div class="card-header header-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/content-2.jpg')}});"></div>
                     <div class="card-body p-2 w-100">
                         <div class="row px-2">
