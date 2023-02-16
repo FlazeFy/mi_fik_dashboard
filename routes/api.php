@@ -2,8 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-//use App\Http\Controllers\Mifik\DashboardController;
-use App\Http\Controllers\DashboardController;
+//use App\Http\Controllers\Mifik\HomepageController;
+use App\Http\Controllers\HomepageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,30 +20,30 @@ use App\Http\Controllers\DashboardController;
 //     return $request->user();
 // });
 
-Route::prefix('/content')->group(function () {
-    Route::get('/', [DashboardController::class, 'getAllContent']);
-    Route::get('/{id}', [DashboardController::class, 'getContent']);
-    Route::post('/create/{id_user}', [DashboardController::class, 'addContent']);
+Route::prefix('/v1/content')->group(function () {
+    Route::get('/', [HomepageController::class, 'getAllContent']);
+    Route::get('/{id}', [HomepageController::class, 'getContent']);
+    Route::post('/create/{id_user}', [HomepageController::class, 'addContent']);
 });
 
-Route::prefix('/task')->group(function () {
-    Route::get('/{id_user}', [DashboardController::class, 'getMyTask']);
-    Route::post('/create/{id_user}', [DashboardController::class, 'addTask']);
-    Route::put('/update/{id}', [DashboardController::class, 'updateTask']);
+Route::prefix('/v1/task')->group(function () {
+    Route::get('/{id_user}', [HomepageController::class, 'getMyTask']);
+    Route::post('/create/{id_user}', [HomepageController::class, 'addTask']);
+    Route::put('/update/{id}', [HomepageController::class, 'updateTask']);
 });
 
-Route::prefix('/schedule')->group(function () {
-    Route::get('/{date}', [DashboardController::class, 'getAllSchedule']);
-    Route::get('/my/{id}', [DashboardController::class, 'getMySchedule']);
+Route::prefix('/v1/schedule')->group(function () {
+    Route::get('/{date}', [HomepageController::class, 'getAllSchedule']);
+    Route::get('/my/{id}', [HomepageController::class, 'getMySchedule']);
 });
 
-Route::prefix('/tag')->group(function () {
-    Route::get('/', [DashboardController::class, 'getAllTag']);
+Route::prefix('/v1/tag')->group(function () {
+    Route::get('/', [HomepageController::class, 'getAllTag']);
 });
 
-Route::prefix('/archieve')->group(function () {
-    Route::get('/{id_user}', [DashboardController::class, 'getMyArchieve']);
-    Route::post('/create/{id_user}', [DashboardController::class, 'addArchive']);
-    Route::put('/edit/{id}', [DashboardController::class, 'editArchive']);
-    Route::delete('/delete/{id}', [DashboardController::class, 'deleteArchive']);
+Route::prefix('/v1/archieve')->group(function () {
+    Route::get('/{id_user}', [HomepageController::class, 'getMyArchieve']);
+    Route::post('/create/{id_user}', [HomepageController::class, 'addArchive']);
+    Route::put('/edit/{id}', [HomepageController::class, 'editArchive']);
+    Route::delete('/delete/{id}', [HomepageController::class, 'deleteArchive']);
 });

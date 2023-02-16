@@ -88,7 +88,7 @@
     }
 </style>
 
-@if(session()->get('active_nav') == "dashboard")
+@if(session()->get('active_nav') == "homepage")
     <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'
         data-bs-target="#addEventModal" data-bs-toggle="modal">
         <h5 class="quick-action-text">Add Event</h5>
@@ -99,7 +99,7 @@
 <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
-            <form action="/dashboard/add_event" method="POST">
+            <form action="/homepage/add_event" method="POST">
                 @csrf 
                 <div class="modal-body pt-4">
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>

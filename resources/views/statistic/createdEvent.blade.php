@@ -7,7 +7,7 @@
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
         <!--Chart Setting-->
         @foreach($setting as $set)
-            <form action="/dashboard/update_ce/{{$set->id}}" method="POST">
+            <form action="/statistic/update_ce/{{$set->id}}" method="POST">
                 @csrf
                 <input hidden name="CE_range" value="6">
                 <button class="dropdown-item btn-transparent" type="submit">
@@ -16,7 +16,7 @@
                     @endif
                     Semester</button>
             </form>
-            <form action="/dashboard/update_ce/{{$set->id}}" method="POST">
+            <form action="/statistic/update_ce/{{$set->id}}" method="POST">
                 @csrf
                 <input hidden name="CE_range" value="12">
                 <button class="dropdown-item btn-transparent" type="submit">

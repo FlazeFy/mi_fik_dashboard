@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Dashboard</title>
+        <title>Homepage</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -85,6 +85,11 @@
             #content{
                 overflow:auto;
             }
+            .content-body{
+                max-width:1080px;
+                display:block;
+                margin-inline:auto;
+            }
 
             .modal-content{
                 margin-top:7vh;
@@ -133,75 +138,22 @@
     </head>
 
     <body>
-        <div class="row m-0 p-0">
-            <div class="col-lg-10 col-md-9 col-sm-12 p-0">
-                <div class="wrapper d-flex align-items-stretch">
-                    <!--Sidebar.-->
-                    @include('sidebar.leftbar')
+        <div class="wrapper d-flex align-items-stretch">
+            <!--Sidebar.-->
+            @include('sidebar.leftbar')
 
-                    <!-- Page Content  -->
-                    <div id="content" class="p-4">
-                        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                            <i class="fa fa-bars"></i>
-                            <span class="sr-only">Toggle Menu</span>
-                        </button>
+            <!-- Page Content  -->
+            <div id="content" class="p-4">
+                <div class="content-body">
+                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
+                        <i class="fa fa-bars"></i>
+                        <span class="sr-only">Toggle Menu</span>
+                    </button>
 
-                        <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                            @include('dashboard.event')
-                        </div>
-                        <div class="row p-0 m-0">
-                            <div class="col-lg-5 p-1">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('dashboard.mostTag')
-                                    <?php
-                                        //For testing the most used tag chart only
-                                        // $val = [];
-                                        // foreach($mostTag as $mt){
-                                        //     $tag = json_decode($mt->content_tag);
-                                            
-                                        //     foreach($tag as $tg){
-                                        //         //Insert tag name to new array
-                                        //         array_push($val, $tg->tag_name);
-                                        //     }   
-                                        // }
-                                        // foreach($val as $v){
-                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
-                                        // }
-                                        // echo "<br><br>";
-                                        // $result = array_count_values($val);
-
-                                        // arsort($result);
-                                        // $new_arr = array_keys($result);
-                                        // $i = 0;
-                                        // foreach($result as $v){
-                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$new_arr[$i]."  </a>";
-                                        //     $i++;
-                                        // }
-                                    ?>
-                                </div>
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('dashboard.mostLoc')
-                                </div>
-                            </div>
-                            <div class="col-lg-7 p-1">
-                                <div class="container-fluid mt-2 p-2">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 px-1 pb-2">
-                                            @include('dashboard.addEvent')
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container-fluid bg-white rounded p-2">
-                                    @include('dashboard.createdEvent')
-                                </div>
-                            </div>
-                        </div>
+                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                        @include('homepage.event')
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-12 p-2">
-                <!--Sidebar.-->
-                @include('sidebar.rightbar')
             </div>
         </div>
 

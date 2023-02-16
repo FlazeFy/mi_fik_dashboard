@@ -8,7 +8,7 @@
         <span class="dropdown-item">
             <!--Chart Setting-->
             @foreach($setting as $set)
-                <form action="/dashboard/update_mot/{{$set->id}}" method="POST">
+                <form action="/statistic/update_mot/{{$set->id}}" method="POST">
                     @csrf
                     <label for="floatingInputValue" style="font-size:12px;">Chart Range</label>
                     <input type="number" class="form-control py-1" name="MOT_range" min="3" max="10" value="{{$set->MOT_range}}" onblur="this.form.submit()" required>
@@ -108,7 +108,7 @@
         ?>
     ],
     responsive: [{
-        breakpoint: 480,
+        // breakpoint: 480,
         options: {
             chart: {
                 width: 160
