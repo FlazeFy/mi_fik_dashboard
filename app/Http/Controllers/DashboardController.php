@@ -122,7 +122,7 @@ class DashboardController extends Controller
             'id_user' => 1, //For now
             'content_title' => $request->content_title,
             'content_subtitle' => null, //For now
-            'content_desc' => "null",
+            'content_desc' => $request->content_desc,
             'content_attach' => null, //For now
             'content_tag' => $tag,
             'content_loc' => null, //For now

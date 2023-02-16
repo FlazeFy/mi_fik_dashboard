@@ -127,11 +127,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="rich_box">
-                                <p>Hello World!</p>
-                                <p>Some initial <strong>bold</strong> text</p>
-                                <p><br></p>
-                            </div>
+                            <!--Event desc w/ richtext editor-->
+                            <div id="rich_box"></div>
+                            <input name="content_desc" id="content_desc" hidden>
                             <div class="row mt-2">
                                 <div class="col-lg-7">
                                     <label>Event Tag</label>
@@ -181,7 +179,7 @@
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
-                    <button type="submit" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                    <button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>
                 </div>
             </form>
         </div>
@@ -191,6 +189,17 @@
 <script>
     //Initial variable.
     var check_title = false;
+
+    function getRichText(){
+        var rawText = document.getElementById("rich_box").innerHTML;
+
+        //Remove quills element from raw text
+        var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','');
+        //Check this clean text 2!!!
+        cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
+        
+        document.getElementById("content_desc").value = cleanText;
+    }
 
     //Validator.
     function lengValidator(len, type){
