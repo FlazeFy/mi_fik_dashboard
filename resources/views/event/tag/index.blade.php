@@ -91,6 +91,11 @@
             #content{
                 overflow:auto;
             }
+            .content-body{
+                max-width:1080px;
+                display:block;
+                margin-inline:auto;
+            }
             
             .btn-link{
                 text-decoration:none;
@@ -141,24 +146,23 @@
 
             <!-- Page Content  -->
             <div id="content" class="p-4">
-                <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                    <i class="fa fa-bars"></i>
-                    <span class="sr-only">Toggle Menu</span>
-                </button>
+                <div class="content-body">
+                    @include('sidebar.navbar')
 
-                <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-5 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('event.tag.add')
+                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                        <div class="row">
+                            <div class="col-lg-5 col-md-5 col-sm-12">
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('event.tag.add')
+                                </div>
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('statistic.mostTag')
+                                </div>
                             </div>
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('dashboard.mostTag')
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-md-7 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('event.tag.table')
+                            <div class="col-lg-7 col-md-7 col-sm-12">
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('event.tag.table')
+                                </div>
                             </div>
                         </div>
                     </div>

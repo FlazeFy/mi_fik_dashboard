@@ -145,55 +145,20 @@
             <!-- Page Content  -->
             <div id="content" class="p-4">
                 <div class="content-body">
-                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                        <i class="fa fa-bars"></i>
-                        <span class="sr-only">Toggle Menu</span>
-                    </button>
+                    @include('sidebar.navbar')
 
+                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
+                        @include('statistic.createdEvent')
+                    </div>
                     <div class="row p-0 m-0">
-                        <div class="col-lg-5 p-1">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="container-fluid bg-white rounded my-3 p-2">
                                 @include('statistic.mostTag')
-                                <?php
-                                    //For testing the most used tag chart only
-                                    // $val = [];
-                                    // foreach($mostTag as $mt){
-                                    //     $tag = json_decode($mt->content_tag);
-                                        
-                                    //     foreach($tag as $tg){
-                                    //         //Insert tag name to new array
-                                    //         array_push($val, $tg->tag_name);
-                                    //     }   
-                                    // }
-                                    // foreach($val as $v){
-                                    //     echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
-                                    // }
-                                    // echo "<br><br>";
-                                    // $result = array_count_values($val);
-
-                                    // arsort($result);
-                                    // $new_arr = array_keys($result);
-                                    // $i = 0;
-                                    // foreach($result as $v){
-                                    //     echo "<a class='fw-bold text-decoration-none mx-1'>".$new_arr[$i]."  </a>";
-                                    //     $i++;
-                                    // }
-                                ?>
-                            </div>
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostLoc')
                             </div>
                         </div>
-                        <div class="col-lg-7 p-1">
-                            <div class="container-fluid mt-2 p-2">
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-sm-12 px-1 pb-2">
-                                      <!--  -->
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="container-fluid bg-white rounded p-2">
-                                @include('statistic.createdEvent')
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('statistic.mostLoc')
                             </div>
                         </div>
                     </div>

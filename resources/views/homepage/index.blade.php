@@ -145,13 +145,25 @@
             <!-- Page Content  -->
             <div id="content" class="p-4">
                 <div class="content-body">
-                    <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                        <i class="fa fa-bars"></i>
-                        <span class="sr-only">Toggle Menu</span>
-                    </button>
+                    @include('sidebar.navbar')
 
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        @include('homepage.event')
+                        <div class="position-relative">
+                            <h5 class="text-secondary fw-bold">Today's Event</h5>
+                            <a class="content-more position-absolute" style="right:0px; top:0px;" href="/event/page/1">See More <i class="fa-solid fa-arrow-right"></i></a>
+                            <div class="row mt-2"> 
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    @include('homepage.addEvent')
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    @include('homepage.addTask')
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    @include('homepage.addAnnouncement')
+                                </div>
+                            </div>
+                            @include('homepage.event')
+                        </div>
                     </div>
                 </div>
             </div>

@@ -150,6 +150,9 @@
             <li class="">
                 <a href="{{ url('/system/notification') }}"><i class="fa-solid fa-bell me-3"></i> Notification</a>
             </li>
+            <li class="">
+                <a href="{{ url('/system/dictionary') }}"><i class="fa-solid fa-book me-3"></i> Dictionary</a>
+            </li>
         </div>
         <li class="">
             <a href="{{ url('/statistic') }}"><i class="fa-solid fa-chart-line me-3"></i> Statistic</a>

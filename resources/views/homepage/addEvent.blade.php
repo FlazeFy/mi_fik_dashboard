@@ -88,13 +88,11 @@
     }
 </style>
 
-@if(session()->get('active_nav') == "homepage")
-    <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'
-        data-bs-target="#addEventModal" data-bs-toggle="modal">
-        <h5 class="quick-action-text">Add Event</h5>
-        <p class="quick-action-info">Event is a bla bla....</p>
-    </button>
-@endif
+<button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'
+    data-bs-target="#addEventModal" data-bs-toggle="modal">
+    <h5 class="quick-action-text">Add Event</h5>
+    <p class="quick-action-info">Event is a bla bla....</p>
+</button>
 
 <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -107,7 +105,7 @@
                     <div class="row my-2">
                         <div class="col-lg-8">
                             <div class="row">
-                                <div class="col-lg-8">
+                                <div class="col-lg-8 pb-2">
                                     <div class="form-floating">
                                         <input type="text" class="form-control nameInput" id="tagNameInput" name="content_title" oninput="lengValidator('75', 'title')" maxlength="75"  required>
                                         <label for="tagNameInput">Event Title</label>
@@ -179,7 +177,7 @@
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
-                    <button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                    <span id="btn-submit-holder"></span>
                 </div>
             </form>
         </div>
@@ -209,6 +207,12 @@
                 check_title = true;
             } else {
                 $("#tagName_msg").text("");
+            }
+
+            if($("#tagNameInput").val().length <= 6){
+                $("#btn-submit-holder").html("");
+            } else {
+                $("#btn-submit-holder").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
             }
         }
     }
