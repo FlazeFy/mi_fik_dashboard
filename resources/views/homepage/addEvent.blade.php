@@ -88,18 +88,16 @@
     }
 </style>
 
-@if(session()->get('active_nav') == "dashboard")
-    <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'
-        data-bs-target="#addEventModal" data-bs-toggle="modal">
-        <h5 class="quick-action-text">Add Event</h5>
-        <p class="quick-action-info">Event is a bla bla....</p>
-    </button>
-@endif
+<button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'
+    data-bs-target="#addEventModal" data-bs-toggle="modal">
+    <h5 class="quick-action-text">Add Event</h5>
+    <p class="quick-action-info">Event is a bla bla....</p>
+</button>
 
 <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
-            <form action="/dashboard/add_event" method="POST">
+            <form action="/homepage/add_event" method="POST">
                 @csrf 
                 <div class="modal-body pt-4">
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
@@ -107,7 +105,7 @@
                     <div class="row my-2">
                         <div class="col-lg-8">
                             <div class="row">
-                                <div class="col-lg-8">
+                                <div class="col-lg-8 pb-2">
                                     <div class="form-floating">
                                         <input type="text" class="form-control nameInput" id="tagNameInput" name="content_title" oninput="lengValidator('75', 'title')" maxlength="75"  required>
                                         <label for="tagNameInput">Event Title</label>
@@ -127,11 +125,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="rich_box">
-                                <p>Hello World!</p>
-                                <p>Some initial <strong>bold</strong> text</p>
-                                <p><br></p>
-                            </div>
+                            <!--Event desc w/ richtext editor-->
+                            <div id="rich_box"></div>
+                            <input name="content_desc" id="content_desc" hidden>
                             <div class="row mt-2">
                                 <div class="col-lg-7">
                                     <label>Event Tag</label>
@@ -181,7 +177,7 @@
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
-                    <button type="submit" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                    <span id="btn-submit-holder"></span>
                 </div>
             </form>
         </div>
@@ -192,6 +188,17 @@
     //Initial variable.
     var check_title = false;
 
+    function getRichText(){
+        var rawText = document.getElementById("rich_box").innerHTML;
+
+        //Remove quills element from raw text
+        var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','');
+        //Check this clean text 2!!!
+        cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
+        
+        document.getElementById("content_desc").value = cleanText;
+    }
+
     //Validator.
     function lengValidator(len, type){
         if(type == "title"){
@@ -200,6 +207,12 @@
                 check_title = true;
             } else {
                 $("#tagName_msg").text("");
+            }
+
+            if($("#tagNameInput").val().length <= 6){
+                $("#btn-submit-holder").html("");
+            } else {
+                $("#btn-submit-holder").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
             }
         }
     }

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Dashboard</title>
+        <title>Event | </title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -146,56 +146,7 @@
                             <span class="sr-only">Toggle Menu</span>
                         </button>
 
-                        <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                            @include('dashboard.event')
-                        </div>
-                        <div class="row p-0 m-0">
-                            <div class="col-lg-5 p-1">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('dashboard.mostTag')
-                                    <?php
-                                        //For testing the most used tag chart only
-                                        // $val = [];
-                                        // foreach($mostTag as $mt){
-                                        //     $tag = json_decode($mt->content_tag);
-                                            
-                                        //     foreach($tag as $tg){
-                                        //         //Insert tag name to new array
-                                        //         array_push($val, $tg->tag_name);
-                                        //     }   
-                                        // }
-                                        // foreach($val as $v){
-                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
-                                        // }
-                                        // echo "<br><br>";
-                                        // $result = array_count_values($val);
-
-                                        // arsort($result);
-                                        // $new_arr = array_keys($result);
-                                        // $i = 0;
-                                        // foreach($result as $v){
-                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$new_arr[$i]."  </a>";
-                                        //     $i++;
-                                        // }
-                                    ?>
-                                </div>
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('dashboard.mostLoc')
-                                </div>
-                            </div>
-                            <div class="col-lg-7 p-1">
-                                <div class="container-fluid mt-2 p-2">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 px-1 pb-2">
-                                            @include('dashboard.addEvent')
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container-fluid bg-white rounded p-2">
-                                    @include('dashboard.createdEvent')
-                                </div>
-                            </div>
-                        </div>
+                        @include('event.detail.event')
                     </div>
                 </div>
             </div>
@@ -218,7 +169,7 @@
 
         <!--Maps API Key.-->
         <!--need billing!!!-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRXG9R-3Jj-LghEPIV2f-rNhO2FjuOa7M&callback=initMap&v=weekly" defer></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
         <script>
             let map;
 

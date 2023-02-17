@@ -111,8 +111,8 @@
     </div>
     <!--Main Navbar.-->
     <ul class="list-unstyled components my-5">
-        <li class="<?php if(session()->get('active_nav') == "dashboard"){ echo " active"; }?>">
-            <a href="{{ url('/dashboard') }}"><i class="fa-solid fa-table-columns me-3"></i> Dashboard</a>
+        <li class="<?php if(session()->get('active_nav') == "homepage"){ echo " active"; }?>">
+            <a href="{{ url('/homepage') }}"><i class="fa-solid fa-home me-3"></i> Homepage</a>
         </li>
         <li class="<?php if(session()->get('active_nav') == "event"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsEvent">
             <a><i class="fa-regular fa-calendar me-3"></i> Events</a>
@@ -149,6 +149,9 @@
             </li>
             <li class="">
                 <a href="{{ url('/system/notification') }}"><i class="fa-solid fa-bell me-3"></i> Notification</a>
+            </li>
+            <li class="">
+                <a href="{{ url('/system/dictionary') }}"><i class="fa-solid fa-book me-3"></i> Dictionary</a>
             </li>
         </div>
         <li class="">
