@@ -13,5 +13,5 @@ class Tag extends Model
 
     protected $table = 'tag';
     protected $primaryKey = 'id';
-    protected $fillable = ['id_user', 'tag_name', 'created_at', 'updated_at'];
+    protected $fillable = ['slug_name', 'tag_name', 'tag_desc', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'];
 }
