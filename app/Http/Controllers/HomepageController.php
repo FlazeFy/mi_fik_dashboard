@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\content;
-use App\Models\tag;
+use App\Models\ContentHeader;
+use App\Models\Tag;
 use App\Models\archieve;
 use App\Models\task;
 use App\Models\Setting;
@@ -23,55 +23,25 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        $event = DB::table('content')
+        $content = ContentHeader::select('slug_name','content_title','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')
+            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
+            ->orderBy('content_header.created_at', 'DESC')
             ->limit(3)->get();
 
         $tag = Tag::orderBy('updated_at', 'DESC')
             ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')->get();
+            ->get();
 
         //Set active nav
         session()->put('active_nav', 'homepage');
 
         return view ('homepage.index')
-            ->with('event', $event)
+            ->with('content', $content)
             ->with('tag', $tag);
     }
 
     // ================================= MVC =================================
-
-    public function update_mot(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOT_range' => $request->MOT_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_mol(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOL_range' => $request->MOL_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_ce(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'CE_range' => $request->CE_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
 
     public function add_event(Request $request)
     {
