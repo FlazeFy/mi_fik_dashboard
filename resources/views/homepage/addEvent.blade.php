@@ -115,11 +115,17 @@
                                 <div class="col-lg-4">
                                     <div class="form-floating">
                                         <select class="form-select" id="floatingSelect" name="content_reminder" aria-label="Floating label select example">
-                                            <option value="0">None</option>
-                                            <option value="1">1 hr before</option>
-                                            <option value="2">3 hr before</option>
-                                            <option value="3">1 day before</option>
-                                            <option value="4">3 day before</option>
+                                            @php($i = 0)
+
+                                            @foreach($dictionary as $dct)
+                                                @if($i == 0)
+                                                    <option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option>
+                                                @else
+                                                    <option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option>
+                                                @endif
+
+                                                @php($i++)
+                                            @endforeach
                                         </select>
                                         <label for="floatingSelect">Reminder</label>
                                     </div>
@@ -157,7 +163,8 @@
                                             <input type="time" name="content_time_end" id="time_end" onchange="validateDate()" class="form-control mb-2">
                                         </div>
                                     </div>
-                                    <a id="dateEnd_msg" class="input-warning text-danger"></a>
+                                    <a id="dateEnd_msg" class="input-warning text-danger"></a><br>
+                                    <a id="dateStartEnd_msg" class="input-warning text-danger"></a>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -223,10 +230,12 @@
         var date_end = $("#date_end").val();
         var time_start = $("#time_start").val();
         var time_end = $("#time_end").val();
+        var ds = new Date(date_start+" "+time_start);
+        var de = new Date(date_end+" "+time_end);
 
         //Check if empty.
         if(!date_start || !date_end || !time_start || !time_end){
-            //Border style if empty.
+            //Highlight input if empty.
             if(!date_start){
                 $("#date_start").css({"border":"2px solid #F85D59"});
             } else {
@@ -251,13 +260,13 @@
                 $("#time_end").css({"border":"1.5px solid #CCCCCC"});
             }
 
-            //Event date and today validator
-            if(new Date(date_start) < today){
+            //Event date and today validator if only one datetime is filled
+            if(ds < today && time_start){
                 $("#dateStart_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
             } else {
                 $("#dateStart_msg").text("");
             }
-            if(new Date(date_end) < today){
+            if(de < today && time_end){
                 $("#dateEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
             } else {
                 $("#dateEnd_msg").text("");
@@ -265,19 +274,30 @@
         } else {
             //Event datetime and today validator
 
-            //not finished......
-            var ds = new Date(date_start+" "+time_start);
+            //Unhighlight all filled input
+            $("#date_start").css({"border":"1.5px solid #CCCCCC"});
+            $("#date_end").css({"border":"1.5px solid #CCCCCC"});
+            $("#time_start").css({"border":"1.5px solid #CCCCCC"});
+            $("#time_end").css({"border":"1.5px solid #CCCCCC"});
+            
+            //Event date and today validator if only all datetime is filled
             if(ds < today){
                 $("#dateStart_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
             } else {
                 $("#dateStart_msg").text("");
             }
-            if(new Date(date_end+" "+time_end) < today){
+            if(de < today){
                 $("#dateEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
             } else {
                 $("#dateEnd_msg").text("");
             }
-            console.log("tes");
+
+            //Event date start and date end validator if all date is filled
+            if(de < ds){
+                $("#dateStartEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event's end time earlier than the start time"); //Check this poor grammar LOL
+            } else {
+                $("#dateStartEnd_msg").text("");
+            }
         }
     }
 </script>
@@ -291,40 +311,39 @@
         <?php 
             foreach($tag as $tg){
                 //Insert tag name to new array.
-                echo '{"id":'.$tg->id.', "tag_name":"'.$tg->tag_name.'"},';
+                echo '{"slug_name":"'.$tg->slug_name.'", "tag_name":"'.$tg->tag_name.'"},';
             }
         ?>];
     
     tag_list.map((val, index) => {
-        $("#tag_holder").append("<a class='btn btn-tag' title='Select this tag' onclick='addSelectedTag("+val['id']+", "+'"'+val['tag_name']+'"'+")'>"+val['tag_name']+"</a>");
+        $("#tag_holder").append("<a class='btn btn-tag' title='Select this tag' onclick='addSelectedTag("+'"'+val['slug_name']+'"'+", "+'"'+val['tag_name']+'"'+")'>"+val['tag_name']+"</a>");
     });
 
-    function addSelectedTag(id, tag_name){
+    function addSelectedTag(slug_name, tag_name){
         var found = false;
 
         if(slct_list.length > 0){
             //Check if tag is exist in selected tag.
             slct_list.map((val, index) => {
-                if(val == id){
+                if(val == slug_name){
                     found = true;
                 }
             });
 
             if(found == false){
-                slct_list.push(id);
+                slct_list.push(slug_name);
                 //Check this append input value again!
-                $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='content_tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+id+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+slug_name+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
             }
         } else {
-            slct_list.push(id);
-            $("#slct_holder").append("<div class='d-inline' id='tagger"+id+"'><input hidden name='content_tag[]' value='{"+'"'+"id"+'"'+":"+id+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+id+")'>"+tag_name+"</a></div>");
+            slct_list.push(slug_name);
+            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+slug_name+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+")'>"+tag_name+"</a></div>");
         }
-
     }
 
-    function removeSelectedTag(id){
-        var tag = document.getElementById('tagger'+id);
-        slct_list = slct_list.filter(function(e) { return e !== id })
+    function removeSelectedTag(slug_name){
+        var tag = document.getElementById('tagger_'+slug_name);
+        slct_list = slct_list.filter(function(e) { return e !== slug_name })
         tag.parentNode.removeChild(tag);
     }
 </script>

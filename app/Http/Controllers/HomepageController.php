@@ -13,6 +13,7 @@ use App\Models\Tag;
 use App\Models\archieve;
 use App\Models\task;
 use App\Models\Setting;
+use App\Models\Dictionary;
 
 class HomepageController extends Controller
 {
@@ -23,6 +24,9 @@ class HomepageController extends Controller
      */
     public function index()
     {
+        //Required config
+        $select_1 = "Reminder";
+
         $content = ContentHeader::select('slug_name','content_title','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
             ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
@@ -33,12 +37,19 @@ class HomepageController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
+        $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
+            ->join('dictionary_type', 'dictionary_type.app_code', '=', 'dictionary.dct_type')
+            ->where('type_name', $select_1)
+            ->orderBy('dictionary.created_at', 'ASC')
+            ->get();
+
         //Set active nav
         session()->put('active_nav', 'homepage');
 
         return view ('homepage.index')
             ->with('content', $content)
-            ->with('tag', $tag);
+            ->with('tag', $tag)
+            ->with('dictionary', $dictionary);
     }
 
     // ================================= MVC =================================
