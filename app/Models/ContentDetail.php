@@ -13,5 +13,5 @@ class ContentDetail extends Model
 
     protected $table = 'content_detail';
     protected $primaryKey = 'id';
-    protected $fillable = ['content_id', 'content_attach', 'content_tag', 'content_location', 'created_at', 'updated_at'];
+    protected $fillable = ['content_id', 'content_attach', 'content_tag', 'content_loc', 'created_at', 'updated_at'];
 }
