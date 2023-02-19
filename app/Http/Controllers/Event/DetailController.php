@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\content;
-use App\Models\tag;
+use App\Models\ContentHeader;
+use App\Models\Tag;
 
 class DetailController extends Controller
 {
@@ -17,11 +17,15 @@ class DetailController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($id)
+    public function index($slug_name)
     {
-        $tag = Tag::all();
+        $tag = Tag::orderBy('updated_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->get();
 
-        $event = Content::where('id', $id)
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
+            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
+            ->where('slug_name', $slug_name)
             ->get();
 
         //Set active nav
@@ -29,7 +33,7 @@ class DetailController extends Controller
 
         return view ('event.detail.index')
             ->with('tag', $tag)
-            ->with('event', $event);
+            ->with('content', $content);
     }
 
     /**

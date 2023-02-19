@@ -48,69 +48,33 @@ class StatisticController extends Controller
             ->with('createdEvent', $createdEvent);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function update_mot(Request $request, $id)
     {
-        //
+        Setting::where('id', $id)->update([
+            'MOT_range' => $request->MOT_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update_mol(Request $request, $id)
     {
-        //
+        Setting::where('id', $id)->update([
+            'MOL_range' => $request->MOL_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update_ce(Request $request, $id)
     {
-        //
-    }
+        Setting::where('id', $id)->update([
+            'CE_range' => $request->CE_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->back()->with('success_message', 'Chart range updated');
     }
 }

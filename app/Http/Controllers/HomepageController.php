@@ -8,11 +8,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\content;
-use App\Models\tag;
+use App\Models\ContentHeader;
+use App\Models\ContentDetail;
+use App\Models\Tag;
 use App\Models\archieve;
 use App\Models\task;
 use App\Models\Setting;
+use App\Models\Dictionary;
 
 class HomepageController extends Controller
 {
@@ -23,89 +25,95 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        $event = DB::table('content')
+        //Required config
+        $select_1 = "Reminder";
+
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')
+            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
+            ->orderBy('content_header.created_at', 'DESC')
             ->limit(3)->get();
 
         $tag = Tag::orderBy('updated_at', 'DESC')
             ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')->get();
+            ->get();
+
+        $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
+            ->join('dictionary_type', 'dictionary_type.app_code', '=', 'dictionary.dct_type')
+            ->where('type_name', $select_1)
+            ->orderBy('dictionary.created_at', 'ASC')
+            ->get();
 
         //Set active nav
         session()->put('active_nav', 'homepage');
 
         return view ('homepage.index')
-            ->with('event', $event)
-            ->with('tag', $tag);
+            ->with('content', $content)
+            ->with('tag', $tag)
+            ->with('dictionary', $dictionary);
     }
 
     // ================================= MVC =================================
 
-    public function update_mot(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOT_range' => $request->MOT_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_mol(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOL_range' => $request->MOL_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_ce(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'CE_range' => $request->CE_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
     public function add_event(Request $request)
     {
-        if($request->content_tag != null){
-            //Initial variable
-            $tag = [];
-            $total_tag = count($request->content_tag);
-
-            //Iterate all selected tag
-            for($i=0; $i < $total_tag; $i++){
-                array_push($tag, $request->content_tag[$i]);
+        function getTag($tag_raw){
+            if($tag_raw != null){
+                //Initial variable
+                $tag = [];
+                $total_tag = count($tag_raw);
+    
+                //Iterate all selected tag
+                for($i=0; $i < $total_tag; $i++){
+                    array_push($tag, $tag_raw[$i]);
+                }
+    
+                //Clean the json from quotes mark
+                $tag = str_replace('"{',"{", json_encode($tag));
+                $tag = str_replace('}"',"}", $tag);
+                $tag = stripslashes($tag);
+            } else {
+                $tag = null;
             }
 
-            //Clean the json from quotes mark
-            $tag = str_replace('"{',"{", json_encode($tag));
-            $tag = str_replace('}"',"}", $tag);
-            $tag = stripslashes($tag);
-        } else {
-            $tag = null;
+            return $tag;
         }
 
-        $result = Content::create([
-            'id_user' => 1, //For now
+        function getSlugName($val){
+            $replace = str_replace("/","", $val);
+            $replace = str_replace(" ","_", $replace);
+            $replace = str_replace("-","_", $replace);
+
+            return strtolower($replace);
+        }
+
+        $header = ContentHeader::create([
+            'slug_name' => getSlugName($request->content_title), 
             'content_title' => $request->content_title,
-            'content_subtitle' => null, //For now
             'content_desc' => $request->content_desc,
-            'content_attach' => null, //For now
-            'content_tag' => $tag,
-            'content_loc' => null, //For now
             'content_date_start' => date("Y-m-d H:i", strtotime($request->content_date_start."".$request->content_time_start)),
             'content_date_end' => date("Y-m-d H:i", strtotime($request->content_date_end."".$request->content_time_end)),
+            'content_reminder' => $request->content_reminder,
+            'is_important' => $request->has('is_important'), //for now
+            'is_draft' => 1, //for now
             'created_at' => date("Y-m-d H:i"),
-            'updated_at' => date("Y-m-d H:i")
+            'created_by' => 1, //for now
+            'updated_at' => null,
+            'updated_by' => null,
+            'deleted_at' => null,
+            'deleted_by' => null
         ]);
+
+        if(getTag($request->content_tag)){
+            ContentDetail::create([
+                'content_id' => $header->id, //for now
+                'content_attach' => null, //for now
+                'content_tag' => getTag($request->content_tag),
+                'content_loc' => null, //for now 
+                'created_by' => date("Y-m-d H:i"), 
+                'updated_at' => null
+            ]);
+        }
 
         return redirect()->back()->with('success_message', 'Create content success');
     }

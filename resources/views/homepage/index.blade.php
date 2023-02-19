@@ -153,7 +153,7 @@
                             <a class="content-more position-absolute" style="right:0px; top:0px;" href="/event/page/1">See More <i class="fa-solid fa-arrow-right"></i></a>
                             <div class="row mt-2"> 
                                 <div class="col-lg-4 col-md-6 col-sm-6">
-                                    @include('homepage.addEvent')
+                                    @include('homepage.addevent_form.layout')
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-6">
                                     @include('homepage.addTask')
@@ -171,14 +171,6 @@
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
-
-        <!-- Main Quill library -->
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-        <script>
-            var quill = new Quill('#rich_box', {
-                theme: 'snow'
-            });
-        </script>
 
         <!--Maps API Key.-->
         <!--need billing!!!-->
