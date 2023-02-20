@@ -117,13 +117,15 @@
                                             @php($i = 0)
 
                                             @foreach($dictionary as $dct)
-                                                @if($i == 0)
-                                                    <option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option>
-                                                @else
-                                                    <option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option>
-                                                @endif
+                                                @if($dct->type_name == "Reminder")
+                                                    @if($i == 0)
+                                                        <option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option>
+                                                    @else
+                                                        <option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option>
+                                                    @endif
 
-                                                @php($i++)
+                                                    @php($i++)
+                                                @endif
                                             @endforeach
                                         </select>
                                         <label for="floatingSelect">Reminder</label>
@@ -155,8 +157,9 @@
                             <div id="map"></div>
 
                             <label class="input-title">Attachment</label><br>
+                            @include('homepage.addevent_form.attachment')
 
-                            <label class="input-title">Constraint</label>
+                            <label class="input-title mt-2">Constraint</label>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" name="is_important" id="flexCheckDefault">
                                 <label class="form-check-label mt-1" for="flexCheckDefault">&nbsp Important Event</label>

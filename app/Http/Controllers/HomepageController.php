@@ -27,6 +27,7 @@ class HomepageController extends Controller
     {
         //Required config
         $select_1 = "Reminder";
+        $select_2 = "Attachment";
 
         $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
@@ -41,6 +42,7 @@ class HomepageController extends Controller
         $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
             ->join('dictionary_type', 'dictionary_type.app_code', '=', 'dictionary.dct_type')
             ->where('type_name', $select_1)
+            ->orWhere('type_name', $select_2)
             ->orderBy('dictionary.created_at', 'ASC')
             ->get();
 
@@ -87,15 +89,23 @@ class HomepageController extends Controller
             return strtolower($replace);
         }
 
+        function getFullDate($date, $time){
+            if($date && $time){
+                return date("Y-m-d H:i", strtotime($date."".$time));
+            } else {
+                return null;
+            }
+        }
+
         $header = ContentHeader::create([
             'slug_name' => getSlugName($request->content_title), 
             'content_title' => $request->content_title,
             'content_desc' => $request->content_desc,
-            'content_date_start' => date("Y-m-d H:i", strtotime($request->content_date_start."".$request->content_time_start)),
-            'content_date_end' => date("Y-m-d H:i", strtotime($request->content_date_end."".$request->content_time_end)),
+            'content_date_start' => getFullDate($request->content_date_start, $request->content_time_start),
+            'content_date_end' => getFullDate($request->content_date_end, $request->content_time_end),
             'content_reminder' => $request->content_reminder,
             'is_important' => $request->has('is_important'), //for now
-            'is_draft' => 1, //for now
+            'is_draft' => 0, 
             'created_at' => date("Y-m-d H:i"),
             'created_by' => 1, //for now
             'updated_at' => null,
@@ -104,10 +114,10 @@ class HomepageController extends Controller
             'deleted_by' => null
         ]);
 
-        if(getTag($request->content_tag)){
+        if(getTag($request->content_tag) || $request->has('content_attach')){
             ContentDetail::create([
                 'content_id' => $header->id, //for now
-                'content_attach' => null, //for now
+                'content_attach' => $request->content_attach, 
                 'content_tag' => getTag($request->content_tag),
                 'content_loc' => null, //for now 
                 'created_by' => date("Y-m-d H:i"), 
