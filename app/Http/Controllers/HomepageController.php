@@ -114,10 +114,10 @@ class HomepageController extends Controller
             'deleted_by' => null
         ]);
 
-        if(getTag($request->content_tag)){
+        if(getTag($request->content_tag) || $request->has('content_attach')){
             ContentDetail::create([
                 'content_id' => $header->id, //for now
-                'content_attach' => null, //for now
+                'content_attach' => $request->content_attach, 
                 'content_tag' => getTag($request->content_tag),
                 'content_loc' => null, //for now 
                 'created_by' => date("Y-m-d H:i"), 
