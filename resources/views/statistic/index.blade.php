@@ -134,6 +134,12 @@
                 background:#00C363;
                 color:whitesmoke;
             }
+            .nodata-icon{
+                display: block;
+                margin-inline: auto;
+                height: 30vh;
+                min-height: 80px;
+            }
         </style>
     </head>
 

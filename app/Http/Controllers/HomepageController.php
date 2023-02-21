@@ -15,6 +15,7 @@ use App\Models\archieve;
 use App\Models\task;
 use App\Models\Setting;
 use App\Models\Dictionary;
+use App\Models\Notification;
 
 class HomepageController extends Controller
 {
@@ -28,6 +29,7 @@ class HomepageController extends Controller
         //Required config
         $select_1 = "Reminder";
         $select_2 = "Attachment";
+        $user_id = 1; //for now.
 
         $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
@@ -129,6 +131,24 @@ class HomepageController extends Controller
     }
 
     // ================================= API =================================
+    public function getAllNotification(){
+        $user_id = 1;
+        
+        $notification = Notification::select('notif_type', 'notif_body', 'notif_send_to', 'is_pending')
+            ->where('is_pending', 0)
+            ->where(function ($query) {
+                $query->where('notif_send_to','LIKE','%send_to":"1"%') //Must use jsoncontains
+                    ->orWhere('notif_send_to','LIKE','%send_to":"all"%');
+            })
+            ->get();
+        
+        return response()->json([
+            "msg"=> count($notification)." Data retrived", 
+            "status"=> 200,
+            "data"=> $notification
+        ]);
+    }
+    
     public function getAllContent()
     {
         $cnt = content::orderBy('created_at', 'DESC')

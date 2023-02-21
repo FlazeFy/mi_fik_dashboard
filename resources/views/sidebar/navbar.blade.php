@@ -113,12 +113,55 @@
         </li>
         <li>
             <a class="dropdown-item" href="#"><i class="fa-solid fa-bell me-2"></i> Notification</a>
-            <div class="item-notification">
-                <i class="fa-solid fa-bell me-2"></i>4
-            </div>
+            <div class="item-notification" id="notif-holder"><img src='http://127.0.0.1:8000/assets/loading-notif.gif' style='height:24px; margin-top:-5px;'></div>
         </li>
         <div class="sign-out-area">
-            <li><a class="dropdown-item" href="#"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
+            <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
         </div>
     </ul>
 </div>
+
+<script type="text/javascript">
+    //Get data ajax
+    $(document).ready(function() {
+        clear();
+    });
+    
+    function clear() {
+        setTimeout(function() {
+            update();
+            clear();
+        }, 5000); 
+    }
+    
+    function update() {
+        $.ajax({
+            url: '/api/v1/notification',
+            type: 'get',
+            dataType: 'json',
+            success: function(response){
+                var response = response.data;
+                var len = 0;
+
+                $('#notif-holder').empty(); 
+                if(response != null){
+                    len = response.length;
+                }
+                
+                if(len > 0){
+                    var elmt = 
+                        "<i class='fa-solid fa-bell me-2'></i>"+len ;
+                        
+                    $("#notif-holder").append(elmt);
+                }else{
+                    var elmt = 
+                        "<span>" +
+                            " " + //Check this again
+                        "</span>";
+
+                    $("#notif-holder").append(elmt);
+                }
+            }
+       });
+    }
+</script>
