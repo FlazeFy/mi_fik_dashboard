@@ -7,8 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\content;
-use App\Models\tag;
+use App\Models\ContentDetail;
+use App\Models\Tag;
 use App\Models\Setting;
 
 class TagController extends Controller
@@ -23,12 +23,12 @@ class TagController extends Controller
         $tag = Tag::all();
 
         //Chart query
-        $mostTag = Content::select('content_tag')
+        $mostTag = ContentDetail::select('content_tag')
             ->whereNot('content_tag', null)
             ->get();
 
         $setting = Setting::select('id', 'MOT_range')
-            ->where('id_user', 1)
+            ->where('created_by', 'dc4d52ec-afb1-11ed-afa1-0242ac120002')
             ->get();
 
         //Set active nav

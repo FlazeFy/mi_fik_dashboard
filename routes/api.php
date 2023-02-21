@@ -47,3 +47,7 @@ Route::prefix('/v1/archieve')->group(function () {
     Route::put('/edit/{id}', [HomepageController::class, 'editArchive']);
     Route::delete('/delete/{id}', [HomepageController::class, 'deleteArchive']);
 });
+
+Route::prefix('/v1/notification')->group(function () {
+    Route::get('/', [HomepageController::class, 'getAllNotification']);
+});

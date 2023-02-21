@@ -10,6 +10,8 @@ use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 
+use App\Http\Controllers\System\NotificationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,4 +48,9 @@ Route::prefix('/event')->group(function () {
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 
     Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
+});
+
+Route::prefix('/system')->group(function () {
+    Route::get('/notification', [NotificationController::class, 'index']);
+    Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
 });
