@@ -27,6 +27,99 @@
     /*Icon color must change on input focus*/
 </style>
 
+<style>
+    .input-warning{
+        font-size:14px;
+    }
+    .btn-quick-action{
+        border-radius:6px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        height:15vh;
+        border:none;
+        width:100%;
+        background-position: center;
+        background-repeat:no-repeat;
+        position: relative;
+        background-size: cover;
+        transition: 0.5s;
+        text-align:left;
+        padding:10px;
+    }
+    .btn-quick-action:hover{
+        background: #F78A00 !important;
+        background-image:none !important;
+    }
+    .quick-action-text{
+        font-size:24px;
+        color:white;
+        transition: 0.5s;
+        margin-top:9vh;
+    }
+    .quick-action-info{
+        font-size:16px;
+        color:white;
+        transition: 0.5s;
+        display:none;
+    }
+    .btn-quick-action:hover .quick-action-text{
+        margin-top:-4vh;
+    }
+    .btn-quick-action:hover .quick-action-info{
+        display:block;
+    }
+    .btn-tag{
+        background:white;
+        padding: 6px 8px;
+        border-radius:12px;
+        margin:4px;
+        color:#414141;
+        font-weight:400;
+        border:1.5px solid #F78A00;
+    }
+    .btn-tag:hover, .btn-tag-selected{
+        background:#F78A00;
+        padding: 6px 8px;
+        border-radius:12px;
+        margin:4px;
+        color:whitesmoke !important;
+    }
+
+    /*Richtext header*/
+    .ql-toolbar.ql-snow{
+        border:1.7px solid #F78A00;
+        margin-top:10px;
+        border-radius:10px 10px 0 0;
+    }
+    .ql-snow .ql-stroke {
+        stroke:#414141;
+    }
+    .ql-snow.ql-toolbar button{
+        border-radius:6px;
+        height:25px;
+        width:25px;
+        padding-left:3px;
+        margin-right:10px;
+        transition: all 0.4s;
+    }
+    .ql-snow.ql-toolbar button:hover .ql-stroke{
+        stroke:#F78A00;
+    }
+    button.ql-active{
+        background:#F78A00 !important;
+    }
+    button.ql-active svg .ql-stroke{
+        stroke:white !important;
+    }
+
+    /*Richtext body*/
+    .ql-toolbar.ql-snow + .ql-container.ql-snow{
+        height:30vh;
+    }
+    .input-title{
+        font-weight: 500;
+    }
+</style>
+
 <div class="text-nowrap table-responsive">
     <table class="table table-paginate" id="notifTable" cellspacing="0">
         <thead>
@@ -40,11 +133,13 @@
             </tr>
         </thead>
         <tbody>
+            @php($i = 0)
             @foreach($notification as $nt)
                 <tr>
                     <td>
                         @php($split = explode("_",$nt->notif_type))
-                        {{ucfirst($split[1])}}
+                        @php($type = ucfirst($split[1]))
+                        {{$type}}
                     </td>
                     <td>{{$nt->notif_body}}</td>
                     <td>
@@ -102,11 +197,13 @@
                         @endif
                     </td>
                     <td>
-                        <button class="btn btn-warning" data-bs-target="#editModal-{{$nt->id}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
-                        <button class="btn btn-danger" data-bs-target="#deleteModal-{{$nt->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-warning" data-bs-target="#editModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
+                        <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
 
+                @include('system.notification.edit')
+                @php($i++)
             @endforeach
         </tbody>
     </table>

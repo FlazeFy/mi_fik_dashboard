@@ -52,5 +52,5 @@ Route::prefix('/event')->group(function () {
 
 Route::prefix('/system')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
-   
+    Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
 });
