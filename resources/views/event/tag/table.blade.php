@@ -31,7 +31,6 @@
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col">ID</th>
                 <th scope="col">Tag Name</th>
                 <th scope="col">Used</th>
                 <th scope="col">Created At</th>
@@ -42,7 +41,6 @@
         <tbody>
             @foreach($tag as $tg)
                 <tr>
-                    <th scope="row">{{$tg->id}}</th>
                     <td>
                         <form class="form-custom" method="POST" action="/event/tag/update/{{$tg->id}}">
                             @csrf
