@@ -99,6 +99,22 @@ class HomepageController extends Controller
             }
         }
 
+        $att_count = count($request->attach_input);
+        if($att_count > 0){
+            for($i = 0; $i < $att_count; $i++){
+                if($request->hasFile('attach_input.'.$i)){
+                    //validate image
+                    $this->validate($request, [
+                        'attach_input.'.$i     => 'required|max:10000',
+                    ]);
+        
+                    //upload image
+                    $att_file = $request->file('attach_input.'.$i);
+                    $att_file->storeAs('public', $att_file->getClientOriginalName());
+                } 
+            }
+        }
+
         $header = ContentHeader::create([
             'slug_name' => getSlugName($request->content_title), 
             'content_title' => $request->content_title,
