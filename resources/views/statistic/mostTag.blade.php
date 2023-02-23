@@ -1,24 +1,29 @@
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold">Most Used Location</h5>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-MOL" data-bs-toggle="dropdown" aria-haspopup="true"
+    <h5 class="text-secondary fw-bold">Most Used Tag</h5>
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-MOT" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOL">
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
         <span class="dropdown-item">
             <!--Chart Setting-->
             @foreach($setting as $set)
-                <form action="/dashboard/update_mol/{{$set->id}}" method="POST">
+                <form action="/statistic/update_mot/{{$set->id}}" method="POST">
                     @csrf
                     <label for="floatingInputValue" style="font-size:12px;">Chart Range</label>
-                    <input type="number" class="form-control py-1" name="MOL_range" min="3" max="10" value="{{$set->MOL_range}}" onblur="this.form.submit()" required>
+                    <input type="number" class="form-control py-1" name="MOT_range" min="3" max="10" value="{{$set->MOT_range}}" onblur="this.form.submit()" required>
                 </form>
             @endforeach
         </span>
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
-    <div id="MOL_pie_chart"></div>
+    @if(count($mostTag) != 0)
+        <div id="MOT_pie_chart"></div>
+    @else
+        <img src="http://127.0.0.1:8000/assets/nodata.png" class="img nodata-icon">
+        <h6 class="text-center">No Data Available</h6>
+    @endif
 </div>
 
 <script type="text/javascript">
@@ -27,22 +32,19 @@
             <?php 
                 //Initial variable
                 $val = [];
-
-                foreach($mostLoc as $mt){
-                    $loc = json_decode($mt->content_loc);
-                    
-                    foreach($loc as $lc){
-                        //Insert loc name to new array
-                        if($lc->type == "location"){
-                            array_push($val, $lc->detail);
-                        }
-                    }   
-                }
-
                 foreach($setting as $set){
-                    $max = $set->MOL_range; //Max loc to show.
+                    $max = $set->MOT_range; //Max tag to show.
                 }
                 $otherTotal = 0;
+
+                foreach($mostTag as $mt){
+                    $tag = json_decode($mt->content_tag);
+                    
+                    foreach($tag as $tg){
+                        //Insert tag name to new array
+                        array_push($val, $tg->tag_name);
+                    }   
+                }
 
                 //Count duplicate value w/ DESC sorting
                 $result = array_count_values($val);
@@ -74,21 +76,19 @@
             //Initial variable
             $val = [];
 
-            foreach($mostLoc as $mt){
-                $loc = json_decode($mt->content_loc);
+            foreach($mostTag as $mt){
+                $tag = json_decode($mt->content_tag);
                 
-                foreach($loc as $lc){
-                    //Insert loc name to new array
-                    if($lc->type == "location"){
-                        array_push($val, $lc->detail);
-                    }
+                foreach($tag as $tg){
+                    //Insert tag name to new array
+                    array_push($val, $tg->tag_name);
                 }   
             }
 
             //Check if chart range is greater than location total
             foreach($setting as $set){
-                if(count($val) > $set->MOL_range){
-                    $max = $set->MOL_range; //Max loc to show.
+                if(count($val) > $set->MOT_range){
+                    $max = $set->MOT_range; //Max loc to show.
                 } else {
                     $max = null;
                 }
@@ -113,7 +113,7 @@
         ?>
     ],
     responsive: [{
-        breakpoint: 480,
+        // breakpoint: 480,
         options: {
             chart: {
                 width: 160
@@ -125,6 +125,6 @@
     }]
     };
 
-    var chart = new ApexCharts(document.querySelector("#MOL_pie_chart"), options);
+    var chart = new ApexCharts(document.querySelector("#MOT_pie_chart"), options);
     chart.render();
 </script>

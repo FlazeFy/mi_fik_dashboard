@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Event | Tag</title>
+        <title>System | Notification</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,7 +28,7 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#tagTable').DataTable();
+                $('#notifTable').DataTable();
             });
         </script>
 
@@ -132,8 +132,26 @@
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 transition: all 0.4s;
             }
+            .custom-submit-modal{
+                position:absolute !important;
+                bottom:-20px;
+                background:white;
+                right:10px;
+                height:45px;
+                padding:6px 12px;
+                color:#00C363;
+                border-radius:6px;
+                border:none;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transition: all 0.4s;
+            }
+
             .custom-close-modal:hover{
                 background:#F85D59;
+                color:whitesmoke;
+            }
+            .custom-submit-modal:hover{
+                background:#00C363;
                 color:whitesmoke;
             }
         </style>
@@ -149,22 +167,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="row">
-                            <div class="col-lg-5 col-md-5 col-sm-12">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('event.tag.add')
-                                </div>
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('statistic.mostTag')
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-md-7 col-sm-12">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('event.tag.table')
-                                </div>
-                            </div>
-                        </div>
+                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
+                        @include('system.notification.table')
                     </div>
                 </div>
             </div>

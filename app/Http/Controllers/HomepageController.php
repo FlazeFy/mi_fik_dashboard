@@ -8,14 +8,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-
-use App\Models\content;
-use App\Models\tag;
+use App\Models\ContentHeader;
+use App\Models\ContentDetail;
+use App\Models\Tag;
 use App\Models\archieve;
 use App\Models\task;
 use App\Models\Setting;
+use App\Models\Dictionary;
+use App\Models\Notification;
 
-class DashboardController extends Controller
+class HomepageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,118 +26,129 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $event = DB::table('content')
+        //Required config
+        $select_1 = "Reminder";
+        $select_2 = "Attachment";
+        $user_id = 1; //for now.
+
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')
+            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
+            ->orderBy('content_header.created_at', 'DESC')
             ->limit(3)->get();
 
         $tag = Tag::orderBy('updated_at', 'DESC')
             ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')->get();
-
-        //Chart query
-        $mostTag = Content::select('content_tag')
-            ->whereNot('content_tag', null)
             ->get();
 
-        $mostLoc = Content::select('content_loc')
-            ->whereNot('content_loc', null)
-            ->get();
-
-        $setting = Setting::select('id', 'MOT_range', 'MOL_range', 'CE_range')
-            ->where('id_user', 1)
+        $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
+            ->join('dictionary_type', 'dictionary_type.app_code', '=', 'dictionary.dct_type')
+            ->where('type_name', $select_1)
+            ->orWhere('type_name', $select_2)
+            ->orderBy('dictionary.created_at', 'ASC')
             ->get();
 
         //Set active nav
-        session()->put('active_nav', 'dashboard');
+        session()->put('active_nav', 'homepage');
 
-        foreach($setting as $set){
-            $createdEvent = Content::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
-                ->where('created_at', '>=', date("Y-m-d", strtotime("-".$set->CE_range." months")))
-                ->groupByRaw('MONTH(created_at)')
-                ->get();
-        }
-
-        return view ('dashboard.index')
-            ->with('event', $event)
-            ->with('mostTag', $mostTag)
-            ->with('mostLoc', $mostLoc)
-            ->with('setting', $setting)
+        return view ('homepage.index')
+            ->with('content', $content)
             ->with('tag', $tag)
-            ->with('createdEvent', $createdEvent);
+            ->with('dictionary', $dictionary);
     }
 
     // ================================= MVC =================================
 
-    public function update_mot(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOT_range' => $request->MOT_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_mol(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOL_range' => $request->MOL_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_ce(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'CE_range' => $request->CE_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
     public function add_event(Request $request)
     {
-        if($request->content_tag != null){
-            //Initial variable
-            $tag = [];
-            $total_tag = count($request->content_tag);
-
-            //Iterate all selected tag
-            for($i=0; $i < $total_tag; $i++){
-                array_push($tag, $request->content_tag[$i]);
+        function getTag($tag_raw){
+            if($tag_raw != null){
+                //Initial variable
+                $tag = [];
+                $total_tag = count($tag_raw);
+    
+                //Iterate all selected tag
+                for($i=0; $i < $total_tag; $i++){
+                    array_push($tag, $tag_raw[$i]);
+                }
+    
+                //Clean the json from quotes mark
+                $tag = str_replace('"{',"{", json_encode($tag));
+                $tag = str_replace('}"',"}", $tag);
+                $tag = stripslashes($tag);
+            } else {
+                $tag = null;
             }
 
-            //Clean the json from quotes mark
-            $tag = str_replace('"{',"{", json_encode($tag));
-            $tag = str_replace('}"',"}", $tag);
-            $tag = stripslashes($tag);
-        } else {
-            $tag = null;
+            return $tag;
         }
 
-        $result = Content::create([
-            'id_user' => 1, //For now
+        function getSlugName($val){
+            $replace = str_replace("/","", $val);
+            $replace = str_replace(" ","_", $replace);
+            $replace = str_replace("-","_", $replace);
+
+            return strtolower($replace);
+        }
+
+        function getFullDate($date, $time){
+            if($date && $time){
+                return date("Y-m-d H:i", strtotime($date."".$time));
+            } else {
+                return null;
+            }
+        }
+
+        $header = ContentHeader::create([
+            'slug_name' => getSlugName($request->content_title), 
             'content_title' => $request->content_title,
-            'content_subtitle' => null, //For now
-            'content_desc' => "null",
-            'content_attach' => null, //For now
-            'content_tag' => $tag,
-            'content_loc' => null, //For now
-            'content_date_start' => date("Y-m-d H:i", strtotime($request->content_date_start."".$request->content_time_start)),
-            'content_date_end' => date("Y-m-d H:i", strtotime($request->content_date_end."".$request->content_time_end)),
+            'content_desc' => $request->content_desc,
+            'content_date_start' => getFullDate($request->content_date_start, $request->content_time_start),
+            'content_date_end' => getFullDate($request->content_date_end, $request->content_time_end),
+            'content_reminder' => $request->content_reminder,
+            'is_important' => $request->has('is_important'), //for now
+            'is_draft' => 0, 
             'created_at' => date("Y-m-d H:i"),
-            'updated_at' => date("Y-m-d H:i")
+            'created_by' => 1, //for now
+            'updated_at' => null,
+            'updated_by' => null,
+            'deleted_at' => null,
+            'deleted_by' => null
         ]);
+
+        if(getTag($request->content_tag) || $request->has('content_attach')){
+            ContentDetail::create([
+                'content_id' => $header->id, //for now
+                'content_attach' => $request->content_attach, 
+                'content_tag' => getTag($request->content_tag),
+                'content_loc' => null, //for now 
+                'created_by' => date("Y-m-d H:i"), 
+                'updated_at' => null
+            ]);
+        }
 
         return redirect()->back()->with('success_message', 'Create content success');
     }
 
     // ================================= API =================================
+    public function getAllNotification(){
+        $user_id = 1;
+        
+        $notification = Notification::select('notif_type', 'notif_body', 'notif_send_to', 'is_pending')
+            ->where('is_pending', 0)
+            ->where(function ($query) {
+                $query->where('notif_send_to','LIKE','%send_to":"1"%') //Must use jsoncontains
+                    ->orWhere('notif_send_to','LIKE','%send_to":"all"%');
+            })
+            ->get();
+        
+        return response()->json([
+            "msg"=> count($notification)." Data retrived", 
+            "status"=> 200,
+            "data"=> $notification
+        ]);
+    }
+    
     public function getAllContent()
     {
         $cnt = content::orderBy('created_at', 'DESC')

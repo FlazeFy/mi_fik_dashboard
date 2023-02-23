@@ -2,10 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
-//use App\Http\Controllers\Mifik\DashboardController;
-use App\Http\Controllers\DashboardController;
+//use App\Http\Controllers\Mifik\HomepageController;
+use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\StatisticController;
+
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
+use App\Http\Controllers\Event\DetailController;
+
+use App\Http\Controllers\System\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,15 +23,19 @@ use App\Http\Controllers\Event\TagController;
 |
 */
 
-// Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+// Route::get('/homepage', [HomepageController::class, 'index'])->name('dashboard');
 
-Route::prefix('/dashboard')->group(function () {
-    Route::get('/', [DashboardController::class, 'index']);
-    Route::post('/update_mot/{id}', [DashboardController::class, 'update_mot']);
-    Route::post('/update_mol/{id}', [DashboardController::class, 'update_mol']);
-    Route::post('/update_ce/{id}', [DashboardController::class, 'update_ce']);
+Route::prefix('/homepage')->group(function () {
+    Route::get('/', [HomepageController::class, 'index']);
 
-    Route::post('/add_event', [DashboardController::class, 'add_event']);
+    Route::post('/add_event', [HomepageController::class, 'add_event']);
+});
+
+Route::prefix('/statistic')->group(function () {
+    Route::get('/', [StatisticController::class, 'index']);
+    Route::post('/update_mot/{id}', [StatisticController::class, 'update_mot']);
+    Route::post('/update_mol/{id}', [StatisticController::class, 'update_mol']);
+    Route::post('/update_ce/{id}', [StatisticController::class, 'update_ce']);
 });
 
 Route::prefix('/event')->group(function () {
@@ -37,4 +46,11 @@ Route::prefix('/event')->group(function () {
     Route::post('/tag/add', [TagController::class, 'add_tag']);
     Route::post('/tag/update/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
+
+    Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
+});
+
+Route::prefix('/system')->group(function () {
+    Route::get('/notification', [NotificationController::class, 'index']);
+    Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
 });

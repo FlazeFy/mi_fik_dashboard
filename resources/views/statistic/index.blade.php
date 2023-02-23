@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Dashboard</title>
+        <title>Statistic</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -85,6 +85,11 @@
             #content{
                 overflow:auto;
             }
+            .content-body{
+                max-width:1080px;
+                display:block;
+                margin-inline:auto;
+            }
 
             .modal-content{
                 margin-top:7vh;
@@ -129,107 +134,45 @@
                 background:#00C363;
                 color:whitesmoke;
             }
+            .nodata-icon{
+                display: block;
+                margin-inline: auto;
+                height: 30vh;
+                min-height: 80px;
+            }
         </style>
     </head>
 
     <body>
-        <div class="row m-0 p-0">
-            <div class="col-lg-10 col-md-9 col-sm-12 p-0">
-                <div class="wrapper d-flex align-items-stretch">
-                    <!--Sidebar.-->
-                    @include('sidebar.leftbar')
+        <div class="wrapper d-flex align-items-stretch">
+            <!--Sidebar.-->
+            @include('sidebar.leftbar')
 
-                    <!-- Page Content  -->
-                    <div id="content" class="p-4">
-                        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                            <i class="fa fa-bars"></i>
-                            <span class="sr-only">Toggle Menu</span>
-                        </button>
+            <!-- Page Content  -->
+            <div id="content" class="p-4">
+                <div class="content-body">
+                    @include('sidebar.navbar')
 
-                        <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                            @include('dashboard.event')
-                        </div>
-                        <div class="row p-0 m-0">
-                            <div class="col-lg-5 p-1">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('dashboard.mostTag')
-                                    <?php
-                                        //For testing the most used tag chart only
-                                        // $val = [];
-                                        // foreach($mostTag as $mt){
-                                        //     $tag = json_decode($mt->content_tag);
-                                            
-                                        //     foreach($tag as $tg){
-                                        //         //Insert tag name to new array
-                                        //         array_push($val, $tg->tag_name);
-                                        //     }   
-                                        // }
-                                        // foreach($val as $v){
-                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$v."  </a>";
-                                        // }
-                                        // echo "<br><br>";
-                                        // $result = array_count_values($val);
-
-                                        // arsort($result);
-                                        // $new_arr = array_keys($result);
-                                        // $i = 0;
-                                        // foreach($result as $v){
-                                        //     echo "<a class='fw-bold text-decoration-none mx-1'>".$new_arr[$i]."  </a>";
-                                        //     $i++;
-                                        // }
-                                    ?>
-                                </div>
-                                <div class="container-fluid bg-white rounded my-3 p-2">
-                                    @include('dashboard.mostLoc')
-                                </div>
+                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
+                        @include('statistic.createdEvent')
+                    </div>
+                    <div class="row p-0 m-0">
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('statistic.mostTag')
                             </div>
-                            <div class="col-lg-7 p-1">
-                                <div class="container-fluid mt-2 p-2">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-md-6 col-sm-12 px-1 pb-2">
-                                            @include('dashboard.addEvent')
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="container-fluid bg-white rounded p-2">
-                                    @include('dashboard.createdEvent')
-                                </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                @include('statistic.mostLoc')
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-2 col-md-3 col-sm-12 p-2">
-                <!--Sidebar.-->
-                @include('sidebar.rightbar')
-            </div>
         </div>
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
-
-        <!-- Main Quill library -->
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-        <script>
-            var quill = new Quill('#rich_box', {
-                theme: 'snow'
-            });
-        </script>
-
-        <!--Maps API Key.-->
-        <!--need billing!!!-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRXG9R-3Jj-LghEPIV2f-rNhO2FjuOa7M&callback=initMap&v=weekly" defer></script>
-        <script>
-            let map;
-
-            function initMap() {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: { lat: -34.397, lng: 150.644 },
-                    zoom: 8,
-                });
-            }
-            
-            window.initMap = initMap;
-        </script>
     </body>
 </html>

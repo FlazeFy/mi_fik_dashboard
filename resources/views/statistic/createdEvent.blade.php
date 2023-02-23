@@ -7,7 +7,7 @@
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
         <!--Chart Setting-->
         @foreach($setting as $set)
-            <form action="/dashboard/update_ce/{{$set->id}}" method="POST">
+            <form action="/statistic/update_ce/{{$set->id}}" method="POST">
                 @csrf
                 <input hidden name="CE_range" value="6">
                 <button class="dropdown-item btn-transparent" type="submit">
@@ -16,7 +16,7 @@
                     @endif
                     Semester</button>
             </form>
-            <form action="/dashboard/update_ce/{{$set->id}}" method="POST">
+            <form action="/statistic/update_ce/{{$set->id}}" method="POST">
                 @csrf
                 <input hidden name="CE_range" value="12">
                 <button class="dropdown-item btn-transparent" type="submit">
@@ -30,7 +30,12 @@
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
-    <div id="CE_area_chart"></div>
+    @if(count($createdEvent) != 0)
+        <div id="CE_area_chart"></div>
+    @else
+        <img src="http://127.0.0.1:8000/assets/nodata.png" class="img nodata-icon">
+        <h6 class="text-center">No Data Available</h6>
+    @endif
 </div>
 
 <script type="text/javascript">
