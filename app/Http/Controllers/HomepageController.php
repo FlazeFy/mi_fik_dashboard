@@ -147,6 +147,16 @@ class HomepageController extends Controller
     }
 
     // ================================= API =================================
+    public function getContentHeader(){
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
+            //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
+            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
+            ->orderBy('content_header.created_at', 'DESC')
+            ->paginate(15);
+        
+        return response()->json($content);
+    }
+
     public function getAllNotification(){
         $user_id = 1;
         
