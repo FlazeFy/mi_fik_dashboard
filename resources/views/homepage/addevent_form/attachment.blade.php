@@ -73,28 +73,25 @@
         attach_list.push(obj);
 
         $("#attachment-holder").append(' ' +
-            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'"> ' +
-                '<form class="d-inline" id="attachment_form_'+i+'"> ' +
-                    '@csrf ' +
-                    '<div class="row mb-1"> ' +
-                        '<div class="col-6"> ' +
-                            '<h6 class="mt-1">Attachment Type : </h6> ' +
-                        '</div> ' +
-                        '<div class="col-6"> ' +
-                            '<select class="form-select attachment" id="attach_type_'+i+'" name="attach_type" onChange="getAttachmentInput('+i+', this.value, false)" aria-label="Default select example"> ' +
-                                '<option selected>---</option> ' +
-                                <?php
-                                    foreach($dictionary as $dct){
-                                        if($dct->type_name == "Attachment"){
-                                            echo "'<option value=".'"'.$dct->slug_name.'"'.">".$dct->dct_name."</option> ' +";
-                                        }
-                                    }
-                                ?>
-                            '</select> ' +
-                        '</div> ' +
+            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'"> ' + 
+                '<div class="row mb-1"> ' +
+                    '<div class="col-6"> ' +
+                        '<h6 class="mt-1">Attachment Type : </h6> ' +
                     '</div> ' +
-                    '<div id="attach-input-holder-'+i+'"></div> ' +
-                '</form> ' +
+                    '<div class="col-6"> ' +
+                        '<select class="form-select attachment" id="attach_type_'+i+'" name="attach_type" onChange="getAttachmentInput('+i+', this.value, false)" aria-label="Default select example"> ' +
+                            '<option selected>---</option> ' +
+                            <?php
+                                foreach($dictionary as $dct){
+                                    if($dct->type_name == "Attachment"){
+                                        echo "'<option value=".'"'.$dct->slug_name.'"'.">".$dct->dct_name."</option> ' +";
+                                    }
+                                }
+                            ?>
+                        '</select> ' +
+                    '</div> ' +
+                '</div> ' +
+                '<div id="attach-input-holder-'+i+'"></div> ' +
                 '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+i+')"> ' +
                     '<i class="fa-solid fa-trash-can"></i></a> ' +
                 '<a class="btn btn-icon-preview" title="Preview Attachment" onclick=""> ' +
@@ -111,6 +108,9 @@
         if(all){
             var att_name = document.getElementById('attach_name_'+id).value;
             var att_url = document.getElementById('attach_url_'+id).value;
+            att_url = att_url.replace(/\\/g, '');
+            att_url = att_url.replace("C:fakepath", "");
+            //addAttachmentFile(id);
         } else {
             var att_name = null;
             var att_url = null;
@@ -122,6 +122,8 @@
             "attach_name": att_name, 
             "attach_url": att_url
         };
+
+        console.log(attach_list);
 
         document.getElementById('content_attach').value = JSON.stringify(attach_list);
     }
@@ -155,9 +157,40 @@
                 '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
         } else {
             $("#attach-input-holder-"+index).append(' ' +
-                '<input type="file" id="attach_url_'+index+'" name="attach_input" class="form-control m-2" '+allowed+' onblur="setValue('+index+', true)"> ' +
+                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+index+', true)"> ' +
                 '<h6 class="mt-1">Attachment Name</h6> ' +
                 '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
         }
     }
+
+    // function addAttachmentFile(index){
+    //     //e.preventDefault();
+    //     // var actionType = $('#btn-save').val();
+    //     // $('#btn-save').html('Sending..');
+
+    //     var datastring = $("#attachment_form_"+index).serialize();
+
+    //     //var formData = new FormData(this);
+
+    //     $.ajax({
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         type:'POST',
+    //         url: "homepage/add_attach/"+index,
+    //         data: datastring,
+    //         // cache: false,
+    //         // contentType: false,
+    //         // processData: false,
+    //         success: (data) => {
+    //             // $('#productForm').trigger("reset");
+    //             $('#ajax-product-modal').modal('hide');
+    //             //$('#btn-save').html('Save Changes');
+    //         },
+    //         error: function(data){
+    //             console.log('Error:', data);
+    //             $('#btn-save').html('Save Changes');
+    //         }
+    //     });
+    // }
 </script>

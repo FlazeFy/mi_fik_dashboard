@@ -107,7 +107,7 @@
                     </div>
                     <div class="row d-inline-block px-2">
                         <!--Get event location-->
-                        @if($c->content_loc != null)
+                        @if($c->content_loc)
                             @php($loc = json_decode($c->content_loc))
                             <span class="loc-limiter px-0 m-0">
                                 <a class="btn-detail" title="Event Location"><i class="fa-solid fa-location-dot"></i> {{$loc[0]->detail}}</a>
@@ -115,12 +115,12 @@
                         @endif
 
                         <!--Get event date start-->
-                        @if($c->content_date_start != null && $c->content_date_end != null)
+                        @if($c->content_date_start && $c->content_date_end)
                             <a class="btn-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> {{date('h:i A', strtotime($c->content_date_start))}} - {{date('h:i A', strtotime($c->content_date_end))}}</a>
                         @endif
 
                         <!--Get event tag-->
-                        @if($c->content_tag != null)
+                        @if($c->content_tag)
                             @php($tag = json_decode($c->content_tag))
                             <a class="btn-detail" title="
                                 <?php 

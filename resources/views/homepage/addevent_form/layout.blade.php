@@ -100,7 +100,7 @@
 <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
-            <form action="/homepage/add_event" method="POST">
+            <form action="/homepage/add_event" method="POST" enctype="multipart/form-data">
                 @csrf 
                 <div class="modal-body pt-4">
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
