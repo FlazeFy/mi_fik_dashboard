@@ -4,6 +4,13 @@
     }
     .event-detail-img-header{
         height:30vh;
+        background-position: center;
+        background-repeat:no-repeat;
+        position: relative;
+        background-size: cover;
+        background-color: black;
+        width: 100%;
+        border-radius: 18px 18px 0 0;
     }
     .event-tag-box{
         border-radius:6px;
@@ -29,9 +36,11 @@
 
 @foreach($content as $c)
     <div class="box-event-detail">
-        <div class="event-detail-img-header">
-
-        </div>
+        @if($c->content_image)
+            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/storage/{{$c->content_image}}');"></div>
+        @else
+            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});"></div>
+        @endif
         <div class="row p-3">
             <div class="col-lg-8">
                 <h5>{{$c->content_title}}</h5>
@@ -39,24 +48,24 @@
 
                 <!--Content attachment-->
                 @if($c->content_attach != null)
-                    @php($att = json_decode($c->content_attach))
+                    @php($att = $c->content_attach)
                     @foreach($att as $at)
                         <!-- Show attachment title or name  -->
-                        @if($at->attach_name && $at->attach_name == "")
-                            <h6>{{$at->attach_name}} : </h6>
+                        @if($at['attach_name'] && $at['attach_name'] == "")
+                            <h6>['$at->attach_name'] : </h6>
                         @endif
 
                         <!-- Show file -->
-                        @if($at->attach_type == "attachment_url")
-                            <input id="copy_url_{{$at->id}}" value="{{$at->attach_url}}" hidden>
-                            <a class="btn-copy-link" title="Copy this link" onclick="copylink(<?php echo $at->id; ?>)"><i class="fa-solid fa-copy"></i> </a><a class="text-link" title="Open this link" href="{{$at->attach_url}}" target="_blank">{{$at->attach_url}}</a>
-                        @elseif($at->attach_type == "attachment_image")
-                            <img class="img img-fluid mx-auto rounded mb-2" src="http://127.0.0.1:8000/storage/{{$at->attach_url}}" alt="{{$at->attach_url}}">
-                        @elseif($at->attach_type == "attachment_video")
-                            <video controls class="rounded w-100 mx-auto mb-2" alt="{{$at->attach_url}}">
-                                <source src="http://127.0.0.1:8000/storage/{{$at->attach_url}}">
+                        @if($at['attach_type'] == "attachment_url")
+                            <input id="copy_url_{{$at['id']}}" value="{{$at['attach_url']}}" hidden>
+                            <a class="btn-copy-link" title="Copy this link" onclick="copylink(<?php echo $at['id']; ?>)"><i class="fa-solid fa-copy"></i> </a><a class="text-link" title="Open this link" href="{{$at['attach_url']}}" target="_blank">{{$at['attach_url']}}</a>
+                        @elseif($at['attach_type'] == "attachment_image")
+                            <img class="img img-fluid mx-auto rounded mb-2" src="http://127.0.0.1:8000/storage/{{$at['attach_url']}}" alt="{{$at['attach_url']}}">
+                        @elseif($at['attach_type'] == "attachment_video")
+                            <video controls class="rounded w-100 mx-auto mb-2" alt="{{$at['attach_url']}}">
+                                <source src="http://127.0.0.1:8000/storage/{{$at['attach_url']}}">
                             </video>
-                        @elseif($at->attach_type == "attachment_doc")
+                        @elseif($at['attach_type'] == "attachment_doc")
                             <!-- ??? -->
                         @endif
                     @endforeach
@@ -65,9 +74,9 @@
             <div class="col-lg-4">
                 <!--Get event tag-->
                 @if($c->content_tag)
-                    @php($tag = json_decode($c->content_tag))
+                    @php($tag = $c->content_tag)
                     @foreach($tag as $tg)
-                        <a class="btn event-tag-box">{{$tg->tag_name}}</a>
+                        <a class="btn event-tag-box">{{$tg['tag_name']}}</a>
                     @endforeach
                 @endif
 

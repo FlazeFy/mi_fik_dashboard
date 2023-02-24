@@ -153,10 +153,13 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <label class="input-title">Event Location</label>
+                            <label class="input-title">Event Image</label><br>
+                            @include('homepage.addevent_form.contentimage')
+
+                            <label class="input-title">Event Location</label><br>
                             <div id="map"></div>
 
-                            <label class="input-title">Attachment</label><br>
+                            <label class="input-title mb-2">Attachment</label><br>
                             @include('homepage.addevent_form.attachment')
 
                             <label class="input-title mt-2">Constraint</label>
