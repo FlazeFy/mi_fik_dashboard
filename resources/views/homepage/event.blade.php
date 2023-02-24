@@ -106,7 +106,7 @@
 
     <div class="event-holder row mt-3" >        
     <div class="row p-0 m-0" id="data-wrapper"></div>
-    <button class="btn btn-link" onclick="loadmore()">Show more <span id="textno"></span></button>
+    <button class="btn content-more d-block mx-auto my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>
 </div>
 
 
@@ -144,7 +144,7 @@
             var data =  response.data;
 
             if (data.length == 0) {
-                $('.auto-load').html("We don't have more data to display :(");
+                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
                 function getEventLoc(loc){
@@ -233,6 +233,14 @@
                     return str.replace( /(<([^>]+)>)/ig, '');
                 }
 
+                function getContentImage(img){
+                    if(img){
+                        return 'url("http://127.0.0.1:8000/storage/'+img+'")';
+                    } else {
+                        return "url({{asset('assets/default_content.jpg')}})";
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -240,13 +248,14 @@
                     var content_desc = data[i].content_desc;
                     var content_loc = data[i].content_loc;
                     var content_tag = data[i].content_tag;
+                    var content_image = data[i].content_image;
                     var content_date_start = data[i].content_date_start;
                     var content_date_end = data[i].content_date_end;
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
                             "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
-                                "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/public/assets/content-2.jpg'));'></div> " +
+                                "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                 "<div class='card-body p-2 w-100'> " +
                                     "<div class='row px-2'> " +
                                         "<div class='col-lg-2 px-1'> " +

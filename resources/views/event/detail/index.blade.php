@@ -152,10 +152,9 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="container-fluid bg-white rounded my-3 p-2">
-                            @include('event.detail.event')
-                        </div>
+                   
+                    <div class="container-fluid bg-white mt-5 mb-3 p-0 shadow" style="border-radius: 18px !important;">
+                        @include('event.detail.event')
                     </div>
                 </div>
             </div>
