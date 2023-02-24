@@ -132,7 +132,7 @@
 
     function infinteLoadMore(page) {
         $.ajax({
-            url: "/api/v1/content/view/detail?page=" + page,
+            url: "/api/v1/content?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -147,12 +147,41 @@
                 $('.auto-load').html("We don't have more data to display :(");
                 return;
             } else {
-                function getEventLoc(location){
-                    if(location){
-                        loc = JSON.parse(location);
+                function getEventLoc(loc){
+                    if(loc){
                         return "<span class='loc-limiter px-0 m-0'> " +
                                 "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> "+loc[0].detail+"</a> " +
                             "</span>";
+                    } else {
+                        return "";
+                    }
+                }
+
+                function getDateMonth(date){
+                    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+                    return ("0" + date.getDate()).slice(-2) + " " + month[date.getMonth() + 1];
+                }
+
+                function getHourMinute(date){
+                    return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+                }
+
+                function getEventTag(tag){
+                    if(tag){
+                        var str = "";
+
+                        for(var i = 0; i < tag.length; i++){
+                            if(i != tag.length - 1){
+                                str += tag[i].tag_name +", ";
+                            } else {
+                                str += tag[i].tag_name;
+                            }
+                        }
+
+                        return '<a class="btn-detail" title="'+ str +'"><i class="fa-solid fa-hashtag"></i>'+ tag.length +'</a>';
+                    } else {
+                        return "";
                     }
                 }
 
@@ -161,9 +190,47 @@
                         const ds = new Date(dateStart);
                         const de = new Date(dateEnd);
 
-                        //If same day
-                        return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ ("0" + ds.getDate()).slice(-2) + ("0" + ds.getHours()).slice(-2) + ":" + ("0" + ds.getMinutes()).slice(-2) +" until " + ("0" + de.getHours()).slice(-2) + ":" + ("0" + de.getMinutes()).slice(-2) + "</a>";
+                        if(ds.getFullYear() !== de.getFullYear()){
+                            //Event year not same
+                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                                getDateMonth(ds) + "/" + ds.getFullYear() + " " + getHourMinute(ds) + 
+                                " - " +
+                                getDateMonth(de) + "/" + de.getFullYear() + " " + getHourMinute(de) + "</a>";
+
+                        } else if(ds.getMonth() !== de.getMonth()){
+                            //If month not same
+                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                                getDateMonth(ds) + "/" + ds.getFullYear() + " " + getHourMinute(ds) + 
+                                " - " +
+                                getDateMonth(de) + " " + getHourMinute(de) + "</a>";
+
+                        } else if(ds.getDate() !== de.getDate()){
+                            //If date not same
+                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                                getDateMonth(ds) + " " + getHourMinute(ds) + 
+                                " - " +
+                                ("0" + de.getDate()).slice(-2) + " " + "0" + de.getHours().slice(-2) + ":" + ("0" + de.getMinutes()).slice(-2) + "</a>";
+
+                        } else if(ds.getDate() === de.getDate()){
+                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                                getDateMonth(ds) + " " + getHourMinute(ds) + 
+                                " - " +
+                                getHourMinute(de) + "</a>";
+
+                        }
+                    } else {
+                        return "";
                     }
+                }
+
+                //For now.
+                function removeTags(str) {
+                    if ((str===null) || (str===''))
+                        return false;
+                    else
+                        str = str.toString();
+                        
+                    return str.replace( /(<([^>]+)>)/ig, '');
                 }
 
                 for(var i = 0; i < data.length; i++){
@@ -172,12 +239,13 @@
                     var content_title = data[i].content_title;
                     var content_desc = data[i].content_desc;
                     var content_loc = data[i].content_loc;
+                    var content_tag = data[i].content_tag;
                     var content_date_start = data[i].content_date_start;
                     var content_date_end = data[i].content_date_end;
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
-                            "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/"+slug_name+"';"+'"'+"> " +
+                            "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                 "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/public/assets/content-2.jpg'));'></div> " +
                                 "<div class='card-body p-2 w-100'> " +
                                     "<div class='row px-2'> " +
@@ -185,17 +253,17 @@
                                             "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
                                         "</div> " +
                                         "<div class='col-lg-9 p-0 py-1'> " +
-                                            "<h6 class='event-title'>"+content_title+"</h6> " +
+                                            "<h6 class='event-title'>" + content_title + "</h6> " +
                                             "<h6 class='event-subtitle'>[username]</h6> " +
                                         "</div> " +
                                     "</div> " +
                                     "<div style='height:45px;'> " +
-                                        "<p class='event-desc my-1'>"+content_desc+"</p> " +
+                                        "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
                                     "</div> " +
                                     "<div class='row d-inline-block px-2'> " +
-                                        getEventLoc(content_loc)
-                                        getEventDate(content_date_start, content_date_end)
-
+                                        getEventLoc(content_loc) +
+                                        getEventDate(content_date_start, content_date_end) +
+                                        getEventTag(content_tag) +
                                     "</div> " +
                                 "</div> " +
                             "</button> " +

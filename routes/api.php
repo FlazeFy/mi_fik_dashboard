@@ -21,10 +21,9 @@ use App\Http\Controllers\HomepageController;
 // });
 
 Route::prefix('/v1/content')->group(function () {
-    Route::get('/', [HomepageController::class, 'getAllContent']);
-    Route::get('/{id}', [HomepageController::class, 'getContent']);
+    Route::get('/', [HomepageController::class, 'getContentHeader']);
+    Route::get('/id/{id}', [HomepageController::class, 'getContent']);
     Route::post('/create/{id_user}', [HomepageController::class, 'addContent']);
-    Route::get('/view/detail', [HomepageController::class, 'getContentHeader']);
 });
 
 Route::prefix('/v1/task')->group(function () {
