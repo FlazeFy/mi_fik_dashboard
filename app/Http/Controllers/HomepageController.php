@@ -33,8 +33,8 @@ class HomepageController extends Controller
 
         $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
-            ->orderBy('content_header.created_at', 'DESC')
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->orderBy('contents_headers.created_at', 'DESC')
             ->limit(3)->get();
 
         $tag = Tag::orderBy('updated_at', 'DESC')
@@ -42,10 +42,10 @@ class HomepageController extends Controller
             ->get();
 
         $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
-            ->join('dictionary_type', 'dictionary_type.app_code', '=', 'dictionary.dct_type')
+            ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
             ->where('type_name', $select_1)
             ->orWhere('type_name', $select_2)
-            ->orderBy('dictionary.created_at', 'ASC')
+            ->orderBy('dictionaries.created_at', 'ASC')
             ->get();
 
         //Set active nav
@@ -159,7 +159,6 @@ class HomepageController extends Controller
             'content_date_end' => getFullDate($request->content_date_end, $request->content_time_end),
             'content_reminder' => $request->content_reminder,
             'content_image' => $imageURL,
-            'is_important' => $request->has('is_important'), //for now
             'is_draft' => $draft, 
             'created_at' => date("Y-m-d H:i"),
             'created_by' => 1, //for now
@@ -195,9 +194,9 @@ class HomepageController extends Controller
     public function getContentHeader(){
         $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
-            ->orderBy('content_header.created_at', 'DESC')
-            ->paginate(18);
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->orderBy('contents_headers.created_at', 'DESC')
+            ->paginate(12);
         
         return response()->json($content);
     }

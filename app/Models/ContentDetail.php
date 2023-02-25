@@ -11,7 +11,7 @@ class ContentDetail extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $table = 'content_detail';
+    protected $table = 'contents_details';
     protected $primaryKey = 'id';
     protected $fillable = ['content_id', 'content_attach', 'content_tag', 'content_loc', 'created_at', 'updated_at'];
 }

@@ -161,12 +161,6 @@
 
                             <label class="input-title mb-2">Attachment</label><br>
                             @include('homepage.addevent_form.attachment')
-
-                            <label class="input-title mt-2">Constraint</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" name="is_important" id="flexCheckDefault">
-                                <label class="form-check-label mt-1" for="flexCheckDefault">&nbsp Important Event</label>
-                            </div>
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>

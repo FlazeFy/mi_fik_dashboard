@@ -46,9 +46,20 @@ class TagController extends Controller
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
         if(count($check) == 0){
+            function getSlugName($val){
+                $replace = str_replace("/","", $val);
+                $replace = str_replace(" ","_", $replace);
+                $replace = str_replace("-","_", $replace);
+        
+                return strtolower($replace);
+            }
+            
             Tag::where('id', $id)->update([
+                'slug_name' => getSlugName($request->tag_name),
                 'tag_name' => $request->tag_name,
+                'tag_desc' => $request->tag_desc,
                 'updated_at' => date("Y-m-d h:i:s"),
+                'updated_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002'
             ]);
     
             return redirect()->back()->with('success_message', "'".$request->tag_name."' tag has been successfully updated");
@@ -70,38 +81,29 @@ class TagController extends Controller
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
         if(count($check) == 0){
+            function getSlugName($val){
+                $replace = str_replace("/","", $val);
+                $replace = str_replace(" ","_", $replace);
+                $replace = str_replace("-","_", $replace);
+        
+                return strtolower($replace);
+            }
+
             Tag::create([
+                'slug_name' => getSlugName($request->tag_name),
                 'tag_name' => $request->tag_name,
+                'tag_desc' => $request->tag_desc,
                 'created_at' => date("Y-m-d h:i:s"),
-                'updated_at' => date("Y-m-d h:i:s"),
+                'updated_at' => null,
+                'deleted_at' => null,
+                'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002',
+                'updated_by' => null,
+                'deleted_by' => null
             ]);
 
             return redirect()->back()->with('success_message', "'".$request->tag_name."'Tag has been created");
         } else {
             return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
         }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

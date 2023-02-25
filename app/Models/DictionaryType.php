@@ -11,7 +11,7 @@ class DictionaryType extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $table = 'dictionary_type';
+    protected $table = 'dictionaries_types';
     protected $primaryKey = 'id';
     protected $fillable = ['app_code', 'type_name', 'created_at'];
 }

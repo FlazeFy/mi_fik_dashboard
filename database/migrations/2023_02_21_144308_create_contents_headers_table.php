@@ -22,7 +22,6 @@ return new class extends Migration
             $table->dateTime('content_date_end', $precision = 0)->nullable();
             $table->string('content_reminder', 75);
             $table->string('content_image', 255)->nullable();
-            $table->boolean('is_important');
             $table->boolean('is_draft');
 
             $table->dateTime('created_at', $precision = 0);
