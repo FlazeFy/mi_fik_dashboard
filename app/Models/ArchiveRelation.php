@@ -11,7 +11,7 @@ class ArchiveRelation extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $table = 'archive_relation';
+    protected $table = 'archives_relations';
     protected $primaryKey = 'id';
     protected $fillable = ['archive_id', 'content_id', 'created_at', 'created_by'];
 }

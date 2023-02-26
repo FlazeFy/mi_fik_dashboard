@@ -11,7 +11,7 @@ class Dictionary extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $table = 'dictionary';
+    protected $table = 'dictionaries';
     protected $primaryKey = 'id';
     protected $fillable = ['slug_name', 'dct_name', 'dct_desc', 'dct_type', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'];
 }
