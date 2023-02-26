@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('first_name', 75);
             $table->string('last_name', 75)->nullable();
             $table->longText('role')->nullable();
-            $table->string('image_url', 255);
+            $table->string('image_url', 255)->nullable();
             
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at', $precision = 0)->nullable();

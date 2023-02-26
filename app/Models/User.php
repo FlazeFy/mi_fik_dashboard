@@ -9,4 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     use HasFactory;
+    use HasUuids;
+
+    protected $table = 'users';
+    protected $primaryKey = 'id';
+    protected $fillable = ['slug_name', 'username', 'email', 'password', 'first_name', 'last_name', 'role', 'image_url', 'created_at', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by', 'accepted_at', 'accepted_by', 'is_accepted'];
+
+    protected $casts = [
+        'role' => 'array',
+    ];
 }

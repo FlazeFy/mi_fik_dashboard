@@ -92,6 +92,8 @@
 </style>
 
 <div class="container mt-5 p-0">
+    <div class="event-holder row mt-3" >        
+    <div class="row p-0 m-0" id="data-wrapper"></div>
     <!-- Loading -->
     <div class="auto-load text-center">
         <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -103,9 +105,7 @@
             </path>
         </svg>
     </div>
-
-    <div class="event-holder row mt-3" >        
-    <div class="row p-0 m-0" id="data-wrapper"></div>
+    
     <button class="btn content-more d-block mx-auto my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>
 </div>
 
