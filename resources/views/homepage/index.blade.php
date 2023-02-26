@@ -169,6 +169,10 @@
             </div>
         </div>
 
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
+
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
 

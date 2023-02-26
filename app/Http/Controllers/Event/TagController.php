@@ -45,7 +45,7 @@ class TagController extends Controller
         //Validate name avaiability
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
-        if(count($check) == 0){
+        if(count($check) == 0 || $request->update_type == "desc"){
             function getSlugName($val){
                 $replace = str_replace("/","", $val);
                 $replace = str_replace(" ","_", $replace);
@@ -53,7 +53,7 @@ class TagController extends Controller
         
                 return strtolower($replace);
             }
-            
+
             Tag::where('id', $id)->update([
                 'slug_name' => getSlugName($request->tag_name),
                 'tag_name' => $request->tag_name,
@@ -101,7 +101,7 @@ class TagController extends Controller
                 'deleted_by' => null
             ]);
 
-            return redirect()->back()->with('success_message', "'".$request->tag_name."'Tag has been created");
+            return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
         } else {
             return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
         }
