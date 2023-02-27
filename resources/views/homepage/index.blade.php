@@ -150,13 +150,12 @@
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
                         <div class="position-relative">
                             <h5 class="text-secondary fw-bold">Today's Event</h5>
-                            <a class="content-more position-absolute" style="right:0px; top:-10px;" href="/event/page/1">See More <i class="fa-solid fa-arrow-right"></i></a>
                             <div class="row mt-3"> 
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
                                     @include('homepage.addevent_form.layout')
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
-                                    @include('homepage.addTask')
+                                    @include('homepage.addtask_form.layout')
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
                                     @include('homepage.addAnnouncement')

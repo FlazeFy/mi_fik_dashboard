@@ -23,7 +23,7 @@ class DetailController extends Controller
             ->orderBy('created_at', 'DESC')
             ->get();
 
-        $content = ContentHeader::select('slug_name','content_title','content_desc','content_image','content_loc','content_date_start','content_date_end','content_tag','content_attach')
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_image','content_loc','content_date_start','content_date_end','content_tag','content_attach','contents_headers.created_at','contents_headers.updated_at')
             ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
             ->where('slug_name', $slug_name)
             ->get();

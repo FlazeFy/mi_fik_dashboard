@@ -12,6 +12,15 @@
         width: 100%;
         padding:0px;
         text-align:left;
+        position: relative;
+    }
+    .event-created-at{
+        position: absolute;
+        top: 7.5px;
+        right: 10px;
+        color: whitesmoke !important;
+        font-weight: 500;
+        font-size: 13.5px;
     }
     .event-box:hover{
         transform: translateY(15px);
@@ -160,7 +169,7 @@
                 function getDateMonth(date){
                     const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-                    return ("0" + date.getDate()).slice(-2) + " " + month[date.getMonth() + 1];
+                    return ("0" + date.getDate()).slice(-2) + " " + month[date.getMonth()].slice(0, 3);
                 }
 
                 function getHourMinute(date){
@@ -193,14 +202,14 @@
                         if(ds.getFullYear() !== de.getFullYear()){
                             //Event year not same
                             return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + "/" + ds.getFullYear() + " " + getHourMinute(ds) + 
+                                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
                                 " - " +
-                                getDateMonth(de) + "/" + de.getFullYear() + " " + getHourMinute(de) + "</a>";
+                                getDateMonth(de) + " " + de.getFullYear() + " " + getHourMinute(de) + "</a>";
 
                         } else if(ds.getMonth() !== de.getMonth()){
                             //If month not same
                             return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + "/" + ds.getFullYear() + " " + getHourMinute(ds) + 
+                                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
                                 " - " +
                                 getDateMonth(de) + " " + getHourMinute(de) + "</a>";
 
@@ -241,6 +250,36 @@
                     }
                 }
 
+                function getCreatedAt(datetime){
+                    const result = new Date(datetime);
+                    const now = new Date(Date.now());
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    
+                    //FIx this!!!
+                    if(result.toDateString() === now.toDateString()){
+                        // $start_date = new DateTime(datetime);
+                        // $since_start = $start_date->diff(new DateTime(Date.now()));
+
+                        // if(result.getHours() == now.getHours()){
+                        //     const min = result.getMinutes() - now.getMinutes();
+                        //     if(min <= 10 && min > 0){
+                        //         return $since_start->m;
+                        //     } else {
+                        //         return  min + " minutes ago";    
+                        //     }
+                        // } else if(now.getHours() - result.getHours() <= 6){
+                        //     return now.getHours() - result.getHours() + " hours ago";    
+                        // } else {
+                            return "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
+                        //}
+                    } else if(result.toDateString() === yesterday.toDateString()){
+                        return "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
+                    } else {
+                        return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -251,11 +290,13 @@
                     var content_image = data[i].content_image;
                     var content_date_start = data[i].content_date_start;
                     var content_date_end = data[i].content_date_end;
+                    var created_at = data[i].created_at;
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
                             "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                 "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
+                                "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
                                 "<div class='card-body p-2 w-100'> " +
                                     "<div class='row px-2'> " +
                                         "<div class='col-lg-2 px-1'> " +

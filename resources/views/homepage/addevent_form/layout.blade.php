@@ -164,7 +164,7 @@
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
-                    <span id="btn-submit-holder"></span>
+                    <span id="btn-submit-holder"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </div>
             </form>
         </div>
