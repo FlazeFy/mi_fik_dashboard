@@ -11,7 +11,7 @@ class Archive extends Model
     use HasFactory;
     use HasUuids;
 
-    protected $table = 'archive';
+    protected $table = 'archives';
     protected $primaryKey = 'id';
     protected $fillable = ['slug_name', 'archive_name', 'archive_desc', 'created_at', 'updated_at', 'created_by', 'deleted_at'];
 }

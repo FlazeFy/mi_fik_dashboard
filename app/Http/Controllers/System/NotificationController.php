@@ -23,9 +23,9 @@ class NotificationController extends Controller
             ->get();
 
         $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
-            ->join('dictionary_type', 'dictionary_type.app_code', '=', 'dictionary.dct_type')
+            ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
             ->where('type_name', $select_1)
-            ->orderBy('dictionary.created_at', 'ASC')
+            ->orderBy('dictionaries.created_at', 'ASC')
             ->get();
 
         //Set active nav

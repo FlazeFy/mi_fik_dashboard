@@ -18,8 +18,8 @@
                 $("#title_msg").text("");
             }
 
-            if($("#titleInput").val().length <= 6){
-                $("#btn-submit-holder").html("");
+            if($("#titleInput").val().length <= 6 || slct_list.length == 0){
+                $("#btn-submit-holder").html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
             } else {
                 $("#btn-submit-holder").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
             }

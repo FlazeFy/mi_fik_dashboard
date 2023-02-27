@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('contents_headers', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('slug_name', 255);
-            $table->string('content_title', 75);
-            $table->longText('content_desc');
-            $table->dateTime('content_date_start', $precision = 0)->nullable();
-            $table->dateTime('content_date_end', $precision = 0)->nullable();
-            $table->string('content_reminder', 75);
-            $table->string('content_image', 255)->nullable();
-            $table->boolean('is_draft');
+            $table->string('task_title', 75);
+            $table->longText('task_desc')->nullable();
+            $table->string('task_reminder', 75);
+            $table->dateTime('task_date_start', $precision = 0)->nullable();
+            $table->dateTime('task_date_end', $precision = 0)->nullable();
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 75);
@@ -40,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contents_headers');
+        Schema::dropIfExists('tasks');
     }
 };

@@ -100,7 +100,7 @@
 <div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
-            <form action="/homepage/add_event" method="POST">
+            <form action="/homepage/add_event" method="POST" enctype="multipart/form-data">
                 @csrf 
                 <div class="modal-body pt-4">
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
@@ -153,21 +153,18 @@
                             </div>
                         </div>
                         <div class="col-lg-4">
-                            <label class="input-title">Event Location</label>
+                            <label class="input-title">Event Image</label><br>
+                            @include('homepage.addevent_form.contentimage')
+
+                            <label class="input-title">Event Location</label><br>
                             <div id="map"></div>
 
-                            <label class="input-title">Attachment</label><br>
+                            <label class="input-title mb-2">Attachment</label><br>
                             @include('homepage.addevent_form.attachment')
-
-                            <label class="input-title mt-2">Constraint</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" name="is_important" id="flexCheckDefault">
-                                <label class="form-check-label mt-1" for="flexCheckDefault">&nbsp Important Event</label>
-                            </div>
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
-                    <span id="btn-submit-holder"></span>
+                    <span id="btn-submit-holder"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </div>
             </form>
         </div>

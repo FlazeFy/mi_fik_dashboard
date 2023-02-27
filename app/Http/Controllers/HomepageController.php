@@ -12,7 +12,7 @@ use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
 use App\Models\archieve;
-use App\Models\task;
+use App\Models\Task;
 use App\Models\Setting;
 use App\Models\Dictionary;
 use App\Models\Notification;
@@ -33,8 +33,8 @@ class HomepageController extends Controller
 
         $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->leftjoin('content_detail', 'content_header.id', '=', 'content_detail.content_id')
-            ->orderBy('content_header.created_at', 'DESC')
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->orderBy('contents_headers.created_at', 'DESC')
             ->limit(3)->get();
 
         $tag = Tag::orderBy('updated_at', 'DESC')
@@ -42,10 +42,10 @@ class HomepageController extends Controller
             ->get();
 
         $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
-            ->join('dictionary_type', 'dictionary_type.app_code', '=', 'dictionary.dct_type')
+            ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
             ->where('type_name', $select_1)
             ->orWhere('type_name', $select_2)
-            ->orderBy('dictionary.created_at', 'ASC')
+            ->orderBy('dictionaries.created_at', 'ASC')
             ->get();
 
         //Set active nav
@@ -61,6 +61,10 @@ class HomepageController extends Controller
 
     public function add_event(Request $request)
     {
+        //Inital variable 
+        $draft = 0;
+        $failed_attach = false;
+
         function getTag($tag_raw){
             if($tag_raw != null){
                 //Initial variable
@@ -84,7 +88,15 @@ class HomepageController extends Controller
         }
 
         function getSlugName($val){
-            $replace = str_replace("/","", $val);
+            $check = ContentHeader::select('slug_name')
+                ->limit(1)
+                ->get();
+
+            if(count($check) > 0){
+                $val = $val."_".date('mdhis'); 
+            }
+
+            $replace = str_replace("/","", stripslashes($val));
             $replace = str_replace(" ","_", $replace);
             $replace = str_replace("-","_", $replace);
 
@@ -99,6 +111,54 @@ class HomepageController extends Controller
             }
         }
 
+        // Attachment file upload
+        $status = true;
+
+        if(is_countable($request->attach_input)){
+            $att_count = count($request->attach_input);
+        
+            for($i = 0; $i < $att_count; $i++){
+                if($request->hasFile('attach_input.'.$i)){
+                    //validate image
+                    $this->validate($request, [
+                        'attach_input.'.$i     => 'required|max:10000',
+                    ]);
+        
+                    //upload image
+                    $att_file = $request->file('attach_input.'.$i);
+                    $att_file->storeAs('public', $att_file->getClientOriginalName());
+
+                    //get success message 
+                    // ????
+                    $status = true;
+                } else {
+                    $status = false;
+                }
+            }
+        } else {
+            $status = true;
+        }
+
+        // Content image file upload
+        if($request->hasFile('content_image')){
+            //validate image
+            $this->validate($request, [
+                'content_image'    => 'required|max:5000',
+            ]);
+
+            //upload image
+            $att_file = $request->file('content_image');
+            $imageURL = $att_file->hashName();
+            $att_file->storeAs('public', $imageURL);
+        } else {
+            $imageURL = null;
+        }
+    
+        if(!$status){
+            $draft = 1;
+            $failed_attach = true;
+        }
+
         $header = ContentHeader::create([
             'slug_name' => getSlugName($request->content_title), 
             'content_title' => $request->content_title,
@@ -106,8 +166,8 @@ class HomepageController extends Controller
             'content_date_start' => getFullDate($request->content_date_start, $request->content_time_start),
             'content_date_end' => getFullDate($request->content_date_end, $request->content_time_end),
             'content_reminder' => $request->content_reminder,
-            'is_important' => $request->has('is_important'), //for now
-            'is_draft' => 0, 
+            'content_image' => $imageURL,
+            'is_draft' => $draft, 
             'created_at' => date("Y-m-d H:i"),
             'created_by' => 1, //for now
             'updated_at' => null,
@@ -117,9 +177,17 @@ class HomepageController extends Controller
         ]);
 
         if(getTag($request->content_tag) || $request->has('content_attach')){
+            function getFailedAttach($failed, $att_content){
+                if($failed){
+                    return null;
+                } else {
+                    return $att_content;
+                }
+            }
+            
             ContentDetail::create([
                 'content_id' => $header->id, //for now
-                'content_attach' => $request->content_attach, 
+                'content_attach' => getFailedAttach($failed_attach, $request->content_attach), 
                 'content_tag' => getTag($request->content_tag),
                 'content_loc' => null, //for now 
                 'created_by' => date("Y-m-d H:i"), 
@@ -129,8 +197,63 @@ class HomepageController extends Controller
 
         return redirect()->back()->with('success_message', 'Create content success');
     }
+    
+    public function add_task(Request $request){
+        function getSlugName($val){
+            $check = Task::select('slug_name')
+                ->limit(1)
+                ->get();
+
+            if(count($check) > 0){
+                $val = $val."_".date('mdhis'); 
+            }
+
+            $replace = str_replace("/","", stripslashes($val));
+            $replace = str_replace(" ","_", $replace);
+            $replace = str_replace("-","_", $replace);
+
+            return strtolower($replace);
+        }
+
+        function getFullDate($date, $time){
+            if($date && $time){
+                return date("Y-m-d H:i", strtotime($date."".$time));
+            } else {
+                return null;
+            }
+        }
+
+        $header = Task::create([
+            'slug_name' => getSlugName($request->task_title), 
+            'task_title' => $request->task_title,
+            'task_desc' => $request->task_desc,
+            'task_date_start' => getFullDate($request->task_date_start, $request->task_time_start),
+            'task_date_end' => getFullDate($request->task_date_end, $request->task_time_end),
+            'task_reminder' => $request->task_reminder,
+
+            'created_at' => date("Y-m-d H:i"),
+            'created_by' => 1, //for now
+            'updated_at' => null,
+            'updated_by' => null,
+            'deleted_at' => null,
+            'deleted_by' => null
+        ]);
+
+        return redirect()->back()->with('success_message', 'Create item success');
+    }
+    
 
     // ================================= API =================================
+    public function getContentHeader(){
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+            //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->orderBy('contents_headers.created_at', 'DESC')
+            ->paginate(12);
+        
+        return response()->json($content);
+    }
+
     public function getAllNotification(){
         $user_id = 1;
         
