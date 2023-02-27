@@ -29,6 +29,7 @@ Route::prefix('/homepage')->group(function () {
     Route::get('/', [HomepageController::class, 'index']);
 
     Route::post('/add_event', [HomepageController::class, 'add_event']);
+    Route::post('/add_task', [HomepageController::class, 'add_task']);
 });
 
 Route::prefix('/statistic')->group(function () {

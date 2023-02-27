@@ -71,7 +71,7 @@
                         <div class="col-lg-7 pb-2">
                             @include('homepage.addtask_form.titleinput')
                             <div class="form-floating mt-3">
-                                <textarea class="form-control" id="floatingTextarea2" style="height: 100px"></textarea>
+                                <textarea class="form-control" id="floatingTextarea2" style="height: 100px" name="task_desc"></textarea>
                                 <label for="floatingTextarea2">Descriptions</label>
                             </div>
                         </div>

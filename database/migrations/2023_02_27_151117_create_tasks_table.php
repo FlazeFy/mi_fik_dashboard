@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('slug_name', 255);
             $table->string('task_title', 75);
             $table->longText('task_desc')->nullable();
+            $table->string('task_reminder', 75);
             $table->dateTime('task_date_start', $precision = 0)->nullable();
             $table->dateTime('task_date_end', $precision = 0)->nullable();
 
