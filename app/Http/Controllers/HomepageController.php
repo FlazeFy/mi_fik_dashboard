@@ -88,7 +88,15 @@ class HomepageController extends Controller
         }
 
         function getSlugName($val){
-            $replace = str_replace("/","", $val);
+            $check = ContentHeader::select('slug_name')
+                ->limit(1)
+                ->get();
+
+            if(count($check) > 0){
+                $val = $val."_".date('mdhis'); 
+            }
+
+            $replace = str_replace("/","", stripslashes($val));
             $replace = str_replace(" ","_", $replace);
             $replace = str_replace("-","_", $replace);
 
@@ -192,7 +200,7 @@ class HomepageController extends Controller
 
     // ================================= API =================================
     public function getContentHeader(){
-        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag')
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
             ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
             ->orderBy('contents_headers.created_at', 'DESC')

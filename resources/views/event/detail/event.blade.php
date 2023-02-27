@@ -47,12 +47,12 @@
                 <span><?php echo $c->content_desc; ?></span>
 
                 <!--Content attachment-->
-                @if($c->content_attach != null)
+                @if($c->content_attach)
                     @php($att = $c->content_attach)
                     @foreach($att as $at)
                         <!-- Show attachment title or name  -->
-                        @if($at['attach_name'] && $at['attach_name'] == "")
-                            <h6>['$at->attach_name'] : </h6>
+                        @if($at['attach_name'] || $at['attach_name'] == "")
+                            <h6>{{$at['attach_name']}} : </h6>
                         @endif
 
                         <!-- Show file -->
@@ -101,6 +101,12 @@
                 @else
                     <img src="http://127.0.0.1:8000/assets/nodate.png" class="img nodata-icon" style="height:18vh;">
                     <h6 class="text-center text-secondary">This Event doesn't have date</h6>
+                @endif
+
+                <hr>
+                <h6 class="text-secondary" title="Event Created At">Created At : {{date('d M Y h:i:s', strtotime($c->created_at))}}</h6>
+                @if($c->updated_at)
+                    <h6 class="text-secondary" title="Event Updated At">Created At : {{date('d M Y h:i:s', strtotime($c->updated_at))}}</h6>
                 @endif
             </div>
         </div>
