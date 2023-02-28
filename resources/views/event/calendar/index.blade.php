@@ -159,7 +159,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-white rounded my-3 p-2">
+                    <div class="container-fluid bg-white rounded my-5 p-2">
+                        @include('event.calendar.filter_tag')
                         @include('event.calendar.calendar')
                     </div>
                 </div>

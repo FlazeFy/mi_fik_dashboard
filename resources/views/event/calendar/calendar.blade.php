@@ -76,7 +76,10 @@
                                 groupId: '".$i."',
                                 title: '".$ct->content_title."',
                                 start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."'
+                                end: '".$ct->content_date_end."',
+                                extendedProps: {
+                                    slug_name: '".$ct->slug_name."'
+                                }
                             },
                         ";
                         $i++;
@@ -85,6 +88,10 @@
                 
             ?>
         ],
+        //Show content detail
+        eventClick:  function(info, jsEvent, view) {
+            window.location.href = "http://127.0.0.1:8000/event/detail/" +info.event.extendedProps.slug_name;
+        },
     });
     calendar.render();
     });
