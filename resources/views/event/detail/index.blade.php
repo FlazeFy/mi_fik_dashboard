@@ -85,6 +85,11 @@
             #content{
                 overflow:auto;
             }
+            .content-body{
+                max-width:1080px;
+                display:block;
+                margin-inline:auto;
+            }
 
             .modal-content{
                 margin-top:7vh;
@@ -129,30 +134,29 @@
                 background:#00C363;
                 color:whitesmoke;
             }
+            .nodata-icon{
+                display: block;
+                margin-inline: auto;
+                min-height: 80px;
+            }
         </style>
     </head>
 
     <body>
-        <div class="row m-0 p-0">
-            <div class="col-lg-10 col-md-9 col-sm-12 p-0">
-                <div class="wrapper d-flex align-items-stretch">
-                    <!--Sidebar.-->
-                    @include('sidebar.leftbar')
+        <div class="wrapper d-flex align-items-stretch">
+            <!--Sidebar.-->
+            @include('sidebar.leftbar')
 
-                    <!-- Page Content  -->
-                    <div id="content" class="p-4">
-                        <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                            <i class="fa fa-bars"></i>
-                            <span class="sr-only">Toggle Menu</span>
-                        </button>
+            <!-- Page Content  -->
+            <div id="content" class="p-4">
+                <div class="content-body">
+                    @include('sidebar.navbar')
 
+                   
+                    <div class="container-fluid bg-white mt-5 mb-3 p-0 shadow" style="border-radius: 18px !important;">
                         @include('event.detail.event')
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-2 col-md-3 col-sm-12 p-2">
-                <!--Sidebar.-->
-                @include('sidebar.rightbar')
             </div>
         </div>
 

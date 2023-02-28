@@ -21,8 +21,8 @@ use App\Http\Controllers\HomepageController;
 // });
 
 Route::prefix('/v1/content')->group(function () {
-    Route::get('/', [HomepageController::class, 'getAllContent']);
-    Route::get('/{id}', [HomepageController::class, 'getContent']);
+    Route::get('/', [HomepageController::class, 'getContentHeader']);
+    Route::get('/id/{id}', [HomepageController::class, 'getContent']);
     Route::post('/create/{id_user}', [HomepageController::class, 'addContent']);
 });
 
@@ -46,4 +46,8 @@ Route::prefix('/v1/archieve')->group(function () {
     Route::post('/create/{id_user}', [HomepageController::class, 'addArchive']);
     Route::put('/edit/{id}', [HomepageController::class, 'editArchive']);
     Route::delete('/delete/{id}', [HomepageController::class, 'deleteArchive']);
+});
+
+Route::prefix('/v1/notification')->group(function () {
+    Route::get('/', [HomepageController::class, 'getAllNotification']);
 });

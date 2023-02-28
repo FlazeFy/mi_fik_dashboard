@@ -11,9 +11,13 @@
     </button>
     <form class="p-2 mt-2" action="/event/tag/add" method="POST">
         @csrf
-        <div class="form-floating">
+        <div class="form-floating mb-2">
             <input type="text" class="form-control nameInput" id="tagNameInput" name="tag_name" oninput="validateTagName()" maxlength="35" required>
             <label for="tagNameInput">Tag Name</label>
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control" id="floatingTextarea2" style="height: 100px" name="tag_desc"></textarea>
+            <label for="floatingTextarea2">Tag Description</label>
         </div>
         <a id="tagName_msg" class="text-danger"></a>
         <button class="btn btn-success mt-3" type="submit"><i class="fa-solid fa-plus"></i> Add Tag</button>

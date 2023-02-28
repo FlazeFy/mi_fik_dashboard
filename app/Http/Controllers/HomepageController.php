@@ -8,11 +8,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\content;
-use App\Models\tag;
+use App\Models\ContentHeader;
+use App\Models\ContentDetail;
+use App\Models\Tag;
 use App\Models\archieve;
-use App\Models\task;
+use App\Models\Task;
 use App\Models\Setting;
+use App\Models\Dictionary;
+use App\Models\Notification;
 
 class HomepageController extends Controller
 {
@@ -23,94 +26,252 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        $event = DB::table('content')
+        //Required config
+        $select_1 = "Reminder";
+        $select_2 = "Attachment";
+        $user_id = 1; //for now.
+
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->orderBy('contents_headers.created_at', 'DESC')
             ->limit(3)->get();
 
         $tag = Tag::orderBy('updated_at', 'DESC')
             ->orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')->get();
+            ->get();
+
+        $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
+            ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
+            ->where('type_name', $select_1)
+            ->orWhere('type_name', $select_2)
+            ->orderBy('dictionaries.created_at', 'ASC')
+            ->get();
 
         //Set active nav
         session()->put('active_nav', 'homepage');
 
         return view ('homepage.index')
-            ->with('event', $event)
-            ->with('tag', $tag);
+            ->with('content', $content)
+            ->with('tag', $tag)
+            ->with('dictionary', $dictionary);
     }
 
     // ================================= MVC =================================
 
-    public function update_mot(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOT_range' => $request->MOT_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_mol(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'MOL_range' => $request->MOL_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
-    public function update_ce(Request $request, $id)
-    {
-        Setting::where('id', $id)->update([
-            'CE_range' => $request->CE_range,
-            'updated_at' => date("Y-m-d h:i"),
-        ]);
-
-        return redirect()->back()->with('success_message', 'Chart range updated');
-    }
-
     public function add_event(Request $request)
     {
-        if($request->content_tag != null){
-            //Initial variable
-            $tag = [];
-            $total_tag = count($request->content_tag);
+        //Inital variable 
+        $draft = 0;
+        $failed_attach = false;
 
-            //Iterate all selected tag
-            for($i=0; $i < $total_tag; $i++){
-                array_push($tag, $request->content_tag[$i]);
+        function getTag($tag_raw){
+            if($tag_raw != null){
+                //Initial variable
+                $tag = [];
+                $total_tag = count($tag_raw);
+    
+                //Iterate all selected tag
+                for($i=0; $i < $total_tag; $i++){
+                    array_push($tag, $tag_raw[$i]);
+                }
+    
+                //Clean the json from quotes mark
+                $tag = str_replace('"{',"{", json_encode($tag));
+                $tag = str_replace('}"',"}", $tag);
+                $tag = stripslashes($tag);
+            } else {
+                $tag = null;
             }
 
-            //Clean the json from quotes mark
-            $tag = str_replace('"{',"{", json_encode($tag));
-            $tag = str_replace('}"',"}", $tag);
-            $tag = stripslashes($tag);
-        } else {
-            $tag = null;
+            return $tag;
         }
 
-        $result = Content::create([
-            'id_user' => 1, //For now
+        function getSlugName($val){
+            $check = ContentHeader::select('slug_name')
+                ->limit(1)
+                ->get();
+
+            if(count($check) > 0){
+                $val = $val."_".date('mdhis'); 
+            }
+
+            $replace = str_replace("/","", stripslashes($val));
+            $replace = str_replace(" ","_", $replace);
+            $replace = str_replace("-","_", $replace);
+
+            return strtolower($replace);
+        }
+
+        function getFullDate($date, $time){
+            if($date && $time){
+                return date("Y-m-d H:i", strtotime($date."".$time));
+            } else {
+                return null;
+            }
+        }
+
+        // Attachment file upload
+        $status = true;
+
+        if(is_countable($request->attach_input)){
+            $att_count = count($request->attach_input);
+        
+            for($i = 0; $i < $att_count; $i++){
+                if($request->hasFile('attach_input.'.$i)){
+                    //validate image
+                    $this->validate($request, [
+                        'attach_input.'.$i     => 'required|max:10000',
+                    ]);
+        
+                    //upload image
+                    $att_file = $request->file('attach_input.'.$i);
+                    $att_file->storeAs('public', $att_file->getClientOriginalName());
+
+                    //get success message 
+                    // ????
+                    $status = true;
+                } else {
+                    $status = false;
+                }
+            }
+        } else {
+            $status = true;
+        }
+
+        // Content image file upload
+        if($request->hasFile('content_image')){
+            //validate image
+            $this->validate($request, [
+                'content_image'    => 'required|max:5000',
+            ]);
+
+            //upload image
+            $att_file = $request->file('content_image');
+            $imageURL = $att_file->hashName();
+            $att_file->storeAs('public', $imageURL);
+        } else {
+            $imageURL = null;
+        }
+    
+        if(!$status){
+            $draft = 1;
+            $failed_attach = true;
+        }
+
+        $header = ContentHeader::create([
+            'slug_name' => getSlugName($request->content_title), 
             'content_title' => $request->content_title,
-            'content_subtitle' => null, //For now
             'content_desc' => $request->content_desc,
-            'content_attach' => null, //For now
-            'content_tag' => $tag,
-            'content_loc' => null, //For now
-            'content_date_start' => date("Y-m-d H:i", strtotime($request->content_date_start."".$request->content_time_start)),
-            'content_date_end' => date("Y-m-d H:i", strtotime($request->content_date_end."".$request->content_time_end)),
+            'content_date_start' => getFullDate($request->content_date_start, $request->content_time_start),
+            'content_date_end' => getFullDate($request->content_date_end, $request->content_time_end),
+            'content_reminder' => $request->content_reminder,
+            'content_image' => $imageURL,
+            'is_draft' => $draft, 
             'created_at' => date("Y-m-d H:i"),
-            'updated_at' => date("Y-m-d H:i")
+            'created_by' => 1, //for now
+            'updated_at' => null,
+            'updated_by' => null,
+            'deleted_at' => null,
+            'deleted_by' => null
         ]);
+
+        if(getTag($request->content_tag) || $request->has('content_attach')){
+            function getFailedAttach($failed, $att_content){
+                if($failed){
+                    return null;
+                } else {
+                    return $att_content;
+                }
+            }
+            
+            ContentDetail::create([
+                'content_id' => $header->id, //for now
+                'content_attach' => getFailedAttach($failed_attach, $request->content_attach), 
+                'content_tag' => getTag($request->content_tag),
+                'content_loc' => null, //for now 
+                'created_by' => date("Y-m-d H:i"), 
+                'updated_at' => null
+            ]);
+        }
 
         return redirect()->back()->with('success_message', 'Create content success');
     }
+    
+    public function add_task(Request $request){
+        function getSlugName($val){
+            $check = Task::select('slug_name')
+                ->limit(1)
+                ->get();
+
+            if(count($check) > 0){
+                $val = $val."_".date('mdhis'); 
+            }
+
+            $replace = str_replace("/","", stripslashes($val));
+            $replace = str_replace(" ","_", $replace);
+            $replace = str_replace("-","_", $replace);
+
+            return strtolower($replace);
+        }
+
+        function getFullDate($date, $time){
+            if($date && $time){
+                return date("Y-m-d H:i", strtotime($date."".$time));
+            } else {
+                return null;
+            }
+        }
+
+        $header = Task::create([
+            'slug_name' => getSlugName($request->task_title), 
+            'task_title' => $request->task_title,
+            'task_desc' => $request->task_desc,
+            'task_date_start' => getFullDate($request->task_date_start, $request->task_time_start),
+            'task_date_end' => getFullDate($request->task_date_end, $request->task_time_end),
+            'task_reminder' => $request->task_reminder,
+
+            'created_at' => date("Y-m-d H:i"),
+            'created_by' => 1, //for now
+            'updated_at' => null,
+            'updated_by' => null,
+            'deleted_at' => null,
+            'deleted_by' => null
+        ]);
+
+        return redirect()->back()->with('success_message', 'Create item success');
+    }
+    
 
     // ================================= API =================================
+    public function getContentHeader(){
+        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+            //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->orderBy('contents_headers.created_at', 'DESC')
+            ->paginate(12);
+        
+        return response()->json($content);
+    }
+
+    public function getAllNotification(){
+        $user_id = 1;
+        
+        $notification = Notification::select('notif_type', 'notif_body', 'notif_send_to', 'is_pending')
+            ->where('is_pending', 0)
+            ->where(function ($query) {
+                $query->where('notif_send_to','LIKE','%send_to":"1"%') //Must use jsoncontains
+                    ->orWhere('notif_send_to','LIKE','%send_to":"all"%');
+            })
+            ->get();
+        
+        return response()->json([
+            "msg"=> count($notification)." Data retrived", 
+            "status"=> 200,
+            "data"=> $notification
+        ]);
+    }
+    
     public function getAllContent()
     {
         $cnt = content::orderBy('created_at', 'DESC')

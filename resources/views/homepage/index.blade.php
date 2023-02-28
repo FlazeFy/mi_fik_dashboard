@@ -54,11 +54,11 @@
                 color:#F78A00;
                 float:right;
                 background:none;
-                border:none;
+                border: 2px solid #F78A00;
                 text-decoration:none !important;
                 cursor: pointer;
                 padding:3px 9px;
-                margin:0px;
+                margin-top:10px;
                 border-radius:6px;
             }
             .content-add:hover, .content-more:hover{
@@ -150,15 +150,14 @@
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
                         <div class="position-relative">
                             <h5 class="text-secondary fw-bold">Today's Event</h5>
-                            <a class="content-more position-absolute" style="right:0px; top:0px;" href="/event/page/1">See More <i class="fa-solid fa-arrow-right"></i></a>
-                            <div class="row mt-2"> 
-                                <div class="col-lg-4 col-md-6 col-sm-6">
-                                    @include('homepage.addEvent')
+                            <div class="row mt-3"> 
+                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
+                                    @include('homepage.addevent_form.layout')
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-sm-6">
-                                    @include('homepage.addTask')
+                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
+                                    @include('homepage.addtask_form.layout')
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
                                     @include('homepage.addAnnouncement')
                                 </div>
                             </div>
@@ -169,16 +168,12 @@
             </div>
         </div>
 
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
+
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
-
-        <!-- Main Quill library -->
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-        <script>
-            var quill = new Quill('#rich_box', {
-                theme: 'snow'
-            });
-        </script>
 
         <!--Maps API Key.-->
         <!--need billing!!!-->

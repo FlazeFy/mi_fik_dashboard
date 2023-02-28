@@ -25,9 +25,9 @@
         padding: 0;
     }
     #sidebar ul li {
-        font-size: 17px;
+        font-size: 15.5px;
         padding:4px;
-        font-weight:bold;
+        font-weight:500;
         margin-bottom:15px;
     }
     #sidebar ul li > ul {

@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\content;
+use App\Models\ContentDetail;
+use App\Models\ContentHeader;
 use App\Models\Setting;
 
 class StatisticController extends Controller
@@ -19,11 +20,11 @@ class StatisticController extends Controller
     public function index()
     {
         //Chart query
-        $mostTag = Content::select('content_tag')
+        $mostTag = ContentDetail::select('content_tag')
             ->whereNot('content_tag', null)
             ->get();
 
-        $mostLoc = Content::select('content_loc')
+        $mostLoc = ContentDetail::select('content_loc')
             ->whereNot('content_loc', null)
             ->get();
         
@@ -31,11 +32,11 @@ class StatisticController extends Controller
         session()->put('active_nav', 'statistic');
 
         $setting = Setting::select('id', 'MOT_range', 'MOL_range', 'CE_range')
-            ->where('id_user', 1)
+            ->where('created_by', 'dc4d52ec-afb1-11ed-afa1-0242ac120002')
             ->get();
 
         foreach($setting as $set){
-            $createdEvent = Content::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
+            $createdEvent = ContentHeader::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
                 ->where('created_at', '>=', date("Y-m-d", strtotime("-".$set->CE_range." months")))
                 ->groupByRaw('MONTH(created_at)')
                 ->get();
@@ -48,69 +49,33 @@ class StatisticController extends Controller
             ->with('createdEvent', $createdEvent);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function update_mot(Request $request, $id)
     {
-        //
+        Setting::where('id', $id)->update([
+            'MOT_range' => $request->MOT_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update_mol(Request $request, $id)
     {
-        //
+        Setting::where('id', $id)->update([
+            'MOL_range' => $request->MOL_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update_ce(Request $request, $id)
     {
-        //
-    }
+        Setting::where('id', $id)->update([
+            'CE_range' => $request->CE_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->back()->with('success_message', 'Chart range updated');
     }
 }

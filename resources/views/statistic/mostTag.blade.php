@@ -18,7 +18,12 @@
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
-    <div id="MOT_pie_chart"></div>
+    @if(count($mostTag) != 0)
+        <div id="MOT_pie_chart"></div>
+    @else
+        <img src="http://127.0.0.1:8000/assets/nodata.png" class="img nodata-icon">
+        <h6 class="text-center">No Data Available</h6>
+    @endif
 </div>
 
 <script type="text/javascript">

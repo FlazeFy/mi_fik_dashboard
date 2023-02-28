@@ -10,6 +10,8 @@ use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 
+use App\Http\Controllers\System\NotificationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,15 +27,16 @@ use App\Http\Controllers\Event\DetailController;
 
 Route::prefix('/homepage')->group(function () {
     Route::get('/', [HomepageController::class, 'index']);
-    Route::post('/update_mot/{id}', [HomepageController::class, 'update_mot']);
-    Route::post('/update_mol/{id}', [HomepageController::class, 'update_mol']);
-    Route::post('/update_ce/{id}', [HomepageController::class, 'update_ce']);
 
     Route::post('/add_event', [HomepageController::class, 'add_event']);
+    Route::post('/add_task', [HomepageController::class, 'add_task']);
 });
 
 Route::prefix('/statistic')->group(function () {
     Route::get('/', [StatisticController::class, 'index']);
+    Route::post('/update_mot/{id}', [StatisticController::class, 'update_mot']);
+    Route::post('/update_mol/{id}', [StatisticController::class, 'update_mol']);
+    Route::post('/update_ce/{id}', [StatisticController::class, 'update_ce']);
 });
 
 Route::prefix('/event')->group(function () {
@@ -45,5 +48,10 @@ Route::prefix('/event')->group(function () {
     Route::post('/tag/update/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 
-    Route::get('/detail/{id}', [DetailController::class, 'index']);
+    Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
+});
+
+Route::prefix('/system')->group(function () {
+    Route::get('/notification', [NotificationController::class, 'index']);
+    Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
 });

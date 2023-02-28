@@ -134,6 +134,12 @@
                 background:#00C363;
                 color:whitesmoke;
             }
+            .nodata-icon{
+                display: block;
+                margin-inline: auto;
+                height: 30vh;
+                min-height: 80px;
+            }
         </style>
     </head>
 
@@ -165,6 +171,10 @@
                 </div>
             </div>
         </div>
+
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
