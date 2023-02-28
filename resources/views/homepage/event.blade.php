@@ -218,7 +218,7 @@
                             return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
                                 getDateMonth(ds) + " " + getHourMinute(ds) + 
                                 " - " +
-                                ("0" + de.getDate()).slice(-2) + " " + "0" + de.getHours().slice(-2) + ":" + ("0" + de.getMinutes()).slice(-2) + "</a>";
+                                ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
 
                         } else if(ds.getDate() === de.getDate()){
                             return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 

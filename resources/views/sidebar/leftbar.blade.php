@@ -127,6 +127,9 @@
             <li class="">
                 <a href="{{ url('/event/location') }}"><i class="fa-solid fa-location-dot me-3"></i> Location</a>
             </li>
+            <li class="">
+                <a href="{{ url('/event/calendar') }}"><i class="fa-solid fa-calendar me-3"></i> Calendar</a>
+            </li>
            
         </div>
         <li class="<?php if(session()->get('active_nav') == "user"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsUser">
