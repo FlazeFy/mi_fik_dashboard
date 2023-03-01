@@ -17,7 +17,7 @@ class ArchiveApi extends Controller
     public function createArchive(Request $request)
     {
         //Helpers
-        $slug = Generator::getSlugName($request->archive_name);
+        $slug = Generator::getSlugName($request->archive_name, "archive");
 
         try{
             $validator = Validator::make($request->all(), [

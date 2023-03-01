@@ -32,7 +32,7 @@ class Converter
     // In-1 : 2022-03-01  
     // In-2 : 01:30  
     // Out : 2022-03-01 01:30
-    function getFullDate($date, $time){
+    public static function getFullDate($date, $time){
         if($date && $time){
             return date("Y-m-d H:i", strtotime($date."".$time));
         } else {
@@ -40,5 +40,5 @@ class Converter
         }
     }
 
-    
+
 }

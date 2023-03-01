@@ -72,7 +72,7 @@ class HomepageController extends Controller
         $tag = Converter::getTag($request->content_tag);
         $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
         $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-        $slug = Generator::getSlugName($request->content_title);
+        $slug = Generator::getSlugName($request->content_title, "content");
 
         // Attachment file upload
         $status = true;
@@ -162,7 +162,7 @@ class HomepageController extends Controller
     }
     
     public function add_task(Request $request){
-        $slug = Generator::getSlugName($request->task_title);
+        $slug = Generator::getSlugName($request->task_title, "task");
 
         $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
         $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
