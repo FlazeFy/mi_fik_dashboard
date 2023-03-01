@@ -48,14 +48,9 @@
                     foreach($setting as $set){
                         $max = $set->CE_range; //Max month to show
                     }
-                    $date = new DateTime(date("Y/m/d")); 
 
-                    //Array to store month. First month is the current month.
-                    $arr = [$date->format('m')];
-                    for ($i = 1; $i < $max; $i++) {
-                        $date->modify("-1 month");
-                        array_push($arr, $date->format('m'));
-                    }
+                    //Helper
+                    $arr = App\Helpers\Generator::getMonthList($max, "number");
                     
                     //Print array from backward.
                     foreach(array_reverse($arr) as $ar => $val){
@@ -92,14 +87,9 @@
                 foreach($setting as $set){
                     $max = $set->CE_range; //Max month to show
                 }
-                $date = new DateTime(date("Y/m/d")); 
 
-                //Array to store month. First month is the current month.
-                $arr = ["'".substr($date->format('F'), 0, 3)."', ", ];
-                for ($i = 1; $i < $max; $i++) {
-                    $date->modify("-1 month");
-                    array_push($arr, "'".substr($date->format('F'), 0, 3)."',");
-                }
+                //Helper
+                $arr = App\Helpers\Generator::getMonthList($max, "name");                
                 
                 //Print array from backward.
                 foreach(array_reverse($arr) as $ar => $val){

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
+use App\Helpers\Converter;
+use App\Helpers\Generator;
+
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
@@ -65,51 +68,11 @@ class HomepageController extends Controller
         $draft = 0;
         $failed_attach = false;
 
-        function getTag($tag_raw){
-            if($tag_raw != null){
-                //Initial variable
-                $tag = [];
-                $total_tag = count($tag_raw);
-    
-                //Iterate all selected tag
-                for($i=0; $i < $total_tag; $i++){
-                    array_push($tag, $tag_raw[$i]);
-                }
-    
-                //Clean the json from quotes mark
-                $tag = str_replace('"{',"{", json_encode($tag));
-                $tag = str_replace('}"',"}", $tag);
-                $tag = stripslashes($tag);
-            } else {
-                $tag = null;
-            }
-
-            return $tag;
-        }
-
-        function getSlugName($val){
-            $check = ContentHeader::select('slug_name')
-                ->limit(1)
-                ->get();
-
-            if(count($check) > 0){
-                $val = $val."_".date('mdhis'); 
-            }
-
-            $replace = str_replace("/","", stripslashes($val));
-            $replace = str_replace(" ","_", $replace);
-            $replace = str_replace("-","_", $replace);
-
-            return strtolower($replace);
-        }
-
-        function getFullDate($date, $time){
-            if($date && $time){
-                return date("Y-m-d H:i", strtotime($date."".$time));
-            } else {
-                return null;
-            }
-        }
+        //Helpers
+        $tag = Converter::getTag($request->content_tag);
+        $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+        $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+        $slug = Generator::getSlugName($request->content_title, "content");
 
         // Attachment file upload
         $status = true;
@@ -160,11 +123,11 @@ class HomepageController extends Controller
         }
 
         $header = ContentHeader::create([
-            'slug_name' => getSlugName($request->content_title), 
+            'slug_name' => $slug, 
             'content_title' => $request->content_title,
             'content_desc' => $request->content_desc,
-            'content_date_start' => getFullDate($request->content_date_start, $request->content_time_start),
-            'content_date_end' => getFullDate($request->content_date_end, $request->content_time_end),
+            'content_date_start' => $fulldate_start,
+            'content_date_end' => $fulldate_end,
             'content_reminder' => $request->content_reminder,
             'content_image' => $imageURL,
             'is_draft' => $draft, 
@@ -176,7 +139,7 @@ class HomepageController extends Controller
             'deleted_by' => null
         ]);
 
-        if(getTag($request->content_tag) || $request->has('content_attach')){
+        if($tag || $request->has('content_attach')){
             function getFailedAttach($failed, $att_content){
                 if($failed){
                     return null;
@@ -188,7 +151,7 @@ class HomepageController extends Controller
             ContentDetail::create([
                 'content_id' => $header->id, //for now
                 'content_attach' => getFailedAttach($failed_attach, $request->content_attach), 
-                'content_tag' => getTag($request->content_tag),
+                'content_tag' => $tag,
                 'content_loc' => null, //for now 
                 'created_by' => date("Y-m-d H:i"), 
                 'updated_at' => null
@@ -199,36 +162,17 @@ class HomepageController extends Controller
     }
     
     public function add_task(Request $request){
-        function getSlugName($val){
-            $check = Task::select('slug_name')
-                ->limit(1)
-                ->get();
+        $slug = Generator::getSlugName($request->task_title, "task");
 
-            if(count($check) > 0){
-                $val = $val."_".date('mdhis'); 
-            }
-
-            $replace = str_replace("/","", stripslashes($val));
-            $replace = str_replace(" ","_", $replace);
-            $replace = str_replace("-","_", $replace);
-
-            return strtolower($replace);
-        }
-
-        function getFullDate($date, $time){
-            if($date && $time){
-                return date("Y-m-d H:i", strtotime($date."".$time));
-            } else {
-                return null;
-            }
-        }
+        $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
+        $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
 
         $header = Task::create([
-            'slug_name' => getSlugName($request->task_title), 
+            'slug_name' => $slug, 
             'task_title' => $request->task_title,
             'task_desc' => $request->task_desc,
-            'task_date_start' => getFullDate($request->task_date_start, $request->task_time_start),
-            'task_date_end' => getFullDate($request->task_date_end, $request->task_time_end),
+            'task_date_start' => $fulldate_start,
+            'task_date_end' => $fulldate_end,
             'task_reminder' => $request->task_reminder,
 
             'created_at' => date("Y-m-d H:i"),

@@ -11,18 +11,19 @@ use App\Models\ContentDetail;
 
 class ContentApi extends Controller
 {
-   public function getContentHeader()
-   {
+    public function getContentHeader()
+    {
         $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
-                                    ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                                    ->orderBy('contents_headers.created_at', 'DESC')
-                                    ->paginate(12);
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->orderBy('contents_headers.created_at', 'DESC')
+            ->paginate(12);
 
         if ($content->isEmpty()) {
             return response()->json([
-                'status' => 'error',
-                'message' => 'Content Header Not Found'
-            ], Response::HTTP_NOT_FOUND);
+                'status' => 'success',
+                'message' => 'Content Not Found',
+                'data' => $content
+            ], Response::HTTP_OK);
         } else {
             return response()->json([
                 'status' => 'success',
@@ -30,14 +31,14 @@ class ContentApi extends Controller
                 'data' => $content
             ], Response::HTTP_OK);
         }
-   }
+    }
 
-   public function getContentBySlug($slug)
-   {
+    public function getContentBySlug($slug)
+    {
         $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
-                                    ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                                    ->where('slug_name', $slug)
-                                    ->get();
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->where('slug_name', $slug)
+            ->get();
 
         if ($content->isEmpty()) {
             return response()->json([
@@ -51,17 +52,52 @@ class ContentApi extends Controller
                 'data' => $content
             ], Response::HTTP_OK);
         }
-   }
+    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function getContentBySlugLike($slug)
     {
-        //
+        if($slug != "all"){
+            $i = 1;
+            $query = "";
+            $filter_tag = explode(",", $slug);
+            
+            foreach($filter_tag as $ft){
+                $stmt = 'content_tag like '."'".'%"slug_name":"'.$ft.'"%'."'";
+
+                if($i != 1){
+                    $query = substr_replace($query, " ".$stmt." OR", 0, 0);
+                } else {
+                    $query = substr_replace($query, " ".$stmt, 0, 0);
+                }
+                $i++;
+            }
+
+            $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->orderBy('contents_headers.created_at', 'DESC')
+                ->whereRaw($query)
+                ->paginate(12);
+
+        } else {
+            $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->orderBy('contents_headers.created_at', 'DESC')
+                ->paginate(12);
+        }
+
+        if ($content->isEmpty()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Content Not Found',
+                'data' => $content
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Content Header Found',
+                'data' => $content
+            ], Response::HTTP_OK);
+        }
     }
 
     /**

@@ -134,6 +134,16 @@
                 background:#00C363;
                 color:whitesmoke;
             }
+            .btn-submit{
+                background: #00c363;
+                color: whitesmoke !important;
+            }
+            .nodata-icon{
+                display: block;
+                margin-inline: auto;
+                height: 30vh;
+                min-height: 80px;
+            }
         </style>
     </head>
 
@@ -160,6 +170,9 @@
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
                                     @include('homepage.addAnnouncement')
                                 </div>
+                            </div>
+                            <div class="mt-2">
+                                @include('event.calendar.filter_tag')
                             </div>
                             @include('homepage.event')
                         </div>

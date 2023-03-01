@@ -100,7 +100,7 @@
     }
 </style>
 
-<div class="container mt-5 p-0">
+<div class="container mt-3 p-0">
     <div class="event-holder row mt-3" >        
     <div class="row p-0 m-0" id="data-wrapper"></div>
     <!-- Loading -->
@@ -114,7 +114,7 @@
             </path>
         </svg>
     </div>
-    
+    <div id="empty_item_holder"></div>
     <button class="btn content-more d-block mx-auto my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>
 </div>
 
@@ -140,8 +140,30 @@
     }
 
     function infinteLoadMore(page) {
+        var tag = <?php
+            $tags = session()->get('selected_tag_calendar');
+            
+            if($tags != "All"){
+                echo "'";
+                $count_tag = count($tags);
+                $i = 1;
+
+                foreach($tags as $tg){
+                    if($i != $count_tag){
+                        echo $tg.",";
+                    } else {
+                        echo $tg;
+                    }
+                    $i++;
+                }
+                echo "'";
+            } else {
+                echo "'all'";
+            }
+        ?>;
+        
         $.ajax({
-            url: "/api/v1/content?page=" + page,
+            url: "/api/v3/content/" + tag + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -150,9 +172,13 @@
         })
         .done(function (response) {
             $('.auto-load').hide();
-            var data =  response.data;
+            var data =  response.data.data;
+            var total = response.data.total;
 
-            if (data.length == 0) {
+            if (total == 0) {
+                $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                return;
+            } else if (data.length == 0) {
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {

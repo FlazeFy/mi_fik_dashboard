@@ -59,6 +59,10 @@ Route::prefix('/v2/content')->group(function() {
     Route::get('/{slug}', [ContentApi::class, 'getContentBySlug']);
 });
 
+Route::prefix('/v3/content')->group(function() {
+    Route::get('/{slug}', [ContentApi::class, 'getContentBySlugLike']);
+});
+
 Route::prefix('/v2/archive')->group(function() {
     Route::post('/create', [ArchiveApi::class, 'createArchive']);
     Route::get('/{slug}/my', [ArchiveApi::class, 'getArchive']);
