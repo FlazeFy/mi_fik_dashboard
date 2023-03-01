@@ -45,7 +45,7 @@ class TagController extends Controller
         //Validate name avaiability
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
-        if(count($check) == 0 || $request->update_type == "desc"){
+        if((count($check) == 0 || $request->update_type == "desc") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             function getSlugName($val){
                 $replace = str_replace("/","", $val);
                 $replace = str_replace(" ","_", $replace);
@@ -80,7 +80,7 @@ class TagController extends Controller
         //Validate name avaiability
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
-        if(count($check) == 0){
+        if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             function getSlugName($val){
                 $replace = str_replace("/","", $val);
                 $replace = str_replace(" ","_", $replace);
