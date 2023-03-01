@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 //use App\Http\Controllers\Mifik\HomepageController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
 
 use App\Http\Controllers\Event\AllEventController;
@@ -26,8 +27,13 @@ use App\Http\Controllers\System\NotificationController;
 
 // Route::get('/homepage', [HomepageController::class, 'index'])->name('dashboard');
 
+Route::prefix('/')->group(function () {
+    Route::get('/', [LandingController::class, 'index']);
+    Route::post('/login', [LandingController::class, 'login_admin']);
+});
+
 Route::prefix('/homepage')->group(function () {
-    Route::get('/', [HomepageController::class, 'index']);
+    Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
     Route::post('/add_event', [HomepageController::class, 'add_event']);
     Route::post('/add_task', [HomepageController::class, 'add_task']);
