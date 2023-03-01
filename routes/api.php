@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\Mifik\HomepageController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\Api\ContentApi;
+use App\Http\Controllers\Api\ArchiveApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,4 +52,14 @@ Route::prefix('/v1/archieve')->group(function () {
 
 Route::prefix('/v1/notification')->group(function () {
     Route::get('/', [HomepageController::class, 'getAllNotification']);
+});
+
+Route::prefix('/v2/content')->group(function() {
+    Route::get('/', [ContentApi::class, 'getContentHeader']);
+    Route::get('/{slug}', [ContentApi::class, 'getContentBySlug']);
+});
+
+Route::prefix('/v2/archive')->group(function() {
+    Route::post('/create', [ArchiveApi::class, 'createArchive']);
+    Route::get('/{slug}/my', [ArchiveApi::class, 'getArchive']);
 });
