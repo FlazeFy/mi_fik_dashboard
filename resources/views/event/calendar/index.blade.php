@@ -159,13 +159,16 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-white rounded my-5 p-2">
+                    <div class="container-fluid bg-white rounded my-5 p-3">
                         @include('event.calendar.filter_tag')
                         @include('event.calendar.calendar')
                     </div>
                 </div>
             </div>
         </div>
+
+        <!--Modal-->
+        @include('popup.success')
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
