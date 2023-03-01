@@ -1,5 +1,5 @@
 <div class="form-floating">
-    <input type="text" class="form-control nameInput" id="titleInput" name="content_title" oninput="lengValidator('75', 'title')" maxlength="75"  required>
+    <input type="text" class="form-control nameInput" id="titleInput" name="content_title" oninput="lengValidatorEvent('75', 'title')" maxlength="75"  required>
     <label for="titleInput">Event Title</label>
 </div>
 <a id="title_msg" class="input-warning text-danger"></a>
@@ -9,7 +9,7 @@
     var check_title = false;
 
     //Validator
-    function lengValidator(len, type){
+    function lengValidatorEvent(len, type){
         if(type == "title"){
             if($("#titleInput").val().length >= len){
                 $("#title_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> You reaches the maximum character");

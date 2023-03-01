@@ -11,6 +11,10 @@ MI-FIK Laravel Documentation
 --Run Application
 > php artisan serve
 
+--Run Application On Custom Pors
+> php artisan serve --port=****
+ex : php artisan serve --port=9000
+
 --Run Migrations
 > php artisan migrate
 
