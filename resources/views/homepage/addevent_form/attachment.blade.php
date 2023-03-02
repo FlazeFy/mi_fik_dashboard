@@ -6,7 +6,7 @@
         position: relative;
         border-radius: 0 10px 10px 0;
         min-height: 80px;
-        border-left: 3px solid #808080;
+        border-left: 3.5px solid #808080;
         border-top: 1.75px solid #CED4DA;
         border-right: 1.75px solid #CED4DA;
         border-bottom: 1.75px solid #CED4DA;
@@ -29,7 +29,7 @@
         left: -13px;
         top: 36%;
         background: white;
-        border: 3px solid #808080;
+        border: 3px solid var(--circle-attach-color-var);
     }
     .btn-icon-delete{
         color: #F85D59 !important;
@@ -48,6 +48,18 @@
         font-size: 13px;
         width: 100px;
     }
+    .attach-upload-status{
+        text-decoration: none;
+        font-style: italic;
+        font-size: 12px;
+        font-weight: 400;
+    }
+    .success{
+        color: #00c363 !important;
+    }
+    .failed{
+        color: #e74645 !important;
+    }
 </style>
 
 <div>
@@ -56,6 +68,23 @@
     </div>
     <input hidden id="content_attach" name="content_attach">
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCN3J8nXpP1NuHwX7NjfYpMWkNGPzfV0X0",
+        authDomain: "mifik-ad2d9.firebaseapp.com",
+        projectId: "mifik-ad2d9",
+        storageBucket: "mifik-ad2d9.appspot.com",
+        messagingSenderId: "96469457737",
+        appId: "1:96469457737:web:f70e18e5dcfe41c66bd898",
+        measurementId: "G-PZDGL9X7T1"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+</script>
 
 <script>
     //Initial variable.
@@ -73,7 +102,7 @@
         attach_list.push(obj);
 
         $("#attachment-holder").append(' ' +
-            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'"> ' + 
+            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'" style="--circle-attach-color-var:#808080;"> ' + 
                 '<div class="row mb-1"> ' +
                     '<div class="col-6"> ' +
                         '<h6 class="mt-1">Attachment Type : </h6> ' +
@@ -96,6 +125,8 @@
                     '<i class="fa-solid fa-trash-can"></i></a> ' +
                 '<a class="btn btn-icon-preview" title="Preview Attachment" onclick=""> ' +
                     '<i class="fa-regular fa-eye-slash"></i></a> ' +
+                '<a class="attach-upload-status success" id="attach-progress-'+i+'"></a>' +
+                '<a class="attach-upload-status danger" id="attach-failed-'+i+'"></a>' +
             '</div>');
         i++;
     }
@@ -107,10 +138,42 @@
 
         if(all){
             var att_name = document.getElementById('attach_name_'+id).value;
-            var att_url = document.getElementById('attach_url_'+id).value;
-            att_url = att_url.replace(/\\/g, '');
-            att_url = att_url.replace("C:fakepath", "");
-            //addAttachmentFile(id);
+            //var att_url = document.getElementById('attach_url_'+id).value;
+            var att_file_src = document.getElementById('attach_url_'+id).files[0];
+            var att_cont = document.getElementById('attachment_container_'+id);
+            var fileName = att_file_src.name;
+            
+            if(attach_list[objIndex]['attach_url'] == null){
+                //Set upload path
+                var storageRef = firebase.storage().ref(att_type + '/' + fileName);
+                var uploadTask = storageRef.put(att_file_src);
+
+                //Do upload
+                uploadTask.on('state_changed',function (snapshot) {
+                    var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                    document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done";
+                    if(progress == 100){
+                        att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
+                    }
+                }, 
+                function (error) {
+                    console.log(error.message);
+                    document.getElementById('attach-failed-'+id).innerHTML = "File upload is " + error.message;
+                    var att_url = null;
+                    if(error.message){
+                        att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
+                    }
+                }, 
+                function () {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
+                        var att_url = downloadUrl;
+                        attach_list[objIndex]['attach_url'] =  downloadUrl;
+                    });
+                });
+            }
+            
+            // att_url = att_url.replace(/\\/g, '');
+            // att_url = att_url.replace("C:fakepath", "");
         } else {
             var att_name = null;
             var att_url = null;
@@ -162,35 +225,4 @@
                 '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
         }
     }
-
-    // function addAttachmentFile(index){
-    //     //e.preventDefault();
-    //     // var actionType = $('#btn-save').val();
-    //     // $('#btn-save').html('Sending..');
-
-    //     var datastring = $("#attachment_form_"+index).serialize();
-
-    //     //var formData = new FormData(this);
-
-    //     $.ajax({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         type:'POST',
-    //         url: "homepage/add_attach/"+index,
-    //         data: datastring,
-    //         // cache: false,
-    //         // contentType: false,
-    //         // processData: false,
-    //         success: (data) => {
-    //             // $('#productForm').trigger("reset");
-    //             $('#ajax-product-modal').modal('hide');
-    //             //$('#btn-save').html('Save Changes');
-    //         },
-    //         error: function(data){
-    //             console.log('Error:', data);
-    //             $('#btn-save').html('Save Changes');
-    //         }
-    //     });
-    // }
 </script>

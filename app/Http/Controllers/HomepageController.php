@@ -33,6 +33,10 @@ class HomepageController extends Controller
         $select_1 = "Reminder";
         $select_2 = "Attachment";
         $user_id = 1; //for now.
+        
+        if(!session()->get('selected_tag_calendar')){
+            session()->put('selected_tag_calendar', "All");
+        }
 
         $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
             //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
