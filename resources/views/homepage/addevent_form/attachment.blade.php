@@ -139,11 +139,12 @@
         if(all){
             var att_name = document.getElementById('attach_name_'+id).value;
             //var att_url = document.getElementById('attach_url_'+id).value;
-            var att_file_src = document.getElementById('attach_url_'+id).files[0];
             var att_cont = document.getElementById('attachment_container_'+id);
-            var fileName = att_file_src.name;
             
-            if(attach_list[objIndex]['attach_url'] == null){
+            if(att_type != "attachment_url"){
+                var att_file_src = document.getElementById('attach_url_'+id).files[0];
+                var fileName = att_file_src.name;
+
                 //Set upload path
                 var storageRef = firebase.storage().ref(att_type + '/' + fileName);
                 var uploadTask = storageRef.put(att_file_src);
@@ -154,6 +155,9 @@
                     document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done";
                     if(progress == 100){
                         att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
+                        $("#btn-submit-holder-event").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+                    } else {
+                        $("#btn-submit-holder-event").html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
                 }, 
                 function (error) {
@@ -162,6 +166,7 @@
                     var att_url = null;
                     if(error.message){
                         att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
+                        $("#btn-submit-holder-event").html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
                 }, 
                 function () {
@@ -170,6 +175,8 @@
                         attach_list[objIndex]['attach_url'] =  downloadUrl;
                     });
                 });
+            } else {
+                var att_url = document.getElementById('attach_url_'+id).value;
             }
             
             // att_url = att_url.replace(/\\/g, '');
@@ -192,11 +199,34 @@
     }
 
     function deleteAttachmentForm(index){
+        var att_url = document.getElementById('attach_url_'+index).value;
+            let att_type = document.getElementById('attach_type_'+index).value;
         $("#attachment_container_"+index).remove();
 
         attach_list = attach_list.filter(object => {
+            
+
+            att_url = att_url.replace(/\\/g, '');
+            att_url = att_url.replace("C:fakepath", "");
+
+            const storage = getStorage();
+
+            // Create a reference to the file to delete
+            const desertRef = firebase.storage().ref(att_type + '/' + att_url);
+
+            // Delete the file
+            deleteObject(desertRef).then(() => {
+                // File deleted successfulls
+                console.log("success");
+            }).catch((error) => {
+                // Uh-oh, an error occurred!
+                console.log("failed");
+            });
+
             return object.id !== index;
         });
+
+        lengValidatorEvent('75', 'title');
     }
 
     function getAttachmentInput(index, val){
