@@ -70,13 +70,11 @@
                     <div class="row my-2">
                         <div class="col-lg-7 pb-2">
                             @include('homepage.addtask_form.titleinput')
-                            <div class="form-floating mt-3">
+                            <div class="form-floating mt-2">
                                 <textarea class="form-control" id="floatingTextarea2" style="height: 100px" name="task_desc"></textarea>
                                 <label for="floatingTextarea2">Descriptions</label>
                             </div>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="form-floating">
+                            <div class="form-floating mt-2">
                                 <select class="form-select" id="floatingSelect" name="task_reminder" aria-label="Floating label select example">
                                     @php($i = 0)
 
@@ -95,6 +93,9 @@
                                 <label for="floatingSelect">Reminder</label>
                             </div>
                             @include('homepage.addtask_form.datepicker')
+                        </div>
+                        <div class="col-lg-5">
+                            <label class="input-title">My Archive</label><br>
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>

@@ -1,10 +1,10 @@
 <label>Set Date Start</label>
 <div class="row mt-2">
     <div class="col-6">
-        <input type="date" name="task_date_start" id="date_start" onchange="validateDate()" class="form-control">
+        <input type="date" name="task_date_start" id="date_start" onchange="validateDateTask()" class="form-control">
     </div>
     <div class="col-6">
-        <input type="time" name="task_time_start" id="time_start" onchange="validateDate()" class="form-control mb-2">
+        <input type="time" name="task_time_start" id="time_start" onchange="validateDateTask()" class="form-control mb-2">
     </div>
 </div>
 <a id="dateStart_task_msg" class="input-warning text-danger"></a>
@@ -12,10 +12,10 @@
 <label>Set Date End</label>
 <div class="row mt-2">
     <div class="col-6">
-        <input type="date" name="task_date_end" id="date_end" onchange="validateDate()" class="form-control">
+        <input type="date" name="task_date_end" id="date_end" onchange="validateDateTask()" class="form-control">
     </div>
     <div class="col-6">
-        <input type="time" name="task_time_end" id="time_end" onchange="validateDate()" class="form-control mb-2">
+        <input type="time" name="task_time_end" id="time_end" onchange="validateDateTask()" class="form-control mb-2">
     </div>
 </div>
 <a id="dateEnd_task_msg" class="input-warning text-danger"></a><br>
@@ -24,7 +24,7 @@
 <script>
     var error = false;
 
-    function validateDate(){
+    function validateDateTask(){
         var today = new Date();
         var date_start = $("#date_start_task").val();
         var date_end = $("#date_end_task").val();
@@ -115,9 +115,9 @@
         }
 
         if(!error){
-            $("#btn-submit-holder").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+            $("#btn-submit-holder-task").html('<button type="submit" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
         } else {
-            $("#btn-submit-holder").html("");
+            $("#btn-submit-holder-task").html("");
         }
     }
 </script>

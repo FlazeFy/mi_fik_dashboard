@@ -30,10 +30,12 @@ class DetailController extends Controller
 
         //Set active nav
         session()->put('active_nav', 'event');
+        $title = $content[0]['content_title'];
 
         return view ('event.detail.index')
             ->with('tag', $tag)
-            ->with('content', $content);
+            ->with('content', $content)
+            ->with('title', $title);
     }
 
     /**

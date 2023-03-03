@@ -49,7 +49,7 @@
             $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
         }
 
-        lengValidator('75', 'title');
+        lengValidatorEvent('75', 'title');
     }
 
     function removeSelectedTag(slug_name, tag_name){
@@ -61,6 +61,6 @@
         //Return selected tag to tag collection
         $("#tag_holder").append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+"slct"+'"'+")'>"+tag_name+"</a>");
 
-        lengValidator('75', 'title');
+        lengValidatorEvent('75', 'title');
     }
 </script>
