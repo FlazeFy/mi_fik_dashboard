@@ -14,7 +14,8 @@ use App\Helpers\Generator;
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
-use App\Models\archieve;
+use App\Models\Archive;
+use App\Models\ArchiveRelation;
 use App\Models\Task;
 use App\Models\Setting;
 use App\Models\Dictionary;
@@ -32,7 +33,7 @@ class HomepageController extends Controller
         //Required config
         $select_1 = "Reminder";
         $select_2 = "Attachment";
-        $user_id = 1; //for now.
+        $user_id = 'dc4d52ec-afb1-11ed-afa1-0242ac120002'; //for now.
         
         if(!session()->get('selected_tag_calendar')){
             session()->put('selected_tag_calendar', "All");
@@ -55,13 +56,19 @@ class HomepageController extends Controller
             ->orderBy('dictionaries.created_at', 'ASC')
             ->get();
 
+        $archive = Archive::select('id','slug_name','archive_name','archive_desc','created_at')
+            ->where('created_by', $user_id)
+            ->orderBy('created_at','DESC')
+            ->get();
+
         //Set active nav
         session()->put('active_nav', 'homepage');
 
         return view ('homepage.index')
             ->with('content', $content)
             ->with('tag', $tag)
-            ->with('dictionary', $dictionary);
+            ->with('dictionary', $dictionary)
+            ->with('archive', $archive);
     }
 
     // ================================= MVC =================================
@@ -180,12 +187,27 @@ class HomepageController extends Controller
             'task_reminder' => $request->task_reminder,
 
             'created_at' => date("Y-m-d H:i"),
-            'created_by' => 1, //for now
+            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002', //for now
             'updated_at' => null,
             'updated_by' => null,
             'deleted_at' => null,
             'deleted_by' => null
         ]);
+
+        if(is_countable($request->archive_rel)){
+            $ar_count = count($request->archive_rel);
+        
+            for($i = 0; $i < $ar_count; $i++){
+                if($request->has('archive_rel.'.$i)){
+                    ArchiveRelation::create([
+                        'archive_id' => $request->archive_rel[$i],
+                        'content_id' => $header->id,
+                        'created_at' => date("Y-m-d H:i"),
+                        'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+                    ]);
+                }
+            }
+        }
 
         return redirect()->back()->with('success_message', 'Create item success');
     }

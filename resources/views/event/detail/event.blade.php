@@ -11,6 +11,14 @@
         background-color: black;
         width: 100%;
         border-radius: 18px 18px 0 0;
+        transition: all .25s linear;
+    }
+    .event-header-size-toogle{
+        color: #F78A00 !important;
+        background: none;
+        border: none;
+        margin-top: 10px;
+        margin-left: 10px;
     }
     .event-tag-box{
         border-radius:6px;
@@ -18,7 +26,7 @@
         background: #F78A00;
     }
     .event-detail{
-        color:#F78A00 !important;
+        color: #F78A00 !important;
         text-decoration:none;
     }
     .text-link{
@@ -37,9 +45,13 @@
 @foreach($content as $c)
     <div class="box-event-detail">
         @if($c->content_image)
-            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/storage/{{$c->content_image}}');"></div>
+            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/storage/{{$c->content_image}}');" id="event-header-image">
+                <button class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+            </div>
         @else
-            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});"></div>
+            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});" id="event-header-image">
+                <button class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+            </div>
         @endif
         <div class="row p-3">
             <div class="col-lg-8">
@@ -114,6 +126,8 @@
 @endforeach
 
 <script>
+    var i = 0;
+
     function copylink(id) {
         var copyText = document.getElementById("copy_url_"+id);
 
@@ -121,5 +135,20 @@
         copyText.setSelectionRange(0, 99999); // For mobile devices
 
         navigator.clipboard.writeText(copyText.value);
+    }
+
+    function resize(img){
+        if(img){
+            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/storage/" + img + "');";
+        } else {
+            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');";
+        }
+
+        if(i % 2 == 0){
+            document.getElementById('event-header-image').style = "height: 100vh; " + img_url;
+        } else {
+            document.getElementById('event-header-image').style = "height: 30vh; " + img_url;
+        }
+        i++;
     }
 </script>
