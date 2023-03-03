@@ -126,11 +126,12 @@
                 '<div id="attach-input-holder-'+i+'"></div> ' +
                 '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+i+')"> ' +
                     '<i class="fa-solid fa-trash-can"></i></a> ' +
-                '<a class="btn btn-icon-preview" title="Preview Attachment" onclick=""> ' +
+                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-' + i + '"> ' +
                     '<i class="fa-regular fa-eye-slash"></i></a> ' +
                 '<a class="attach-upload-status success" id="attach-progress-'+i+'"></a>' +
                 '<a class="attach-upload-status danger" id="attach-failed-'+i+'"></a>' +
                 '<a class="attach-upload-status warning" id="attach-warning-'+i+'"></a>' +
+                '<span id="preview_holder_' + i + '"></span> ' +
             '</div>');
         i++;
     }
@@ -180,6 +181,19 @@
                     uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
                         var att_url = downloadUrl;
                         attach_list[objIndex]['attach_url'] =  downloadUrl;
+                        if(att_type == "attachment_image"){
+                            var att_preview_elmt = "<img class='img img-fluid mx-auto rounded mt-2' src='" + downloadUrl + "' alt='" + downloadUrl + "'>";
+                        } else if(att_type == "attachment_video"){
+                            var att_preview_elmt = "<video controls class='rounded w-100 mx-auto mt-2' alt='" + downloadUrl + "'> " +
+                                "<source src='" + downloadUrl + "'> " +
+                            "</video>";
+                        }
+                        var preview_elmt = "<div class='collapse' id='collapsePreview-" + id + "'> " +
+                                "<div class='container w-100 m-0 p-0'> " +
+                                    att_preview_elmt +
+                                "</div> " +
+                            "</div>";
+                        document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
                     });
                 });
             } else {
