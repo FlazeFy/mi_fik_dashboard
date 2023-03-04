@@ -53,11 +53,34 @@
     .archive-box{
         padding: 10px;
         margin-top: 14px;
+        width: 200px !important;
     }
     .archive-count{
         font-size: 12px;
         font-weight: 400;
     }
+    .dropdown-menu{
+        border: none;
+        margin: 10px 0 0 0 !important; 
+        border-radius: 15px !important;
+        padding-bottom: 0px;
+    }
+    .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
+        background: none !important;
+    }
+    .btn.archive-box:hover{
+        border-left: 6px solid #F78A00;
+        transition: all .15s linear;
+    }
+    .btn.archive-box.active{
+        color: whitesmoke;
+        background: #F78A00;
+        border: none !important;
+    }
+    .btn.archive-box.active h6{
+        color: whitesmoke !important;
+    }
+    
 </style>
 
 @foreach($content as $c)
@@ -78,24 +101,37 @@
                     <h5>{{$c->content_title}}</h5>
 
                 <div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="section-select-archive">
-                    <span class="dropdown-item py-2">
-                        <label class="fw-bold">My Archive</label><br>
+                    <span class="dropdown-item py-2 px-0">
+                        <label class="fw-bold ms-2">My Archive</label><br>
                         <div class="archive-holder">
                             @php($i = 0)
                             @foreach($archive as $ar)
-                                <div class="archive-box shadow">
-                                    <div class="row">
-                                        <div class="col-10">
+                                @php($found = false)
+                                @foreach($archive_relation as $arl)
+                                    @if($arl->archive_id == $ar->id)
+                                        @php($found = true)
+                                        @php($id = $arl->id)
+                                    @endif
+                                @endforeach
+
+                                @if($found)
+                                    <form class="d-inline" action="/event/detail/delete_relation/{{$id}}" method="POST">
+                                        @csrf
+                                        <button class="btn archive-box active shadow text-start" type="submit" title="Add event to {{$ar->archive_name}}">
                                             <h6 class="text-secondary" id="archive-title-{{$i}}">{{$ar->archive_name}}</h6>
                                             <h6 class="archive-count"><span>Event : </span>&nbsp<span>Task : </span></h6>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-check d-block mx-auto mt-2">
-                                                <input class="form-check-input" type="checkbox" value="{{$ar->id}}" name="archive_rel[]" id="flexCheckDefault">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        </button>
+                                    </form>
+                                @else 
+                                    <form class="d-inline" action="/event/detail/add_relation/{{$c->slug_name}}" method="POST">
+                                        @csrf
+                                        <input hidden value="{{$ar->id}}" name="archive_id">
+                                        <button class="btn archive-box shadow text-start" type="submit" title="Add event to {{$ar->archive_name}}">
+                                            <h6 class="text-secondary" id="archive-title-{{$i}}">{{$ar->archive_name}}</h6>
+                                            <h6 class="archive-count"><span>Event : </span>&nbsp<span>Task : </span></h6>
+                                        </button>
+                                    </form>
+                                @endif
                                 @php($i++)
                             @endforeach
                         </div>

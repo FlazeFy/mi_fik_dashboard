@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\ContentHeader;
 use App\Models\Archive;
+use App\Models\ArchiveRelation;
 use App\Models\Tag;
 
 class DetailController extends Controller
@@ -25,6 +26,7 @@ class DetailController extends Controller
         $tag = Tag::getFullTag("DESC", "DESC");
         $content = ContentHeader::getFullContentBySlug($slug_name);
         $archive = Archive::getMyArchive($user_id, "DESC");
+        $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
 
         //Set active nav
         session()->put('active_nav', 'event');
@@ -34,72 +36,27 @@ class DetailController extends Controller
             ->with('tag', $tag)
             ->with('content', $content)
             ->with('title', $title)
-            ->with('archive', $archive);
+            ->with('archive', $archive)
+            ->with('archive_relation', $archive_relation);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function add_relation(Request $request, $slug_name)
     {
-        //
+        $content_id = ContentHeader::getContentIdBySlug($slug_name);
+
+        ArchiveRelation::create([
+            'archive_id' => $request->archive_id,
+            'content_id' => $content_id,
+            'created_at' => date("Y-m-d H:i"),
+            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+        ]);
+
+        return redirect()->back()->with('success_message', 'Content has been added to archive');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function delete_relation($id){
+        ArchiveRelation::destroy($id);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->back()->with('success_message', "Content has been removed from archive");
     }
 }

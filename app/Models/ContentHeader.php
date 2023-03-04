@@ -72,4 +72,17 @@ class ContentHeader extends Model
 
         return $res;
     }
+
+    public static function getContentIdBySlug($slug_name){
+        $res = ContentHeader::select('id')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        foreach($res as $r){
+            $id = $r->id;
+        }
+
+        return $id;
+    }
 }
