@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
+use App\Helpers\Generator;
+
 use App\Models\ContentHeader;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
@@ -58,5 +60,21 @@ class DetailController extends Controller
         ArchiveRelation::destroy($id);
 
         return redirect()->back()->with('success_message', "Content has been removed from archive");
+    }
+
+    public function add_archive(Request $request){
+        $slug = Generator::getSlugName($request->archive_name, "archive");
+
+        Archive::create([
+            'slug_name' => $slug,
+            'archive_name' => $request->archive_name,
+            'archive_desc' => null,
+            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002', //for now
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_by' => null,
+            'updated_at' => null
+        ]);
+
+        return redirect()->back()->with('success_message', "Archive has been created");
     }
 }

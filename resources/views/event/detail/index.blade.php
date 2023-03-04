@@ -154,11 +154,14 @@
 
                    
                     <div class="container-fluid bg-white mt-5 mb-3 p-0 shadow" style="border-radius: 18px !important;">
-                        @include('event.detail.event')
+                        @include('event.detail.layout')
                     </div>
                 </div>
             </div>
         </div>
+
+        <!--Modal-->
+        @include('popup.success')
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
