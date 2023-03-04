@@ -20,16 +20,11 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tag = Tag::all();
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $setting = Setting::getSingleSetting("MOT_range", "dc4d52ec-afb1-11ed-afa1-0242ac120002");
 
         //Chart query
-        $mostTag = ContentDetail::select('content_tag')
-            ->whereNot('content_tag', null)
-            ->get();
-
-        $setting = Setting::select('id', 'MOT_range')
-            ->where('created_by', 'dc4d52ec-afb1-11ed-afa1-0242ac120002')
-            ->get();
+        $mostTag = ContentDetail::getMostUsedTag();
 
         //Set active nav
         session()->put('active_nav', 'event');

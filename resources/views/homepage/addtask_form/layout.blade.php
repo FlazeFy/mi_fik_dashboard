@@ -51,6 +51,24 @@
         margin:4px;
         color:whitesmoke !important;
     }
+    .archive-holder{
+        display: flex;
+        flex-direction: column;
+        height: 400px;
+        padding-inline: 10px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .archive-box{
+        padding: 10px;
+        margin-top: 14px;
+    }
+    .archive-count{
+        font-size: 12px;
+        font-weight: 400;
+    }
 </style>
 
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/task.png"); background-color:#FB5E5B;'
@@ -68,13 +86,13 @@
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                     <h5>Create Task</h5>
                     <div class="row my-2">
-                        <div class="col-lg-7 pb-2">
+                        <div class="col-lg-7 col-md-12 col-sm-12 pb-2">
                             @include('homepage.addtask_form.titleinput')
                             <div class="form-floating mt-2">
                                 <textarea class="form-control" id="floatingTextarea2" style="height: 100px" name="task_desc"></textarea>
                                 <label for="floatingTextarea2">Descriptions</label>
                             </div>
-                            <div class="form-floating mt-2">
+                            <div class="form-floating my-2">
                                 <select class="form-select" id="floatingSelect" name="task_reminder" aria-label="Floating label select example">
                                     @php($i = 0)
 
@@ -94,8 +112,27 @@
                             </div>
                             @include('homepage.addtask_form.datepicker')
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-5 col-md-12 col-sm-12">
                             <label class="input-title">My Archive</label><br>
+                            <div class="archive-holder">
+                                @php($i = 0)
+                                @foreach($archive as $ar)
+                                    <div class="archive-box shadow">
+                                        <div class="row">
+                                            <div class="col-10">
+                                                <h6 class="text-secondary" id="archive-title-{{$i}}">{{$ar->archive_name}}</h6>
+                                                <h6 class="archive-count"><span>Event : </span>&nbsp<span>Task : </span></h6>
+                                            </div>
+                                            <div class="col-2">
+                                                <div class="form-check d-block mx-auto mt-2">
+                                                    <input class="form-check-input" type="checkbox" value="{{$ar->id}}" name="archive_rel[]" id="flexCheckDefault">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @php($i++)
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                     <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
