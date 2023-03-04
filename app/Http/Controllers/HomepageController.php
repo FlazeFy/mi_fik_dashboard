@@ -30,42 +30,21 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        //Required config
-        $select_1 = "Reminder";
-        $select_2 = "Attachment";
         $user_id = 'dc4d52ec-afb1-11ed-afa1-0242ac120002'; //for now.
+        $type = ["Reminder", "Attachment"];
         
         if(!session()->get('selected_tag_calendar')){
             session()->put('selected_tag_calendar', "All");
         }
 
-        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_date_start','content_date_end','content_tag')
-            //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-            ->orderBy('contents_headers.created_at', 'DESC')
-            ->limit(3)->get();
-
-        $tag = Tag::orderBy('updated_at', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->get();
-
-        $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
-            ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
-            ->where('type_name', $select_1)
-            ->orWhere('type_name', $select_2)
-            ->orderBy('dictionaries.created_at', 'ASC')
-            ->get();
-
-        $archive = Archive::select('id','slug_name','archive_name','archive_desc','created_at')
-            ->where('created_by', $user_id)
-            ->orderBy('created_at','DESC')
-            ->get();
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $dictionary = Dictionary::getDictionaryByType($type);
+        $archive = Archive::getMyArchive($user_id, "DESC");
 
         //Set active nav
         session()->put('active_nav', 'homepage');
 
         return view ('homepage.index')
-            ->with('content', $content)
             ->with('tag', $tag)
             ->with('dictionary', $dictionary)
             ->with('archive', $archive);
@@ -210,6 +189,34 @@ class HomepageController extends Controller
         }
 
         return redirect()->back()->with('success_message', 'Create item success');
+    }
+
+    public function add_content_task_relation($slug_name, $type){
+        if($type == 0){
+            $content = ContentHeader::select('id')
+                ->where('slug_name', $slug_name)
+                ->get();
+
+            if(count($content) > 0){
+                $id = $content['id'][0];
+
+                ArchiveRelation::create([
+                    'archive_id' => $request->archive_id,
+                    'content_id' => $id,
+                    'created_at' => date("Y-m-d H:i"),
+                    'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+                ]);
+
+                return redirect()->back()->with('success_message', 'Update item success');
+            } else {
+                return redirect()->back()->with('failed_message', 'Update item failed');
+            }
+        } else {
+            ArchiveRelation::destroy($slug_name);
+
+            return redirect()->back()->with('success_message', 'Create item success');
+        }
+        
     }
     
 

@@ -17,16 +17,8 @@ class NotificationController extends Controller
         //Required config
         $select_1 = "Notification";
 
-        $notification = Notification::select('*')
-            ->orderBy('updated_at', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->get();
-
-        $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
-            ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
-            ->where('type_name', $select_1)
-            ->orderBy('dictionaries.created_at', 'ASC')
-            ->get();
+        $notification = Notification::getAllNotification("DESC", "DESC");
+        $dictionary = Dictionary::getDictionaryByType($select_1);
 
         //Set active nav
         session()->put('active_nav', 'system');

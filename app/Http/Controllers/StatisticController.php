@@ -19,28 +19,17 @@ class StatisticController extends Controller
      */
     public function index()
     {
-        //Chart query
-        $mostTag = ContentDetail::select('content_tag')
-            ->whereNot('content_tag', null)
-            ->get();
+        $setting = Setting::getChartSetting('dc4d52ec-afb1-11ed-afa1-0242ac120002');
 
-        $mostLoc = ContentDetail::select('content_loc')
-            ->whereNot('content_loc', null)
-            ->get();
+        //Chart query
+        $mostTag = ContentDetail::getMostUsedTag();
+        $mostLoc = ContentDetail::getMostUsedLoc();
+        foreach($setting as $set){
+            $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
+        }
         
         //Set active nav
         session()->put('active_nav', 'statistic');
-
-        $setting = Setting::select('id', 'MOT_range', 'MOL_range', 'CE_range')
-            ->where('created_by', 'dc4d52ec-afb1-11ed-afa1-0242ac120002')
-            ->get();
-
-        foreach($setting as $set){
-            $createdEvent = ContentHeader::selectRaw("MONTH(created_at) as 'month', COUNT(*) as total")
-                ->where('created_at', '>=', date("Y-m-d", strtotime("-".$set->CE_range." months")))
-                ->groupByRaw('MONTH(created_at)')
-                ->get();
-        }
 
         return view ('statistic.index')
             ->with('mostTag', $mostTag)

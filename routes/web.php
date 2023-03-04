@@ -56,6 +56,7 @@ Route::prefix('/event')->group(function () {
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 
     Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
+    Route::post('/detail/add_archive/{slug_name}', [DetailController::class, 'add_content_task_relation']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);

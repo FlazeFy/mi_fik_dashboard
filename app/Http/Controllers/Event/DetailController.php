@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 use App\Models\ContentHeader;
+use App\Models\Archive;
 use App\Models\Tag;
 
 class DetailController extends Controller
@@ -19,14 +20,11 @@ class DetailController extends Controller
      */
     public function index($slug_name)
     {
-        $tag = Tag::orderBy('updated_at', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->get();
+        $user_id = 'dc4d52ec-afb1-11ed-afa1-0242ac120002'; //for now.
 
-        $content = ContentHeader::select('slug_name','content_title','content_desc','content_image','content_loc','content_date_start','content_date_end','content_tag','content_attach','contents_headers.created_at','contents_headers.updated_at')
-            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-            ->where('slug_name', $slug_name)
-            ->get();
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $content = ContentHeader::getFullContentBySlug($slug_name);
+        $archive = Archive::getMyArchive($user_id, "DESC");
 
         //Set active nav
         session()->put('active_nav', 'event');
@@ -35,7 +33,8 @@ class DetailController extends Controller
         return view ('event.detail.index')
             ->with('tag', $tag)
             ->with('content', $content)
-            ->with('title', $title);
+            ->with('title', $title)
+            ->with('archive', $archive);
     }
 
     /**

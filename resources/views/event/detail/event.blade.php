@@ -40,6 +40,24 @@
     .btn-copy-link:hover{
         color: #F78A00;
     }
+    .archive-holder{
+        display: flex;
+        flex-direction: column;
+        height: 300px;
+        padding-inline: 10px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+    .archive-box{
+        padding: 10px;
+        margin-top: 14px;
+    }
+    .archive-count{
+        font-size: 12px;
+        font-weight: 400;
+    }
 </style>
 
 @foreach($content as $c)
@@ -55,7 +73,34 @@
         @endif
         <div class="row p-3">
             <div class="col-lg-8">
-                <h5>{{$c->content_title}}</h5>
+                <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button>
+                    <h5>{{$c->content_title}}</h5>
+
+                <div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="section-select-archive">
+                    <span class="dropdown-item py-2">
+                        <label class="fw-bold">My Archive</label><br>
+                        <div class="archive-holder">
+                            @php($i = 0)
+                            @foreach($archive as $ar)
+                                <div class="archive-box shadow">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <h6 class="text-secondary" id="archive-title-{{$i}}">{{$ar->archive_name}}</h6>
+                                            <h6 class="archive-count"><span>Event : </span>&nbsp<span>Task : </span></h6>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-check d-block mx-auto mt-2">
+                                                <input class="form-check-input" type="checkbox" value="{{$ar->id}}" name="archive_rel[]" id="flexCheckDefault">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @php($i++)
+                            @endforeach
+                        </div>
+                    </span>
+                </div>
                 <span><?php echo $c->content_desc; ?></span>
 
                 <!--Content attachment-->
