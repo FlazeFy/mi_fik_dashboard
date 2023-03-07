@@ -7,7 +7,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
+use App\Helpers\Generator;
+
 use App\Models\ContentHeader;
+use App\Models\Archive;
+use App\Models\ArchiveRelation;
 use App\Models\Tag;
 
 class DetailController extends Controller
@@ -19,86 +23,58 @@ class DetailController extends Controller
      */
     public function index($slug_name)
     {
-        $tag = Tag::orderBy('updated_at', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->get();
+        $user_id = 'dc4d52ec-afb1-11ed-afa1-0242ac120002'; //for now.
 
-        $content = ContentHeader::select('slug_name','content_title','content_desc','content_image','content_loc','content_date_start','content_date_end','content_tag','content_attach','contents_headers.created_at','contents_headers.updated_at')
-            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-            ->where('slug_name', $slug_name)
-            ->get();
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $content = ContentHeader::getFullContentBySlug($slug_name);
+        $archive = Archive::getMyArchive($user_id, "DESC");
+        $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
 
         //Set active nav
         session()->put('active_nav', 'event');
+        $title = $content[0]['content_title'];
 
         return view ('event.detail.index')
             ->with('tag', $tag)
-            ->with('content', $content);
+            ->with('content', $content)
+            ->with('title', $title)
+            ->with('archive', $archive)
+            ->with('archive_relation', $archive_relation);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function add_relation(Request $request, $slug_name)
     {
-        //
+        $content_id = ContentHeader::getContentIdBySlug($slug_name);
+
+        ArchiveRelation::create([
+            'archive_id' => $request->archive_id,
+            'content_id' => $content_id,
+            'created_at' => date("Y-m-d H:i"),
+            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+        ]);
+
+        return redirect()->back()->with('success_message', 'Content has been added to archive');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+    public function delete_relation($id){
+        ArchiveRelation::destroy($id);
+
+        return redirect()->back()->with('success_message', "Content has been removed from archive");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    public function add_archive(Request $request){
+        $slug = Generator::getSlugName($request->archive_name, "archive");
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        Archive::create([
+            'slug_name' => $slug,
+            'archive_name' => $request->archive_name,
+            'archive_desc' => null,
+            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002', //for now
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_by' => null,
+            'updated_at' => null
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->back()->with('success_message', "Archive has been created");
     }
 }

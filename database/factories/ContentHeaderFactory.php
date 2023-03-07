@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Helpers\Generator;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContentHeader>
@@ -17,18 +18,8 @@ class ContentHeaderFactory extends Factory
     public function definition()
     {
         $title = fake()->sentence();
-        $slug_name = strtolower(str_replace(" ","_", $title));
-
-        //Get random reminder
-        $collection = [
-            'reminder_1_day_before',
-            'reminder_3_day_before',
-            'reminder_none',
-            'reminder_1_hour_before',
-            'reminder_3_hour_before'
-        ];
-        $i = rand(0, 4);
-        $reminder = $collection[$i];
+        $reminder = Generator::getRandomReminder();
+        $slug_name = Generator::getSlugName($request->content_title, "content");
         
         return [
             'slug_name' => $slug_name, 

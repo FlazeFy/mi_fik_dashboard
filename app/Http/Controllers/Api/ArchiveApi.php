@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Helpers\Generator;
 
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
@@ -15,23 +16,8 @@ class ArchiveApi extends Controller
     //
     public function createArchive(Request $request)
     {
-
-        function getSlugName($val){
-            $check = Archive::select('slug_name')
-                ->limit(1)
-                ->get();
-
-            if(count($check) > 0){
-                $val = $val."_".date('mdhis');
-            }
-
-            $replace = str_replace("/","", stripslashes($val));
-            $replace = str_replace(" ","_", $replace);
-            $replace = str_replace("-","_", $replace);
-
-            return strtolower($replace);
-        }
-
+        //Helpers
+        $slug = Generator::getSlugName($request->archive_name, "archive");
 
         try{
             $validator = Validator::make($request->all(), [
@@ -46,7 +32,7 @@ class ArchiveApi extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $archive = Archive::create([
-                    'slug_name' => getSlugName($request->archive_name),
+                    'slug_name' => $slug,
                     'archive_name' => $request->archive_name,
                     'archive_desc' => $request->archive_desc,
                     'created_by' => 1, // for now, later will be changed to auth user

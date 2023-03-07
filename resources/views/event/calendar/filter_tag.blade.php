@@ -1,3 +1,15 @@
+<style>
+    .dropdown-menu{
+        border: none;
+        margin: 10px 0 0 0 !important; 
+        border-radius: 15px !important;
+        padding-bottom: 0px;
+    }
+    .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
+        background: none !important;
+    }
+</style>
+
 <div class="position-relative">
     <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
@@ -8,9 +20,9 @@
             All Tags
         @endif
     </button>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-select-tag">
-        <span class="dropdown-item">
-            <label class="mb-2 fw-bold">Available Tag</label><br>
+    <div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="section-select-tag">
+        <span class="dropdown-item py-2">
+            <label class="fw-bold">Available Tag</label><br>
             <form action="/event/calendar/set_filter_tag/1" method="POST">
                 @csrf
                 <div class="form-check">
@@ -55,7 +67,7 @@
                     </div>
                 @endforeach
                 <div class="col-4">
-                    <button class="btn btn-primary w-75" style="width:60px;">Filter</button>
+                    <button class="btn btn-submit w-75" style="width:60px;"><i class="fa-solid fa-filter"></i> Filter</button>
                 </div>
             </form>            
         </span>

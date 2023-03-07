@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 //use App\Http\Controllers\Mifik\HomepageController;
 use App\Http\Controllers\HomepageController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
 
 use App\Http\Controllers\Event\AllEventController;
@@ -26,8 +27,13 @@ use App\Http\Controllers\System\NotificationController;
 
 // Route::get('/homepage', [HomepageController::class, 'index'])->name('dashboard');
 
+Route::prefix('/')->group(function () {
+    Route::get('/', [LandingController::class, 'index']);
+    Route::post('/login', [LandingController::class, 'login_admin']);
+});
+
 Route::prefix('/homepage')->group(function () {
-    Route::get('/', [HomepageController::class, 'index']);
+    Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
     Route::post('/add_event', [HomepageController::class, 'add_event']);
     Route::post('/add_task', [HomepageController::class, 'add_task']);
@@ -50,6 +56,9 @@ Route::prefix('/event')->group(function () {
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 
     Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
+    Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
+    Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
+    Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
