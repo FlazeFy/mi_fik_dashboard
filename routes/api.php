@@ -60,7 +60,7 @@ Route::prefix('/v2/content')->group(function() {
 });
 
 Route::prefix('/v3/content')->group(function() {
-    Route::get('/{slug}', [ContentApi::class, 'getContentBySlugLike']);
+    Route::get('/{slug}/order/{order}', [ContentApi::class, 'getContentBySlugLike']);
 });
 
 Route::prefix('/v2/archive')->group(function() {

@@ -161,9 +161,11 @@
                 echo "'all'";
             }
         ?>;
+
+        var order = <?php echo '"'.session()->get('ordering_event').'"'; ?>
         
         $.ajax({
-            url: "/api/v3/content/" + tag + "?page=" + page,
+            url: "/api/v3/content/" + tag + "/order/" + order + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {

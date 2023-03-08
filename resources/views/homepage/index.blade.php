@@ -144,6 +144,11 @@
                 height: 30vh;
                 min-height: 80px;
             }
+            .btn-config-holder{
+                display:flex !important; 
+                flex-direction: row; 
+                justify-content: start;
+            }
         </style>
     </head>
 
@@ -171,8 +176,9 @@
                                     @include('homepage.addAnnouncement')
                                 </div>
                             </div>
-                            <div class="mt-2">
+                            <div class="mt-2 btn-config-holder">
                                 @include('event.calendar.filter_tag')
+                                @include('homepage.sorting')
                             </div>
                             @include('homepage.event')
                         </div>

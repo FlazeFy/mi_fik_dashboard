@@ -36,6 +36,9 @@ class HomepageController extends Controller
         if(!session()->get('selected_tag_calendar')){
             session()->put('selected_tag_calendar', "All");
         }
+        if(!session()->get('ordering_event')){
+            session()->put('ordering_event', "DESC");
+        }
 
         $tag = Tag::getFullTag("DESC", "DESC");
         $dictionary = Dictionary::getDictionaryByType($type);
@@ -217,6 +220,12 @@ class HomepageController extends Controller
             return redirect()->back()->with('success_message', 'Create item success');
         }
         
+    }
+    public function set_ordering_content($order)
+    {
+        session()->put('ordering_event', $order);
+
+        return redirect()->back()->with('success_message', 'Content ordered');
     }
     
 
