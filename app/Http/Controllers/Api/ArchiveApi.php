@@ -55,10 +55,10 @@ class ArchiveApi extends Controller
         }
     }
 
-    public function getArchive($created_by) {
+    public function getArchive($user_id) {
         try{
             $archive = Archive::select('slug_name', 'archive_name', 'archive_desc', 'created_by')
-                ->where('created_by', $created_by)
+                ->where('created_by', $user_id)
                 ->get();
 
             if ($archive->count() > 0) {
@@ -87,7 +87,7 @@ class ArchiveApi extends Controller
             $relation = ArchiveRelation::create([
                 'archive_id' => $request->archive_id,
                 'content_id' => $request->content_id,
-                'created_by' => 1, // for now, later will be changed to auth user
+                'created_by' => $request->user_id,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
@@ -95,6 +95,59 @@ class ArchiveApi extends Controller
                 'status' => 'success',
                 'message' => 'Content Added to Archive',
                 'data' => $relation
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function editArchive(Request $request, $id)
+    {
+        try{
+            //Validate name avaiability
+            $check = Archieve::where('archive_name', $request->archieve_name)->where('id_user', $request->id_user)->get();
+
+            if(count($check) == 0){
+                $result = Archieve::where('id', $id)->update([
+                    'archive_name' => $request->archive_name,
+                    'updated_at' => date("Y-m-d h:i")
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Archive successfully updated',
+                    'data' => $result
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Archive name must be unique',
+                    'data' => null
+                ], Response::HTTP_OK);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    public function deleteArchive(Request $request, $id)
+    {
+        try {
+            $result = archieve::destroy($id);
+        
+            //Delete archive relation
+            DB::table('archive_relation')->where('archive_id', $id)->where('user_id', $request->user_id)->delete();
+                
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Archive name must be unique',
+                'data' => null
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json([

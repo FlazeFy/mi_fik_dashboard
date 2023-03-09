@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\Api\ContentApi;
 use App\Http\Controllers\Api\ArchiveApi;
+use App\Http\Controllers\Api\TagApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,12 +23,6 @@ use App\Http\Controllers\Api\ArchiveApi;
 //     return $request->user();
 // });
 
-Route::prefix('/v1/content')->group(function () {
-    Route::get('/', [HomepageController::class, 'getContentHeader']);
-    Route::get('/id/{id}', [HomepageController::class, 'getContent']);
-    Route::post('/create/{id_user}', [HomepageController::class, 'addContent']);
-});
-
 Route::prefix('/v1/task')->group(function () {
     Route::get('/{id_user}', [HomepageController::class, 'getMyTask']);
     Route::post('/create/{id_user}', [HomepageController::class, 'addTask']);
@@ -35,19 +30,12 @@ Route::prefix('/v1/task')->group(function () {
 });
 
 Route::prefix('/v1/schedule')->group(function () {
-    Route::get('/{date}', [HomepageController::class, 'getAllSchedule']);
+    Route::get('/{date}', [ContentApi::class, 'getAllContentSchedule']);
     Route::get('/my/{id}', [HomepageController::class, 'getMySchedule']);
 });
 
 Route::prefix('/v1/tag')->group(function () {
-    Route::get('/', [HomepageController::class, 'getAllTag']);
-});
-
-Route::prefix('/v1/archieve')->group(function () {
-    Route::get('/{id_user}', [HomepageController::class, 'getMyArchieve']);
-    Route::post('/create/{id_user}', [HomepageController::class, 'addArchive']);
-    Route::put('/edit/{id}', [HomepageController::class, 'editArchive']);
-    Route::delete('/delete/{id}', [HomepageController::class, 'deleteArchive']);
+    Route::get('/', [TagApi::class, 'getAllTag']);
 });
 
 Route::prefix('/v1/notification')->group(function () {
@@ -64,6 +52,9 @@ Route::prefix('/v3/content')->group(function() {
 });
 
 Route::prefix('/v2/archive')->group(function() {
+    Route::get('/{user_id}', [ArchiveApi::class, 'getArchive']);
     Route::post('/create', [ArchiveApi::class, 'createArchive']);
-    Route::get('/{slug}/my', [ArchiveApi::class, 'getArchive']);
+    Route::post('/createRelation', [ArchiveApi::class, 'addToArchive']);
+    Route::put('/edit/{id}', [HomepageController::class, 'editArchive']);
+    Route::delete('/delete/{id}', [HomepageController::class, 'deleteArchive']);
 });
