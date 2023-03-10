@@ -218,68 +218,13 @@ class HomepageController extends Controller
             ArchiveRelation::destroy($slug_name);
 
             return redirect()->back()->with('success_message', 'Create item success');
-        }
-        
+        }    
     }
+
     public function set_ordering_content($order)
     {
         session()->put('ordering_event', $order);
 
         return redirect()->back()->with('success_message', 'Content ordered');
-    }
-    
-
-    // ================================= API =================================
-
-    public function getMySchedule(Request $request, $id){
-        $sch = content::selectRaw('content.id, content_title, content_subtitle, content_desc, content_attach, content_tag, content_loc, content_date_start, content_date_end, content.created_at, content.updated_at, archieve_relation.id as id_rel')
-            ->join('archieve_relation', 'archieve_relation.content_id', '=', 'content.id')
-            ->where('archieve_relation.archieve_id', $id)
-            ->orderBy('archieve_relation.created_at', 'DESC')
-            ->get();
-        
-        return response()->json($sch);
-    }
-    
-    public function getMyTask()
-    {
-        $tk = task::orderBy('task_date_end', 'DESC')->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->paginate(15);
-        //Need pagination?
-        return response()->json($tk);
-    }
-    
-    public function updateTask(Request $request, $id){
-        $result = task::where('id', $id)->update([
-            'task_title' => $request->task_title,
-            'task_desc' => $request->task_desc,
-            'task_date_start' => $request->task_date_start,
-            'task_date_end' => $request->task_date_end,
-            'updated_at' => date("Y-m-d h:i")
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Task successfully updated',
-            'result' => $result,
-        ]);
-    }
-    
-    public function addTask(Request $request, $id_user)
-    {
-        $result = task::create([
-            'id_user' => $id_user,
-            'task_title' => $request->task_title,
-            'task_desc' => $request->task_desc,
-            'task_date_start' => $request->task_date_start,
-            'task_date_end' => $request->task_date_end,
-            'created_at' => date("Y-m-d h:i"),
-            'updated_at' => date("Y-m-d h:i")
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Archive successfully added',
-            'result' => $result,
-        ]);
     }
 }

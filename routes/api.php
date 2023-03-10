@@ -2,11 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-//use App\Http\Controllers\Mifik\HomepageController;
-use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\Api\ContentApi;
 use App\Http\Controllers\Api\ArchiveApi;
 use App\Http\Controllers\Api\TagApi;
+use App\Http\Controllers\Api\TaskApi;
+use App\Http\Controllers\Api\NotificationApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,14 +24,10 @@ use App\Http\Controllers\Api\TagApi;
 // });
 
 Route::prefix('/v1/task')->group(function () {
-    Route::get('/{id_user}', [HomepageController::class, 'getMyTask']);
-    Route::post('/create/{id_user}', [HomepageController::class, 'addTask']);
-    Route::put('/update/{id}', [HomepageController::class, 'updateTask']);
-});
-
-Route::prefix('/v1/schedule')->group(function () {
-    Route::get('/{date}', [ContentApi::class, 'getAllContentSchedule']);
-    Route::get('/my/{id}', [HomepageController::class, 'getMySchedule']);
+    Route::get('/{id_user}', [TaskApi::class, 'getMyTask']);
+    Route::post('/create/{id_user}', [TaskApi::class, 'addTask']);
+    Route::put('/update/{id}', [TaskApi::class, 'updateTask']);
+    Route::delete('/delete/{id}', [TaskApi::class, 'deleteTask']);
 });
 
 Route::prefix('/v1/tag')->group(function () {
@@ -39,22 +35,23 @@ Route::prefix('/v1/tag')->group(function () {
 });
 
 Route::prefix('/v1/notification')->group(function () {
-    Route::get('/', [HomepageController::class, 'getAllNotification']);
+    Route::get('/', [NotificationApi::class, 'getAllNotification']);
+});
+
+Route::prefix('/v1/content')->group(function() {
+    Route::get('/', [ContentApi::class, 'getContentHeader']);
+    Route::get('/slug/{slug}', [ContentApi::class, 'getContentBySlug']);
+    Route::get('/date/{date}', [ContentApi::class, 'getAllContentSchedule']);
 });
 
 Route::prefix('/v2/content')->group(function() {
-    Route::get('/', [ContentApi::class, 'getContentHeader']);
-    Route::get('/{slug}', [ContentApi::class, 'getContentBySlug']);
+    Route::get('/slug/{slug}/order/{order}', [ContentApi::class, 'getContentBySlugLike']);
 });
 
-Route::prefix('/v3/content')->group(function() {
-    Route::get('/{slug}/order/{order}', [ContentApi::class, 'getContentBySlugLike']);
-});
-
-Route::prefix('/v2/archive')->group(function() {
+Route::prefix('/v1/archive')->group(function() {
     Route::get('/{user_id}', [ArchiveApi::class, 'getArchive']);
     Route::post('/create', [ArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [ArchiveApi::class, 'addToArchive']);
-    Route::put('/edit/{id}', [HomepageController::class, 'editArchive']);
-    Route::delete('/delete/{id}', [HomepageController::class, 'deleteArchive']);
+    Route::put('/edit/{id}', [ArchiveApi::class, 'editArchive']);
+    Route::delete('/delete/{id}', [ArchiveApi::class, 'deleteArchive']);
 });

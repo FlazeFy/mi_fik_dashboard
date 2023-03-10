@@ -108,10 +108,10 @@ class ArchiveApi extends Controller
     {
         try{
             //Validate name avaiability
-            $check = Archieve::where('archive_name', $request->archieve_name)->where('id_user', $request->id_user)->get();
+            $check = Archive::where('archive_name', $request->archive_name)->where('id_user', $request->id_user)->get();
 
             if(count($check) == 0){
-                $result = Archieve::where('id', $id)->update([
+                $result = Archive::where('id', $id)->update([
                     'archive_name' => $request->archive_name,
                     'updated_at' => date("Y-m-d h:i")
                 ]);
@@ -139,15 +139,17 @@ class ArchiveApi extends Controller
     public function deleteArchive(Request $request, $id)
     {
         try {
-            $result = archieve::destroy($id);
+            $result = Archive::destroy($id);
         
             //Delete archive relation
-            DB::table('archive_relation')->where('archive_id', $id)->where('user_id', $request->user_id)->delete();
+            DB::table('archive_relations')
+                ->where('archive_id', $id)
+                ->where('user_id', $request->user_id)
+                ->delete();
                 
             return response()->json([
-                'status' => 'failed',
-                'message' => 'Archive name must be unique',
-                'data' => null
+                'status' => 'success',
+                'message' => 'Archive deleted'
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json([
