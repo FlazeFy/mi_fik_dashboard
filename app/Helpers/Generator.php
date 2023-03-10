@@ -4,6 +4,7 @@ namespace App\Helpers;
 use App\Models\ContentHeader;
 use App\Models\Archive;
 use App\Models\Task;
+use App\Models\Tag;
 
 use DateTime;
 
@@ -13,27 +14,35 @@ class Generator
     // In : Leonardho R Sitanggang-01/02
     // Out : leonardho_r_sitanggang_0102
     public static function getSlugName($val, $type){ 
+        $replace = str_replace(" ","_", $val);
+        $replace = str_replace("-","_", $replace);
+        $replace = preg_replace('/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/', '', $replace);
+
         if($type == "content"){
             $check = ContentHeader::select('slug_name')
+                ->where('slug_name', $replace)
                 ->limit(1)
                 ->get();
         } else if($type == "archive"){
             $check = Archive::select('slug_name')
+                ->where('slug_name', $replace)
                 ->limit(1)
                 ->get();
         } else if($type == "task"){
             $check = Task::select('slug_name')
+                ->where('slug_name', $replace)
+                ->limit(1)
+                ->get();
+        } else if($type == "tag"){
+            $check = Tag::select('slug_name')
+                ->where('slug_name', $replace)
                 ->limit(1)
                 ->get();
         }
 
         if(count($check) > 0){
-            $val = $val."_".date('mdhis'); 
+            $replace = $replace."_".date('mdhis'); 
         }
-
-        $replace = str_replace("/","", stripslashes($val));
-        $replace = str_replace(" ","_", $replace);
-        $replace = str_replace("-","_", $replace);
 
         return strtolower($replace);
     }

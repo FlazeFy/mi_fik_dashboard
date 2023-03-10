@@ -36,6 +36,9 @@ class HomepageController extends Controller
         if(!session()->get('selected_tag_calendar')){
             session()->put('selected_tag_calendar', "All");
         }
+        if(!session()->get('ordering_event')){
+            session()->put('ordering_event', "DESC");
+        }
 
         $tag = Tag::getFullTag("DESC", "DESC");
         $dictionary = Dictionary::getDictionaryByType($type);
@@ -215,222 +218,13 @@ class HomepageController extends Controller
             ArchiveRelation::destroy($slug_name);
 
             return redirect()->back()->with('success_message', 'Create item success');
-        }
-        
-    }
-    
-
-    // ================================= API =================================
-    public function getContentHeader(){
-        $content = ContentHeader::select('slug_name','content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
-            //->whereRaw('DATE(content_date_start) = ?', date("Y-m-d")) //For now, just testing.
-            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-            ->orderBy('contents_headers.created_at', 'DESC')
-            ->paginate(12);
-        
-        return response()->json($content);
+        }    
     }
 
-    public function getAllNotification(){
-        $user_id = 1;
-        
-        $notification = Notification::select('notif_type', 'notif_body', 'notif_send_to', 'is_pending')
-            ->where('is_pending', 0)
-            ->where(function ($query) {
-                $query->where('notif_send_to','LIKE','%send_to":"1"%') //Must use jsoncontains
-                    ->orWhere('notif_send_to','LIKE','%send_to":"all"%');
-            })
-            ->get();
-        
-        return response()->json([
-            "msg"=> count($notification)." Data retrived", 
-            "status"=> 200,
-            "data"=> $notification
-        ]);
-    }
-    
-    public function getAllContent()
+    public function set_ordering_content($order)
     {
-        $cnt = content::orderBy('created_at', 'DESC')
-            ->orderBy('id', 'DESC')
-            ->paginate(15);
-        //Need pagination?
-        return response()->json($cnt);
-    }
-    
-    public function getContent($id)
-    {
-        $cnt = content::where('id', $id)->get();
-        
-        return response()->json($cnt);
-    }
+        session()->put('ordering_event', $order);
 
-    public function getAllSchedule($date)
-    {
-        $cnt = content::selectRaw('id, content_title, content_desc, content_loc, content_tag, content_date_start, content_date_end, 1 as data_from')
-            ->whereRaw("date(`content_date_start`) = ?", $date)
-            ->orderBy('content.content_date_start', 'DESC');
-            
-        $sch = task::selectRaw('id, task_title as content_title, task_desc as content_desc, null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, 2 as data_from')
-            ->where('id_user', 1)
-            ->whereRaw("date(`task_date_start`) = ?", $date)
-            ->orderBy('task.task_date_start', 'DESC')
-            ->union($cnt)
-            ->get();
-            
-        //Need pagination?
-        return response()->json($sch);
-    }
-    
-    public function getAllTag()
-    { 
-        $tag = tag::orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->get();
-        
-        return response()->json($tag);
-    }
-    
-    public function getMyArchieve($id_user)
-    {
-        // $ar = archieve::where('id_user', $id_user)->get();
-        // Old select raw
-        // archieve::selectRaw("archieve.id, archieve.archieve_name,  CASE WHEN content.content_type = 'event' THEN COUNT(content.id) ELSE 0 END AS event, CASE WHEN content.content_type = 'task' THEN COUNT(content.id) ELSE 0 END AS task")
-        $ar = archieve::selectRaw("archieve.id, archieve.archieve_name,  CASE WHEN archieve_relation.rel_type = 'content' THEN COUNT(content.id) ELSE 0 END AS event, CASE WHEN archieve_relation.rel_type = 'task' THEN COUNT(content.id) ELSE 0 END AS task")
-            ->leftjoin('archieve_relation', 'archieve.id', '=', 'archieve_relation.archieve_id')
-            ->leftjoin('content', 'content.id', '=', 'archieve_relation.content_id')
-            // ->join('task', 'task.id', '=', 'archieve_relation.content_id')
-            ->where('archieve.id_user', $id_user)
-            ->groupBy('archieve.id')
-            ->orderBy('archieve.created_at', 'DESC')->get();
-        return response()->json($ar);
-    }
-
-    public function getMySchedule(Request $request, $id){
-        $sch = content::selectRaw('content.id, content_title, content_subtitle, content_desc, content_attach, content_tag, content_loc, content_date_start, content_date_end, content.created_at, content.updated_at, archieve_relation.id as id_rel')
-            ->join('archieve_relation', 'archieve_relation.content_id', '=', 'content.id')
-            ->where('archieve_relation.archieve_id', $id)
-            ->orderBy('archieve_relation.created_at', 'DESC')
-            ->get();
-        
-        return response()->json($sch);
-    }
-
-    public function addContent(Request $request, $id_user)
-    {
-        $result = content::create([
-            'id_user' => $id_user,
-            'content_title' => $request->content_title,
-            'content_subtitle' => $request->content_subtitle,
-            'content_desc' => $request->content_desc,
-            'content_attach' => $request->content_attach,
-            'content_tag' => $request->content_tag,
-            'content_loc' => $request->content_loc,
-            'content_date_start' => $request->content_date_start,
-            'content_date_end' => $request->content_date_end,
-            'created_at' => date("Y-m-d h:i"),
-            'updated_at' => date("Y-m-d h:i")
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Content successfully added',
-            'result' => $result,
-        ]);
-    }
-
-    public function addArchive(Request $request, $id_user)
-    {
-        $result = archieve::create([
-            'id_user' => $id_user,
-            'archieve_name' => $request->archieve_name,
-            'created_at' => date("Y-m-d h:i"),
-            'updated_at' => date("Y-m-d h:i")
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Archive successfully added',
-            'result' => $result,
-        ]);
-    }
-
-    public function editArchive(Request $request, $id)
-    {
-        //Validate name avaiability
-        $check = archieve::where('archieve_name', $request->archieve_name)->where('id_user', $request->id_user)->get();
-
-        if(count($check) == 0){
-            $result = archieve::where('id', $id)->update([
-                'archieve_name' => $request->archieve_name,
-                'updated_at' => date("Y-m-d h:i")
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Archive successfully updated',
-                'result' => $result,
-            ]);
-        } else {
-            return response()->json([
-                'status' => 'failed',
-                'message' => 'Archive name must be unique',
-                'result' => null,
-            ]);
-        }
-    }
-    
-    public function deleteArchive(Request $request, $id)
-    {
-        $result = archieve::destroy($id);
-        
-        //Delete archive relation
-        DB::table('archieve_relation')->where('archieve_id', $id)->where('user_id', $request->user_id)->delete();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Archive successfully deleted',
-            'result' => $result,
-        ]);
-    }
-    
-    public function getMyTask()
-    {
-        $tk = task::orderBy('task_date_end', 'DESC')->orderBy('created_at', 'DESC')->orderBy('id', 'DESC')->paginate(15);
-        //Need pagination?
-        return response()->json($tk);
-    }
-    
-    public function updateTask(Request $request, $id){
-        $result = task::where('id', $id)->update([
-            'task_title' => $request->task_title,
-            'task_desc' => $request->task_desc,
-            'task_date_start' => $request->task_date_start,
-            'task_date_end' => $request->task_date_end,
-            'updated_at' => date("Y-m-d h:i")
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Task successfully updated',
-            'result' => $result,
-        ]);
-    }
-    
-    public function addTask(Request $request, $id_user)
-    {
-        $result = task::create([
-            'id_user' => $id_user,
-            'task_title' => $request->task_title,
-            'task_desc' => $request->task_desc,
-            'task_date_start' => $request->task_date_start,
-            'task_date_end' => $request->task_date_end,
-            'created_at' => date("Y-m-d h:i"),
-            'updated_at' => date("Y-m-d h:i")
-        ]);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Archive successfully added',
-            'result' => $result,
-        ]);
+        return redirect()->back()->with('success_message', 'Content ordered');
     }
 }

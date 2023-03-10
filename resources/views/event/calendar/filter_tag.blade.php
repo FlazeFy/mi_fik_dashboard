@@ -4,15 +4,16 @@
         margin: 10px 0 0 0 !important; 
         border-radius: 15px !important;
         padding-bottom: 0px;
+        width: 480px !important;
     }
     .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
         background: none !important;
     }
 </style>
 
-<div class="position-relative">
+<div class="position-relative me-2">
     <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
+        aria-expanded="false"><i class="fa-solid fa-hashtag"></i> 
         @php($tag_coll = session()->get('selected_tag_calendar'))
         @if($tag_coll != "All")
             {{count($tag_coll)}} Selected Tags
