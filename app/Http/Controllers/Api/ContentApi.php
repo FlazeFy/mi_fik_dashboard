@@ -101,7 +101,7 @@ class ContentApi extends Controller
     }
 
     public function getAllContentSchedule($date){
-        $content = Content::selectRaw('slug_name, content_title, content_desc, content_loc, content_tag, content_date_start, content_date_end, 1 as data_from')
+        $content = ContentHeader::selectRaw('slug_name, content_title, content_desc, content_loc, content_tag, content_date_start, content_date_end, 1 as data_from')
             ->whereRaw("date(`content_date_start`) = ?", $date)
             ->orderBy('content.content_date_start', 'DESC');
             
@@ -124,6 +124,54 @@ class ContentApi extends Controller
                 'message' => 'Content Header Found',
                 'data' => $schedule
             ], Response::HTTP_OK);
+        }
+    }
+
+    public function deleteContent(Request $request, $id){
+        try{
+            $content = ContentHeader::where('id', $id)->update([
+                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_by' => $request->user_id,
+            ]);
+
+            if($content != 0){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content created',
+                    'data' => $content
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Content not found',
+                    'data' => null
+                ], Response::HTTP_OK);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function destroyContent($id){
+        try{
+            $content = ContentHeader::destroy($id);
+
+            ContentDetail::where('content_id', $id)
+                ->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Content permanentaly deleted',
+                'data' => $content
+            ], Response::HTTP_OK);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
