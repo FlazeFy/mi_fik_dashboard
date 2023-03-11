@@ -119,9 +119,6 @@
         </li>
         <div class="collapse ps-4" id="clpsEvent">
             <li class="">
-                <a href="{{ url('/event/browse') }}"><i class="fa-solid fa-magnifying-glass me-3"></i> Browse</a>
-            </li>
-            <li class="">
                 <a href="{{ url('/event/tag') }}"><i class="fa-solid fa-hashtag me-3"></i> Tag</a>
             </li>
             <li class="">

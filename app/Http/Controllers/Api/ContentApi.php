@@ -54,7 +54,7 @@ class ContentApi extends Controller
         }
     }
 
-    public function getContentBySlugLike($slug)
+    public function getContentBySlugLike($slug, $order)
     {
         if($slug != "all"){
             $i = 1;
@@ -74,14 +74,14 @@ class ContentApi extends Controller
 
             $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->orderBy('contents_headers.created_at', 'DESC')
+                ->orderBy('contents_headers.created_at', $order)
                 ->whereRaw($query)
                 ->paginate(12);
 
         } else {
             $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->orderBy('contents_headers.created_at', 'DESC')
+                ->orderBy('contents_headers.created_at', $order)
                 ->paginate(12);
         }
 
@@ -100,48 +100,78 @@ class ContentApi extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+    public function getAllContentSchedule($date){
+        $content = ContentHeader::selectRaw('slug_name, content_title, content_desc, content_loc, content_tag, content_date_start, content_date_end, 1 as data_from')
+            ->whereRaw("date(`content_date_start`) = ?", $date)
+            ->orderBy('content.content_date_start', 'DESC');
+            
+        $schedule = Task::selectRaw('slug_name, task_title as content_title, task_desc as content_desc, null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, 2 as data_from')
+            ->where('id_user', 1)
+            ->whereRaw("date(`task_date_start`) = ?", $date)
+            ->orderBy('task.task_date_start', 'DESC')
+            ->union($content)
+            ->get();
+
+        if ($schedule->isEmpty()) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Content Not Found',
+                'data' => $schedule
+            ], Response::HTTP_OK);
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Content Header Found',
+                'data' => $schedule
+            ], Response::HTTP_OK);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+    public function deleteContent(Request $request, $id){
+        try{
+            $content = ContentHeader::where('id', $id)->update([
+                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_by' => $request->user_id,
+            ]);
+
+            if($content != 0){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content created',
+                    'data' => $content
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Content not found',
+                    'data' => null
+                ], Response::HTTP_OK);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    public function destroyContent($id){
+        try{
+            $content = ContentHeader::destroy($id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            ContentDetail::where('content_id', $id)
+                ->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Content permanentaly deleted',
+                'data' => $content
+            ], Response::HTTP_OK);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

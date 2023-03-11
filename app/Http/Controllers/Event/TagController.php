@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Helpers\Converter;
 
 use App\Models\ContentDetail;
 use App\Models\Tag;
@@ -41,16 +42,10 @@ class TagController extends Controller
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
         if((count($check) == 0 || $request->update_type == "desc") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
-            function getSlugName($val){
-                $replace = str_replace("/","", $val);
-                $replace = str_replace(" ","_", $replace);
-                $replace = str_replace("-","_", $replace);
-        
-                return strtolower($replace);
-            }
+            $slug = Generator::getSlugName($request->tag_name, "tag");
 
             Tag::where('id', $id)->update([
-                'slug_name' => getSlugName($request->tag_name),
+                'slug_name' => $slug,
                 'tag_name' => $request->tag_name,
                 'tag_desc' => $request->tag_desc,
                 'updated_at' => date("Y-m-d h:i:s"),
@@ -76,16 +71,10 @@ class TagController extends Controller
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
-            function getSlugName($val){
-                $replace = str_replace("/","", $val);
-                $replace = str_replace(" ","_", $replace);
-                $replace = str_replace("-","_", $replace);
-        
-                return strtolower($replace);
-            }
+            $slug = Generator::getSlugName($request->tag_name, "tag");
 
             Tag::create([
-                'slug_name' => getSlugName($request->tag_name),
+                'slug_name' => $slug,
                 'tag_name' => $request->tag_name,
                 'tag_desc' => $request->tag_desc,
                 'created_at' => date("Y-m-d h:i:s"),
