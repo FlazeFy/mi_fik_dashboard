@@ -28,6 +28,7 @@ Route::prefix('/v1/task')->group(function () {
     Route::post('/create/{id_user}', [TaskApi::class, 'addTask']);
     Route::put('/update/{id}', [TaskApi::class, 'updateTask']);
     Route::delete('/delete/{id}', [TaskApi::class, 'deleteTask']);
+    Route::delete('/destroy/{id}', [TaskApi::class, 'destroyTask']);
 });
 
 Route::prefix('/v1/tag')->group(function () {
@@ -40,12 +41,15 @@ Route::prefix('/v1/tag')->group(function () {
 
 Route::prefix('/v1/notification')->group(function () {
     Route::get('/', [NotificationApi::class, 'getAllNotification']);
+    Route::get('/{user_id}', [NotificationApi::class, 'getMyNotification']);
 });
 
 Route::prefix('/v1/content')->group(function() {
     Route::get('/', [ContentApi::class, 'getContentHeader']);
     Route::get('/slug/{slug}', [ContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}', [ContentApi::class, 'getAllContentSchedule']);
+    Route::delete('/delete/{id}', [ContentApi::class, 'deleteContent']);
+    Route::delete('/destroy/{id}', [ContentApi::class, 'deleteContent']);
 });
 
 Route::prefix('/v2/content')->group(function() {

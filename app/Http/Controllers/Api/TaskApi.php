@@ -8,15 +8,16 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\Task;
+use App\Models\ArchiveRelation;
 
 class TaskApi extends Controller
 {
-    public function getTask($user_id) {
+    public function getMyTask($user_id) {
         try{
             $archive = Task::select('slug_name','task_title','task_desc','task_date_start','task_date_end','task_reminder','created_at','updated_at')
                 ->where('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
-                ->get();
+                ->paginate(15);
 
             if ($archive->count() > 0) {
                 return response()->json([
@@ -80,7 +81,10 @@ class TaskApi extends Controller
 
     public function deleteTask(Request $request, $id){
         try{
-            Task::destroy($id);
+            $task = Task::where('id', $id)->update([
+                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_by' => $request->user_id,
+            ]);
             ArchiveRelation::where('content_id',$id)
                 ->where('created_by', $request->user_id)
                 ->delete();
@@ -98,7 +102,27 @@ class TaskApi extends Controller
         }
     }
 
-    public function createTask(){
+    public function destroyTask(Request $request, $id){
+        try{
+            $task = Task::destroy($id);
+            ArchiveRelation::where('content_id',$id)
+                ->where('created_by', $request->user_id)
+                ->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Task Permentaly Deleted',
+                'data' => $task
+            ], Response::HTTP_OK);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function addTask(){
         try{
             $validator = Validator::make($request->all(), [
                 'task_title' => 'required',
