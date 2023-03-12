@@ -242,4 +242,11 @@ class HomepageController extends Controller
 
         return redirect()->back()->with('success_message', 'Content filtered');
     }
+
+    public function reset_filter_date()
+    {
+        session()->put('filtering_date', 'all');
+
+        return redirect()->back()->with('success_message', 'Content filtered');
+    }
 }

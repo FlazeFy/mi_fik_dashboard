@@ -39,6 +39,7 @@ Route::prefix('/homepage')->group(function () {
     Route::post('/add_task', [HomepageController::class, 'add_task']);
     Route::post('/ordered/{order}', [HomepageController::class, 'set_ordering_content']);
     Route::post('/date', [HomepageController::class, 'set_filter_date']);
+    Route::post('/date/reset', [HomepageController::class, 'reset_filter_date']);
 });
 
 Route::prefix('/statistic')->group(function () {

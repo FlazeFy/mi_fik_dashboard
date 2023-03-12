@@ -1,5 +1,11 @@
 <style>
-
+    .btn-danger-icon-outlined{
+        border-radius: 100%;
+    }
+    .btn-danger-icon-outlined:hover{
+        background: #D5534C;
+        color: whitesmoke;
+    }
 </style>
 
 <div class="position-relative ms-2">
@@ -8,31 +14,48 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="section-date-picker">
         <span class="dropdown-item py-2">
-            <label class="fw-bold">Select Event Date Start</label><br>
+            <label class="fw-bold">Filter Event Date</label><br>
     
             <form action="/homepage/date" method="POST" class="row">
                 @csrf
+
+                @if(session()->get('filtering_date') && session()->get('filtering_date') != "all")
+                    @php($date_full = session()->get('filtering_date'))
+                    @php($date = explode("_", $date_full))
+                @endif
                 <div class="row my-2">
                     <div class="col-5">
                         <label class="form-label">From</label>
-                        <input type="date" class="form-control" name="date_start" id="date_filter_start" value="" onchange="validateDateFilter()">
+                        <input type="date" class="form-control" name="date_start" id="date_filter_start" 
+                        value="<?php
+                            if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
+                                echo $date[0]; 
+                            } 
+                        ?>" onchange="validateDateFilter()">
                         <a id="date_filter_msg_start" class="input-warning text-danger"></a>
+                        <div class="mt-2" id="date-filter-submit-holder"></div>
                     </div>
                     <div class="col-5">
                         <label class="form-label">Until</label>
-                        <input type="date" class="form-control" name="date_end" id="date_filter_end" value="" onchange="validateDateFilter()">
+                        <input type="date" class="form-control" name="date_end" id="date_filter_end" 
+                        value="<?php 
+                            if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
+                                echo $date[1];
+                            } 
+                        ?>" onchange="validateDateFilter()">
                         <a id="date_filter_msg_end" class="input-warning text-danger"></a>
                     </div>
+            </form>            
+
                     <div class="col-1">
                         <br>
-                        <a class="btn btn-danger-outlined mt-2" title="Reset"><i class="fa-solid fa-xmark"></i></a>
+                        <form action="/homepage/date/reset" method="POST">
+                            @csrf
+                            <button class="btn btn-danger-icon-outlined mt-2" title="Reset" type="submit"><i class="fa-solid fa-xmark"></i></button>
+                        </form>
                     </div>
                 </div>
                 <a id="date_filter_msg_all" class="input-warning text-danger"></a>
-                <div class="col-4">
-                    <div id="date-filter-submit-holder"></div>
-                </div>
-            </form>            
         </span>
     </div>
 </div>
