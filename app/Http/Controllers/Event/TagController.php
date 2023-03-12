@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Helpers\Converter;
+use App\Helpers\Generator;
 
 use App\Models\ContentDetail;
 use App\Models\Tag;
@@ -21,19 +22,25 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tag = Tag::getFullTag("DESC", "DESC");
-        $setting = Setting::getSingleSetting("MOT_range", "dc4d52ec-afb1-11ed-afa1-0242ac120002");
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $tag = Tag::getFullTag("DESC", "DESC");
+            $setting = Setting::getSingleSetting("MOT_range", $user_id);
 
-        //Chart query
-        $mostTag = ContentDetail::getMostUsedTag();
+            //Chart query
+            $mostTag = ContentDetail::getMostUsedTag();
 
-        //Set active nav
-        session()->put('active_nav', 'event');
+            //Set active nav
+            session()->put('active_nav', 'event');
 
-        return view ('event.tag.index')
-            ->with('mostTag', $mostTag)
-            ->with('tag', $tag)
-            ->with('setting', $setting);
+            return view ('event.tag.index')
+                ->with('mostTag', $mostTag)
+                ->with('tag', $tag)
+                ->with('setting', $setting);
+        } else {
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
+        }
     }
 
     public function update_tag(Request $request, $id)

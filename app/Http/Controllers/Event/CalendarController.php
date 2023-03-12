@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
+use App\Helpers\Generator;
+
 use App\Models\ContentHeader;
 use App\Models\Tag;
 
@@ -19,19 +21,26 @@ class CalendarController extends Controller
      */
     public function index(Request $request)
     {
-        if(!session()->get('selected_tag_calendar')){
-            session()->put('selected_tag_calendar', "All");
-        }
-
-        $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'));       
-        $tag = Tag::getFullTag("DESC", "DESC");
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
             
-        //Set active nav
-        session()->put('active_nav', 'event');
+            if(!session()->get('selected_tag_calendar')){
+                session()->put('selected_tag_calendar', "All");
+            }
 
-        return view ('event.calendar.index')
-            ->with('content', $content)
-            ->with('tag', $tag);
+            $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'));       
+            $tag = Tag::getFullTag("DESC", "DESC");
+                
+            //Set active nav
+            session()->put('active_nav', 'event');
+
+            return view ('event.calendar.index')
+                ->with('content', $content)
+                ->with('tag', $tag);
+        } else {
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
+        }
     }
 
     public function set_filter_tag(Request $request, $all)

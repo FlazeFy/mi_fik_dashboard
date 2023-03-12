@@ -23,23 +23,28 @@ class DetailController extends Controller
      */
     public function index($slug_name)
     {
-        $user_id = 'dc4d52ec-afb1-11ed-afa1-0242ac120002'; //for now.
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-        $tag = Tag::getFullTag("DESC", "DESC");
-        $content = ContentHeader::getFullContentBySlug($slug_name);
-        $archive = Archive::getMyArchive($user_id, "DESC");
-        $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
+            $tag = Tag::getFullTag("DESC", "DESC");
+            $content = ContentHeader::getFullContentBySlug($slug_name);
+            $archive = Archive::getMyArchive($user_id, "DESC");
+            $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
 
-        //Set active nav
-        session()->put('active_nav', 'event');
-        $title = $content[0]['content_title'];
+            //Set active nav
+            session()->put('active_nav', 'event');
+            $title = $content[0]['content_title'];
 
-        return view ('event.detail.index')
-            ->with('tag', $tag)
-            ->with('content', $content)
-            ->with('title', $title)
-            ->with('archive', $archive)
-            ->with('archive_relation', $archive_relation);
+            return view ('event.detail.index')
+                ->with('tag', $tag)
+                ->with('content', $content)
+                ->with('title', $title)
+                ->with('archive', $archive)
+                ->with('archive_relation', $archive_relation);
+        } else {
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
+        }
     }
 
     public function add_relation(Request $request, $slug_name)

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
+use App\Helpers\Generator;
+
 use App\Models\ContentDetail;
 use App\Models\ContentHeader;
 use App\Models\Setting;
@@ -19,23 +21,29 @@ class StatisticController extends Controller
      */
     public function index()
     {
-        $setting = Setting::getChartSetting('dc4d52ec-afb1-11ed-afa1-0242ac120002');
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $setting = Setting::getChartSetting($user_id);
 
-        //Chart query
-        $mostTag = ContentDetail::getMostUsedTag();
-        $mostLoc = ContentDetail::getMostUsedLoc();
-        foreach($setting as $set){
-            $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
+            //Chart query
+            $mostTag = ContentDetail::getMostUsedTag();
+            $mostLoc = ContentDetail::getMostUsedLoc();
+            foreach($setting as $set){
+                $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
+            }
+            
+            //Set active nav
+            session()->put('active_nav', 'statistic');
+
+            return view ('statistic.index')
+                ->with('mostTag', $mostTag)
+                ->with('mostLoc', $mostLoc)
+                ->with('setting', $setting)
+                ->with('createdEvent', $createdEvent);
+        } else {
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
         }
-        
-        //Set active nav
-        session()->put('active_nav', 'statistic');
-
-        return view ('statistic.index')
-            ->with('mostTag', $mostTag)
-            ->with('mostLoc', $mostLoc)
-            ->with('setting', $setting)
-            ->with('createdEvent', $createdEvent);
     }
 
     public function update_mot(Request $request, $id)

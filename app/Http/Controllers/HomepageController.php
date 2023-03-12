@@ -30,27 +30,32 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        $user_id = 'dc4d52ec-afb1-11ed-afa1-0242ac120002'; //for now.
-        $type = ["Reminder", "Attachment"];
-        
-        if(!session()->get('selected_tag_calendar')){
-            session()->put('selected_tag_calendar', "All");
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $type = ["Reminder", "Attachment"];
+            
+            if(!session()->get('selected_tag_calendar')){
+                session()->put('selected_tag_calendar', "All");
+            }
+            if(!session()->get('ordering_event')){
+                session()->put('ordering_event', "DESC");
+            }
+
+            $tag = Tag::getFullTag("DESC", "DESC");
+            $dictionary = Dictionary::getDictionaryByType($type);
+            $archive = Archive::getMyArchive($user_id, "DESC");
+
+            //Set active nav
+            session()->put('active_nav', 'homepage');
+
+            return view ('homepage.index')
+                ->with('tag', $tag)
+                ->with('dictionary', $dictionary)
+                ->with('archive', $archive);
+        } else {
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
         }
-        if(!session()->get('ordering_event')){
-            session()->put('ordering_event', "DESC");
-        }
-
-        $tag = Tag::getFullTag("DESC", "DESC");
-        $dictionary = Dictionary::getDictionaryByType($type);
-        $archive = Archive::getMyArchive($user_id, "DESC");
-
-        //Set active nav
-        session()->put('active_nav', 'homepage');
-
-        return view ('homepage.index')
-            ->with('tag', $tag)
-            ->with('dictionary', $dictionary)
-            ->with('archive', $archive);
     }
 
     // ================================= MVC =================================
