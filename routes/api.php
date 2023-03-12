@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ArchiveApi;
 use App\Http\Controllers\Api\TagApi;
 use App\Http\Controllers\Api\TaskApi;
 use App\Http\Controllers\Api\NotificationApi;
+use App\Http\Controllers\Api\DictionaryApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,10 +51,11 @@ Route::prefix('/v1/content')->group(function() {
     Route::get('/date/{date}', [ContentApi::class, 'getAllContentSchedule']);
     Route::delete('/delete/{id}', [ContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [ContentApi::class, 'deleteContent']);
+    Route::post('/create', [ContentApi::class, 'addContent']);
 });
 
 Route::prefix('/v2/content')->group(function() {
-    Route::get('/slug/{slug}/order/{order}', [ContentApi::class, 'getContentBySlugLike']);
+    Route::get('/slug/{slug}/order/{order}', [ContentApi::class, 'getContentBySlugLike']); //*Tag slug
 });
 
 Route::prefix('/v1/archive')->group(function() {
@@ -62,4 +64,9 @@ Route::prefix('/v1/archive')->group(function() {
     Route::post('/createRelation', [ArchiveApi::class, 'addToArchive']);
     Route::put('/edit/{id}', [ArchiveApi::class, 'editArchive']);
     Route::delete('/delete/{id}', [ArchiveApi::class, 'deleteArchive']);
+});
+
+Route::prefix('/v1/dictionaries')->group(function() {
+    Route::get('/', [DictionaryApi::class, 'getAllDictionary']);
+    Route::get('/type', [DictionaryApi::class, 'getAllDictionaryType']);
 });
