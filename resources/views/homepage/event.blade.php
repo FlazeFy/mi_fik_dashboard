@@ -115,7 +115,7 @@
         </svg>
     </div>
     <div id="empty_item_holder"></div>
-    <button class="btn content-more d-block mx-auto my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>
+    <span id="load_more_holder" style="display: flex; justify-content:center;"></span>
 </div>
 
 
@@ -162,10 +162,11 @@
             }
         ?>;
 
-        var order = <?php echo '"'.session()->get('ordering_event').'"'; ?>
+        var order = <?php echo '"'.session()->get('ordering_event').'";'; ?>
+        var date = <?php echo '"'.session()->get('filtering_date').'";'; ?>
         
         $.ajax({
-            url: "/api/v2/content/slug/" + tag + "/order/" + order + "?page=" + page,
+            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -176,6 +177,13 @@
             $('.auto-load').hide();
             var data =  response.data.data;
             var total = response.data.total;
+            var last = response.data.last_page;
+
+            if(page != last){
+                $('#load_more_holder').html('<button class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            } else {
+                $('#load_more_holder').html('<h6 class="text-primary my-3">No more item to show</h6>');
+            }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");

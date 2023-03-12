@@ -28,7 +28,7 @@ use App\Http\Controllers\System\NotificationController;
 // Route::get('/homepage', [HomepageController::class, 'index'])->name('dashboard');
 
 Route::prefix('/')->group(function () {
-    Route::get('/', [LandingController::class, 'index']);
+    Route::get('/', [LandingController::class, 'index'])->name('landing');
     Route::post('/login', [LandingController::class, 'login_admin']);
 });
 
@@ -38,6 +38,8 @@ Route::prefix('/homepage')->group(function () {
     Route::post('/add_event', [HomepageController::class, 'add_event']);
     Route::post('/add_task', [HomepageController::class, 'add_task']);
     Route::post('/ordered/{order}', [HomepageController::class, 'set_ordering_content']);
+    Route::post('/date', [HomepageController::class, 'set_filter_date']);
+    Route::post('/date/reset', [HomepageController::class, 'reset_filter_date']);
 });
 
 Route::prefix('/statistic')->group(function () {
@@ -48,9 +50,6 @@ Route::prefix('/statistic')->group(function () {
 });
 
 Route::prefix('/event')->group(function () {
-    Route::get('/page/{page}', [AllEventController::class, 'index']);
-    Route::post('/navigate/{page}', [AllEventController::class, 'navigate_page']);
-
     Route::get('/tag', [TagController::class, 'index']);
     Route::post('/tag/add', [TagController::class, 'add_tag']);
     Route::post('/tag/update/{id}', [TagController::class, 'update_tag']);

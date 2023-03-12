@@ -5,6 +5,8 @@ use App\Models\ContentHeader;
 use App\Models\Archive;
 use App\Models\Task;
 use App\Models\Tag;
+use App\Models\Admin;
+use App\Models\User;
 
 use DateTime;
 
@@ -86,5 +88,26 @@ class Generator
         $reminder = $collection[$i];
 
         return $reminder;
+    }
+
+    public static function getUserId($slug_name, $role){
+        if($role == 0){
+            $query = Admin::select('id')
+                ->where('slug_name', $slug_name)
+                ->limit(1)
+                ->get();
+        } else {
+            $query = User::select('id')
+                ->where('slug_name', $slug_name)
+                ->whereRaw("role like '%dosen%' or '%staff%'")
+                ->limit(1)
+                ->get();
+        }
+
+        foreach($query as $q){
+            $res = $q->id;
+        }
+
+        return $res;
     }
 }

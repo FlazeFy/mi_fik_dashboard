@@ -30,27 +30,35 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        $user_id = 'dc4d52ec-afb1-11ed-afa1-0242ac120002'; //for now.
-        $type = ["Reminder", "Attachment"];
-        
-        if(!session()->get('selected_tag_calendar')){
-            session()->put('selected_tag_calendar', "All");
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $type = ["Reminder", "Attachment"];
+            
+            if(!session()->get('selected_tag_calendar')){
+                session()->put('selected_tag_calendar', "All");
+            }
+            if(!session()->get('ordering_event')){
+                session()->put('ordering_event', "DESC");
+            }
+            if(!session()->get('filtering_date')){
+                session()->put('filtering_date', "all");
+            }
+
+            $tag = Tag::getFullTag("DESC", "DESC");
+            $dictionary = Dictionary::getDictionaryByType($type);
+            $archive = Archive::getMyArchive($user_id, "DESC");
+
+            //Set active nav
+            session()->put('active_nav', 'homepage');
+
+            return view ('homepage.index')
+                ->with('tag', $tag)
+                ->with('dictionary', $dictionary)
+                ->with('archive', $archive);
+        } else {
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
         }
-        if(!session()->get('ordering_event')){
-            session()->put('ordering_event', "DESC");
-        }
-
-        $tag = Tag::getFullTag("DESC", "DESC");
-        $dictionary = Dictionary::getDictionaryByType($type);
-        $archive = Archive::getMyArchive($user_id, "DESC");
-
-        //Set active nav
-        session()->put('active_nav', 'homepage');
-
-        return view ('homepage.index')
-            ->with('tag', $tag)
-            ->with('dictionary', $dictionary)
-            ->with('archive', $archive);
     }
 
     // ================================= MVC =================================
@@ -226,5 +234,19 @@ class HomepageController extends Controller
         session()->put('ordering_event', $order);
 
         return redirect()->back()->with('success_message', 'Content ordered');
+    }
+
+    public function set_filter_date(Request $request)
+    {
+        session()->put('filtering_date', $request->date_start."_".$request->date_end);
+
+        return redirect()->back()->with('success_message', 'Content filtered');
+    }
+
+    public function reset_filter_date()
+    {
+        session()->put('filtering_date', 'all');
+
+        return redirect()->back()->with('success_message', 'Content filtered');
     }
 }
