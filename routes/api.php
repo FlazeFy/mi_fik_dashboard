@@ -55,7 +55,7 @@ Route::prefix('/v1/content')->group(function() {
 });
 
 Route::prefix('/v2/content')->group(function() {
-    Route::get('/slug/{slug}/order/{order}', [ContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/slug/{slug}/order/{order}/date/{date}', [ContentApi::class, 'getContentBySlugLike']); //*Tag slug
 });
 
 Route::prefix('/v1/archive')->group(function() {

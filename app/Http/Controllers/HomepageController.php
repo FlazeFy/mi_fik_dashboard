@@ -40,6 +40,9 @@ class HomepageController extends Controller
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
             }
+            if(!session()->get('filtering_date')){
+                session()->put('filtering_date', "all");
+            }
 
             $tag = Tag::getFullTag("DESC", "DESC");
             $dictionary = Dictionary::getDictionaryByType($type);
@@ -231,5 +234,12 @@ class HomepageController extends Controller
         session()->put('ordering_event', $order);
 
         return redirect()->back()->with('success_message', 'Content ordered');
+    }
+
+    public function set_filter_date(Request $request)
+    {
+        session()->put('filtering_date', $request->date_start."_".$request->date_end);
+
+        return redirect()->back()->with('success_message', 'Content filtered');
     }
 }

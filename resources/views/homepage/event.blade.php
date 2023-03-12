@@ -162,10 +162,11 @@
             }
         ?>;
 
-        var order = <?php echo '"'.session()->get('ordering_event').'"'; ?>
+        var order = <?php echo '"'.session()->get('ordering_event').'";'; ?>
+        var date = <?php echo '"'.session()->get('filtering_date').'";'; ?>
         
         $.ajax({
-            url: "/api/v2/content/slug/" + tag + "/order/" + order + "?page=" + page,
+            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {

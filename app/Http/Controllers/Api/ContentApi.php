@@ -72,7 +72,7 @@ class ContentApi extends Controller
         }
     }
 
-    public function getContentBySlugLike($slug, $order)
+    public function getContentBySlugLike($slug, $order, $date)
     {
         try{
             if($slug != "all"){
@@ -91,17 +91,41 @@ class ContentApi extends Controller
                     $i++;
                 }
 
-                $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
-                    ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                    ->orderBy('contents_headers.created_at', $order)
-                    ->whereRaw($query)
-                    ->paginate(12);
+                if($date != "all"){
+                    $date = explode("_", $date);
+                    $date_start = $date[0];
+                    $date_end = $date[1];
 
+                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                        ->orderBy('contents_headers.created_at', $order)
+                        ->whereRaw($query)
+                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'")
+                        ->paginate(12);
+                } else {
+                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                        ->orderBy('contents_headers.created_at', $order)
+                        ->whereRaw($query)
+                        ->paginate(12);
+                }
             } else {
-                $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
-                    ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                    ->orderBy('contents_headers.created_at', $order)
-                    ->paginate(12);
+                if($date != "all"){
+                    $date = explode("_", $date);
+                    $date_start = $date[0];
+                    $date_end = $date[1];
+
+                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'")
+                        ->orderBy('contents_headers.created_at', $order)
+                        ->paginate(12);
+                } else {
+                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                        ->orderBy('contents_headers.created_at', $order)
+                        ->paginate(12);
+                }
             }
 
             if ($content->isEmpty()) {

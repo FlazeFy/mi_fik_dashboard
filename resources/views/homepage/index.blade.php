@@ -179,6 +179,7 @@
                             <div class="mt-2 btn-config-holder">
                                 @include('event.calendar.filter_tag')
                                 @include('homepage.sorting')
+                                @include('homepage.datefilter')
                             </div>
                             @include('homepage.event')
                         </div>
