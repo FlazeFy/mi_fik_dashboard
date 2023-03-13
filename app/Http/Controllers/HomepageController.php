@@ -16,6 +16,7 @@ use App\Models\ContentDetail;
 use App\Models\Tag;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
+use App\Models\ContentViewer;
 use App\Models\Task;
 use App\Models\Setting;
 use App\Models\Dictionary;
@@ -227,6 +228,27 @@ class HomepageController extends Controller
 
             return redirect()->back()->with('success_message', 'Create item success');
         }    
+    }
+
+    public function add_content_view($slug_name){
+        $content_id = Generator::getContentId($slug_name);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
+
+        if($viewer){
+            ContentViewer::where('id', $viewer)->update([
+                'created_at' => date("Y-m-d H:i:s")
+            ]);
+        } else {
+            ContentViewer::create([
+                'content_id' => $content_id,
+                'type_viewer' => 0,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $user_id
+            ]);
+        }
+
+        return redirect('event/detail/'.$slug_name);
     }
 
     public function set_ordering_content($order)

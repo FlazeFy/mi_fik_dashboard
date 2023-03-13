@@ -8,9 +8,11 @@ use Illuminate\Http\Response;
 
 use App\Helpers\Converter;
 use App\Helpers\Generator;
+use App\Helpers\Query;
 
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
+use App\Models\ContentViewer;
 use App\Models\Task;
 
 class ContentApi extends Controller
@@ -18,7 +20,9 @@ class ContentApi extends Controller
     public function getContentHeader()
     {
         try{
-            $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+            $select = Query::getSelectTemplate("content_thumbnail");
+
+            $content = ContentHeader::selectRaw($select)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->orderBy('contents_headers.created_at', 'DESC')
                 ->paginate(12);
@@ -47,8 +51,12 @@ class ContentApi extends Controller
     public function getContentBySlug($slug)
     {
         try{
-            $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','content_attach','contents_headers.created_at')
+            $select = Query::getSelectTemplate("content_detail");
+
+            $content = ContentHeader::selectRaw($select)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                ->groupBy('contents_headers.id')
                 ->where('slug_name', $slug)
                 ->get();
 
@@ -74,7 +82,11 @@ class ContentApi extends Controller
 
     public function getContentBySlugLike($slug, $order, $date)
     {
+        $page = 12;
+
         try{
+            $select = Query::getSelectTemplate("content_thumbnail");
+
             if($slug != "all"){
                 $i = 1;
                 $query = "";
@@ -96,18 +108,24 @@ class ContentApi extends Controller
                     $date_start = $date[0];
                     $date_end = $date[1];
 
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                        ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.created_at', $order)
+                        ->where('is_draft', 0)
                         ->whereRaw($query)
-                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'")
-                        ->paginate(12);
+                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_start <= '".$date_end."'")
+                        ->paginate($page);
                 } else {
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                        ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.created_at', $order)
+                        ->where('is_draft', 0)
                         ->whereRaw($query)
-                        ->paginate(12);
+                        ->paginate($page);
                 }
             } else {
                 if($date != "all"){
@@ -115,16 +133,22 @@ class ContentApi extends Controller
                     $date_start = $date[0];
                     $date_end = $date[1];
 
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'")
+                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                        ->groupBy('contents_headers.id')
+                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_start <= '".$date_end."'")
                         ->orderBy('contents_headers.created_at', $order)
-                        ->paginate(12);
+                        ->where('is_draft', 0)
+                        ->paginate($page);
                 } else {
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                        ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.created_at', $order)
-                        ->paginate(12);
+                        ->where('is_draft', 0)
+                        ->paginate($page);
                 }
             }
 
@@ -151,12 +175,15 @@ class ContentApi extends Controller
 
     public function getAllContentSchedule(Request $request, $date){
         try{
-            $content = ContentHeader::selectRaw('slug_name, content_title, content_desc, content_loc, content_tag, content_date_start, content_date_end, 1 as data_from')
+            $select_content = Query::getSelectTemplate("content_schedule");
+            $select_task = Query::getSelectTemplate("task_schedule");
+
+            $content = ContentHeader::selectRaw($select_content)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = ?", $date)
                 ->orderBy('content_date_start', 'DESC');
                 
-            $schedule = Task::selectRaw('slug_name, task_title as content_title, task_desc as content_desc, null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, 2 as data_from')
+            $schedule = Task::selectRaw($select_task)
                 ->where('created_by', $request->user_id)
                 ->whereRaw("date(`task_date_start`) = ?", $date)
                 ->orderBy('tasks.task_date_start', 'DESC')
@@ -338,6 +365,47 @@ class ContentApi extends Controller
                 'message' => 'Content created',
                 'data' => $full_result
             ], Response::HTTP_OK);
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function addView($slug_name,$user_slug,$user_role){
+        try{
+            $content_id = Generator::getContentId($slug_name); //Fix this
+            $user_id = Generator::getUserId($user_slug, $user_role);
+            $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
+
+            if($content_id != null && $user_id != null){
+                if($viewer){
+                    $res = ContentViewer::where('id', $viewer)->update([
+                        'created_at' => date("Y-m-d H:i:s")
+                    ]);
+                } else {
+                    $res = ContentViewer::create([
+                        'content_id' => $content_id,
+                        'type_viewer' => 0,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                }
+    
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content views created',
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'User or content not found',
+                    'data' => null
+                ], Response::HTTP_OK);
+            }
+            
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',

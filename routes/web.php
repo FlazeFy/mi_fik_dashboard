@@ -14,6 +14,8 @@ use App\Http\Controllers\Event\CalendarController;
 
 use App\Http\Controllers\System\NotificationController;
 
+use App\Http\Controllers\User\ManageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +42,7 @@ Route::prefix('/homepage')->group(function () {
     Route::post('/ordered/{order}', [HomepageController::class, 'set_ordering_content']);
     Route::post('/date', [HomepageController::class, 'set_filter_date']);
     Route::post('/date/reset', [HomepageController::class, 'reset_filter_date']);
+    Route::post('/open/{slug_name}', [HomepageController::class, 'add_content_view']);
 });
 
 Route::prefix('/statistic')->group(function () {
@@ -67,4 +70,8 @@ Route::prefix('/event')->group(function () {
 Route::prefix('/system')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
+});
+
+Route::prefix('/user')->group(function () {
+    Route::get('/manage', [ManageController::class, 'index']);
 });

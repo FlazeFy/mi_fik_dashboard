@@ -22,6 +22,14 @@
         font-weight: 500;
         font-size: 13.5px;
     }
+    .event-views{
+        position: absolute;
+        top: 7.5px;
+        left: 10px;
+        color: whitesmoke !important;
+        font-weight: 500;
+        font-size: 13.5px;
+    }
     .event-box:hover{
         transform: translateY(15px);
     }
@@ -326,33 +334,38 @@
                     var content_image = data[i].content_image;
                     var content_date_start = data[i].content_date_start;
                     var content_date_end = data[i].content_date_end;
+                    var total_views = data[i].total_views;
                     var created_at = data[i].created_at;
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
-                            "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
-                                "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
-                                "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
-                                "<div class='card-body p-2 w-100'> " +
-                                    "<div class='row px-2'> " +
-                                        "<div class='col-lg-2 px-1'> " +
-                                            "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                            "<form class='d-inline' method='POST' action='homepage/open/" + slug_name + "'> " +
+                                '@csrf ' +
+                                "<button class='card shadow event-box' type='submit'> " +
+                                    "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
+                                    "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
+                                    "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
+                                    "<div class='card-body p-2 w-100'> " +
+                                        "<div class='row px-2'> " +
+                                            "<div class='col-lg-2 px-1'> " +
+                                                "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                                            "</div> " +
+                                            "<div class='col-lg-9 p-0 py-1'> " +
+                                                "<h6 class='event-title'>" + content_title + "</h6> " +
+                                                "<h6 class='event-subtitle'>[username]</h6> " +
+                                            "</div> " +
                                         "</div> " +
-                                        "<div class='col-lg-9 p-0 py-1'> " +
-                                            "<h6 class='event-title'>" + content_title + "</h6> " +
-                                            "<h6 class='event-subtitle'>[username]</h6> " +
+                                        "<div style='height:45px;'> " +
+                                            "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
+                                        "</div> " +
+                                        "<div class='row d-inline-block px-2'> " +
+                                            getEventLoc(content_loc) +
+                                            getEventDate(content_date_start, content_date_end) +
+                                            getEventTag(content_tag) +
                                         "</div> " +
                                     "</div> " +
-                                    "<div style='height:45px;'> " +
-                                        "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
-                                    "</div> " +
-                                    "<div class='row d-inline-block px-2'> " +
-                                        getEventLoc(content_loc) +
-                                        getEventDate(content_date_start, content_date_end) +
-                                        getEventTag(content_tag) +
-                                    "</div> " +
-                                "</div> " +
-                            "</button> " +
+                                "</button> " +
+                            "</form> " +
                         "</div>";
 
                     $("#data-wrapper").append(elmt);

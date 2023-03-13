@@ -92,20 +92,49 @@ class Generator
 
     public static function getUserId($slug_name, $role){
         if($role == 0){
+            //for dashboard login and content views
             $query = Admin::select('id')
                 ->where('slug_name', $slug_name)
                 ->limit(1)
                 ->get();
-        } else {
+        } else if($role == 1) {
+            //for dashboard login and content views
             $query = User::select('id')
                 ->where('slug_name', $slug_name)
                 ->whereRaw("role like '%dosen%' or '%staff%'")
                 ->limit(1)
                 ->get();
+        } else if($role == 2) {
+            //for content views only
+            $query = User::select('id')
+                ->where('slug_name', $slug_name)
+                ->limit(1)
+                ->get();
         }
 
-        foreach($query as $q){
-            $res = $q->id;
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->id;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getContentId($slug_name){
+        $query = ContentHeader::select('id')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->id;
+            }
+        } else {
+            $res = null;
         }
 
         return $res;
