@@ -7,7 +7,8 @@ class Query
         if($type == "content_thumbnail"){
             $query = "slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,
-                content_date_end,content_tag,contents_headers.created_at";
+                content_date_end,content_tag,contents_headers.created_at,
+                count(contents_viewers.id) as total_views";
 
         } else if($type == "content_schedule"){
             $query = "slug_name,content_title,content_desc, 
@@ -17,7 +18,8 @@ class Query
         } else if($type == "content_detail"){
             $query = "slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,content_date_end,
-                content_tag,content_attach,contents_headers.created_at";
+                content_tag,content_attach,contents_headers.created_at,
+                count(contents_viewers.id) as total_views";
                 
         } else if($type == "task_schedule"){
             $query = "slug_name, task_title as content_title, 

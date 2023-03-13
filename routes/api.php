@@ -52,6 +52,7 @@ Route::prefix('/v1/content')->group(function() {
     Route::delete('/delete/{id}', [ContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [ContentApi::class, 'deleteContent']);
     Route::post('/create', [ContentApi::class, 'addContent']);
+    Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [ContentApi::class, 'addView']);
 });
 
 Route::prefix('/v2/content')->group(function() {

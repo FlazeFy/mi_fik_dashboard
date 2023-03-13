@@ -22,6 +22,14 @@
         font-weight: 500;
         font-size: 13.5px;
     }
+    .event-views{
+        position: absolute;
+        top: 7.5px;
+        left: 10px;
+        color: whitesmoke !important;
+        font-weight: 500;
+        font-size: 13.5px;
+    }
     .event-box:hover{
         transform: translateY(15px);
     }
@@ -326,6 +334,7 @@
                     var content_image = data[i].content_image;
                     var content_date_start = data[i].content_date_start;
                     var content_date_end = data[i].content_date_end;
+                    var total_views = data[i].total_views;
                     var created_at = data[i].created_at;
 
                     var elmt = " " +
@@ -335,6 +344,7 @@
                                 "<button class='card shadow event-box' type='submit'> " +
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                     "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
+                                    "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                     "<div class='card-body p-2 w-100'> " +
                                         "<div class='row px-2'> " +
                                             "<div class='col-lg-2 px-1'> " +

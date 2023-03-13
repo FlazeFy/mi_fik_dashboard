@@ -233,13 +233,20 @@ class HomepageController extends Controller
     public function add_content_view($slug_name){
         $content_id = Generator::getContentId($slug_name);
         $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
 
-        ContentViewer::create([
-            'content_id' => $content_id,
-            'type_viewer' => 0,
-            'created_at' => date("Y-m-d H:i"),
-            'created_by' => $user_id
-        ]);
+        if($viewer){
+            ContentViewer::where('id', $viewer)->update([
+                'created_at' => date("Y-m-d H:i:s")
+            ]);
+        } else {
+            ContentViewer::create([
+                'content_id' => $content_id,
+                'type_viewer' => 0,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $user_id
+            ]);
+        }
 
         return redirect('event/detail/'.$slug_name);
     }
