@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 
 use App\Helpers\Converter;
 use App\Helpers\Generator;
+use App\Helpers\Query;
 
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
@@ -18,7 +19,9 @@ class ContentApi extends Controller
     public function getContentHeader()
     {
         try{
-            $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+            $select = Query::getSelectTemplate("content_thumbnail");
+
+            $content = ContentHeader::selectRaw($select)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->orderBy('contents_headers.created_at', 'DESC')
                 ->paginate(12);
@@ -47,7 +50,9 @@ class ContentApi extends Controller
     public function getContentBySlug($slug)
     {
         try{
-            $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','content_attach','contents_headers.created_at')
+            $select = Query::getSelectTemplate("content_detail");
+
+            $content = ContentHeader::selectRaw($select)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->where('slug_name', $slug)
                 ->get();
@@ -75,6 +80,8 @@ class ContentApi extends Controller
     public function getContentBySlugLike($slug, $order, $date)
     {
         try{
+            $select = Query::getSelectTemplate("content_thumbnail");
+
             if($slug != "all"){
                 $i = 1;
                 $query = "";
@@ -96,14 +103,14 @@ class ContentApi extends Controller
                     $date_start = $date[0];
                     $date_end = $date[1];
 
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->orderBy('contents_headers.created_at', $order)
                         ->whereRaw($query)
                         ->whereRaw("content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'")
                         ->paginate(12);
                 } else {
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->orderBy('contents_headers.created_at', $order)
                         ->whereRaw($query)
@@ -115,13 +122,13 @@ class ContentApi extends Controller
                     $date_start = $date[0];
                     $date_end = $date[1];
 
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->whereRaw("content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'")
                         ->orderBy('contents_headers.created_at', $order)
                         ->paginate(12);
                 } else {
-                    $content = ContentHeader::select('slug_name', 'content_title','content_desc','content_loc','content_image','content_date_start','content_date_end','content_tag','contents_headers.created_at')
+                    $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->orderBy('contents_headers.created_at', $order)
                         ->paginate(12);
@@ -151,12 +158,15 @@ class ContentApi extends Controller
 
     public function getAllContentSchedule(Request $request, $date){
         try{
-            $content = ContentHeader::selectRaw('slug_name, content_title, content_desc, content_loc, content_tag, content_date_start, content_date_end, 1 as data_from')
+            $select_content = Query::getSelectTemplate("content_schedule");
+            $select_task = Query::getSelectTemplate("task_schedule");
+
+            $content = ContentHeader::selectRaw($select_content)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = ?", $date)
                 ->orderBy('content_date_start', 'DESC');
                 
-            $schedule = Task::selectRaw('slug_name, task_title as content_title, task_desc as content_desc, null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, 2 as data_from')
+            $schedule = Task::selectRaw($select_task)
                 ->where('created_by', $request->user_id)
                 ->whereRaw("date(`task_date_start`) = ?", $date)
                 ->orderBy('tasks.task_date_start', 'DESC')

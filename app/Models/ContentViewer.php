@@ -10,6 +10,7 @@ class ContentViewer extends Model
 {
     use HasFactory;
     use HasUuids;
+    public $timestamps = false;
 
     protected $table = 'contents_viewers';
     protected $primaryKey = 'id';

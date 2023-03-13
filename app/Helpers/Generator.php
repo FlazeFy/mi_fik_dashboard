@@ -110,4 +110,17 @@ class Generator
 
         return $res;
     }
+
+    public static function getContentId($slug_name){
+        $query = ContentHeader::select('id')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        foreach($query as $q){
+            $res = $q->id;
+        }
+
+        return $res;
+    }
 }
