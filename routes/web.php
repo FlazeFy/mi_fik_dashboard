@@ -14,6 +14,8 @@ use App\Http\Controllers\Event\CalendarController;
 
 use App\Http\Controllers\System\NotificationController;
 
+use App\Http\Controllers\User\ManageController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,4 +70,8 @@ Route::prefix('/event')->group(function () {
 Route::prefix('/system')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
+});
+
+Route::prefix('/user')->group(function () {
+    Route::get('/manage', [ManageController::class, 'index']);
 });
