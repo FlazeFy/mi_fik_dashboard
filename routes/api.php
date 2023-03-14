@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\TagApi;
 use App\Http\Controllers\Api\TaskApi;
 use App\Http\Controllers\Api\NotificationApi;
 use App\Http\Controllers\Api\DictionaryApi;
+use App\Http\Controllers\Api\UserApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,10 @@ Route::prefix('/v1/archive')->group(function() {
 Route::prefix('/v1/dictionaries')->group(function() {
     Route::get('/', [DictionaryApi::class, 'getAllDictionary']);
     Route::get('/type', [DictionaryApi::class, 'getAllDictionaryType']);
+});
+
+Route::prefix('/v1/user')->group(function() {
+    Route::get('/request/new', [UserApi::class, 'getNewUserRequest']);
+    Route::get('/request/old', [UserApi::class, 'getOldUserRequest']);
+    Route::get('/request/dump', [UserApi::class, 'getUserRejectedRequest']);
 });

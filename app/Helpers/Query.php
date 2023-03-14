@@ -26,7 +26,15 @@ class Query
                 task_desc as content_desc, null as content_loc, null as content_tag, 
                 task_date_start as content_date_start, task_date_end as content_date_end, 
                 2 as data_from";
-        } 
+        } else if($type == "user_request_new"){
+            $query = "slug_name, username, CONCAT(first_name,' ',last_name) as full_name, 
+                role, created_at, accepted_at, is_accepted";
+        } else if($type == "user_request_old"){
+            $query = "users_requests.id, slug_name, username, CONCAT(first_name,' ',last_name) 
+                as full_name, tag_slug_name, request_type, users_requests.created_at, created_by";
+        }
+        // Make user's new request dump query
+        // Make user's old request dump query
 
         return $query;
     }
