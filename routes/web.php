@@ -73,5 +73,5 @@ Route::prefix('/system')->group(function () {
 });
 
 Route::prefix('/user')->group(function () {
-    Route::get('/manage', [ManageController::class, 'index']);
+    Route::get('/', [ManageController::class, 'index']);
 });

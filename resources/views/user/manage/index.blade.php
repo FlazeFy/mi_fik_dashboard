@@ -71,6 +71,24 @@
                 color:whitesmoke;
                 background:#F78A00;
             }
+            .content-more-floating{
+                font-weight:500;
+                color:#F78A00;
+                background:white;
+                border:1.5px solid #F78A00;
+                text-decoration:none !important;
+                cursor: pointer;
+                padding:3px 9px;
+                margin:0px;
+                border-radius:6px;
+                font-size: 12.5px;
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            }
+            .content-more-floating:hover{
+                color:whitesmoke;
+                background:#F78A00;
+            }
+
             .text-primary{
                 color: #F78A00 !important;
             }
@@ -154,6 +172,81 @@
                 background:#00C363;
                 color:whitesmoke;
             }
+
+            .incoming-req-box{
+                position: relative;
+                height: 500px;
+            }
+            .user-req-holder{
+                margin-top: 20px;
+                padding: 5px 16px 0 5px;
+                display: flex;
+                flex-direction: column;
+                max-height: 90%;
+                overflow-y: scroll;
+            }
+            .user-box{
+                border-left: 3px solid #808080;
+                border-radius: 10px;
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                padding: 5px;
+                width: 100%;
+                border: none;
+                text-align: start;
+                background: white;
+                margin-bottom: 15px;
+            }
+            .user-box-desc{
+                font-size: 11.5px;
+                font-weight: normal;
+                margin: 0;
+            }
+            .user-box-date{
+                font-size: 11.5px;
+                font-weight: normal;
+                color: #808080;
+                margin: 0;
+            }
+
+
+            /*Global*/
+            .btn-icon-rounded-danger{
+                color: #D5534C;
+                border-radius: 100%;
+                width: 40px;
+                height: 40px;
+            }
+            .btn-icon-rounded-danger:hover{
+                background: #D5534C;
+                color: whitesmoke;
+            }
+
+            .btn-icon-rounded-success{
+                color: #58C06E;
+                border-radius: 100%;
+                width: 40px;
+                height: 40px;
+            }
+            .btn-icon-rounded-success:hover{
+                background: #58C06E;
+                color: whitesmoke;
+            }
+
+            .btn-icon-rounded-primary{
+                color: #F78A00;
+                border-radius: 100%;
+                width: 40px;
+                height: 40px;
+            }
+            .btn-icon-rounded-primary:hover{
+                background: #F78A00;
+                color: whitesmoke;
+            }
+            .nodata-icon-req{
+                display: block;
+                margin-inline: auto;
+                height: 100px;
+            }
         </style>
     </head>
 
@@ -171,14 +264,14 @@
                         <div class="row">
                             <div class="col-lg-8 col-md-7 col-sm-12">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6">
                                         <div class="container-fluid bg-white rounded my-3 p-2">
-                                            @include('user.manage.new_user')
+                                            @include('user.manage.old_user_req')
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6">
                                         <div class="container-fluid bg-white rounded my-3 p-2">
-                                        
+                                            @include('user.manage.new_user_req')
                                         </div>
                                     </div>
                                 </div>
