@@ -20,7 +20,7 @@ class UserApi extends Controller
             $user = User::selectRaw($select)
                 ->where('role', null)
                 ->orWhere('is_accepted', 0)
-                ->orderBy('created_at', 'DESC')
+                ->orderBy('created_at', 'ASC')
                 ->paginate(12);
 
             if ($user->isEmpty()) {
@@ -53,7 +53,7 @@ class UserApi extends Controller
                 ->join('users', 'users.id', '=', 'users_requests.created_by')
                 ->where('is_rejected', null)
                 ->where('users_requests.is_accepted', 0)
-                ->orderBy('created_at', 'DESC')
+                ->orderBy('created_at', 'ASC')
                 ->paginate(12);
 
             if ($user->isEmpty()) {
