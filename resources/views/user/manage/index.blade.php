@@ -175,7 +175,7 @@
 
             .incoming-req-box{
                 position: relative;
-                height: 400px;
+                height: 500px;
             }
             .user-req-holder{
                 margin-top: 20px;
@@ -264,12 +264,12 @@
                         <div class="row">
                             <div class="col-lg-8 col-md-7 col-sm-12">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-lg-6">
                                         <div class="container-fluid bg-white rounded my-3 p-2">
                                             @include('user.manage.old_user_req')
                                         </div>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-lg-6">
                                         <div class="container-fluid bg-white rounded my-3 p-2">
                                             @include('user.manage.new_user_req')
                                         </div>

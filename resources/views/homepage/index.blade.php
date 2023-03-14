@@ -170,10 +170,11 @@
                                     @include('homepage.addevent_form.layout')
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
-                                    @include('homepage.addtask_form.layout')
+                                    <!-- @include('homepage.addtask_form.layout') -->
+                                    @include('homepage.addAnnouncement')
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
-                                    @include('homepage.addAnnouncement')
+                                    
                                 </div>
                             </div>
                             <div class="mt-2 btn-config-holder">

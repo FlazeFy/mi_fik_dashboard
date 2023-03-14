@@ -8,11 +8,11 @@
 
 <div class="incoming-req-box">
     <h5 class="text-secondary fw-bold"><span class="text-primary" id="total_new_req"></span> New User</h5>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:15px; top:0px;" type="button" id="section-more-incoming-req" data-bs-toggle="dropdown" aria-haspopup="true"
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:15px; top:0px;" type="button" id="section-more-new-req" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-incoming-req">
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-new-req">
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-check text-success"></i> Accept All</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-xmark text-danger"></i>&nbsp Reject All</a>
@@ -36,25 +36,25 @@
 </div>
 
 <script>
-    var page = 1;
-    infinteLoadMore(page);
+    var page_new_req = 1;
+    infinteLoadMore_new_req(page_new_req);
 
-    //Fix the sidebar & content page FE first to use this feature
+    //Fix the sidebar & content page_new_req FE first to use this feature
     // window.onscroll = function() { 
     //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page++;
-    //         infinteLoadMore(page);
+    //         page_new_req++;
+    //         infinteLoadMore(page_new_req);
     //     } 
     // };
 
-    function loadmore(route){
-        page++;
-        infinteLoadMore(page);
+    function loadmore_new_req(route){
+        page_new_req++;
+        infinteLoadMore(page_new_req);
     }
 
-    function infinteLoadMore(page) {        
+    function infinteLoadMore_new_req(page_new_req) {        
         $.ajax({
-            url: "/api/v1/user/request/new" + "?page=" + page,
+            url: "/api/v1/user/request/new" + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -67,7 +67,7 @@
             var total = response.data.total;
             var last = response.data.last_page;
 
-            if(page != last){
+            if(page_new_req != last){
                 $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
                 $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');

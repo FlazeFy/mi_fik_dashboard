@@ -339,9 +339,10 @@
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
-                            "<form class='d-inline' method='POST' action='homepage/open/" + slug_name + "'> " +
-                                '@csrf ' +
-                                "<button class='card shadow event-box' type='submit'> " +
+                            // "<form class='d-inline' method='POST' action='homepage/open/" + slug_name + "'> " +
+                            //     '@csrf ' +
+                            //     "<button class='card shadow event-box' type='submit'> " +
+                                "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                     "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
                                     "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
@@ -365,7 +366,7 @@
                                         "</div> " +
                                     "</div> " +
                                 "</button> " +
-                            "</form> " +
+                            //"</form> " +
                         "</div>";
 
                     $("#data-wrapper").append(elmt);
