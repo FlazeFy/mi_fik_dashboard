@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('contents_viewers', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('content_id', 75);
-            $table->int('type_viewer', 3);
+            $table->integer('type_viewer', 3);
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 75);

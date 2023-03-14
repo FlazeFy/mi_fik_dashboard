@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use App\Helpers\Query;
 
 class ContentHeader extends Model
 {
@@ -64,8 +65,12 @@ class ContentHeader extends Model
     } 
 
     public static function getFullContentBySlug($slug_name){
-        $res = ContentHeader::select('slug_name','content_title','content_desc','content_image','content_loc','content_date_start','content_date_end','content_tag','content_attach','contents_headers.created_at','contents_headers.updated_at')
+        $select = Query::getSelectTemplate("content_detail");
+
+        $res = ContentHeader::selectRaw($select)
             ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+            ->groupBy('contents_headers.id')
             ->where('slug_name', $slug_name)
             ->limit(1)
             ->get();

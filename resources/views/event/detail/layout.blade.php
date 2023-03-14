@@ -13,6 +13,12 @@
         border-radius: 18px 18px 0 0;
         transition: all .25s linear;
     }
+    .content-detail-views{
+        position: absolute;
+        left: 10px;
+        bottom: 10px;
+        color: whitesmoke;
+    }
     .event-header-size-toogle{
         color: #F78A00 !important;
         background: none;
@@ -126,10 +132,12 @@
         @if($c->content_image)
             <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/storage/{{$c->content_image}}');" id="event-header-image">
                 <button class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+                <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
             </div>
         @else
             <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});" id="event-header-image">
                 <button class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+                <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
             </div>
         @endif
         <div class="row p-3">
