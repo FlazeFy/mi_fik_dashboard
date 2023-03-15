@@ -1,34 +1,44 @@
 <?php
 
-namespace App\Http\Controllers\Event;
+namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\Content;
+use App\Helpers\Generator;
 
-class AllEventController extends Controller
+class ManageController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($page)
+    public function index()
     {
-        //Set active nav
-        session()->put('active_nav', 'event');
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-        //Set initial page
-        if (session()->get('event_page') == null) {
-            session()->put('event_page', 1);
+            //Set active nav
+            session()->put('active_nav', 'user');
+
+            return view('user.manage.index');
         } else {
-            session()->put('event_page', $page);
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
         }
+    }
 
-        return view ('event.all.index');
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
     }
 
     /**

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Event | </title>
+        <title>Event | {{$title}}</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -154,11 +154,14 @@
 
                    
                     <div class="container-fluid bg-white mt-5 mb-3 p-0 shadow" style="border-radius: 18px !important;">
-                        @include('event.detail.event')
+                        @include('event.detail.layout')
                     </div>
                 </div>
             </div>
         </div>
+
+        <!--Modal-->
+        @include('popup.success')
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>

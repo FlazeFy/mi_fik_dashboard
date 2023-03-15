@@ -6,7 +6,7 @@
         position: relative;
         border-radius: 0 10px 10px 0;
         min-height: 80px;
-        border-left: 3px solid #808080;
+        border-left: 3.5px solid #808080;
         border-top: 1.75px solid #CED4DA;
         border-right: 1.75px solid #CED4DA;
         border-bottom: 1.75px solid #CED4DA;
@@ -29,7 +29,7 @@
         left: -13px;
         top: 36%;
         background: white;
-        border: 3px solid #808080;
+        border: 3px solid var(--circle-attach-color-var);
     }
     .btn-icon-delete{
         color: #F85D59 !important;
@@ -48,6 +48,21 @@
         font-size: 13px;
         width: 100px;
     }
+    .attach-upload-status{
+        text-decoration: none;
+        font-style: italic;
+        font-size: 12.5px;
+        font-weight: 500;
+    }
+    .success{
+        color: #00c363 !important;
+    }
+    .failed{
+        color: #e74645 !important;
+    }
+    .warning{
+        color: #f78a00 !important;
+    }
 </style>
 
 <div>
@@ -56,6 +71,23 @@
     </div>
     <input hidden id="content_attach" name="content_attach">
 </div>
+
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyCN3J8nXpP1NuHwX7NjfYpMWkNGPzfV0X0",
+        authDomain: "mifik-ad2d9.firebaseapp.com",
+        projectId: "mifik-ad2d9",
+        storageBucket: "mifik-ad2d9.appspot.com",
+        messagingSenderId: "96469457737",
+        appId: "1:96469457737:web:f70e18e5dcfe41c66bd898",
+        measurementId: "G-PZDGL9X7T1"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+</script>
 
 <script>
     //Initial variable.
@@ -73,7 +105,7 @@
         attach_list.push(obj);
 
         $("#attachment-holder").append(' ' +
-            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'"> ' + 
+            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'" style="--circle-attach-color-var:#808080;"> ' + 
                 '<div class="row mb-1"> ' +
                     '<div class="col-6"> ' +
                         '<h6 class="mt-1">Attachment Type : </h6> ' +
@@ -94,8 +126,12 @@
                 '<div id="attach-input-holder-'+i+'"></div> ' +
                 '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+i+')"> ' +
                     '<i class="fa-solid fa-trash-can"></i></a> ' +
-                '<a class="btn btn-icon-preview" title="Preview Attachment" onclick=""> ' +
+                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-' + i + '"> ' +
                     '<i class="fa-regular fa-eye-slash"></i></a> ' +
+                '<a class="attach-upload-status success" id="attach-progress-'+i+'"></a>' +
+                '<a class="attach-upload-status danger" id="attach-failed-'+i+'"></a>' +
+                '<a class="attach-upload-status warning" id="attach-warning-'+i+'"></a>' +
+                '<span id="preview_holder_' + i + '"></span> ' +
             '</div>');
         i++;
     }
@@ -107,10 +143,79 @@
 
         if(all){
             var att_name = document.getElementById('attach_name_'+id).value;
-            var att_url = document.getElementById('attach_url_'+id).value;
-            att_url = att_url.replace(/\\/g, '');
-            att_url = att_url.replace("C:fakepath", "");
-            //addAttachmentFile(id);
+            //var att_url = document.getElementById('attach_url_'+id).value;
+            var att_cont = document.getElementById('attachment_container_'+id);
+            var submitHolder = $("#btn-submit-holder-event");
+            
+            if(att_type != "attachment_url"){
+                var att_file_src = document.getElementById('attach_url_'+id).files[0];
+                var filePath = att_type + '/' + getUUID();
+
+                document.getElementById('attach_url_holder_'+id).value = filePath;
+
+                //Set upload path
+                var storageRef = firebase.storage().ref(filePath);
+                var uploadTask = storageRef.put(att_file_src);
+
+                //Do upload
+                uploadTask.on('state_changed',function (snapshot) {
+                    var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                    document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done";
+                    if(progress == 100){
+                        att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
+                        submitHolder.html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+                    } else {
+                        submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
+                    }
+                }, 
+                function (error) {
+                    console.log(error.message);
+                    document.getElementById('attach-failed-'+id).innerHTML = "File upload is " + error.message;
+                    var att_url = null;
+                    if(error.message){
+                        att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
+                        submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
+                    }
+                }, 
+                function () {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
+                        var att_url = downloadUrl;
+                        attach_list[objIndex]['attach_url'] =  downloadUrl;
+                        if(att_type == "attachment_image"){
+                            var att_preview_elmt = "<img class='img img-fluid mx-auto rounded mt-2' src='" + downloadUrl + "' alt='" + downloadUrl + "'>";
+                        } else if(att_type == "attachment_video"){
+                            var att_preview_elmt = "<video controls class='rounded w-100 mx-auto mt-2' alt='" + downloadUrl + "'> " +
+                                "<source src='" + downloadUrl + "'> " +
+                            "</video>";
+                        }
+                        var preview_elmt = "<div class='collapse' id='collapsePreview-" + id + "'> " +
+                                "<div class='container w-100 m-0 p-0'> " +
+                                    att_preview_elmt +
+                                "</div> " +
+                            "</div>";
+                        document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
+                    });
+                });
+            } else {
+                var att_url = document.getElementById('attach_url_'+id).value.trim();
+            
+                if(att_url.length > 0){
+                    att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
+                    warningAttMsg = document.getElementById('attach-warning-'+id);
+                    if(isValidURL(att_url)){
+                        warningAttMsg.style = "color: #09c568 !important;"
+                        warningAttMsg.innerHTML = "URL is valid";
+                    } else {
+                        warningAttMsg.innerHTML = "URL isn't not valid!";
+                    }
+                } else {
+                    warningAttMsg.innerHTML = "";
+                    att_cont.style = "border-left: 3.5px solid #808080 !important; --circle-attach-color-var:#808080 !important;";
+                }   
+            }
+            
+            // att_url = att_url.replace(/\\/g, '');
+            // att_url = att_url.replace("C:fakepath", "");
         } else {
             var att_name = null;
             var att_url = null;
@@ -128,12 +233,47 @@
         document.getElementById('content_attach').value = JSON.stringify(attach_list);
     }
 
+    function isValidURL(urlString){
+        try { 
+            return Boolean(new URL(urlString)); 
+        }
+        catch(e){ 
+            return false; 
+        }
+    }
+
+    function getUUID() {
+        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+        );
+    }
+
     function deleteAttachmentForm(index){
-        $("#attachment_container_"+index).remove();
+        let att_type = document.getElementById('attach_type_'+index).value;
 
         attach_list = attach_list.filter(object => {
+            if(att_type != "attachment_url"){
+                var filePath =  document.getElementById('attach_url_holder_'+index).value;
+                if(filePath){
+                    //Set upload path
+                    var storageRef = firebase.storage().ref(filePath);
+                
+                    storageRef.delete().then(() => {
+                        console.log("success");
+                        $("#attachment_container_"+index).remove();
+
+                    }).catch((error) => {
+                        console.log("failed");
+                    });
+                }
+            } else {
+                $("#attachment_container_"+index).remove();
+            }
+
             return object.id !== index;
         });
+
+        lengValidatorEvent('75', 'title');
     }
 
     function getAttachmentInput(index, val){
@@ -158,39 +298,9 @@
         } else {
             $("#attach-input-holder-"+index).append(' ' +
                 '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+index+', true)"> ' +
+                '<input type="text" id="attach_url_holder_'+index+'" hidden required> ' +
                 '<h6 class="mt-1">Attachment Name</h6> ' +
                 '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
         }
     }
-
-    // function addAttachmentFile(index){
-    //     //e.preventDefault();
-    //     // var actionType = $('#btn-save').val();
-    //     // $('#btn-save').html('Sending..');
-
-    //     var datastring = $("#attachment_form_"+index).serialize();
-
-    //     //var formData = new FormData(this);
-
-    //     $.ajax({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         type:'POST',
-    //         url: "homepage/add_attach/"+index,
-    //         data: datastring,
-    //         // cache: false,
-    //         // contentType: false,
-    //         // processData: false,
-    //         success: (data) => {
-    //             // $('#productForm').trigger("reset");
-    //             $('#ajax-product-modal').modal('hide');
-    //             //$('#btn-save').html('Save Changes');
-    //         },
-    //         error: function(data){
-    //             console.log('Error:', data);
-    //             $('#btn-save').html('Save Changes');
-    //         }
-    //     });
-    // }
 </script>

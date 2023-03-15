@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
+use App\Helpers\Generator;
+
 use App\Models\Notification;
 use App\Models\Dictionary;
 
@@ -14,26 +16,24 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        //Required config
-        $select_1 = "Notification";
+        if(session()->get('slug_key')){
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            //Required config
+            $select_1 = "Notification";
 
-        $notification = Notification::select('*')
-            ->orderBy('updated_at', 'DESC')
-            ->orderBy('created_at', 'DESC')
-            ->get();
+            $notification = Notification::getAllNotification("DESC", "DESC");
+            $dictionary = Dictionary::getDictionaryByType($select_1);
 
-        $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
-            ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
-            ->where('type_name', $select_1)
-            ->orderBy('dictionaries.created_at', 'ASC')
-            ->get();
+            //Set active nav
+            session()->put('active_nav', 'system');
 
-        //Set active nav
-        session()->put('active_nav', 'system');
-
-        return view ('system.notification.index')
-            ->with('notification', $notification)
-            ->with('dictionary', $dictionary);
+            return view ('system.notification.index')
+                ->with('notification', $notification)
+                ->with('dictionary', $dictionary);
+        } else {
+            return redirect()->route('landing')
+                ->with('failed_message', 'Your session time is expired. Please login again!');
+        }
     }
 
     public function update_notif(Request $request, $id)

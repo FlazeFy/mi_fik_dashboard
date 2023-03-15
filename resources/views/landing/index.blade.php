@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Event | All</title>
+        <title>MI-FIK Dashboard</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,6 +28,7 @@
             }
             .text-danger{
                 color:#F85D59 !important;
+                text-decoration:none;
             }
             .text-secondary{
                 color: #5B5B5B !important;
@@ -45,11 +46,11 @@
                 color:#F78A00;
                 float:right;
                 background:none;
-                border:none;
+                border: 2px solid #F78A00;
                 text-decoration:none !important;
                 cursor: pointer;
                 padding:3px 9px;
-                margin:0px;
+                margin-top:10px;
                 border-radius:6px;
             }
             .content-add:hover, .content-more:hover{
@@ -76,44 +77,81 @@
             #content{
                 overflow:auto;
             }
-            
-            .btn-link{
-                text-decoration:none;
-                padding:10px 16px;
-                border-radius:5px;
-                color:#F78A00;
-                background:transparent;
-                font-weight:500;
-                font-size:16px;
+            .content-body{
+                max-width:1080px;
+                display:block;
+                margin-inline:auto;
             }
 
-            .btn-link:hover{
-                color:white;
-                background:#F78A00;
+            .modal-content{
+                margin-top:7vh;
+            }
+            .modal-body{
+                position:relative;
+            }
+
+            .custom-close-modal{
+                position:absolute !important;
+                top:-20px;
+                background:white;
+                width:45px;
+                right:10px;
+                height:45px;
+                padding:6px;
+                color:#F85D59;
+                border-radius:100%;
+                border:none;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transition: all 0.4s;
+            }
+            .custom-submit-modal{
+                position:absolute !important;
+                bottom:-20px;
+                background:white;
+                right:10px;
+                height:45px;
+                padding:6px 12px;
+                color:#00C363;
+                border-radius:6px;
+                border:none;
+                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                transition: all 0.4s;
+            }
+
+            .custom-close-modal:hover{
+                background:#F85D59;
+                color:whitesmoke;
+            }
+            .custom-submit-modal:hover{
+                background:#00C363;
+                color:whitesmoke;
+            }
+            .btn-submit{
+                background: #00c363;
+                color: whitesmoke !important;
+            }
+            .nodata-icon{
+                display: block;
+                margin-inline: auto;
+                height: 30vh;
+                min-height: 80px;
             }
         </style>
     </head>
 
     <body>
         <div class="wrapper d-flex align-items-stretch">
-            <!--Sidebar.-->
-            @include('sidebar.leftbar')
+            <div class="row px-3 w-100">
+                <div class="col-lg-6 col-md-6 col-sm-12">
 
-            <!-- Page Content  -->
-            <div id="content" class="p-4">
-                <button type="button" id="sidebarCollapse" class="btn btn-primary">
-                    <i class="fa fa-bars"></i>
-                    <span class="sr-only">Toggle Menu</span>
-                </button>
-
-                <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                    @include('event.all.content')
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 py-5">
+                    @include('landing.login')
                 </div>
             </div>
         </div>
 
-        <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
-
+        <!--Modal-->
+        @include('popup.failed')
     </body>
 </html>

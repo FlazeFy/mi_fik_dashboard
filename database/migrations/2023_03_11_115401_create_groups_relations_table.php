@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('groups_relations', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('group_id', 75);
+
+            $table->dateTime('created_at', $precision = 0);
+            $table->string('created_by', 75);
         });
     }
 
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('average_task');
+        Schema::dropIfExists('groups_relations');
     }
 };

@@ -119,27 +119,19 @@
         </li>
         <div class="collapse ps-4" id="clpsEvent">
             <li class="">
-                <a href="{{ url('/event/browse') }}"><i class="fa-solid fa-magnifying-glass me-3"></i> Browse</a>
-            </li>
-            <li class="">
                 <a href="{{ url('/event/tag') }}"><i class="fa-solid fa-hashtag me-3"></i> Tag</a>
             </li>
             <li class="">
                 <a href="{{ url('/event/location') }}"><i class="fa-solid fa-location-dot me-3"></i> Location</a>
             </li>
+            <li class="">
+                <a href="{{ url('/event/calendar') }}"><i class="fa-solid fa-calendar me-3"></i> Calendar</a>
+            </li>
            
         </div>
-        <li class="<?php if(session()->get('active_nav') == "user"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsUser">
-            <a><i class="fa-solid fa-user me-3"></i> Users</a>
+        <li class="<?php if(session()->get('active_nav') == "user"){ echo " active"; }?>">
+            <a href="{{ url('/user') }}"><i class="fa-solid fa-user-pen me-3"></i> Manage User</a>
         </li>
-        <div class="collapse ps-4" id="clpsUser">
-            <li class="">
-                <a href="{{ url('/user/activity') }}"><i class="fa-solid fa-paper-plane me-3"></i> Activity</a>
-            </li>
-            <li class="">
-                <a href="{{ url('/user/manage') }}"><i class="fa-solid fa-user-pen me-3"></i> Manage</a>
-            </li>
-        </div>
         <li class="<?php if(session()->get('active_nav') == "system"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsSystem">
             <a><i class="fa-solid fa-globe me-3"></i> System</a>
         </li>
@@ -154,11 +146,11 @@
                 <a href="{{ url('/system/dictionary') }}"><i class="fa-solid fa-book me-3"></i> Dictionary</a>
             </li>
         </div>
-        <li class="">
+        <li class="<?php if(session()->get('active_nav') == "statistic"){ echo " active"; }?>">
             <a href="{{ url('/statistic') }}"><i class="fa-solid fa-chart-line me-3"></i> Statistic</a>
         </li>
         <li class="">
-            <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> My History</a>
+            <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> History</a>
         </li>
     </ul>
     <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button>

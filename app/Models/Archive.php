@@ -14,4 +14,13 @@ class Archive extends Model
     protected $table = 'archives';
     protected $primaryKey = 'id';
     protected $fillable = ['slug_name', 'archive_name', 'archive_desc', 'created_at', 'updated_at', 'created_by', 'deleted_at'];
+
+    public static function getMyArchive($user_id, $order){
+        $res = Archive::select('id','slug_name','archive_name','archive_desc','created_at')
+            ->where('created_by', $user_id)
+            ->orderBy('created_at', $order)
+            ->get();
+
+        return $res;
+    }
 }

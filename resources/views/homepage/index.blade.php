@@ -134,6 +134,21 @@
                 background:#00C363;
                 color:whitesmoke;
             }
+            .btn-submit{
+                background: #00c363;
+                color: whitesmoke !important;
+            }
+            .nodata-icon{
+                display: block;
+                margin-inline: auto;
+                height: 30vh;
+                min-height: 80px;
+            }
+            .btn-config-holder{
+                display:flex !important; 
+                flex-direction: row; 
+                justify-content: start;
+            }
         </style>
     </head>
 
@@ -155,11 +170,17 @@
                                     @include('homepage.addevent_form.layout')
                                 </div>
                                 <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
-                                    @include('homepage.addtask_form.layout')
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
+                                    <!-- @include('homepage.addtask_form.layout') -->
                                     @include('homepage.addAnnouncement')
                                 </div>
+                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
+                                    
+                                </div>
+                            </div>
+                            <div class="mt-2 btn-config-holder">
+                                @include('event.calendar.filter_tag')
+                                @include('homepage.sorting')
+                                @include('homepage.datefilter')
                             </div>
                             @include('homepage.event')
                         </div>
