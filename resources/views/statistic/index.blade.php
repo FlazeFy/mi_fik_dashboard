@@ -168,6 +168,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
+                       @include('statistic.mostViewedEvent')
+                    </div>
                 </div>
             </div>
         </div>

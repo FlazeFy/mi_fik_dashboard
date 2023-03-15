@@ -32,4 +32,15 @@ class ContentDetail extends Model
 
         return $res;
     }
+
+    public static function getMostViewedEvent($limit){
+        $res = ContentHeader::selectRaw('contents_headers.id, content_title, count(1) as total')
+            ->join('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+            ->groupBy('contents_headers.id')
+            ->orderBy('total', 'DESC')
+            ->limit($limit) 
+            ->get();
+
+        return $res;
+    }
 }

@@ -99,10 +99,17 @@
         ]
     },
     tooltip: {
-        // x: {
-        // format: 'MMM'
-        // },
-    },
+        y: {
+            formatter: function (val) {
+                val = val.toFixed(0)
+                if(val == 0 || val == 1){
+                    return val + " event";
+                } else {
+                    return val + " events";
+                }
+            }
+        },
+    }
     };
 
     var chart = new ApexCharts(document.querySelector("#CE_area_chart"), options);

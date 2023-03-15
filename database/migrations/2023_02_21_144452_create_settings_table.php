@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->integer('MOL_range');
             $table->integer('MOT_range');
+            $table->integer('MVE_range');
             $table->integer('CE_range');
 
             $table->dateTime('created_at', $precision = 0);
