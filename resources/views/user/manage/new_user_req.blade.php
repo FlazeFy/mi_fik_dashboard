@@ -128,6 +128,14 @@
                     }
                 }
 
+                function getContext(acc){
+                    if(!acc){
+                        return 'Want to join Mi-FIK'
+                    } else {
+                        return "Doesn't have a tag"
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -145,7 +153,7 @@
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
-                                    '<h6 class="user-box-desc">Want to join Mi-FIK</h6> ' +
+                                    '<h6 class="user-box-desc">' + getContext(is_accepted) + '</h6> ' +
                                     '<h6 class="user-box-date">' + getCreatedAt(created_at) + '</h6> ' +
                                     '<a class="btn btn-icon-rounded-primary" style="position:absolute; right: 15px; top:15px;" title="Accept Request & Give Role"><i class="fa-solid fa-add"></i></a> ' +
                                     getApprovedButton(accepted_at) +

@@ -198,6 +198,9 @@
                             '<span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span> ' +
                             '</div> ' +
 
+                            '<h6 class="text-secondary"> Selected Role</h6> ' +
+                            '<div id="slct_holder"></div> ' +
+
                             '<div class="config-btn-group">' +
                                 '<hr> ' +
                                 '<button class="btn btn-detail-config primary" title="Manage role" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></button>' +
@@ -221,6 +224,10 @@
     //     page_tag++;
     //     infinteLoadMoreTag(page_tag);
     // }
+
+    //Initial variable.
+    var tag_list = []; //Store all tag from db to js arr.
+    var slct_list = []; //Store all tag's id.
 
     function infinteLoadMoreTag(page_tag) { 
         $.ajax({
@@ -258,7 +265,8 @@
                     var slug_name = data[i].slug_name;
                     var tag_name = data[i].tag_name;
 
-                    var elmt = '<button class="btn btn-tag">' + tag_name + '</button> ';
+                    var elmt = '<button class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
+                        'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'slct'+"'"+')">' + tag_name + '</button> ';
 
                     $("#data_wrapper_manage_tag").append(elmt);
                 }   
@@ -267,5 +275,43 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             console.log('Server error occured');
         });
+    }
+
+    function addSelectedTag(slug_name, tag_name, is_deleted){
+        var found = false;
+
+        //Remove selected tag from tag collection
+        if(is_deleted){
+            var tag = document.getElementById('tag_collection_'+slug_name);
+            tag.parentNode.removeChild(tag);
+        }
+
+        if(slct_list.length > 0){
+            //Check if tag is exist in selected tag.
+            slct_list.map((val, index) => {
+                if(val == slug_name){
+                    found = true;
+                }
+            });
+
+            if(found == false){
+                slct_list.push(slug_name);
+                //Check this append input value again!
+                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+            }
+        } else {
+            slct_list.push(slug_name);
+            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+        }
+    }
+
+    function removeSelectedTag(slug_name, tag_name){
+        //Remove selected tag
+        var tag = document.getElementById('tagger_'+slug_name);
+        slct_list = slct_list.filter(function(e) { return e !== slug_name })
+        tag.parentNode.removeChild(tag);
+
+        //Return selected tag to tag collection
+        $("#data_wrapper_manage_tag").append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+"slct"+'"'+")'>"+tag_name+"</a>");
     }
 </script>
