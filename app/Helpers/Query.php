@@ -32,6 +32,9 @@ class Query
         } else if($type == "user_request_old"){
             $query = "users_requests.id, slug_name, username, CONCAT(first_name,' ',last_name) 
                 as full_name, tag_slug_name, request_type, users_requests.created_at, created_by";
+        } else if($type == "user_detail"){
+            $query = "slug_name, username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
+                created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
         }
         // Make user's new request dump query
         // Make user's old request dump query
