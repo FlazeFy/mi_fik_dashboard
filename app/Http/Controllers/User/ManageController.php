@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
+use App\Helpers\Converter;
+
+use App\Models\User;
 
 class ManageController extends Controller
 {
@@ -31,69 +34,33 @@ class ManageController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function add_role(Request $request)
     {
-        //
-    }
+        //Helpers
+        if(session()->get('slug_key')){
+            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        }
+        $user_id = Generator::getUserId($request->slug_user, 2); 
+        $tag = Converter::getTag($request->user_role);
+        $new_user = $request->is_new;
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if($new_user == 1){
+            User::where('id', $user_id)->update([
+                'role' => $tag,
+                'updated_by' => $admin_id,
+                'is_accepted' => 1,
+                'accepted_by' => $admin_id,
+                'updated_at' => date("Y-m-d H:i"),
+                'accepted_at' => date("Y-m-d H:i")
+            ]);
+        } else {
+            User::where('id', $user_id)->update([
+                'role' => $tag,
+                'updated_by' => $admin_id,
+                'updated_at' => date("Y-m-d H:i")
+            ]);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->back()->with('success_message', 'Assign role success');
     }
 }

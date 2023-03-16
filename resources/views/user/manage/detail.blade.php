@@ -43,22 +43,25 @@
 </style>
 
 <div class="detail-box">
-    <h5 class="text-secondary fw-bold"><span class="text-primary" id="detail_body"></span> Detail</h5>
-    <div class="user-req-holder" id="data_wrapper_user_detail">
-        <!-- Loading -->
-        <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
-    </div>
-    <div id="empty_item_holder_user_detail"></div>
-    <span id="load_more_holder_user_detail" style="display: flex; justify-content:center;"></span>
-    </div>
+    <form action="/user/manage_role" method="POST">
+        @csrf
+        <h5 class="text-secondary fw-bold"><span class="text-primary" id="detail_body"></span> Detail</h5>
+        <div class="user-req-holder" id="data_wrapper_user_detail">
+            <!-- Loading -->
+            <div class="auto-load text-center">
+                <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                    <path fill="#000"
+                        d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                        <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                            from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+            <div id="empty_item_holder_user_detail"></div>
+            <span id="load_more_holder_user_detail" style="display: flex; justify-content:center;"></span>
+        </div>
+    </form>
 </div>
 
 <script>
@@ -134,7 +137,7 @@
 
                     if(role){
                         for(var i = 0; i < role.length; i++){
-                            elmnt += "<button class='btn btn-tag'>"+role[i]['tag_name']+"</button>"
+                            elmnt += "<a class='btn btn-tag'>"+role[i]['tag_name']+"</a>"
                         }
                         return elmnt
 
@@ -146,12 +149,20 @@
 
                 function getLifeButton(acc, acc_date){
                     if(!acc && !acc_date){
-                        return '<button class="btn btn-detail-config success" title="Approve Account"><i class="fa-solid fa-check"></i></button>';
+                        return '<a class="btn btn-detail-config success" title="Approve Account"><i class="fa-solid fa-check"></i></a>';
                     } else if(!acc && acc_date){
-                        return '<button class="btn btn-detail-config success" title="Recover Account"><i class="fa-solid fa-rotate-right"></i></button>';
+                        return '<a class="btn btn-detail-config success" title="Recover Account"><i class="fa-solid fa-rotate-right"></i></a>';
                     } else if(acc && acc_date){
-                        return '<button class="btn btn-detail-config danger" title="Suspend Account"><i class="fa-solid fa-power-off"></i></button>';
+                        return '<a class="btn btn-detail-config danger" title="Suspend Account"><i class="fa-solid fa-power-off"></i></a>';
                     } else {}
+                }
+
+                function getNewUser(status){
+                    if(status == 0){
+                        return 1
+                    } else {
+                        return 0
+                    }
                 }
 
                 for(var i = 0; i < data.length; i++){
@@ -168,6 +179,8 @@
                     var is_accepted = data[i].is_accepted;
 
                     var elmt = " " +
+                        '<input hidden name="slug_user" value="' + slug_name + '"> ' +
+                        '<input hidden name="is_new" value="' + getNewUser(is_accepted) + '"> ' +
                         '<div class=""> ' +
                             '<div class="row"> ' +
                                 '<div class="col-2 p-0 py-3 ps-2"> ' +
@@ -203,9 +216,10 @@
 
                             '<div class="config-btn-group">' +
                                 '<hr> ' +
-                                '<button class="btn btn-detail-config primary" title="Manage role" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></button>' +
+                                '<a class="btn btn-detail-config primary" title="Manage role" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></a>' +
                                 '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
                                 getLifeButton(is_accepted, accepted_at) +
+                                '<span id="btn-submit-tag-holder"></span> ' +
                             '</div>' +
                         '</div>';
 
@@ -245,7 +259,7 @@
             var last = response.data.last_page;
 
             if(page_tag != last){
-                $('#load_more_holder_manage_tag').html('<button class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></button>');
+                $('#load_more_holder_manage_tag').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>');
             } else {
                 $('#load_more_holder_manage_tag').html('<h6 class="text-primary my-3">No more item to show</h6>');
             }
@@ -265,8 +279,8 @@
                     var slug_name = data[i].slug_name;
                     var tag_name = data[i].tag_name;
 
-                    var elmt = '<button class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                        'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'slct'+"'"+')">' + tag_name + '</button> ';
+                    var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
+                        'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'slct'+"'"+')">' + tag_name + '</a> ';
 
                     $("#data_wrapper_manage_tag").append(elmt);
                 }   
@@ -297,12 +311,15 @@
             if(found == false){
                 slct_list.push(slug_name);
                 //Check this append input value again!
-                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
             }
         } else {
             slct_list.push(slug_name);
-            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
         }
+
+        getButtonSubmitTag()
+        console.log(slct_list)
     }
 
     function removeSelectedTag(slug_name, tag_name){
@@ -313,5 +330,43 @@
 
         //Return selected tag to tag collection
         $("#data_wrapper_manage_tag").append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+"slct"+'"'+")'>"+tag_name+"</a>");
+
+        getButtonSubmitTag()
+        console.log(slct_list)
+    }
+
+    function getButtonSubmitTag(){
+        if(slct_list.length > 0){
+            var tags = "";
+
+            for(var i = 0; i < slct_list.length; i++){
+                if(i != slct_list.length - 1){
+                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>, ';
+                } else {
+                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>';
+                }
+            }
+            
+            $("#btn-submit-tag-holder").html(''+
+                '<a class="btn btn-detail-config success float-end" title="Submit Role"  data-bs-toggle="modal" href="#exampleModal"><i class="fa-solid fa-plus"></i> Assign</a> ' +
+                '<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
+                '<div class="modal-dialog"> ' +
+                    '<div class="modal-content"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="exampleModalLabel">Assign Selected Tags</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to assign ' + tags + ' to this User</h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-success">Submit</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</div> ' +
+                '</div>') ;
+        } else {
+            return $("#btn-submit-tag-holder").text('')
+        }
     }
 </script>
