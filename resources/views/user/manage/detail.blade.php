@@ -37,6 +37,9 @@
         bottom: 10px;
         width: 95%;
     }
+    .tag-manage-holder{
+
+    }
 </style>
 
 <div class="detail-box">
@@ -59,6 +62,8 @@
 </div>
 
 <script>
+    var page_tag = 1;
+
     function load_user_detail(slug_name_search) {        
         $.ajax({
             url: "/api/v1/user/" + slug_name_search,
@@ -176,15 +181,86 @@
                             '</div> ' +
                             '<h6 class="text-secondary"> Role</h6> ' +
                             getRoleArea(role) +
+                            '<h6 class="text-secondary"> Manage Role</h6> ' +
+
+                            '<div class="tag-manage-holder" id="data_wrapper_manage_tag"> ' +
+                                '<div class="auto-load-tag text-center"> ' +
+                                '<svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ' +
+                                    'x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve"> ' +
+                                    '<path fill="#000" ' +
+                                        'd="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"> ' +
+                                        '<animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" ' +
+                                            'from="0 50 50" to="360 50 50" repeatCount="indefinite" /> ' +
+                                    '</path> ' +
+                                '</svg> ' +
+                            '</div> ' +
+                            '<div id="empty_item_holder_manage_tag"></div> ' +
+                            '<span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span> ' +
+                            '</div> ' +
+
                             '<div class="config-btn-group">' +
                                 '<hr> ' +
-                                '<button class="btn btn-detail-config primary" title="Manage role"><i class="fa-solid fa-hashtag"></i></button>' +
+                                '<button class="btn btn-detail-config primary" title="Manage role" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></button>' +
                                 '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
                                 getLifeButton(is_accepted, accepted_at) +
                             '</div>' +
                         '</div>';
 
                     $("#data_wrapper_user_detail").append(elmt);
+                }   
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            console.log('Server error occured');
+        });
+    }
+
+    // infinteLoadMoreTag(page_tag);
+
+    // function loadmoretag(route){
+    //     page_tag++;
+    //     infinteLoadMoreTag(page_tag);
+    // }
+
+    function infinteLoadMoreTag(page_tag) { 
+        $.ajax({
+            url: "/api/v1/tag/12"+ "?page=" + page_tag,
+            datatype: "json",
+            type: "get",
+            beforeSend: function () {
+                $('.auto-load-tag').show();
+            }
+        })
+        .done(function (response) {
+            $('.auto-load-tag').hide();
+            var data =  response.data.data;
+            var total = response.data.total;
+            var last = response.data.last_page;
+
+            if(page_tag != last){
+                $('#load_more_holder_manage_tag').html('<button class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></button>');
+            } else {
+                $('#load_more_holder_manage_tag').html('<h6 class="text-primary my-3">No more item to show</h6>');
+            }
+
+            if (total == 0) {
+                $('#empty_item_holder_manage_tag').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                return;
+            } else if (data.length == 0) {
+                $('.auto-load-tag').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                return;
+            } else {
+                $("#data_wrapper_manage_tag").empty();
+
+                for(var i = 0; i < data.length; i++){
+
+                    //Attribute
+                    var slug_name = data[i].slug_name;
+                    var tag_name = data[i].tag_name;
+
+                    var elmt = '<button class="btn btn-tag">' + tag_name + '</button> ';
+
+                    $("#data_wrapper_manage_tag").append(elmt);
                 }   
             }
         })

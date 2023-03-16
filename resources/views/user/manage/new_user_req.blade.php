@@ -120,6 +120,14 @@
                     }
                 }
 
+                function getApprovedButton(acc){
+                    if(!acc){
+                        return '<a class="btn btn-icon-rounded-success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a>'
+                    } else {
+                        return ''
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -127,9 +135,10 @@
                     var role = data[i].role;
                     var created_at = data[i].created_at;
                     var is_accepted = data[i].is_accepted;
+                    var accepted_at = data[i].accepted_at;
 
                     var elmt = " " +
-                        '<button class="btn user-box" onclick="load_user_detail(' + "'" + slug_name + "'" + ')"> ' +
+                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + slug_name + "'" + ')"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-3 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png"> ' +
@@ -139,7 +148,7 @@
                                     '<h6 class="user-box-desc">Want to join Mi-FIK</h6> ' +
                                     '<h6 class="user-box-date">' + getCreatedAt(created_at) + '</h6> ' +
                                     '<a class="btn btn-icon-rounded-primary" style="position:absolute; right: 15px; top:15px;" title="Accept Request & Give Role"><i class="fa-solid fa-add"></i></a> ' +
-                                    '<a class="btn btn-icon-rounded-success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a> ' +
+                                    getApprovedButton(accepted_at) +
                                 '</div> ' +
                             '</div> ' +
                         '</button>';
@@ -151,5 +160,10 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             console.log('Server error occured');
         });
+    }
+
+    function loadDetailGroup(slug){
+        load_user_detail(slug)
+        infinteLoadMoreTag()
     }
 </script>

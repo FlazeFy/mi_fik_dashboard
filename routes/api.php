@@ -34,7 +34,7 @@ Route::prefix('/v1/task')->group(function () {
 });
 
 Route::prefix('/v1/tag')->group(function () {
-    Route::get('/', [TagApi::class, 'getAllTag']);
+    Route::get('/{limit}', [TagApi::class, 'getAllTag']);
     Route::post('/create', [TagApi::class, 'addTag']);
     Route::put('/update/{id}', [TagApi::class, 'updateTag']);
     Route::delete('/delete/{id}', [TagApi::class, 'deleteTag']);
