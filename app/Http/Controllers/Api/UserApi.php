@@ -111,4 +111,34 @@ class UserApi extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getUserDetail($slug_name){
+        try{
+            $select = Query::getSelectTemplate("user_detail");
+
+            $user = User::selectRaw($select)
+                ->where('slug_name', $slug_name)
+                ->limit(1)
+                ->get();
+
+            if ($user->isEmpty()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Not Found',
+                    'data' => $user
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Found',
+                    'data' => $user
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

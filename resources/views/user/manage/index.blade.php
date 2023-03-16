@@ -247,6 +247,12 @@
                 margin-inline: auto;
                 height: 100px;
             }
+            .nodata-icon-role{
+                display: block;
+                margin-inline: auto;
+                height: 140px;
+                min-height: 80px;
+            }
         </style>
     </head>
 
@@ -281,7 +287,7 @@
                             </div>
                             <div class="col-lg-4 col-md-5 col-sm-12">
                                 <div class="container-fluid bg-white rounded my-3 p-2">
-                                    
+                                    @include('user.manage.detail')
                                 </div>
                             </div>
                         </div>
