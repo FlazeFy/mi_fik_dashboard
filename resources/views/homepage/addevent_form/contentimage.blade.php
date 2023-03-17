@@ -14,6 +14,7 @@
         background-size: cover;
         background-color: black;
         height:200px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
     .image-upload{
         position: absolute;
@@ -41,7 +42,7 @@
 </style>
 
 <div class="content-image-holder">
-    <img id="frame" class="content-image shadow img img-fluid" src="{{asset('assets/default_content.jpg')}}">
+    <img id="frame" class="content-image img img-fluid" src="{{asset('assets/default_content.jpg')}}">
     <div class='image-upload' id='formFileImg' onchange='previewImage()'>
         <label for='file-input'>
             <img class='btn change-image shadow position-relative p-1' title='Change Image' src="{{asset('assets/change_image.png')}}"/>
