@@ -27,6 +27,8 @@
 
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
 
         <style>
             #content{
@@ -196,20 +198,5 @@
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
 
-        <!--Maps API Key.-->
-        <!--need billing!!!-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
-        <script>
-            let map;
-
-            function initMap() {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: { lat: -34.397, lng: 150.644 },
-                    zoom: 8,
-                });
-            }
-            
-            window.initMap = initMap;
-        </script>
     </body>
 </html>

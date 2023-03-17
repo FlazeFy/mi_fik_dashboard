@@ -41,4 +41,22 @@ class Query
 
         return $query;
     }
+
+    public static function getWhereDateTemplate($date_start, $date_end){
+        if($date_start == $date_end){
+            $query = "
+                content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'
+            "; //Check this shit
+        } else {
+            $query = "
+                (content_date_start <= '".$date_start."' and content_date_end >= '".$date_start."')
+                OR
+                (content_date_start <= '".$date_end."' and content_date_end >= '".$date_end."')
+                OR
+                (content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."')
+            ";
+        }
+        
+        return $query;
+    }
 }

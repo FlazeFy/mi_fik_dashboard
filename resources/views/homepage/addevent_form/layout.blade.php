@@ -157,7 +157,7 @@
                             @include('homepage.addevent_form.contentimage')
 
                             <label class="input-title">Event Location</label><br>
-                            <div id="map"></div>
+                            @include('homepage.addevent_form.locationpicker')
 
                             <label class="input-title mb-2">Attachment</label><br>
                             @include('homepage.addevent_form.attachment')

@@ -10,6 +10,11 @@
 
     //Validator
     function lengValidatorEvent(len, type){
+        var date_start_event = $("#date_start_event").val();
+        var date_end_event = $("#date_end_event").val();
+        var time_start_event = $("#time_start_event").val();
+        var time_end_event = $("#time_end_event").val();
+        
         if(type == "title"){
             if($("#titleInput_event").val().length >= len){
                 $("#title_msg_event").html("<i class='fa-solid fa-triangle-exclamation'></i> You reaches the maximum character");
@@ -18,7 +23,7 @@
                 $("#title_msg_event").text("");
             }
 
-            if($("#titleInput_event").val().length <= 6 || slct_list.length == 0){
+            if($("#titleInput_event").val().length <= 6 || slct_list.length == 0 || (!Date.parse(date_start_event) && !Date.parse(date_end_event) && !Date.parse(time_start_event) && !Date.parse(time_end_event)) && error){
                 $("#btn-submit-holder-event").html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
             } else {
                 $("#btn-submit-holder-event").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');

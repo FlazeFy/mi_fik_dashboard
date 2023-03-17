@@ -7,15 +7,6 @@
         @endforeach
     @endif
 
-    <h6 class="mt-2">Event Location</h6>
-    <!--Get event location-->
-    @if($c->content_loc)
-        <div id="map"></div>
-    @else
-        <img src="http://127.0.0.1:8000/assets/noloc.png" class="img nodata-icon" style="height:18vh;">
-        <h6 class="text-center text-secondary">This Event doesn't have location</h6>
-    @endif
-
     <h6 class="mt-2">Date & Time</h6>
 
     <!--Get event date start-->
