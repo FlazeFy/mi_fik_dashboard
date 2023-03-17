@@ -413,4 +413,31 @@ class ContentApi extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getStatsMostViewedEvent(){
+        try{
+            $res= ContentDetail::getMostViewedEvent(7);
+
+
+            if(count($res) > 0){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Statistic found',
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Statistic not found',
+                    'data' => null
+                ], Response::HTTP_OK);
+            }
+            
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

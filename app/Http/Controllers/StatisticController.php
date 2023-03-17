@@ -30,6 +30,7 @@ class StatisticController extends Controller
             $mostLoc = ContentDetail::getMostUsedLoc();
             foreach($setting as $set){
                 $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
+                $mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
             }
             
             //Set active nav
@@ -38,6 +39,7 @@ class StatisticController extends Controller
             return view ('statistic.index')
                 ->with('mostTag', $mostTag)
                 ->with('mostLoc', $mostLoc)
+                ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
                 ->with('createdEvent', $createdEvent);
         } else {
@@ -70,6 +72,16 @@ class StatisticController extends Controller
     {
         Setting::where('id', $id)->update([
             'CE_range' => $request->CE_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    public function update_mve(Request $request, $id)
+    {
+        Setting::where('id', $id)->update([
+            'MVE_range' => $request->MVE_range,
             'updated_at' => date("Y-m-d h:i"),
         ]);
 

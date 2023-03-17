@@ -50,6 +50,7 @@ Route::prefix('/statistic')->group(function () {
     Route::post('/update_mot/{id}', [StatisticController::class, 'update_mot']);
     Route::post('/update_mol/{id}', [StatisticController::class, 'update_mol']);
     Route::post('/update_ce/{id}', [StatisticController::class, 'update_ce']);
+    Route::post('/update_mve/{id}', [StatisticController::class, 'update_mve']);
 });
 
 Route::prefix('/event')->group(function () {
@@ -74,4 +75,5 @@ Route::prefix('/system')->group(function () {
 
 Route::prefix('/user')->group(function () {
     Route::get('/', [ManageController::class, 'index']);
+    Route::post('/manage_role', [ManageController::class, 'add_role']);
 });

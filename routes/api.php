@@ -34,7 +34,7 @@ Route::prefix('/v1/task')->group(function () {
 });
 
 Route::prefix('/v1/tag')->group(function () {
-    Route::get('/', [TagApi::class, 'getAllTag']);
+    Route::get('/{limit}', [TagApi::class, 'getAllTag']);
     Route::post('/create', [TagApi::class, 'addTag']);
     Route::put('/update/{id}', [TagApi::class, 'updateTag']);
     Route::delete('/delete/{id}', [TagApi::class, 'deleteTag']);
@@ -74,7 +74,12 @@ Route::prefix('/v1/dictionaries')->group(function() {
 });
 
 Route::prefix('/v1/user')->group(function() {
+    Route::get('/{slug_name}', [UserApi::class, 'getUserDetail']);
     Route::get('/request/new', [UserApi::class, 'getNewUserRequest']);
     Route::get('/request/old', [UserApi::class, 'getOldUserRequest']);
     Route::get('/request/dump', [UserApi::class, 'getUserRejectedRequest']);
+});
+
+Route::prefix('/v1/stats')->group(function() {
+    Route::get('/mostviewed', [ContentApi::class, 'getStatsMostViewedEvent']);
 });
