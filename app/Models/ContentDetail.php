@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\Query;
+
 class ContentDetail extends Model
 {
     use HasFactory;
@@ -14,6 +16,19 @@ class ContentDetail extends Model
     protected $table = 'contents_details';
     protected $primaryKey = 'id';
     protected $fillable = ['content_id', 'content_attach', 'content_tag', 'content_loc', 'created_at', 'updated_at'];
+
+    public static function getContentLocation(){
+        $select = Query::getSelectTemplate("content_location");
+
+        $res = ContentDetail::selectRaw($select)
+            ->leftjoin('contents_headers', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->where('is_draft', 0)
+            ->whereNot('content_loc', null)
+            ->orderBy('content_date_start','DESC')
+            ->get();
+
+        return $res;
+    }
 
     //Statistic
     public static function getMostUsedTag(){
