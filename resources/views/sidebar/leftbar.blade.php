@@ -31,7 +31,7 @@
         font-size: 15.5px;
         padding:4px;
         font-weight:500;
-        margin-bottom:15px;
+        margin-bottom:18px;
     }
     #sidebar ul li > ul {
         margin-left: 10px;
@@ -177,6 +177,9 @@
             </li>
             <li class="">
                 <a href="{{ url('/setting') }}"><i class="fa-solid fa-gear me-3"></i> Setting</a>
+            </li>
+            <li class="">
+                <a href="{{ url('/about') }}"><i class="fa-solid fa-regular fa-circle-info me-3"></i> About</a>
             </li>
         </ul>
         <!-- <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button> -->
