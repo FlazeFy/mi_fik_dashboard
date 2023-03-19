@@ -8,6 +8,9 @@
         -webkit-transition: all 0.3s;
         -o-transition: all 0.3s;
         transition: all 0.3s;
+        flex-direction: column;
+        height: 100vh;
+        overflow-y: scroll;
     }
     #sidebar.active {
         margin-left: -300px;
@@ -43,6 +46,22 @@
         color: var(--text2);
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
+    .accordion{
+        border: none;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+    }
+    .btn-accordion-custom{
+        border: none;
+        /* padding: 0; */
+        margin: 0;
+        background: transparent;
+        width: 100%;
+        text-align: left;
+        color: #5B5B5c;
+        font-weight:500;
+    }
 
     /*li*/
     #sidebar ul li.active, #sidebar ul li:hover {
@@ -54,13 +73,16 @@
         -o-transition: all 0.6s;
         transition: all 0.6s;
     }
-    #sidebar ul li.active {
+    #sidebar ul li.active, #sidebar ul li.active .btn-accordion-custom {
         background:#F78A00;
-        color:whitesmoke;
+        color:whitesmoke !important;
     }
     #sidebar ul li:hover:not(.active) {
         color:#F78A00;
         border-left:12px solid #F78A00;
+    }
+    #sidebar ul li:hover:not(.active) .btn-accordion-custom {
+        color:#F78A00;
     }
 
     /*li icon*/
@@ -110,52 +132,57 @@
         </div>
     </div>
     <!--Main Navbar.-->
-    <ul class="list-unstyled components my-5">
-        <li class="<?php if(session()->get('active_nav') == "homepage"){ echo " active"; }?>">
-            <a href="{{ url('/homepage') }}"><i class="fa-solid fa-home me-3"></i> Homepage</a>
-        </li>
-        <li class="<?php if(session()->get('active_nav') == "event"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsEvent">
-            <a><i class="fa-regular fa-calendar me-3"></i> Events</a>
-        </li>
-        <div class="collapse ps-4" id="clpsEvent">
-            <li class="">
-                <a href="{{ url('/event/tag') }}"><i class="fa-solid fa-hashtag me-3"></i> Tag</a>
+    <div class="accordion" id="accordionExample">
+        <ul class="list-unstyled components my-5">
+            <li class="<?php if(session()->get('active_nav') == "homepage"){ echo " active"; }?>">
+                <a href="{{ url('/homepage') }}"><i class="fa-solid fa-home me-3"></i> Homepage</a>
+            </li>
+            <li class="accordion-header <?php if(session()->get('active_nav') == "event"){ echo " active"; }?>">
+                <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clpsEvent"><i class="fa-regular fa-calendar me-3"></i> Events</button>
+            </li>
+            <div class="collapse ps-4" id="clpsEvent" data-bs-parent="#accordionExample">
+                <li class="">
+                    <a href="{{ url('/event/tag') }}"><i class="fa-solid fa-hashtag me-3"></i> Tag</a>
+                </li>
+                <li class="">
+                    <a href="{{ url('/event/location') }}"><i class="fa-solid fa-location-dot me-3"></i> Location</a>
+                </li>
+                <li class="">
+                    <a href="{{ url('/event/calendar') }}"><i class="fa-solid fa-calendar me-3"></i> Calendar</a>
+                </li>
+            
+            </div>
+            <li class="<?php if(session()->get('active_nav') == "user"){ echo " active"; }?>">
+                <a href="{{ url('/user') }}"><i class="fa-solid fa-user-pen me-3"></i> Manage User</a>
+            </li>
+            <li class="accordion-header <?php if(session()->get('active_nav') == "system"){ echo " active"; }?>">
+                <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clpsSystem"><i class="fa-solid fa-globe me-3"></i> System</button>
+            </li>
+            <div class="collapse ps-4" id="clpsSystem" data-bs-parent="#accordionExample">
+                <li class="">
+                    <a href="{{ url('/system/maintenance') }}"><i class="fa-solid fa-screwdriver-wrench me-3"></i> Maintenance</a>
+                </li>
+                <li class="">
+                    <a href="{{ url('/system/notification') }}"><i class="fa-solid fa-bell me-3"></i> Notification</a>
+                </li>
+                <li class="">
+                    <a href="{{ url('/system/dictionary') }}"><i class="fa-solid fa-book me-3"></i> Dictionary</a>
+                </li>
+            </div>
+            <li class="<?php if(session()->get('active_nav') == "statistic"){ echo " active"; }?>">
+                <a href="{{ url('/statistic') }}"><i class="fa-solid fa-chart-line me-3"></i> Statistic</a>
             </li>
             <li class="">
-                <a href="{{ url('/event/location') }}"><i class="fa-solid fa-location-dot me-3"></i> Location</a>
+                <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> History</a>
             </li>
             <li class="">
-                <a href="{{ url('/event/calendar') }}"><i class="fa-solid fa-calendar me-3"></i> Calendar</a>
+                <a href="{{ url('/setting') }}"><i class="fa-solid fa-gear me-3"></i> Setting</a>
             </li>
-           
-        </div>
-        <li class="<?php if(session()->get('active_nav') == "user"){ echo " active"; }?>">
-            <a href="{{ url('/user') }}"><i class="fa-solid fa-user-pen me-3"></i> Manage User</a>
-        </li>
-        <li class="<?php if(session()->get('active_nav') == "system"){ echo " active"; }?>" data-bs-toggle="collapse" href="#clpsSystem">
-            <a><i class="fa-solid fa-globe me-3"></i> System</a>
-        </li>
-        <div class="collapse ps-4" id="clpsSystem">
-            <li class="">
-                <a href="{{ url('/system/maintenance') }}"><i class="fa-solid fa-screwdriver-wrench me-3"></i> Maintenance</a>
-            </li>
-            <li class="">
-                <a href="{{ url('/system/notification') }}"><i class="fa-solid fa-bell me-3"></i> Notification</a>
-            </li>
-            <li class="">
-                <a href="{{ url('/system/dictionary') }}"><i class="fa-solid fa-book me-3"></i> Dictionary</a>
-            </li>
-        </div>
-        <li class="<?php if(session()->get('active_nav') == "statistic"){ echo " active"; }?>">
-            <a href="{{ url('/statistic') }}"><i class="fa-solid fa-chart-line me-3"></i> Statistic</a>
-        </li>
-        <li class="">
-            <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> History</a>
-        </li>
-    </ul>
-    <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button>
-    <button class="btn btn-transparent text-danger fw-bolder position-absolute" style='bottom:20px; right:10px;' title="Sign Out"
-        data-bs-toggle="modal" data-bs-target="#sign-out-modal"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button>
+        </ul>
+        <!-- <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button> -->
+        <!-- <button class="btn btn-transparent text-danger fw-bolder position-absolute" style='bottom:20px; right:10px;' title="Sign Out"
+            data-bs-toggle="modal" data-bs-target="#sign-out-modal"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button> -->
+    </div>
 </nav>
 
 @include('popup.signout')

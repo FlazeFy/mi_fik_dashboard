@@ -27,11 +27,14 @@
                     $full_coor = json_decode($full_coor);
 
                     foreach($full_coor as $fc){
+                        if($fc->type == "name"){
+                            $name = $fc->detail;
+                        }
                         if($fc->type == "coordinate"){
                             $coor = explode(", ", $fc->detail);
                             echo "{
                                 coords:{lat:".$coor[0].",lng:".$coor[1]."},
-                                content:'<div><h4>".$loc->content_title."</h4><p>".$loc->content_desc."</p></div>'
+                                content:'<div><h6>".$loc->content_title."</h6><p>".$loc->content_desc."</p><b><i class=".'"'."fa-solid fa-house".'"'."></i> ".$name."</b><br><b><i class=".'"'."fa-regular fa-circle-dot".'"'."></i> ".$coor[0].", ".$coor[0]."</b><hr><a class=".'"'."btn btn-primary py-1 px-2".'"'." onclick=".'"'."location.href=".'`'."/event/detail/".$loc->slug_name.'`' .';"'.">See Detail</a></div>'
                                 },";
                         }
                     }
