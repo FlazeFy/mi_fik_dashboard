@@ -160,6 +160,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="container-fluid bg-white rounded my-3 p-2">
                                 @include('statistic.mostTag')
+                                @include('statistic.mostRole')
                             </div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12">
