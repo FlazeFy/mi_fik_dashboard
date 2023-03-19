@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Statistic</title>
+        <title>Event | Location</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,6 +27,13 @@
 
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+        <!--Full calendar.-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/fullcalendar@5.11.2/main.min.css,npm/fullcalendar@5.11.2/main.min.css" />
+        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.js'></script>
+        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/locales-all.min.js'></script>
+        <script type='text/javascript' src='https://cdn.jsdelivr.net/combine/npm/fullcalendar@5.11.2,npm/fullcalendar@5.11.2/locales-all.min.js,npm/fullcalendar@5.11.2/locales-all.min.js,npm/fullcalendar@5.11.2/main.min.js'></script>
 
         <style>
             #content{
@@ -137,8 +144,11 @@
             .nodata-icon{
                 display: block;
                 margin-inline: auto;
-                height: 30vh;
                 min-height: 80px;
+            }
+            .btn-submit{
+                background: #00c363;
+                color: whitesmoke !important;
             }
         </style>
     </head>
@@ -153,24 +163,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
-                        @include('statistic.createdEvent')
-                    </div>
-                    <div class="row p-0 m-0">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostTag')
-                                @include('statistic.mostRole')
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostLoc')
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
-                       @include('statistic.mostViewedEvent')
+                    <div class="container-fluid bg-white rounded my-5 p-3">
+                        @include('event.location.discover')
                     </div>
                 </div>
             </div>
@@ -178,7 +172,6 @@
 
         <!--Modal-->
         @include('popup.success')
-        @include('popup.failed')
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>

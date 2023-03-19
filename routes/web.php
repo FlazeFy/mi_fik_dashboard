@@ -11,6 +11,7 @@ use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 use App\Http\Controllers\Event\CalendarController;
+use App\Http\Controllers\Event\LocationController;
 
 use App\Http\Controllers\System\NotificationController;
 
@@ -66,6 +67,8 @@ Route::prefix('/event')->group(function () {
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
+
+    Route::get('/location', [LocationController::class, 'index']);
 });
 
 Route::prefix('/system')->group(function () {
