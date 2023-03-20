@@ -1,0 +1,9 @@
+.form-check-input{
+    height:23px;
+    width:23px;
+    cursor:pointer;
+}
+.form-check-input:checked{
+    background-color:#F78A00 !important;
+    border:none;
+}
