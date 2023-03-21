@@ -6,3 +6,16 @@
     background: #F78A00 !important;
     border:none;
 }
+.btn-primary-v{
+    background: #FFDEB4 !important;
+    color: #F78A00 !important;
+    z-index: 998 !important;
+}
+.btn-hide-bar{
+    color: white !important;
+}
+.btn-config-holder{
+    display:flex !important; 
+    flex-direction: row; 
+    justify-content: start;
+}

@@ -1,7 +1,6 @@
 <style>
     #calendar {
         width: 100%;
-        margin: 40px auto;
     }
 </style>
 
@@ -13,8 +12,8 @@
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         headerToolbar: {
-            center: 'prev,next today',
-            left: 'title',
+            left: 'prev,next today',
+            center: 'title',
             //right: 'dayGridMonth'
             right: 'dayGridMonth,timeGridWeek,timeGridDay'
         },
@@ -30,78 +29,6 @@
                 foreach($content as $ct){
                     if($ct->content_date_start){
                         echo "
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
-                            {
-                                groupId: '".$i."',
-                                title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
-                                extendedProps: {
-                                    slug_name: '".$ct->slug_name."'
-                                }
-                            },
                             {
                                 groupId: '".$i."',
                                 title: '".$ct->content_title."',

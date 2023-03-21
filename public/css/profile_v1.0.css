@@ -1,0 +1,46 @@
+.sign-out-area{
+    background: #F85D59;
+    border-radius: 0 0  15px 15px;
+    color: white !important;
+}
+.sign-out-area .dropdown-item{
+    color: white !important;
+}
+.sign-out-area .dropdown-item .notification{
+    position: absolute;
+    right: 10px !important;
+    top: 0 !important;
+}
+
+.sign-out-area .dropdown-item:hover{
+    background: none;
+}
+.item-notification{
+    position: absolute;
+    right: 10px;
+    top: 11px;
+    color: #F78A00;
+    font-size: 15px;
+    font-weight: 500;
+}
+.user-username{
+    font-size:18px;
+    font-weight:500;
+    margin:0px;
+    color: whitesmoke;
+}
+.user-role{
+    font-size:15px;
+    font-weight:400;
+    margin:0px;
+    color: whitesmoke;
+}
+.user-image{
+    border:2px solid whitesmoke;
+    width:45px;
+    height:45px;
+    cursor:pointer; /*if we can view other user profile*/
+    border-radius:30px;
+    margin-inline:auto;
+    display: block;
+}

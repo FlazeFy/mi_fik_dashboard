@@ -37,6 +37,8 @@
         <link rel="stylesheet" href="{{ asset('/css/main/global_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/calendar_v1.0.css') }}"/>
     </head>
@@ -51,7 +53,7 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-white rounded my-5 p-3">
+                    <div class="content-section" style="position:relative;">
                         @include('event.calendar.filter_tag')
                         @include('event.calendar.calendar')
                     </div>

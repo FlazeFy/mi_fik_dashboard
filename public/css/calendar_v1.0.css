@@ -13,16 +13,24 @@
 .fc-header-toolbar.fc-toolbar.fc-toolbar-ltr{
     position: relative;
 }
-.fc-toolbar-chunk .fc-button-group button{
+.fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary{
     padding: 6px 8px !important;
     border: 1.75px solid #FFDeB4 !important;
     padding: 6px 8px !important;
     background: transparent;
     color: #FB8C00;
 }
-.fc-toolbar-chunk .fc-button-group button.fc-button-active, .fc-toolbar-chunk .fc-button-group button:hover{
+.fc-toolbar-chunk .fc-button-group button.fc-button-active, .fc-toolbar-chunk .fc-button-group button:hover, .fc-today-button.fc-button.fc-button-primary:disabled{
     background: #FFDeB4 !important;
     color: #FB8C00 !important;
+    border: none; 
+}
+.fc-header-toolbar.fc-toolbar.fc-toolbar-ltr .fc-toolbar-chunk:nth-child(2n)  {
+    position: absolute;
+    margin-left: 18vh;
+}
+.fc-next-button.fc-button.fc-button-primary, .fc-prev-button.fc-button.fc-button-primary{
+    border: none !important;
 }
 
 /* Day Grid */
@@ -67,6 +75,14 @@ a.fc-daygrid-day-number{
     transform: scale(1.175);
     z-index: 999 !important;
 }
+.fc-timegrid-event:hover{
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+    transform: scaleX(1.1);
+    z-index: 999 !important;
+}
+
 th.fc-col-header-cell.fc-day{
     background: #FFDEB4;
     padding: 10px;
@@ -85,9 +101,8 @@ td.fc-daygrid-day.fc-day{
     border: 1.25px solid #414141 !important;
     height: 40px !important;
 }
-.fc-daygrid-event{
+.fc-daygrid-event, .fc-timegrid-event{
     background: #E4F5FF !important;
-    padding: 6px 0 8px 0 !important;
     white-space: normal !important;
     margin: 0 10px 10px 15px !important;
     font-weight: 500;
@@ -95,12 +110,26 @@ td.fc-daygrid-day.fc-day{
     border-left: 2.5px solid #42C9E7;
     position: relative;
     cursor: pointer;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2.4px 4px;
 }
-.fc-daygrid-event:last-child {
+
+.fc-daygrid-event.fc-daygrid-dot-event{
+    padding: 6px 0 8px 4px !important;
+}
+.fc-daygrid-event.fc-daygrid-block-event{
+    padding: 6px 0 8px 10px !important;
+}
+.fc-v-event .fc-event-title-container{
+    padding: 8px !important;
+}
+
+.fc-daygrid-event:last-child, .fc-timegrid-event:last-child {
     padding-bottom: 0;
 }
-.fc-daygrid-event::before {
+.fc-daygrid-event::before, .fc-timegrid-event::before {
     content: "";
     position: absolute;
     width: 12.5px;
@@ -111,7 +140,7 @@ td.fc-daygrid-day.fc-day{
     background: white;
     border: 2.5px solid #42C9E7;
 }
-.fc-daygrid-event .fc-event-title{
+.fc-daygrid-event .fc-event-title, .fc-timegrid-event .fc-event-title{
     font-size: 11px;
     font-weight: 500; /*Medium*/
 }

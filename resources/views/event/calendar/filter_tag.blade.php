@@ -12,8 +12,8 @@
 </style>
 
 <div class="position-relative me-2">
-    <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false"><i class="fa-solid fa-hashtag"></i> 
+    <button class="btn btn-primary-v px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false" style="position:absolute; right:18vh; top:2px;"><i class="fa-solid fa-hashtag"></i> 
         @php($tag_coll = session()->get('selected_tag_calendar'))
         @if($tag_coll != "All")
             {{count($tag_coll)}} Selected Tags
