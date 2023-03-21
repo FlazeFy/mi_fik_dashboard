@@ -8,7 +8,9 @@
         <i class="fa fa-bars"></i>
         <span class="sr-only">Toggle Menu</span>
     </button>
-
+    <div class="navbar-title">
+        <h5>Today's Event</h5>
+    </div>
     <div class="dropdown dd-profil">
         <div class="btn btn-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             <div class="row p-0 m-0">

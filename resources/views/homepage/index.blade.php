@@ -33,6 +33,8 @@
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
+
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         
     </head>
@@ -49,17 +51,12 @@
 
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
                         <div class="position-relative">
-                            <h5 class="text-secondary fw-bold">Today's Event</h5>
                             <div class="row mt-3"> 
-                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
+                                <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
                                     @include('homepage.addevent_form.layout')
                                 </div>
-                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
-                                    <!-- @include('homepage.addtask_form.layout') -->
+                                <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
                                     @include('homepage.addAnnouncement')
-                                </div>
-                                <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
-                                    
                                 </div>
                             </div>
                             <div class="mt-2 btn-config-holder">

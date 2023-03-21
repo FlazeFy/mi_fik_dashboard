@@ -32,228 +32,19 @@
             });
         </script>
 
-        <!--Apex Chart-->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <!--CSS Collection-->
+        <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/global_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
 
-        <style>
-            #content{
-                background:#D9D9D9;
-                height:100vh;
-                width: 100%;
-            }
-            .text-danger{
-                color:#F85D59 !important;
-            }
-            .text-secondary{
-                color: #5B5B5B !important;
-            }
-            .btn-primary{
-                background: #F78A00 !important;
-                border:none;
-            }
-            .content-title{
-                font-weight:500;
-                color:#414141;
-            }
-            .content-add, .content-more{
-                font-weight:500;
-                color:#F78A00;
-                float:right;
-                background:none;
-                border:none;
-                text-decoration:none !important;
-                cursor: pointer;
-                padding:3px 9px;
-                margin:0px;
-                border-radius:6px;
-            }
-            .content-add:hover, .content-more:hover{
-                color:whitesmoke;
-                background:#F78A00;
-            }
-            .content-more-floating{
-                font-weight:500;
-                color:#F78A00;
-                background:white;
-                border:1.5px solid #F78A00;
-                text-decoration:none !important;
-                cursor: pointer;
-                padding:3px 9px;
-                margin:0px;
-                border-radius:6px;
-                font-size: 12.5px;
-                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-            }
-            .content-more-floating:hover{
-                color:whitesmoke;
-                background:#F78A00;
-            }
-
-            .text-primary{
-                color: #F78A00 !important;
-            }
-            .bg-primary{
-                background: #F78A00 !important;
-            }
-
-            /*Custom checkbox*/
-            .form-check-input{
-                height:23px;
-                width:23px;
-                cursor:pointer;
-            }
-            .form-check-input:checked{
-                background-color:#F78A00 !important;
-                border:none;
-            }
-            #content{
-                overflow:auto;
-            }
-            .content-body{
-                max-width:1080px;
-                display:block;
-                margin-inline:auto;
-            }
-            
-            .btn-link{
-                text-decoration:none;
-                padding:10px 16px;
-                border-radius:5px;
-                color:#F78A00;
-                background:transparent;
-                font-weight:500;
-                font-size:16px;
-            }
-
-            .btn-link:hover{
-                color:white;
-                background:#F78A00;
-            }
-
-            .modal-content{
-                margin-top:7vh;
-            }
-            .modal-body{
-                position:relative;
-            }
-            .custom-close-modal{
-                position:absolute !important;
-                top:-20px;
-                background:white;
-                width:45px;
-                right:10px;
-                height:45px;
-                padding:6px;
-                color:#F85D59;
-                border-radius:100%;
-                border:none;
-                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-                transition: all 0.4s;
-            }
-            .custom-submit-modal{
-                position:absolute !important;
-                bottom:-20px;
-                background:white;
-                right:10px;
-                height:45px;
-                padding:6px 12px;
-                color:#00C363;
-                border-radius:6px;
-                border:none;
-                box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-                transition: all 0.4s;
-            }
-
-            .custom-close-modal:hover{
-                background:#F85D59;
-                color:whitesmoke;
-            }
-            .custom-submit-modal:hover{
-                background:#00C363;
-                color:whitesmoke;
-            }
-
-            .incoming-req-box{
-                position: relative;
-                height: 500px;
-            }
-            .user-req-holder{
-                margin-top: 20px;
-                padding: 5px 16px 0 5px;
-                display: flex;
-                flex-direction: column;
-                max-height: 90%;
-                overflow-y: scroll;
-            }
-            .user-box{
-                border-left: 3px solid #808080;
-                border-radius: 10px;
-                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-                padding: 5px;
-                width: 100%;
-                border: none;
-                text-align: start;
-                background: white;
-                margin-bottom: 15px;
-            }
-            .user-box-desc{
-                font-size: 11.5px;
-                font-weight: normal;
-                margin: 0;
-            }
-            .user-box-date{
-                font-size: 11.5px;
-                font-weight: normal;
-                color: #808080;
-                margin: 0;
-            }
-
-
-            /*Global*/
-            .btn-icon-rounded-danger{
-                color: #D5534C;
-                border-radius: 100%;
-                width: 40px;
-                height: 40px;
-            }
-            .btn-icon-rounded-danger:hover{
-                background: #D5534C;
-                color: whitesmoke;
-            }
-
-            .btn-icon-rounded-success{
-                color: #58C06E;
-                border-radius: 100%;
-                width: 40px;
-                height: 40px;
-            }
-            .btn-icon-rounded-success:hover{
-                background: #58C06E;
-                color: whitesmoke;
-            }
-
-            .btn-icon-rounded-primary{
-                color: #F78A00;
-                border-radius: 100%;
-                width: 40px;
-                height: 40px;
-            }
-            .btn-icon-rounded-primary:hover{
-                background: #F78A00;
-                color: whitesmoke;
-            }
-            .nodata-icon-req{
-                display: block;
-                margin-inline: auto;
-                height: 100px;
-            }
-            .nodata-icon-role{
-                display: block;
-                margin-inline: auto;
-                height: 140px;
-                min-height: 80px;
-            }
-        </style>
+        <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
+        
     </head>
 
     <body>
@@ -271,22 +62,22 @@
                             <div class="col-lg-8 col-md-7 col-sm-12">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="container-fluid bg-white rounded my-3 p-2">
+                                        <div class="content-section-small">
                                             @include('user.manage.old_user_req')
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="container-fluid bg-white rounded my-3 p-2">
+                                        <div class="content-section-small">
                                             @include('user.manage.new_user_req')
                                         </div>
                                     </div>
                                 </div>
-                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                <div class="content-section-small">
                                     
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-5 col-sm-12">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                <div class="content-section-small">
                                     @include('user.manage.detail')
                                 </div>
                             </div>

@@ -1,45 +1,5 @@
 <style>
-    .btn-tag{
-        background:white;
-        padding: 6px 8px;
-        border-radius:12px;
-        margin:4px;
-        color:#414141;
-        font-weight:400;
-        border:1.5px solid #F78A00;
-    }
-    .btn-tag:hover, .btn-tag-selected{
-        background:#F78A00;
-        padding: 6px 8px;
-        border-radius:12px;
-        margin:4px;
-        color:whitesmoke !important;
-    }
-    .btn-detail-config{
-        color:whitesmoke !important;
-        margin-right:6px;
-    }
-    .btn-detail-config.primary{
-        background:#F78A00;
-    }
-    .btn-detail-config.danger{
-        background:#D5534C;
-    }
-    .btn-detail-config.success{
-        background:#58C06E;
-    }
-    .detail-box{
-        height: 80vh;
-        position: relative;
-    }
-    .config-btn-group{
-        position: absolute;
-        bottom: 10px;
-        width: 95%;
-    }
-    .tag-manage-holder{
-
-    }
+    
 </style>
 
 <div class="detail-box">

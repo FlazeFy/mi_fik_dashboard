@@ -12,6 +12,15 @@
     margin-top: 40px;
     margin-bottom: 40px;
     padding: 25px;
+    position: relative;
+}
+.content-section-small{
+    border-radius: 10px;
+    background: white;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding: 15px;
+    position: relative;
 }
 
 /* Layout */
@@ -71,4 +80,8 @@
     border-radius: 30px;
     padding-left:6px;
     text-align:left;
+}
+
+.item-stack-holder{
+    width: 100px !important;
 }

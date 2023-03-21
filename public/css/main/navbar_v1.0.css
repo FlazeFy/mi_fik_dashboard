@@ -10,3 +10,9 @@
     z-index: 999 !important;
     margin-top: 50px;
 }
+.navbar-title{
+    position: absolute;
+    top: 26px;
+    color: white;
+    left: 70px;
+}

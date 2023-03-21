@@ -32,6 +32,16 @@
 .fc-next-button.fc-button.fc-button-primary, .fc-prev-button.fc-button.fc-button-primary{
     border: none !important;
 }
+.calendar-tag-holder {
+    position: absolute; 
+    right: 20vh; 
+    z-index:999;
+}
+.calendar-tag-holder .btn-primary{
+    background: #FFDEB4 !important;
+    color: #F78A00 !important;
+    z-index: 998 !important;
+}
 
 /* Day Grid */
 .fc-daygrid-event-dot{

@@ -38,6 +38,7 @@
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/calendar_v1.0.css') }}"/>
@@ -53,8 +54,10 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section" style="position:relative;">
-                        @include('event.calendar.filter_tag')
+                    <div class="content-section">
+                        <div class="calendar-tag-holder">
+                            @include('event.calendar.filter_tag')
+                        </div>
                         @include('event.calendar.calendar')
                     </div>
                 </div>
