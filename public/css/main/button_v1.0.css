@@ -1,0 +1,133 @@
+.btn-submit{
+    background: #00c363;
+    color: whitesmoke !important;
+}
+.btn-primary{
+    background: #F78A00 !important;
+    border:none;
+}
+.btn-noline{
+    background: transparent;
+    border:none;
+    color: #343434;
+}
+.btn-primary-v{
+    background: #FFDEB4 !important;
+    color: #F78A00 !important;
+    z-index: 998 !important;
+}
+.btn-hide-bar{
+    color: white !important;
+}
+.btn-config-holder{
+    display:flex !important; 
+    flex-direction: row; 
+    justify-content: start;
+}
+
+.btn-tag{
+    background:white;
+    padding: 6px 8px;
+    border-radius:12px;
+    margin:4px;
+    color:#414141;
+    font-weight:400;
+    border:1.5px solid #F78A00;
+}
+.btn-tag:hover, .btn-tag-selected{
+    background:#F78A00;
+    padding: 6px 8px;
+    border-radius:12px;
+    margin:4px;
+    color:whitesmoke !important;
+}
+.btn-detail-config{
+    color:whitesmoke !important;
+    margin-right:6px;
+}
+.btn-detail-config.primary{
+    background:#F78A00;
+}
+.btn-detail-config.danger{
+    background:#D5534C;
+}
+.btn-detail-config.success{
+    background:#58C06E;
+}
+.detail-box{
+    height: 80vh;
+    position: relative;
+}
+.config-btn-group{
+    position: absolute;
+    bottom: 10px;
+    width: 95%;
+}
+.tag-manage-holder{
+
+}
+
+.btn-link{
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:5px;
+    color:#F78A00;
+    background:transparent;
+    font-weight:500;
+    font-size:16px;
+}
+.btn-link:hover{
+    color:white;
+    background:#F78A00;
+}
+
+.btn-icon-rounded-danger{
+    color: #D5534C;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+.btn-icon-rounded-danger:hover{
+    background: #D5534C;
+    color: whitesmoke;
+}
+
+.btn-icon-rounded-success{
+    color: #58C06E;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+.btn-icon-rounded-success:hover{
+    background: #58C06E;
+    color: whitesmoke;
+}
+
+.btn-icon-rounded-primary{
+    color: #F78A00;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+.btn-icon-rounded-primary:hover{
+    background: #F78A00;
+    color: whitesmoke;
+}
+
+.content-more-floating{
+    font-weight:500;
+    color:#F78A00;
+    background:white;
+    border:1.5px solid #F78A00;
+    text-decoration:none !important;
+    cursor: pointer;
+    padding:3px 9px;
+    margin:0px;
+    border-radius:6px;
+    font-size: 12.5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.content-more-floating:hover{
+    color:whitesmoke;
+    background:#F78A00;
+}

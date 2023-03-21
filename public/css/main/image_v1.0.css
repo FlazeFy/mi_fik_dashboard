@@ -1,0 +1,16 @@
+.nodata-icon{
+    display: block;
+    margin-inline: auto;
+    min-height: 80px;
+}
+.nodata-icon-req{
+    display: block;
+    margin-inline: auto;
+    height: 100px;
+}
+.nodata-icon-role{
+    display: block;
+    margin-inline: auto;
+    height: 140px;
+    min-height: 80px;
+}
