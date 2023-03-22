@@ -9,7 +9,7 @@
         <span class="sr-only">Toggle Menu</span>
     </button>
     <div class="navbar-title">
-        <h5>Today's Event</h5>
+        <h5>{{$greet}}</h5>
     </div>
     <div class="dropdown dd-profil">
         <div class="btn btn-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

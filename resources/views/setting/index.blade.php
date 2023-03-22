@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Statistic</title>
+        <title>Setting</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -17,16 +17,20 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>  
 
-        <!-- Include stylesheet -->
-        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-        <!--Apex Chart-->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+        <!-- Jquery DataTables -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+        <!-- Bootstrap dataTables Javascript -->
+        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $('#notifTable').DataTable();
+            });
+        </script>
 
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
@@ -36,6 +40,8 @@
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
+
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         
     </head>
@@ -50,24 +56,13 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
-                        @include('statistic.createdEvent')
-                    </div>
-                    <div class="row p-0 m-0">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostTag')
-                                @include('statistic.mostRole')
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="content-section p-0 pt-3">
+                                <h5 class="mx-3">Chart Range</h5><hr>
+                                @include('setting.chart')
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostLoc')
-                            </div>
-                        </div>
-                    </div>
-                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
-                       @include('statistic.mostViewedEvent')
                     </div>
                 </div>
             </div>
@@ -75,9 +70,18 @@
 
         <!--Modal-->
         @include('popup.success')
-        @include('popup.failed')
+
+        <script>
+            //Popover
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
+
+        </script>
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+
     </body>
 </html>

@@ -175,7 +175,7 @@
             <li class="">
                 <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> History</a>
             </li>
-            <li class="">
+            <li class="<?php if(session()->get('active_nav') == "setting"){ echo " active"; }?>">
                 <a href="{{ url('/setting') }}"><i class="fa-solid fa-gear me-3"></i> Setting</a>
             </li>
             <li class="">

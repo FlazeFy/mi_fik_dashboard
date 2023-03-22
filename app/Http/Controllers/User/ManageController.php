@@ -23,18 +23,20 @@ class ManageController extends Controller
     {
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'user');
 
-            return view('user.manage.index');
+            return view('user.manage.index')
+                ->with('greet',$greet);
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');
         }
     }
 
-    public function add_role(Request $request)
+    public function add_role_acc(Request $request)
     {
         //Helpers
         if(session()->get('slug_key')){
@@ -53,14 +55,74 @@ class ManageController extends Controller
                 'updated_at' => date("Y-m-d H:i"),
                 'accepted_at' => date("Y-m-d H:i")
             ]);
+
+            return redirect()->back()->with('success_message', 'Assign role success & Access granted');
         } else {
             User::where('id', $user_id)->update([
                 'role' => $tag,
                 'updated_by' => $admin_id,
                 'updated_at' => date("Y-m-d H:i")
             ]);
+
+            return redirect()->back()->with('success_message', 'Assign role success');
+        }
+    }
+
+    public function add_acc(Request $request)
+    {
+        //Helpers
+        if(session()->get('slug_key')){
+            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         }
 
-        return redirect()->back()->with('success_message', 'Assign role success');
+        $user_id = Generator::getUserId($request->slug_user, 2); 
+
+        User::where('id', $user_id)->update([
+            'updated_by' => $admin_id,
+            'is_accepted' => 1,
+            'accepted_by' => $admin_id,
+            'updated_at' => date("Y-m-d H:i"),
+            'accepted_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', 'Access granted');
+    }
+
+    public function add_suspend(Request $request)
+    {
+        //Helpers
+        if(session()->get('slug_key')){
+            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        }
+
+        $user_id = Generator::getUserId($request->slug_user, 2); 
+
+        User::where('id', $user_id)->update([
+            'updated_by' => $admin_id,
+            'is_accepted' => 0,
+            'accepted_by' => $admin_id,
+            'updated_at' => date("Y-m-d H:i"),
+            'accepted_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', 'Account suspended');
+    }
+
+    public function add_recover(Request $request)
+    {
+        //Helpers
+        if(session()->get('slug_key')){
+            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        }
+
+        $user_id = Generator::getUserId($request->slug_user, 2); 
+
+        User::where('id', $user_id)->update([
+            'updated_by' => $admin_id,
+            'is_accepted' => 1,
+            'updated_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', 'Account recovered');
     }
 }
