@@ -36,7 +36,7 @@ class ManageController extends Controller
         }
     }
 
-    public function add_role(Request $request)
+    public function add_role_acc(Request $request)
     {
         //Helpers
         if(session()->get('slug_key')){
@@ -55,14 +55,36 @@ class ManageController extends Controller
                 'updated_at' => date("Y-m-d H:i"),
                 'accepted_at' => date("Y-m-d H:i")
             ]);
+
+            return redirect()->back()->with('success_message', 'Assign role success & Access granted');
         } else {
             User::where('id', $user_id)->update([
                 'role' => $tag,
                 'updated_by' => $admin_id,
                 'updated_at' => date("Y-m-d H:i")
             ]);
+
+            return redirect()->back()->with('success_message', 'Assign role success');
+        }
+    }
+
+    public function add_acc(Request $request)
+    {
+        //Helpers
+        if(session()->get('slug_key')){
+            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         }
 
-        return redirect()->back()->with('success_message', 'Assign role success');
+        $user_id = Generator::getUserId($request->slug_user, 2); 
+
+        User::where('id', $user_id)->update([
+            'updated_by' => $admin_id,
+            'is_accepted' => 1,
+            'accepted_by' => $admin_id,
+            'updated_at' => date("Y-m-d H:i"),
+            'accepted_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', '::'.$request->slug_user);
     }
 }

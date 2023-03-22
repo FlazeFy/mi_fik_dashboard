@@ -79,7 +79,8 @@ Route::prefix('/system')->group(function () {
 
 Route::prefix('/user')->group(function () {
     Route::get('/', [ManageController::class, 'index']);
-    Route::post('/manage_role', [ManageController::class, 'add_role']);
+    Route::post('/manage_role_acc', [ManageController::class, 'add_role_acc']);
+    Route::post('/manage_acc', [ManageController::class, 'add_acc']);
 });
 
 Route::prefix('/setting')->group(function () {

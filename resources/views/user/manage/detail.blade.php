@@ -3,7 +3,7 @@
 </style>
 
 <div class="detail-box">
-    <form action="/user/manage_role" method="POST">
+    <form action="/user/manage_role_acc" method="POST">
         @csrf
         <h5 class="text-secondary fw-bold"><span class="text-primary" id="detail_body"></span> Detail</h5>
         <div class="user-req-holder" id="data_wrapper_user_detail">
@@ -22,6 +22,7 @@
             <span id="load_more_holder_user_detail" style="display: flex; justify-content:center;"></span>
         </div>
     </form>
+    <span id="acc-user-holder"></span>
 </div>
 
 <script>
@@ -109,7 +110,7 @@
 
                 function getLifeButton(acc, acc_date){
                     if(!acc && !acc_date){
-                        return '<a class="btn btn-detail-config success" title="Approve Account"><i class="fa-solid fa-check"></i></a>';
+                        return '<a class="btn btn-detail-config success" title="Approve Account" data-bs-toggle="modal" href="#acc_user"><i class="fa-solid fa-check"></i></a>';
                     } else if(!acc && acc_date){
                         return '<a class="btn btn-detail-config success" title="Recover Account"><i class="fa-solid fa-rotate-right"></i></a>';
                     } else if(acc && acc_date){
@@ -123,6 +124,29 @@
                     } else {
                         return 0
                     }
+                }
+
+                function getAccUser(slug, fullname){    
+                    $("#acc-user-holder").html('<div class="modal fade" id="acc_user" tabindex="-1" aria-labelledby="accLabel" aria-hidden="true"> ' +
+                        '<div class="modal-dialog"> ' +
+                            '<div class="modal-content"> ' +
+                            '<form action="/user/manage_acc" method="POST"> ' +
+                                '@csrf ' +
+                                '<input hidden name="slug_user" value="'+slug+'"> ' +
+                                '<div class="modal-header"> ' +
+                                    '<h5 class="modal-title" id="accLabel">Assign Selected Tags</h5> ' +
+                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                                '</div> ' +
+                                '<div class="modal-body"> ' +
+                                    '<h6 class="fw-normal">Are you sure want to give access to <span class="text-primary fw-bold">' + fullname + '</span></h6> ' +
+                                '</div> ' +
+                                '<div class="modal-footer"> ' +
+                                    '<button type="submit" class="btn btn-success">Submit</button> ' +
+                                '</div> ' +
+                                '</div> ' +
+                            '</form> ' +
+                        '</div> ' +
+                    '</div>');
                 }
 
                 for(var i = 0; i < data.length; i++){
@@ -180,8 +204,9 @@
                                 '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
                                 getLifeButton(is_accepted, accepted_at) +
                                 '<span id="btn-submit-tag-holder"></span> ' +
-                            '</div>' +
+                            '</div> ' +
                         '</div>';
+                        getAccUser(slug_name, full_name);
 
                     $("#data_wrapper_user_detail").append(elmt);
                 }   
@@ -308,12 +333,12 @@
             }
             
             $("#btn-submit-tag-holder").html(''+
-                '<a class="btn btn-detail-config success float-end" title="Submit Role"  data-bs-toggle="modal" href="#exampleModal"><i class="fa-solid fa-plus"></i> Assign</a> ' +
-                '<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
+                '<a class="btn btn-detail-config success float-end" title="Submit Role"  data-bs-toggle="modal" href="#assignRoleAcc"><i class="fa-solid fa-plus"></i> Assign</a> ' +
+                '<div class="modal fade" id="assignRoleAcc" tabindex="-1" aria-labelledby="assignRoleAccLabel" aria-hidden="true"> ' +
                 '<div class="modal-dialog"> ' +
                     '<div class="modal-content"> ' +
                     '<div class="modal-header"> ' +
-                        '<h5 class="modal-title" id="exampleModalLabel">Assign Selected Tags</h5> ' +
+                        '<h5 class="modal-title" id="assignRoleAccLabel">Assign Selected Tags</h5> ' +
                         '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
                     '</div> ' +
                     '<div class="modal-body"> ' +
