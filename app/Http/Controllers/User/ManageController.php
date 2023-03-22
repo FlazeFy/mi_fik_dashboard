@@ -107,4 +107,22 @@ class ManageController extends Controller
 
         return redirect()->back()->with('success_message', 'Account suspended');
     }
+
+    public function add_recover(Request $request)
+    {
+        //Helpers
+        if(session()->get('slug_key')){
+            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        }
+
+        $user_id = Generator::getUserId($request->slug_user, 2); 
+
+        User::where('id', $user_id)->update([
+            'updated_by' => $admin_id,
+            'is_accepted' => 1,
+            'updated_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', 'Account recovered');
+    }
 }

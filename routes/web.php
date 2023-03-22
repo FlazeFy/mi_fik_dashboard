@@ -82,6 +82,7 @@ Route::prefix('/user')->group(function () {
     Route::post('/manage_role_acc', [ManageController::class, 'add_role_acc']);
     Route::post('/manage_acc', [ManageController::class, 'add_acc']);
     Route::post('/manage_suspend', [ManageController::class, 'add_suspend']);
+    Route::post('/manage_recover', [ManageController::class, 'add_recover']);
 });
 
 Route::prefix('/setting')->group(function () {

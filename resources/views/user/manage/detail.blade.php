@@ -22,8 +22,11 @@
             <span id="load_more_holder_user_detail" style="display: flex; justify-content:center;"></span>
         </div>
     </form>
+
     <span id="acc-user-holder"></span>
     <span id="suspend-user-holder"></span>
+    <span id="recover-user-holder"></span>
+
 </div>
 
 <script>
@@ -57,8 +60,8 @@
                     }
                 }
 
-                function getJoinedAt(datetime, acc, acc_at){
-                    if(datetime && acc && acc_at){
+                function getJoinedAt(datetime, acc){
+                    if(datetime && acc){
                         const result = new Date(datetime);
                         const now = new Date(Date.now());
                         const yesterday = new Date();
@@ -89,9 +92,9 @@
                         }
 
                         return "<span class='text-success'>Joined since " + elmt + "</span>"
-                    } else if(!acc && !acc_at){
+                    } else if(!acc && !datetime){
                         return "<span class='text-danger fw-bold'>Waiting for admin approved</span>";
-                    } else if(!acc && acc_at){
+                    } else if(!acc && datetime){
                         return "<span class='text-danger fw-bold'>Account suspended</span>";
                     }
                 }
@@ -115,7 +118,7 @@
                     if(!acc && !acc_date){
                         return '<a class="btn btn-detail-config success" title="Approve Account" data-bs-toggle="modal" href="#acc_user"><i class="fa-solid fa-check"></i></a>';
                     } else if(!acc && acc_date){
-                        return '<a class="btn btn-detail-config success" title="Recover Account"><i class="fa-solid fa-rotate-right"></i></a>';
+                        return '<a class="btn btn-detail-config success" title="Recover Account" data-bs-toggle="modal" href="#recover_user"><i class="fa-solid fa-rotate-right"></i></a>';
                     } else if(acc && acc_date){
                         return '<a class="btn btn-detail-config danger" title="Suspend Account" data-bs-toggle="modal" href="#suspend_user"><i class="fa-solid fa-power-off"></i></a>';
                     } else {}
@@ -144,7 +147,7 @@
                                     '<h6 class="fw-normal">Are you sure want to give access to <span class="text-primary fw-bold">' + fullname + '</span></h6> ' +
                                 '</div> ' +
                                 '<div class="modal-footer"> ' +
-                                    '<button type="submit" class="btn btn-success">Submit</button> ' +
+                                    '<button type="submit" class="btn btn-success">Accept</button> ' +
                                 '</div> ' +
                                 '</div> ' +
                             '</form> ' +
@@ -164,10 +167,33 @@
                                     '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
                                 '</div> ' +
                                 '<div class="modal-body"> ' +
-                                    '<h6 class="fw-normal">Are you sure want to suspend <span class="text-danger fw-bold">' + fullname + '</span></h6> ' +
+                                    '<h6 class="fw-normal">Are you sure want to suspend <span class="text-danger fw-bold">' + fullname + '</span> account</h6> ' +
                                 '</div> ' +
                                 '<div class="modal-footer"> ' +
                                     '<button type="submit" class="btn btn-danger">Suspend</button> ' +
+                                '</div> ' +
+                                '</div> ' +
+                            '</form> ' +
+                        '</div> ' +
+                    '</div>');
+                }
+
+                function getRecoverUser(slug, fullname){    
+                    $("#recover-user-holder").html('<div class="modal fade" id="recover_user" tabindex="-1" aria-labelledby="recLabel" aria-hidden="true"> ' +
+                        '<div class="modal-dialog"> ' +
+                            '<div class="modal-content"> ' +
+                            '<form action="/user/manage_recover" method="POST"> ' +
+                                '@csrf ' +
+                                '<input hidden name="slug_user" value="'+slug+'"> ' +
+                                '<div class="modal-header"> ' +
+                                    '<h5 class="modal-title" id="recLabel">Recover User</h5> ' +
+                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                                '</div> ' +
+                                '<div class="modal-body"> ' +
+                                    '<h6 class="fw-normal">Are you sure want to recover <span class="text-primary fw-bold">' + fullname + '</span> account</h6> ' +
+                                '</div> ' +
+                                '<div class="modal-footer"> ' +
+                                    '<button type="submit" class="btn btn-submit">Recover</button> ' +
                                 '</div> ' +
                                 '</div> ' +
                             '</form> ' +
@@ -199,7 +225,7 @@
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
                                     '<h6 class="user-box-desc">' + username + " | " + email + '</h6> ' +
-                                    '<h6 class="user-box-date">' + getJoinedAt(accepted_at, is_accepted, accepted_at) + '</h6> ' +
+                                    '<h6 class="user-box-date">' + getJoinedAt(accepted_at, is_accepted) + '</h6> ' +
                                 '</div> ' +
                             '</div> ' +
                             '<h6 class="text-secondary"> Role</h6> ' +
@@ -237,6 +263,8 @@
                             getAccUser(slug_name, full_name);
                         } else if(is_accepted && accepted_at){ 
                             getSuspendUser(slug_name, full_name);
+                        } else if(!is_accepted && accepted_at){ 
+                            getRecoverUser(slug_name, full_name);
                         }
 
                     $("#data_wrapper_user_detail").append(elmt);
