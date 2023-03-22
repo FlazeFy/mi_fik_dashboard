@@ -85,6 +85,26 @@ class ManageController extends Controller
             'accepted_at' => date("Y-m-d H:i")
         ]);
 
-        return redirect()->back()->with('success_message', '::'.$request->slug_user);
+        return redirect()->back()->with('success_message', 'Access granted');
+    }
+
+    public function add_suspend(Request $request)
+    {
+        //Helpers
+        if(session()->get('slug_key')){
+            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        }
+
+        $user_id = Generator::getUserId($request->slug_user, 2); 
+
+        User::where('id', $user_id)->update([
+            'updated_by' => $admin_id,
+            'is_accepted' => 0,
+            'accepted_by' => $admin_id,
+            'updated_at' => date("Y-m-d H:i"),
+            'accepted_at' => date("Y-m-d H:i")
+        ]);
+
+        return redirect()->back()->with('success_message', 'Account suspended');
     }
 }
