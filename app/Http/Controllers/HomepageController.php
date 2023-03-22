@@ -48,6 +48,7 @@ class HomepageController extends Controller
             $tag = Tag::getFullTag("DESC", "DESC");
             $dictionary = Dictionary::getDictionaryByType($type);
             $archive = Archive::getMyArchive($user_id, "DESC");
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'homepage');
@@ -55,7 +56,9 @@ class HomepageController extends Controller
             return view ('homepage.index')
                 ->with('tag', $tag)
                 ->with('dictionary', $dictionary)
-                ->with('archive', $archive);
+                ->with('archive', $archive)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');
@@ -74,6 +77,7 @@ class HomepageController extends Controller
         $tag = Converter::getTag($request->content_tag);
         $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
         $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $slug = Generator::getSlugName($request->content_title, "content");
 
         // Attachment file upload
@@ -134,7 +138,7 @@ class HomepageController extends Controller
             'content_image' => $imageURL,
             'is_draft' => $draft, 
             'created_at' => date("Y-m-d H:i"),
-            'created_by' => 1, //for now
+            'created_by' => $user_id, 
             'updated_at' => null,
             'updated_by' => null,
             'deleted_at' => null,
@@ -168,6 +172,7 @@ class HomepageController extends Controller
 
         $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
         $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
         $header = Task::create([
             'slug_name' => $slug, 
@@ -178,7 +183,7 @@ class HomepageController extends Controller
             'task_reminder' => $request->task_reminder,
 
             'created_at' => date("Y-m-d H:i"),
-            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002', //for now
+            'created_by' => $user_id, //for now
             'updated_at' => null,
             'updated_by' => null,
             'deleted_at' => null,

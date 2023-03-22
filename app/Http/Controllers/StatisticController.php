@@ -30,6 +30,7 @@ class StatisticController extends Controller
             $mostTag = ContentDetail::getMostUsedTag();
             $mostLoc = ContentDetail::getMostUsedLoc();
             $mostRole = User::getMostUsedRole();
+            $greet = Generator::getGreeting(date('h'));
 
             foreach($setting as $set){
                 $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
@@ -45,7 +46,9 @@ class StatisticController extends Controller
                 ->with('mostRole', $mostRole)
                 ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
-                ->with('createdEvent', $createdEvent);
+                ->with('createdEvent', $createdEvent)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

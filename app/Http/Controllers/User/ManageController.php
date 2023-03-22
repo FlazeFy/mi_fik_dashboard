@@ -23,11 +23,13 @@ class ManageController extends Controller
     {
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'user');
 
-            return view('user.manage.index');
+            return view('user.manage.index')
+                ->with('greet',$greet);
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

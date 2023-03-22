@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\SettingController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -79,4 +80,9 @@ Route::prefix('/system')->group(function () {
 Route::prefix('/user')->group(function () {
     Route::get('/', [ManageController::class, 'index']);
     Route::post('/manage_role', [ManageController::class, 'add_role']);
+});
+
+Route::prefix('/setting')->group(function () {
+    Route::get('/', [SettingController::class, 'index']);
+    Route::post('/update_chart', [SettingController::class, 'update_chart']);
 });

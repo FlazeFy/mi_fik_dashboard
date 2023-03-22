@@ -29,6 +29,7 @@ class TagController extends Controller
 
             //Chart query
             $mostTag = ContentDetail::getMostUsedTag();
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'event');
@@ -36,7 +37,9 @@ class TagController extends Controller
             return view ('event.tag.index')
                 ->with('mostTag', $mostTag)
                 ->with('tag', $tag)
-                ->with('setting', $setting);
+                ->with('setting', $setting)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

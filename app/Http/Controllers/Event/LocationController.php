@@ -26,12 +26,15 @@ class LocationController extends Controller
 
             //Chart query
             $location = ContentDetail::getContentLocation();
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'event');
 
             return view ('event.location.index')
-                ->with('location', $location);
+                ->with('location', $location)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

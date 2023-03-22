@@ -23,13 +23,16 @@ class NotificationController extends Controller
 
             $notification = Notification::getAllNotification("DESC", "DESC");
             $dictionary = Dictionary::getDictionaryByType($select_1);
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'system');
 
             return view ('system.notification.index')
                 ->with('notification', $notification)
-                ->with('dictionary', $dictionary);
+                ->with('dictionary', $dictionary)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');
