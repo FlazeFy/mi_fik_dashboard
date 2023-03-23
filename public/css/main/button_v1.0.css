@@ -131,3 +131,53 @@
     color:whitesmoke;
     background:#F78A00;
 }
+
+.tag-check{
+    background: white;
+    border-radius: 20px;
+    border: 1.5px solid #D9D9D9;
+    overflow: hidden;
+    margin-top: 6px;
+    width: fit-content;
+    block-size: fit-content;    
+    margin-right: 4px;
+    display: inline-block;
+}
+.tag-check:hover{
+    border: 1.5px solid #00c363;
+    background: #00c363 !important;
+}
+.tag-check:hover label span{
+    color: #fff !important;
+}
+
+.tag-check input:checked{
+    border: 1.5px solid #00c363 !important;
+}
+  
+.tag-check label {
+    float: left; 
+    cursor: pointer !important;
+}
+  
+.tag-check label span {
+    text-align: center;
+    padding: 4px 12px;
+    display: block;
+}
+  
+.tag-check label input {
+    position: absolute;
+    display: none !important;
+    color: #fff !important;
+}
+.tag-check label input + span{
+    color: #343434;
+}  
+.tag-check input:checked + span {
+    color: #00c363;
+}
+.Checked input:checked + span{
+    color: #00c363;
+    background: transparent;
+}

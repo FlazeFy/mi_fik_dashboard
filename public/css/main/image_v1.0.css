@@ -2,6 +2,7 @@
     display: block;
     margin-inline: auto;
     min-height: 80px;
+    max-height: 200px;
 }
 .nodata-icon-req{
     display: block;

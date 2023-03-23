@@ -36,7 +36,7 @@
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        
+        <link rel="stylesheet" href="{{ asset('/css/minicalendar_v1.0.css') }}"/>
     </head>
 
     <body>
@@ -64,6 +64,7 @@
                                 @include('homepage.sorting')
                                 @include('homepage.datefilter')
                             </div>
+                
                             @include('homepage.event')
                         </div>
                     </div>
@@ -76,7 +77,8 @@
         @include('popup.failed')
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar.js')}}"></script>
+        <script src="{{ asset('/js/minicalendar.js')}}"></script>
 
     </body>
 </html>
