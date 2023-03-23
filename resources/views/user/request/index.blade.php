@@ -71,9 +71,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="content-section-small">
-                                    
-                                </div>
                             </div>
                             <div class="col-lg-4 col-md-5 col-sm-12">
                                 <div class="content-section-small">

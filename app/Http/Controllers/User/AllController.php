@@ -41,64 +41,23 @@ class AllController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function set_filter_name(Request $request, $all, $type)
     {
-        //
-    }
+        if($all == 0){
+            $filter = $request->filter_alph;
+        } else {
+            $filter = "all";
+        }
+        
+        if($type == "front"){
+            session()->put('filtering_fname', $filter);
+        } else if($type == "last"){
+            session()->put('filtering_lname', $filter);
+        } else {
+            session()->put('filtering_fname', "all");
+            session()->put('filtering_lname', "all");
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->back()->with('success_message', 'Content filtered');
     }
 }

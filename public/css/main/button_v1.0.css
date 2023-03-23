@@ -24,6 +24,22 @@
     flex-direction: row; 
     justify-content: start;
 }
+.btn-filter{
+    color:#343434;
+    border: 1.5px solid #D9D9D9;
+    font-size: 12.5px;
+    margin-top: 6px;
+}
+.btn-filter:hover{
+    background:#00c363;
+    color: white;
+    border: 1.5px solid #00c363;
+}
+.btn-filter.selected{
+    color:#00c363;
+    font-weight: 500;
+    border: 1.5px solid #00c363;
+}
 
 .btn-tag{
     background:white;
@@ -62,9 +78,6 @@
     position: absolute;
     bottom: 10px;
     width: 95%;
-}
-.tag-manage-holder{
-
 }
 
 .btn-link{

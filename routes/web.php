@@ -86,6 +86,7 @@ Route::prefix('/user')->group(function () {
     Route::post('/request/manage_recover', [RequestController::class, 'add_recover']);
 
     Route::get('/all', [AllController::class, 'index']);
+    Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
 });
 
 Route::prefix('/setting')->group(function () {
