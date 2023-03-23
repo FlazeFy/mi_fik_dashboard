@@ -74,6 +74,7 @@ Route::prefix('/v1/dictionaries')->group(function() {
 });
 
 Route::prefix('/v1/user')->group(function() {
+    Route::get('/{filter_name}/{limit}', [UserApi::class, 'getUser']);
     Route::get('/{slug_name}', [UserApi::class, 'getUserDetail']);
     Route::get('/request/new', [UserApi::class, 'getNewUserRequest']);
     Route::get('/request/old', [UserApi::class, 'getOldUserRequest']);

@@ -58,6 +58,7 @@
 
                     <div class="content-section-small">
                         @include('user.all.filtername')
+                        @include('user.all.list')
                     </div>
                 </div>
             </div>
