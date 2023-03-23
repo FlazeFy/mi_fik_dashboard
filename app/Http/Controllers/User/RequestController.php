@@ -12,7 +12,7 @@ use App\Helpers\Converter;
 
 use App\Models\User;
 
-class ManageController extends Controller
+class RequestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +28,7 @@ class ManageController extends Controller
             //Set active nav
             session()->put('active_nav', 'user');
 
-            return view('user.manage.index')
+            return view('user.request.index')
                 ->with('greet',$greet);
         } else {
             return redirect()->route('landing')

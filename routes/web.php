@@ -16,7 +16,8 @@ use App\Http\Controllers\Event\LocationController;
 
 use App\Http\Controllers\System\NotificationController;
 
-use App\Http\Controllers\User\ManageController;
+use App\Http\Controllers\User\RequestController;
+use App\Http\Controllers\User\AllController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,11 +79,13 @@ Route::prefix('/system')->group(function () {
 });
 
 Route::prefix('/user')->group(function () {
-    Route::get('/', [ManageController::class, 'index']);
-    Route::post('/manage_role_acc', [ManageController::class, 'add_role_acc']);
-    Route::post('/manage_acc', [ManageController::class, 'add_acc']);
-    Route::post('/manage_suspend', [ManageController::class, 'add_suspend']);
-    Route::post('/manage_recover', [ManageController::class, 'add_recover']);
+    Route::get('/request', [RequestController::class, 'index']);
+    Route::post('/request/manage_role_acc', [RequestController::class, 'add_role_acc']);
+    Route::post('/request/manage_acc', [RequestController::class, 'add_acc']);
+    Route::post('/request/manage_suspend', [RequestController::class, 'add_suspend']);
+    Route::post('/request/manage_recover', [RequestController::class, 'add_recover']);
+
+    Route::get('/all', [AllController::class, 'index']);
 });
 
 Route::prefix('/setting')->group(function () {

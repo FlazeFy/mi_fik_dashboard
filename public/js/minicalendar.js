@@ -139,6 +139,8 @@
 
 		}
 		function selectDates(selected) {
+			//selected = JSON.parse('{"2023":{"2":[24,25,26,27,28,29,30,31]}}');
+			
 			if (!$.isEmptyObject(selected)) {
 				var dateElements1 = datesBody1.find('div');
 				var dateElements2 = datesBody2.find('div');
@@ -319,7 +321,7 @@
 				var added_year = secondClicked.year;
 				var added_month = secondClicked.month;
 				var added_date = secondClicked.date;
-				console.log(selected);
+				mini_calendar = selected;
 
 				if (added_year > firstClicked.year) {	
 					// first add all dates from all months of Second-Clicked-Year
