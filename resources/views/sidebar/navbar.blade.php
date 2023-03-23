@@ -30,12 +30,12 @@
                     <i class="fa-solid fa-triangle-exclamation me-2"></i>
                 </div>
             </li>
-            <li>
+            <!-- <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check me-2"></i> Task</a>
                 <div class="item-notification">
                     <i class="fa-solid fa-bell me-2"></i>3
                 </div>
-            </li>
+            </li> -->
             <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-bell me-2"></i> Notification</a>
                 <div class="item-notification" id="notif-holder"><img src='http://127.0.0.1:8000/assets/loading-notif.gif' style='height:24px; margin-top:-5px;'></div>

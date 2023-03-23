@@ -197,7 +197,7 @@
             if(page != last){
                 $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more_holder').html('<h6 class="text-primary my-3">No more item to show</h6>');
+                $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
             }
 
             if (total == 0) {

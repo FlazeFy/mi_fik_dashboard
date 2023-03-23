@@ -3,7 +3,7 @@
 </style>
 
 <div class="detail-box">
-    <form action="/user/manage_role_acc" method="POST">
+    <form action="/user/request/manage_role_acc" method="POST">
         @csrf
         <h5 class="text-secondary fw-bold"><span class="text-primary" id="detail_body"></span> Detail</h5>
         <div class="user-req-holder" id="data_wrapper_user_detail">
@@ -136,7 +136,7 @@
                     $("#acc-user-holder").html('<div class="modal fade" id="acc_user" tabindex="-1" aria-labelledby="accLabel" aria-hidden="true"> ' +
                         '<div class="modal-dialog"> ' +
                             '<div class="modal-content"> ' +
-                            '<form action="/user/manage_acc" method="POST"> ' +
+                            '<form action="/user/request/manage_acc" method="POST"> ' +
                                 '@csrf ' +
                                 '<input hidden name="slug_user" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
@@ -159,7 +159,7 @@
                     $("#suspend-user-holder").html('<div class="modal fade" id="suspend_user" tabindex="-1" aria-labelledby="susLabel" aria-hidden="true"> ' +
                         '<div class="modal-dialog"> ' +
                             '<div class="modal-content"> ' +
-                            '<form action="/user/manage_suspend" method="POST"> ' +
+                            '<form action="/user/request/manage_suspend" method="POST"> ' +
                                 '@csrf ' +
                                 '<input hidden name="slug_user" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
@@ -182,7 +182,7 @@
                     $("#recover-user-holder").html('<div class="modal fade" id="recover_user" tabindex="-1" aria-labelledby="recLabel" aria-hidden="true"> ' +
                         '<div class="modal-dialog"> ' +
                             '<div class="modal-content"> ' +
-                            '<form action="/user/manage_recover" method="POST"> ' +
+                            '<form action="/user/request/manage_recover" method="POST"> ' +
                                 '@csrf ' +
                                 '<input hidden name="slug_user" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +

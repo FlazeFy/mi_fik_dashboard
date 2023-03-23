@@ -150,11 +150,21 @@
                 <li class="">
                     <a href="{{ url('/event/calendar') }}"><i class="fa-solid fa-calendar me-3"></i> Calendar</a>
                 </li>
-            
             </div>
-            <li class="<?php if(session()->get('active_nav') == "user"){ echo " active"; }?>">
-                <a href="{{ url('/user') }}"><i class="fa-solid fa-user-pen me-3"></i> Manage User</a>
+            <li class="accordion-header <?php if(session()->get('active_nav') == "user"){ echo " active"; }?>">
+                <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clpsUser"><i class="fa-solid fa-user-pen me-3"></i> Manage User</button>
             </li>
+            <div class="collapse ps-4" id="clpsUser" data-bs-parent="#accordionExample">
+                <li class="">
+                    <a href="{{ url('/user/request') }}"><i class="fa-solid fa-hand me-3"></i> Request</a>
+                </li>
+                <li class="">
+                    <a href="{{ url('/user/all') }}"><i class="fa-solid fa-user me-3"></i> All User</a>
+                </li>
+                <li class="">
+                    <a href="{{ url('/user/group') }}"><i class="fa-solid fa-users me-3"></i> Grouping</a>
+                </li>
+            </div>
             <li class="accordion-header <?php if(session()->get('active_nav') == "system"){ echo " active"; }?>">
                 <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clpsSystem"><i class="fa-solid fa-globe me-3"></i> System</button>
             </li>

@@ -44,6 +44,12 @@ class HomepageController extends Controller
             if(!session()->get('filtering_date')){
                 session()->put('filtering_date', "all");
             }
+            if(!session()->get('filtering_fname')){
+                session()->put('filtering_fname', "all");
+            }
+            if(!session()->get('filtering_lname')){
+                session()->put('filtering_lname', "all");
+            }
 
             $tag = Tag::getFullTag("DESC", "DESC");
             $dictionary = Dictionary::getDictionaryByType($type);

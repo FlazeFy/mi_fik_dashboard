@@ -1,6 +1,6 @@
 <div class="position-relative me-2">
-    <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false"><i class="fa-solid fa-hashtag"></i> 
+    <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown"
+        ><i class="fa-solid fa-hashtag"></i> 
         @php($tag_coll = session()->get('selected_tag_calendar'))
         @if($tag_coll != "All")
             {{count($tag_coll)}} Selected Tags
@@ -8,7 +8,7 @@
             All Tags
         @endif
     </button>
-    <div class="filter-section dropdown-menu dropdown-menu-end shadow" aria-labelledby="section-select-tag">
+    <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-select-tag">
         <span class="dropdown-item">
             <div class="dropdown-header">
                 <h6 class="dropdown-title">Filter Tag</h6>
@@ -18,7 +18,7 @@
                 </form>
             </div><hr>
             <div class="dropdown-body">
-                <form action="/event/calendar/set_filter_tag/0" method="POST" class="row">
+                <form action="/event/calendar/set_filter_tag/0" method="POST" style="white-space:normal;">
                     @csrf
                     @foreach($tag as $tg)
                         <!-- Initial variable -->
@@ -38,14 +38,12 @@
                             @php($check = "Checked")
                         @endif
 
-                        <div class="col-4">
-                            <div class="form-check custom">
-                                <input class="form-check-input" name="slug_name[]" type="checkbox" value="{{$tg->slug_name}}" id="flexCheckDefault" <?php echo $check; ?>>
-                                <label class="form-check-label mt-1" for="flexCheckDefault">
-                                    &nbsp {{$tg->tag_name}}
-                                </label>
-                            </div>
-                        </div>
+                        <a class="tag-check action">
+                            <label>
+                                <input class="" name="slug_name[]" type="checkbox" value="{{$tg->slug_name}}" id="flexCheckDefault" <?php echo $check; ?>>
+                                <span>{{$tg->tag_name}}</span>
+                            </label>
+                        </a>
                     @endforeach
             </div><hr>
             <div class="dropdown-footer">

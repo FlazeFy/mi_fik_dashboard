@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>User | Manage</title>
+        <title>User | All</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -40,9 +40,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
         
     </head>
 
@@ -56,31 +56,9 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="row">
-                            <div class="col-lg-8 col-md-7 col-sm-12">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="content-section-small">
-                                            @include('user.manage.old_user_req')
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="content-section-small">
-                                            @include('user.manage.new_user_req')
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="content-section-small">
-                                    
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-5 col-sm-12">
-                                <div class="content-section-small">
-                                    @include('user.manage.detail')
-                                </div>
-                            </div>
-                        </div>
+                    <div class="content-section-small">
+                        @include('user.all.filtername')
+                        @include('user.all.list')
                     </div>
                 </div>
             </div>
