@@ -48,7 +48,6 @@ class UserApi extends Controller
     {
         try{
             $select = Query::getSelectTemplate("user_detail");
-            $limit = 3;
 
             $name = explode("_", $filter_name);
             $ord = explode("__", $order);

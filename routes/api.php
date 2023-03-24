@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\TaskApi;
 use App\Http\Controllers\Api\NotificationApi;
 use App\Http\Controllers\Api\DictionaryApi;
 use App\Http\Controllers\Api\UserApi;
+use App\Http\Controllers\Api\GroupApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,4 +84,8 @@ Route::prefix('/v1/user')->group(function() {
 
 Route::prefix('/v1/stats')->group(function() {
     Route::get('/mostviewed', [ContentApi::class, 'getStatsMostViewedEvent']);
+});
+
+Route::prefix('/v1/group')->group(function() {
+    Route::get('/{limit}', [GroupApi::class, 'getAllGroup']);
 });

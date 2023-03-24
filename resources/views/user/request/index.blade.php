@@ -26,12 +26,6 @@
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-        <script type="text/javascript" charset="utf-8">
-            $(document).ready(function () {
-                $('#notifTable').DataTable();
-            });
-        </script>
-
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
