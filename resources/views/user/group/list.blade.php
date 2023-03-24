@@ -1,9 +1,10 @@
 <table class="table tabular">
     <thead>
         <tr>
-            <th scope="col">Group Name</th>
-            <th scope="col">Description</th>
-            <th scope="col">Properties</th>
+            <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
+            <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
+            <th scope="col">Total @include('user.group.sorting.total')</th>
+            <th scope="col">Properties @include('user.group.sorting.created')</th>
             <th scope="col">Member</th>
             <th scope="col">Manage</th>
         </tr>
@@ -43,9 +44,10 @@
     }
 
     function infinteLoadMore(page_new_req) {    
+        var order = '<?= session()->get('ordering_group_list'); ?>';
     
         $.ajax({
-            url: "/api/v1/group/100" + "?page=" + page_new_req,
+            url: "/api/v1/group/limit/100/order/" + order + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -114,6 +116,7 @@
                     //Attribute
                     var groupName = data[i].group_name;
                     var groupDesc = data[i].group_desc;
+                    var total = data[i].total;
                     var createdAt = data[i].created_at;
                     var updatedAt = data[i].updated_at;
 
@@ -121,6 +124,7 @@
                         '<tr class="tabular-item"> ' +
                             '<td>' + groupName + '</td> ' +
                             '<td>' + groupDesc + '</td> ' +
+                            '<td>' + total + '</td> ' +
                             '<td class="properties"> ' +
                                 '<h6>Joined At</h6> ' +
                                 '<a>' + getDateContext(createdAt) + '</a> ' +

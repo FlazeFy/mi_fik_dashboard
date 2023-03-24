@@ -11,13 +11,16 @@ use App\Helpers\Query;
 
 class GroupApi extends Controller
 {
-    public function getAllGroup($limit)
+    public function getAllGroup($limit, $order)
     {
         try{
             $select = Query::getSelectTemplate("group_detail");
+            $ord = explode("__", $order);
 
             $user = UserGroup::selectRaw($select)
-                ->orderBy('created_at', 'ASC')
+                ->join('groups_relations', 'groups_relations.group_id', '=', 'users_groups.id')
+                ->groupBy('id')
+                ->orderBy($ord[0], $ord[1])
                 ->paginate($limit);
 
             if ($user->isEmpty()) {

@@ -87,5 +87,5 @@ Route::prefix('/v1/stats')->group(function() {
 });
 
 Route::prefix('/v1/group')->group(function() {
-    Route::get('/{limit}', [GroupApi::class, 'getAllGroup']);
+    Route::get('/limit/{limit}/order/{order}', [GroupApi::class, 'getAllGroup']);
 });
