@@ -1,15 +1,15 @@
 <table class="table tabular">
     <thead>
         <tr>
-            <th scope="col">Image</th>
-            <th scope="col">Username @include('user.all.sorting.username')</th>
-            <th scope="col">Email @include('user.all.sorting.email')</th>
-            <th scope="col">Full Name @include('user.all.sorting.fullname')</th>
-            <th scope="col">Properties @include('user.all.sorting.joined')</th>
-            <th scope="col">Role</th>
+            <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
+            <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
+            <th scope="col">Total @include('user.group.sorting.total')</th>
+            <th scope="col">Properties @include('user.group.sorting.created')</th>
+            <th scope="col">Member</th>
+            <th scope="col">Manage</th>
         </tr>
     </thead>
-    <tbody class="user-holder tabular-body" id="user-list-holder">
+    <tbody class="user-holder tabular-body" id="group-list-holder">
         <!-- Loading -->
         <div class="auto-load text-center">
         <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -44,11 +44,10 @@
     }
 
     function infinteLoadMore(page_new_req) {    
-        var name_filter = '<?= session()->get('filtering_fname')."_".session()->get('filtering_lname'); ?>';
-        var order = '<?= session()->get('ordering_user_list'); ?>';
+        var order = '<?= session()->get('ordering_group_list'); ?>';
     
         $.ajax({
-            url: "/api/v1/user/" + name_filter + "/limit/100/order/" + order + "?page=" + page_new_req,
+            url: "/api/v1/group/limit/100/order/" + order + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -113,62 +112,29 @@
                     }
                 }
 
-                function getItemBg(date, acc){
-                    if(date && acc){
-                        return "normal"
-                    } else if(!acc && !date){
-                        return "waiting"
-                    } else if(!acc && date){
-                        return "suspend"
-                    }
-                }
-
-                function getRole(tag){
-                    if(tag){
-                        var tags = "";
-
-                        for(var i = 0; i < tag.length; i++){
-                            if(i != tag.length - 1){
-                                tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>, ';
-                            } else {
-                                tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>';
-                            }
-                        }
-                        return tags
-                    } else {
-                        return '<span class="text-danger fw-bold">Doesn'+"'"+'t have a role'
-                    }
-                }
-
                 for(var i = 0; i < data.length; i++){
                     //Attribute
-                    var username = data[i].username;
-                    var fullname = data[i].full_name;
+                    var groupName = data[i].group_name;
+                    var groupDesc = data[i].group_desc;
+                    var total = data[i].total;
                     var createdAt = data[i].created_at;
                     var updatedAt = data[i].updated_at;
-                    var email = data[i].email;
-                    var accStatus = data[i].is_accepted;
-                    var accDate = data[i].accepted_at;
-                    var role = data[i].role;
 
                     var elmt = " " +
-                        '<tr class="tabular-item ' + getItemBg(accDate, accStatus) + '"> ' +
-                            '<th scope="row">1</th> ' +
-                            '<td>' + username + '</td> ' +
-                            '<td class="email" title="Send Email" onclick="window.location = '+"'"+'mailto:'+email+"'"+'" href="mailto:' + email + '">' + email + '</td> ' +
-                            '<td>' + fullname + '</td> ' +
+                        '<tr class="tabular-item"> ' +
+                            '<td>' + groupName + '</td> ' +
+                            '<td>' + groupDesc + '</td> ' +
+                            '<td>' + total + '</td> ' +
                             '<td class="properties"> ' +
                                 '<h6>Joined At</h6> ' +
                                 '<a>' + getDateContext(createdAt) + '</a> ' +
                                 '<h6>Updated At</h6> ' +
                                 '<a>' + getDateContext(updatedAt) + '</a> ' +
                             '</td> ' +
-                            '<td class="tabular-role-holder"> ' +
-                                getRole(role) +
-                            '</td> ' +
+                            '<td class="tabular-role-holder"></td> ' +
                         '</tr>';
 
-                    $("#user-list-holder").prepend(elmt);
+                    $("#group-list-holder").prepend(elmt);
                 }   
             }
         })

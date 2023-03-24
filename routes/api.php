@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\TaskApi;
 use App\Http\Controllers\Api\NotificationApi;
 use App\Http\Controllers\Api\DictionaryApi;
 use App\Http\Controllers\Api\UserApi;
+use App\Http\Controllers\Api\GroupApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,7 +75,7 @@ Route::prefix('/v1/dictionaries')->group(function() {
 });
 
 Route::prefix('/v1/user')->group(function() {
-    Route::get('/{filter_name}/{limit}', [UserApi::class, 'getUser']);
+    Route::get('/{filter_name}/limit/{limit}/order/{order}', [UserApi::class, 'getUser']);
     Route::get('/{slug_name}', [UserApi::class, 'getUserDetail']);
     Route::get('/request/new', [UserApi::class, 'getNewUserRequest']);
     Route::get('/request/old', [UserApi::class, 'getOldUserRequest']);
@@ -83,4 +84,8 @@ Route::prefix('/v1/user')->group(function() {
 
 Route::prefix('/v1/stats')->group(function() {
     Route::get('/mostviewed', [ContentApi::class, 'getStatsMostViewedEvent']);
+});
+
+Route::prefix('/v1/group')->group(function() {
+    Route::get('/limit/{limit}/order/{order}', [GroupApi::class, 'getAllGroup']);
 });

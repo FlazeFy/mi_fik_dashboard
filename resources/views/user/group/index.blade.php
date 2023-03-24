@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>User | All</title>
+        <title>User | Grouping</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,10 +34,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
+        
     </head>
 
     <body>
@@ -50,12 +49,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="mt-4 btn-config-holder">
-                        @include('user.all.filtername')
-                    </div>
-
-                    <div class="content-section-small mt-3">
-                        @include('user.all.list')
+                    <div class="content-section">
+                        @include('user.group.list')
                     </div>
                 </div>
             </div>

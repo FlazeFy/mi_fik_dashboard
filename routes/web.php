@@ -18,6 +18,7 @@ use App\Http\Controllers\System\NotificationController;
 
 use App\Http\Controllers\User\RequestController;
 use App\Http\Controllers\User\AllController;
+use App\Http\Controllers\User\GroupingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,6 +88,10 @@ Route::prefix('/user')->group(function () {
 
     Route::get('/all', [AllController::class, 'index']);
     Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
+    Route::post('/all/ordered/{order}/{type}', [AllController::class, 'set_ordering_content']);
+
+    Route::get('/group', [GroupingController::class, 'index']);
+    Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
 });
 
 Route::prefix('/setting')->group(function () {

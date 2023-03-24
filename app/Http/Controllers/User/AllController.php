@@ -60,4 +60,20 @@ class AllController extends Controller
 
         return redirect()->back()->with('success_message', 'Content filtered');
     }
+
+    public function set_ordering_content($order, $type)
+    {
+        if($type == "username"){
+            $res = "username__".$order;
+        } else if($type == "email"){
+            $res = "email__".$order;
+        } else if($type == "first_name"){
+            $res = "first_name__".$order;
+        } else if($type == "joined"){
+            $res = "created_at__".$order;
+        }
+        session()->put('ordering_user_list', $res);
+
+        return redirect()->back()->with('success_message', 'Content ordered');
+    }
 }
