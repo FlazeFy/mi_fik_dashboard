@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th scope="col">Image</th>
-            <th scope="col">Username</th>
-            <th scope="col">Email</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Properties</th>
+            <th scope="col">Username @include('user.all.sorting.username')</th>
+            <th scope="col">Email @include('user.all.sorting.email')</th>
+            <th scope="col">Full Name @include('user.all.sorting.fullname')</th>
+            <th scope="col">Properties @include('user.all.sorting.joined')</th>
             <th scope="col">Role</th>
         </tr>
     </thead>
@@ -22,7 +22,7 @@
         </svg>
     </tbody>
     <div id="empty_item_holder"></div>
-    <span id="load_more_holder" style="display: flex; justify-content:center;"></span>
+    <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
     </div>
 </table>
 
@@ -45,9 +45,10 @@
 
     function infinteLoadMore(page_new_req) {    
         var name_filter = '<?= session()->get('filtering_fname')."_".session()->get('filtering_lname'); ?>';
+        var order = '<?= session()->get('ordering_user_list'); ?>';
     
         $.ajax({
-            url: "/api/v1/user/" + name_filter + "/100" + "?page=" + page_new_req,
+            url: "/api/v1/user/" + name_filter + "/limit/100/order/" + order + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -69,7 +70,7 @@
             $('#total_new_req').text(total);
 
             if (total == 0) {
-                $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");

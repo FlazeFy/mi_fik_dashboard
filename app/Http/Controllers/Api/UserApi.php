@@ -44,28 +44,34 @@ class UserApi extends Controller
         }
     }
 
-    public function getUser($filter_name, $limit)
+    public function getUser($filter_name, $limit, $order)
     {
         try{
             $select = Query::getSelectTemplate("user_detail");
+            $limit = 3;
 
             $name = explode("_", $filter_name);
+            $ord = explode("__", $order);
 
             if($name[0] == "all" && $name[1] == "all"){
                 $user = User::selectRaw($select)
+                    ->orderBy($ord[0], $ord[1])
                     ->paginate($limit);
             } else if($name[0] != "all" && $name[1] == "all"){
                 $user = User::selectRaw($select)
                     ->whereRaw("first_name LIKE '".$name[0]."%'")
+                    ->orderBy($ord[0], $ord[1])
                     ->paginate($limit);
             } else if($name[0] == "all" && $name[1] != "all"){
                 $user = User::selectRaw($select)
                     ->whereRaw("last_name LIKE '".$name[1]."%'")
+                    ->orderBy($ord[0], $ord[1])
                     ->paginate($limit);
             } else {
                 $user = User::selectRaw($select)
                     ->whereRaw("first_name LIKE '".$name[0]."%'")
                     ->whereRaw("last_name LIKE '".$name[1]."%'")
+                    ->orderBy($ord[0], $ord[1])
                     ->paginate($limit);
             }
 

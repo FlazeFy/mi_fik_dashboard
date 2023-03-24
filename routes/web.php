@@ -87,6 +87,7 @@ Route::prefix('/user')->group(function () {
 
     Route::get('/all', [AllController::class, 'index']);
     Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
+    Route::post('/all/ordered/{order}/{type}', [AllController::class, 'set_ordering_content']);
 });
 
 Route::prefix('/setting')->group(function () {

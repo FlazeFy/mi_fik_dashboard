@@ -56,8 +56,11 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section-small">
+                    <div class="mt-4 btn-config-holder">
                         @include('user.all.filtername')
+                    </div>
+
+                    <div class="content-section-small mt-3">
                         @include('user.all.list')
                     </div>
                 </div>

@@ -8,6 +8,9 @@
 .tabular-body .tabular-item{
     cursor: pointer;
 }
+.tabular-item .properties{
+    width: 180px;
+}
 .tabular-item .properties h6{
     margin: 0;
 }

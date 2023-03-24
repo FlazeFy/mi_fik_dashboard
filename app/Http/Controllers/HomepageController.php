@@ -41,6 +41,9 @@ class HomepageController extends Controller
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
             }
+            if(!session()->get('ordering_user_list')){
+                session()->put('ordering_user_list', "username__DESC");
+            }
             if(!session()->get('filtering_date')){
                 session()->put('filtering_date', "all");
             }
