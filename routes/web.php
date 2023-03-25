@@ -77,6 +77,7 @@ Route::prefix('/event')->group(function () {
 Route::prefix('/system')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
+    Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
 });
 
 Route::prefix('/user')->group(function () {

@@ -41,6 +41,8 @@ class NotificationController extends Controller
 
     public function update_notif(Request $request, $id)
     {
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+
         $result = Notification::where('id', $id)->update([
             'notif_type' => $request->notif_type,
             'notif_body' => $request->notif_body,
@@ -48,13 +50,21 @@ class NotificationController extends Controller
             'is_pending' => $request->is_pending,
             'pending_until' => $pending_date,
             'updated_at' => date("Y-m-d h:i"),
-            'updated_by' => 1 //for now
+            'updated_by' => $user_id
         ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Notification successfully updated',
-            'result' => $result,
+        return redirect()->back()->with('success_message', 'Notification has been updated');
+    }
+
+    public function delete_notif($id)
+    {
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        
+        $result = Notification::where('id', $id)->update([
+            'deleted_at' => date("Y-m-d h:i"),
+            'deleted_by' => $user_id
         ]);
+
+        return redirect()->back()->with('success_message', "Notification has been deleted");
     }
 }

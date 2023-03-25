@@ -32,9 +32,6 @@
             });
         </script>
 
-        <!--Apex Chart-->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
