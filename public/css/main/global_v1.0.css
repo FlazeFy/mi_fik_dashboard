@@ -96,7 +96,7 @@
 }
 
 /* Tip / Warning box */
-.tip-box{
+.info-box{
     background: #c6eff8;
     border-radius: 10px;
     color: #5B5B5B;
@@ -104,7 +104,7 @@
     padding: 14px;
     margin: 10px 0 10px 0;
 }
-.tip-box label{
+.info-box label{
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 6px;

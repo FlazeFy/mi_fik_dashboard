@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 
 use App\Models\Notification;
 use App\Models\Dictionary;
+use App\Models\Info;
 
 class NotificationController extends Controller
 {
@@ -24,6 +25,7 @@ class NotificationController extends Controller
             $notification = Notification::getAllNotification("DESC", "DESC");
             $dictionary = Dictionary::getDictionaryByType($select_1);
             $greet = Generator::getGreeting(date('h'));
+            $info = Info::getAvailableInfo("system");
 
             //Set active nav
             session()->put('active_nav', 'system');
@@ -31,6 +33,7 @@ class NotificationController extends Controller
             return view ('system.notification.index')
                 ->with('notification', $notification)
                 ->with('dictionary', $dictionary)
+                ->with('info', $info)
                 ->with('greet',$greet);
                 
         } else {
