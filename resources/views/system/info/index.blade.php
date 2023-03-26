@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>System | Notification</title>
+        <title>System | Info</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,7 +28,7 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#notifTable').DataTable();
+                $('#infoTable').DataTable();
             });
         </script>
 
@@ -56,7 +56,7 @@
                     @include('sidebar.navbar')
 
                     <div class="content-section">
-                        @include('system.notification.table')
+                        @include('system.info.table')
                     </div>
                 </div>
             </div>

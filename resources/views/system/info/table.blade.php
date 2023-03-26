@@ -21,41 +21,21 @@
         <thead>
             <tr>
                 <th scope="col">Type</th>
+                <th scope="col">Page</th>
+                <th scope="col">Location</th>
                 <th scope="col">Body</th>
-                <th scope="col">Send To</th>
-                <th scope="col">Pending</th>
-                <th scope="col">Manage By</th>
-                <th scope="col">Action</th>
+                <th scope="col">Is Active</th>
+                <th scope="col">Properties</th>
             </tr>
         </thead>
         <tbody>
             @php($i = 0)
-            @foreach($notification as $nt)
+            @foreach($info as $in)
                 <tr>
-                    <td>
-                        @php($split = explode("_",$nt->notif_type))
-                        @php($type = ucfirst($split[1]))
-                        {{$type}}
-                    </td>
-                    <td>{{$nt->notif_body}}</td>
-                    <td>
-                        @php($ntJson = json_decode($nt->notif_send_to))
-                            
-                        @foreach($ntJson as $nj)
-                            @if($nj->send_to == "all")
-                                {{ucfirst($nj->send_to)}}
-                            @else 
-                                {{$nj->user_id}}
-                            @endif
-                        @endforeach 
-                    </td>
-                    <td>
-                        @if($nt->is_pending)
-                            Pending until {{date('Y-m-d h:i', strtotime($nt->pending_until))}}
-                        @else 
-                            Announced
-                        @endif
-                    </td>
+                    <td>{{ucfirst($in->info_type)}}</td>
+                    <td>{{$in->info_page}}</td>
+                    <td>{{$in->info_location}}</td>
+                    <td>{{$in->info_body}}</td>
                     <td>
                         <h6>Created By</h6>
                         <div class="row p-0 m-0">
@@ -64,10 +44,10 @@
                             </div>
                             <div class="col-9 p-0 ps-2 pt-1">
                                 <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($nt->created_at))}}</h6>
+                                <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($in->created_at))}}</h6>
                             </div>
                         </div>    
-                        @if($nt->updated_at)
+                        @if($in->updated_at)
                             <h6>Updated By</h6>
                             <div class="row p-0 m-0">
                                 <div class="col-3 p-0">
@@ -75,11 +55,11 @@
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
                                     <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($nt->updated_at))}}</h6>
+                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($in->updated_at))}}</h6>
                                 </div>
                             </div>   
                         @endif
-                        @if($nt->deleted_at)
+                        @if($in->deleted_at)
                             <h6>Deleted By</h6>
                             <div class="row p-0 m-0">
                                 <div class="col-3 p-0">
@@ -87,7 +67,7 @@
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
                                     <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($nt->deleted_at))}}</h6>
+                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($in->deleted_at))}}</h6>
                                 </div>
                             </div>   
                         @endif
@@ -97,9 +77,6 @@
                         <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
-
-                @include('system.notification.edit')
-                @include('system.notification.delete')
                 
                 @php($i++)
             @endforeach

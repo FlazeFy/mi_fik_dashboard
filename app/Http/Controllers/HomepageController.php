@@ -14,10 +14,12 @@ use App\Helpers\Generator;
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\Menu;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
 use App\Models\ContentViewer;
 use App\Models\Task;
+use App\Models\Info;
 use App\Models\Setting;
 use App\Models\Dictionary;
 use App\Models\Notification;
@@ -58,6 +60,8 @@ class HomepageController extends Controller
             }
 
             $tag = Tag::getFullTag("DESC", "DESC");
+            $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("homepage");
             $dictionary = Dictionary::getDictionaryByType($type);
             $archive = Archive::getMyArchive($user_id, "DESC");
             $greet = Generator::getGreeting(date('h'));
@@ -67,6 +71,8 @@ class HomepageController extends Controller
 
             return view ('homepage.index')
                 ->with('tag', $tag)
+                ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('dictionary', $dictionary)
                 ->with('archive', $archive)
                 ->with('greet',$greet);

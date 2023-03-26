@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Event;
+
+namespace App\Http\Controllers\System;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
-use App\Models\ContentDetail;
-use App\Models\Setting;
-use App\Models\Menu;
-
 use App\Helpers\Generator;
 
-class LocationController extends Controller
+use App\Models\Info;
+use App\Models\Menu;
+
+class InfoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,16 +25,15 @@ class LocationController extends Controller
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-            //Chart query
-            $location = ContentDetail::getContentLocation();
             $greet = Generator::getGreeting(date('h'));
+            $info = Info::getAllInfo();
             $menu = Menu::getMenu();
 
             //Set active nav
-            session()->put('active_nav', 'event');
+            session()->put('active_nav', 'system');
 
-            return view ('event.location.index')
-                ->with('location', $location)
+            return view ('system.info.index')
+                ->with('info', $info)
                 ->with('menu', $menu)
                 ->with('greet',$greet);
                 

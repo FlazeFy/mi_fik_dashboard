@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 
 use App\Models\ContentHeader;
 use App\Models\Tag;
+use App\Models\Menu;
 
 class CalendarController extends Controller
 {
@@ -31,6 +32,7 @@ class CalendarController extends Controller
             $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'));       
             $tag = Tag::getFullTag("DESC", "DESC");
             $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
                 
             //Set active nav
             session()->put('active_nav', 'event');
@@ -38,6 +40,7 @@ class CalendarController extends Controller
             return view ('event.calendar.index')
                 ->with('content', $content)
                 ->with('tag', $tag)
+                ->with('menu', $menu)
                 ->with('greet',$greet);
                 
         } else {

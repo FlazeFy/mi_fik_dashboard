@@ -18,8 +18,8 @@ class GroupApi extends Controller
             $ord = explode("__", $order);
 
             $user = UserGroup::selectRaw($select)
-                ->join('groups_relations', 'groups_relations.group_id', '=', 'users_groups.id')
-                ->groupBy('id')
+                ->leftjoin('groups_relations', 'groups_relations.group_id', '=', 'users_groups.id')
+                ->groupBy('users_groups.id')
                 ->orderBy($ord[0], $ord[1])
                 ->paginate($limit);
 

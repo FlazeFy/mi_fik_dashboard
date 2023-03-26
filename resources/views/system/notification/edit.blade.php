@@ -1,12 +1,12 @@
 <div class="modal fade" id="editModal-{{$i}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">  
-            <form action="/system/notification/update" method="POST">
-                @csrf 
-                <div class="modal-body pt-4">
-                    <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                    <h5>Edit Announcement</h5>
-                    <div class="row my-2">
+            <div class="modal-body pt-4">
+                <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                <h5>Edit Notification</h5>
+                <div class="row my-2">
+                    <form action="/system/notification/update" method="POST">
+                        @csrf 
                         <div class="row">
                             <div class="col-lg-8 pb-2">
                                 <div class="form-floating">
@@ -45,11 +45,11 @@
                         </div>
                     
                         <label class="input-title">Send To</label>
-                    </div>
-                    <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
-                    <span id="btn-submit-holder-{{$i}}"></span>
+                        <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
+                        <span id="btn-submit-holder-{{$i}}"></span>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
