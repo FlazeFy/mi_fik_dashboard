@@ -12,6 +12,7 @@ use App\Helpers\Converter;
 
 use App\Models\User;
 use App\Models\UserGroup;
+use App\Models\GroupRelation;
 use App\Models\Menu;
 use App\Models\Info;
 
@@ -51,7 +52,7 @@ class GroupingController extends Controller
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->group_name)) != "all"){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-            UserGroup::create([
+            $header = UserGroup::create([
                 'group_name' => $request->group_name,
                 'group_desc' => $request->group_desc,
                 'created_at' => date("Y-m-d h:i:s"),
@@ -59,6 +60,21 @@ class GroupingController extends Controller
                 'updated_at' => null,
                 'updated_by' => null,
             ]);
+
+            if(is_countable($request->slug_name)){
+                $user_count = count($request->slug_name);
+            
+                for($i = 0; $i < $user_count; $i++){
+                    $user_id_mng = Generator::getUserId($request->slug_name[$i], 2);
+
+                    GroupRelation::create([
+                        'group_id' => $header->id,
+                        'user_id' => $user_id_mng,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id,
+                    ]);
+                }
+            } 
 
             return redirect()->back()->with('success_message', "'".$request->group_name."' group has been created");
         } else {
