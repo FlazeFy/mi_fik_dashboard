@@ -1,0 +1,21 @@
+.form-check-input{
+    height:23px;
+    width:23px;
+    cursor:pointer;
+}
+.form-check-input:checked{
+    background-color:#F78A00 !important;
+    border:none;
+}
+
+.btn-outlined{
+    background: transparent;
+    border-radius: 20px;
+    border:none;
+    color: #343434;
+    border: 1.5px solid #343434;
+}
+.btn-outlined.selected{
+    color: #00c363 !important;
+    border: 1.5px solid #00c363;
+}

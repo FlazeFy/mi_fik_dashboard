@@ -1,4 +1,5 @@
-MI-FIK Laravel Documentation
+MI-FIK Dashboard Documentation
+https://mifik.id/
 
 ========================= Command =========================
 --First Run
@@ -36,17 +37,39 @@ ex : php artisan serve --port=9000
 --Make Migrations
 > php artisan make:migration create_<NAMA-TABEL>_table
 
+--Make Deploy
+> php artisan route:cache
+> php artisan cache:clear
+> php artisan route:clear
+
 ========================= File Directory =========================
 --Assets
-
+CSS
+Directory               : public/css
+Access Local Path       : http://127.0.0.1:8000/css/<< CSS_FILENAME >>.css
+Access Global Path      : http://mifik.id/css/<< CSS_FILENAME >>.css
 
 --API Controller
-
+Directory               : app/Http/Controllers/Api
 
 --Normal Controller
+Directory               : app/Http/Controllers/<< MENU_NAME/SUBMENU_NAME >>
 
+--Model
+Directory               : app/Http/Models/<< DB_TABLE_NAME >>
 
 --View
+Directory               : app/Http/Controllers/<< MENU_NAME/SUBMENU_NAME >>
 
+============================ Rules ===============================
+--Penamaan CSS 
+> << CONTEXT_NAME >>_v1.0.css                       <= Iterate
 
-Last Updated : 26 February 2023
+--Penamaan JS
+> << CONTEXT_NAME >>_v1.0.js                        <= Iterate
+
+--Secret JSON
+> << RANDOM_STRING >>_v1.0.js                       <= Iterate
+
+==================================================================
+Last Updated : 22 March 2023

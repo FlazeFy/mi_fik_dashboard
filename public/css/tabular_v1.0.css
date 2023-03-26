@@ -1,0 +1,42 @@
+.tabular {
+    min-height: 45vh !important;
+}
+.tabular-body{
+
+}
+
+.tabular-body .tabular-item{
+    cursor: pointer;
+}
+.tabular-item .properties{
+    width: 180px;
+}
+.tabular-item .properties h6{
+    margin: 0;
+}
+.tabular-item .properties a {
+    font-size:13px;
+}
+.tabular-item .email:hover{
+    color: #F78A00;
+}
+
+.tabular-body .tabular-item.normal{
+    background: transparent;
+}
+.tabular-body .tabular-item.waiting{
+    background: #FFDEB4;
+}
+.tabular-body .tabular-item.suspend{
+    background:  #f5a2a8;
+}
+
+.tabular-body .tabular-item.normal:hover{
+    background: #F4F4F4;
+}
+.tabular-body .tabular-item.waiting:hover{
+    background: #fbd29c;
+}
+.tabular-body .tabular-item.suspend:hover{
+    background:  #f19399;
+}

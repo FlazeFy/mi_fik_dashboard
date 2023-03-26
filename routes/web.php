@@ -6,15 +6,19 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\SettingController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 use App\Http\Controllers\Event\CalendarController;
+use App\Http\Controllers\Event\LocationController;
 
 use App\Http\Controllers\System\NotificationController;
 
-use App\Http\Controllers\User\ManageController;
+use App\Http\Controllers\User\RequestController;
+use App\Http\Controllers\User\AllController;
+use App\Http\Controllers\User\GroupingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +70,8 @@ Route::prefix('/event')->group(function () {
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
+
+    Route::get('/location', [LocationController::class, 'index']);
 });
 
 Route::prefix('/system')->group(function () {
@@ -74,6 +80,21 @@ Route::prefix('/system')->group(function () {
 });
 
 Route::prefix('/user')->group(function () {
-    Route::get('/', [ManageController::class, 'index']);
-    Route::post('/manage_role', [ManageController::class, 'add_role']);
+    Route::get('/request', [RequestController::class, 'index']);
+    Route::post('/request/manage_role_acc', [RequestController::class, 'add_role_acc']);
+    Route::post('/request/manage_acc', [RequestController::class, 'add_acc']);
+    Route::post('/request/manage_suspend', [RequestController::class, 'add_suspend']);
+    Route::post('/request/manage_recover', [RequestController::class, 'add_recover']);
+
+    Route::get('/all', [AllController::class, 'index']);
+    Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
+    Route::post('/all/ordered/{order}/{type}', [AllController::class, 'set_ordering_content']);
+
+    Route::get('/group', [GroupingController::class, 'index']);
+    Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
+});
+
+Route::prefix('/setting')->group(function () {
+    Route::get('/', [SettingController::class, 'index']);
+    Route::post('/update_chart', [SettingController::class, 'update_chart']);
 });

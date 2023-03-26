@@ -30,13 +30,16 @@ class CalendarController extends Controller
 
             $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'));       
             $tag = Tag::getFullTag("DESC", "DESC");
+            $greet = Generator::getGreeting(date('h'));
                 
             //Set active nav
             session()->put('active_nav', 'event');
 
             return view ('event.calendar.index')
                 ->with('content', $content)
-                ->with('tag', $tag);
+                ->with('tag', $tag)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

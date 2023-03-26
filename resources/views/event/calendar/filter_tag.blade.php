@@ -1,19 +1,6 @@
-<style>
-    .dropdown-menu{
-        border: none;
-        margin: 10px 0 0 0 !important; 
-        border-radius: 15px !important;
-        padding-bottom: 0px;
-        width: 480px !important;
-    }
-    .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
-        background: none !important;
-    }
-</style>
-
 <div class="position-relative me-2">
-    <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false"><i class="fa-solid fa-hashtag"></i> 
+    <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown"
+        ><i class="fa-solid fa-hashtag"></i> 
         @php($tag_coll = session()->get('selected_tag_calendar'))
         @if($tag_coll != "All")
             {{count($tag_coll)}} Selected Tags
@@ -21,56 +8,49 @@
             All Tags
         @endif
     </button>
-    <div class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="section-select-tag">
-        <span class="dropdown-item py-2">
-            <label class="fw-bold">Available Tag</label><br>
-            <form action="/event/calendar/set_filter_tag/1" method="POST">
-                @csrf
-                <div class="form-check">
-                    @if(session()->get('selected_tag_calendar') == "All")
-                        <input class="form-check-input" type="checkbox" value="all" id="flexCheckDefault" checked onchange="this.form.submit()">
-                    @else 
-                        <input class="form-check-input" type="checkbox" value="all" id="flexCheckDefault" onchange="this.form.submit()">
-                    @endif
-                    <label class="form-check-label mt-1" for="flexCheckDefault">
-                        &nbsp All
-                    </label>
-                </div>
-            </form>
+    <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-select-tag">
+        <span class="dropdown-item">
+            <div class="dropdown-header">
+                <h6 class="dropdown-title">Filter Tag</h6>
+                <form action="/event/calendar/set_filter_tag/1" method="POST" class="position-absolute" style="right:15px; top:20px;">
+                    @csrf
+                    <button class="btn btn-noline text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> Clear All</button>
+                </form>
+            </div><hr>
+            <div class="dropdown-body">
+                <form action="/event/calendar/set_filter_tag/0" method="POST" style="white-space:normal;">
+                    @csrf
+                    @foreach($tag as $tg)
+                        <!-- Initial variable -->
+                        @php($found = false)
+                        @php($check = "")
 
-            <form action="/event/calendar/set_filter_tag/0" method="POST" class="row">
-                @csrf
-                @foreach($tag as $tg)
-                    <!-- Initial variable -->
-                    @php($found = false)
-                    @php($check = "")
+                        <!-- Check if tag is selected -->
+                        @if(is_array(session()->get('selected_tag_calendar')))
+                            @foreach(session()->get('selected_tag_calendar') as $slct)
+                                @if($slct == $tg->slug_name)
+                                    @php($found = true)
+                                @endif
+                            @endforeach
+                        @endif
 
-                    <!-- Check if tag is selected -->
-                    @if(is_array(session()->get('selected_tag_calendar')))
-                        @foreach(session()->get('selected_tag_calendar') as $slct)
-                            @if($slct == $tg->slug_name)
-                                @php($found = true)
-                            @endif
-                        @endforeach
-                    @endif
+                        @if($found)
+                            @php($check = "Checked")
+                        @endif
 
-                    @if($found)
-                        @php($check = "Checked")
-                    @endif
-
-                    <div class="col-4">
-                        <div class="form-check">
-                            <input class="form-check-input" name="slug_name[]" type="checkbox" value="{{$tg->slug_name}}" id="flexCheckDefault" <?php echo $check; ?>>
-                            <label class="form-check-label mt-1" for="flexCheckDefault">
-                                &nbsp {{$tg->tag_name}}
+                        <a class="tag-check action">
+                            <label>
+                                <input class="" name="slug_name[]" type="checkbox" value="{{$tg->slug_name}}" id="flexCheckDefault" <?php echo $check; ?>>
+                                <span>{{$tg->tag_name}}</span>
                             </label>
-                        </div>
-                    </div>
-                @endforeach
-                <div class="col-4">
-                    <button class="btn btn-submit w-75" style="width:60px;"><i class="fa-solid fa-filter"></i> Filter</button>
-                </div>
-            </form>            
+                        </a>
+                    @endforeach
+            </div><hr>
+            <div class="dropdown-footer">
+                    <button class="btn btn-submit float-end mb-3"><i class="fa-solid fa-filter"></i> Apply Filter</button>
+                </form> 
+            </div>
         </span>
     </div>
 </div>
+

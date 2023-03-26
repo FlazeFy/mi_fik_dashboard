@@ -30,6 +30,7 @@ class DetailController extends Controller
             $content = ContentHeader::getFullContentBySlug($slug_name);
             $archive = Archive::getMyArchive($user_id, "DESC");
             $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'event');
@@ -40,7 +41,9 @@ class DetailController extends Controller
                 ->with('content', $content)
                 ->with('title', $title)
                 ->with('archive', $archive)
-                ->with('archive_relation', $archive_relation);
+                ->with('archive_relation', $archive_relation)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

@@ -44,6 +44,57 @@ class UserApi extends Controller
         }
     }
 
+    public function getUser($filter_name, $limit, $order)
+    {
+        try{
+            $select = Query::getSelectTemplate("user_detail");
+
+            $name = explode("_", $filter_name);
+            $ord = explode("__", $order);
+
+            if($name[0] == "all" && $name[1] == "all"){
+                $user = User::selectRaw($select)
+                    ->orderBy($ord[0], $ord[1])
+                    ->paginate($limit);
+            } else if($name[0] != "all" && $name[1] == "all"){
+                $user = User::selectRaw($select)
+                    ->whereRaw("first_name LIKE '".$name[0]."%'")
+                    ->orderBy($ord[0], $ord[1])
+                    ->paginate($limit);
+            } else if($name[0] == "all" && $name[1] != "all"){
+                $user = User::selectRaw($select)
+                    ->whereRaw("last_name LIKE '".$name[1]."%'")
+                    ->orderBy($ord[0], $ord[1])
+                    ->paginate($limit);
+            } else {
+                $user = User::selectRaw($select)
+                    ->whereRaw("first_name LIKE '".$name[0]."%'")
+                    ->whereRaw("last_name LIKE '".$name[1]."%'")
+                    ->orderBy($ord[0], $ord[1])
+                    ->paginate($limit);
+            }
+
+            if ($user->isEmpty()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Not Found',
+                    'data' => $user
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User '.count($user).' Found',
+                    'data' => $user
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function getOldUserRequest()
     {
         try{

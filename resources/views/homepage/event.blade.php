@@ -30,6 +30,13 @@
         font-weight: 500;
         font-size: 13.5px;
     }
+    .event-status{
+        position: absolute;
+        top: 7.5px;
+        left: 70px;
+        font-weight: 500;
+        font-size: 13.5px;
+    }
     .event-box:hover{
         transform: translateY(15px);
     }
@@ -123,7 +130,7 @@
         </svg>
     </div>
     <div id="empty_item_holder"></div>
-    <span id="load_more_holder" style="display: flex; justify-content:center;"></span>
+    <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
 </div>
 
 
@@ -188,9 +195,9 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_holder').html('<button class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more_holder').html('<h6 class="text-primary my-3">No more item to show</h6>');
+                $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
             }
 
             if (total == 0) {
@@ -262,7 +269,7 @@
                             return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
                                 getDateMonth(ds) + " " + getHourMinute(ds) + 
                                 " - " +
-                                ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
+                                getDateMonth(de) + " " + ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
 
                         } else if(ds.getDate() === de.getDate()){
                             return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
@@ -324,6 +331,36 @@
                     }
                 }
 
+                function getEventStatus(start, end){
+                    const c_start = new Date(start);
+                    const c_end = new Date(end);
+                    const now = new Date(Date.now());
+
+                    const msDiff_start = c_start.getTime() - now.getTime()
+                    const msDiff_end = c_end.getTime() - now.getTime()
+
+                    const hourDiff_start = Math.round(
+                        msDiff_start / (24 * 60 * 60 * 60) //hr before start
+                    )
+                    const hourDiff_end = Math.round(
+                        msDiff_end / (24 * 60 * 60 * 60) //30 minutes before end
+                    )
+
+                    if(c_start.toDateString() >= now.toDateString() && c_end.toDateString() >= now.toDateString() && hourDiff_start > 0 && hourDiff_start < 3){
+                        return "<div class='event-status text-primary'><i class='fa-solid fa-circle fa-xs'></i> About to start</div>";
+                    } else if(c_start.toDateString() <= now.toDateString() && c_end.toDateString() >= now.toDateString()){ //3 hr before start
+                        if(hourDiff_end > 1){
+                            return "<div class='event-status text-danger'><i class='fa-solid fa-circle fa-xs'></i> Live</div>";
+                        } else {
+                            return "<div class='event-status text-danger'><i class='fa-solid fa-circle fa-xs'></i> About to end</div>"; //1 hr before end
+                        }
+                    } else if(c_end.toDateString() > now.toDateString() && hourDiff_start > 0 && hourDiff_start <= 6){
+                        return "<div class='event-status text-success'><i class='fa-solid fa-circle fa-xs'></i> Just Ended</div>"; //If api show finished event with datediff end is one
+                    } else {
+                        return ""
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -339,34 +376,31 @@
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
-                            // "<form class='d-inline' method='POST' action='homepage/open/" + slug_name + "'> " +
-                            //     '@csrf ' +
-                            //     "<button class='card shadow event-box' type='submit'> " +
-                                "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
-                                    "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
-                                    "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
-                                    "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
-                                    "<div class='card-body p-2 w-100'> " +
-                                        "<div class='row px-2'> " +
-                                            "<div class='col-lg-2 px-1'> " +
-                                                "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
-                                            "</div> " +
-                                            "<div class='col-lg-9 p-0 py-1'> " +
-                                                "<h6 class='event-title'>" + content_title + "</h6> " +
-                                                "<h6 class='event-subtitle'>[username]</h6> " +
-                                            "</div> " +
+                            "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
+                                "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
+                                "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
+                                "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
+                                getEventStatus(content_date_start, content_date_end) +
+                                "<div class='card-body p-2 w-100'> " +
+                                    "<div class='row px-2'> " +
+                                        "<div class='col-lg-2 px-1'> " +
+                                            "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
                                         "</div> " +
-                                        "<div style='height:45px;'> " +
-                                            "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
-                                        "</div> " +
-                                        "<div class='row d-inline-block px-2'> " +
-                                            getEventLoc(content_loc) +
-                                            getEventDate(content_date_start, content_date_end) +
-                                            getEventTag(content_tag) +
+                                        "<div class='col-lg-9 p-0 py-1'> " +
+                                            "<h6 class='event-title'>" + content_title + "</h6> " +
+                                            "<h6 class='event-subtitle'>[username]</h6> " +
                                         "</div> " +
                                     "</div> " +
-                                "</button> " +
-                            //"</form> " +
+                                    "<div style='height:45px;'> " +
+                                        "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
+                                    "</div> " +
+                                    "<div class='row d-inline-block px-2'> " +
+                                        getEventLoc(content_loc) +
+                                        getEventDate(content_date_start, content_date_end) +
+                                        getEventTag(content_tag) +
+                                    "</div> " +
+                                "</div> " +
+                            "</button> " +
                         "</div>";
 
                     $("#data-wrapper").append(elmt);

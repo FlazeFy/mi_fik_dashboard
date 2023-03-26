@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 use App\Models\ContentDetail;
 use App\Models\ContentHeader;
 use App\Models\Setting;
+use App\Models\User;
 
 class StatisticController extends Controller
 {
@@ -28,6 +29,9 @@ class StatisticController extends Controller
             //Chart query
             $mostTag = ContentDetail::getMostUsedTag();
             $mostLoc = ContentDetail::getMostUsedLoc();
+            $mostRole = User::getMostUsedRole();
+            $greet = Generator::getGreeting(date('h'));
+
             foreach($setting as $set){
                 $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
                 $mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
@@ -39,9 +43,12 @@ class StatisticController extends Controller
             return view ('statistic.index')
                 ->with('mostTag', $mostTag)
                 ->with('mostLoc', $mostLoc)
+                ->with('mostRole', $mostRole)
                 ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
-                ->with('createdEvent', $createdEvent);
+                ->with('createdEvent', $createdEvent)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

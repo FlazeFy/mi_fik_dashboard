@@ -1,0 +1,196 @@
+.btn-submit{
+    background: #00c363;
+    color: whitesmoke !important;
+}
+.btn-primary{
+    background: #F78A00 !important;
+    border:none;
+}
+.btn-noline{
+    background: transparent;
+    border:none;
+    color: #343434;
+}
+.btn-primary-v{
+    background: #FFDEB4 !important;
+    color: #F78A00 !important;
+    z-index: 998 !important;
+}
+.btn-hide-bar{
+    color: white !important;
+}
+.btn-config-holder{
+    display:flex !important; 
+    flex-direction: row; 
+    justify-content: start;
+}
+.btn-filter{
+    color:#343434;
+    border: 1.5px solid #D9D9D9;
+    font-size: 12.5px;
+    margin-top: 6px;
+}
+.btn-filter:hover{
+    background:#00c363;
+    color: white;
+    border: 1.5px solid #00c363;
+}
+.btn-filter.selected{
+    color:#00c363;
+    font-weight: 500;
+    border: 1.5px solid #00c363;
+}
+
+.btn-tag{
+    background:white;
+    padding: 6px 8px;
+    border-radius:12px;
+    margin:4px;
+    color:#414141;
+    font-weight:400;
+    border:1.5px solid #F78A00;
+}
+.btn-tag:hover, .btn-tag-selected{
+    background:#F78A00;
+    padding: 6px 8px;
+    border-radius:12px;
+    margin:4px;
+    color:whitesmoke !important;
+}
+.btn-detail-config{
+    color:whitesmoke !important;
+    margin-right:6px;
+}
+.btn-detail-config.primary{
+    background:#F78A00;
+}
+.btn-detail-config.danger{
+    background:#D5534C;
+}
+.btn-detail-config.success{
+    background:#58C06E;
+}
+.detail-box{
+    height: 80vh;
+    position: relative;
+}
+.config-btn-group{
+    position: absolute;
+    bottom: 10px;
+    width: 95%;
+}
+
+.btn-link{
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:5px;
+    color:#F78A00;
+    background:transparent;
+    font-weight:500;
+    font-size:16px;
+}
+.btn-link:hover{
+    color:white;
+    background:#F78A00;
+}
+
+.btn-icon-rounded-danger{
+    color: #D5534C;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+.btn-icon-rounded-danger:hover{
+    background: #D5534C;
+    color: whitesmoke;
+}
+
+.btn-icon-rounded-success{
+    color: #58C06E;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+.btn-icon-rounded-success:hover{
+    background: #58C06E;
+    color: whitesmoke;
+}
+
+.btn-icon-rounded-primary{
+    color: #F78A00;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+.btn-icon-rounded-primary:hover{
+    background: #F78A00;
+    color: whitesmoke;
+}
+
+.content-more-floating{
+    font-weight:500;
+    color:#F78A00;
+    background:white;
+    border:1.5px solid #F78A00;
+    text-decoration:none !important;
+    cursor: pointer;
+    padding:3px 9px;
+    margin:0px;
+    border-radius:6px;
+    font-size: 12.5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.content-more-floating:hover{
+    color:whitesmoke;
+    background:#F78A00;
+}
+
+.tag-check{
+    background: white;
+    border-radius: 20px;
+    border: 1.5px solid #D9D9D9;
+    overflow: hidden;
+    margin-top: 6px;
+    width: fit-content;
+    block-size: fit-content;    
+    margin-right: 4px;
+    display: inline-block;
+}
+.tag-check:hover{
+    border: 1.5px solid #00c363;
+    background: #00c363 !important;
+}
+.tag-check:hover label span{
+    color: #fff !important;
+}
+
+.tag-check input:checked{
+    border: 1.5px solid #00c363 !important;
+}
+  
+.tag-check label {
+    float: left; 
+    cursor: pointer !important;
+}
+  
+.tag-check label span {
+    text-align: center;
+    padding: 4px 12px;
+    display: block;
+}
+  
+.tag-check label input {
+    position: absolute;
+    display: none !important;
+    color: #fff !important;
+}
+.tag-check label input + span{
+    color: #343434;
+}  
+.tag-check input:checked + span {
+    color: #00c363;
+}
+.Checked input:checked + span{
+    color: #00c363;
+    background: transparent;
+}

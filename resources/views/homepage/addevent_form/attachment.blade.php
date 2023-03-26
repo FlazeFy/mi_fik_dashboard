@@ -48,7 +48,7 @@
         font-size: 13px;
         width: 100px;
     }
-    .attach-upload-status{
+    .attach-upload-status, #content_loc_msg{
         text-decoration: none;
         font-style: italic;
         font-size: 12.5px;
