@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\ContentDetail;
 use App\Models\Setting;
+use App\Models\Menu;
 
 use App\Helpers\Generator;
 
@@ -27,12 +28,14 @@ class LocationController extends Controller
             //Chart query
             $location = ContentDetail::getContentLocation();
             $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
 
             //Set active nav
             session()->put('active_nav', 'event');
 
             return view ('event.location.index')
                 ->with('location', $location)
+                ->with('menu', $menu)
                 ->with('greet',$greet);
                 
         } else {

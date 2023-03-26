@@ -12,6 +12,7 @@ use App\Models\ContentDetail;
 use App\Models\ContentHeader;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\Menu;
 
 class StatisticController extends Controller
 {
@@ -30,6 +31,7 @@ class StatisticController extends Controller
             $mostTag = ContentDetail::getMostUsedTag();
             $mostLoc = ContentDetail::getMostUsedLoc();
             $mostRole = User::getMostUsedRole();
+            $menu = Menu::getMenu();
             $greet = Generator::getGreeting(date('h'));
 
             foreach($setting as $set){
@@ -46,6 +48,7 @@ class StatisticController extends Controller
                 ->with('mostRole', $mostRole)
                 ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
+                ->with('menu', $menu)
                 ->with('createdEvent', $createdEvent)
                 ->with('greet',$greet);
                 

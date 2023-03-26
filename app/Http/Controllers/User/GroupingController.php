@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 use App\Helpers\Converter;
 
 use App\Models\User;
+use App\Models\Menu;
 
 class GroupingController extends Controller
 {
@@ -24,11 +25,13 @@ class GroupingController extends Controller
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
             $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
 
             //Set active nav
-            session()->put('active_nav', 'user');
+            session()->put('active_nav', 'manageuser');
 
             return view('user.group.index')
+                ->with('menu', $menu)
                 ->with('greet',$greet);
         } else {
             return redirect()->route('landing')

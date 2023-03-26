@@ -14,6 +14,7 @@ use App\Helpers\Generator;
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\Menu;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
 use App\Models\ContentViewer;
@@ -59,6 +60,7 @@ class HomepageController extends Controller
             }
 
             $tag = Tag::getFullTag("DESC", "DESC");
+            $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("homepage");
             $dictionary = Dictionary::getDictionaryByType($type);
             $archive = Archive::getMyArchive($user_id, "DESC");
@@ -69,6 +71,7 @@ class HomepageController extends Controller
 
             return view ('homepage.index')
                 ->with('tag', $tag)
+                ->with('menu', $menu)
                 ->with('info', $info)
                 ->with('dictionary', $dictionary)
                 ->with('archive', $archive)

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Helpers\Generator;
 
 use App\Models\Info;
+use App\Models\Menu;
 
 class InfoController extends Controller
 {
@@ -26,12 +27,14 @@ class InfoController extends Controller
 
             $greet = Generator::getGreeting(date('h'));
             $info = Info::getAllInfo();
+            $menu = Menu::getMenu();
 
             //Set active nav
             session()->put('active_nav', 'system');
 
             return view ('system.info.index')
                 ->with('info', $info)
+                ->with('menu', $menu)
                 ->with('greet',$greet);
                 
         } else {
