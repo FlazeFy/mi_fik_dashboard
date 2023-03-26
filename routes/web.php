@@ -96,6 +96,7 @@ Route::prefix('/user')->group(function () {
 
     Route::get('/group', [GroupingController::class, 'index']);
     Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
+    Route::post('/group/add', [GroupingController::class, 'add_group']);
 });
 
 Route::prefix('/setting')->group(function () {

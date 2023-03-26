@@ -50,6 +50,7 @@
                     @include('sidebar.navbar')
 
                     <div class="content-section">
+                        @include('user.group.create')
                         @include('user.group.list')
                     </div>
                 </div>
@@ -58,6 +59,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.failed')
 
         <script>
             //Popover

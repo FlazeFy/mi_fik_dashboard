@@ -45,7 +45,7 @@ class Query
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
 
         } else if($type == "group_detail"){
-            $query = "users_groups.id, group_name, group_desc, count(1) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
+            $query = "users_groups.id, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
         } 
         // Make user's new request dump query
         // Make user's old request dump query
