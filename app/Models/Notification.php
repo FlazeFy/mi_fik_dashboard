@@ -17,6 +17,7 @@ class Notification extends Model
 
     public static function getAllNotification($order_1, $order_2){
         $res = Notification::select('*')
+            ->whereNull('deleted_at')
             ->orderBy('updated_at', $order_1)
             ->orderBy('created_at', $order_2)
             ->get();

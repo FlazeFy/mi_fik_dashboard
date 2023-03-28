@@ -114,10 +114,10 @@
             }
         }
 
-        if(!error){
-            $("#btn-submit-holder-event").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
-        } else {
-            $("#btn-submit-holder-event").html("");
-        }
+        // if(!error){
+        //     $("#btn-submit-holder-event").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+        // } else {
+        //     $("#btn-submit-holder-event").html("");
+        // }
     }
 </script>

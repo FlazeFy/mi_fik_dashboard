@@ -1,6 +1,7 @@
 <style>
     .box-event-detail{
         margin:20px 0 20px 0;
+        min-height: 80vh;
     }
     .event-detail-img-header{
         height:30vh;
@@ -153,6 +154,14 @@
 
                 <!--Content attachment-->
                 @include('event.detail.attachment')
+
+                <!--Content location-->
+                @if($c->content_loc)
+                    @include('event.detail.maps')
+                @else 
+                    <img src="http://127.0.0.1:8000/assets/noloc.png" class="img nodata-icon" style="height:18vh;">
+                    <h6 class="text-center text-secondary">This Event doesn't have location</h6>
+                @endif
             </div>
             <div class="col-lg-4">
                 @include('event.detail.properties')

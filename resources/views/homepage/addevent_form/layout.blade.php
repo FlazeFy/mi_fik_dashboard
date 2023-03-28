@@ -143,27 +143,26 @@
                                     @include('homepage.addevent_form.datepicker')
                                 </div>
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-lg-8">
-                                    
-                                </div>
-                                <div class="col-lg-4">
-                                
-                                </div>
-                            </div>
+                            @foreach($info as $in)
+                                @if($in->info_location == "add_event")
+                                    <div class="info-box {{$in->info_type}}">
+                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                        <?php echo $in->info_body; ?>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                         <div class="col-lg-4">
                             <label class="input-title">Event Image</label><br>
                             @include('homepage.addevent_form.contentimage')
 
                             <label class="input-title">Event Location</label><br>
-                            <div id="map"></div>
+                            @include('homepage.addevent_form.locationpicker')
 
                             <label class="input-title mb-2">Attachment</label><br>
                             @include('homepage.addevent_form.attachment')
                         </div>
                     </div>
-                    <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
                     <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </div>
             </form>

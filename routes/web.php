@@ -6,15 +6,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\SettingController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 use App\Http\Controllers\Event\CalendarController;
+use App\Http\Controllers\Event\LocationController;
 
 use App\Http\Controllers\System\NotificationController;
+use App\Http\Controllers\System\InfoController;
 
-use App\Http\Controllers\User\ManageController;
+use App\Http\Controllers\User\RequestController;
+use App\Http\Controllers\User\AllController;
+use App\Http\Controllers\User\GroupingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +55,7 @@ Route::prefix('/statistic')->group(function () {
     Route::post('/update_mot/{id}', [StatisticController::class, 'update_mot']);
     Route::post('/update_mol/{id}', [StatisticController::class, 'update_mol']);
     Route::post('/update_ce/{id}', [StatisticController::class, 'update_ce']);
+    Route::post('/update_mve/{id}', [StatisticController::class, 'update_mve']);
 });
 
 Route::prefix('/event')->group(function () {
@@ -65,13 +71,35 @@ Route::prefix('/event')->group(function () {
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
+
+    Route::get('/location', [LocationController::class, 'index']);
 });
 
 Route::prefix('/system')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
+    Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
+
+    Route::get('/info', [InfoController::class, 'index']);
 });
 
 Route::prefix('/user')->group(function () {
-    Route::get('/', [ManageController::class, 'index']);
+    Route::get('/request', [RequestController::class, 'index']);
+    Route::post('/request/manage_role_acc', [RequestController::class, 'add_role_acc']);
+    Route::post('/request/manage_acc', [RequestController::class, 'add_acc']);
+    Route::post('/request/manage_suspend', [RequestController::class, 'add_suspend']);
+    Route::post('/request/manage_recover', [RequestController::class, 'add_recover']);
+
+    Route::get('/all', [AllController::class, 'index']);
+    Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
+    Route::post('/all/ordered/{order}/{type}', [AllController::class, 'set_ordering_content']);
+
+    Route::get('/group', [GroupingController::class, 'index']);
+    Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
+    Route::post('/group/add', [GroupingController::class, 'add_group']);
+});
+
+Route::prefix('/setting')->group(function () {
+    Route::get('/', [SettingController::class, 'index']);
+    Route::post('/update_chart', [SettingController::class, 'update_chart']);
 });

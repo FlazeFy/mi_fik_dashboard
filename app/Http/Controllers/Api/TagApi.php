@@ -12,12 +12,12 @@ use App\Models\Tag;
 
 class TagApi extends Controller
 {
-    public function getAllTag(){
+    public function getAllTag($limit){
         try{
             $tag = Tag::select('slug_name', 'tag_name')
                 ->orderBy('created_at', 'DESC')
                 ->orderBy('id', 'DESC')
-                ->paginate(15);
+                ->paginate($limit);
 
             if ($tag->isEmpty()) {
                 return response()->json([

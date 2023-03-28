@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\Menu;
 use App\Models\Setting;
 
 class TagController extends Controller
@@ -29,6 +30,8 @@ class TagController extends Controller
 
             //Chart query
             $mostTag = ContentDetail::getMostUsedTag();
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
 
             //Set active nav
             session()->put('active_nav', 'event');
@@ -36,7 +39,10 @@ class TagController extends Controller
             return view ('event.tag.index')
                 ->with('mostTag', $mostTag)
                 ->with('tag', $tag)
-                ->with('setting', $setting);
+                ->with('menu', $menu)
+                ->with('setting', $setting)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

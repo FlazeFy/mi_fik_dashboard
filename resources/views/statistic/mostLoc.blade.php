@@ -38,7 +38,7 @@
                     
                     foreach($loc as $lc){
                         //Insert loc name to new array
-                        if($lc->type == "location"){
+                        if($lc->type == "name"){
                             array_push($val, $lc->detail);
                         }
                     }   
@@ -84,7 +84,7 @@
                 
                 foreach($loc as $lc){
                     //Insert loc name to new array
-                    if($lc->type == "location"){
+                    if($lc->type == "name"){
                         array_push($val, $lc->detail);
                     }
                 }   

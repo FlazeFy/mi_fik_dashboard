@@ -18,4 +18,13 @@ class User extends Model
     protected $casts = [
         'role' => 'array',
     ];
+
+    public static function getMostUsedRole(){
+        //This query must directly return at least 10 most used tag
+        $res = User::select('role')
+            ->whereNot('role', null)
+            ->get();
+
+        return $res;
+    }
 }

@@ -1,15 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\Event;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
+use App\Models\ContentDetail;
+use App\Models\Setting;
+use App\Models\Menu;
+
 use App\Helpers\Generator;
 
-class ManageController extends Controller
+class LocationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,10 +25,19 @@ class ManageController extends Controller
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-            //Set active nav
-            session()->put('active_nav', 'user');
+            //Chart query
+            $location = ContentDetail::getContentLocation();
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
 
-            return view('user.manage.index');
+            //Set active nav
+            session()->put('active_nav', 'event');
+
+            return view ('event.location.index')
+                ->with('location', $location)
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');

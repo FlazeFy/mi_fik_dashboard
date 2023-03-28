@@ -139,4 +139,18 @@ class Generator
 
         return $res;
     }
+
+    public static function getGreeting($datetime){
+        $hour = date('h', $datetime);
+
+        if ($hour >= 3 && $hour <= 12) {
+            $greet = "Good Morning";
+        } else if ($hour > 12 && $hour <= 17) {
+            $greet = "Good Evening";
+        } else if (($hour > 17 && $hour <= 24) || ($hour >= 0 && $hour < 3)) {
+            $greet = "Good Night";
+        }
+
+        return $greet;
+    }
 }

@@ -14,10 +14,12 @@ use App\Helpers\Generator;
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\Menu;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
 use App\Models\ContentViewer;
 use App\Models\Task;
+use App\Models\Info;
 use App\Models\Setting;
 use App\Models\Dictionary;
 use App\Models\Notification;
@@ -41,21 +43,40 @@ class HomepageController extends Controller
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
             }
+            if(!session()->get('ordering_user_list')){
+                session()->put('ordering_user_list', "username__DESC");
+            }
+            if(!session()->get('ordering_group_list')){
+                session()->put('ordering_group_list', "group_name__DESC");
+            }
             if(!session()->get('filtering_date')){
                 session()->put('filtering_date', "all");
             }
+            if(!session()->get('filtering_fname')){
+                session()->put('filtering_fname', "all");
+            }
+            if(!session()->get('filtering_lname')){
+                session()->put('filtering_lname', "all");
+            }
 
             $tag = Tag::getFullTag("DESC", "DESC");
+            $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("homepage");
             $dictionary = Dictionary::getDictionaryByType($type);
             $archive = Archive::getMyArchive($user_id, "DESC");
+            $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
             session()->put('active_nav', 'homepage');
 
             return view ('homepage.index')
                 ->with('tag', $tag)
+                ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('dictionary', $dictionary)
-                ->with('archive', $archive);
+                ->with('archive', $archive)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');
@@ -74,6 +95,7 @@ class HomepageController extends Controller
         $tag = Converter::getTag($request->content_tag);
         $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
         $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $slug = Generator::getSlugName($request->content_title, "content");
 
         // Attachment file upload
@@ -134,7 +156,7 @@ class HomepageController extends Controller
             'content_image' => $imageURL,
             'is_draft' => $draft, 
             'created_at' => date("Y-m-d H:i"),
-            'created_by' => 1, //for now
+            'created_by' => $user_id, 
             'updated_at' => null,
             'updated_by' => null,
             'deleted_at' => null,
@@ -154,7 +176,7 @@ class HomepageController extends Controller
                 'content_id' => $header->id, //for now
                 'content_attach' => getFailedAttach($failed_attach, $request->content_attach), 
                 'content_tag' => $tag,
-                'content_loc' => null, //for now 
+                'content_loc' => $request->content_loc,
                 'created_by' => date("Y-m-d H:i"), 
                 'updated_at' => null
             ]);
@@ -168,6 +190,7 @@ class HomepageController extends Controller
 
         $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
         $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
         $header = Task::create([
             'slug_name' => $slug, 
@@ -178,7 +201,7 @@ class HomepageController extends Controller
             'task_reminder' => $request->task_reminder,
 
             'created_at' => date("Y-m-d H:i"),
-            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002', //for now
+            'created_by' => $user_id, //for now
             'updated_at' => null,
             'updated_by' => null,
             'deleted_at' => null,

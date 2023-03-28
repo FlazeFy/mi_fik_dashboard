@@ -24,7 +24,7 @@ class ContentApi extends Controller
 
             $content = ContentHeader::selectRaw($select)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->orderBy('contents_headers.created_at', 'DESC')
+                ->orderBy('contents_headers.content_date_start', 'DESC')
                 ->paginate(12);
 
             if ($content->isEmpty()) {
@@ -105,24 +105,25 @@ class ContentApi extends Controller
 
                 if($date != "all"){
                     $date = explode("_", $date);
-                    $date_start = $date[0];
-                    $date_end = $date[1];
+                    $ds = $date[0];
+                    $de = $date[1];
+                    $filter_date = Query::getWhereDateTemplate($ds, $de);
 
                     $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
                         ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.created_at', $order)
+                        ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
                         ->whereRaw($query)
-                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_start <= '".$date_end."'")
+                        ->whereRaw($filter_date)
                         ->paginate($page);
                 } else {
                     $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
                         ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.created_at', $order)
+                        ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
                         ->whereRaw($query)
                         ->paginate($page);
@@ -130,15 +131,16 @@ class ContentApi extends Controller
             } else {
                 if($date != "all"){
                     $date = explode("_", $date);
-                    $date_start = $date[0];
-                    $date_end = $date[1];
+                    $ds = $date[0];
+                    $de = $date[1];
+                    $filter_date = Query::getWhereDateTemplate($ds, $de);
 
                     $content = ContentHeader::selectRaw($select)
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
                         ->groupBy('contents_headers.id')
-                        ->whereRaw("content_date_start >= '".$date_start."' and content_date_start <= '".$date_end."'")
-                        ->orderBy('contents_headers.created_at', $order)
+                        ->orderBy('contents_headers.content_date_start', $order)
+                        ->whereRaw($filter_date)
                         ->where('is_draft', 0)
                         ->paginate($page);
                 } else {
@@ -146,7 +148,7 @@ class ContentApi extends Controller
                         ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                         ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
                         ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.created_at', $order)
+                        ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
                         ->paginate($page);
                 }
@@ -402,6 +404,33 @@ class ContentApi extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'User or content not found',
+                    'data' => null
+                ], Response::HTTP_OK);
+            }
+            
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getStatsMostViewedEvent(){
+        try{
+            $res= ContentDetail::getMostViewedEvent(7);
+
+
+            if(count($res) > 0){
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Statistic found',
+                    'data' => $res
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Statistic not found',
                     'data' => null
                 ], Response::HTTP_OK);
             }

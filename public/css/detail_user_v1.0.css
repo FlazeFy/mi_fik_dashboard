@@ -1,0 +1,37 @@
+.incoming-req-box{
+    position: relative;
+    height: 70vh;
+}
+.user-req-holder{
+    margin-top: 20px;
+    padding: 5px 16px 0 5px;
+    display: flex;
+    flex-direction: column;
+    max-height: 90%;
+    overflow-y: scroll;
+}
+.user-box{
+    border-left: 3px solid #808080;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 5px;
+    width: 100%;
+    border: none;
+    text-align: start;
+    background: white;
+    margin-bottom: 15px;
+}
+.user-box-desc{
+    font-size: 11.5px;
+    font-weight: normal;
+    margin: 0;
+}
+.user-box-date{
+    font-size: 11.5px;
+    font-weight: normal;
+    color: #808080;
+    margin: 0;
+}
+.detail-box{
+    height: 70vh;
+}

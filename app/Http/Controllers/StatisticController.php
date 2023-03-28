@@ -11,6 +11,8 @@ use App\Helpers\Generator;
 use App\Models\ContentDetail;
 use App\Models\ContentHeader;
 use App\Models\Setting;
+use App\Models\User;
+use App\Models\Menu;
 
 class StatisticController extends Controller
 {
@@ -28,8 +30,13 @@ class StatisticController extends Controller
             //Chart query
             $mostTag = ContentDetail::getMostUsedTag();
             $mostLoc = ContentDetail::getMostUsedLoc();
+            $mostRole = User::getMostUsedRole();
+            $menu = Menu::getMenu();
+            $greet = Generator::getGreeting(date('h'));
+
             foreach($setting as $set){
                 $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
+                $mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
             }
             
             //Set active nav
@@ -38,8 +45,13 @@ class StatisticController extends Controller
             return view ('statistic.index')
                 ->with('mostTag', $mostTag)
                 ->with('mostLoc', $mostLoc)
+                ->with('mostRole', $mostRole)
+                ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
-                ->with('createdEvent', $createdEvent);
+                ->with('menu', $menu)
+                ->with('createdEvent', $createdEvent)
+                ->with('greet',$greet);
+                
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');
@@ -70,6 +82,16 @@ class StatisticController extends Controller
     {
         Setting::where('id', $id)->update([
             'CE_range' => $request->CE_range,
+            'updated_at' => date("Y-m-d h:i"),
+        ]);
+
+        return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    public function update_mve(Request $request, $id)
+    {
+        Setting::where('id', $id)->update([
+            'MVE_range' => $request->MVE_range,
             'updated_at' => date("Y-m-d h:i"),
         ]);
 
