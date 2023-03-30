@@ -20,7 +20,7 @@ class UserApi extends Controller
             $user = User::selectRaw($select)
                 ->where('role', null)
                 ->orWhere('is_accepted', 0)
-                ->orderBy('created_at', 'ASC')
+                ->orderBy('created_at', 'DESC')
                 ->paginate(12);
 
             if ($user->isEmpty()) {

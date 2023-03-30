@@ -34,7 +34,7 @@ class HomepageController extends Controller
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
             $type = ["Reminder", "Attachment"];
-            
+
             if(!session()->get('selected_tag_calendar')){
                 session()->put('selected_tag_calendar', "All");
             }
@@ -70,7 +70,7 @@ class HomepageController extends Controller
                 ->with('dictionary', $dictionary)
                 ->with('archive', $archive)
                 ->with('greet',$greet);
-                
+
         } else {
             return redirect()->route('landing')
                 ->with('failed_message', 'Your session time is expired. Please login again!');
@@ -81,7 +81,7 @@ class HomepageController extends Controller
 
     public function add_event(Request $request)
     {
-        //Inital variable 
+        //Inital variable
         $draft = 0;
         $failed_attach = false;
 
@@ -97,19 +97,19 @@ class HomepageController extends Controller
 
         if(is_countable($request->attach_input)){
             $att_count = count($request->attach_input);
-        
+
             for($i = 0; $i < $att_count; $i++){
                 if($request->hasFile('attach_input.'.$i)){
                     //validate image
                     $this->validate($request, [
                         'attach_input.'.$i     => 'required|max:10000',
                     ]);
-        
+
                     //upload image
                     $att_file = $request->file('attach_input.'.$i);
                     $att_file->storeAs('public', $att_file->getClientOriginalName());
 
-                    //get success message 
+                    //get success message
                     // ????
                     $status = true;
                 } else {
@@ -134,23 +134,23 @@ class HomepageController extends Controller
         } else {
             $imageURL = null;
         }
-    
+
         if(!$status){
             $draft = 1;
             $failed_attach = true;
         }
 
         $header = ContentHeader::create([
-            'slug_name' => $slug, 
+            'slug_name' => $slug,
             'content_title' => $request->content_title,
             'content_desc' => $request->content_desc,
             'content_date_start' => $fulldate_start,
             'content_date_end' => $fulldate_end,
             'content_reminder' => $request->content_reminder,
             'content_image' => $imageURL,
-            'is_draft' => $draft, 
+            'is_draft' => $draft,
             'created_at' => date("Y-m-d H:i"),
-            'created_by' => $user_id, 
+            'created_by' => $user_id,
             'updated_at' => null,
             'updated_by' => null,
             'deleted_at' => null,
@@ -165,20 +165,20 @@ class HomepageController extends Controller
                     return $att_content;
                 }
             }
-            
+
             ContentDetail::create([
                 'content_id' => $header->id, //for now
-                'content_attach' => getFailedAttach($failed_attach, $request->content_attach), 
+                'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
                 'content_tag' => $tag,
                 'content_loc' => $request->content_loc,
-                'created_by' => date("Y-m-d H:i"), 
+                'created_by' => date("Y-m-d H:i"),
                 'updated_at' => null
             ]);
         }
 
         return redirect()->back()->with('success_message', 'Create content success');
     }
-    
+
     public function add_task(Request $request){
         $slug = Generator::getSlugName($request->task_title, "task");
 
@@ -187,7 +187,7 @@ class HomepageController extends Controller
         $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
         $header = Task::create([
-            'slug_name' => $slug, 
+            'slug_name' => $slug,
             'task_title' => $request->task_title,
             'task_desc' => $request->task_desc,
             'task_date_start' => $fulldate_start,
@@ -204,7 +204,7 @@ class HomepageController extends Controller
 
         if(is_countable($request->archive_rel)){
             $ar_count = count($request->archive_rel);
-        
+
             for($i = 0; $i < $ar_count; $i++){
                 if($request->has('archive_rel.'.$i)){
                     ArchiveRelation::create([
@@ -220,7 +220,7 @@ class HomepageController extends Controller
         return redirect()->back()->with('success_message', 'Create item success');
     }
 
-    public function add_content_task_relation($slug_name, $type){
+    public function add_content_task_relation(Request $request, $slug_name, $type){
         if($type == 0){
             $content = ContentHeader::select('id')
                 ->where('slug_name', $slug_name)
@@ -244,7 +244,7 @@ class HomepageController extends Controller
             ArchiveRelation::destroy($slug_name);
 
             return redirect()->back()->with('success_message', 'Create item success');
-        }    
+        }
     }
 
     public function add_content_view($slug_name){
