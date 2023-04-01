@@ -72,23 +72,6 @@
     <input hidden id="content_attach" name="content_attach">
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
-
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyCN3J8nXpP1NuHwX7NjfYpMWkNGPzfV0X0",
-        authDomain: "mifik-ad2d9.firebaseapp.com",
-        projectId: "mifik-ad2d9",
-        storageBucket: "mifik-ad2d9.appspot.com",
-        messagingSenderId: "96469457737",
-        appId: "1:96469457737:web:f70e18e5dcfe41c66bd898",
-        measurementId: "G-PZDGL9X7T1"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-</script>
-
 <script>
     //Initial variable.
     var attach_list = []; //Store all attachment.
