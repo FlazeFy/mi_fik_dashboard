@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 
 use App\Helpers\Converter;
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 use App\Helpers\Query;
 
 use App\Models\ContentHeader;
@@ -268,105 +269,117 @@ class ContentApi extends Controller
             $failed_attach = false;
 
             //Helpers
-            $tag = Converter::getTag($request->content_tag);
-            $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
-            $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-            $slug = Generator::getSlugName($request->content_title, "content");
+            $validator = Validation::getValidateEvent($request);
 
-            // Attachment file upload
-            $status = true;
+            if ($validator->fails()) {
+                $errors = $validator->messages();
 
-            if(is_countable($request->attach_input)){
-                $att_count = count($request->attach_input);
-
-                for($i = 0; $i < $att_count; $i++){
-                    if($request->hasFile('attach_input.'.$i)){
-                        //validate image
-                        $this->validate($request, [
-                            'attach_input.'.$i     => 'required|max:10000',
-                        ]);
-
-                        //upload image
-                        $att_file = $request->file('attach_input.'.$i);
-                        $att_file->storeAs('public', $att_file->getClientOriginalName());
-
-                        //get success message
-                        // ????
-                        $status = true;
-                    } else {
-                        $status = false;
-                    }
-                }
+                return response()->json([
+                    'status' => 422,
+                    'message' => 'Add content failed',
+                    'error' => $errors
+                ], Response::HTTP_BAD_REQUEST);
             } else {
+                $tag = Converter::getTag($request->content_tag);
+                $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+                $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+                $slug = Generator::getSlugName($request->content_title, "content");
+
+                // Attachment file upload
                 $status = true;
-            }
 
-            // Content image file upload
-            if($request->hasFile('content_image')){
-                //validate image
-                $this->validate($request, [
-                    'content_image'    => 'required|max:5000',
-                ]);
+                if(is_countable($request->attach_input)){
+                    $att_count = count($request->attach_input);
 
-                //upload image
-                $att_file = $request->file('content_image');
-                $imageURL = $att_file->hashName();
-                $att_file->storeAs('public', $imageURL);
-            } else {
-                $imageURL = null;
-            }
+                    for($i = 0; $i < $att_count; $i++){
+                        if($request->hasFile('attach_input.'.$i)){
+                            //validate image
+                            $this->validate($request, [
+                                'attach_input.'.$i     => 'required|max:10000',
+                            ]);
 
-            if(!$status){
-                $draft = 1;
-                $failed_attach = true;
-            }
+                            //upload image
+                            $att_file = $request->file('attach_input.'.$i);
+                            $att_file->storeAs('public', $att_file->getClientOriginalName());
 
-            $header = ContentHeader::create([
-                'slug_name' => $slug,
-                'content_title' => $request->content_title,
-                'content_desc' => $request->content_desc,
-                'content_date_start' => $fulldate_start,
-                'content_date_end' => $fulldate_end,
-                'content_reminder' => $request->content_reminder,
-                'content_image' => $imageURL,
-                'is_draft' => $draft,
-                'created_at' => date("Y-m-d H:i"),
-                'created_by' => $request->user_id, //for now
-                'updated_at' => null,
-                'updated_by' => null,
-                'deleted_at' => null,
-                'deleted_by' => null
-            ]);
-
-            if($tag || $request->has('content_attach')){
-                function getFailedAttach($failed, $att_content){
-                    if($failed){
-                        return null;
-                    } else {
-                        return $att_content;
+                            //get success message
+                            // ????
+                            $status = true;
+                        } else {
+                            $status = false;
+                        }
                     }
+                } else {
+                    $status = true;
                 }
 
-                $detail = ContentDetail::create([
-                    'content_id' => $header->id, //for now
-                    'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
-                    'content_tag' => $tag,
-                    'content_loc' => null, //for now
-                    'created_by' => date("Y-m-d H:i"),
-                    'updated_at' => null
+                // Content image file upload
+                if($request->hasFile('content_image')){
+                    //validate image
+                    $this->validate($request, [
+                        'content_image'    => 'required|max:5000',
+                    ]);
+
+                    //upload image
+                    $att_file = $request->file('content_image');
+                    $imageURL = $att_file->hashName();
+                    $att_file->storeAs('public', $imageURL);
+                } else {
+                    $imageURL = null;
+                }
+
+                if(!$status){
+                    $draft = 1;
+                    $failed_attach = true;
+                }
+
+                $header = ContentHeader::create([
+                    'slug_name' => $slug,
+                    'content_title' => $request->content_title,
+                    'content_desc' => $request->content_desc,
+                    'content_date_start' => $fulldate_start,
+                    'content_date_end' => $fulldate_end,
+                    'content_reminder' => $request->content_reminder,
+                    'content_image' => $imageURL,
+                    'is_draft' => $draft,
+                    'created_at' => date("Y-m-d H:i"),
+                    'created_by' => $request->user_id, //for now
+                    'updated_at' => null,
+                    'updated_by' => null,
+                    'deleted_at' => null,
+                    'deleted_by' => null
                 ]);
+
+                if($tag || $request->has('content_attach')){
+                    function getFailedAttach($failed, $att_content){
+                        if($failed){
+                            return null;
+                        } else {
+                            return $att_content;
+                        }
+                    }
+
+                    $detail = ContentDetail::create([
+                        'content_id' => $header->id, //for now
+                        'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
+                        'content_tag' => $tag,
+                        'content_loc' => null, //for now
+                        'created_by' => date("Y-m-d H:i"),
+                        'updated_at' => null
+                    ]);
+                }
+
+                $full_result = ([
+                    "header" => $header,
+                    "detail" => $detail
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content created',
+                    'data' => $full_result
+                ], Response::HTTP_OK);
             }
-
-            $full_result = ([
-                "header" => $header,
-                "detail" => $detail
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Content created',
-                'data' => $full_result
-            ], Response::HTTP_OK);
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',

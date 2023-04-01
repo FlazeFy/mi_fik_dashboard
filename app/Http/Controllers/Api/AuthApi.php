@@ -10,32 +10,41 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-
+use App\Helpers\Validation;
 
 class AuthApi extends Controller
 {
     //
     public function login(Request $request)
     {
-        $request->validate([
-            'username' => 'required',
-            'password' => 'required'
-        ]);
+        $validator = Validation::getValidateLogin($request);
 
-        $user = Admin::where('username', $request->username)->first();
+        if ($validator->fails()) {
+            $errors = $validator->messages();
 
-        if (!$user || ($request->password != $user->password)) {
-            throw ValidationException::withMessages([
-                'username' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json([
+                'status' => 422,
+                'result' => $errors,
+                'token' => null
+            ], Response::HTTP_OK);
+        } else {
+            $user = Admin::where('username', $request->username)->first();
+
+            if (!$user || ($request->password != $user->password)) {
+                throw ValidationException::withMessages([
+                    'result' => ['The provided credentials are incorrect.'],
+                ]);
+            } else {
+                $token = $user->createToken('login')->plainTextToken;
+
+                return response()->json([
+                    'status' => 200,
+                    'result' => $user,
+                    'token' => $token,                    
+                ], Response::HTTP_OK);
+            }
         }
-
-        $token = $user->createToken('login')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ], Response::HTTP_OK);
+        
     }
 
     public function logout(Request $request)
