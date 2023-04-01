@@ -2,13 +2,16 @@
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\TagApi;
-use App\Http\Controllers\Api\AuthApi;
+use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
+use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
 use App\Http\Controllers\Api\TaskApi;
-use App\Http\Controllers\Api\UserApi;
+use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\GroupApi;
-use App\Http\Controllers\Api\ArchiveApi;
-use App\Http\Controllers\Api\ContentApi;
+use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
+use App\Http\Controllers\Api\ArchiveApi\Commands as CommandArchiveApi;
+use App\Http\Controllers\Api\ArchiveApi\Queries as QueryArchiveApi;
+use App\Http\Controllers\Api\ContentApi\CommandContent as CommandContentApi;
+use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
 use App\Http\Controllers\Api\DictionaryApi;
 use App\Http\Controllers\Api\NotificationApi;
 
@@ -49,26 +52,28 @@ Route::prefix('/v1/notification')->group(function () {
 });
 
 Route::prefix('/v1/content')->group(function() {
-    Route::get('/', [ContentApi::class, 'getContentHeader']);
-    Route::get('/slug/{slug}', [ContentApi::class, 'getContentBySlug']);
-    Route::get('/date/{date}', [ContentApi::class, 'getAllContentSchedule']);
-    Route::delete('/delete/{id}', [ContentApi::class, 'deleteContent']);
-    Route::delete('/destroy/{id}', [ContentApi::class, 'deleteContent']);
-    Route::post('/create', [ContentApi::class, 'addContent']);
-    Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [ContentApi::class, 'addView']);
+    Route::get('/', [QueryContentApi::class, 'getContentHeader']);
+    Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
+    Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
+
+    Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
+    Route::delete('/destroy/{id}', [CommandContentApi::class, 'deleteContent']);
+    Route::post('/create', [CommandContentApi::class, 'addContent']);
+    Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [CommandContentApi::class, 'addView']);
     // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
 });
 
 Route::prefix('/v2/content')->group(function() {
-    Route::get('/slug/{slug}/order/{order}/date/{date}', [ContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/slug/{slug}/order/{order}/date/{date}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
 });
 
 Route::prefix('/v1/archive')->group(function() {
-    Route::get('/{user_id}', [ArchiveApi::class, 'getArchive']);
-    Route::post('/create', [ArchiveApi::class, 'createArchive']);
-    Route::post('/createRelation', [ArchiveApi::class, 'addToArchive']);
-    Route::put('/edit/{id}', [ArchiveApi::class, 'editArchive']);
-    Route::delete('/delete/{id}', [ArchiveApi::class, 'deleteArchive']);
+    Route::get('/{user_id}', [QueryArchiveApi::class, 'getArchive']);
+
+    Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
+    Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
+    Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
+    Route::delete('/delete/{id}', [CommandArchiveApi::class, 'deleteArchive']);
 });
 
 Route::prefix('/v1/dictionaries')->group(function() {
@@ -77,20 +82,20 @@ Route::prefix('/v1/dictionaries')->group(function() {
 });
 
 Route::prefix('/v1/user')->group(function() {
-    Route::get('/{filter_name}/limit/{limit}/order/{order}', [UserApi::class, 'getUser']);
-    Route::get('/{slug_name}', [UserApi::class, 'getUserDetail']);
-    Route::get('/request/new', [UserApi::class, 'getNewUserRequest']);
-    Route::get('/request/old', [UserApi::class, 'getOldUserRequest']);
-    Route::get('/request/dump', [UserApi::class, 'getUserRejectedRequest']);
+    Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
+    Route::get('/{slug_name}', [QueryUserApi::class, 'getUserDetail']);
+    Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
+    Route::get('/request/old', [QueryUserApi::class, 'getOldUserRequest']);
+    Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
 });
 
 Route::prefix('/v1/stats')->group(function() {
-    Route::get('/mostviewed', [ContentApi::class, 'getStatsMostViewedEvent']);
+    Route::get('/mostviewed', [QueryContentApi::class, 'getStatsMostViewedEvent']);
 });
 
 Route::prefix('/v1/group')->group(function() {
-    Route::get('/limit/{limit}/order/{order}', [GroupApi::class, 'getAllGroup']);
+    Route::get('/limit/{limit}/order/{order}', [QueryGroupApi::class, 'getAllGroup']);
 });
 
-Route::post('/v1/login', [AuthApi::class, 'login']);
-Route::get('/v1/logout', [AuthApi::class, 'logout'])->middleware(['auth:sanctum']);
+Route::post('/v1/login', [CommandAuthApi::class, 'login']);
+Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);

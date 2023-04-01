@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\GroupApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\UserGroup;
 use App\Helpers\Query;
 
-class GroupApi extends Controller
+class Queries extends Controller
 {
     public function getAllGroup($limit, $order)
     {

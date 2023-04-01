@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\AuthApi;
 
 use App\Models\User;
 use App\Models\Admin;
@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 
 use App\Helpers\Validation;
 
-class AuthApi extends Controller
+class Commands extends Controller
 {
     //
     public function login(Request $request)
@@ -45,14 +45,5 @@ class AuthApi extends Controller
             }
         }
         
-    }
-
-    public function logout(Request $request)
-    {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json([
-            'message' => 'Logout success'
-        ], Response::HTTP_OK);
     }
 }

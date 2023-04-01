@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\ArchiveApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use App\Helpers\Generator;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
 
-class ArchiveApi extends Controller
+class Commands extends Controller
 {
     //
     public function createArchive(Request $request)
@@ -46,33 +46,6 @@ class ArchiveApi extends Controller
                     'message' => 'Archive Created',
                     'data' => $archive
                 ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function getArchive($user_id) {
-        try{
-            $archive = Archive::select('slug_name', 'archive_name', 'archive_desc', 'created_by')
-                ->where('created_by', $user_id)
-                ->get();
-
-            if ($archive->count() > 0) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Archive Found',
-                    'data' => $archive
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Archive Not Found',
-                    'data' => null
-                ], Response::HTTP_NOT_FOUND);
             }
         } catch(\Exception $e) {
             return response()->json([
