@@ -1,15 +1,16 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ContentApi;
-use App\Http\Controllers\Api\ArchiveApi;
 use App\Http\Controllers\Api\TagApi;
+use App\Http\Controllers\Api\AuthApi;
 use App\Http\Controllers\Api\TaskApi;
-use App\Http\Controllers\Api\NotificationApi;
-use App\Http\Controllers\Api\DictionaryApi;
 use App\Http\Controllers\Api\UserApi;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi;
+use App\Http\Controllers\Api\ArchiveApi;
+use App\Http\Controllers\Api\ContentApi;
+use App\Http\Controllers\Api\DictionaryApi;
+use App\Http\Controllers\Api\NotificationApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +55,8 @@ Route::prefix('/v1/content')->group(function() {
     Route::delete('/delete/{id}', [ContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [ContentApi::class, 'deleteContent']);
     Route::post('/create', [ContentApi::class, 'addContent']);
-    //Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [ContentApi::class, 'addView']);
+    Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [ContentApi::class, 'addView']);
+    // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
 });
 
 Route::prefix('/v2/content')->group(function() {
@@ -89,3 +91,6 @@ Route::prefix('/v1/stats')->group(function() {
 Route::prefix('/v1/group')->group(function() {
     Route::get('/limit/{limit}/order/{order}', [GroupApi::class, 'getAllGroup']);
 });
+
+Route::post('/v1/login', [AuthApi::class, 'login']);
+Route::get('/v1/logout', [AuthApi::class, 'logout'])->middleware(['auth:sanctum']);

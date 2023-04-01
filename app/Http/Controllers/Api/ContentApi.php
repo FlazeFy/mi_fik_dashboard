@@ -91,7 +91,7 @@ class ContentApi extends Controller
                 $i = 1;
                 $query = "";
                 $filter_tag = explode(",", $slug);
-                
+
                 foreach($filter_tag as $ft){
                     $stmt = 'content_tag like '."'".'%"slug_name":"'.$ft.'"%'."'";
 
@@ -184,7 +184,7 @@ class ContentApi extends Controller
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = ?", $date)
                 ->orderBy('content_date_start', 'DESC');
-                
+
             $schedule = Task::selectRaw($select_task)
                 ->where('created_by', $request->user_id)
                 ->whereRaw("date(`task_date_start`) = ?", $date)
@@ -263,7 +263,7 @@ class ContentApi extends Controller
 
     public function addContent(Request $request){
         try{
-            //Inital variable 
+            //Inital variable
             $draft = 0;
             $failed_attach = false;
 
@@ -278,19 +278,19 @@ class ContentApi extends Controller
 
             if(is_countable($request->attach_input)){
                 $att_count = count($request->attach_input);
-            
+
                 for($i = 0; $i < $att_count; $i++){
                     if($request->hasFile('attach_input.'.$i)){
                         //validate image
                         $this->validate($request, [
                             'attach_input.'.$i     => 'required|max:10000',
                         ]);
-            
+
                         //upload image
                         $att_file = $request->file('attach_input.'.$i);
                         $att_file->storeAs('public', $att_file->getClientOriginalName());
 
-                        //get success message 
+                        //get success message
                         // ????
                         $status = true;
                     } else {
@@ -315,21 +315,21 @@ class ContentApi extends Controller
             } else {
                 $imageURL = null;
             }
-        
+
             if(!$status){
                 $draft = 1;
                 $failed_attach = true;
             }
 
             $header = ContentHeader::create([
-                'slug_name' => $slug, 
+                'slug_name' => $slug,
                 'content_title' => $request->content_title,
                 'content_desc' => $request->content_desc,
                 'content_date_start' => $fulldate_start,
                 'content_date_end' => $fulldate_end,
                 'content_reminder' => $request->content_reminder,
                 'content_image' => $imageURL,
-                'is_draft' => $draft, 
+                'is_draft' => $draft,
                 'created_at' => date("Y-m-d H:i"),
                 'created_by' => $request->user_id, //for now
                 'updated_at' => null,
@@ -346,13 +346,13 @@ class ContentApi extends Controller
                         return $att_content;
                     }
                 }
-                
+
                 $detail = ContentDetail::create([
                     'content_id' => $header->id, //for now
-                    'content_attach' => getFailedAttach($failed_attach, $request->content_attach), 
+                    'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
                     'content_tag' => $tag,
-                    'content_loc' => null, //for now 
-                    'created_by' => date("Y-m-d H:i"), 
+                    'content_loc' => null, //for now
+                    'created_by' => date("Y-m-d H:i"),
                     'updated_at' => null
                 ]);
             }
@@ -394,7 +394,7 @@ class ContentApi extends Controller
                         'created_by' => $user_id
                     ]);
                 }
-    
+
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Content views created',
@@ -407,7 +407,7 @@ class ContentApi extends Controller
                     'data' => null
                 ], Response::HTTP_OK);
             }
-            
+
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -434,7 +434,7 @@ class ContentApi extends Controller
                     'data' => null
                 ], Response::HTTP_OK);
             }
-            
+
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
