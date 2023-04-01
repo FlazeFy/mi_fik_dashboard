@@ -1,10 +1,12 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\TagApi;
+use App\Http\Controllers\Api\TagApi\Commands as CommandTagApi;
+use App\Http\Controllers\Api\TagApi\Queries as QueryTagApi;
 use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
 use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
-use App\Http\Controllers\Api\TaskApi;
+use App\Http\Controllers\Api\TaskApi\CommandTask as CommandTaskApi;
+use App\Http\Controllers\Api\TaskApi\QueryTask as QueryTaskApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
@@ -12,8 +14,8 @@ use App\Http\Controllers\Api\ArchiveApi\Commands as CommandArchiveApi;
 use App\Http\Controllers\Api\ArchiveApi\Queries as QueryArchiveApi;
 use App\Http\Controllers\Api\ContentApi\CommandContent as CommandContentApi;
 use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
-use App\Http\Controllers\Api\DictionaryApi;
-use App\Http\Controllers\Api\NotificationApi;
+use App\Http\Controllers\Api\DictionaryApi\QueryDictionary as QueryDictionaryApi;
+use App\Http\Controllers\Api\NotificationApi\QueryNotification as QueryNotificationApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +49,8 @@ Route::prefix('/v1/tag')->group(function () {
 });
 
 Route::prefix('/v1/notification')->group(function () {
-    Route::get('/', [NotificationApi::class, 'getAllNotification']);
-    Route::get('/{user_id}', [NotificationApi::class, 'getMyNotification']);
+    Route::get('/', [QueryNotification::class, 'getAllNotification']);
+    Route::get('/{user_id}', [QueryNotification::class, 'getMyNotification']);
 });
 
 Route::prefix('/v1/content')->group(function() {
@@ -77,8 +79,8 @@ Route::prefix('/v1/archive')->group(function() {
 });
 
 Route::prefix('/v1/dictionaries')->group(function() {
-    Route::get('/', [DictionaryApi::class, 'getAllDictionary']);
-    Route::get('/type', [DictionaryApi::class, 'getAllDictionaryType']);
+    Route::get('/', [QueryDictionary::class, 'getAllDictionary']);
+    Route::get('/type', [QueryDictionary::class, 'getAllDictionaryType']);
 });
 
 Route::prefix('/v1/user')->group(function() {
