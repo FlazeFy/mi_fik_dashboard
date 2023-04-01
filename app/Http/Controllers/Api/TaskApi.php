@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 
 use App\Models\Task;
 use App\Models\ArchiveRelation;
+
+use App\Helpers\Validation;
 
 class TaskApi extends Controller
 {
@@ -124,18 +125,16 @@ class TaskApi extends Controller
 
     public function addTask(){
         try{
-            $validator = Validator::make($request->all(), [
-                'task_title' => 'required',
-                'task_desc' => 'required',
-                'task_date_start' => 'required',
-                'task_date_end' => 'required',
-                'task_reminder' => 'required',
-            ]);
+            //Helpers
+            $validator = Validation::getValidateTask($request);
 
             if ($validator->fails()) {
+                $errors = $validator->messages();
+
                 return response()->json([
-                    'status' => 'error',
-                    'message' => $validator->errors()
+                    'status' => 422,
+                    'message' => 'Add task failed',
+                    'error' => $errors
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $task = Task::create([

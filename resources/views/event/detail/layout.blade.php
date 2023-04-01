@@ -143,12 +143,12 @@
         @endif
         <div class="row p-3">
             <div class="col-lg-8">
-                <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button>
+                <!-- <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button> -->
                     <h5>{{$c->content_title}}</h5>
 
                 <!--My Archive-->
-                @include('event.detail.archive')
+                <!-- include('event.detail.archive') -->
 
                 <span><?php echo $c->content_desc; ?></span>
 

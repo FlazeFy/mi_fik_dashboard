@@ -40,6 +40,7 @@
                 error = true;
             } else {
                 $("#dateStartEnd_msg").text("");
+                lengValidatorEvent('75', 'title');
                 error = false;
             }
         }

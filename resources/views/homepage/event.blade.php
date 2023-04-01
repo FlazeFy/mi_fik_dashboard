@@ -285,10 +285,11 @@
 
                 //For now.
                 function removeTags(str) {
-                    if ((str===null) || (str===''))
-                        return false;
-                    else
+                    if ((str===null) || (str==='')){
+                        return "<span class='fst-italic'>No description provided</span>";
+                    } else {
                         str = str.toString();
+                    }
                         
                     return str.replace( /(<([^>]+)>)/ig, '');
                 }
