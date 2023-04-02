@@ -1,16 +1,21 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Api\TagApi;
-use App\Http\Controllers\Api\AuthApi;
-use App\Http\Controllers\Api\TaskApi;
-use App\Http\Controllers\Api\UserApi;
+use App\Http\Controllers\Api\TagApi\Commands as CommandTagApi;
+use App\Http\Controllers\Api\TagApi\Queries as QueryTagApi;
+use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
+use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
+use App\Http\Controllers\Api\ContentApi\CommandTask as CommandTaskApi;
+use App\Http\Controllers\Api\ContentApi\QueryTask as QueryTaskApi;
+use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\GroupApi;
-use App\Http\Controllers\Api\ArchiveApi;
-use App\Http\Controllers\Api\ContentApi;
-use App\Http\Controllers\Api\DictionaryApi;
-use App\Http\Controllers\Api\NotificationApi;
+use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
+use App\Http\Controllers\Api\ArchiveApi\Commands as CommandArchiveApi;
+use App\Http\Controllers\Api\ArchiveApi\Queries as QueryArchiveApi;
+use App\Http\Controllers\Api\ContentApi\CommandContent as CommandContentApi;
+use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
+use App\Http\Controllers\Api\SystemApi\QueryDictionary as QueryDictionaryApi;
+use App\Http\Controllers\Api\SystemApi\QueryNotification as QueryNotificationApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,69 +33,71 @@ use App\Http\Controllers\Api\NotificationApi;
 // });
 
 Route::prefix('/v1/task')->group(function () {
-    Route::get('/{id_user}', [TaskApi::class, 'getMyTask']);
-    Route::post('/create/{id_user}', [TaskApi::class, 'addTask']);
-    Route::put('/update/{id}', [TaskApi::class, 'updateTask']);
-    Route::delete('/delete/{id}', [TaskApi::class, 'deleteTask']);
-    Route::delete('/destroy/{id}', [TaskApi::class, 'destroyTask']);
+    Route::get('/{id_user}', [QueryTaskApi::class, 'getMyTask']);
+    Route::post('/create/{id_user}', [CommandTaskApi::class, 'addTask']);
+    Route::put('/update/{id}', [CommandTaskApi::class, 'updateTask']);
+    Route::delete('/delete/{id}', [CommandTaskApi::class, 'deleteTask']);
+    Route::delete('/destroy/{id}', [CommandTaskApi::class, 'destroyTask']);
 });
 
 Route::prefix('/v1/tag')->group(function () {
-    Route::get('/{limit}', [TagApi::class, 'getAllTag']);
-    Route::post('/create', [TagApi::class, 'addTag']);
-    Route::put('/update/{id}', [TagApi::class, 'updateTag']);
-    Route::delete('/delete/{id}', [TagApi::class, 'deleteTag']);
-    Route::delete('/destroy/{id}', [TagApi::class, 'destroyTag']);
+    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag']);
+    Route::post('/create', [CommandTagApi::class, 'addTag']);
+    Route::put('/update/{id}', [CommandTagApi::class, 'updateTag']);
+    Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag']);
+    Route::delete('/destroy/{id}', [CommandTagApi::class, 'destroyTag']);
 });
 
 Route::prefix('/v1/notification')->group(function () {
-    Route::get('/', [NotificationApi::class, 'getAllNotification']);
-    Route::get('/{user_id}', [NotificationApi::class, 'getMyNotification']);
+    Route::get('/', [QueryNotificationApi::class, 'getAllNotification']);
+    Route::get('/{user_id}', [QueryNotificationApi::class, 'getMyNotification']);
 });
 
 Route::prefix('/v1/content')->group(function() {
-    Route::get('/', [ContentApi::class, 'getContentHeader']);
-    Route::get('/slug/{slug}', [ContentApi::class, 'getContentBySlug']);
-    Route::get('/date/{date}', [ContentApi::class, 'getAllContentSchedule']);
-    Route::delete('/delete/{id}', [ContentApi::class, 'deleteContent']);
-    Route::delete('/destroy/{id}', [ContentApi::class, 'deleteContent']);
-    Route::post('/create', [ContentApi::class, 'addContent']);
-    Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [ContentApi::class, 'addView']);
+    Route::get('/', [QueryContentApi::class, 'getContentHeader']);
+    Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
+    Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
+
+    Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
+    Route::delete('/destroy/{id}', [CommandContentApi::class, 'deleteContent']);
+    Route::post('/create', [CommandContentApi::class, 'addContent']);
+    Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [CommandContentApi::class, 'addView']);
     // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
 });
 
 Route::prefix('/v2/content')->group(function() {
-    Route::get('/slug/{slug}/order/{order}/date/{date}', [ContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/slug/{slug}/order/{order}/date/{date}/find/{search}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
 });
 
 Route::prefix('/v1/archive')->group(function() {
-    Route::get('/{user_id}', [ArchiveApi::class, 'getArchive']);
-    Route::post('/create', [ArchiveApi::class, 'createArchive']);
-    Route::post('/createRelation', [ArchiveApi::class, 'addToArchive']);
-    Route::put('/edit/{id}', [ArchiveApi::class, 'editArchive']);
-    Route::delete('/delete/{id}', [ArchiveApi::class, 'deleteArchive']);
+    Route::get('/{user_id}', [QueryArchiveApi::class, 'getArchive']);
+
+    Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
+    Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
+    Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
+    Route::delete('/delete/{id}', [CommandArchiveApi::class, 'deleteArchive']);
 });
 
 Route::prefix('/v1/dictionaries')->group(function() {
-    Route::get('/', [DictionaryApi::class, 'getAllDictionary']);
-    Route::get('/type', [DictionaryApi::class, 'getAllDictionaryType']);
+    Route::get('/', [QueryDictionaryApi::class, 'getAllDictionary']);
+    Route::get('/type', [QueryDictionaryApi::class, 'getAllDictionaryType']);
 });
 
 Route::prefix('/v1/user')->group(function() {
-    Route::get('/{filter_name}/limit/{limit}/order/{order}', [UserApi::class, 'getUser']);
-    Route::get('/{slug_name}', [UserApi::class, 'getUserDetail']);
-    Route::get('/request/new', [UserApi::class, 'getNewUserRequest']);
-    Route::get('/request/old', [UserApi::class, 'getOldUserRequest']);
-    Route::get('/request/dump', [UserApi::class, 'getUserRejectedRequest']);
+    Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
+    Route::get('/{slug_name}', [QueryUserApi::class, 'getUserDetail']);
+    Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
+    Route::get('/request/old', [QueryUserApi::class, 'getOldUserRequest']);
+    Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
 });
 
 Route::prefix('/v1/stats')->group(function() {
-    Route::get('/mostviewed', [ContentApi::class, 'getStatsMostViewedEvent']);
+    Route::get('/mostviewed', [QueryContentApi::class, 'getStatsMostViewedEvent']);
 });
 
 Route::prefix('/v1/group')->group(function() {
-    Route::get('/limit/{limit}/order/{order}', [GroupApi::class, 'getAllGroup']);
+    Route::get('/limit/{limit}/order/{order}', [QueryGroupApi::class, 'getAllGroup']);
 });
 
-Route::post('/v1/login', [AuthApi::class, 'login']);
-Route::get('/v1/logout', [AuthApi::class, 'logout'])->middleware(['auth:sanctum']);
+Route::post('/v1/login', [CommandAuthApi::class, 'login']);
+Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);

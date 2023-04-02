@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\ContentApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -16,204 +16,8 @@ use App\Models\ContentDetail;
 use App\Models\ContentViewer;
 use App\Models\Task;
 
-class ContentApi extends Controller
+class CommandContent extends Controller
 {
-    public function getContentHeader()
-    {
-        try{
-            $select = Query::getSelectTemplate("content_thumbnail");
-
-            $content = ContentHeader::selectRaw($select)
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->orderBy('contents_headers.content_date_start', 'DESC')
-                ->paginate(12);
-
-            if ($content->isEmpty()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Not Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Header Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function getContentBySlug($slug)
-    {
-        try{
-            $select = Query::getSelectTemplate("content_detail");
-
-            $content = ContentHeader::selectRaw($select)
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                ->groupBy('contents_headers.id')
-                ->where('slug_name', $slug)
-                ->get();
-
-            if ($content->isEmpty()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Content Not Found'
-                ], Response::HTTP_NOT_FOUND);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Header Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function getContentBySlugLike($slug, $order, $date)
-    {
-        $page = 12;
-
-        try{
-            $select = Query::getSelectTemplate("content_thumbnail");
-
-            if($slug != "all"){
-                $i = 1;
-                $query = "";
-                $filter_tag = explode(",", $slug);
-
-                foreach($filter_tag as $ft){
-                    $stmt = 'content_tag like '."'".'%"slug_name":"'.$ft.'"%'."'";
-
-                    if($i != 1){
-                        $query = substr_replace($query, " ".$stmt." OR", 0, 0);
-                    } else {
-                        $query = substr_replace($query, " ".$stmt, 0, 0);
-                    }
-                    $i++;
-                }
-
-                if($date != "all"){
-                    $date = explode("_", $date);
-                    $ds = $date[0];
-                    $de = $date[1];
-                    $filter_date = Query::getWhereDateTemplate($ds, $de);
-
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->where('is_draft', 0)
-                        ->whereRaw($query)
-                        ->whereRaw($filter_date)
-                        ->paginate($page);
-                } else {
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->where('is_draft', 0)
-                        ->whereRaw($query)
-                        ->paginate($page);
-                }
-            } else {
-                if($date != "all"){
-                    $date = explode("_", $date);
-                    $ds = $date[0];
-                    $de = $date[1];
-                    $filter_date = Query::getWhereDateTemplate($ds, $de);
-
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->whereRaw($filter_date)
-                        ->where('is_draft', 0)
-                        ->paginate($page);
-                } else {
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->where('is_draft', 0)
-                        ->paginate($page);
-                }
-            }
-
-            if ($content->isEmpty()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Not Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Header Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function getAllContentSchedule(Request $request, $date){
-        try{
-            $select_content = Query::getSelectTemplate("content_schedule");
-            $select_task = Query::getSelectTemplate("task_schedule");
-
-            $content = ContentHeader::selectRaw($select_content)
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->whereRaw("date(`content_date_start`) = ?", $date)
-                ->orderBy('content_date_start', 'DESC');
-
-            $schedule = Task::selectRaw($select_task)
-                ->where('created_by', $request->user_id)
-                ->whereRaw("date(`task_date_start`) = ?", $date)
-                ->orderBy('tasks.task_date_start', 'DESC')
-                ->union($content)
-                ->get();
-
-            if ($schedule->isEmpty()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Not Found',
-                    'data' => $schedule
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Found',
-                    'data' => $schedule
-                ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function deleteContent(Request $request, $id){
         try{
             $content = ContentHeader::where('id', $id)->update([
@@ -284,6 +88,7 @@ class ContentApi extends Controller
                 $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
                 $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
                 $slug = Generator::getSlugName($request->content_title, "content");
+                $uuid = Generator::getUUID();
 
                 // Attachment file upload
                 $status = true;
@@ -334,6 +139,7 @@ class ContentApi extends Controller
                 }
 
                 $header = ContentHeader::create([
+                    'id' => $uuid,
                     'slug_name' => $slug,
                     'content_title' => $request->content_title,
                     'content_desc' => $request->content_desc,
@@ -360,7 +166,8 @@ class ContentApi extends Controller
                     }
 
                     $detail = ContentDetail::create([
-                        'content_id' => $header->id, //for now
+                        'id' => Generator::getUUID(),
+                        'content_id' => $uuid, //for now
                         'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
                         'content_tag' => $tag,
                         'content_loc' => null, //for now
@@ -401,6 +208,7 @@ class ContentApi extends Controller
                     ]);
                 } else {
                     $res = ContentViewer::create([
+                        'id' => Generator::getUUID(),
                         'content_id' => $content_id,
                         'type_viewer' => 0,
                         'created_at' => date("Y-m-d H:i:s"),

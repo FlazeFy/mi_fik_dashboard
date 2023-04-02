@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\SystemApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\Dictionary;
 use App\Models\DictionaryType;
 
-class DictionaryApi extends Controller
+class QueryDictionary extends Controller
 {
     public function getAllDictionary() {
         try{

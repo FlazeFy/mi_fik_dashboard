@@ -36,7 +36,8 @@ class StatisticController extends Controller
 
             foreach($setting as $set){
                 $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
-                $mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
+                //$mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
+                $mostViewed = ContentDetail::getMostViewedEventSeparatedRole($set->MVE_range);
             }
             
             //Set active nav
@@ -96,5 +97,12 @@ class StatisticController extends Controller
         ]);
 
         return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    public function update_mve_view(Request $request)
+    {
+        session()->put('selected_view_mve_chart', $request->MVE_view);
+
+        return redirect()->back()->with('success_message', 'Chart view updated');
     }
 }

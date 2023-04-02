@@ -3,18 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+//use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class ContentViewer extends Model
 {
     use HasFactory;
-    use HasUuids;
+    //use HasUuids;
     public $timestamps = false;
 
     protected $table = 'contents_viewers';
     protected $primaryKey = 'id';
-    protected $fillable = ['content_id', 'type_viewer', 'created_at', 'created_by'];
+    protected $fillable = ['id','content_id', 'type_viewer', 'created_at', 'created_by'];
 
     public static function getViewByContentIdUserId($content_id, $user_id){
         $res = ContentViewer::select('id')

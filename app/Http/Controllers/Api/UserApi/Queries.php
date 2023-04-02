@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\UserApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ use App\Models\User;
 use App\Models\UserRequest;
 use App\Helpers\Query;
 
-class UserApi extends Controller
+class Queries extends Controller
 {
     public function getNewUserRequest()
     {

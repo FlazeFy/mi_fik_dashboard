@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\TagApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,36 +11,8 @@ use App\Helpers\Validation;
 
 use App\Models\Tag;
 
-class TagApi extends Controller
+class Commands extends Controller
 {
-    public function getAllTag($limit){
-        try{
-            $tag = Tag::select('slug_name', 'tag_name')
-                ->orderBy('created_at', 'DESC')
-                ->orderBy('id', 'DESC')
-                ->paginate($limit);
-
-            if ($tag->isEmpty()) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Tag Not Found',
-                    'data' => $tag
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Tag Found',
-                    'data' => $tag
-                ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function addTag(Request $request){
         try{
             //Validate name avaiability
@@ -62,6 +34,7 @@ class TagApi extends Controller
                     $slug = Generator::getSlugName($request->tag_name, "tag");
     
                     $tag = Tag::create([
+                        'id' => Generator::getUUID(),
                         'slug_name' => $slug,
                         'tag_name' => $request->tag_name,
                         'tag_desc' => $request->tag_desc,

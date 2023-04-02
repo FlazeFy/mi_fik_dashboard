@@ -39,6 +39,9 @@ class HomepageController extends Controller
             if(!session()->get('selected_tag_calendar')){
                 session()->put('selected_tag_calendar', "All");
             }
+            if(!session()->get('selected_view_mve_chart')){
+                session()->put('selected_view_mve_chart', "All");
+            }
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
             }
@@ -102,6 +105,7 @@ class HomepageController extends Controller
             $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
             $slug = Generator::getSlugName($request->content_title, "content");
+            $uuid = Generator::getUUID();
 
             // Attachment file upload
             $status = true;
@@ -152,6 +156,7 @@ class HomepageController extends Controller
             }
 
             $header = ContentHeader::create([
+                'id' => $uuid,
                 'slug_name' => $slug,
                 'content_title' => $request->content_title,
                 'content_desc' => $request->content_desc,
@@ -178,7 +183,8 @@ class HomepageController extends Controller
                 }
 
                 ContentDetail::create([
-                    'content_id' => $header->id, //for now
+                    'id' => Generator::getUUID(),
+                    'content_id' => $uuid, //for now
                     'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
                     'content_tag' => $tag,
                     'content_loc' => $request->content_loc,
@@ -197,8 +203,10 @@ class HomepageController extends Controller
         $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
         $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
         $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $uuid = Generator::getUUID();
 
         $header = Task::create([
+            'id' => $uuid,
             'slug_name' => $slug,
             'task_title' => $request->task_title,
             'task_desc' => $request->task_desc,
@@ -220,8 +228,9 @@ class HomepageController extends Controller
             for($i = 0; $i < $ar_count; $i++){
                 if($request->has('archive_rel.'.$i)){
                     ArchiveRelation::create([
+                        'id' => Generator::getUUID(),
                         'archive_id' => $request->archive_rel[$i],
-                        'content_id' => $header->id,
+                        'content_id' => $uuid,
                         'created_at' => date("Y-m-d H:i"),
                         'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
                     ]);
@@ -242,6 +251,7 @@ class HomepageController extends Controller
                 $id = $content['id'][0];
 
                 ArchiveRelation::create([
+                    'id' => Generator::getUUID(),
                     'archive_id' => $request->archive_id,
                     'content_id' => $id,
                     'created_at' => date("Y-m-d H:i"),
@@ -270,6 +280,7 @@ class HomepageController extends Controller
             ]);
         } else {
             ContentViewer::create([
+                'id' => Generator::getUUID(),
                 'content_id' => $content_id,
                 'type_viewer' => 0,
                 'created_at' => date("Y-m-d H:i:s"),
