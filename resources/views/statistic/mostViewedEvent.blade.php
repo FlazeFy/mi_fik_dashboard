@@ -1,3 +1,19 @@
+<style>
+    <?php
+        $color = ['#F9DB00','#009FF9','#FB8C00','#42C9E7', 
+            '#F9DB00','#009FF9','#FB8C00','#42C9E7','#F9DB00','#009FF9','#FB8C00','#42C9E7'];
+
+        $i = 1;
+
+        foreach($mostViewed as $mv) {
+            echo "#MVE_column_chart .apexcharts-series :nth-child(".$i.") {
+                fill:".$color[$i].";
+            }";
+            $i++;
+        }
+    ?>
+</style>
+
 <div class="position-relative">
 <h5 class="text-secondary fw-bold">Most Viewed Event</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-MVE" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -37,7 +53,7 @@
                         echo $mv->total.",";
                     }    
                 ?>
-            ]
+            ],
         }, 
         //....
     ],
@@ -64,13 +80,14 @@
             formatter: function (val) {
                 return val.toFixed(0);
             }
-        }
+        },
     },
+   
     plotOptions: {
         bar: {
             borderRadius: 6,
-            horizontal: true
-        }
+            horizontal: true,
+        },
     },
     tooltip: {
         y: {

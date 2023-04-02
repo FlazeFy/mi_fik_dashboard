@@ -54,19 +54,25 @@
                         @include('statistic.createdEvent')
                     </div>
                     <div class="row p-0 m-0">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostTag')
-                                @include('statistic.mostRole')
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12 ps-0 py-0 my-0">
                             <div class="container-fluid bg-white rounded my-3 p-2">
                                 @include('statistic.mostLoc')
                             </div>
                         </div>
+                        <div class="col-lg-8 col-md-6 col-sm-12 pe-0 py-0 my-0">
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                <div class="row p-0 m-0">
+                                    <div class="col-lg-6 col-md-12 col-sm-12">
+                                        @include('statistic.mostRole')
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12">
+                                        @include('statistic.mostTag')
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
+                    <div class="container-fluid bg-white rounded mb-3 mt-2 p-2">
                        @include('statistic.mostViewedEvent')
                     </div>
                 </div>
