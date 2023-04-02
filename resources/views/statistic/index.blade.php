@@ -38,6 +38,12 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         
+        <style>
+            .dropdown-menu.dropdown-menu-end hr {
+                margin-top:5px !important; 
+                margin-bottom:5px !important;
+            }
+        </style>
     </head>
 
     <body>

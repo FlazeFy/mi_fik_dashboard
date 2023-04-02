@@ -58,4 +58,18 @@ class ContentDetail extends Model
 
         return $res;
     }
+
+    public static function getMostViewedEventSeparatedRole($limit){
+        $select = Query::getSelectTemplate("viewed_event_role");
+
+        $res = ContentHeader::selectRaw($select)
+            ->join('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+            ->join('users', 'users.id', '=', 'contents_viewers.created_by')
+            ->groupBy('id_content','content_title')
+            ->orderBy('total', 'DESC')
+            ->limit($limit) 
+            ->get();
+
+        return $res;
+    }
 }

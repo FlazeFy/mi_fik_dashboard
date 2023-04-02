@@ -46,7 +46,11 @@ class Query
 
         } else if($type == "group_detail"){
             $query = "users_groups.id, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
-        } 
+        } else if($type == "viewed_event_role"){ 
+            $query = "contents_headers.id as id_content, content_title, COUNT(1) as total,
+                COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."dosen".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,
+                COUNT(CASE WHEN users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."dosen".'"'."%' AND users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_student";
+        }
         // Make user's new request dump query
         // Make user's old request dump query
 

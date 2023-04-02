@@ -56,6 +56,7 @@ Route::prefix('/statistic')->group(function () {
     Route::post('/update_mol/{id}', [StatisticController::class, 'update_mol']);
     Route::post('/update_ce/{id}', [StatisticController::class, 'update_ce']);
     Route::post('/update_mve/{id}', [StatisticController::class, 'update_mve']);
+    Route::post('/update_mve_view', [StatisticController::class, 'update_mve_view']);
 });
 
 Route::prefix('/event')->group(function () {
