@@ -33,19 +33,19 @@ use App\Http\Controllers\Api\SystemApi\QueryNotification as QueryNotificationApi
 // });
 
 Route::prefix('/v1/task')->group(function () {
-    Route::get('/{id_user}', [TaskApi::class, 'getMyTask']);
-    Route::post('/create/{id_user}', [TaskApi::class, 'addTask']);
-    Route::put('/update/{id}', [TaskApi::class, 'updateTask']);
-    Route::delete('/delete/{id}', [TaskApi::class, 'deleteTask']);
-    Route::delete('/destroy/{id}', [TaskApi::class, 'destroyTask']);
+    Route::get('/{id_user}', [QueryTaskApi::class, 'getMyTask']);
+    Route::post('/create/{id_user}', [CommandTaskApi::class, 'addTask']);
+    Route::put('/update/{id}', [CommandTaskApi::class, 'updateTask']);
+    Route::delete('/delete/{id}', [CommandTaskApi::class, 'deleteTask']);
+    Route::delete('/destroy/{id}', [CommandTaskApi::class, 'destroyTask']);
 });
 
 Route::prefix('/v1/tag')->group(function () {
-    Route::get('/{limit}', [TagApi::class, 'getAllTag']);
-    Route::post('/create', [TagApi::class, 'addTag']);
-    Route::put('/update/{id}', [TagApi::class, 'updateTag']);
-    Route::delete('/delete/{id}', [TagApi::class, 'deleteTag']);
-    Route::delete('/destroy/{id}', [TagApi::class, 'destroyTag']);
+    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag']);
+    Route::post('/create', [CommandTagApi::class, 'addTag']);
+    Route::put('/update/{id}', [CommandTagApi::class, 'updateTag']);
+    Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag']);
+    Route::delete('/destroy/{id}', [CommandTagApi::class, 'destroyTag']);
 });
 
 Route::prefix('/v1/notification')->group(function () {
@@ -66,7 +66,7 @@ Route::prefix('/v1/content')->group(function() {
 });
 
 Route::prefix('/v2/content')->group(function() {
-    Route::get('/slug/{slug}/order/{order}/date/{date}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/slug/{slug}/order/{order}/date/{date}/find/{search}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
 });
 
 Route::prefix('/v1/archive')->group(function() {

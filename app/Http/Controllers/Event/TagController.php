@@ -87,6 +87,7 @@ class TagController extends Controller
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
             Tag::create([
+                'id' => Generator::getUUID(),
                 'slug_name' => $slug,
                 'tag_name' => $request->tag_name,
                 'tag_desc' => $request->tag_desc,

@@ -179,9 +179,17 @@
 
         var order = <?php echo '"'.session()->get('ordering_event').'";'; ?>
         var date = <?php echo '"'.session()->get('filtering_date').'";'; ?>
+
+        function getFind(check){
+            if(check == null || check.trim() === ''){
+                return " "
+            } else {
+                return check
+            }
+        }
         
         $.ajax({
-            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "?page=" + page,
+            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {

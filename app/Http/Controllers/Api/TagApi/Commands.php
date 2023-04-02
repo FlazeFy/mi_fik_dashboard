@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\TagApi;
+namespace App\Http\Controllers\Api\TagApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -34,6 +34,7 @@ class Commands extends Controller
                     $slug = Generator::getSlugName($request->tag_name, "tag");
     
                     $tag = Tag::create([
+                        'id' => Generator::getUUID(),
                         'slug_name' => $slug,
                         'tag_name' => $request->tag_name,
                         'tag_desc' => $request->tag_desc,

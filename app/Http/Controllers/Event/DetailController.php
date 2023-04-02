@@ -58,6 +58,7 @@ class DetailController extends Controller
         $content_id = ContentHeader::getContentIdBySlug($slug_name);
 
         ArchiveRelation::create([
+            'id' => Generator::getUUID(),
             'archive_id' => $request->archive_id,
             'content_id' => $content_id,
             'created_at' => date("Y-m-d H:i"),
@@ -77,6 +78,7 @@ class DetailController extends Controller
         $slug = Generator::getSlugName($request->archive_name, "archive");
 
         Archive::create([
+            'id' => Generator::getUUID(),
             'slug_name' => $slug,
             'archive_name' => $request->archive_name,
             'archive_desc' => null,

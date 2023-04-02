@@ -81,12 +81,13 @@ class QueryContent extends Controller
         }
     }
 
-    public function getContentBySlugLike($slug, $order, $date)
+    public function getContentBySlugLike($slug, $order, $date, $search)
     {
         $page = 12;
 
         try{
             $select = Query::getSelectTemplate("content_thumbnail");
+            $search = trim($search);
 
             if($slug != "all"){
                 $i = 1;
@@ -116,6 +117,7 @@ class QueryContent extends Controller
                         ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
+                        ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->whereRaw($query)
                         ->whereRaw($filter_date)
                         ->paginate($page);
@@ -126,6 +128,7 @@ class QueryContent extends Controller
                         ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
+                        ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->whereRaw($query)
                         ->paginate($page);
                 }
@@ -143,6 +146,7 @@ class QueryContent extends Controller
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->whereRaw($filter_date)
                         ->where('is_draft', 0)
+                        ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->paginate($page);
                 } else {
                     $content = ContentHeader::selectRaw($select)
@@ -151,6 +155,7 @@ class QueryContent extends Controller
                         ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
+                        ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->paginate($page);
                 }
             }

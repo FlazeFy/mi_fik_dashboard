@@ -3,17 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+//use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Info extends Model
 {
     use HasFactory;
-    use HasUuids;
+    //use HasUuids;
 
     protected $table = 'infos';
     protected $primaryKey = 'id';
-    protected $fillable = ['info_type', 'info_page', 'info_location', 'info_body', 'is_active', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
+    protected $fillable = ['id','info_type', 'info_page', 'info_location', 'info_body', 'is_active', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
 
     public static function getAvailableInfo($page){
         $res = Info::select('info_type','info_body','info_location','is_active')

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+//use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Helpers\Query;
@@ -11,11 +11,11 @@ use App\Helpers\Query;
 class ContentDetail extends Model
 {
     use HasFactory;
-    use HasUuids;
+    //use HasUuids;
 
     protected $table = 'contents_details';
     protected $primaryKey = 'id';
-    protected $fillable = ['content_id', 'content_attach', 'content_tag', 'content_loc', 'created_at', 'updated_at'];
+    protected $fillable = ['id','content_id', 'content_attach', 'content_tag', 'content_loc', 'created_at', 'updated_at'];
 
     public static function getContentLocation(){
         $select = Query::getSelectTemplate("content_location");

@@ -110,6 +110,7 @@ class CommandTask extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $task = Task::create([
+                    'id' => Generator::getUUID(),
                     'task_title' => $request->task_title,
                     'task_desc' => $request->task_desc,
                     'task_date_start' => $request->task_date_start,

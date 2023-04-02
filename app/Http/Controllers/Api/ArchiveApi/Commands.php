@@ -32,6 +32,7 @@ class Commands extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             } else {
                 $archive = Archive::create([
+                    'id' => Generator::getUUID(),
                     'slug_name' => $slug,
                     'archive_name' => $request->archive_name,
                     'archive_desc' => $request->archive_desc,
@@ -58,6 +59,7 @@ class Commands extends Controller
     public function addToArchive(Request $request){
         try{
             $relation = ArchiveRelation::create([
+                'id' => Generator::getUUID(),
                 'archive_id' => $request->archive_id,
                 'content_id' => $request->content_id,
                 'created_by' => $request->user_id,

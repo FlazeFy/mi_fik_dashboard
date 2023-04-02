@@ -51,8 +51,10 @@ class GroupingController extends Controller
 
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->group_name)) != "all"){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $uuid = Generator::getUUID();
 
             $header = UserGroup::create([
+                'id' => $uuid,
                 'group_name' => $request->group_name,
                 'group_desc' => $request->group_desc,
                 'created_at' => date("Y-m-d h:i:s"),
@@ -68,7 +70,8 @@ class GroupingController extends Controller
                     $user_id_mng = Generator::getUserId($request->slug_name[$i], 2);
 
                     GroupRelation::create([
-                        'group_id' => $header->id,
+                        'id' => Generator::getUUID(),
+                        'group_id' => $uuid,
                         'user_id' => $user_id_mng,
                         'created_at' => date("Y-m-d h:i:s"),
                         'created_by' => $user_id,

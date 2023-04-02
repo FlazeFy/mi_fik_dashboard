@@ -88,6 +88,7 @@ class CommandContent extends Controller
                 $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
                 $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
                 $slug = Generator::getSlugName($request->content_title, "content");
+                $uuid = Generator::getUUID();
 
                 // Attachment file upload
                 $status = true;
@@ -138,6 +139,7 @@ class CommandContent extends Controller
                 }
 
                 $header = ContentHeader::create([
+                    'id' => $uuid,
                     'slug_name' => $slug,
                     'content_title' => $request->content_title,
                     'content_desc' => $request->content_desc,
@@ -164,7 +166,8 @@ class CommandContent extends Controller
                     }
 
                     $detail = ContentDetail::create([
-                        'content_id' => $header->id, //for now
+                        'id' => Generator::getUUID(),
+                        'content_id' => $uuid, //for now
                         'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
                         'content_tag' => $tag,
                         'content_loc' => null, //for now
@@ -205,6 +208,7 @@ class CommandContent extends Controller
                     ]);
                 } else {
                     $res = ContentViewer::create([
+                        'id' => Generator::getUUID(),
                         'content_id' => $content_id,
                         'type_viewer' => 0,
                         'created_at' => date("Y-m-d H:i:s"),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\TagApi;
+namespace App\Http\Controllers\Api\TagApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
