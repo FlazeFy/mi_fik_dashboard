@@ -134,8 +134,6 @@
                 var att_file_src = document.getElementById('attach_url_'+id).files[0];
                 var filePath = att_type + '/' + getUUID();
 
-                document.getElementById('attach_url_holder_'+id).value = filePath;
-
                 //Set upload path
                 var storageRef = firebase.storage().ref(filePath);
                 var uploadTask = storageRef.put(att_file_src);
@@ -177,6 +175,7 @@
                                 "</div> " +
                             "</div>";
                         document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
+                        document.getElementById('attach_url_holder_'+id).value = downloadUrl;
                     });
                 });
             } else {
@@ -236,22 +235,23 @@
 
         attach_list = attach_list.filter(object => {
             if(att_type != "attachment_url"){
-                var filePath =  document.getElementById('attach_url_holder_'+index).value;
+                var filePath = object.attach_url;
                 if(filePath){
-                    //Set upload path
-                    var storageRef = firebase.storage().ref(filePath);
-                
-                    storageRef.delete().then(() => {
-                        console.log("success");
-                        $("#attachment_container_"+index).remove();
+                    var storageRef = firebase.storage();
+                    var desertRef = storageRef.refFromURL(filePath);
+                    var msg = ""
 
+                    desertRef.delete().then(() => {
+                        msg = "Attachment has been removed";
+                        //Return msg not finished. i dont know what to do next LOL
                     }).catch((error) => {
-                        console.log("failed");
+                        msg = "Failed to deleted the Attachment";
+                        //Return msg not finished. i dont know what to do next LOL
                     });
                 }
-            } else {
-                $("#attachment_container_"+index).remove();
-            }
+            } 
+
+            $("#attachment_container_"+index).remove();
 
             return object.id !== index;
         });

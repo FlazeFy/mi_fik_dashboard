@@ -304,7 +304,7 @@
 
                 function getContentImage(img){
                     if(img){
-                        return 'url("http://127.0.0.1:8000/storage/'+img+'")';
+                        return 'url("'+img+'")';
                     } else {
                         return "url({{asset('assets/default_content.jpg')}})";
                     }
