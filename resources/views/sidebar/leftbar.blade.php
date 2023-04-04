@@ -134,63 +134,55 @@
     <!--Main Navbar.-->
     <div class="accordion" id="accordionExample">
         <ul class="list-unstyled components my-5">
-            <li class="<?php if(session()->get('active_nav') == "homepage"){ echo " active"; }?>">
-                <a href="{{ url('/homepage') }}"><i class="fa-solid fa-home me-3"></i> Homepage</a>
-            </li>
-            <li class="accordion-header <?php if(session()->get('active_nav') == "event"){ echo " active"; }?>">
-                <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clpsEvent"><i class="fa-regular fa-calendar me-3"></i> Events</button>
-            </li>
-            <div class="collapse ps-4" id="clpsEvent" data-bs-parent="#accordionExample">
-                <li class="">
-                    <a href="{{ url('/event/tag') }}"><i class="fa-solid fa-hashtag me-3"></i> Tag</a>
-                </li>
-                <li class="">
-                    <a href="{{ url('/event/location') }}"><i class="fa-solid fa-location-dot me-3"></i> Location</a>
-                </li>
-                <li class="">
-                    <a href="{{ url('/event/calendar') }}"><i class="fa-solid fa-calendar me-3"></i> Calendar</a>
-                </li>
-            </div>
-            <li class="accordion-header <?php if(session()->get('active_nav') == "user"){ echo " active"; }?>">
-                <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clpsUser"><i class="fa-solid fa-user-pen me-3"></i> Manage User</button>
-            </li>
-            <div class="collapse ps-4" id="clpsUser" data-bs-parent="#accordionExample">
-                <li class="">
-                    <a href="{{ url('/user/request') }}"><i class="fa-solid fa-hand me-3"></i> Request</a>
-                </li>
-                <li class="">
-                    <a href="{{ url('/user/all') }}"><i class="fa-solid fa-user me-3"></i> All User</a>
-                </li>
-                <li class="">
-                    <a href="{{ url('/user/group') }}"><i class="fa-solid fa-users me-3"></i> Grouping</a>
-                </li>
-            </div>
-            <li class="accordion-header <?php if(session()->get('active_nav') == "system"){ echo " active"; }?>">
-                <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clpsSystem"><i class="fa-solid fa-globe me-3"></i> System</button>
-            </li>
-            <div class="collapse ps-4" id="clpsSystem" data-bs-parent="#accordionExample">
-                <li class="">
-                    <a href="{{ url('/system/maintenance') }}"><i class="fa-solid fa-screwdriver-wrench me-3"></i> Maintenance</a>
-                </li>
-                <li class="">
-                    <a href="{{ url('/system/notification') }}"><i class="fa-solid fa-bell me-3"></i> Notification</a>
-                </li>
-                <li class="">
-                    <a href="{{ url('/system/dictionary') }}"><i class="fa-solid fa-book me-3"></i> Dictionary</a>
-                </li>
-            </div>
-            <li class="<?php if(session()->get('active_nav') == "statistic"){ echo " active"; }?>">
-                <a href="{{ url('/statistic') }}"><i class="fa-solid fa-chart-line me-3"></i> Statistic</a>
-            </li>
-            <li class="">
-                <a href="{{ url('/history') }}"><i class="fa-solid fa-clock-rotate-left me-3"></i> History</a>
-            </li>
-            <li class="<?php if(session()->get('active_nav') == "setting"){ echo " active"; }?>">
-                <a href="{{ url('/setting') }}"><i class="fa-solid fa-gear me-3"></i> Setting</a>
-            </li>
-            <li class="">
-                <a href="{{ url('/about') }}"><i class="fa-solid fa-regular fa-circle-info me-3"></i> About</a>
-            </li>
+            @php($group = false)
+            @php($before = null)
+            @php($total = count($menu))
+            @php($i = 0)
+
+            @foreach($menu as $mn)
+                @if(!$mn->menu_name)
+                    <li class="<?php if(session()->get('active_nav') == $mn->menu_group){ echo " active"; }?>">
+                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> {{ucfirst($mn->menu_group)}}</a>
+                    </li>
+                    @php($group = false)
+                @else 
+                    @php($menu_group = str_replace(' ', '', $mn->menu_group))
+
+                    <!-- Fix this -->
+                    @if($menu_group == "event")
+                        <?php $icon = '<i class="fa-regular fa-calendar me-3"></i>'; ?>
+                    @elseif($menu_group == "system")
+                        <?php $icon = '<i class="fa-solid fa-globe me-3"></i>'; ?>
+                    @elseif($menu_group == "manageuser")
+                        <?php $icon = '<i class="fa-solid fa-user-pen me-3"></i>'; ?>
+                    @endif
+                    
+                    @if(!$group)
+                        <li class="accordion-header <?php if(session()->get('active_nav') == $menu_group){ echo " active"; }?>">
+                            <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clps{{$menu_group}}"><?= $icon; ?> {{ucfirst($mn->menu_group)}}</button>
+                        </li>
+                        @php($group = true)
+                    @endif
+                    
+                    @if($before == null || ($before != $menu_group && $group == true))
+                        <div class="collapse ps-4" id="clps{{$menu_group}}" data-bs-parent="#accordionExample">
+                        @php($before = $menu_group)
+                    @endif
+
+                    <li class="">
+                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> {{ucfirst($mn->menu_name)}}</a>
+                    </li>
+                   
+                    @if($i <= $total)
+                        @if(str_replace(' ', '', $menu[$i + 1]['menu_group']) != $before)
+                            </div>
+                            @php($group = false)
+                        @endif
+                    @endif
+
+                @endif
+                @php($i++)
+            @endforeach
         </ul>
         <!-- <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button> -->
         <!-- <button class="btn btn-transparent text-danger fw-bolder position-absolute" style='bottom:20px; right:10px;' title="Sign Out"

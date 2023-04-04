@@ -15,6 +15,7 @@ use App\Http\Controllers\Event\CalendarController;
 use App\Http\Controllers\Event\LocationController;
 
 use App\Http\Controllers\System\NotificationController;
+use App\Http\Controllers\System\InfoController;
 
 use App\Http\Controllers\User\RequestController;
 use App\Http\Controllers\User\AllController;
@@ -55,6 +56,7 @@ Route::prefix('/statistic')->group(function () {
     Route::post('/update_mol/{id}', [StatisticController::class, 'update_mol']);
     Route::post('/update_ce/{id}', [StatisticController::class, 'update_ce']);
     Route::post('/update_mve/{id}', [StatisticController::class, 'update_mve']);
+    Route::post('/update_mve_view', [StatisticController::class, 'update_mve_view']);
 });
 
 Route::prefix('/event')->group(function () {
@@ -77,6 +79,9 @@ Route::prefix('/event')->group(function () {
 Route::prefix('/system')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
+    Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
+
+    Route::get('/info', [InfoController::class, 'index']);
 });
 
 Route::prefix('/user')->group(function () {
@@ -92,6 +97,7 @@ Route::prefix('/user')->group(function () {
 
     Route::get('/group', [GroupingController::class, 'index']);
     Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
+    Route::post('/group/add', [GroupingController::class, 'add_group']);
 });
 
 Route::prefix('/setting')->group(function () {

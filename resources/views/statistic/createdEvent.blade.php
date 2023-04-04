@@ -98,6 +98,7 @@
             ?>
         ]
     },
+    colors: ['#42C9E7'],
     tooltip: {
         y: {
             formatter: function (val) {

@@ -13,6 +13,7 @@ use App\Models\ContentHeader;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
 use App\Models\Tag;
+use App\Models\Menu;
 
 class DetailController extends Controller
 {
@@ -31,6 +32,7 @@ class DetailController extends Controller
             $archive = Archive::getMyArchive($user_id, "DESC");
             $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
             $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
 
             //Set active nav
             session()->put('active_nav', 'event');
@@ -41,6 +43,7 @@ class DetailController extends Controller
                 ->with('content', $content)
                 ->with('title', $title)
                 ->with('archive', $archive)
+                ->with('menu', $menu)
                 ->with('archive_relation', $archive_relation)
                 ->with('greet',$greet);
                 
@@ -55,6 +58,7 @@ class DetailController extends Controller
         $content_id = ContentHeader::getContentIdBySlug($slug_name);
 
         ArchiveRelation::create([
+            'id' => Generator::getUUID(),
             'archive_id' => $request->archive_id,
             'content_id' => $content_id,
             'created_at' => date("Y-m-d H:i"),
@@ -74,6 +78,7 @@ class DetailController extends Controller
         $slug = Generator::getSlugName($request->archive_name, "archive");
 
         Archive::create([
+            'id' => Generator::getUUID(),
             'slug_name' => $slug,
             'archive_name' => $request->archive_name,
             'archive_desc' => null,

@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\Menu;
 use App\Models\Setting;
 
 class TagController extends Controller
@@ -30,6 +31,7 @@ class TagController extends Controller
             //Chart query
             $mostTag = ContentDetail::getMostUsedTag();
             $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
 
             //Set active nav
             session()->put('active_nav', 'event');
@@ -37,6 +39,7 @@ class TagController extends Controller
             return view ('event.tag.index')
                 ->with('mostTag', $mostTag)
                 ->with('tag', $tag)
+                ->with('menu', $menu)
                 ->with('setting', $setting)
                 ->with('greet',$greet);
                 
@@ -84,6 +87,7 @@ class TagController extends Controller
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
             Tag::create([
+                'id' => Generator::getUUID(),
                 'slug_name' => $slug,
                 'tag_name' => $request->tag_name,
                 'tag_desc' => $request->tag_desc,

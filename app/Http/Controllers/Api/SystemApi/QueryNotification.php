@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\SystemApi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
 
 use App\Models\Notification;
 
-class NotificationApi extends Controller
+class QueryNotification extends Controller
 {
     public function getAllNotification(){    
         $notif = Notification::select('notif_type', 'notif_body', 'notif_send_to', 'is_pending')

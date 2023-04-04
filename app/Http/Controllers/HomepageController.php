@@ -10,17 +10,18 @@ use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Converter;
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\Menu;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
 use App\Models\ContentViewer;
 use App\Models\Task;
-use App\Models\Setting;
+use App\Models\Info;
 use App\Models\Dictionary;
-use App\Models\Notification;
 
 class HomepageController extends Controller
 {
@@ -37,6 +38,9 @@ class HomepageController extends Controller
 
             if(!session()->get('selected_tag_calendar')){
                 session()->put('selected_tag_calendar', "All");
+            }
+            if(!session()->get('selected_view_mve_chart')){
+                session()->put('selected_view_mve_chart', "All");
             }
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
@@ -58,8 +62,10 @@ class HomepageController extends Controller
             }
 
             $tag = Tag::getFullTag("DESC", "DESC");
+            $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("homepage");
             $dictionary = Dictionary::getDictionaryByType($type);
-            $archive = Archive::getMyArchive($user_id, "DESC");
+            //$archive = Archive::getMyArchive($user_id, "DESC");
             $greet = Generator::getGreeting(date('h'));
 
             //Set active nav
@@ -67,8 +73,10 @@ class HomepageController extends Controller
 
             return view ('homepage.index')
                 ->with('tag', $tag)
+                ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('dictionary', $dictionary)
-                ->with('archive', $archive)
+                //->with('archive', $archive)
                 ->with('greet',$greet);
 
         } else {
@@ -86,97 +94,107 @@ class HomepageController extends Controller
         $failed_attach = false;
 
         //Helpers
-        $tag = Converter::getTag($request->content_tag);
-        $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
-        $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        $slug = Generator::getSlugName($request->content_title, "content");
+        $validator = Validation::getValidateEvent($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
 
-        // Attachment file upload
-        $status = true;
-
-        if(is_countable($request->attach_input)){
-            $att_count = count($request->attach_input);
-
-            for($i = 0; $i < $att_count; $i++){
-                if($request->hasFile('attach_input.'.$i)){
-                    //validate image
-                    $this->validate($request, [
-                        'attach_input.'.$i     => 'required|max:10000',
-                    ]);
-
-                    //upload image
-                    $att_file = $request->file('attach_input.'.$i);
-                    $att_file->storeAs('public', $att_file->getClientOriginalName());
-
-                    //get success message
-                    // ????
-                    $status = true;
-                } else {
-                    $status = false;
-                }
-            }
+            return redirect()->back()->with('failed_message', $errors);
         } else {
+            $tag = Converter::getTag($request->content_tag);
+            $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+            $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $slug = Generator::getSlugName($request->content_title, "content");
+            $uuid = Generator::getUUID();
+
+            // Attachment file upload
             $status = true;
-        }
 
-        // Content image file upload
-        if($request->hasFile('content_image')){
-            //validate image
-            $this->validate($request, [
-                'content_image'    => 'required|max:5000',
-            ]);
+            if(is_countable($request->attach_input)){
+                $att_count = count($request->attach_input);
 
-            //upload image
-            $att_file = $request->file('content_image');
-            $imageURL = $att_file->hashName();
-            $att_file->storeAs('public', $imageURL);
-        } else {
-            $imageURL = null;
-        }
+                for($i = 0; $i < $att_count; $i++){
+                    if($request->hasFile('attach_input.'.$i)){
+                        //validate image
+                        $this->validate($request, [
+                            'attach_input.'.$i     => 'required|max:10000',
+                        ]);
 
-        if(!$status){
-            $draft = 1;
-            $failed_attach = true;
-        }
+                        //upload image
+                        $att_file = $request->file('attach_input.'.$i);
+                        $att_file->storeAs('public', $att_file->getClientOriginalName());
 
-        $header = ContentHeader::create([
-            'slug_name' => $slug,
-            'content_title' => $request->content_title,
-            'content_desc' => $request->content_desc,
-            'content_date_start' => $fulldate_start,
-            'content_date_end' => $fulldate_end,
-            'content_reminder' => $request->content_reminder,
-            'content_image' => $imageURL,
-            'is_draft' => $draft,
-            'created_at' => date("Y-m-d H:i"),
-            'created_by' => $user_id,
-            'updated_at' => null,
-            'updated_by' => null,
-            'deleted_at' => null,
-            'deleted_by' => null
-        ]);
-
-        if($tag || $request->has('content_attach')){
-            function getFailedAttach($failed, $att_content){
-                if($failed){
-                    return null;
-                } else {
-                    return $att_content;
+                        //get success message
+                        // ????
+                        $status = true;
+                    } else {
+                        $status = false;
+                    }
                 }
+            } else {
+                $status = true;
             }
 
-            ContentDetail::create([
-                'content_id' => $header->id, //for now
-                'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
-                'content_tag' => $tag,
-                'content_loc' => $request->content_loc,
-                'created_by' => date("Y-m-d H:i"),
-                'updated_at' => null
-            ]);
-        }
+            // Content image file upload
+            if($request->hasFile('content_image')){
+                //validate image
+                $this->validate($request, [
+                    'content_image'    => 'required|max:5000',
+                ]);
 
-        return redirect()->back()->with('success_message', 'Create content success');
+                //upload image
+                $att_file = $request->file('content_image');
+                $imageURL = $att_file->hashName();
+                $att_file->storeAs('public', $imageURL);
+            } else {
+                $imageURL = null;
+            }
+
+            if(!$status){
+                $draft = 1;
+                $failed_attach = true;
+            }
+
+            $header = ContentHeader::create([
+                'id' => $uuid,
+                'slug_name' => $slug,
+                'content_title' => $request->content_title,
+                'content_desc' => $request->content_desc,
+                'content_date_start' => $fulldate_start,
+                'content_date_end' => $fulldate_end,
+                'content_reminder' => $request->content_reminder,
+                'content_image' => $imageURL,
+                'is_draft' => $draft,
+                'created_at' => date("Y-m-d H:i"),
+                'created_by' => $user_id,
+                'updated_at' => null,
+                'updated_by' => null,
+                'deleted_at' => null,
+                'deleted_by' => null
+            ]);
+
+            if($tag || $request->has('content_attach')){
+                function getFailedAttach($failed, $att_content){
+                    if($failed){
+                        return null;
+                    } else {
+                        return $att_content;
+                    }
+                }
+
+                ContentDetail::create([
+                    'id' => Generator::getUUID(),
+                    'content_id' => $uuid, //for now
+                    'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
+                    'content_tag' => $tag,
+                    'content_loc' => $request->content_loc,
+                    'created_by' => date("Y-m-d H:i"),
+                    'updated_at' => null
+                ]);
+            }
+
+            return redirect()->back()->with('success_message', 'Create content success');
+        }
     }
 
     public function add_task(Request $request){
@@ -185,8 +203,10 @@ class HomepageController extends Controller
         $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
         $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
         $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $uuid = Generator::getUUID();
 
         $header = Task::create([
+            'id' => $uuid,
             'slug_name' => $slug,
             'task_title' => $request->task_title,
             'task_desc' => $request->task_desc,
@@ -208,8 +228,9 @@ class HomepageController extends Controller
             for($i = 0; $i < $ar_count; $i++){
                 if($request->has('archive_rel.'.$i)){
                     ArchiveRelation::create([
+                        'id' => Generator::getUUID(),
                         'archive_id' => $request->archive_rel[$i],
-                        'content_id' => $header->id,
+                        'content_id' => $uuid,
                         'created_at' => date("Y-m-d H:i"),
                         'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
                     ]);
@@ -230,6 +251,7 @@ class HomepageController extends Controller
                 $id = $content['id'][0];
 
                 ArchiveRelation::create([
+                    'id' => Generator::getUUID(),
                     'archive_id' => $request->archive_id,
                     'content_id' => $id,
                     'created_at' => date("Y-m-d H:i"),
@@ -258,6 +280,7 @@ class HomepageController extends Controller
             ]);
         } else {
             ContentViewer::create([
+                'id' => Generator::getUUID(),
                 'content_id' => $content_id,
                 'type_viewer' => 0,
                 'created_at' => date("Y-m-d H:i:s"),

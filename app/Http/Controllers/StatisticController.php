@@ -12,6 +12,7 @@ use App\Models\ContentDetail;
 use App\Models\ContentHeader;
 use App\Models\Setting;
 use App\Models\User;
+use App\Models\Menu;
 
 class StatisticController extends Controller
 {
@@ -30,11 +31,13 @@ class StatisticController extends Controller
             $mostTag = ContentDetail::getMostUsedTag();
             $mostLoc = ContentDetail::getMostUsedLoc();
             $mostRole = User::getMostUsedRole();
+            $menu = Menu::getMenu();
             $greet = Generator::getGreeting(date('h'));
 
             foreach($setting as $set){
                 $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
-                $mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
+                //$mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
+                $mostViewed = ContentDetail::getMostViewedEventSeparatedRole($set->MVE_range);
             }
             
             //Set active nav
@@ -46,6 +49,7 @@ class StatisticController extends Controller
                 ->with('mostRole', $mostRole)
                 ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
+                ->with('menu', $menu)
                 ->with('createdEvent', $createdEvent)
                 ->with('greet',$greet);
                 
@@ -93,5 +97,12 @@ class StatisticController extends Controller
         ]);
 
         return redirect()->back()->with('success_message', 'Chart range updated');
+    }
+
+    public function update_mve_view(Request $request)
+    {
+        session()->put('selected_view_mve_chart', $request->MVE_view);
+
+        return redirect()->back()->with('success_message', 'Chart view updated');
     }
 }

@@ -143,14 +143,14 @@
                                     @include('homepage.addevent_form.datepicker')
                                 </div>
                             </div>
-                            <div class="row mt-2">
-                                <div class="col-lg-8">
-                                    
-                                </div>
-                                <div class="col-lg-4">
-                                
-                                </div>
-                            </div>
+                            @foreach($info as $in)
+                                @if($in->info_location == "add_event")
+                                    <div class="info-box {{$in->info_type}}">
+                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                        <?php echo $in->info_body; ?>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                         <div class="col-lg-4">
                             <label class="input-title">Event Image</label><br>
@@ -163,7 +163,6 @@
                             @include('homepage.addevent_form.attachment')
                         </div>
                     </div>
-                    <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
                     <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </div>
             </form>
@@ -171,3 +170,19 @@
     </div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
+        authDomain: "mifik-83723.firebaseapp.com",
+        projectId: "mifik-83723",
+        storageBucket: "mifik-83723.appspot.com",
+        messagingSenderId: "38302719013",
+        appId: "1:38302719013:web:23e7dc410514ae43d573cc",
+        measurementId: "G-V13CR730JG"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+</script>

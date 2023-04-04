@@ -63,6 +63,7 @@
                                 @include('event.calendar.filter_tag')
                                 @include('homepage.sorting')
                                 @include('homepage.datefilter')
+                                @include('homepage.searchbar')
                             </div>
                 
                             @include('homepage.event')
