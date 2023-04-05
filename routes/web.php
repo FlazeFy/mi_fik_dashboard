@@ -13,6 +13,7 @@ use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 use App\Http\Controllers\Event\CalendarController;
 use App\Http\Controllers\Event\LocationController;
+use App\Http\Controllers\Event\EditController;
 
 use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
@@ -69,6 +70,8 @@ Route::prefix('/event')->group(function () {
     Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
     Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
     Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
+
+    Route::get('/edit/{slug_name}', [EditController::class, 'index']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);

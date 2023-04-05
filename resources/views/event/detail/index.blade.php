@@ -49,10 +49,13 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                   
-                    <div class="container-fluid bg-white mt-5 mb-3 p-0 shadow" style="border-radius: 18px !important;">
-                        @include('event.detail.layout')
-                    </div>
+                    @foreach($content as $c)
+                        @include('event.detail.navigator')
+
+                        <div class="container-fluid bg-white mt-2 mb-3 p-0 shadow" style="border-radius: 18px !important;">
+                            @include('event.detail.layout')
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -62,13 +65,5 @@
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
-
-        <!-- Main Quill library -->
-        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-        <script>
-            var quill = new Quill('#rich_box', {
-                theme: 'snow'
-            });
-        </script>
     </body>
 </html>

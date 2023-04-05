@@ -10,10 +10,15 @@ class Notification extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'notifications';
     protected $primaryKey = 'id';
     protected $fillable = ['id','notif_type', 'notif_body', 'notif_send_to', 'is_pending', 'pending_until', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
+
+    protected $casts = [
+        'notif_send_to' => 'array',
+    ];
 
     public static function getAllNotification($order_1, $order_2){
         $res = Notification::select('*')

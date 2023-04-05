@@ -50,6 +50,9 @@ class Query
             $query = "contents_headers.id as id_content, content_title, COUNT(1) as total,
                 COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."dosen".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,
                 COUNT(CASE WHEN users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."dosen".'"'."%' AND users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_student";
+        } else if($type == "notif_my"){
+            $query = "notifications.id, notif_type, notif_body, notif_send_to, is_pending, notifications.created_at, CONCAT(users.first_name, ' ', users.last_name) as users_fullname, 
+                CONCAT(admins.first_name, ' ', admins.last_name) as admins_fullname";
         }
         // Make user's new request dump query
         // Make user's old request dump query

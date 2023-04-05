@@ -11,6 +11,7 @@ class GroupRelation extends Model
     use HasFactory;
     //use HasUuids;
     public $timestamps = false;
+    public $incrementing = false;
 
     protected $table = 'groups_relations';
     protected $primaryKey = 'id';

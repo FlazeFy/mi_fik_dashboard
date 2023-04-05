@@ -12,7 +12,7 @@ class Queries extends Controller
 {
     public function getArchive($user_id) {
         try{
-            $archive = Archive::select('slug_name', 'archive_name', 'archive_desc', 'created_by')
+            $archive = Archive::select('slug_name', 'archive_name', 'archive_desc')
                 ->where('created_by', $user_id)
                 ->get();
 

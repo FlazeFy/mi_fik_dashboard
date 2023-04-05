@@ -11,6 +11,7 @@ class ArchiveRelation extends Model
     use HasFactory;
     //use HasUuids;
     public $timestamps = false;
+    public $incrementing = false;
 
     protected $table = 'archives_relations';
     protected $primaryKey = 'id';

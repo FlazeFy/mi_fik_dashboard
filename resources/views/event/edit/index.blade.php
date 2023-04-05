@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Homepage</title>
+        <title>Event | {{$title}}</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -34,9 +34,8 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
-
+        
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/minicalendar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
     </head>
 
@@ -50,37 +49,21 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="position-relative">
-                            <div class="row mt-3"> 
-                                <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
-                                    @include('homepage.addevent_form.layout')
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
-                                    @include('homepage.addAnnouncement')
-                                </div>
-                            </div>
-                            <div class="mt-2 btn-config-holder">
-                                @include('event.calendar.filter_tag')
-                                @include('homepage.sorting')
-                                @include('homepage.datefilter')
-                                @include('homepage.searchbar')
-                            </div>
-                
-                            @include('homepage.event')
+                    @foreach($content as $c)
+                        @include('event.edit.navigator')
+
+                        <div class="container-fluid bg-white mt-2 mb-3 p-0 shadow" style="border-radius: 18px !important;">
+                            @include('event.edit.layout')
                         </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
 
         <!--Modal-->
         @include('popup.success')
-        @include('popup.failed')
 
         <!--Sidebar-->
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
-        <script src="{{ asset('/js/minicalendar.js')}}"></script>
-
+        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
     </body>
 </html>
