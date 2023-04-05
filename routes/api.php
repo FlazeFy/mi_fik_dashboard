@@ -101,3 +101,12 @@ Route::prefix('/v1/group')->group(function() {
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
+
+//test archive api integreted with auth sanctum
+Route::prefix('/v2/archive')->middleware(['auth:sanctum'])->group(function() {
+    Route::get('/', [QueryArchiveApi::class, 'getArchive']);
+    Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
+    Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
+    Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
+    Route::delete('/delete/{id}', [CommandArchiveApi::class, 'deleteArchive']);
+});

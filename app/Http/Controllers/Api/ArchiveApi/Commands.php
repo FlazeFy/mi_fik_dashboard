@@ -57,12 +57,16 @@ class Commands extends Controller
     }
 
     public function addToArchive(Request $request){
+
         try{
+
+            $user_id = $request->user()->id;
+
             $relation = ArchiveRelation::create([
                 'id' => Generator::getUUID(),
                 'archive_id' => $request->archive_id,
                 'content_id' => $request->content_id,
-                'created_by' => $request->user_id,
+                'created_by' => $user_id,
                 'created_at' => date('Y-m-d H:i:s')
             ]);
 
@@ -110,18 +114,20 @@ class Commands extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     public function deleteArchive(Request $request, $id)
     {
         try {
+
+            $user_id = $request->user()->id;
+
             $result = Archive::destroy($id);
-        
+
             //Delete archive relation
-            DB::table('archive_relations')
-                ->where('archive_id', $id)
-                ->where('user_id', $request->user_id)
+            ArchiveRelation::where('archive_id', $id)
+                ->where('user_id', $user_id)
                 ->delete();
-                
+
             return response()->json([
                 'status' => 'success',
                 'message' => 'Archive deleted'
