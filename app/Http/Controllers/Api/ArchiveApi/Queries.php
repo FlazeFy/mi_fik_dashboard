@@ -10,7 +10,10 @@ use App\Models\Archive;
 
 class Queries extends Controller
 {
-    public function getArchive($user_id) {
+    public function getArchive(Request $request) {
+
+        $user_id = $request->user()->id;
+
         try{
             $archive = Archive::select('slug_name', 'archive_name', 'archive_desc', 'created_by')
                 ->where('created_by', $user_id)
