@@ -2,6 +2,7 @@
 namespace App\Helpers;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\TwoTimeFormats;
+use App\Rules\TypeHistory;
 
 class Validation
 {
@@ -35,6 +36,13 @@ class Validation
         ]);
     }
 
+    public static function getValidateEventInfo($request){ 
+        return Validator::make($request->all(), [
+            'content_title' => 'required|min:6|max:75|string',
+            'content_desc' => 'nullable|string|max:10000'
+        ]);
+    }
+
     public static function getValidateTask($request){ 
         return Validator::make($request->all(), [
             'task_title' => 'required|min:6|max:75|string',
@@ -60,6 +68,13 @@ class Validation
         return Validator::make($request->all(), [
             'tag_name' => 'required|min:2|max:30|string',
             'tag_desc' => 'nullable|max:255|string',
+        ]);
+    }
+
+    public static function getValidateHistory($request){ 
+        return Validator::make($request->all(), [
+            'history_type' => ['required', new TypeHistory],
+            'history_body' => 'required|min:6|max:255|string',
         ]);
     }
 }

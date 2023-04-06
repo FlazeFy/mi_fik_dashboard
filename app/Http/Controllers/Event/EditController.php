@@ -8,10 +8,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 use App\Models\ContentHeader;
 use App\Models\Tag;
 use App\Models\Menu;
+use App\Models\History;
 use App\Models\Dictionary;
 
 class EditController extends Controller
@@ -51,14 +53,50 @@ class EditController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function update_event_info(Request $request, $slug)
     {
-        //
+        $id = Generator::getContentId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+
+        $validator = Validation::getValidateEventInfo($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "Has updated this event"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                ContentHeader::where('id', $id)->update([
+                    'content_title' => $request->content_title,
+                    'content_desc' => $request->content_desc,
+                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => $id, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+            }
+
+            return redirect()->back()->with('success_message', "Event successfully updated");             
+        }
     }
 
     /**

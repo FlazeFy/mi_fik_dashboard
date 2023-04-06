@@ -129,7 +129,7 @@
         background: #555; 
     }
 </style>
-<form action="" method="POST">
+<form action="/event/edit/update/info/{{$c->slug_name}}" method="POST">
     @csrf
     <div class="box-event-detail">
         @if($c->content_image)
@@ -145,12 +145,7 @@
         @endif
         <div class="row p-3">
             <div class="col-lg-8">
-                <div class="form-floating mb-2">
-                    <input type="text" class="form-control" id="floatingPassword" placeholder="{{$c->content_title}}" value="{{$c->content_title}}" required>
-                    <label for="floatingPassword">Content Title</label>
-                </div>
-
-                @include('event.edit.descinput')<hr>
+                @include('event.edit.titledescinput')<hr>
 
                 <h6 class="text-primary mt-3">Attachment</h6>
                 @include('event.edit.attachment')                
