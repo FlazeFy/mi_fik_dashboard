@@ -1,70 +1,3 @@
-<style>
-    .attachment-holder .attachment-item {
-        padding: 12px 20px 12px 12px !important;
-        margin-top: 15px !important;
-        margin-left:15px;
-        position: relative;
-        border-radius: 0 10px 10px 0;
-        min-height: 80px;
-        border-left: 3.5px solid #808080;
-        border-top: 1.75px solid #CED4DA;
-        border-right: 1.75px solid #CED4DA;
-        border-bottom: 1.75px solid #CED4DA;
-    }
-    .attachment-holder .attachment-item ul {
-        padding-left: 12px;
-    }
-    .attachment-holder .attachment-item ul li {
-        padding-bottom: 10px;
-    }
-    .attachment-holder .attachment-item:last-child {
-        padding-bottom: 0;
-    }
-    .attachment-holder .attachment-item::before {
-        content: "";
-        position: absolute;
-        width: 24px;
-        height: 24px;
-        border-radius: 50px;
-        left: -13px;
-        top: 36%;
-        background: white;
-        border: 3px solid var(--circle-attach-color-var);
-    }
-    .btn-icon-delete{
-        color: #F85D59 !important;
-        padding: 4px 8px;
-    }
-    .btn-icon-delete:hover{
-        background: #e74645 !important;
-        color:white !important;
-    }
-    .btn-icon-preview{
-        color: #808080 !important;
-        padding: 4px 8px;
-    }
-    .form-select.attachment{
-        padding: 4px !important;
-        font-size: 13px;
-        width: 100px;
-    }
-    .attach-upload-status, #content_loc_msg{
-        text-decoration: none;
-        font-style: italic;
-        font-size: 12.5px;
-        font-weight: 500;
-    }
-    .success{
-        color: #00c363 !important;
-    }
-    .failed{
-        color: #e74645 !important;
-    }
-    .warning{
-        color: #f78a00 !important;
-    }
-</style>
-
 <div>
     <a class="content-add mb-2" style="float:none;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
     <div class="attachment-holder" id="attachment-holder">
@@ -134,8 +67,6 @@
                 var att_file_src = document.getElementById('attach_url_'+id).files[0];
                 var filePath = att_type + '/' + getUUID();
 
-                document.getElementById('attach_url_holder_'+id).value = filePath;
-
                 //Set upload path
                 var storageRef = firebase.storage().ref(filePath);
                 var uploadTask = storageRef.put(att_file_src);
@@ -177,6 +108,7 @@
                                 "</div> " +
                             "</div>";
                         document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
+                        document.getElementById('attach_url_holder_'+id).value = downloadUrl;
                     });
                 });
             } else {
@@ -236,22 +168,23 @@
 
         attach_list = attach_list.filter(object => {
             if(att_type != "attachment_url"){
-                var filePath =  document.getElementById('attach_url_holder_'+index).value;
+                var filePath = object.attach_url;
                 if(filePath){
-                    //Set upload path
-                    var storageRef = firebase.storage().ref(filePath);
-                
-                    storageRef.delete().then(() => {
-                        console.log("success");
-                        $("#attachment_container_"+index).remove();
+                    var storageRef = firebase.storage();
+                    var desertRef = storageRef.refFromURL(filePath);
+                    var msg = ""
 
+                    desertRef.delete().then(() => {
+                        msg = "Attachment has been removed";
+                        //Return msg not finished. i dont know what to do next LOL
                     }).catch((error) => {
-                        console.log("failed");
+                        msg = "Failed to deleted the Attachment";
+                        //Return msg not finished. i dont know what to do next LOL
                     });
                 }
-            } else {
-                $("#attachment_container_"+index).remove();
-            }
+            } 
+
+            $("#attachment_container_"+index).remove();
 
             return object.id !== index;
         });

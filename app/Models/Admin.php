@@ -13,6 +13,7 @@ class Admin extends Authenticatable
     use HasFactory;
     //use HasUuids;
     use HasApiTokens;
+    public $incrementing = false;
 
     protected $table = 'admins';
     protected $primaryKey = 'id';

@@ -10,6 +10,7 @@ class Dictionary extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'dictionaries';
     protected $primaryKey = 'id';

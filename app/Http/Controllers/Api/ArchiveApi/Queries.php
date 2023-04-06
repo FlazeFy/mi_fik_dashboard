@@ -15,7 +15,7 @@ class Queries extends Controller
         $user_id = $request->user()->id;
 
         try{
-            $archive = Archive::select('slug_name', 'archive_name', 'archive_desc', 'created_by')
+            $archive = Archive::select('slug_name', 'archive_name', 'archive_desc')
                 ->where('created_by', $user_id)
                 ->get();
 

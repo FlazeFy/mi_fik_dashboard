@@ -11,6 +11,8 @@ class Info extends Model
     use HasFactory;
     //use HasUuids;
 
+    public $incrementing = false;
+
     protected $table = 'infos';
     protected $primaryKey = 'id';
     protected $fillable = ['id','info_type', 'info_page', 'info_location', 'info_body', 'is_active', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];

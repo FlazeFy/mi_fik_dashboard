@@ -10,6 +10,7 @@ class Task extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'tasks';
     protected $primaryKey = 'id';

@@ -36,6 +36,8 @@
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/attachment_v1.0.css') }}"/>
 
     </head>
 
@@ -50,10 +52,10 @@
                     @include('sidebar.navbar')
 
                     @foreach($content as $c)
-                        @include('event.detail.navigator')
+                        @include('event.edit.navigator')
 
                         <div class="container-fluid bg-white mt-2 mb-3 p-0 shadow" style="border-radius: 18px !important;">
-                            @include('event.detail.layout')
+                            @include('event.edit.layout')
                         </div>
                     @endforeach
                 </div>
@@ -62,6 +64,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.failed')
 
         <!--Sidebar-->
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>

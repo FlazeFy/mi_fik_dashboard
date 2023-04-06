@@ -135,17 +135,8 @@ class HomepageController extends Controller
                 $status = true;
             }
 
-            // Content image file upload
-            if($request->hasFile('content_image')){
-                //validate image
-                $this->validate($request, [
-                    'content_image'    => 'required|max:5000',
-                ]);
-
-                //upload image
-                $att_file = $request->file('content_image');
-                $imageURL = $att_file->hashName();
-                $att_file->storeAs('public', $imageURL);
+            if($request->content_image || $request->content_image != ""){
+                $imageURL = $request->content_image;
             } else {
                 $imageURL = null;
             }

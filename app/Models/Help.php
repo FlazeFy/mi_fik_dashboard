@@ -10,6 +10,7 @@ class Help extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'helps';
     protected $primaryKey = 'id';

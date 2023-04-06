@@ -129,46 +129,43 @@
         background: #555; 
     }
 </style>
-
+<form action="/event/edit/update/info/{{$c->slug_name}}" method="POST">
+    @csrf
     <div class="box-event-detail">
         @if($c->content_image)
             <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('{{$c->content_image}}');" id="event-header-image">
-                <button class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+                <a class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
                 <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
             </div>
         @else
             <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});" id="event-header-image">
-                <button class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+                <a class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
                 <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
             </div>
         @endif
         <div class="row p-3">
             <div class="col-lg-8">
-                <!-- <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button> -->
-                    <h5>{{$c->content_title}}</h5>
+                @include('event.edit.titledescinput')<hr>
 
-                <!--My Archive-->
-                <!-- include('event.detail.archive') -->
-
-                <span><?php echo $c->content_desc; ?></span>
-
-                <!--Content attachment-->
-                @include('event.detail.attachment')
-
-                <!--Content location-->
-                @if($c->content_loc)
-                    @include('event.detail.maps')
-                @else 
-                    <img src="http://127.0.0.1:8000/assets/noloc.png" class="img nodata-icon" style="height:18vh;">
-                    <h6 class="text-center text-secondary">This Event doesn't have location</h6>
-                @endif
+                <h6 class="text-primary mt-3">Attachment</h6>
+                @include('event.edit.attachment')                
             </div>
             <div class="col-lg-4">
-                @include('event.detail.properties')
+                <h6 class="text-primary">Event Location</h6>
+                    @include('event.edit.maps')
+                <hr>
+
+                <h6 class="text-primary mt-3">Tag</h6>
+                    @include('event.edit.tag')
+                <hr>
+
+                <h6 class="text-primary mt-3">History</h6>
+                    @include('event.edit.history')
+                <hr>
             </div>
         </div>
     </div>
+</form>
 
 <script>
     var i = 0;

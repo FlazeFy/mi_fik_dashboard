@@ -54,41 +54,6 @@
         margin:4px;
         color:whitesmoke !important;
     }
-
-    /*Richtext header*/
-    .ql-toolbar.ql-snow{
-        border:1.7px solid #F78A00;
-        margin-top:10px;
-        border-radius:10px 10px 0 0;
-    }
-    .ql-snow .ql-stroke {
-        stroke:#414141;
-    }
-    .ql-snow.ql-toolbar button{
-        border-radius:6px;
-        height:25px;
-        width:25px;
-        padding-left:3px;
-        margin-right:10px;
-        transition: all 0.4s;
-    }
-    .ql-snow.ql-toolbar button:hover .ql-stroke{
-        stroke:#F78A00;
-    }
-    button.ql-active{
-        background:#F78A00 !important;
-    }
-    button.ql-active svg .ql-stroke{
-        stroke:white !important;
-    }
-
-    /*Richtext body*/
-    .ql-toolbar.ql-snow + .ql-container.ql-snow{
-        height:30vh;
-    }
-    .input-title{
-        font-weight: 500;
-    }
 </style>
 
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'

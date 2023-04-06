@@ -13,6 +13,7 @@ class User extends Authenticatable
     use HasFactory;
     //use HasUuids;
     use HasApiTokens;
+    public $incrementing = false;
 
     protected $table = 'users';
     protected $primaryKey = 'id';

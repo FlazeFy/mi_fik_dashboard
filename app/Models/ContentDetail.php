@@ -12,6 +12,7 @@ class ContentDetail extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'contents_details';
     protected $primaryKey = 'id';

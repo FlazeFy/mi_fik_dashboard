@@ -6,6 +6,11 @@
     background: #F78A00 !important;
     border:none;
 }
+.btn-info{
+    background: #009FF9 !important;
+    color:white !important;
+    border:none;
+}
 .btn-noline{
     background: transparent;
     border:none;

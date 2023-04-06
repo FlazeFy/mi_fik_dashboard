@@ -10,6 +10,7 @@ class UserGroup extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'users_groups';
     protected $primaryKey = 'id';
