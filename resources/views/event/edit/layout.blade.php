@@ -150,16 +150,23 @@
                     <label for="floatingPassword">Content Title</label>
                 </div>
 
-                @include('event.edit.descinput')
+                @include('event.edit.descinput')<hr>
 
-                <!--Content attachment-->
-                <h6 class="mt-3">Attachment</h6>
-
-                <!--Content location-->
-                
+                <h6 class="text-primary mt-3">Attachment</h6>
+                @include('event.edit.attachment')                
             </div>
             <div class="col-lg-4">
+                <h6 class="text-primary">Event Location</h6>
+                    @include('event.edit.maps')
+                <hr>
 
+                <h6 class="text-primary mt-3">Tag</h6>
+                    @include('event.edit.tag')
+                <hr>
+
+                <h6 class="text-primary mt-3">History</h6>
+                
+                <hr>
             </div>
         </div>
     </div>

@@ -12,6 +12,7 @@ use App\Helpers\Generator;
 use App\Models\ContentHeader;
 use App\Models\Tag;
 use App\Models\Menu;
+use App\Models\Dictionary;
 
 class EditController extends Controller
 {
@@ -24,10 +25,12 @@ class EditController extends Controller
     {
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $type = ["Reminder", "Attachment"];
 
             $tag = Tag::getFullTag("DESC", "DESC");
             $content = ContentHeader::getFullContentBySlug($slug_name);
             $greet = Generator::getGreeting(date('h'));
+            $dictionary = Dictionary::getDictionaryByType($type);
             $menu = Menu::getMenu();
 
             //Set active nav
@@ -39,6 +42,7 @@ class EditController extends Controller
                 ->with('content', $content)
                 ->with('title', $title)
                 ->with('menu', $menu)
+                ->with('dictionary', $dictionary)
                 ->with('greet',$greet);
                 
         } else {

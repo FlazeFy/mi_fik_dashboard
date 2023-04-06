@@ -39,13 +39,13 @@
                     </td>
                     <td>{{$nt->notif_body}}</td>
                     <td>
-                        @php($ntJson = json_decode($nt->notif_send_to))
+                        @php($ntJson = $nt->notif_send_to)
                             
                         @foreach($ntJson as $nj)
-                            @if($nj->send_to == "all")
-                                {{ucfirst($nj->send_to)}}
+                            @if($nj['send_to'] == "all")
+                                {{ucfirst($nj['send_to'])}}
                             @else 
-                                {{$nj->user_id}}
+                                {{$nj['user_id']}}
                             @endif
                         @endforeach 
                     </td>
