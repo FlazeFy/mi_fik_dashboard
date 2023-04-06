@@ -160,7 +160,7 @@
                 <hr>
 
                 <h6 class="text-primary mt-3">History</h6>
-                
+                    @include('event.edit.history')
                 <hr>
             </div>
         </div>

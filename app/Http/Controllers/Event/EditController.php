@@ -33,6 +33,7 @@ class EditController extends Controller
             $content = ContentHeader::getFullContentBySlug($slug_name);
             $greet = Generator::getGreeting(date('h'));
             $dictionary = Dictionary::getDictionaryByType($type);
+            $history = History::getContentHistory($slug_name);
             $menu = Menu::getMenu();
 
             //Set active nav
@@ -44,6 +45,7 @@ class EditController extends Controller
                 ->with('content', $content)
                 ->with('title', $title)
                 ->with('menu', $menu)
+                ->with('history', $history)
                 ->with('dictionary', $dictionary)
                 ->with('greet',$greet);
                 
@@ -67,7 +69,7 @@ class EditController extends Controller
             $data = new Request();
             $obj = [
                 'history_type' => "event",
-                'history_body' => "Has updated this event"
+                'history_body' => "Has updated this event info"
             ];
             $data->merge($obj);
 
