@@ -73,6 +73,7 @@ Route::prefix('/event')->group(function () {
 
     Route::get('/edit/{slug_name}', [EditController::class, 'index']);
     Route::post('/edit/update/info/{slug_name}', [EditController::class, 'update_event_info']);
+    Route::post('/edit/update/draft/{slug_name}', [EditController::class, 'update_event_draft']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);

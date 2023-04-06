@@ -101,15 +101,48 @@ class EditController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update_event_draft(Request $request, $slug)
     {
-        //
+        $id = Generator::getContentId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+
+        if($request->is_draft == 1){
+            $body = "Has set this event as draft";
+        } else {
+            $body = "Has unset this event from draft";
+        }
+
+        $data = new Request();
+        $obj = [
+            'history_type' => "event",
+            'history_body' => $body
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            ContentHeader::where('id', $id)->update([
+                'is_draft' => $request->is_draft,
+                'updated_at' => date("Y-m-d h:i:s"),
+                'updated_by' => $user_id
+            ]);
+
+            History::create([
+                'id' => Generator::getUUID(),
+                'history_type' => $data->history_type, 
+                'context_id' => $id, 
+                'history_body' => $data->history_body, 
+                'history_send_to' => null,
+                'created_at' => date("Y-m-d h:i:s"),
+                'created_by' => $user_id
+            ]);
+        }
+
+        return redirect()->back()->with('success_message', "Event successfully updated");             
     }
 
     /**
