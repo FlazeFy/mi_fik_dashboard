@@ -14,6 +14,7 @@ use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
 use App\Models\Menu;
+use App\Models\Info;
 use App\Models\History;
 use App\Models\Dictionary;
 
@@ -36,6 +37,7 @@ class EditController extends Controller
             $dictionary = Dictionary::getDictionaryByType($type);
             $history = History::getContentHistory($slug_name);
             $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("event/edit");
 
             //Set active nav
             session()->put('active_nav', 'event');
@@ -46,6 +48,7 @@ class EditController extends Controller
                 ->with('content', $content)
                 ->with('title', $title)
                 ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('history', $history)
                 ->with('dictionary', $dictionary)
                 ->with('greet',$greet);
@@ -203,15 +206,67 @@ class EditController extends Controller
         
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update_event_remove_attach(Request $request, $slug)
     {
-        //
+        $id = Generator::getContentId($slug);
+        $id_detail = Generator::getContentDetailId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $att = Generator::getContentAtt($id_detail);
+        $oldobj = json_decode($att);
+
+        if($att && json_last_error() === JSON_ERROR_NONE){
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "Has removed attachment"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                foreach ($oldobj as $index => $object) {
+                    if ($object->id == $request->attachment_id) {
+                        $index = $index;
+                        break;
+                    }
+                }
+                if ($index !== null) {
+                    array_splice($oldobj, $index, 1);
+                }
+                $newobj = json_encode($oldobj);
+
+                if(json_last_error() === JSON_ERROR_NONE){
+                    ContentDetail::where('id', $id_detail)->update([
+                        'content_attach' => $newobj,
+                    ]);
+
+                    ContentHeader::where('id', $id)->update([
+                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_by' => $user_id
+                    ]);
+    
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+    
+                    return redirect()->back()->with('success_message', "Event successfully updated"); 
+                } else {
+                    return redirect()->back()->with('failed_message', "Attachment is invalid");    
+                }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+        }
     }
 
     /**

@@ -10,11 +10,12 @@
 <script>
     //Initial variable.
     var attach_list = []; //Store all attachment.
-    var i = 1;
 
     function addAttachmentForm(){
+        var id = getAttCode()
+
         let obj = {
-            "id": i,
+            "id": id,
             "attach_type":null, 
             "attach_name":null, 
             "attach_url":null
@@ -23,13 +24,13 @@
         attach_list.push(obj);
 
         $("#attachment-holder").append(' ' +
-            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'" style="--circle-attach-color-var:#808080;"> ' + 
+            '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:#808080;"> ' + 
                 '<div style="white-space:normal !important;"> ' +
                     '<span class="d-inline-block me-1"> ' +
                         '<h6 class="mt-1">Attachment Type : </h6> ' +
                     '</span> ' +
                     '<span class="d-inline-block"> ' +
-                        '<select class="form-select attachment" id="attach_type_'+i+'" name="attach_type" onChange="getAttachmentInput('+i+', this.value, false)" aria-label="Default select example"> ' +
+                        '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
                             '<option selected>---</option> ' +
                             <?php
                                 foreach($dictionary as $dct){
@@ -41,17 +42,16 @@
                         '</select> ' +
                     '</span> ' +
                 '</div> ' +
-                '<div id="attach-input-holder-'+i+'"></div> ' +
-                '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+i+')"> ' +
+                '<div id="attach-input-holder-'+id+'"></div> ' +
+                '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
                     '<i class="fa-solid fa-trash-can"></i></a> ' +
-                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-' + i + '"> ' +
+                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
                     '<i class="fa-regular fa-eye-slash"></i></a> ' +
-                '<a class="attach-upload-status success" id="attach-progress-'+i+'"></a>' +
-                '<a class="attach-upload-status danger" id="attach-failed-'+i+'"></a>' +
-                '<a class="attach-upload-status warning" id="attach-warning-'+i+'"></a>' +
-                '<span id="preview_holder_' + i + '"></span> ' +
+                '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
+                '<a class="attach-upload-status danger" id="attach-failed-'+id+'"></a>' +
+                '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
+                '<span id="preview_holder_'+id+'"></span> ' +
             '</div>');
-        i++;
     }
 
     function setValue(id, all){
@@ -167,6 +167,16 @@
         );
     }
 
+    function getAttCode() {
+        let col = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let code = '';
+        for (let i = 0; i < 6; i++) {
+            let index = Math.floor(Math.random() * col.length);
+            code += col[index];
+        }
+        return code;
+    }
+
     function deleteAttachmentForm(index){
         let att_type = document.getElementById('attach_type_'+index).value;
 
@@ -192,8 +202,6 @@
 
             return object.id !== index;
         });
-
-        lengValidatorEvent('75', 'title');
     }
 
     function getAttachmentInput(index, val){
@@ -212,15 +220,15 @@
         if(val == "attachment_url"){
             $("#attach-input-holder-"+index).append(' ' +
                 '<h6 class="mt-1">Attachment URL</h6> ' +
-                '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+index+', true)" required> ' +
+                '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)" required> ' +
                 '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
+                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
         } else {
             $("#attach-input-holder-"+index).append(' ' +
-                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+index+', true)"> ' +
+                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+"'"+index+"'"+', true)"> ' +
                 '<input type="text" id="attach_url_holder_'+index+'" hidden required> ' +
                 '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
+                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
         }
     }
 </script>

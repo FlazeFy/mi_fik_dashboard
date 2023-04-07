@@ -18,7 +18,7 @@
             <div class="attachment-edit-header">
                 <label class="mt-1 fw-bold">Attachment Type : {{ucfirst(trim($at['attach_type'], "attachment_"))}}</label>
                 <div class="end-section">
-                    <a class="btn btn-icon-delete" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+                    <a class="btn btn-icon-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal-{{$at['id']}}"><i class="fa-solid fa-trash-can"></i></a>
                     @if($at['attach_type'] != "attachment_url")
                         <a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" 
                             <?= ' href="#collapsePreview'.$at["id"].'"'; ?>>
@@ -46,6 +46,7 @@
                 <!-- ...... -->
             @endif
             
+            @include('event.edit.attachment.delete')
         </div>
     @endforeach
 @endif
