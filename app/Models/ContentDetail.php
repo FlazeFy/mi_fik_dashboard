@@ -31,6 +31,23 @@ class ContentDetail extends Model
         return $res;
     }
 
+    public static function getContentTag($id){
+        $query = ContentDetail::select('content_tag')
+            ->where('id', $id)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->content_tag;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
     //Statistic
     public static function getMostUsedTag(){
         //This query must directly return at least 10 most used tag

@@ -16,22 +16,9 @@
     @foreach($att as $at)
         <div class="attachment-item mb-3 p-3 shadow"> 
             <div class="attachment-edit-header">
-                <label class="mt-1">Attachment Type : </label>
-                <select class="form-select attachment d-inline-block" id="attach_type" name="attach_type" aria-label="Default select example">
-                    <?php
-                        foreach($dictionary as $dct){
-                            if($dct->type_name == "Attachment"){
-                                if($dct->slug_name == $at['attach_type']){
-                                    echo "'<option value=".'"'.$dct->slug_name.'"'." selected>".$dct->dct_name."</option>";
-                                } else {
-                                    echo "'<option value=".'"'.$dct->slug_name.'"'.">".$dct->dct_name."</option>";
-                                }
-                            }
-                        }
-                    ?>
-                </select>
+                <label class="mt-1 fw-bold">Attachment Type : {{ucfirst(trim($at['attach_type'], "attachment_"))}}</label>
                 <div class="end-section">
-                    <a class="btn btn-icon-delete" title="Delete"><i class="fa-solid fa-trash-can"></i></a>
+                    <a class="btn btn-icon-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal-{{$at['id']}}"><i class="fa-solid fa-trash-can"></i></a>
                     @if($at['attach_type'] != "attachment_url")
                         <a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" 
                             <?= ' href="#collapsePreview'.$at["id"].'"'; ?>>
@@ -59,6 +46,7 @@
                 <!-- ...... -->
             @endif
             
+            @include('event.edit.attachment.delete')
         </div>
     @endforeach
 @endif

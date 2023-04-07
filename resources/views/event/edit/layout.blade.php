@@ -148,7 +148,9 @@
                 @include('event.edit.titledescinput')<hr>
 
                 <h6 class="text-primary mt-3">Attachment</h6>
-                @include('event.edit.attachment')                
+                @include('event.edit.attachment.add')  
+                <br>
+                @include('event.edit.attachment.show')                
             </div>
             <div class="col-lg-4">
                 <h6 class="text-primary">Event Location</h6>

@@ -2,6 +2,7 @@
 namespace App\Helpers;
 
 use App\Models\ContentHeader;
+use App\Models\ContentDetail;
 use App\Models\Archive;
 use App\Models\Task;
 use App\Models\Tag;
@@ -132,6 +133,41 @@ class Generator
         if(count($query) > 0){
             foreach($query as $q){
                 $res = $q->id;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getContentDetailId($slug_name){
+        $query = ContentDetail::select('contents_details.id as id')
+            ->join('contents_headers', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->id;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getContentAtt($id){
+        $query = ContentDetail::select('content_attach')
+            ->where('id', $id)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->content_attach;
             }
         } else {
             $res = null;
