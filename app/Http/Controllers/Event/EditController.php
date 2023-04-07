@@ -161,7 +161,7 @@ class EditController extends Controller
             $data = new Request();
             $obj = [
                 'history_type' => "event",
-                'history_body' => "Has added new attachment"
+                'history_body' => "Has added a new attachment"
             ];
             $data->merge($obj);
 
@@ -218,7 +218,7 @@ class EditController extends Controller
             $data = new Request();
             $obj = [
                 'history_type' => "event",
-                'history_body' => "Has removed attachment"
+                'history_body' => "Has removed an attachment"
             ];
             $data->merge($obj);
 
@@ -269,16 +269,67 @@ class EditController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update_event_remove_tag(Request $request, $slug)
     {
-        //
+        $id = Generator::getContentId($slug);
+        $id_detail = Generator::getContentDetailId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $tag =  ContentDetail::getContentTag($id_detail);
+        $oldobj = json_decode($tag);
+
+        if($tag && json_last_error() === JSON_ERROR_NONE){
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "Has removed a tag"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                foreach ($oldobj as $index => $object) {
+                    if ($object->slug_name == $request->slug_name) {
+                        $index = $index;
+                        break;
+                    }
+                }
+                if ($index !== null) {
+                    array_splice($oldobj, $index, 1);
+                }
+                $newobj = json_encode($oldobj);
+
+                if(json_last_error() === JSON_ERROR_NONE){
+                    ContentDetail::where('id', $id_detail)->update([
+                        'content_tag' => $newobj,
+                    ]);
+
+                    ContentHeader::where('id', $id)->update([
+                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_by' => $user_id
+                    ]);
+    
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+    
+                    return redirect()->back()->with('success_message', "Event successfully updated"); 
+                } else {
+                    return redirect()->back()->with('failed_message', "Tag is invalid");    
+                }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+        }
     }
 
     /**

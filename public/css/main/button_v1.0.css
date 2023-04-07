@@ -69,7 +69,7 @@
 .btn-detail-config.primary{
     background:#F78A00;
 }
-.btn-detail-config.danger{
+.btn-detail-config.danger, .hover-danger:hover{
     background:#D5534C;
 }
 .btn-detail-config.success{
