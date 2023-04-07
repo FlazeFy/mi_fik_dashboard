@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 use App\Helpers\Validation;
 
 use App\Models\ContentHeader;
+use App\Models\ContentDetail;
 use App\Models\Tag;
 use App\Models\Menu;
 use App\Models\History;
@@ -140,20 +141,66 @@ class EditController extends Controller
                 'created_at' => date("Y-m-d h:i:s"),
                 'created_by' => $user_id
             ]);
-        }
 
-        return redirect()->back()->with('success_message', "Event successfully updated");             
+            return redirect()->back()->with('success_message', "Event successfully updated");             
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function update_event_add_attach(Request $request, $slug)
     {
-        //
+        $id = Generator::getContentId($slug);
+        $id_detail = Generator::getContentDetailId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $att = Generator::getContentAtt($id_detail);
+        $arrobj = json_decode($att);
+
+        if($att && json_last_error() === JSON_ERROR_NONE){
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "Has added new attachment"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $obj = $request->content_attach;
+                $obj = json_decode($obj);
+                $newobj = json_encode(array_merge($arrobj, $obj));
+
+                if(json_last_error() === JSON_ERROR_NONE){
+                    ContentDetail::where('id', $id_detail)->update([
+                        'content_attach' => $newobj,
+                    ]);
+
+                    ContentHeader::where('id', $id)->update([
+                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_by' => $user_id
+                    ]);
+    
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+    
+                    return redirect()->back()->with('success_message', "Event successfully updated"); 
+                } else {
+                    return redirect()->back()->with('failed_message', "Attachment is invalid");    
+                }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+        }
+        
     }
 
     /**

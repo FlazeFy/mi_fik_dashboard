@@ -1,9 +1,11 @@
-<div>
+<form class="mb-3" action="/event/edit/update/attach/add/{{$c->slug_name}}" method="POST">
+    @csrf
     <a class="content-add mb-2" style="float:none;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
     <div class="attachment-holder" id="attachment-holder">
     </div>
     <input hidden id="content_attach" name="content_attach">
-</div>
+    <span id="btn-submit-holder-event"></span>
+</form> 
 
 <script>
     //Initial variable.
@@ -77,9 +79,9 @@
                     document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done";
                     if(progress == 100){
                         att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
-                        submitHolder.html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+                        submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
                     } else {
-                        submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
+                        submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
                 }, 
                 function (error) {
@@ -88,7 +90,7 @@
                     var att_url = null;
                     if(error.message){
                         att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
-                        submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
+                        submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
                 }, 
                 function () {
@@ -120,8 +122,10 @@
                     if(isValidURL(att_url)){
                         warningAttMsg.style = "color: #09c568 !important;"
                         warningAttMsg.innerHTML = "URL is valid";
+                        submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
                     } else {
                         warningAttMsg.innerHTML = "URL isn't not valid!";
+                        submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
                 } else {
                     warningAttMsg.innerHTML = "";
