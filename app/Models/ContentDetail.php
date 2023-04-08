@@ -69,6 +69,7 @@ class ContentDetail extends Model
     public static function getMostViewedEvent($limit){
         $res = ContentHeader::selectRaw('contents_headers.id, content_title, count(1) as total')
             ->join('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+            ->whereNull('deleted_at')
             ->groupBy('contents_headers.id')
             ->orderBy('total', 'DESC')
             ->limit($limit) 

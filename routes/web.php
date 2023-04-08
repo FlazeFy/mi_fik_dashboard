@@ -70,6 +70,7 @@ Route::prefix('/event')->group(function () {
     Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
     Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
     Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
+    Route::post('/detail/delete/{slug_name}', [DetailController::class, 'delete_event']);
 
     Route::get('/edit/{slug_name}', [EditController::class, 'index']);
     Route::post('/edit/update/info/{slug_name}', [EditController::class, 'update_event_info']);
@@ -77,6 +78,7 @@ Route::prefix('/event')->group(function () {
     Route::post('/edit/update/attach/add/{slug_name}', [EditController::class, 'update_event_add_attach']);
     Route::post('/edit/update/attach/remove/{slug_name}', [EditController::class, 'update_event_remove_attach']);
     Route::post('/edit/update/tag/remove/{slug_name}', [EditController::class, 'update_event_remove_tag']);
+    Route::post('/edit/update/tag/add/{slug_name}', [EditController::class, 'update_event_add_tag']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);

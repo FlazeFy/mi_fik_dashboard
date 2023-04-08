@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
 use App\Helpers\Validation;
+use App\Helpers\Converter;
 
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
@@ -332,14 +333,59 @@ class EditController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function update_event_add_tag(Request $request, $slug)
     {
-        //
+        $id = Generator::getContentId($slug);
+        $id_detail = Generator::getContentDetailId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $tag =  ContentDetail::getContentTag($id_detail);
+        $oldobj = json_decode($tag);
+
+        if($tag && json_last_error() === JSON_ERROR_NONE){
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "Has add a new tag"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $tagNew = Converter::getTag($request->tag);
+                $tagParsed = json_decode($tagNew);
+                $newobj = json_encode(array_merge($oldobj, $tagParsed));
+
+                if(json_last_error() === JSON_ERROR_NONE){
+                    ContentDetail::where('id', $id_detail)->update([
+                        'content_tag' => $newobj,
+                    ]);
+
+                    ContentHeader::where('id', $id)->update([
+                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_by' => $user_id
+                    ]);
+    
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+    
+                    return redirect()->back()->with('success_message', "Event successfully updated"); 
+                } else {
+                    return redirect()->back()->with('failed_message', "Tag is invalid");    
+                }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+        }
     }
 }
