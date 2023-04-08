@@ -6,25 +6,28 @@
 <div class="card p-2 my-2 collapse" id="collapseManageTag">
     <h6 class="text-secondary mt-2"> Available Tag</h6>
 
-    <div class="tag-manage-holder" id="data_wrapper_manage_tag">
-        <div class="auto-load-tag text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            'x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                'd="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    'from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
-    </div>
-    <div id="empty_item_holder_manage_tag"></div>
-    <span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span>
-    </div>
+    <form action="/event/edit/update/tag/add/{{$c->slug_name}}" method="POST">
+        @csrf
+        <div class="tag-manage-holder" id="data_wrapper_manage_tag">
+            <div class="auto-load-tag text-center">
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                'x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    'd="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        'from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
+        <div id="empty_item_holder_manage_tag"></div>
+        <span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span>
+        </div>
 
-    <h6 class="text-secondary"> Selected Tag</h6>
-    <div id="slct_holder"></div>
+        <h6 class="text-secondary"> Selected Tag</h6>
+        <div id="slct_holder"></div>
 
-    <div id="slct_tag_submit_holder"></div>
+        <div id="slct_tag_submit_holder"></div>
+    </form>
 </div>
 
 <script>
@@ -75,7 +78,7 @@
                         $tag = $c->content_tag;
                         $count_tag = count($tag);
                         foreach($tag as $tg){
-                            echo '"'.$tg['slug_name'].'"';
+                            echo '"'.$tg['slug_name'].'",';
                         }
                     } 
                 ?>]
@@ -140,11 +143,11 @@
             if(found == false){
                 slct_list.push(slug_name);
                 //Check this append input value again!
-                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
             }
         } else {
             slct_list.push(slug_name);
-            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
         }
 
         getButtonSubmitTag()
@@ -177,16 +180,16 @@
             }
             
             $("#slct_tag_submit_holder").html(''+
-                '<a class="btn btn-submit mt-3" title="Submit Role"  data-bs-toggle="modal" href="#addTag"><i class="fa-solid fa-plus"></i> Add Tag</a> ' +
+                '<a class="btn btn-submit mt-3" title="Submit Tag"  data-bs-toggle="modal" href="#addTag"><i class="fa-solid fa-plus"></i> Add Tag</a> ' +
                 '<div class="modal fade" id="addTag" tabindex="-1" aria-labelledby="addTagLabel" aria-hidden="true"> ' +
                 '<div class="modal-dialog"> ' +
                     '<div class="modal-content"> ' +
                     '<div class="modal-header"> ' +
-                        '<h5 class="modal-title" id="addTagLabel">Assign Selected Tags</h5> ' +
+                        '<h5 class="modal-title" id="addTagLabel">Add Selected Tags</h5> ' +
                         '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
                     '</div> ' +
                     '<div class="modal-body"> ' +
-                        '<h6 class="fw-normal">Are you sure want to assign ' + tags + ' to this User</h6> ' +
+                        '<h6 class="fw-normal">Are you sure want to add ' + tags + ' to this Event</h6> ' +
                     '</div> ' +
                     '<div class="modal-footer"> ' +
                         '<button type="submit" class="btn btn-success">Submit</button> ' +

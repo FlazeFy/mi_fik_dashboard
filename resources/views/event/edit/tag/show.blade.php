@@ -3,7 +3,7 @@
     @php($count_tag = count($tag))
     @foreach($tag as $tg)
         @if($count_tag > 1)
-            <a class="btn event-tag-box hover-danger" title="Remove tag" data-bs-toggle="modal" data-bs-target="#deleteTag-{{$tg['slug_name']}}">{{$tg['tag_name']}}</a>
+            <a class="btn event-tag-box hover-danger mb-1" title="Remove tag" data-bs-toggle="modal" data-bs-target="#deleteTag-{{$tg['slug_name']}}">{{$tg['tag_name']}}</a>
 
             <div class="modal fade" id="deleteTag-{{$tg['slug_name']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -29,7 +29,7 @@
                 </div>
             </div>
         @else
-            <a class="btn event-tag-box hover-danger" title="Remove tag" data-bs-toggle="modal" data-bs-target="#deleteTagLast-{{$tg['slug_name']}}">{{$tg['tag_name']}}</a>
+            <a class="btn event-tag-box hover-danger mb-1" title="Remove tag" data-bs-toggle="modal" data-bs-target="#deleteTagLast-{{$tg['slug_name']}}">{{$tg['tag_name']}}</a>
 
             <div class="modal fade" id="deleteTagLast-{{$tg['slug_name']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
