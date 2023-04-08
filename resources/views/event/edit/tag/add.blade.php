@@ -1,5 +1,5 @@
 
-<a class="btn btn-info" data-bs-toggle="collapse" href="#collapseManageTag" title="Manage Tag" role="button" aria-expanded="false" aria-controls="collapseManageTag">
+<a class="btn btn-info" data-bs-toggle="collapse" href="#collapseManageTag" title="Manage Tag" role="button" aria-expanded="false" style="margin-top:-5px;">
     <i class="fa-solid fa-gear"></i>
 </a>
 

@@ -421,7 +421,7 @@ class EditController extends Controller
         }
     }
 
-    public function update_event_loc(Request $request, $slug)
+    public function update_event_add_loc(Request $request, $slug)
     {
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
@@ -467,6 +467,52 @@ class EditController extends Controller
                 } else {
                     return redirect()->back()->with('failed_message', "Location is invalid");    
                 }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+        }
+    }
+
+    public function update_event_remove_loc(Request $request, $slug)
+    {
+        $id = Generator::getContentId($slug);
+        $id_detail = Generator::getContentDetailId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+
+        if($id != null && $id_detail != null){
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "Has removed event location"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                ContentDetail::where('id', $id_detail)->update([
+                    'content_loc' => null,
+                ]);
+
+                ContentHeader::where('id', $id)->update([
+                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => $id, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+
+                return redirect()->back()->with('success_message', "Event successfully updated"); 
             }
         } else {
             return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
