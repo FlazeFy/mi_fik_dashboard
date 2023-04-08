@@ -158,7 +158,8 @@
                 <hr>
 
                 <h6 class="text-primary mt-3">Tag</h6>
-                    @include('event.edit.tag')
+                    @include('event.edit.tag.show')
+                    @include('event.edit.tag.add')
                 <hr>
 
                 <h6 class="text-primary mt-3">History</h6>
