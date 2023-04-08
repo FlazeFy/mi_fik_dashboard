@@ -70,6 +70,7 @@ Route::prefix('/event')->group(function () {
     Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
     Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
     Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
+    Route::post('/detail/delete/{slug_name}', [DetailController::class, 'delete_event']);
 
     Route::get('/edit/{slug_name}', [EditController::class, 'index']);
     Route::post('/edit/update/info/{slug_name}', [EditController::class, 'update_event_info']);
