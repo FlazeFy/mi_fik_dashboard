@@ -6,6 +6,16 @@ use App\Rules\TypeHistory;
 
 class Validation
 {
+    public static function getValidateJSON($json){ 
+        $array = json_decode($json, true);
+
+        if ($array !== null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function getValidateLogin($request){ 
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',

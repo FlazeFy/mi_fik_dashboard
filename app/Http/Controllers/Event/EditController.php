@@ -65,16 +65,67 @@ class EditController extends Controller
         $id = Generator::getContentId($slug);
         $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-        $validator = Validation::getValidateEventInfo($request);
-        if ($validator->fails()) {
-            $errors = $validator->messages();
+        if($id != null){
+            $validator = Validation::getValidateEventInfo($request);
+            if ($validator->fails()) {
+                $errors = $validator->messages();
 
-            return redirect()->back()->with('failed_message', $errors);
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "Has updated this event info"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    ContentHeader::where('id', $id)->update([
+                        'content_title' => $request->content_title,
+                        'content_desc' => $request->content_desc,
+                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_by' => $user_id
+                    ]);
+
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                }
+
+                return redirect()->back()->with('success_message', "Event successfully updated");             
+            }
         } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");   
+        }
+    }
+
+    public function update_event_draft(Request $request, $slug)
+    {
+        $id = Generator::getContentId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+
+        if($id != null){
+            if($request->is_draft == 1){
+                $body = "Has set this event as draft";
+            } else {
+                $body = "Has unset this event from draft";
+            }
+
             $data = new Request();
             $obj = [
                 'history_type' => "event",
-                'history_body' => "Has updated this event info"
+                'history_body' => $body
             ];
             $data->merge($obj);
 
@@ -85,8 +136,7 @@ class EditController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 ContentHeader::where('id', $id)->update([
-                    'content_title' => $request->content_title,
-                    'content_desc' => $request->content_desc,
+                    'is_draft' => $request->is_draft,
                     'updated_at' => date("Y-m-d h:i:s"),
                     'updated_by' => $user_id
                 ]);
@@ -100,53 +150,11 @@ class EditController extends Controller
                     'created_at' => date("Y-m-d h:i:s"),
                     'created_by' => $user_id
                 ]);
+
+                return redirect()->back()->with('success_message', "Event successfully updated");             
             }
-
-            return redirect()->back()->with('success_message', "Event successfully updated");             
-        }
-    }
-
-    public function update_event_draft(Request $request, $slug)
-    {
-        $id = Generator::getContentId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-
-        if($request->is_draft == 1){
-            $body = "Has set this event as draft";
         } else {
-            $body = "Has unset this event from draft";
-        }
-
-        $data = new Request();
-        $obj = [
-            'history_type' => "event",
-            'history_body' => $body
-        ];
-        $data->merge($obj);
-
-        $validatorHistory = Validation::getValidateHistory($data);
-        if ($validatorHistory->fails()) {
-            $errors = $validatorHistory->messages();
-
-            return redirect()->back()->with('failed_message', $errors);
-        } else {
-            ContentHeader::where('id', $id)->update([
-                'is_draft' => $request->is_draft,
-                'updated_at' => date("Y-m-d h:i:s"),
-                'updated_by' => $user_id
-            ]);
-
-            History::create([
-                'id' => Generator::getUUID(),
-                'history_type' => $data->history_type, 
-                'context_id' => $id, 
-                'history_body' => $data->history_body, 
-                'history_send_to' => null,
-                'created_at' => date("Y-m-d h:i:s"),
-                'created_by' => $user_id
-            ]);
-
-            return redirect()->back()->with('success_message', "Event successfully updated");             
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");   
         }
     }
 
@@ -158,53 +166,61 @@ class EditController extends Controller
         $att = Generator::getContentAtt($id_detail);
         $arrobj = json_decode($att);
 
-        if($att && json_last_error() === JSON_ERROR_NONE){
-            $data = new Request();
-            $obj = [
-                'history_type' => "event",
-                'history_body' => "Has added a new attachment"
-            ];
-            $data->merge($obj);
+        if($id != null && $id_detail != null){
+            if(($att && json_last_error() === JSON_ERROR_NONE) || $att == null){
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "Has added a new attachment"
+                ];
+                $data->merge($obj);
 
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
 
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                $obj = $request->content_attach;
-                $obj = json_decode($obj);
-                $newobj = json_encode(array_merge($arrobj, $obj));
-
-                if(json_last_error() === JSON_ERROR_NONE){
-                    ContentDetail::where('id', $id_detail)->update([
-                        'content_attach' => $newobj,
-                    ]);
-
-                    ContentHeader::where('id', $id)->update([
-                        'updated_at' => date("Y-m-d h:i:s"),
-                        'updated_by' => $user_id
-                    ]);
-    
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => $id, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
-                        'created_by' => $user_id
-                    ]);
-    
-                    return redirect()->back()->with('success_message', "Event successfully updated"); 
+                    return redirect()->back()->with('failed_message', $errors);
                 } else {
-                    return redirect()->back()->with('failed_message', "Attachment is invalid");    
+                    $obj = $request->content_attach;
+
+                    if($att != null){
+                        $obj = json_decode($obj);
+                        $newobj = json_encode(array_merge($arrobj, $obj));
+                    } else {
+                        $newobj = $obj;
+                    }
+
+                    if(json_last_error() === JSON_ERROR_NONE || $att == null){
+                        ContentDetail::where('id', $id_detail)->update([
+                            'content_attach' => $newobj,
+                        ]);
+
+                        ContentHeader::where('id', $id)->update([
+                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $id, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $user_id
+                        ]);
+        
+                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                    } else {
+                        return redirect()->back()->with('failed_message', "Attachment is invalid");    
+                    }
                 }
+            } else {
+                return redirect()->back()->with('failed_message', "Attachment is invalid");    
             }
         } else {
-            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
-        }
-        
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");   
+        } 
     }
 
     public function update_event_remove_attach(Request $request, $slug)
@@ -215,58 +231,62 @@ class EditController extends Controller
         $att = Generator::getContentAtt($id_detail);
         $oldobj = json_decode($att);
 
-        if($att && json_last_error() === JSON_ERROR_NONE){
-            $data = new Request();
-            $obj = [
-                'history_type' => "event",
-                'history_body' => "Has removed an attachment"
-            ];
-            $data->merge($obj);
+        if($id != null && $id_detail != null){
+            if($att && json_last_error() === JSON_ERROR_NONE){
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "Has removed an attachment"
+                ];
+                $data->merge($obj);
 
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
 
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                foreach ($oldobj as $index => $object) {
-                    if ($object->id == $request->attachment_id) {
-                        $index = $index;
-                        break;
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    foreach ($oldobj as $index => $object) {
+                        if ($object->id == $request->attachment_id) {
+                            $index = $index;
+                            break;
+                        }
+                    }
+                    if ($index !== null) {
+                        array_splice($oldobj, $index, 1);
+                    }
+                    $newobj = json_encode($oldobj);
+
+                    if(json_last_error() === JSON_ERROR_NONE){
+                        ContentDetail::where('id', $id_detail)->update([
+                            'content_attach' => $newobj,
+                        ]);
+
+                        ContentHeader::where('id', $id)->update([
+                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $id, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $user_id
+                        ]);
+        
+                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                    } else {
+                        return redirect()->back()->with('failed_message', "Attachment is invalid");    
                     }
                 }
-                if ($index !== null) {
-                    array_splice($oldobj, $index, 1);
-                }
-                $newobj = json_encode($oldobj);
-
-                if(json_last_error() === JSON_ERROR_NONE){
-                    ContentDetail::where('id', $id_detail)->update([
-                        'content_attach' => $newobj,
-                    ]);
-
-                    ContentHeader::where('id', $id)->update([
-                        'updated_at' => date("Y-m-d h:i:s"),
-                        'updated_by' => $user_id
-                    ]);
-    
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => $id, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
-                        'created_by' => $user_id
-                    ]);
-    
-                    return redirect()->back()->with('success_message', "Event successfully updated"); 
-                } else {
-                    return redirect()->back()->with('failed_message', "Attachment is invalid");    
-                }
+            } else {
+                return redirect()->back()->with('failed_message', "Attachment is invalid");      
             }
         } else {
-            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore"); 
         }
     }
 
@@ -278,58 +298,62 @@ class EditController extends Controller
         $tag =  ContentDetail::getContentTag($id_detail);
         $oldobj = json_decode($tag);
 
-        if($tag && json_last_error() === JSON_ERROR_NONE){
-            $data = new Request();
-            $obj = [
-                'history_type' => "event",
-                'history_body' => "Has removed a tag"
-            ];
-            $data->merge($obj);
+        if($id != null && $id_detail != null){
+            if($tag && json_last_error() === JSON_ERROR_NONE){
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "Has removed a tag"
+                ];
+                $data->merge($obj);
 
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
 
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                foreach ($oldobj as $index => $object) {
-                    if ($object->slug_name == $request->slug_name) {
-                        $index = $index;
-                        break;
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    foreach ($oldobj as $index => $object) {
+                        if ($object->slug_name == $request->slug_name) {
+                            $index = $index;
+                            break;
+                        }
+                    }
+                    if ($index !== null) {
+                        array_splice($oldobj, $index, 1);
+                    }
+                    $newobj = json_encode($oldobj);
+
+                    if(json_last_error() === JSON_ERROR_NONE){
+                        ContentDetail::where('id', $id_detail)->update([
+                            'content_tag' => $newobj,
+                        ]);
+
+                        ContentHeader::where('id', $id)->update([
+                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $id, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $user_id
+                        ]);
+        
+                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                    } else {
+                        return redirect()->back()->with('failed_message', "Tag is invalid");    
                     }
                 }
-                if ($index !== null) {
-                    array_splice($oldobj, $index, 1);
-                }
-                $newobj = json_encode($oldobj);
-
-                if(json_last_error() === JSON_ERROR_NONE){
-                    ContentDetail::where('id', $id_detail)->update([
-                        'content_tag' => $newobj,
-                    ]);
-
-                    ContentHeader::where('id', $id)->update([
-                        'updated_at' => date("Y-m-d h:i:s"),
-                        'updated_by' => $user_id
-                    ]);
-    
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => $id, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
-                        'created_by' => $user_id
-                    ]);
-    
-                    return redirect()->back()->with('success_message', "Event successfully updated"); 
-                } else {
-                    return redirect()->back()->with('failed_message', "Tag is invalid");    
-                }
+            } else {
+                return redirect()->back()->with('failed_message', "Tag is invalid");     
             }
         } else {
-            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");  
         }
     }
 
@@ -341,11 +365,73 @@ class EditController extends Controller
         $tag =  ContentDetail::getContentTag($id_detail);
         $oldobj = json_decode($tag);
 
-        if($tag && json_last_error() === JSON_ERROR_NONE){
+        if($id != null && $id_detail != null){
+            if($tag && json_last_error() === JSON_ERROR_NONE || $tag == null){
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "Has add a new tag"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    $tagNew = Converter::getTag($request->tag);
+                    if($tag != null){
+                        $tagParsed = json_decode($tagNew);
+                        $newobj = json_encode(array_merge($oldobj, $tagParsed));
+                    } else {
+                        $newobj = $tagNew;
+                    }
+
+                    if(json_last_error() === JSON_ERROR_NONE || $tag == null){
+                        ContentDetail::where('id', $id_detail)->update([
+                            'content_tag' => $newobj,
+                        ]);
+
+                        ContentHeader::where('id', $id)->update([
+                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $id, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $user_id
+                        ]);
+        
+                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                    } else {
+                        return redirect()->back()->with('failed_message', "Tag is invalid");    
+                    }
+                }
+            } else {
+                return redirect()->back()->with('failed_message', "Tag is invalid"); 
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+        }
+    }
+
+    public function update_event_add_loc(Request $request, $slug)
+    {
+        $id = Generator::getContentId($slug);
+        $id_detail = Generator::getContentDetailId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+
+        if($id != null && $id_detail != null){
             $data = new Request();
             $obj = [
                 'history_type' => "event",
-                'history_body' => "Has add a new tag"
+                'history_body' => "Has updated event location"
             ];
             $data->merge($obj);
 
@@ -355,13 +441,11 @@ class EditController extends Controller
 
                 return redirect()->back()->with('failed_message', $errors);
             } else {
-                $tagNew = Converter::getTag($request->tag);
-                $tagParsed = json_decode($tagNew);
-                $newobj = json_encode(array_merge($oldobj, $tagParsed));
+                $check = Validation::getValidateJSON($request->content_loc);
 
-                if(json_last_error() === JSON_ERROR_NONE){
+                if($check){
                     ContentDetail::where('id', $id_detail)->update([
-                        'content_tag' => $newobj,
+                        'content_loc' => $request->content_loc,
                     ]);
 
                     ContentHeader::where('id', $id)->update([
@@ -381,8 +465,54 @@ class EditController extends Controller
     
                     return redirect()->back()->with('success_message', "Event successfully updated"); 
                 } else {
-                    return redirect()->back()->with('failed_message', "Tag is invalid");    
+                    return redirect()->back()->with('failed_message', "Location is invalid");    
                 }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    
+        }
+    }
+
+    public function update_event_remove_loc(Request $request, $slug)
+    {
+        $id = Generator::getContentId($slug);
+        $id_detail = Generator::getContentDetailId($slug);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+
+        if($id != null && $id_detail != null){
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "Has removed event location"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                ContentDetail::where('id', $id_detail)->update([
+                    'content_loc' => null,
+                ]);
+
+                ContentHeader::where('id', $id)->update([
+                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => $id, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+
+                return redirect()->back()->with('success_message', "Event successfully updated"); 
             }
         } else {
             return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    

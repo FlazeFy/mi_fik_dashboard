@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\ContentApi\CommandContent as CommandContentApi;
 use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
 use App\Http\Controllers\Api\SystemApi\QueryDictionary as QueryDictionaryApi;
 use App\Http\Controllers\Api\SystemApi\QueryNotification as QueryNotificationApi;
+use App\Http\Controllers\Api\TrashApi\Queries as QueryTrashApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -97,6 +98,10 @@ Route::prefix('/v1/stats')->group(function() {
 
 Route::prefix('/v1/group')->group(function() {
     Route::get('/limit/{limit}/order/{order}', [QueryGroupApi::class, 'getAllGroup']);
+});
+
+Route::prefix('/v1/trash')->group(function() {
+    Route::get('/order/{order}/cat/{category}/find/{search}', [QueryTrashApi::class, 'getAllContentTrash']);
 });
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);

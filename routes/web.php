@@ -7,6 +7,8 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TrashController;
+use App\Http\Controllers\AboutController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -79,6 +81,8 @@ Route::prefix('/event')->group(function () {
     Route::post('/edit/update/attach/remove/{slug_name}', [EditController::class, 'update_event_remove_attach']);
     Route::post('/edit/update/tag/remove/{slug_name}', [EditController::class, 'update_event_remove_tag']);
     Route::post('/edit/update/tag/add/{slug_name}', [EditController::class, 'update_event_add_tag']);
+    Route::post('/edit/update/loc/add/{slug_name}', [EditController::class, 'update_event_add_loc']);
+    Route::post('/edit/update/loc/remove/{slug_name}', [EditController::class, 'update_event_remove_loc']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
@@ -113,4 +117,12 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/setting')->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
+});
+
+Route::prefix('/trash')->group(function () {
+    Route::get('/', [TrashController::class, 'index']);
+});
+
+Route::prefix('/about')->group(function () {
+    Route::get('/', [AboutController::class, 'index']);
 });

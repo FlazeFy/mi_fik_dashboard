@@ -1,140 +1,20 @@
-<style>
-    .event-holder{
-        
-    }
-    .event-box{
-        border-radius:14px;
-        height:240px;
-        -webkit-transition: all 0.6s;
-        -o-transition: all 0.5s;
-        transition: all 0.5s;
-        cursor:pointer;
-        width: 100%;
-        padding:0px;
-        text-align:left;
-        position: relative;
-    }
-    .event-created-at{
-        position: absolute;
-        top: 7.5px;
-        right: 10px;
-        color: whitesmoke !important;
-        font-weight: 500;
-        font-size: 13.5px;
-    }
-    .event-views{
-        position: absolute;
-        top: 7.5px;
-        left: 10px;
-        color: whitesmoke !important;
-        font-weight: 500;
-        font-size: 13.5px;
-    }
-    .event-status{
-        position: absolute;
-        top: 7.5px;
-        left: 70px;
-        font-weight: 500;
-        font-size: 13.5px;
-    }
-    .event-box:hover{
-        transform: translateY(15px);
-    }
-    .event-box .event-title{
-        font-weight:bold;
-        font-size:14px;
-        color:#404040 !important;
-        margin:0px;
-    }
-    .event-box .event-subtitle{
-        font-weight:500;
-        font-size:12.5px;
-        color:#5B5B5B !important;
-        margin:0px;
-    }
-    .event-box .event-desc{
-        font-weight:400;
-        font-size:12px;
-        color:#989898 !important;
-        margin:0px;
-        overflow: hidden; 
-        text-overflow: ellipsis; 
-        display: -webkit-box; 
-        -webkit-line-clamp: 2; 
-        line-clamp: 2; 
-        -webkit-box-orient: vertical;
-    }
-    .btn-detail{
-        text-decoration: none !important;
-        border-radius: 6px;
-        font-size:12px;
-        font-weight:500;
-        padding: 5px;
-        color:#F78A00 !important;
-        cursor:pointer;
-    }
-    .user-image-content{
-        border:2px solid #F78A00;
-        width:40px;
-        height:40px;
-        cursor:pointer; /*if we can view other user profile*/
-        border-radius:30px;
-        margin-inline:auto;
-        display: block;
-    }
-    .header-image{
-        background-position: center;
-        background-repeat:no-repeat;
-        position: relative;
-        background-size: cover;
-        background-color: black;
-        height:110px;
-        width: 100%;
-        border-radius: 14px 14px 0px 0px !important;
-    }
-    .loc-limiter{
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 70%;
-    }
-
-    @media screen and (max-width: 1000px) {
-        .user-image-content{ /*Need to be fixed*/
-            position:absolute;
-            margin-top:-37.5px;
-            margin-left:35%;
-        }
-    }
-    /* @media screen and (max-width: 768px) {
-        
-    } */
-    .ajax-load{
-        padding: 10px 0px;
-        width: 100%;
-    }
-</style>
-
 <div class="container mt-3 p-0">
     <div class="event-holder row mt-3" >        
-    <div class="row p-0 m-0" id="data-wrapper"></div>
-    <!-- Loading -->
-    <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
+        <div class="row p-0 m-0" id="data-wrapper"></div>
+        <!-- Loading -->
+        <div class="auto-load text-center">
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
+        <div id="empty_item_holder"></div>
+        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
     </div>
-    <div id="empty_item_holder"></div>
-    <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
-</div>
-
-
-
 </div>
 
 <script type="text/javascript">
