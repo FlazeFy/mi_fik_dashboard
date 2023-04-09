@@ -121,6 +121,7 @@ Route::prefix('/setting')->group(function () {
 
 Route::prefix('/trash')->group(function () {
     Route::get('/', [TrashController::class, 'index']);
+    Route::post('/ordered/{order}', [TrashController::class, 'set_ordering_content']);
 });
 
 Route::prefix('/about')->group(function () {

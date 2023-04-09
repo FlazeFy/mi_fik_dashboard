@@ -51,7 +51,16 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    @include('trash.content')
+                    <div class="container-fluid bg-transparent my-1 py-2 px-0">
+                        <div class="position-relative">
+                            <div class="mt-2 btn-config-holder">
+                                @include('trash.sorting')
+                                @include('trash.searchbar')
+                            </div>
+                
+                            @include('trash.content')
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

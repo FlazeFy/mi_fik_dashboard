@@ -131,6 +131,13 @@
     background: #F78A00;
     color: whitesmoke;
 }
+.btn-danger-icon-outlined{
+    border-radius: 100%;
+}
+.btn-danger-icon-outlined:hover{
+    background: #D5534C;
+    color: whitesmoke;
+}
 
 .content-more-floating{
     font-weight:500;

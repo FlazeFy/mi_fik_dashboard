@@ -1,5 +1,5 @@
-<div class="container mt-3 p-0">
-    <div class="event-holder row mt-3" >        
+<div class="container mt-5 p-0">
+    <div class="event-holder row mt-5" >        
         <div class="accordion row p-0 m-0 content-container" id="data-wrapper"></div>
         <!-- Loading -->
         <div class="auto-load text-center">
@@ -47,7 +47,7 @@
         }
         
         $.ajax({
-            url: "/api/v1/trash/order/" + order + "/cat/" + cat + "/find/%20?page=" + page,
+            url: "/api/v1/trash/order/" + order + "/cat/" + cat + "/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {
