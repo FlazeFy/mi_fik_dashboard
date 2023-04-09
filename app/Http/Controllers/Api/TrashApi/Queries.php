@@ -63,6 +63,8 @@ class Queries extends Controller
                 $uu_deleted = $result->user_username_deleted; 
                 $date_start = $result->content_date_start; 
                 $date_end = $result->content_date_end; 
+                $created_at = $result->created_at; 
+                $deleted_at = $result->deleted_at; 
                 $from = $result->data_from; 
 
                 $clean[] = [
@@ -79,6 +81,8 @@ class Queries extends Controller
                     'content_loc' => $loc,
                     'content_date_start' => $date_start,
                     'content_date_end' => $date_end,
+                    'created_at' => $created_at,
+                    'deleted_at' => $deleted_at,
                     'data_from' => $from
                 ];
             }

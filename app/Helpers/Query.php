@@ -58,14 +58,14 @@ class Query
                 ac.username as admin_username_created, uc.username as user_username_created, 
                 au.username as admin_username_updated, uu.username as user_username_updated, 
                 ad.username as admin_username_deleted, ud.username as user_username_deleted,
-                content_loc, content_tag, content_date_start, content_date_end, 
+                content_loc, content_tag, content_date_start, content_date_end, ch.created_at,
                 1 as data_from, ch.deleted_at as deleted_at";
         } else if($type == "task_dump"){
             $query = "ts.slug_name, task_title as content_title, task_desc as content_desc, 
                 null as admin_username_created, uc.username as user_username_created, 
                 null as admin_username_updated, uu.username as user_username_updated, 
                 null as admin_username_deleted, ud.username as user_username_deleted,
-                null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, 
+                null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, ts.created_at,
                 2 as data_from, ts.deleted_at as deleted_at";
         }
         // Make user's new request dump query

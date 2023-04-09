@@ -1,6 +1,6 @@
 .task-box{
     border-radius:14px;
-    height:230px;
+    min-height:190px;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
@@ -14,7 +14,7 @@
     position: absolute;
     top: 7.5px;
     right: 10px;
-    color: whitesmoke !important;
+    color: #F78A00 !important;
     font-weight: 500;
     font-size: 13.5px;
 }

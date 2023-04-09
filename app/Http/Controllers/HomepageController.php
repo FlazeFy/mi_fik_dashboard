@@ -45,6 +45,9 @@ class HomepageController extends Controller
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
             }
+            if(!session()->get('ordering_trash')){
+                session()->put('ordering_trash', "DESC");
+            }
             if(!session()->get('ordering_user_list')){
                 session()->put('ordering_user_list', "username__DESC");
             }
@@ -53,6 +56,9 @@ class HomepageController extends Controller
             }
             if(!session()->get('filtering_date')){
                 session()->put('filtering_date', "all");
+            }
+            if(!session()->get('filtering_trash')){
+                session()->put('filtering_trash', "all");
             }
             if(!session()->get('filtering_fname')){
                 session()->put('filtering_fname', "all");
