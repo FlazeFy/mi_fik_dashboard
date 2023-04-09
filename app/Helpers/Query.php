@@ -53,11 +53,36 @@ class Query
         } else if($type == "notif_my"){
             $query = "notifications.id, notif_type, notif_body, notif_send_to, is_pending, notifications.created_at, CONCAT(users.first_name, ' ', users.last_name) as users_fullname, 
                 CONCAT(admins.first_name, ' ', admins.last_name) as admins_fullname";
+        } else if($type == "event_dump"){
+            $query = "ch.slug_name, content_title, content_desc, 
+                ac.username as admin_username_created, uc.username as user_username_created, 
+                au.username as admin_username_updated, uu.username as user_username_updated, 
+                ad.username as admin_username_deleted, ud.username as user_username_deleted,
+                content_loc, content_tag, content_date_start, content_date_end, 
+                1 as data_from, ch.deleted_at as deleted_at";
+        } else if($type == "task_dump"){
+            $query = "ts.slug_name, task_title as content_title, task_desc as content_desc, 
+                null as admin_username_created, uc.username as user_username_created, 
+                null as admin_username_updated, uu.username as user_username_updated, 
+                null as admin_username_deleted, ud.username as user_username_deleted,
+                null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, 
+                2 as data_from, ts.deleted_at as deleted_at";
         }
         // Make user's new request dump query
         // Make user's old request dump query
 
         return $query;
+    }
+
+    public static function getJoinTemplate($type, $initial){
+        if($type == "content_dump"){
+            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+                LEFT JOIN users uc ON ".$initial.".created_by = uc.id
+                LEFT JOIN admins au ON ".$initial.".updated_by = au.id
+                LEFT JOIN users uu ON ".$initial.".updated_by = uu.id
+                LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
+                LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id";    
+        }
     }
 
     public static function getWhereDateTemplate($date_start, $date_end){
