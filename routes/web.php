@@ -7,6 +7,7 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TrashController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -115,4 +116,8 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/setting')->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
+});
+
+Route::prefix('/trash')->group(function () {
+    Route::get('/', [TrashController::class, 'index']);
 });
