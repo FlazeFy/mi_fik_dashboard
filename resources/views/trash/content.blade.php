@@ -1,6 +1,6 @@
 <div class="container mt-3 p-0">
     <div class="event-holder row mt-3" >        
-        <div class="accordion row p-0 m-0" id="data-wrapper"></div>
+        <div class="accordion row p-0 m-0 content-container" id="data-wrapper"></div>
         <!-- Loading -->
         <div class="auto-load text-center">
             <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -228,7 +228,7 @@
 
                     if(data_from == 1){ // Event
                         var elmt = " " +
-                            "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
+                            "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
                                 "<button class='card shadow event-box ultimate' onclick=''> " +
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                     "<div class='event-created-at'>" + getDateTime(created_at) + "</div> " +
@@ -282,7 +282,7 @@
                             "</div>";
                         } else if(data_from == 2){ // Task
                             var elmt = " " +
-                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
+                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
                                         "<div class='task-created-at'>" + getDateTime(created_at) + "</div> " +
                                         "<div class='card-body p-2 w-100'> " +

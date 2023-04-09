@@ -5,13 +5,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
-use App\Helpers\Converter;
 use App\Helpers\Generator;
 
-use App\Models\Setting;
 use App\Models\Menu;
 
-class TrashController extends Controller
+class AboutController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -26,9 +24,9 @@ class TrashController extends Controller
             $menu = Menu::getMenu();
             
             //Set active nav
-            session()->put('active_nav', 'trash');
+            session()->put('active_nav', 'about');
 
-            return view ('trash.index')
+            return view ('about.index')
                 ->with('menu', $menu)
                 ->with('greet',$greet);
                 

@@ -8,6 +8,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TrashController;
+use App\Http\Controllers\AboutController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -120,4 +121,8 @@ Route::prefix('/setting')->group(function () {
 
 Route::prefix('/trash')->group(function () {
     Route::get('/', [TrashController::class, 'index']);
+});
+
+Route::prefix('/about')->group(function () {
+    Route::get('/', [AboutController::class, 'index']);
 });

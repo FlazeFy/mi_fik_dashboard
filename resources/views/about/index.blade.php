@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Trash</title>
+        <title>About</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,8 +37,6 @@
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/task_box_v1.0.css') }}"/>
     </head>
 
     <body>
@@ -51,7 +49,7 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    @include('trash.content')
+                    
                 </div>
             </div>
         </div>
@@ -70,8 +68,6 @@
         </script>
 
         <!--Sidebar-->
-        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
         <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
-        <script src="http://127.0.0.1:8000/js/isotope.js"></script>
     </body>
 </html>
