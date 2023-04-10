@@ -11,6 +11,7 @@ use App\Helpers\Generator;
 use App\Models\Setting;
 use App\Models\Menu;
 use App\Models\History;
+use App\Models\SettingSystem;
 use App\Models\ContentHeader;
 use App\Models\Task;
 use App\Models\Info;
@@ -27,6 +28,7 @@ class TrashController extends Controller
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
             $greet = Generator::getGreeting(date('h'));
+            $settingJobs = SettingSystem::getJobsSetting();
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("trash");
             
@@ -36,6 +38,7 @@ class TrashController extends Controller
             return view ('trash.index')
                 ->with('menu', $menu)
                 ->with('info', $info)
+                ->with('settingJobs', $settingJobs)
                 ->with('greet',$greet);
                 
         } else {

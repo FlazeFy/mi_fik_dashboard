@@ -117,6 +117,7 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/setting')->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
+    Route::post('/update_jobs/{id}', [SettingController::class, 'update_jobs']);
 });
 
 Route::prefix('/trash')->group(function () {

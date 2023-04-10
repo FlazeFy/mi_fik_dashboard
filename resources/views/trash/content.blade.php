@@ -42,6 +42,11 @@
                 echo "var info_type = '".$in->info_type."';
                 var info_body = '".$in->info_body."';";
             }
+
+            foreach($settingJobs as $stj){
+                echo "var dcd_range = ".$stj->DCD_range.";
+                var dtd_range = ".$stj->DTD_range.";";
+            }
         ?>
 
         function getFind(check){
@@ -212,18 +217,18 @@
                     }
                 }
 
-                function getDaysRemaining(date){
+                function getDaysRemaining(date, range){
                     date = new Date(date)
                     const currDate = new Date()
-                    const deadDate = new Date(currDate.setDate(currDate.getDate() + 30))
+                    const deadDate = new Date(currDate.setDate(currDate.getDate() + range))
                     const start = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
                     const end = Date.UTC(deadDate.getFullYear(), deadDate.getMonth(), deadDate.getDate())
                     
                     const timeDiff = end - start
                     var daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
 
-                    if(daysDiff == '31'){
-                        daysDiff = '30'
+                    if(daysDiff == range + 1){
+                        daysDiff = range
                     }
                     
                     return "<a class='text-danger fst-italic fw-bold' title='Days before auto deleted from system' style='font-size:12px;'>" + daysDiff + " days remaining</a>";
@@ -293,7 +298,7 @@
                                             getEventLoc(content_loc) +
                                             getEventDate(content_date_start, content_date_end) +
                                             getEventTag(content_tag) +
-                                            getDaysRemaining(deleted_at) +
+                                            getDaysRemaining(deleted_at, dcd_range) +
                                         "</div> " +
                                         "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                         "<div class='position-relative'> " +
@@ -346,7 +351,7 @@
                                             "</div> " +
                                             "<div class='row d-inline-block px-2'> " +
                                                 getEventDate(content_date_start, content_date_end) +
-                                                getDaysRemaining(deleted_at) +
+                                                getDaysRemaining(deleted_at, dtd_range) +
                                             "</div> " +
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class='position-relative'> " +

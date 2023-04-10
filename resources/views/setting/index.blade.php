@@ -57,6 +57,12 @@
                                 @include('setting.chart')
                             </div>
                         </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="content-section p-0 pt-3">
+                                <h5 class="mx-3">Task Scheduling Range</h5><hr>
+                                @include('setting.jobs')
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,6 +70,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.failed')
 
         <script>
             //Popover

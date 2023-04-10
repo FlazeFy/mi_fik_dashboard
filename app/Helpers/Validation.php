@@ -74,6 +74,13 @@ class Validation
         ]);
     }
 
+    public static function getValidateJobs($request){ 
+        return Validator::make($request->all(), [
+            'DCD_range' => 'required|numeric|max:100|min:7',
+            'DTD_range' => 'required|numeric|max:100|min:7',
+        ]);
+    }
+
     public static function getValidateTag($request){ 
         return Validator::make($request->all(), [
             'tag_name' => 'required|min:2|max:30|string',
