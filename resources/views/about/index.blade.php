@@ -58,7 +58,8 @@
                                     @include('about.app')
                                 </div>
                                 <div class="col-lg-3 col-md-4 col-sm-12">
-
+                                    <h6 class="text-primary mt-3">History</h6>
+                                    @include('components.history')
                                 </div>
                             </div>
                         </div>

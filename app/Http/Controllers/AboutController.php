@@ -26,6 +26,7 @@ class AboutController extends Controller
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $about = Help::getAboutApp();
+            $history = History::getAboutAppHistory();
             
             //Set active nav
             session()->put('active_nav', 'about');
@@ -33,6 +34,7 @@ class AboutController extends Controller
             return view ('about.index')
                 ->with('menu', $menu)
                 ->with('about', $about)
+                ->with('history', $history)
                 ->with('greet',$greet);
                 
         } else {
