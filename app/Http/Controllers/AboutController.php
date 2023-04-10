@@ -6,8 +6,11 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 use App\Models\Menu;
+use App\Models\Help;
+use App\Models\History;
 
 class AboutController extends Controller
 {
@@ -22,12 +25,14 @@ class AboutController extends Controller
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
+            $about = Help::getAboutApp();
             
             //Set active nav
             session()->put('active_nav', 'about');
 
             return view ('about.index')
                 ->with('menu', $menu)
+                ->with('about', $about)
                 ->with('greet',$greet);
                 
         } else {
@@ -36,14 +41,53 @@ class AboutController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    
+    public function edit_about_app(Request $request)
     {
-        //
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+
+        $validator = Validation::getValidateAboutApp($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "about",
+                'history_body' => "Has edited about app"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $help = Help::getAboutApp();
+                foreach($help as $hp){
+                    $id = $hp->id;
+                }
+
+                Help::where('id', $id)->update([
+                    'help_body' => $request->help_body,
+                    'updated_at' => date("Y-m-d H:i"),
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'About Apps updated');  
+            }
+        }  
     }
 
     /**

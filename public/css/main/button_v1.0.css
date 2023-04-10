@@ -6,6 +6,10 @@
     background: #F78A00 !important;
     border:none;
 }
+.btn-success{
+    background: #00C363 !important;
+    border:none;
+}
 .btn-info{
     background: #009FF9 !important;
     color:white !important;

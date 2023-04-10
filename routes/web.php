@@ -129,4 +129,5 @@ Route::prefix('/trash')->group(function () {
 
 Route::prefix('/about')->group(function () {
     Route::get('/', [AboutController::class, 'index']);
+    Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
 });

@@ -94,4 +94,10 @@ class Validation
             'history_body' => 'required|min:6|max:255|string',
         ]);
     }
+
+    public static function getValidateAboutApp($request){ 
+        return Validator::make($request->all(), [
+            'help_body' => 'required|string|max:7500|min:3',
+        ]);
+    }
 }

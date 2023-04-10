@@ -11,7 +11,7 @@
                 <label for="floatingInput">Deleted Task Range (Days)</label>
             </div>
             <div class="position-absolute" style="right: 15px;">
-                <button class="btn btn-submit" type="submit">Save Changes</button>
+                <button class="btn btn-submit" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
             </div>
         </form>
         <h6 class="text-secondary mb-1" style="font-size:12px;">Last Updated :</h6>
