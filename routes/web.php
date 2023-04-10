@@ -117,12 +117,17 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/setting')->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
+    Route::post('/update_jobs/{id}', [SettingController::class, 'update_jobs']);
 });
 
 Route::prefix('/trash')->group(function () {
     Route::get('/', [TrashController::class, 'index']);
+    Route::post('/ordered/{order}', [TrashController::class, 'set_ordering_content']);
+    Route::post('/recover/{slug}/{type}', [TrashController::class, 'recover_content']);
+    Route::post('/destroy/{slug}/{type}', [TrashController::class, 'destroy_content']);
 });
 
 Route::prefix('/about')->group(function () {
     Route::get('/', [AboutController::class, 'index']);
+    Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
 });

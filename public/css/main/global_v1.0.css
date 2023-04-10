@@ -100,13 +100,18 @@
 
 /* Tip / Warning box */
 .info-box{
-    background: #c6eff8;
     border-radius: 10px;
     color: #5B5B5B;
     font-size: 13.5px;
     padding: 14px;
     margin: 10px 0 10px 0;
     text-align: start;
+}
+.info-box.tips{
+    background: #c6eff8 !important;
+}
+.info-box.warning{
+    background: #f7bdbd !important;
 }
 .info-box label{
     font-size: 14px;

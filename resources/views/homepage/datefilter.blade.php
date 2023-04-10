@@ -1,13 +1,3 @@
-<style>
-    .btn-danger-icon-outlined{
-        border-radius: 100%;
-    }
-    .btn-danger-icon-outlined:hover{
-        background: #D5534C;
-        color: whitesmoke;
-    }
-</style>
-
 <div class="position-relative ms-2">
     <button class="btn btn-primary px-3" type="button" id="section-date-picker" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false"><i class="fa-solid fa-calendar"></i> Filter Date 

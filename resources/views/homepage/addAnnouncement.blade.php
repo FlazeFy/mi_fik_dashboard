@@ -55,6 +55,6 @@
 
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/announcement.png"); background-color:#FB5E5B;'
     data-bs-target="#addAnnModal" data-bs-toggle="modal">
-    <h5 class="quick-action-text">Add Announcement</h5>
-    <p class="quick-action-info">Announcement is a bla bla....</p>
+    <h5 class="quick-action-text">Add Notification</h5>
+    <p class="quick-action-info">Notification is a bla bla....</p>
 </button>

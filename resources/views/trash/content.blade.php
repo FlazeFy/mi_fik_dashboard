@@ -1,5 +1,5 @@
-<div class="container mt-3 p-0">
-    <div class="event-holder row mt-3" >        
+<div class="container mt-5 p-0">
+    <div class="event-holder row mt-4" >        
         <div class="accordion row p-0 m-0 content-container" id="data-wrapper"></div>
         <!-- Loading -->
         <div class="auto-load text-center">
@@ -37,6 +37,17 @@
     function infinteLoadMore(page) {
         var order = <?php echo '"'.session()->get('ordering_trash').'";'; ?>
         var cat = <?php echo '"'.session()->get('filtering_trash').'";'; ?>
+        <?php 
+            foreach($info as $in){
+                echo "var info_type_".$in->info_location." = ".'"'.$in->info_type.'"'.";
+                var info_body_".$in->info_location." = ".'"'.$in->info_body.'"'.";";
+            }
+
+            foreach($settingJobs as $stj){
+                echo "var dcd_range = ".$stj->DCD_range.";
+                var dtd_range = ".$stj->DTD_range.";";
+            }
+        ?>
 
         function getFind(check){
             if(check == null || check.trim() === ''){
@@ -47,7 +58,7 @@
         }
         
         $.ajax({
-            url: "/api/v1/trash/order/" + order + "/cat/" + cat + "/find/%20?page=" + page,
+            url: "/api/v1/trash/order/" + order + "/cat/" + cat + "/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function () {
@@ -67,7 +78,7 @@
             }
 
             if (total == 0) {
-                $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata2.png' class='img nodata-icon'><h6 class='text-secondary text-center'>Trash can is empty</h6>");
                 return;
             } else if (data.length == 0) {
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
@@ -206,6 +217,59 @@
                     }
                 }
 
+                function getDaysRemaining(date, range){
+                    date = new Date(date)
+                    now = new Date()
+                    const deadDate = new Date(date.setDate(date.getDate() + range))
+                    
+                    const timeDiff = now - deadDate
+                    var daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) * -1
+                    
+                    return "<a class='text-danger fst-italic fw-bold' title='Days before auto deleted from system' style='font-size:12px;'>" + daysDiff + " days remaining</a>";
+                }
+
+                function getRecoverModal(type, slug_name, data_from, info_type, info_body, content_title){
+                    return "<div class='modal fade' id='recover" + type + "-" + slug_name + "' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'> " +
+                        "<div class='modal-dialog'> " +
+                            "<div class='modal-content'> " +
+                                "<div class='modal-body text-center pt-4'> " +
+                                    "<button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button> " +
+                                    "<form class='d-inline' action='/trash/recover/" + slug_name + "/" + data_from + "' method='POST'> " +
+                                        '@csrf ' +
+                                        "<p style='font-weight:500;'>Are you sure want to recover '<span class='text-primary'>" + content_title + "</span>' task?</p> " +                                                
+                                            "<div class='info-box " + info_type + "'> " +
+                                                "<label><i class='fa-solid fa-circle-info'></i> " + info_type + "</label><br> " +
+                                                info_body + 
+                                            "</div> " +
+                                        "<button class='btn btn-submit' type='submit'>Recover</button> " +
+                                    "</form> " +
+                                "</div> " +
+                            "</div> " +
+                        "</div> " +
+                    "</div>";
+                }
+
+                function getDestroyModal(type, slug_name, data_from, info_type, info_body, content_title){
+                    return "<div class='modal fade' id='destroy" + type + "-" + slug_name + "' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'> " +
+                        "<div class='modal-dialog'> " +
+                            "<div class='modal-content'> " +
+                                "<div class='modal-body text-center pt-4'> " +
+                                    "<button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button> " +
+                                    "<form class='d-inline' action='/trash/destroy/" + slug_name + "/" + data_from + "' method='POST'> " +
+                                        '@csrf ' +
+                                        "<p style='font-weight:500;'>Are you sure want to destroy '<span class='text-primary'>" + content_title + "</span>' task?</p> " +                                                
+                                            "<div class='info-box " + info_type + "'> " +
+                                                "<label><i class='fa-solid fa-triangle-exclamation'></i> " + info_type + "</label><br> " +
+                                                info_body + 
+                                            "</div> " +
+                                        "<button class='btn btn-danger' type='submit'>Destroy</button> " +
+                                    "</form> " +
+                                "</div> " +
+                            "</div> " +
+                        "</div> " +
+                    "</div>";
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -249,16 +313,17 @@
                                             getEventLoc(content_loc) +
                                             getEventDate(content_date_start, content_date_end) +
                                             getEventTag(content_tag) +
+                                            getDaysRemaining(deleted_at, dcd_range) +
                                         "</div> " +
                                         "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                         "<div class='position-relative'> " +
                                             "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_event_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'>" +
                                                 "<i class='fa-solid fa-info'></i> " +
                                             "</a> " +
-                                            "<a class='btn btn-submit me-1' role='button' title='Recover this content'> " +
+                                            "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverEvent-" + slug_name + "'> " +
                                                 "<i class='fa-solid fa-arrow-rotate-right'></i> " +
                                             "</a> " +
-                                            "<a class='btn btn-danger' role='button' title='Permanently delete'> " +
+                                            "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyEvent-" + slug_name + "'> " +
                                                 "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                             "</a> " +
                                             "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
@@ -279,7 +344,9 @@
                                         "</div> " +
                                     "</div> " +
                                 "</button> " +
-                            "</div>";
+                            "</div> " +
+                            getRecoverModal("Event", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) +
+                            getDestroyModal("Event", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                         } else if(data_from == 2){ // Task
                             var elmt = " " +
                                 "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
@@ -300,16 +367,17 @@
                                             "</div> " +
                                             "<div class='row d-inline-block px-2'> " +
                                                 getEventDate(content_date_start, content_date_end) +
+                                                getDaysRemaining(deleted_at, dtd_range) +
                                             "</div> " +
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class='position-relative'> " +
                                                 "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
                                                     "<i class='fa-solid fa-info'></i> " +
                                                 "</a> " +
-                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content'> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-arrow-rotate-right'></i> " +
                                                 "</a> " +
-                                                "<a class='btn btn-danger' role='button' title='Permanently delete'> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
                                                 "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
@@ -330,7 +398,9 @@
                                             "</div> " +
                                         "</div> " +
                                     "</button> " +
-                                "</div> ";
+                                "</div> " +
+                                getRecoverModal("Task", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Task", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                         }
 
                     $("#data-wrapper").append(elmt);
