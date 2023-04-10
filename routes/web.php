@@ -124,6 +124,7 @@ Route::prefix('/trash')->group(function () {
     Route::get('/', [TrashController::class, 'index']);
     Route::post('/ordered/{order}', [TrashController::class, 'set_ordering_content']);
     Route::post('/recover/{slug}/{type}', [TrashController::class, 'recover_content']);
+    Route::post('/destroy/{slug}/{type}', [TrashController::class, 'destroy_content']);
 });
 
 Route::prefix('/about')->group(function () {

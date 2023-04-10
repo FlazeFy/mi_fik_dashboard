@@ -141,6 +141,40 @@ class Generator
         return $res;
     }
 
+    public static function getContentOwner($slug_name){
+        $query = ContentHeader::select('created_by')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->created_by;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getTaskOwner($slug_name){
+        $query = Task::select('created_by')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->created_by;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
     public static function getTaskId($slug_name){
         $query = Task::select('id')
             ->where('slug_name', $slug_name)

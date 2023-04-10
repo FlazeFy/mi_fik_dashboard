@@ -1,6 +1,6 @@
 
-<a class="btn btn-noline text-danger position-absolute" data-bs-toggle="modal" href="#addTag" style="right:0; top:-9px;"><i class="fa-regular fa-trash-can"></i> Remove Location</a>
-<div class="modal fade" id="addTag" tabindex="-1" aria-labelledby="addTagLabel" aria-hidden="true">
+<a class="btn btn-noline text-danger position-absolute" data-bs-toggle="modal" href="#removeLoc" style="right:0; top:-9px;"><i class="fa-regular fa-trash-can"></i> Remove Location</a>
+<div class="modal fade" id="removeLoc" tabindex="-1" aria-labelledby="removeLocLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>

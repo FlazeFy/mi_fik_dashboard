@@ -39,8 +39,8 @@
         var cat = <?php echo '"'.session()->get('filtering_trash').'";'; ?>
         <?php 
             foreach($info as $in){
-                echo "var info_type = '".$in->info_type."';
-                var info_body = '".$in->info_body."';";
+                echo "var info_type_".$in->info_location." = ".'"'.$in->info_type.'"'.";
+                var info_body_".$in->info_location." = ".'"'.$in->info_body.'"'.";";
             }
 
             foreach($settingJobs as $stj){
@@ -219,17 +219,11 @@
 
                 function getDaysRemaining(date, range){
                     date = new Date(date)
-                    const currDate = new Date()
-                    const deadDate = new Date(currDate.setDate(currDate.getDate() + range))
-                    const start = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-                    const end = Date.UTC(deadDate.getFullYear(), deadDate.getMonth(), deadDate.getDate())
+                    now = new Date()
+                    const deadDate = new Date(date.setDate(date.getDate() + range))
                     
-                    const timeDiff = end - start
-                    var daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24))
-
-                    if(daysDiff == range + 1){
-                        daysDiff = range
-                    }
+                    const timeDiff = now - deadDate
+                    var daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) * -1
                     
                     return "<a class='text-danger fst-italic fw-bold' title='Days before auto deleted from system' style='font-size:12px;'>" + daysDiff + " days remaining</a>";
                 }
@@ -248,6 +242,27 @@
                                                 info_body + 
                                             "</div> " +
                                         "<button class='btn btn-submit' type='submit'>Recover</button> " +
+                                    "</form> " +
+                                "</div> " +
+                            "</div> " +
+                        "</div> " +
+                    "</div>";
+                }
+
+                function getDestroyModal(type, slug_name, data_from, info_type, info_body, content_title){
+                    return "<div class='modal fade' id='destroy" + type + "-" + slug_name + "' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'> " +
+                        "<div class='modal-dialog'> " +
+                            "<div class='modal-content'> " +
+                                "<div class='modal-body text-center pt-4'> " +
+                                    "<button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button> " +
+                                    "<form class='d-inline' action='/trash/destroy/" + slug_name + "/" + data_from + "' method='POST'> " +
+                                        '@csrf ' +
+                                        "<p style='font-weight:500;'>Are you sure want to destroy '<span class='text-primary'>" + content_title + "</span>' task?</p> " +                                                
+                                            "<div class='info-box " + info_type + "'> " +
+                                                "<label><i class='fa-solid fa-triangle-exclamation'></i> " + info_type + "</label><br> " +
+                                                info_body + 
+                                            "</div> " +
+                                        "<button class='btn btn-danger' type='submit'>Destroy</button> " +
                                     "</form> " +
                                 "</div> " +
                             "</div> " +
@@ -308,7 +323,7 @@
                                             "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverEvent-" + slug_name + "'> " +
                                                 "<i class='fa-solid fa-arrow-rotate-right'></i> " +
                                             "</a> " +
-                                            "<a class='btn btn-danger' role='button' title='Permanently delete'> " +
+                                            "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyEvent-" + slug_name + "'> " +
                                                 "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                             "</a> " +
                                             "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
@@ -330,7 +345,8 @@
                                     "</div> " +
                                 "</button> " +
                             "</div> " +
-                            getRecoverModal("Event", slug_name, data_from, info_type, info_body, content_title);
+                            getRecoverModal("Event", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) +
+                            getDestroyModal("Event", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                         } else if(data_from == 2){ // Task
                             var elmt = " " +
                                 "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
@@ -361,7 +377,7 @@
                                                 "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-arrow-rotate-right'></i> " +
                                                 "</a> " +
-                                                "<a class='btn btn-danger' role='button' title='Permanently delete'> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
                                                 "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
@@ -383,7 +399,8 @@
                                         "</div> " +
                                     "</button> " +
                                 "</div> " +
-                                getRecoverModal("Task", slug_name, data_from, info_type, info_body, content_title);
+                                getRecoverModal("Task", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Task", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                         }
 
                     $("#data-wrapper").append(elmt);
