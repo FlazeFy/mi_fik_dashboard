@@ -81,7 +81,7 @@ class AboutController extends Controller
 
                 History::create([
                     'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
+                    'history_type' => strtolower($data->history_type), 
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
@@ -137,6 +137,7 @@ class AboutController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 Help::create([
+                    'id' => Generator::getUUID(),
                     'help_type' => $request->help_type,
                     'help_category' => null,
                     'help_body' => null,

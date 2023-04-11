@@ -34,6 +34,7 @@ class Help extends Model
             LEFT JOIN admins au ON au.id = hs.updated_by 
             WHERE help_type != 'about'
             and help_type != 'contact'
+            GROUP BY help_type
             ORDER BY created_at DESC"));
 
         return $res;

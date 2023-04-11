@@ -80,7 +80,7 @@
 
         <!--Sidebar-->
         <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
-        <script src="http://127.0.0.1:8000/js/isotope.js"></script>
+        <script src="{{ asset('/js/sidebar.js')}}"></script>
+        <script src="{{ asset('/js/isotope.js')}}"></script>
     </body>
 </html>

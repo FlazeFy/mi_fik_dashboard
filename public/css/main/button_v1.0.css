@@ -49,6 +49,23 @@
     font-weight: 500;
     border: 1.5px solid #00c363;
 }
+.btn-category-help{
+    margin: 0 30px 10px 30px;
+    border-left: 3px solid #F78A00;
+    background: #FFF1DF;
+    border-radius: 0;
+    padding: 8px 10px; 
+    width: 90%;
+    text-align: left;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.btn-category-help:hover{
+    background: #F78A00;
+    color: whitesmoke;
+    border-radius: 10px;
+}
 
 .btn-tag{
     background:white;
