@@ -26,6 +26,9 @@ class AboutController extends Controller
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $about = Help::getAboutApp();
+            $helplist = Help::getHelpListNType();
+            $history_about = History::getAboutAppHistory();
+            $history_help = History::getAboutHelpHistory();
             
             //Set active nav
             session()->put('active_nav', 'about');
@@ -33,6 +36,9 @@ class AboutController extends Controller
             return view ('about.index')
                 ->with('menu', $menu)
                 ->with('about', $about)
+                ->with('h_help', $history_help)
+                ->with('h_about', $history_about)
+                ->with('helplist', $helplist)
                 ->with('greet',$greet);
                 
         } else {
@@ -77,7 +83,7 @@ class AboutController extends Controller
 
                 History::create([
                     'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
+                    'history_type' => strtolower($data->history_type), 
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
@@ -90,49 +96,188 @@ class AboutController extends Controller
         }  
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function sort_section(Request $request, $navigation)
     {
-        //
+        $active = $request->section;
+        $about_menu = json_decode($request->menu);
+
+        $i = array_search($active, $about_menu);
+        array_splice($about_menu, $i, 1);
+
+        if($navigation == "up"){
+            array_splice($about_menu, $i - 1, 0, $active);
+        } else if($navigation == "down"){
+            array_splice($about_menu, $i + 1, 0, $active);
+        }
+
+        session()->put('about_menu', $about_menu);
+
+        return redirect()->back()->with('success_message', 'Section has sorted'); 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function add_help_type(Request $request)
     {
-        //
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+
+        $validator = Validation::getValidateHelp($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "help",
+                'history_body' => "Has created a new type"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $type = trim(strtolower($request->help_type));
+                $checkType = Help::getAboutHelpType($type);
+
+                if($checkType == false){
+                    Help::create([
+                        'id' => Generator::getUUID(),
+                        'help_type' => $type,
+                        'help_category' => null,
+                        'help_body' => null,
+                        'created_at' => date("Y-m-d H:i"),
+                        'created_by' => $user_id,
+                        'updated_at' => null,
+                        'updated_by' => null,
+                        'deleted_at' => null,
+                        'deleted_by' => null,
+                    ]);
+
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => null, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                    
+                    return redirect()->back()->with('success_message', 'Success created new help category');  
+                } else {
+                    return redirect()->back()->with('failed_message', 'Failed to created new help category. The help type is already exist');  
+                }    
+            }
+        }  
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit_help_body(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+
+        $validator = Validation::getValidateBodyTypeEdit($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "help",
+                'history_body' => "Has updated a ".$request->help_category."'s help body"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Help::where('id', $id)->update([
+                    'help_body' => $request->help_body,
+                    'updated_at' => date("Y-m-d H:i"),
+                    'updated_by' => $user_id,
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success updated help body from '.$request->help_category);  
+            }
+        }  
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function add_help_cat(Request $request)
     {
-        //
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+
+        $validator = Validation::getValidateBodyTypeEdit($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "help",
+                'history_body' => "Has created a help category called '".$request->help_category."'"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $type = trim(strtolower($request->help_type));
+
+                $checkEmptyType = Help::getAboutHelpCategory($type);
+
+                if($checkEmptyType != null){
+                    Help::where('id', $checkEmptyType)->update([
+                        'help_category' => $request->help_category,
+                        'created_at' => date("Y-m-d H:i"),
+                        'created_by' => $user_id,
+                    ]);
+                } else {
+                    Help::create([
+                        'id' => Generator::getUUID(),
+                        'help_type' => $type,
+                        'help_category' => $request->help_category,
+                        'help_body' => null,
+                        'created_at' => date("Y-m-d H:i"),
+                        'created_by' => $user_id,
+                        'updated_at' => null,
+                        'updated_by' => null,
+                        'deleted_at' => null,
+                        'deleted_by' => null,
+                    ]);
+                }
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success added a new help category called '.$request->help_category);  
+            }
+        }  
     }
 
     /**

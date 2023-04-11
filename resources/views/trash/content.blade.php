@@ -179,36 +179,6 @@
                     }
                 }
 
-                function getDateTime(datetime){
-                    const result = new Date(datetime);
-                    const now = new Date(Date.now());
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    
-                    //FIx this!!!
-                    if(result.toDateString() === now.toDateString()){
-                        // $start_date = new DateTime(datetime);
-                        // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                        // if(result.getHours() == now.getHours()){
-                        //     const min = result.getMinutes() - now.getMinutes();
-                        //     if(min <= 10 && min > 0){
-                        //         return $since_start->m;
-                        //     } else {
-                        //         return  min + " minutes ago";    
-                        //     }
-                        // } else if(now.getHours() - result.getHours() <= 6){
-                        //     return now.getHours() - result.getHours() + " hours ago";    
-                        // } else {
-                            return "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        //}
-                    } else if(result.toDateString() === yesterday.toDateString()){
-                        return "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                    } else {
-                        return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
-                    }
-                }
-
                 function getUsername(admin_username, user_username){
                     if(admin_username){
                         return admin_username
@@ -295,7 +265,7 @@
                             "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
                                 "<button class='card shadow event-box ultimate' onclick=''> " +
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
-                                    "<div class='event-created-at'>" + getDateTime(created_at) + "</div> " +
+                                    "<div class='event-created-at'>" + getDateToContext(created_at) + "</div> " +
                                     "<div class='card-body p-2 w-100'> " +
                                         "<div class='row px-2'> " +
                                             "<div class='col-lg-2 px-1'> " +
@@ -338,7 +308,7 @@
                                                 "</div> " +
                                                 "<div class='col-lg-9 p-0 py-1'> " +
                                                     "<h6 class='event-title'>Deleted By ~ Deleted At</h6> " +
-                                                    "<h6 class='event-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateTime(deleted_at) + "</h6> " +
+                                                    "<h6 class='event-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at) + "</h6> " +
                                                 "</div> " +
                                             "</div> " +
                                         "</div> " +
@@ -351,7 +321,7 @@
                             var elmt = " " +
                                 "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
-                                        "<div class='task-created-at'>" + getDateTime(created_at) + "</div> " +
+                                        "<div class='task-created-at'>" + getDateToContext(created_at) + "</div> " +
                                         "<div class='card-body p-2 w-100'> " +
                                             "<div class='row px-2'> " +
                                                 "<div class='col-lg-2 px-1'> " +
@@ -392,7 +362,7 @@
                                                     "</div> " +
                                                     "<div class='col-lg-9 p-0 py-1'> " +
                                                         "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
-                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateTime(deleted_at) + "</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at) + "</h6> " +
                                                     "</div> " +
                                                 "</div> " +
                                             "</div> " +

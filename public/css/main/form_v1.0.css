@@ -19,3 +19,7 @@
     color: #00c363 !important;
     border: 1.5px solid #00c363;
 }
+
+.input-warning.text-danger{
+    font-size: 12px;
+}

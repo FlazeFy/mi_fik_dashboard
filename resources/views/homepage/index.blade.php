@@ -83,6 +83,6 @@
         <!--Sidebar-->
         <script src="{{ asset('/js/sidebar.js')}}"></script>
         <script src="{{ asset('/js/minicalendar.js')}}"></script>
-
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </body>
 </html>

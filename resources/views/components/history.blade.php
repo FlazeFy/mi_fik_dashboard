@@ -17,37 +17,39 @@
 
 <div class="history-holder">
     <?php 
-        function getItemTimeString($date) {
-            // Initial variables
-            $dateItem = date('Y-m-d', strtotime($date)); 
-            $dateNow = date('Y-m-d'); 
-            $yesterday = date('Y-m-d', strtotime('-1 day'));
-            $timeItem = date('h:i', strtotime($date));
-            $hourItem = date('h', strtotime($date));
-            $hourNow = date('h');
-            $minItem = date('i', strtotime($date));
-            $minNow = date('i');
-        
-            $result = "";
-        
-            if ($dateItem == $dateNow) {
-                if ($hourItem == $hourNow) {
-                    $diff = (int)$minNow - (int)$minItem;
-                    if ($diff > 10) {
-                        $result = "$diff min ago";
+        if(!function_exists('getItemTimeString')) {
+            function getItemTimeString($date) {
+                // Initial variables
+                $dateItem = date('Y-m-d', strtotime($date)); 
+                $dateNow = date('Y-m-d'); 
+                $yesterday = date('Y-m-d', strtotime('-1 day'));
+                $timeItem = date('h:i', strtotime($date));
+                $hourItem = date('h', strtotime($date));
+                $hourNow = date('h');
+                $minItem = date('i', strtotime($date));
+                $minNow = date('i');
+            
+                $result = "";
+            
+                if ($dateItem == $dateNow) {
+                    if ($hourItem == $hourNow) {
+                        $diff = (int)$minNow - (int)$minItem;
+                        if ($diff > 10) {
+                            $result = "$diff min ago";
+                        } else {
+                            $result = "Just Now";
+                        }
                     } else {
-                        $result = "Just Now";
+                        $result = "Today at ".$timeItem;
                     }
+                } else if ($dateItem == $yesterday) {
+                    $result = "Yesterday at ".$timeItem;
                 } else {
-                    $result = "Today at ".$timeItem;
+                    $result = date('Y-m-d h:i:s', strtotime($date)); 
                 }
-            } else if ($dateItem == $yesterday) {
-                $result = "Yesterday at ".$timeItem;
-            } else {
-                $result = date('Y-m-d h:i:s', strtotime($date)); 
+            
+                return $result;
             }
-        
-            return $result;
         }
     ?>
     @foreach($history as $hs)
