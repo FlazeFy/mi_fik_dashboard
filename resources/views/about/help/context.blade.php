@@ -20,7 +20,11 @@
         var parent = document.getElementById("rich_box_desc");
         var child = parent.getElementsByClassName("ql-editor")[0];
         input_cat.value = cat;
-        child.innerHTML = desc;
+        if(desc != "null"){
+            child.innerHTML = desc;
+        } else {
+            child.innerHTML = " ";
+        }
     }
 
     function getRichTextHelpDesc(id){

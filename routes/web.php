@@ -131,6 +131,7 @@ Route::prefix('/about')->group(function () {
     Route::get('/', [AboutController::class, 'index']);
     Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
+    Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
     Route::post('/sortsection/{navigation}', [AboutController::class, 'sort_section']);
 });

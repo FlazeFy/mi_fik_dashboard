@@ -40,4 +40,33 @@ class Help extends Model
 
         return $res;
     }
+
+    public static function getAboutHelpCategory($type){
+        $res = Help::select('id')
+            ->where('help_type', $type)
+            ->whereNull('help_category')
+            ->limit(1)
+            ->get();
+
+        if(count($res) > 0){
+            foreach($res as $r){
+                return $r->id;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public static function getAboutHelpType($type){
+        $res = Help::select('id')
+            ->where('help_type', $type)
+            ->limit(1)
+            ->get();
+
+        if(count($res) > 0){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

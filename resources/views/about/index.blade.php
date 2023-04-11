@@ -67,13 +67,13 @@
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-12">
                                             <h6 class="text-primary mt-3">History</h6>
-                                            @include('components.history', ['history' => $history])
+                                            @include('components.history', ['history' => $h_about])
                                         </div>
                                     @elseif($st == "helps editor")
                                         <div class="col-lg-4 col-md-5 col-sm-12">
                                             @include('about.help.list')
                                             <h6 class="text-primary mt-3">History</h6>
-                                            @include('components.history', ['history' => []])
+                                            @include('components.history', ['history' => $h_help])
                                         </div>
                                         <div class="col-lg-8 col-md-7 col-sm-12">
                                             @include('about.help.context')

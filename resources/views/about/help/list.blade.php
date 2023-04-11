@@ -37,9 +37,9 @@
 
     @if(count($helplist) > 0)
         @foreach($helplist as $hl)
-            <a class="helps_type_box" data-bs-toggle="collapse" data-bs-target="#collapse_category_{{$i}}" onclick="<?php echo "infinteLoadMore(1, '".$hl->help_type."')"; ?>">
+            <a class="helps_type_box" data-bs-toggle="collapse" data-bs-target="#collapse_category_{{$i}}" onclick="<?php echo "infinteLoadMore".str_replace(' ', '', $hl->help_type)."(1, '".$hl->help_type."')"; ?>">
                 <h6>{{ucfirst($hl->help_type)}}</h6>
-                @if($hl->total == 1)
+                @if($hl->total == 1 && $hl->help_category == null)
                     <p>{{$hl->total - 1}} Category</p>
                 @else 
                     <p>{{$hl->total}} Category</p>
