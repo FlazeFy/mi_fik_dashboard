@@ -164,15 +164,48 @@ class AboutController extends Controller
         }  
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit_help_body(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+
+        $validator = Validation::getValidateBodyTypeEdit($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "help",
+                'history_body' => "Has updated a ".$request->help_category."'s help body"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Help::where('id', $id)->update([
+                    'help_body' => $request->help_body,
+                    'updated_at' => date("Y-m-d H:i"),
+                    'updated_by' => $user_id,
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success updated help body from '.$request->help_category);  
+            }
+        }  
     }
 
     /**

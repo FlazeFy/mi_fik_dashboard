@@ -76,8 +76,8 @@
                     var updated_at = data[i].updated_at;
 
                     var elmt = " " +
-                        '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("") +'" onclick="loadDetailDesc(' + "'" + help_category.split(" ").join("") + "'" + 
-                            ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ')"> ' +
+                        '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("") +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
+                            ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
                             ucEachWord(help_category) + 
                         '</button>';
 
@@ -90,8 +90,10 @@
         });
     }
 
-    function loadDetailDesc(cat, desc, user, updated){
-        setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "btn-category-help", " ", cat);
-        loadRichTextDesc(desc, user, updated)
+    function loadDetailDesc(cat, desc, user, updated, id){
+        var cat2 = cat.split(" ").join("");
+        setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "btn-category-help", " ", cat2);
+        loadRichTextDesc(desc, user, updated, cat);
+        id_body = id;
     }
 </script>

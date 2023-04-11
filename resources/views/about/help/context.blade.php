@@ -1,24 +1,29 @@
 <h6 class="fst-italic" style="font-size:14px;">Last Updated By : <span class="text-primary" id="desc_updated"></span> </h6>
-<div id="rich_box_desc" style="height: 30vh !important;">
+<div id="rich_box_desc" style="height: 40vh !important;">
     
 </div>
-<form class="d-inline" method="POST" action="/about/edit/app">
+<form class="d-inline" id="form-edit-desc" method="POST" action="">
     @csrf
     <input name="help_body" id="about_body" hidden>
-    <button class="btn btn-success mt-3" onclick="getRichTextHelpDesc()"><i class="fa-solid fa-floppy-disk"></i> Save Chages</button>
+    <input name="help_category" id="about_category" hidden>
+    <button class="btn btn-success mt-3" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Chages</button>
 </form>
 
 <script>
     var desc = document.getElementById("about_body");
+    var form = document.getElementById('form-edit-desc');
+    var input_cat = document.getElementById("about_category");
+    var id_body = " ";
 
-    function loadRichTextDesc(desc, user, updated){
+    function loadRichTextDesc(desc, user, updated, cat){
         document.getElementById("desc_updated").innerHTML = user + " at " + getDateToContext(updated);
         var parent = document.getElementById("rich_box_desc");
         var child = parent.getElementsByClassName("ql-editor")[0];
+        input_cat.value = cat;
         child.innerHTML = desc;
     }
 
-    function getRichTextHelpDesc(){
+    function getRichTextHelpDesc(id){
         var rawText = document.getElementById("rich_box_desc").innerHTML;
 
         //Remove quills element from raw text
@@ -30,6 +35,12 @@
         var characterToDeleteAfter = "</div>";
         var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
         desc.value = modifiedString;
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            form.action = '/about/help/edit/body/' + id;
+            form.submit();
+        });
     }
 
     var quill = new Quill('#rich_box_desc', {
