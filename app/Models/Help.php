@@ -28,7 +28,8 @@ class Help extends Model
     }
 
     public static function getHelpListNType(){        
-        $res = DB::select(DB::raw("SELECT hs.id, help_type, help_category, help_body, ac.username as username_created_by, au.username as username_updated_by, hs.updated_at, hs.created_at
+        $res = DB::select(DB::raw("SELECT hs.id, help_type, help_category, help_body, ac.username as username_created_by, au.username as username_updated_by, 
+            hs.updated_at, hs.created_at, count(1) as total
             FROM helps hs
             LEFT JOIN admins ac ON ac.id = hs.created_by 
             LEFT JOIN admins au ON au.id = hs.updated_by 

@@ -19,6 +19,9 @@
 
         <!-- Include stylesheet -->
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        
+        <!-- Main Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -109,5 +112,8 @@
         <!--Sidebar-->
         <script src="{{ asset('/js/sidebar.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/button_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </body>
 </html>

@@ -61,7 +61,7 @@
     -o-transition: all 0.3s;
     transition: all 0.3s;
 }
-.btn-category-help:hover{
+.btn-category-help:hover, .btn-category-help.active{
     background: #F78A00;
     color: whitesmoke;
     border-radius: 10px;

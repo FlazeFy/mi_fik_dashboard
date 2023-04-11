@@ -12,10 +12,11 @@ class Queries extends Controller
 {
     public function getHelpCategoryByType($type){
         try{
-            $help = Help::select('id', 'help_type', 'help_category')
+            $help = Help::select('helps.id', 'help_type', 'help_category', 'help_body', 'helps.updated_at', 'username')
+                ->leftJoin('admins', 'admins.id', '=', "helps.updated_by")
                 ->where('help_type',$type)
                 ->whereNotNull('help_category')
-                ->orderBy('created_at', 'DESC')
+                ->orderBy('helps.created_at', 'DESC')
                 ->paginate(10);
 
             if ($help->isEmpty()) {

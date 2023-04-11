@@ -80,6 +80,7 @@
 
         <!--Sidebar-->
         <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/sidebar.js')}}"></script>
         <script src="{{ asset('/js/isotope.js')}}"></script>
     </body>

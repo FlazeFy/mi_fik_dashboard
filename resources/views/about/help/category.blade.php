@@ -17,6 +17,7 @@
 
 <script>
     var page = 1;
+    var active_help_cat = "";
 
     //Fix the sidebar & content page FE first to use this feature
     // window.onscroll = function() { 
@@ -69,10 +70,14 @@
                     //Attribute
                     var id = data[i].id;
                     var help_type = data[i].help_type;
+                    var help_body = data[i].help_body;
                     var help_category = data[i].help_category;
+                    var username = data[i].username;
+                    var updated_at = data[i].updated_at;
 
                     var elmt = " " +
-                        '<button class="btn btn-category-help" onclick="loadDetailDesc(' + "'" + id + "'" + ')"> ' +
+                        '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("") +'" onclick="loadDetailDesc(' + "'" + help_category.split(" ").join("") + "'" + 
+                            ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ')"> ' +
                             ucEachWord(help_category) + 
                         '</button>';
 
@@ -85,7 +90,8 @@
         });
     }
 
-    function loadDetailDesc(id){
-        //load_desc_detail(id)
+    function loadDetailDesc(cat, desc, user, updated){
+        setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "btn-category-help", " ", cat);
+        loadRichTextDesc(desc, user, updated)
     }
 </script>

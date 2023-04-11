@@ -23,15 +23,6 @@
 <script>
     var desc = document.getElementById("about_body");
 
-    function deleteAfterCharacter(str, character) {
-        var index = str.indexOf(character);
-        if (index !== -1) {
-            return str.slice(0, index);
-        } else {
-            return str;
-        }
-    }
-
     function getRichText(){
         var rawText = document.getElementById("rich_box").innerHTML;
 
@@ -45,11 +36,7 @@
         var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
         desc.value = modifiedString;
     }
-</script>
 
-<!-- Main Quill library -->
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script>
     var quill = new Quill('#rich_box', {
         theme: 'snow'
     });

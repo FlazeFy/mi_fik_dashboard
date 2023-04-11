@@ -190,36 +190,6 @@
                     }
                 }
 
-                function getCreatedAt(datetime){
-                    const result = new Date(datetime);
-                    const now = new Date(Date.now());
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    
-                    //FIx this!!!
-                    if(result.toDateString() === now.toDateString()){
-                        // $start_date = new DateTime(datetime);
-                        // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                        // if(result.getHours() == now.getHours()){
-                        //     const min = result.getMinutes() - now.getMinutes();
-                        //     if(min <= 10 && min > 0){
-                        //         return $since_start->m;
-                        //     } else {
-                        //         return  min + " minutes ago";    
-                        //     }
-                        // } else if(now.getHours() - result.getHours() <= 6){
-                        //     return now.getHours() - result.getHours() + " hours ago";    
-                        // } else {
-                            return "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        //}
-                    } else if(result.toDateString() === yesterday.toDateString()){
-                        return "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                    } else {
-                        return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
-                    }
-                }
-
                 function getEventStatus(start, end){
                     const c_start = new Date(start);
                     const c_end = new Date(end);
@@ -267,7 +237,7 @@
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
                             "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                 "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
-                                "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
+                                "<div class='event-created-at'>" + getDateToContext(created_at) + "</div> " +
                                 "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
                                 "<div class='card-body p-2 w-100'> " +
