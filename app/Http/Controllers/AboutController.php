@@ -92,15 +92,23 @@ class AboutController extends Controller
         }  
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function sort_section(Request $request, $navigation)
     {
-        //
+        $active = $request->section;
+        $about_menu = json_decode($request->menu);
+
+        $i = array_search($active, $about_menu);
+        array_splice($about_menu, $i, 1);
+
+        if($navigation == "up"){
+            array_splice($about_menu, $i - 1, 0, $active);
+        } else if($navigation == "down"){
+            array_splice($about_menu, $i + 1, 0, $active);
+        }
+
+        session()->put('about_menu', $about_menu);
+
+        return redirect()->back()->with('success_message', 'Section has sorted'); 
     }
 
     /**
