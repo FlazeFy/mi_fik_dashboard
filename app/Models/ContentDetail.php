@@ -12,6 +12,7 @@ class ContentDetail extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'contents_details';
     protected $primaryKey = 'id';
@@ -26,6 +27,23 @@ class ContentDetail extends Model
             ->whereNot('content_loc', null)
             ->orderBy('content_date_start','DESC')
             ->get();
+
+        return $res;
+    }
+
+    public static function getContentTag($id){
+        $query = ContentDetail::select('content_tag')
+            ->where('id', $id)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->content_tag;
+            }
+        } else {
+            $res = null;
+        }
 
         return $res;
     }
@@ -51,6 +69,7 @@ class ContentDetail extends Model
     public static function getMostViewedEvent($limit){
         $res = ContentHeader::selectRaw('contents_headers.id, content_title, count(1) as total')
             ->join('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+            ->whereNull('deleted_at')
             ->groupBy('contents_headers.id')
             ->orderBy('total', 'DESC')
             ->limit($limit) 

@@ -26,12 +26,6 @@
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-        <script type="text/javascript" charset="utf-8">
-            $(document).ready(function () {
-                $('#notifTable').DataTable();
-            });
-        </script>
-
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
@@ -63,6 +57,12 @@
                                 @include('setting.chart')
                             </div>
                         </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="content-section p-0 pt-3">
+                                <h5 class="mx-3">Task Scheduling Range</h5><hr>
+                                @include('setting.jobs')
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,6 +70,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.failed')
 
         <script>
             //Popover

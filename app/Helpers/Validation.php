@@ -2,9 +2,20 @@
 namespace App\Helpers;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\TwoTimeFormats;
+use App\Rules\TypeHistory;
 
 class Validation
 {
+    public static function getValidateJSON($json){ 
+        $array = json_decode($json, true);
+
+        if ($array !== null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static function getValidateLogin($request){ 
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',
@@ -35,6 +46,13 @@ class Validation
         ]);
     }
 
+    public static function getValidateEventInfo($request){ 
+        return Validator::make($request->all(), [
+            'content_title' => 'required|min:6|max:75|string',
+            'content_desc' => 'nullable|string|max:10000'
+        ]);
+    }
+
     public static function getValidateTask($request){ 
         return Validator::make($request->all(), [
             'task_title' => 'required|min:6|max:75|string',
@@ -56,10 +74,30 @@ class Validation
         ]);
     }
 
+    public static function getValidateJobs($request){ 
+        return Validator::make($request->all(), [
+            'DCD_range' => 'required|numeric|max:100|min:7',
+            'DTD_range' => 'required|numeric|max:100|min:7',
+        ]);
+    }
+
     public static function getValidateTag($request){ 
         return Validator::make($request->all(), [
             'tag_name' => 'required|min:2|max:30|string',
             'tag_desc' => 'nullable|max:255|string',
+        ]);
+    }
+
+    public static function getValidateHistory($request){ 
+        return Validator::make($request->all(), [
+            'history_type' => ['required', new TypeHistory],
+            'history_body' => 'required|min:6|max:255|string',
+        ]);
+    }
+
+    public static function getValidateAboutApp($request){ 
+        return Validator::make($request->all(), [
+            'help_body' => 'required|string|max:7500|min:3',
         ]);
     }
 }

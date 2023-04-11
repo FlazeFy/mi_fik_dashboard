@@ -10,6 +10,7 @@ class Archive extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'archives';
     protected $primaryKey = 'id';

@@ -45,6 +45,9 @@ class HomepageController extends Controller
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
             }
+            if(!session()->get('ordering_trash')){
+                session()->put('ordering_trash', "DESC");
+            }
             if(!session()->get('ordering_user_list')){
                 session()->put('ordering_user_list', "username__DESC");
             }
@@ -53,6 +56,9 @@ class HomepageController extends Controller
             }
             if(!session()->get('filtering_date')){
                 session()->put('filtering_date', "all");
+            }
+            if(!session()->get('filtering_trash')){
+                session()->put('filtering_trash', "all");
             }
             if(!session()->get('filtering_fname')){
                 session()->put('filtering_fname', "all");
@@ -135,17 +141,8 @@ class HomepageController extends Controller
                 $status = true;
             }
 
-            // Content image file upload
-            if($request->hasFile('content_image')){
-                //validate image
-                $this->validate($request, [
-                    'content_image'    => 'required|max:5000',
-                ]);
-
-                //upload image
-                $att_file = $request->file('content_image');
-                $imageURL = $att_file->hashName();
-                $att_file->storeAs('public', $imageURL);
+            if($request->content_image || $request->content_image != ""){
+                $imageURL = $request->content_image;
             } else {
                 $imageURL = null;
             }

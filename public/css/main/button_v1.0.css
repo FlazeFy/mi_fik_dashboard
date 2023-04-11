@@ -6,6 +6,15 @@
     background: #F78A00 !important;
     border:none;
 }
+.btn-success{
+    background: #00C363 !important;
+    border:none;
+}
+.btn-info{
+    background: #009FF9 !important;
+    color:white !important;
+    border:none;
+}
 .btn-noline{
     background: transparent;
     border:none;
@@ -64,7 +73,7 @@
 .btn-detail-config.primary{
     background:#F78A00;
 }
-.btn-detail-config.danger{
+.btn-detail-config.danger, .hover-danger:hover{
     background:#D5534C;
 }
 .btn-detail-config.success{
@@ -124,6 +133,13 @@
 }
 .btn-icon-rounded-primary:hover{
     background: #F78A00;
+    color: whitesmoke;
+}
+.btn-danger-icon-outlined{
+    border-radius: 100%;
+}
+.btn-danger-icon-outlined:hover{
+    background: #D5534C;
     color: whitesmoke;
 }
 

@@ -23,7 +23,7 @@ ex : php artisan serve # port=9000
 > php artisan db:seed # class=DatabaseSeeder
 
 # Make Controller
-> php artisan make:controller <NAMA-Controller>Controller # resource
+> php artisan make:controller <NAMA-Controller>Controller --resource
 
 # Make Model
 > php artisan make:model <NAMA-Model>

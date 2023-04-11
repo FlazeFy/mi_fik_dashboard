@@ -37,6 +37,9 @@
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/minicalendar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/attachment_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
     </head>
 
     <body>

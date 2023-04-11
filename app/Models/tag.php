@@ -10,6 +10,7 @@ class Tag extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'tags';
     protected $primaryKey = 'id';

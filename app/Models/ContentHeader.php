@@ -11,6 +11,7 @@ class ContentHeader extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'contents_headers';
     protected $primaryKey = 'id';
@@ -70,6 +71,7 @@ class ContentHeader extends Model
         $res = ContentHeader::selectRaw($select)
             ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
             ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+            ->whereNull('deleted_at')
             ->groupBy('contents_headers.id')
             ->where('slug_name', $slug_name)
             ->limit(1)

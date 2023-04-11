@@ -10,6 +10,7 @@ class Menu extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'menus';
     protected $primaryKey = 'id';

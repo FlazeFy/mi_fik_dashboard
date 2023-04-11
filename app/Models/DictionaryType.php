@@ -10,6 +10,7 @@ class DictionaryType extends Model
 {
     use HasFactory;
     //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'dictionaries_types';
     protected $primaryKey = 'id';

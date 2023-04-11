@@ -117,6 +117,7 @@ class QueryContent extends Controller
                         ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
+                        ->whereNull('deleted_at')
                         ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->whereRaw($query)
                         ->whereRaw($filter_date)
@@ -128,6 +129,7 @@ class QueryContent extends Controller
                         ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
+                        ->whereNull('deleted_at')
                         ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->whereRaw($query)
                         ->paginate($page);
@@ -146,6 +148,7 @@ class QueryContent extends Controller
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->whereRaw($filter_date)
                         ->where('is_draft', 0)
+                        ->whereNull('deleted_at')
                         ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->paginate($page);
                 } else {
@@ -155,6 +158,7 @@ class QueryContent extends Controller
                         ->groupBy('contents_headers.id')
                         ->orderBy('contents_headers.content_date_start', $order)
                         ->where('is_draft', 0)
+                        ->whereNull('deleted_at')
                         ->where('content_title', 'LIKE', '%' . $search . '%')
                         ->paginate($page);
                 }
@@ -189,11 +193,13 @@ class QueryContent extends Controller
             $content = ContentHeader::selectRaw($select_content)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = ?", $date)
+                ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
             $schedule = Task::selectRaw($select_task)
                 ->where('created_by', $request->user_id)
                 ->whereRaw("date(`task_date_start`) = ?", $date)
+                ->whereNull('deleted_at')
                 ->orderBy('tasks.task_date_start', 'DESC')
                 ->union($content)
                 ->get();

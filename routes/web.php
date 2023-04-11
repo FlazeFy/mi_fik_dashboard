@@ -7,12 +7,15 @@ use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\TrashController;
+use App\Http\Controllers\AboutController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 use App\Http\Controllers\Event\CalendarController;
 use App\Http\Controllers\Event\LocationController;
+use App\Http\Controllers\Event\EditController;
 
 use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
@@ -69,6 +72,17 @@ Route::prefix('/event')->group(function () {
     Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
     Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
     Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
+    Route::post('/detail/delete/{slug_name}', [DetailController::class, 'delete_event']);
+
+    Route::get('/edit/{slug_name}', [EditController::class, 'index']);
+    Route::post('/edit/update/info/{slug_name}', [EditController::class, 'update_event_info']);
+    Route::post('/edit/update/draft/{slug_name}', [EditController::class, 'update_event_draft']);
+    Route::post('/edit/update/attach/add/{slug_name}', [EditController::class, 'update_event_add_attach']);
+    Route::post('/edit/update/attach/remove/{slug_name}', [EditController::class, 'update_event_remove_attach']);
+    Route::post('/edit/update/tag/remove/{slug_name}', [EditController::class, 'update_event_remove_tag']);
+    Route::post('/edit/update/tag/add/{slug_name}', [EditController::class, 'update_event_add_tag']);
+    Route::post('/edit/update/loc/add/{slug_name}', [EditController::class, 'update_event_add_loc']);
+    Route::post('/edit/update/loc/remove/{slug_name}', [EditController::class, 'update_event_remove_loc']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
@@ -103,4 +117,17 @@ Route::prefix('/user')->group(function () {
 Route::prefix('/setting')->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
+    Route::post('/update_jobs/{id}', [SettingController::class, 'update_jobs']);
+});
+
+Route::prefix('/trash')->group(function () {
+    Route::get('/', [TrashController::class, 'index']);
+    Route::post('/ordered/{order}', [TrashController::class, 'set_ordering_content']);
+    Route::post('/recover/{slug}/{type}', [TrashController::class, 'recover_content']);
+    Route::post('/destroy/{slug}/{type}', [TrashController::class, 'destroy_content']);
+});
+
+Route::prefix('/about')->group(function () {
+    Route::get('/', [AboutController::class, 'index']);
+    Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
 });
