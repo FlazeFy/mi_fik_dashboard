@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Help extends Model
 {
@@ -22,6 +23,18 @@ class Help extends Model
             ->where('help_type', 'about')
             ->where('help_category', 'app')
             ->get();
+
+        return $res;
+    }
+
+    public static function getHelpListNType(){        
+        $res = DB::select(DB::raw("SELECT hs.id, help_type, help_category, help_body, ac.username as username_created_by, au.username as username_updated_by, hs.updated_at, hs.created_at
+            FROM helps hs
+            LEFT JOIN admins ac ON ac.id = hs.created_by 
+            LEFT JOIN admins au ON au.id = hs.updated_by 
+            WHERE help_type != 'about'
+            and help_type != 'contact'
+            ORDER BY created_at DESC"));
 
         return $res;
     }

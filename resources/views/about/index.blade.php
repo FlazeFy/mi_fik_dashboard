@@ -68,11 +68,12 @@
                                         </div>
                                     @elseif($st == "helps editor")
                                         <div class="col-lg-4 col-md-5 col-sm-12">
+                                            @include('about.help.list')
                                             <h6 class="text-primary mt-3">History</h6>
                                             @include('components.history', ['history' => []])
                                         </div>
                                         <div class="col-lg-8 col-md-7 col-sm-12">
-                                            @include('about.help')
+                                            @include('about.help.context')
                                         </div>
                                     @elseif($st == "contact us")
                                         <div class="col-lg-9 col-md-8 col-sm-12">
