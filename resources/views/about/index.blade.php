@@ -26,7 +26,7 @@
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-        <!--CSS Collection-->
+        <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -38,6 +38,12 @@
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/button_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -110,10 +116,6 @@
         </script>
 
         <!--Sidebar-->
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
-        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/button_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
     </body>
 </html>
