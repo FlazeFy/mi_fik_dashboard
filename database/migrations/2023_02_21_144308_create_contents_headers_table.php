@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('slug_name', 255);
             $table->string('content_title', 75);
-            $table->longText('content_desc');
+            $table->longText('content_desc')->nullable();
             $table->dateTime('content_date_start', $precision = 0)->nullable();
             $table->dateTime('content_date_end', $precision = 0)->nullable();
             $table->string('content_reminder', 75);

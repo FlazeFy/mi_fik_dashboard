@@ -20,6 +20,8 @@ return new class extends Migration
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 75);
+
+            $table->foreign('content_id')->references('id')->on('contents')->onDelete('cascade');
         });
     }
 
