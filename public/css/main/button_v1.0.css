@@ -67,6 +67,22 @@
     border-radius: 10px;
 }
 
+.btn-submit-form:disabled, .btn-submit-form{
+    color:#00c363;
+    border-radius: 8px;
+    border: solid 1.75px #00c363;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    opacity: 1;
+}
+.btn-submit-form{
+    cursor: pointer;
+}
+.btn-submit-form:hover{
+    background:#00c363;
+    color: whitesmoke;
+}
+
 .btn-tag{
     background:white;
     padding: 6px 8px;

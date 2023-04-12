@@ -31,20 +31,10 @@ class History extends Model
         return $res;
     }
 
-    public static function getAboutAppHistory(){
+    public static function getHistoryByType($type){
         $res = History::select('history_body', 'history_send_to', 'histories.created_at', 'admins.username as admin_username')
             ->leftJoin('admins', 'admins.id', '=', 'histories.created_by')
-            ->where('history_type', 'about')
-            ->orderBy('histories.created_at', 'DESC')
-            ->get();
-
-        return $res;
-    }
-
-    public static function getAboutHelpHistory(){
-        $res = History::select('history_body', 'history_send_to', 'histories.created_at', 'admins.username as admin_username')
-            ->leftJoin('admins', 'admins.id', '=', 'histories.created_by')
-            ->where('history_type', 'help')
+            ->where('history_type', $type)
             ->orderBy('histories.created_at', 'DESC')
             ->get();
 

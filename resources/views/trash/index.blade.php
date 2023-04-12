@@ -26,7 +26,7 @@
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-        <!--CSS Collection-->
+        <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -39,6 +39,12 @@
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/task_box_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/isotope_v1.0.js')}}"></script>
+
     </head>
 
     <body>
@@ -80,8 +86,5 @@
 
         <!--Sidebar-->
         <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
-        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
-        <script src="{{ asset('/js/isotope.js')}}"></script>
     </body>
 </html>

@@ -42,6 +42,7 @@ class EditController extends Controller
 
             //Set active nav
             session()->put('active_nav', 'event');
+
             $title = $content[0]['content_title'];
 
             return view ('event.edit.index')

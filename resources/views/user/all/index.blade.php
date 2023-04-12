@@ -74,7 +74,7 @@
         </script>
 
         <!--Sidebar-->
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
 
     </body>
 </html>

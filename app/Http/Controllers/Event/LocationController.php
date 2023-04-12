@@ -32,6 +32,7 @@ class LocationController extends Controller
 
             //Set active nav
             session()->put('active_nav', 'event');
+            session()->put('active_subnav', 'location');
 
             return view ('event.location.index')
                 ->with('location', $location)

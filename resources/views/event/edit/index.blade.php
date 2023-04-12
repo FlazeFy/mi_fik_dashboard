@@ -67,7 +67,7 @@
         @include('popup.failed')
 
         <!--Sidebar-->
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
 
         <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 

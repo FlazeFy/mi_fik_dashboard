@@ -31,6 +31,7 @@ class NotificationController extends Controller
 
             //Set active nav
             session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'notification');
 
             return view ('system.notification.index')
                 ->with('notification', $notification)

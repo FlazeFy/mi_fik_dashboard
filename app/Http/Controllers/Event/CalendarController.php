@@ -36,6 +36,7 @@ class CalendarController extends Controller
                 
             //Set active nav
             session()->put('active_nav', 'event');
+            session()->put('active_subnav', 'calendar');
 
             return view ('event.calendar.index')
                 ->with('content', $content)

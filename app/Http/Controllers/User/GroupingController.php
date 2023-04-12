@@ -33,6 +33,7 @@ class GroupingController extends Controller
 
             //Set active nav
             session()->put('active_nav', 'manageuser');
+            session()->put('active_subnav', 'grouping');
 
             return view('user.group.index')
                 ->with('menu', $menu)
