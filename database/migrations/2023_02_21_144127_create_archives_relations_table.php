@@ -17,9 +17,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('archive_id', 75);
             $table->string('content_id', 75);
-            
+
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 75);
+
+            $table->foreign('archive_id')->references('id')->on('archives')->onDelete('cascade');
+            $table->foreign('content_id')->references('id')->on('contents')->onDelete('cascade');
         });
     }
 

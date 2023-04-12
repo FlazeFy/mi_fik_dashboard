@@ -13,15 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users_groups', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('group_name', 75);
-            $table->string('group_desc', 255);
+            $table->string('menu_group', 75);
+            $table->longText('menu_name')->nullable();
+            $table->string('menu_url', 125)->nullable();
+            $table->string('menu_icon', 255);
+            $table->boolean('menu_access_all');
+            $table->int('sort_number', 3);
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 36);
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->string('updated_by', 36)->nullable();
+            $table->dateTime('deleted_at', $precision = 0)->nullable();
+            $table->string('deleted_by', 36)->nullable();
         });
     }
 
@@ -32,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_groups');
+        Schema::dropIfExists('menus');
     }
 };
