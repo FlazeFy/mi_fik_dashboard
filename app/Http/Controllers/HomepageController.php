@@ -80,6 +80,7 @@ class HomepageController extends Controller
 
             //Set active nav
             session()->put('active_nav', 'homepage');
+            session()->forget('active_subnav');
 
             return view ('homepage.index')
                 ->with('tag', $tag)

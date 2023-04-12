@@ -1,19 +1,15 @@
 <?php
 
-
-namespace App\Http\Controllers\System;
-
+namespace App\Http\Controllers\Social;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
-
-use App\Models\Info;
 use App\Models\Menu;
 
-class InfoController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -24,17 +20,14 @@ class InfoController extends Controller
     {
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-
             $greet = Generator::getGreeting(date('h'));
-            $info = Info::getAllInfo();
             $menu = Menu::getMenu();
-
+            
             //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'info');
+            session()->put('active_nav', 'social');
+            session()->put('active_subnav', 'faq');
 
-            return view ('system.info.index')
-                ->with('info', $info)
+            return view ('social.feedback.index')
                 ->with('menu', $menu)
                 ->with('greet',$greet);
                 

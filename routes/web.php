@@ -20,6 +20,9 @@ use App\Http\Controllers\Event\EditController;
 use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
 
+use App\Http\Controllers\Social\FeedbackController;
+use App\Http\Controllers\Social\FaqController;
+
 use App\Http\Controllers\User\RequestController;
 use App\Http\Controllers\User\AllController;
 use App\Http\Controllers\User\GroupingController;
@@ -134,4 +137,10 @@ Route::prefix('/about')->group(function () {
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
     Route::post('/sortsection/{navigation}', [AboutController::class, 'sort_section']);
+});
+
+Route::prefix('/social')->group(function () {
+    Route::get('/feedback', [FeedbackController::class, 'index']);
+
+    Route::get('/faq', [FaqController::class, 'index']);
 });

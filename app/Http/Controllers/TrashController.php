@@ -37,6 +37,7 @@ class TrashController extends Controller
             
             //Set active nav
             session()->put('active_nav', 'trash');
+            session()->forget('active_subnav');
 
             return view ('trash.index')
                 ->with('menu', $menu)

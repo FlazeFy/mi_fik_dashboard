@@ -27,8 +27,8 @@ class AboutController extends Controller
             $menu = Menu::getMenu();
             $about = Help::getAboutApp();
             $helplist = Help::getHelpListNType();
-            $history_about = History::getAboutAppHistory();
-            $history_help = History::getAboutHelpHistory();
+            $history_about = History::getHistoryByType("about");
+            $history_help = History::getHistoryByType("help");
             
             //Set active nav
             session()->put('active_nav', 'about');

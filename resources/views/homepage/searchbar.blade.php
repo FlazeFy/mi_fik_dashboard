@@ -2,8 +2,9 @@
     <div class="col-2">
         <button class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <div class="col-10">
-        <input type="text" class="form-control rounded-pill" id="title_search" placeholder="Search by event title" onblur="checkTitleSearch()" maxlength="75">
+    <div class="col-10 position-relative">
+        <i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i>
+        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="Search by event title" onblur="checkTitleSearch()" maxlength="75">
     </div>
 </div>
 

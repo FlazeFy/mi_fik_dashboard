@@ -63,7 +63,7 @@
                     @foreach($sort as $st)
                         <div class="content-section p-0 pt-3">
                             <header>
-                                <h5 class="mx-3">{{ucwords($st)}}</h5><hr>
+                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
                                 @include('components.controlsection')
                             </header>
                             <div class="p-3">
@@ -73,13 +73,13 @@
                                             @include('about.app')
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-12">
-                                            <h6 class="text-primary mt-3">History</h6>
+                                            <h5 class="text-secondary fw-bold">History</h5>
                                             @include('components.history', ['history' => $h_about])
                                         </div>
                                     @elseif($st == "helps editor")
                                         <div class="col-lg-4 col-md-5 col-sm-12">
                                             @include('about.help.list')
-                                            <h6 class="text-primary mt-3">History</h6>
+                                            <h5 class="text-secondary fw-bold">History</h5>
                                             @include('components.history', ['history' => $h_help])
                                         </div>
                                         <div class="col-lg-8 col-md-7 col-sm-12">
@@ -90,7 +90,7 @@
                                             @include('about.contact')
                                         </div>
                                         <div class="col-lg-3 col-md-4 col-sm-12">
-                                            <h6 class="text-primary mt-3">History</h6>
+                                            <h5 class="text-secondary fw-bold">History</h5>
                                             @include('components.history', ['history' => []])
                                         </div>
                                     @endif

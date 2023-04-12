@@ -42,6 +42,7 @@ class StatisticController extends Controller
             
             //Set active nav
             session()->put('active_nav', 'statistic');
+            session()->forget('active_subnav');
 
             return view ('statistic.index')
                 ->with('mostTag', $mostTag)
