@@ -35,7 +35,7 @@
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-        <!--CSS Collection-->
+        <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -45,6 +45,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>

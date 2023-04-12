@@ -50,6 +50,13 @@
     }
 </style>
 
+<script>
+    let validation = [
+        { id: "group_name", req: true, len: 75 },
+        { id: "group_desc", req: false, len: 255 },
+    ];
+</script>
+
 <button class="btn btn-submit position-absolute" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Group</button>
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -63,14 +70,15 @@
                     <div class="row mt-4">
                         <div class="col-lg-6 col-md-6 col-sm-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control nameInput" id="titleInput_group" name="group_name" maxlength="75" oninput="lengValidatorGroup(75)" required>
+                                <input type="text" class="form-control nameInput" id="group_name" name="group_name" maxlength="75" oninput="validateForm(validation)" required>
                                 <label for="titleInput_event">Group Name</label>
+                                <a id="group_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
                             </div>
                             <div class="form-floating mt-2">
-                                <textarea class="form-control" id="floatingTextarea2" name="group_desc" style="height: 140px"></textarea>
+                                <textarea class="form-control" id="group_desc" name="group_desc" style="height: 140px" maxlength="255" oninput="validateForm(validation)"></textarea>
                                 <label for="floatingTextarea2">Description (Optional)</label>
+                                <a id="group_desc_msg" class="input-warning text-danger"></a>
                             </div>
-                            <a id="title_msg_group" class="input-warning text-danger"></a>
 
                             @foreach($info as $in)
                                 @if($in->info_location == "add_group")
@@ -85,7 +93,7 @@
                             <span id="user-list-holder"></span>
                         </div>
                     </div>
-                    <span id="btn-submit-holder-group"></span>
+                    <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </form>
             </div>
         </div>
@@ -93,18 +101,6 @@
 </div>
 
 <script>
-    //Validator
-    function lengValidatorGroup(len){        
-        
-        if($("#titleInput_group").val().length >= len){
-            $("#title_msg_group").html("<i class='fa-solid fa-triangle-exclamation'></i> You reaches the maximum character");
-            $("#btn-submit-holder-group").html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
-        } else {
-            $("#title_msg_group").text("");
-            $("#btn-submit-holder-group").html('<button type="submit" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
-        }
-    }
-
     var page_new_req = 1;
     infinteLoadMore_new_req(page_new_req);
 

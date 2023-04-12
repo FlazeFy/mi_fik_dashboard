@@ -36,7 +36,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
