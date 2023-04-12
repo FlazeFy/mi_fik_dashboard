@@ -100,4 +100,19 @@ class Validation
             'help_body' => 'required|string|max:7500|min:3',
         ]);
     }
+
+    public static function getValidateHelp($request){ 
+        return Validator::make($request->all(), [
+            'help_type' => 'required|min:2|max:75|string',
+            'help_category' => 'nullable|min:2|max:75|string',
+            'help_body' => 'nullable|max:2500|string',
+        ]);
+    }
+
+    public static function getValidateBodyTypeEdit($request){ 
+        return Validator::make($request->all(), [
+            'help_category' => 'nullable|min:2|max:75|string',
+            'help_body' => 'nullable|max:2500|string',
+        ]);
+    }
 }

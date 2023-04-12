@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
 use App\Http\Controllers\Api\ContentApi\CommandTask as CommandTaskApi;
 use App\Http\Controllers\Api\ContentApi\QueryTask as QueryTaskApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
+use App\Http\Controllers\Api\HelpApi\Queries as QueryHelpApi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
 use App\Http\Controllers\Api\ArchiveApi\Commands as CommandArchiveApi;
@@ -102,6 +103,10 @@ Route::prefix('/v1/group')->group(function() {
 
 Route::prefix('/v1/trash')->group(function() {
     Route::get('/order/{order}/cat/{category}/find/{search}', [QueryTrashApi::class, 'getAllContentTrash']);
+});
+
+Route::prefix('/v1/help')->group(function() {
+    Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
 });
 
 // integrated with middleware auth sanctum

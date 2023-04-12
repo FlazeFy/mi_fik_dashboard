@@ -17,6 +17,9 @@
     padding: 25px;
     position: relative;
 }
+.content-section header{
+    position: relative;
+}
 .content-section-small{
     border-radius: 10px;
     background: white;
@@ -57,6 +60,12 @@
     max-width:1080px;
     display:block;
     margin-inline:auto;
+}
+
+.control-holder{
+    position: absolute;
+    right: 10px;
+    top:-5px;
 }
 
 /* Drop down */

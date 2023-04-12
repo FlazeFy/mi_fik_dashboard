@@ -58,6 +58,6 @@
         @include('popup.success')
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar.js')}}"></script>
     </body>
 </html>

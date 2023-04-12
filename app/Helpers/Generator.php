@@ -255,4 +255,10 @@ class Generator
         
         return $uuid;
     }
+
+    public static function getListAboutSection(){
+        $res = ["about us","helps editor","contact us"];
+        
+        return $res;
+    }
 }

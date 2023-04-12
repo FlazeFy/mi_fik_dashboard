@@ -19,12 +19,12 @@
 
         <!-- Include stylesheet -->
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        
+        <!-- Main Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
-        <!-- Bootstrap dataTables Javascript -->
-        <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
@@ -50,19 +50,48 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section p-0 pt-3">
-                        <h5 class="mx-3">About Us</h5><hr>
-                        <div class="p-3">
-                            <div class="row">
-                                <div class="col-lg-9 col-md-8 col-sm-12">
-                                    @include('about.app')
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-12">
-
+                    @php($sort = session()->get('about_menu'))
+                    @php($i = 0)
+                    @php($count = count($sort))
+                    @foreach($sort as $st)
+                        <div class="content-section p-0 pt-3">
+                            <header>
+                                <h5 class="mx-3">{{ucwords($st)}}</h5><hr>
+                                @include('components.controlsection')
+                            </header>
+                            <div class="p-3">
+                                <div class="row">
+                                    @if($st == "about us")
+                                        <div class="col-lg-9 col-md-8 col-sm-12">
+                                            @include('about.app')
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-12">
+                                            <h6 class="text-primary mt-3">History</h6>
+                                            @include('components.history', ['history' => $h_about])
+                                        </div>
+                                    @elseif($st == "helps editor")
+                                        <div class="col-lg-4 col-md-5 col-sm-12">
+                                            @include('about.help.list')
+                                            <h6 class="text-primary mt-3">History</h6>
+                                            @include('components.history', ['history' => $h_help])
+                                        </div>
+                                        <div class="col-lg-8 col-md-7 col-sm-12">
+                                            @include('about.help.context')
+                                        </div>
+                                    @elseif($st == "contact us")
+                                        <div class="col-lg-9 col-md-8 col-sm-12">
+                                            @include('about.contact')
+                                        </div>
+                                        <div class="col-lg-3 col-md-4 col-sm-12">
+                                            <h6 class="text-primary mt-3">History</h6>
+                                            @include('components.history', ['history' => []])
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        @php($i++)
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -81,6 +110,10 @@
         </script>
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar.js')}}"></script>
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/button_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </body>
 </html>
