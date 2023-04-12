@@ -35,7 +35,7 @@ use App\Http\Controllers\Api\TrashApi\Queries as QueryTrashApi;
 // });
 
 Route::prefix('/v1/task')->group(function () {
-    Route::get('/{id_user}', [QueryTaskApi::class, 'getMyTask']);
+    Route::get('/{id_user}', [QueryTaskApi::class, 'getMyTask']); // dipindah ke middleware
     Route::post('/create/{id_user}', [CommandTaskApi::class, 'addTask']);
     Route::put('/update/{id}', [CommandTaskApi::class, 'updateTask']);
     Route::delete('/delete/{id}', [CommandTaskApi::class, 'deleteTask']);
@@ -51,7 +51,7 @@ Route::prefix('/v1/tag')->group(function () {
 });
 
 Route::prefix('/v1/notification')->group(function () {
-    Route::get('/', [QueryNotificationApi::class, 'getAllNotification']);
+    Route::get('/', [QueryNotificationApi::class, 'getAllNotification']); // dipindah ke middleware tapi masih error
     Route::get('/{user_id}', [QueryNotificationApi::class, 'getMyNotification']);
 });
 
@@ -72,7 +72,7 @@ Route::prefix('/v2/content')->group(function() {
 });
 
 Route::prefix('/v1/archive')->group(function() {
-    Route::get('/{user_id}', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/{user_id}', [QueryArchiveApi::class, 'getArchive']); // dipindah ke middleware
 
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
@@ -109,6 +109,8 @@ Route::prefix('/v1/help')->group(function() {
     Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
 });
 
+// integrated with middleware auth sanctum
+
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
 
@@ -119,4 +121,18 @@ Route::prefix('/v2/archive')->middleware(['auth:sanctum'])->group(function() {
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
     Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
     Route::delete('/delete/{id}', [CommandArchiveApi::class, 'deleteArchive']);
+});
+
+Route::prefix('/v2/task')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [QueryTaskApi::class, 'getMyTask']);
+});
+
+Route::prefix('/v2/notification')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/my_notif/', [QueryNotificationApi::class, 'getMyNotification']);
+});
+
+Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/', [QueryContentApi::class, 'getContentHeader']);
+    Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
+    Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
 });
