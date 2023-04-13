@@ -97,25 +97,6 @@ class AboutController extends Controller
         }  
     }
 
-    public function sort_section(Request $request, $navigation)
-    {
-        $active = $request->section;
-        $about_menu = json_decode($request->menu);
-
-        $i = array_search($active, $about_menu);
-        array_splice($about_menu, $i, 1);
-
-        if($navigation == "up"){
-            array_splice($about_menu, $i - 1, 0, $active);
-        } else if($navigation == "down"){
-            array_splice($about_menu, $i + 1, 0, $active);
-        }
-
-        session()->put('about_menu', $about_menu);
-
-        return redirect()->back()->with('success_message', 'Section has sorted'); 
-    }
-
     public function add_help_type(Request $request)
     {
         $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 

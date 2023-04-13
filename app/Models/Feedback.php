@@ -13,5 +13,5 @@ class Feedback extends Model
 
     protected $table = 'feedbacks';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'feedback_body', 'feedback_rate', 'created_at', 'deleted_at'];
+    protected $fillable = ['id', 'feedback_body', 'feedback_rate', 'feedback_suggest', 'created_at', 'deleted_at'];
 }

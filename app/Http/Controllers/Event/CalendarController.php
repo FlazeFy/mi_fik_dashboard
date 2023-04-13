@@ -74,23 +74,4 @@ class CalendarController extends Controller
 
         return redirect()->back()->with('success_message', 'Content filtered');
     }
-
-    public function sort_section(Request $request, $navigation)
-    {
-        $active = $request->section;
-        $calendar_menu = json_decode($request->menu);
-
-        $i = array_search($active, $calendar_menu);
-        array_splice($calendar_menu, $i, 1);
-
-        if($navigation == "up"){
-            array_splice($calendar_menu, $i - 1, 0, $active);
-        } else if($navigation == "down"){
-            array_splice($calendar_menu, $i + 1, 0, $active);
-        }
-
-        session()->put('calendar_menu', $calendar_menu);
-
-        return redirect()->back()->with('success_message', 'Section has sorted'); 
-    }
 }

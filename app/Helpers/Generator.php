@@ -267,4 +267,10 @@ class Generator
         
         return $res;
     }
+
+    public static function getListFeedbackSection(){
+        $res = ["list","most suggest"];
+        
+        return $res;
+    }
 }

@@ -34,7 +34,6 @@ class HomepageController extends Controller
     {
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $about_menu = Generator::getListCalendarSection();
             $type = ["Reminder", "Attachment"];
 
             if(!session()->get('selected_tag_calendar')){
@@ -68,10 +67,16 @@ class HomepageController extends Controller
                 session()->put('filtering_lname', "all");
             }
             if(!session()->get('about_menu')){
+                $about_menu = Generator::getListAboutSection();
                 session()->put('about_menu', $about_menu);
             }
             if(!session()->get('calendar_menu')){
-                session()->put('calendar_menu', $about_menu);
+                $calendar_menu = Generator::getListCalendarSection();
+                session()->put('calendar_menu', $calendar_menu);
+            }
+            if(!session()->get('feedback_menu')){
+                $feedback_menu = Generator::getListFeedbackSection();
+                session()->put('feedback_menu', $feedback_menu);
             }
 
             $tag = Tag::getFullTag("DESC", "DESC");

@@ -49,9 +49,25 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
-                        
-                    </div>
+                    @php($sort = session()->get('feedback_menu'))
+                    @php($i = 0)
+                    @php($count = count($sort))
+                    @foreach($sort as $st)
+                        <div class="content-section p-0 pt-3">
+                            <header>
+                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                @include('components.controlsection')
+                            </header>
+                            <div class="p-3">
+                                @if($st == "list")
+                                    @include('social.feedback.table')
+                                @elseif($st == "most suggest")
+                                    @include('social.feedback.mostsuggest')
+                                @endif
+                            </div>
+                        </div>
+                        @php($i++)
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -10,6 +10,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TrashController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\MultiController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -92,7 +93,7 @@ Route::prefix('/event')->group(function () {
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
-    Route::post('/calendar/sortsection/{navigation}', [CalendarController::class, 'sort_section']);
+    Route::post('/calendar/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 
     Route::get('/location', [LocationController::class, 'index']);
 });
@@ -144,7 +145,7 @@ Route::prefix('/about')->group(function () {
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
-    Route::post('/sortsection/{navigation}', [AboutController::class, 'sort_section']);
+    Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 });
 
 Route::prefix('/history')->group(function () {
@@ -153,6 +154,7 @@ Route::prefix('/history')->group(function () {
 
 Route::prefix('/social')->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index']);
+    Route::post('/feedback/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 
     Route::get('/faq', [FaqController::class, 'index']);
 });
