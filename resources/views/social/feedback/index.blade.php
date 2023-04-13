@@ -39,6 +39,13 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $('#feedbackTable').DataTable();
+            });
+        </script>
 
     </head>
 

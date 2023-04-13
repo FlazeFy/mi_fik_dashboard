@@ -40,3 +40,12 @@
 .tabular-body .tabular-item.suspend:hover{
     background:  #f19399;
 }
+
+.page-item.active .page-link{
+    background:#F78A00 !important;
+    border:none;
+    color:white;
+}
+.page-item .page-link{
+    color:#414141;
+}    

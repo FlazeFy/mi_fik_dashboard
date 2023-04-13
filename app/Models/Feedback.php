@@ -18,8 +18,20 @@ class Feedback extends Model
     public static function getAllFeedbackSuggestion(){
         $res = Feedback::selectRaw('dct_name as category, count(1) as total')
             ->join('dictionaries', 'dictionaries.slug_name', '=', 'feedbacks.feedback_suggest')
+            ->whereNull('feedbacks.deleted_at')
             ->groupBy('category')
             ->orderBy('total', 'DESC')
+            ->get();
+
+        return $res;
+    }
+
+    public static function getAllFeedback($limit){
+        $res = Feedback::selectRaw('feedbacks.id, feedback_body, feedback_rate, dct_name as type, feedbacks.created_at')
+            ->join('dictionaries', 'dictionaries.slug_name', '=', 'feedbacks.feedback_suggest')
+            ->whereNull('feedbacks.deleted_at')
+            ->orderBy('feedbacks.created_at', 'DESC')
+            ->limit($limit)
             ->get();
 
         return $res;

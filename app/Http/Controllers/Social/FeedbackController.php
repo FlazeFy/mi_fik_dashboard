@@ -25,6 +25,7 @@ class FeedbackController extends Controller
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $suggestion = Feedback::getAllFeedbackSuggestion();
+            $feedback = Feedback::getAllFeedback(100);
             
             //Set active nav
             session()->put('active_nav', 'social');
@@ -33,6 +34,7 @@ class FeedbackController extends Controller
             return view ('social.feedback.index')
                 ->with('menu', $menu)
                 ->with('suggestion', $suggestion)
+                ->with('feedback', $feedback)
                 ->with('greet',$greet);
                 
         } else {
