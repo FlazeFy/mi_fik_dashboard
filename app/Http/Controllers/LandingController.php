@@ -12,7 +12,11 @@ class LandingController extends Controller
 {
     public function index()
     {
-        return view ('landing.index');
+        if(!session()->get('slug_key')){
+            return view ('landing.index');
+        } else {
+            return redirect()->route('homepage');
+        }
     }
 
     public function login_admin(Request $request){

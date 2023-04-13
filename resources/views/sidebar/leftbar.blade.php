@@ -203,5 +203,3 @@
             data-bs-toggle="modal" data-bs-target="#sign-out-modal"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button> -->
     </div>
 </nav>
-
-@include('popup.signout')

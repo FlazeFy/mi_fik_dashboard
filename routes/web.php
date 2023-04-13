@@ -159,3 +159,5 @@ Route::prefix('/social')->group(function () {
 
     Route::get('/faq', [FaqController::class, 'index']);
 });
+
+Route::post('/sign-out', [MultiController::class, 'sign_out']);

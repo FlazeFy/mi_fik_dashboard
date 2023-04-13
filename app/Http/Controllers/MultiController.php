@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class MultiController extends Controller
 {
@@ -23,5 +24,12 @@ class MultiController extends Controller
         session()->put($menu.'_menu', $body_menu);
 
         return redirect()->back()->with('success_message', 'Section has sorted'); 
+    }
+
+    public function sign_out()
+    {
+        Session::flush();
+
+        return redirect()->route('landing')->with('success_message', 'Successfully sign out'); 
     }
 }

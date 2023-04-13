@@ -23,31 +23,42 @@
                 </div>
             </div>    
         </div>
-        <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1">
+        <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1" id="dd-menu-profile">
             <li class="position-relative">
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i> Profile</a>
                 <div class="item-notification">
                     <i class="fa-solid fa-triangle-exclamation me-2"></i>
                 </div>
             </li>
-            <!-- <li>
-                <a class="dropdown-item" href="#"><i class="fa-solid fa-list-check me-2"></i> Task</a>
-                <div class="item-notification">
-                    <i class="fa-solid fa-bell me-2"></i>3
-                </div>
-            </li> -->
             <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-bell me-2"></i> Notification</a>
                 <div class="item-notification" id="notif-holder"><img src='http://127.0.0.1:8000/assets/loading-notif.gif' style='height:24px; margin-top:-5px;'></div>
             </li>
-            <div class="sign-out-area">
+            <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
                 <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
-            </div>
+            </button>
         </ul>
     </div>
 </div>
 
+<div class='modal fade' id='sign-out-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-body text-center pt-4'>
+                <button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
+                <form class='d-inline' action='/sign-out' method='POST'>
+                    @csrf
+                    <p style='font-weight:500;'>Are you sure want to sign out?</p>
+                    <button class='btn btn-danger' type='submit' onclick="sessionStorage.clear()">Sign Out</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
+    var initial = 2000
+
     //Get data ajax
     $(document).ready(function() {
         clear();
@@ -57,7 +68,11 @@
         setTimeout(function() {
             update();
             clear();
-        }, 5000); 
+        }, initial); 
+
+        if(initial == 2000){
+            initial = 15000
+        }
     }
     
     function update() {
