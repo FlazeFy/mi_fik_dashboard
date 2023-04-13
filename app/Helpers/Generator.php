@@ -261,4 +261,10 @@ class Generator
         
         return $res;
     }
+
+    public static function getListCalendarSection(){
+        $res = ["calendar","finished"];
+        
+        return $res;
+    }
 }

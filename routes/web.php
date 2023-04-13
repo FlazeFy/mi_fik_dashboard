@@ -9,6 +9,7 @@ use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TrashController;
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\HistoryController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -19,6 +20,8 @@ use App\Http\Controllers\Event\EditController;
 
 use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
+use App\Http\Controllers\System\MaintenanceController;
+use App\Http\Controllers\System\DictionaryController;
 
 use App\Http\Controllers\Social\FeedbackController;
 use App\Http\Controllers\Social\FaqController;
@@ -89,6 +92,7 @@ Route::prefix('/event')->group(function () {
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
+    Route::post('/calendar/sortsection/{navigation}', [CalendarController::class, 'sort_section']);
 
     Route::get('/location', [LocationController::class, 'index']);
 });
@@ -99,6 +103,10 @@ Route::prefix('/system')->group(function () {
     Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
 
     Route::get('/info', [InfoController::class, 'index']);
+
+    Route::get('/dictionary', [DictionaryController::class, 'index']);
+
+    Route::get('/maintenance', [MaintenanceController::class, 'index']);
 });
 
 Route::prefix('/user')->group(function () {
@@ -137,6 +145,10 @@ Route::prefix('/about')->group(function () {
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
     Route::post('/sortsection/{navigation}', [AboutController::class, 'sort_section']);
+});
+
+Route::prefix('/history')->group(function () {
+    Route::get('/', [HistoryController::class, 'index']);
 });
 
 Route::prefix('/social')->group(function () {

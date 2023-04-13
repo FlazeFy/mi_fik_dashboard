@@ -32,6 +32,7 @@ class AboutController extends Controller
             
             //Set active nav
             session()->put('active_nav', 'about');
+            session()->forget('active_subnav');
 
             return view ('about.index')
                 ->with('menu', $menu)

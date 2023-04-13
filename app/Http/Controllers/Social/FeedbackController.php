@@ -25,7 +25,7 @@ class FeedbackController extends Controller
             
             //Set active nav
             session()->put('active_nav', 'social');
-            session()->put('active_subnav', 'faq');
+            session()->put('active_subnav', 'feedback');
 
             return view ('social.feedback.index')
                 ->with('menu', $menu)
