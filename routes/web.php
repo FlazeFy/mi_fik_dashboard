@@ -104,6 +104,7 @@ Route::prefix('/system')->group(function () {
     Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
 
     Route::get('/info', [InfoController::class, 'index']);
+    Route::post('/info/update/{id}', [InfoController::class, 'update_type']);
 
     Route::get('/dictionary', [DictionaryController::class, 'index']);
 
