@@ -27,7 +27,7 @@ class Info extends Model
     }
 
     public static function getAllInfo(){
-        $res = Info::select('info_type','info_body','info_location','is_active')
+        $res = Info::select('*')
             ->orderBy('created_at', 'DESC')
             ->orderBy('updated_at', 'DESC')
             ->get();

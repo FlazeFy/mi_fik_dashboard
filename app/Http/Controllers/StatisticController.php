@@ -13,6 +13,7 @@ use App\Models\ContentHeader;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\Menu;
+use App\Models\Feedback;
 
 class StatisticController extends Controller
 {
@@ -33,6 +34,7 @@ class StatisticController extends Controller
             $mostRole = User::getMostUsedRole();
             $menu = Menu::getMenu();
             $greet = Generator::getGreeting(date('h'));
+            $suggestion = Feedback::getAllFeedbackSuggestion();
 
             foreach($setting as $set){
                 $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
@@ -51,6 +53,7 @@ class StatisticController extends Controller
                 ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
                 ->with('menu', $menu)
+                ->with('suggestion', $suggestion)
                 ->with('createdEvent', $createdEvent)
                 ->with('greet',$greet);
                 

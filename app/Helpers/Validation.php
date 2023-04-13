@@ -3,6 +3,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\TwoTimeFormats;
 use App\Rules\TypeHistory;
+use App\Rules\TypeInfo;
 
 class Validation
 {
@@ -113,6 +114,12 @@ class Validation
         return Validator::make($request->all(), [
             'help_category' => 'nullable|min:2|max:75|string',
             'help_body' => 'nullable|max:2500|string',
+        ]);
+    }
+
+    public static function getValidateInfoType($request){ 
+        return Validator::make($request->all(), [
+            'info_type' => ['required', new TypeInfo],
         ]);
     }
 }

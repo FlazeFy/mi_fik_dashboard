@@ -56,7 +56,7 @@
     }
 </style>
 
-<button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'
+<button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/event.png'); ?>"); background-color:#FB5E5B;'
     data-bs-target="#addEventModal" data-bs-toggle="modal">
     <h5 class="quick-action-text">Add Event</h5>
     <p class="quick-action-info">Event is a bla bla....</p>

@@ -6,23 +6,14 @@
     .form-custom i{
         color:#9c9c9c;
     }
-    .page-item.active .page-link{
-        background:#F78A00 !important;
-        border:none;
-        color:white;
-    }
-    .page-item .page-link{
-        color:#414141;
-    }
 </style>
 
-<div class="text-nowrap table-responsive">
+<div class="table-responsive">
     <table class="table table-paginate" id="notifTable" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col">Type</th>
-                <th scope="col">Page</th>
-                <th scope="col">Location</th>
+                <th scope="col">Page / Location</th>
                 <th scope="col">Body</th>
                 <th scope="col">Is Active</th>
                 <th scope="col">Properties</th>
@@ -32,10 +23,29 @@
             @php($i = 0)
             @foreach($info as $in)
                 <tr>
-                    <td>{{ucfirst($in->info_type)}}</td>
-                    <td>{{$in->info_page}}</td>
-                    <td>{{$in->info_location}}</td>
-                    <td>{{$in->info_body}}</td>
+                    <td>
+                        <form action="/system/info/update/{{$in->id}}" method="POST">
+                            @csrf
+                            <select class="form-select" name="info_type" title="Change Type" onchange="this.form.submit()">
+                                @foreach($dictionary as $dct)
+                                    @if($in->info_type == strtolower($dct->dct_name))
+                                        <option selected value="{{strtolower($dct->dct_name)}}">{{$dct->dct_name}}</option>
+                                    @else 
+                                        <option value="{{strtolower($dct->dct_name)}}">{{$dct->dct_name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </form>
+                    </td>
+                    <td>
+                        <p class="mb-0">Page : <a class="text-primary" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
+                        <p>Location : {{$in->info_location}}</p>
+                    </td>
+                    <td >
+                        <div style="word-break: break-all; width: 300px;">
+                            <?= $in->info_body; ?>
+                        </div>
+                    </td>
                     <td>
                         <h6>Created By</h6>
                         <div class="row p-0 m-0">

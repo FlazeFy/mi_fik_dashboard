@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 use App\Helpers\Converter;
 use App\Helpers\Generator;
@@ -22,6 +23,8 @@ use App\Models\ContentViewer;
 use App\Models\Task;
 use App\Models\Info;
 use App\Models\Dictionary;
+use App\Models\User;
+use App\Models\UserRequest;
 
 class HomepageController extends Controller
 {
@@ -34,7 +37,6 @@ class HomepageController extends Controller
     {
         if(session()->get('slug_key')){
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $about_menu = Generator::getListAboutSection();
             $type = ["Reminder", "Attachment"];
 
             if(!session()->get('selected_tag_calendar')){
@@ -68,7 +70,16 @@ class HomepageController extends Controller
                 session()->put('filtering_lname', "all");
             }
             if(!session()->get('about_menu')){
+                $about_menu = Generator::getListAboutSection();
                 session()->put('about_menu', $about_menu);
+            }
+            if(!session()->get('calendar_menu')){
+                $calendar_menu = Generator::getListCalendarSection();
+                session()->put('calendar_menu', $calendar_menu);
+            }
+            if(!session()->get('feedback_menu')){
+                $feedback_menu = Generator::getListFeedbackSection();
+                session()->put('feedback_menu', $feedback_menu);
             }
 
             $tag = Tag::getFullTag("DESC", "DESC");
@@ -78,6 +89,19 @@ class HomepageController extends Controller
             //$archive = Archive::getMyArchive($user_id, "DESC");
             $greet = Generator::getGreeting(date('h'));
 
+            if(Session::has('recatch_message')){
+                $count = [
+                    'count_request' => UserRequest::count(),
+                    'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
+                    'count_new' => User::whereNull('accepted_at')->count()
+                ];
+                $count = json_decode(json_encode($count), false);
+                
+                session()->put('recatch', true);
+            } else {
+                $count = null;
+            }
+            
             //Set active nav
             session()->put('active_nav', 'homepage');
             session()->forget('active_subnav');
@@ -87,6 +111,7 @@ class HomepageController extends Controller
                 ->with('menu', $menu)
                 ->with('info', $info)
                 ->with('dictionary', $dictionary)
+                ->with('count', $count)
                 //->with('archive', $archive)
                 ->with('greet',$greet);
 

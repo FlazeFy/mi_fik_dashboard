@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Event | Tag</title>
+        <title>System | Maintenance</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,16 +26,7 @@
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-        <script type="text/javascript" charset="utf-8">
-            $(document).ready(function () {
-                $('#tagTable').DataTable();
-            });
-        </script>
-
-        <!--Apex Chart-->
-        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-        <!-- CSS Collection -->
+        <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -44,12 +35,8 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
-
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
 
-        <!-- JS Collection -->
-        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -62,34 +49,12 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="row">
-                            <div class="col-lg-5 col-md-5 col-sm-12">
-                                <div class="content-section">
-                                    @include('event.tag.add')
-                                </div>
-                                <div class="content-section">
-                                    @include('statistic.mostTag')
-                                </div>
-                                <div class="content-section position-relative">
-                                    <h5 class="text-secondary fw-bold">History</h5>
-                                    @include('components.history', ['history' => $history])
-                                </div>
-                            </div>
-                            <div class="col-lg-7 col-md-7 col-sm-12">
-                                <div class="content-section">
-                                    @include('event.tag.table')
-                                </div>
-                            </div>
-                        </div>
+                    <div class="content-section">
+                       
                     </div>
                 </div>
             </div>
         </div>
-
-        <!--Modal-->
-        @include('popup.success')
-        @include('popup.failed')
 
         <script>
             //Popover

@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\System;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
+
+use App\Models\Dictionary;
 use App\Models\Menu;
 
-class HistoryController extends Controller
+class DictionaryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,10 +27,10 @@ class HistoryController extends Controller
             $menu = Menu::getMenu();
             
             //Set active nav
-            session()->put('active_nav', 'history');
-            session()->forget('active_subnav');
+            session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'dictionary');
 
-            return view ('history.index')
+            return view ('system.dictionary.index')
                 ->with('menu', $menu)
                 ->with('greet',$greet);
                 

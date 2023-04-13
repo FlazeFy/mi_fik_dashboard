@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
+
 use App\Models\Menu;
+use App\Models\Feedback;
 
 class FeedbackController extends Controller
 {
@@ -22,13 +24,17 @@ class FeedbackController extends Controller
             $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
+            $suggestion = Feedback::getAllFeedbackSuggestion();
+            $feedback = Feedback::getAllFeedback(100);
             
             //Set active nav
             session()->put('active_nav', 'social');
-            session()->put('active_subnav', 'faq');
+            session()->put('active_subnav', 'feedback');
 
             return view ('social.feedback.index')
                 ->with('menu', $menu)
+                ->with('suggestion', $suggestion)
+                ->with('feedback', $feedback)
                 ->with('greet',$greet);
                 
         } else {

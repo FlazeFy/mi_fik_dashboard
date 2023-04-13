@@ -23,6 +23,9 @@
         <!-- Jquery DataTables -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
+        <!--Apex Chart-->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
@@ -36,6 +39,13 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
+
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $('#feedbackTable').DataTable();
+            });
+        </script>
 
     </head>
 
@@ -49,9 +59,25 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
-                        
-                    </div>
+                    @php($sort = session()->get('feedback_menu'))
+                    @php($i = 0)
+                    @php($count = count($sort))
+                    @foreach($sort as $st)
+                        <div class="content-section p-0 pt-3">
+                            <header>
+                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                @include('components.controlsection')
+                            </header>
+                            <div class="p-3">
+                                @if($st == "list")
+                                    @include('social.feedback.table')
+                                @elseif($st == "most suggest")
+                                    @include('social.feedback.mostSuggest')
+                                @endif
+                            </div>
+                        </div>
+                        @php($i++)
+                    @endforeach
                 </div>
             </div>
         </div>
