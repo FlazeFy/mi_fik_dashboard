@@ -14,5 +14,5 @@ class Task extends Model
 
     protected $table = 'tasks';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'slug_name', 'task_title', 'task_desc', 'task_reminder', 'task_date_start', 'task_date_end', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['id', 'slug_name', 'task_title', 'task_desc', 'task_date_start', 'task_date_end', 'task_reminder', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
 }

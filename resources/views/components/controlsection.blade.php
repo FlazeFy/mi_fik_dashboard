@@ -1,6 +1,12 @@
 <div class="control-holder">
+    @php($menu =  session()->get('active_nav'))
+
     @if($i != $count - 1)
-        <form class="d-inline" action="{{session()->get('active_nav')}}/sortsection/down" method="POST">
+        @if(session()->get('active_subnav'))
+            <form class="d-inline" action="/{{$menu}}/{{session()->get('active_subnav')}}/sortsection/{{session()->get('active_subnav')}}/down" method="POST">
+        @else
+            <form class="d-inline" action="/{{$menu}}/sortsection/{{$menu}}/down" method="POST">
+        @endif
             @csrf
             <input hidden name="menu" value="{{json_encode($sort)}}">
             <input hidden name="section" value="{{$st}}">
@@ -9,7 +15,11 @@
     @endif
 
     @if($i != 0)
-        <form class="d-inline" action="{{session()->get('active_nav')}}/sortsection/up" method="POST">
+        @if(session()->get('active_subnav'))
+            <form class="d-inline" action="/{{$menu}}/{{session()->get('active_subnav')}}/sortsection/{{session()->get('active_subnav')}}/up" method="POST">
+        @else
+            <form class="d-inline" action="/{{$menu}}/sortsection/{{$menu}}/up" method="POST">
+        @endif
             @csrf
             <input hidden name="section" value="{{$st}}">
             <input hidden name="menu" value="{{json_encode($sort)}}">

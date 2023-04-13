@@ -54,12 +54,29 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
-                        <div class="calendar-tag-holder">
-                            @include('event.calendar.filter_tag')
+                    @php($sort = session()->get('calendar_menu'))
+                    @php($i = 0)
+                    @php($count = count($sort))
+                    @foreach($sort as $st)
+                        <div class="content-section p-0 pt-3">
+                            <header>
+                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                @include('components.controlsection')
+                            </header>
+                            <div class="p-3">
+                                @if($st == "calendar")
+                                    <div class="calendar-tag-holder">
+                                        @include('event.calendar.filter_tag')
+                                    </div>
+                                    @include('event.calendar.calendar')
+                                @elseif($st == "finished")
+                                    @include('event.calendar.finished')
+                                @endif
+                            </div>
                         </div>
-                        @include('event.calendar.calendar')
-                    </div>
+                        @php($i++)
+                    @endforeach
+    
                 </div>
             </div>
         </div>
@@ -68,6 +85,6 @@
         @include('popup.success')
 
         <!--Sidebar-->
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
     </body>
 </html>

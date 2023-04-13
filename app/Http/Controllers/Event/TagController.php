@@ -8,11 +8,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Helpers\Converter;
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 use App\Models\ContentDetail;
 use App\Models\Tag;
 use App\Models\Menu;
 use App\Models\Setting;
+use App\Models\History;
 
 class TagController extends Controller
 {
@@ -32,15 +34,18 @@ class TagController extends Controller
             $mostTag = ContentDetail::getMostUsedTag();
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
+            $history = History::getHistoryByType("tag");
 
             //Set active nav
             session()->put('active_nav', 'event');
+            session()->put('active_subnav', 'tag');
 
             return view ('event.tag.index')
                 ->with('mostTag', $mostTag)
                 ->with('tag', $tag)
                 ->with('menu', $menu)
                 ->with('setting', $setting)
+                ->with('history', $history)
                 ->with('greet',$greet);
                 
         } else {
@@ -57,15 +62,48 @@ class TagController extends Controller
         if((count($check) == 0 || $request->update_type == "desc") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
-            Tag::where('id', $id)->update([
-                'slug_name' => $slug,
-                'tag_name' => $request->tag_name,
-                'tag_desc' => $request->tag_desc,
-                'updated_at' => date("Y-m-d h:i:s"),
-                'updated_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002'
-            ]);
-    
-            return redirect()->back()->with('success_message', "'".$request->tag_name."' tag has been successfully updated");
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+
+            $validator = Validation::getValidateTag($request);
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $data = new Request();
+                $obj = [
+                    'history_type' => "tag",
+                    'history_body' => "Has updated '".$request->tag_name."' tag"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    Tag::where('id', $id)->update([
+                        'slug_name' => $slug,
+                        'tag_name' => $request->tag_name,
+                        'tag_desc' => $request->tag_desc,
+                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002'
+                    ]);
+
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+
+                    return redirect()->back()->with('success_message', "'".$request->tag_name."' tag has been successfully updated");
+                }
+            }
         } else {
             return redirect()->back()->with('failed_message', 'Updated tag failed. Please use unique name');
         }
@@ -86,20 +124,52 @@ class TagController extends Controller
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
-            Tag::create([
-                'id' => Generator::getUUID(),
-                'slug_name' => $slug,
-                'tag_name' => $request->tag_name,
-                'tag_desc' => $request->tag_desc,
-                'created_at' => date("Y-m-d h:i:s"),
-                'updated_at' => null,
-                'deleted_at' => null,
-                'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002',
-                'updated_by' => null,
-                'deleted_by' => null
-            ]);
+            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
 
-            return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
+            $validator = Validation::getValidateTag($request);
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $data = new Request();
+                $obj = [
+                    'history_type' => "tag",
+                    'history_body' => "Has created a tag called '".$request->tag_name."'"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    $header = Tag::create([
+                        'id' => Generator::getUUID(),
+                        'slug_name' => $slug,
+                        'tag_name' => $request->tag_name,
+                        'tag_desc' => $request->tag_desc,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id,
+                        'updated_at' => null,
+                        'deleted_at' => null,
+                        'updated_by' => null,
+                        'deleted_by' => null
+                    ]);
+
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $header->id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                    return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
+                }
+            }
         } else {
             return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
         }

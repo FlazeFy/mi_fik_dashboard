@@ -29,6 +29,7 @@ class RequestController extends Controller
 
             //Set active nav
             session()->put('active_nav', 'manageuser');
+            session()->put('active_subnav', 'request');
 
             return view('user.request.index')
                 ->with('menu', $menu)

@@ -29,6 +29,7 @@ class AllController extends Controller
 
             //Set active nav
             session()->put('active_nav', 'manageuser');
+            session()->put('active_subnav', 'all user');
 
             return view('user.all.index')
                 ->with('menu', $menu)

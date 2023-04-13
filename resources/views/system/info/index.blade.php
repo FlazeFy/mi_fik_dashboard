@@ -28,7 +28,7 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#infoTable').DataTable();
+                $('#notifTable').DataTable();
             });
         </script>
 
@@ -41,8 +41,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
+        <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
     </head>
 
     <body>
@@ -62,6 +63,10 @@
             </div>
         </div>
 
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
+
         <script>
             //Popover
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
@@ -72,7 +77,7 @@
         </script>
 
         <!--Sidebar-->
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
 
     </body>
 </html>

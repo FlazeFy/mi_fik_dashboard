@@ -32,6 +32,7 @@ class SettingController extends Controller
             
             //Set active nav
             session()->put('active_nav', 'setting');
+            session()->forget('active_subnav');
 
             return view ('setting.index')
                 ->with('setting', $setting)

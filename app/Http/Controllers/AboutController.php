@@ -27,11 +27,12 @@ class AboutController extends Controller
             $menu = Menu::getMenu();
             $about = Help::getAboutApp();
             $helplist = Help::getHelpListNType();
-            $history_about = History::getAboutAppHistory();
-            $history_help = History::getAboutHelpHistory();
+            $history_about = History::getHistoryByType("about");
+            $history_help = History::getHistoryByType("help");
             
             //Set active nav
             session()->put('active_nav', 'about');
+            session()->forget('active_subnav');
 
             return view ('about.index')
                 ->with('menu', $menu)
@@ -94,25 +95,6 @@ class AboutController extends Controller
                 return redirect()->back()->with('success_message', 'About Apps updated');  
             }
         }  
-    }
-
-    public function sort_section(Request $request, $navigation)
-    {
-        $active = $request->section;
-        $about_menu = json_decode($request->menu);
-
-        $i = array_search($active, $about_menu);
-        array_splice($about_menu, $i, 1);
-
-        if($navigation == "up"){
-            array_splice($about_menu, $i - 1, 0, $active);
-        } else if($navigation == "down"){
-            array_splice($about_menu, $i + 1, 0, $active);
-        }
-
-        session()->put('about_menu', $about_menu);
-
-        return redirect()->back()->with('success_message', 'Section has sorted'); 
     }
 
     public function add_help_type(Request $request)

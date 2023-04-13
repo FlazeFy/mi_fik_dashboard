@@ -152,6 +152,7 @@
         </div>
 
         <!--Modal-->
+        @include('popup.success')
         @include('popup.failed')
     </body>
 </html>
