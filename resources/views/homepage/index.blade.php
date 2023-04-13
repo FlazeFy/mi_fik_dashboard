@@ -83,6 +83,7 @@
         <!--Modal-->
         @include('popup.success')
         @include('popup.failed')
+        @include('components.recatch')
 
         <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>

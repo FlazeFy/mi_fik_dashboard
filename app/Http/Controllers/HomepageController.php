@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 use App\Helpers\Converter;
 use App\Helpers\Generator;
@@ -22,6 +23,8 @@ use App\Models\ContentViewer;
 use App\Models\Task;
 use App\Models\Info;
 use App\Models\Dictionary;
+use App\Models\User;
+use App\Models\UserRequest;
 
 class HomepageController extends Controller
 {
@@ -86,6 +89,19 @@ class HomepageController extends Controller
             //$archive = Archive::getMyArchive($user_id, "DESC");
             $greet = Generator::getGreeting(date('h'));
 
+            if(Session::has('recatch_message')){
+                $count = [
+                    'count_request' => UserRequest::count(),
+                    'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
+                    'count_new' => User::whereNull('accepted_at')->count()
+                ];
+                $count = json_decode(json_encode($count), false);
+                
+                session()->put('recatch', true);
+            } else {
+                $count = null;
+            }
+            
             //Set active nav
             session()->put('active_nav', 'homepage');
             session()->forget('active_subnav');
@@ -95,6 +111,7 @@ class HomepageController extends Controller
                 ->with('menu', $menu)
                 ->with('info', $info)
                 ->with('dictionary', $dictionary)
+                ->with('count', $count)
                 //->with('archive', $archive)
                 ->with('greet',$greet);
 

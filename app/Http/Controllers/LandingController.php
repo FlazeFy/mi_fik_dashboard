@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\UserRequest;
 
 class LandingController extends Controller
 {
@@ -41,7 +42,7 @@ class LandingController extends Controller
             $request->session()->put('profile_pic', $image);
             $request->session()->put('role', 0);
 
-            return redirect()->route('homepage');
+            return redirect()->route('homepage')->with('recatch_message', 'true');
         } else {
             $check = User::select('id','slug_name', 'username','image_url')
                 ->where('username', $request->username)
