@@ -13,7 +13,7 @@ class Queries extends Controller
     //
     public function getQuestion($limit) {
         try {
-            $question = Question::select('id', 'question_type', 'question_body', 'created_at', 'username')
+            $question = Question::select('questions.id', 'question_type', 'question_body', 'questions.created_at', 'username')
                 ->join('users', 'users.id', '=', 'questions.created_by')
                 ->orderBy('created_at', 'DESC')
                 ->paginate($limit);
@@ -41,10 +41,11 @@ class Queries extends Controller
 
     public function getAnswer($id) {
         try {
-            $answer = Question::select('id', 'question_answer', 'updated_at', 'username')
+            $answer = Question::select('questions.id', 'question_answer', 'questions.updated_at', 'username')
                 ->leftJoin('admins', 'admins.id', '=', 'questions.updated_by')
                 ->where('questions.id', $id)
-                ->first();
+                ->limit(1)
+                ->get();
 
             if ($answer->isEmpty()) {
                 return response()->json([

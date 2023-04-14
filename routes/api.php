@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
 use App\Http\Controllers\Api\SystemApi\QueryDictionary as QueryDictionaryApi;
 use App\Http\Controllers\Api\SystemApi\QueryNotification as QueryNotificationApi;
 use App\Http\Controllers\Api\TrashApi\Queries as QueryTrashApi;
+use App\Http\Controllers\Api\QuestionApi\Commands as CommandQuestionApi;
+use App\Http\Controllers\Api\QuestionApi\Queries as QueryQuestionApi;
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +111,11 @@ Route::prefix('/v1/help')->group(function() {
     Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
 });
 
+Route::prefix('/v1/faq')->group(function() {
+    Route::get('/question/{limit}', [QueryQuestionApi::class, 'getQuestion']);
+    Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
+});
+
 // integrated with middleware auth sanctum
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
@@ -135,4 +142,8 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueryContentApi::class, 'getContentHeader']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
+});
+
+Route::prefix('/v2/faq')->middleware(['auth:sanctum'])->group(function () {
+    Route::delete('/question/{id}', [CommandQuestionApi::class, 'deleteQuestion']);
 });
