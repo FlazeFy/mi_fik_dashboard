@@ -40,6 +40,9 @@ ex : php artisan serve # port=9000
 # Make Migrations on Specific File
 > php artisan migrate # path=/database/migrations/<NAMA-FILE>.php
 
+# Make Middleware
+> php artisan make:middleware <NAMA-MIDDLEWARE>
+
 # Make Deploy
 > php artisan route:cache
 > php artisan cache:clear
@@ -75,4 +78,4 @@ Directory               : app/Http/Controllers/<< MENU_NAME/SUBMENU_NAME >>
 > << RANDOM_STRING >>_v1.0.js                       <= Iterate
 
 ==================================================================
-Last Updated : 01 Apr 2023
+Last Updated : 14 Apr 2023

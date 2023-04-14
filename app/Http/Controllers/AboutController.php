@@ -21,31 +21,25 @@ class AboutController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $about = Help::getAboutApp();
-            $helplist = Help::getHelpListNType();
-            $history_about = History::getHistoryByType("about");
-            $history_help = History::getHistoryByType("help");
-            
-            //Set active nav
-            session()->put('active_nav', 'about');
-            session()->forget('active_subnav');
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        $about = Help::getAboutApp();
+        $helplist = Help::getHelpListNType();
+        $history_about = History::getHistoryByType("about");
+        $history_help = History::getHistoryByType("help");
+        
+        //Set active nav
+        session()->put('active_nav', 'about');
+        session()->forget('active_subnav');
 
-            return view ('about.index')
-                ->with('menu', $menu)
-                ->with('about', $about)
-                ->with('h_help', $history_help)
-                ->with('h_about', $history_about)
-                ->with('helplist', $helplist)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('about.index')
+            ->with('menu', $menu)
+            ->with('about', $about)
+            ->with('h_help', $history_help)
+            ->with('h_about', $history_about)
+            ->with('helplist', $helplist)
+            ->with('greet',$greet);         
     }
 
     

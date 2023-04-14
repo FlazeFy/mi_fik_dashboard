@@ -27,35 +27,29 @@ class DetailController extends Controller
      */
     public function index($slug_name)
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $content = ContentHeader::getFullContentBySlug($slug_name);
-            $archive = Archive::getMyArchive($user_id, "DESC");
-            $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("event/detail");
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $content = ContentHeader::getFullContentBySlug($slug_name);
+        $archive = Archive::getMyArchive($user_id, "DESC");
+        $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        $info = Info::getAvailableInfo("event/detail");
 
-            //Set active nav
-            session()->put('active_nav', 'event');
-            $title = $content[0]['content_title'];
+        //Set active nav
+        session()->put('active_nav', 'event');
+        $title = $content[0]['content_title'];
 
-            return view ('event.detail.index')
-                ->with('tag', $tag)
-                ->with('content', $content)
-                ->with('title', $title)
-                ->with('archive', $archive)
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('archive_relation', $archive_relation)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('event.detail.index')
+            ->with('tag', $tag)
+            ->with('content', $content)
+            ->with('title', $title)
+            ->with('archive', $archive)
+            ->with('menu', $menu)
+            ->with('info', $info)
+            ->with('archive_relation', $archive_relation)
+            ->with('greet',$greet);
     }
 
     public function add_relation(Request $request, $slug_name)

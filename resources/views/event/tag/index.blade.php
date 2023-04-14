@@ -63,25 +63,31 @@
                     @include('sidebar.navbar')
 
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="row">
-                            <div class="col-lg-5 col-md-5 col-sm-12">
-                                <div class="content-section">
-                                    @include('event.tag.add')
+                        @if(session()->get('role_key') == 1)
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-12">
+                                    <div class="content-section">
+                                        @include('event.tag.add')
+                                    </div>
+                                    <div class="content-section">
+                                        @include('statistic.mostTag')
+                                    </div>
+                                    <div class="content-section position-relative">
+                                        <h5 class="text-secondary fw-bold">History</h5>
+                                        @include('components.history', ['history' => $history])
+                                    </div>
                                 </div>
-                                <div class="content-section">
-                                    @include('statistic.mostTag')
-                                </div>
-                                <div class="content-section position-relative">
-                                    <h5 class="text-secondary fw-bold">History</h5>
-                                    @include('components.history', ['history' => $history])
+                                <div class="col-lg-7 col-md-7 col-sm-12">
+                                    <div class="content-section">
+                                        @include('event.tag.table')
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-7 col-md-7 col-sm-12">
-                                <div class="content-section">
-                                    @include('event.tag.table')
-                                </div>
+                        @else 
+                            <div class="content-section">
+                                @include('event.tag.table')
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>

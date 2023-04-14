@@ -26,8 +26,12 @@
                 <th scope="col">Used</th>
                 <th scope="col">Created At</th>
                 <th scope="col">Updated At</th>
-                <th scope="col">Delete</th>
-                <th scope="col">Info</th>
+                @if(session()->get('role_key') == 1)
+                    <th scope="col">Delete</th>
+                    <th scope="col">Info</th>
+                @else 
+                    <th scope="col">Description</th>
+                @endif  
             </tr>
         </thead>
         <tbody>
@@ -57,27 +61,31 @@
                             -
                         @endif
                     </td>
-                    <td><button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button></td>
-                    <td>
-                        <div class="position-relative">
-                            <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <i class="fa-solid fa-ellipsis-vertical more"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}">
-                                <span class="dropdown-item">
-                                    <label class="mb-2">Tag Description</label><br>
-                                    <form class="form-custom" method="POST" action="/event/tag/update/{{$tg->id}}">
-                                        @csrf
-                                        <i class="fa-solid fa-pencil position-absolute" style="top:3.5px; left:6px;"></i>
-                                        <input name="tag_name" value="{{$tg->tag_name}}" hidden>
-                                        <input name="update_type" value="desc" hidden>
-                                        <input class="input-custom" name="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()">
-                                    </form>
-                                </span>
+                    @if(session()->get('role_key') == 1)
+                        <td><button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            <div class="position-relative">
+                                <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    <i class="fa-solid fa-ellipsis-vertical more"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}">
+                                    <span class="dropdown-item">
+                                        <label class="mb-2">Tag Description</label><br>
+                                        <form class="form-custom" method="POST" action="/event/tag/update/{{$tg->id}}">
+                                            @csrf
+                                            <i class="fa-solid fa-pencil position-absolute" style="top:3.5px; left:6px;"></i>
+                                            <input name="tag_name" value="{{$tg->tag_name}}" hidden>
+                                            <input name="update_type" value="desc" hidden>
+                                            <input class="input-custom" name="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()">
+                                        </form>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </td>
+                        </td>
+                    @else
+                        <td>{{$tg->tag_desc}}</td>
+                    @endif
                 </tr>
 
                 @include('event.tag.delete')

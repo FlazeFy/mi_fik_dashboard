@@ -22,27 +22,21 @@ class LocationController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
 
-            //Chart query
-            $location = ContentDetail::getContentLocation();
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
+        //Chart query
+        $location = ContentDetail::getContentLocation();
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'event');
-            session()->put('active_subnav', 'location');
+        //Set active nav
+        session()->put('active_nav', 'event');
+        session()->put('active_subnav', 'location');
 
-            return view ('event.location.index')
-                ->with('location', $location)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('event.location.index')
+            ->with('location', $location)
+            ->with('menu', $menu)
+            ->with('greet',$greet);
     }
 
     /**

@@ -124,6 +124,15 @@ class Generator
         return $res;
     }
 
+    public static function getId($role){
+        if($role == 0){
+            $user = Auth::user();
+        } else {
+            $user = Auth::admin();
+        }
+        return response()->json(['id' => $user->id]);
+    }
+
     public static function getContentId($slug_name){
         $query = ContentHeader::select('id')
             ->where('slug_name', $slug_name)

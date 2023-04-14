@@ -42,6 +42,7 @@
         </div>
         <a class="error_input" id="all_msg"></a>
         <input hidden name="token" value="" id="token">
+        <input hidden name="role" value="" id="role">
         <a class="btn btn-forgot-password w-100 mt-5">Forgot Password ?</a>
         <a onclick="login()" class="btn btn-sign-in w-100 mt-3 mb-5">Sign In</a>
     </form>
@@ -61,6 +62,7 @@
             success: function(response) {
                 //console.log(response.token);
                 $('#token').val(response.token);
+                $('#role').val(response.role);
                 $('#form-login').submit();
             },
             error: function(response) {

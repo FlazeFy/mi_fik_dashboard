@@ -72,9 +72,9 @@ class LandingController extends Controller
 
     public function login_auth(Request $request){
         $request->session()->put('username_key', $request->username);
-        $request->session()->put('slug_key', $request->token);
+        $request->session()->put('token_key', $request->token);
+        $request->session()->put('role_key', $request->role);
         $request->session()->put('profile_pic', null);
-        $request->session()->put('role', $request->role);
 
         return redirect()->route('homepage')->with('recatch_message', 'true');
     }

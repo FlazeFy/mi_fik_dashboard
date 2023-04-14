@@ -23,27 +23,21 @@ class SettingController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $setting = Setting::getChartSetting($user_id);
-            $settingJobs = SettingSystem::getJobsSetting();
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            
-            //Set active nav
-            session()->put('active_nav', 'setting');
-            session()->forget('active_subnav');
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $setting = Setting::getChartSetting($user_id);
+        $settingJobs = SettingSystem::getJobsSetting();
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        
+        //Set active nav
+        session()->put('active_nav', 'setting');
+        session()->forget('active_subnav');
 
-            return view ('setting.index')
-                ->with('setting', $setting)
-                ->with('settingJobs', $settingJobs)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('setting.index')
+            ->with('setting', $setting)
+            ->with('settingJobs', $settingJobs)
+            ->with('menu', $menu)
+            ->with('greet',$greet);
     }
 
     public function update_chart(Request $request)

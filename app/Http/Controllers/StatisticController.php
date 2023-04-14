@@ -24,43 +24,37 @@ class StatisticController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $setting = Setting::getChartSetting($user_id);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $setting = Setting::getChartSetting($user_id);
 
-            //Chart query
-            $mostTag = ContentDetail::getMostUsedTag();
-            $mostLoc = ContentDetail::getMostUsedLoc();
-            $mostRole = User::getMostUsedRole();
-            $menu = Menu::getMenu();
-            $greet = Generator::getGreeting(date('h'));
-            $suggestion = Feedback::getAllFeedbackSuggestion();
+        //Chart query
+        $mostTag = ContentDetail::getMostUsedTag();
+        $mostLoc = ContentDetail::getMostUsedLoc();
+        $mostRole = User::getMostUsedRole();
+        $menu = Menu::getMenu();
+        $greet = Generator::getGreeting(date('h'));
+        $suggestion = Feedback::getAllFeedbackSuggestion();
 
-            foreach($setting as $set){
-                $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
-                //$mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
-                $mostViewed = ContentDetail::getMostViewedEventSeparatedRole($set->MVE_range);
-            }
-            
-            //Set active nav
-            session()->put('active_nav', 'statistic');
-            session()->forget('active_subnav');
-
-            return view ('statistic.index')
-                ->with('mostTag', $mostTag)
-                ->with('mostLoc', $mostLoc)
-                ->with('mostRole', $mostRole)
-                ->with('mostViewed', $mostViewed)
-                ->with('setting', $setting)
-                ->with('menu', $menu)
-                ->with('suggestion', $suggestion)
-                ->with('createdEvent', $createdEvent)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
+        foreach($setting as $set){
+            $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
+            //$mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
+            $mostViewed = ContentDetail::getMostViewedEventSeparatedRole($set->MVE_range);
         }
+        
+        //Set active nav
+        session()->put('active_nav', 'statistic');
+        session()->forget('active_subnav');
+
+        return view ('statistic.index')
+            ->with('mostTag', $mostTag)
+            ->with('mostLoc', $mostLoc)
+            ->with('mostRole', $mostRole)
+            ->with('mostViewed', $mostViewed)
+            ->with('setting', $setting)
+            ->with('menu', $menu)
+            ->with('suggestion', $suggestion)
+            ->with('createdEvent', $createdEvent)
+            ->with('greet',$greet);
     }
 
     public function update_mot(Request $request, $id)

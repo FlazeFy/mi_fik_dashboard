@@ -25,33 +25,27 @@ class TagController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $setting = Setting::getSingleSetting("MOT_range", $user_id);
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $setting = Setting::getSingleSetting("MOT_range", $user_id);
 
-            //Chart query
-            $mostTag = ContentDetail::getMostUsedTag();
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $history = History::getHistoryByType("tag");
+        //Chart query
+        $mostTag = ContentDetail::getMostUsedTag();
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        $history = History::getHistoryByType("tag");
 
-            //Set active nav
-            session()->put('active_nav', 'event');
-            session()->put('active_subnav', 'tag');
+        //Set active nav
+        session()->put('active_nav', 'event');
+        session()->put('active_subnav', 'tag');
 
-            return view ('event.tag.index')
-                ->with('mostTag', $mostTag)
-                ->with('tag', $tag)
-                ->with('menu', $menu)
-                ->with('setting', $setting)
-                ->with('history', $history)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('event.tag.index')
+            ->with('mostTag', $mostTag)
+            ->with('tag', $tag)
+            ->with('menu', $menu)
+            ->with('setting', $setting)
+            ->with('history', $history)
+            ->with('greet',$greet);
     }
 
     public function update_tag(Request $request, $id)

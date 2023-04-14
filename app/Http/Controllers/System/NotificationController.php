@@ -18,32 +18,26 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            //Required config
-            $select_1 = "Notification";
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        //Required config
+        $select_1 = "Notification";
 
-            $notification = Notification::getAllNotification("DESC", "DESC");
-            $dictionary = Dictionary::getDictionaryByType($select_1);
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("system");
+        $notification = Notification::getAllNotification("DESC", "DESC");
+        $dictionary = Dictionary::getDictionaryByType($select_1);
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        $info = Info::getAvailableInfo("system");
 
-            //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'notification');
+        //Set active nav
+        session()->put('active_nav', 'system');
+        session()->put('active_subnav', 'notification');
 
-            return view ('system.notification.index')
-                ->with('notification', $notification)
-                ->with('dictionary', $dictionary)
-                ->with('info', $info)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('system.notification.index')
+            ->with('notification', $notification)
+            ->with('dictionary', $dictionary)
+            ->with('info', $info)
+            ->with('menu', $menu)
+            ->with('greet',$greet);
     }
 
     public function update_notif(Request $request, $id)

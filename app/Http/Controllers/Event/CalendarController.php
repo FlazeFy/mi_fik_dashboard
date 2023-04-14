@@ -22,32 +22,26 @@ class CalendarController extends Controller
      */
     public function index(Request $request)
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            
-            if(!session()->get('selected_tag_calendar')){
-                session()->put('selected_tag_calendar', "All");
-            }
-
-            $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'));       
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-                
-            //Set active nav
-            session()->put('active_nav', 'event');
-            session()->put('active_subnav', 'calendar');
-
-            return view ('event.calendar.index')
-                ->with('content', $content)
-                ->with('tag', $tag)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        
+        if(!session()->get('selected_tag_calendar')){
+            session()->put('selected_tag_calendar', "All");
         }
+
+        $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'));       
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+            
+        //Set active nav
+        session()->put('active_nav', 'event');
+        session()->put('active_subnav', 'calendar');
+
+        return view ('event.calendar.index')
+            ->with('content', $content)
+            ->with('tag', $tag)
+            ->with('menu', $menu)
+            ->with('greet',$greet);
     }
 
     public function set_filter_tag(Request $request, $all)

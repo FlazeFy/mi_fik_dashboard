@@ -21,23 +21,17 @@ class DictionaryController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            
-            //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'dictionary');
+        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        
+        //Set active nav
+        session()->put('active_nav', 'system');
+        session()->put('active_subnav', 'dictionary');
 
-            return view ('system.dictionary.index')
-                ->with('menu', $menu)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('system.dictionary.index')
+            ->with('menu', $menu)
+            ->with('greet',$greet);
     }
 
     /**
