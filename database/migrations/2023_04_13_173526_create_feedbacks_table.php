@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('feedback_body', 255);
             $table->integer('feedback_rate', 2);
-            $table->strirng('feedback_suggest', 35);
+            $table->string('feedback_suggest', 35);
 
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('deleted_at', $precision = 0);
