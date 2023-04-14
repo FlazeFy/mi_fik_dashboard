@@ -8,3 +8,8 @@
 .text-primary{
     color: #F78A00 !important;
 }
+.error_input{
+    color:#F85D59 !important;
+    text-decoration: none;
+    font-size: 13px;
+}

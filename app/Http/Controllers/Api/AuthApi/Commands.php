@@ -26,9 +26,12 @@ class Commands extends Controller
                 'status' => 422,
                 'result' => $errors,
                 'token' => null
-            ], Response::HTTP_OK);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } else {
             $user = Admin::where('username', $request->username)->first();
+            if($user == null){
+                $user = User::where('username', $request->username)->first();
+            }
 
             if (!$user || ($request->password != $user->password)) {
                 throw ValidationException::withMessages([

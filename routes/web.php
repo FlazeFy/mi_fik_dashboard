@@ -47,6 +47,7 @@ use App\Http\Controllers\User\GroupingController;
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingController::class, 'index'])->name('landing');
     Route::post('/login', [LandingController::class, 'login_admin']);
+    Route::post('/v2/login', [LandingController::class, 'login_auth']);
 });
 
 Route::prefix('/homepage')->group(function () {
