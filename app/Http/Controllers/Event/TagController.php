@@ -27,25 +27,36 @@ class TagController extends Controller
     {
         $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $tag = Tag::getFullTag("DESC", "DESC");
-        $setting = Setting::getSingleSetting("MOT_range", $user_id);
+        if(session()->get('role_key') == 1){
+            $setting = Setting::getSingleSetting("MOT_range", $user_id);
+        }
 
         //Chart query
-        $mostTag = ContentDetail::getMostUsedTag();
+        if(session()->get('role_key') == 1){
+            $mostTag = ContentDetail::getMostUsedTag();
+            $history = History::getHistoryByType("tag");
+        }
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
-        $history = History::getHistoryByType("tag");
 
         //Set active nav
         session()->put('active_nav', 'event');
         session()->put('active_subnav', 'tag');
 
-        return view ('event.tag.index')
-            ->with('mostTag', $mostTag)
-            ->with('tag', $tag)
-            ->with('menu', $menu)
-            ->with('setting', $setting)
-            ->with('history', $history)
-            ->with('greet',$greet);
+        if(session()->get('role_key') == 1){
+            return view ('event.tag.index')
+                ->with('mostTag', $mostTag)
+                ->with('tag', $tag)
+                ->with('menu', $menu)
+                ->with('setting', $setting)
+                ->with('history', $history)
+                ->with('greet',$greet);
+        } else {
+            return view ('event.tag.index')
+                ->with('tag', $tag)
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+        }
     }
 
     public function update_tag(Request $request, $id)

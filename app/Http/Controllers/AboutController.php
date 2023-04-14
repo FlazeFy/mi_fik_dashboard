@@ -26,20 +26,31 @@ class AboutController extends Controller
         $menu = Menu::getMenu();
         $about = Help::getAboutApp();
         $helplist = Help::getHelpListNType();
-        $history_about = History::getHistoryByType("about");
-        $history_help = History::getHistoryByType("help");
+        
+        if(session()->get('role_key') == 1){
+            $history_about = History::getHistoryByType("about");
+            $history_help = History::getHistoryByType("help");
+        }
         
         //Set active nav
         session()->put('active_nav', 'about');
         session()->forget('active_subnav');
 
-        return view ('about.index')
-            ->with('menu', $menu)
-            ->with('about', $about)
-            ->with('h_help', $history_help)
-            ->with('h_about', $history_about)
-            ->with('helplist', $helplist)
-            ->with('greet',$greet);         
+        if(session()->get('role_key') == 1){
+            return view ('about.index')
+                ->with('menu', $menu)
+                ->with('about', $about)
+                ->with('h_help', $history_help)
+                ->with('h_about', $history_about)
+                ->with('helplist', $helplist)
+                ->with('greet',$greet);      
+        } else {
+            return view ('about.index')
+                ->with('menu', $menu)
+                ->with('about', $about)
+                ->with('helplist', $helplist)
+                ->with('greet',$greet);   
+        }   
     }
 
     

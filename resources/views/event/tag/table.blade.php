@@ -23,10 +23,10 @@
         <thead>
             <tr>
                 <th scope="col">Tag Name</th>
-                <th scope="col">Used</th>
                 <th scope="col">Created At</th>
                 <th scope="col">Updated At</th>
                 @if(session()->get('role_key') == 1)
+                    <th scope="col">Used</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Info</th>
                 @else 
@@ -38,21 +38,6 @@
             @foreach($tag as $tg)
                 <tr>
                     <td>{{$tg->tag_name}}</td>
-                    <td>
-                        @php($count = 0)
-
-                        @foreach($mostTag as $mt)
-                            @php($tagJson = json_decode($mt->content_tag))
-                            
-                            @foreach($tagJson as $tj)
-                                @if($tj->tag_name == $tg->tag_name)
-                                    @php($count++)
-                                @endif
-                            @endforeach   
-                        @endforeach
-
-                        {{$count}}
-                    </td>
                     <td>{{date("d/m/y h:i", strtotime($tg->created_at))}}</td>
                     <td>
                         @if($tg->updated_at)
@@ -62,6 +47,21 @@
                         @endif
                     </td>
                     @if(session()->get('role_key') == 1)
+                        <td>
+                            @php($count = 0)
+
+                            @foreach($mostTag as $mt)
+                                @php($tagJson = json_decode($mt->content_tag))
+                                
+                                @foreach($tagJson as $tj)
+                                    @if($tj->tag_name == $tg->tag_name)
+                                        @php($count++)
+                                    @endif
+                                @endforeach   
+                            @endforeach
+
+                            {{$count}}
+                        </td>
                         <td><button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button></td>
                         <td>
                             <div class="position-relative">
