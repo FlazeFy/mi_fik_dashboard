@@ -43,6 +43,7 @@
         <a class="error_input" id="all_msg"></a>
         <input hidden name="token" value="" id="token">
         <input hidden name="role" value="" id="role">
+        <input hidden name="email" value="" id="email">
         <a class="btn btn-forgot-password w-100 mt-5">Forgot Password ?</a>
         <a onclick="login()" class="btn btn-sign-in w-100 mt-3 mb-5">Sign In</a>
     </form>
@@ -79,6 +80,7 @@
                 if(found){
                     $('#token').val(response.token);
                     $('#role').val(response.role);
+                    $('#email').val(response.result.email);
                     $('#form-login').submit();
                 } else {
                     $('#username_msg').html("");

@@ -43,6 +43,9 @@ ex : php artisan serve # port=9000
 # Make Middleware
 > php artisan make:middleware <NAMA-MIDDLEWARE>
 
+# Make Mail
+> php artisan make:mail <NAMA-MAILER>
+
 # Make Deploy
 > php artisan route:cache
 > php artisan cache:clear

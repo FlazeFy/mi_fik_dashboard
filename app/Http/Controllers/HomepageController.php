@@ -26,6 +26,9 @@ use App\Models\Dictionary;
 use App\Models\User;
 use App\Models\UserRequest;
 
+use App\Mail\OrganizerEmail;
+use Illuminate\Support\Facades\Mail;
+
 class HomepageController extends Controller
 {
     /**
@@ -212,6 +215,8 @@ class HomepageController extends Controller
                     'updated_at' => null
                 ]);
             }
+
+            Mail::to(session()->get('email_key'))->send(new OrganizerEmail());
 
             return redirect()->back()->with('success_message', 'Create content success');
         }
