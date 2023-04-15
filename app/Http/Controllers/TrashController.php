@@ -28,7 +28,6 @@ class TrashController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $greet = Generator::getGreeting(date('h'));
         $settingJobs = SettingSystem::getJobsSetting();
         $menu = Menu::getMenu();
@@ -54,7 +53,7 @@ class TrashController extends Controller
 
     public function recover_content($slug, $type)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($type == 1){
             $type = "event";
@@ -109,7 +108,7 @@ class TrashController extends Controller
 
     public function destroy_content(Request $request, $slug, $type)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($type == 1){
             $type = "event";

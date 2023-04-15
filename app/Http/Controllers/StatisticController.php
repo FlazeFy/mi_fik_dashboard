@@ -24,7 +24,7 @@ class StatisticController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(1);
         $setting = Setting::getChartSetting($user_id);
 
         //Chart query

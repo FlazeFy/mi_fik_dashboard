@@ -20,7 +20,6 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
         $suggestion = Feedback::getAllFeedbackSuggestion();

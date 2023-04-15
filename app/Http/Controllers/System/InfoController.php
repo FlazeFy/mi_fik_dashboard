@@ -25,7 +25,6 @@ class InfoController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $type = ["Info"];
 
         $greet = Generator::getGreeting(date('h'));
@@ -46,7 +45,7 @@ class InfoController extends Controller
 
     public function update_type(Request $request, $id)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         $validator = Validation::getValidateInfoType($request);
         if ($validator->fails()) {

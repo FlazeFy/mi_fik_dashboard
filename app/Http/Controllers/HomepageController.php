@@ -35,7 +35,6 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $type = ["Reminder", "Attachment"];
 
         if(!session()->get('selected_tag_calendar')){
@@ -133,7 +132,7 @@ class HomepageController extends Controller
             $tag = Converter::getTag($request->content_tag);
             $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
             $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
             $slug = Generator::getSlugName($request->content_title, "content");
             $uuid = Generator::getUUID();
 
@@ -223,7 +222,7 @@ class HomepageController extends Controller
 
         $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
         $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $uuid = Generator::getUUID();
 
         $header = Task::create([
@@ -292,7 +291,7 @@ class HomepageController extends Controller
 
     public function add_content_view($slug_name){
         $content_id = Generator::getContentId($slug_name);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
 
         if($viewer){

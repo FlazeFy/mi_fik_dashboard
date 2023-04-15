@@ -21,7 +21,6 @@ class AboutController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
         $about = Help::getAboutApp();
@@ -56,7 +55,7 @@ class AboutController extends Controller
     
     public function edit_about_app(Request $request)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateAboutApp($request);
         if ($validator->fails()) {
@@ -104,7 +103,7 @@ class AboutController extends Controller
 
     public function add_help_type(Request $request)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateHelp($request);
         if ($validator->fails()) {
@@ -162,7 +161,7 @@ class AboutController extends Controller
 
     public function edit_help_body(Request $request, $id)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateBodyTypeEdit($request);
         if ($validator->fails()) {
@@ -206,7 +205,7 @@ class AboutController extends Controller
 
     public function add_help_cat(Request $request)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateBodyTypeEdit($request);
         if ($validator->fails()) {

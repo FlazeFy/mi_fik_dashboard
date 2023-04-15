@@ -1,5 +1,7 @@
 <?php
 namespace App\Helpers;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
@@ -124,13 +126,20 @@ class Generator
         return $res;
     }
 
-    public static function getId($role){
-        if($role == 0){
+    public static function getUserIdV2($role){
+        $token = session()->get("token_key");
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if ($accessToken) {
+            Auth::login($accessToken->tokenable);
             $user = Auth::user();
+            
+            $res = $user->id;
         } else {
-            $user = Auth::admin();
+            // do something LOL
         }
-        return response()->json(['id' => $user->id]);
+
+        return $res;
     }
 
     public static function getContentId($slug_name){

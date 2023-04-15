@@ -46,12 +46,9 @@
                 @endif
             </a>
             
-            @if(session()->get('role_key') == 1)
-                <div class="collapse p-2 pt-0" id="collapse_category_{{$i}}" data-bs-parent="#accordion_help">
-                    @include('about.help.category')
-                </div>
-            @endif
-
+            <div class="collapse p-2 pt-0" id="collapse_category_{{$i}}" data-bs-parent="#accordion_help">
+                @include('about.help.category')
+            </div>
             @php($i++)
         @endforeach
     @else 

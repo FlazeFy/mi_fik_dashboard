@@ -21,9 +21,7 @@ class CalendarController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        
+    {        
         if(!session()->get('selected_tag_calendar')){
             session()->put('selected_tag_calendar', "All");
         }

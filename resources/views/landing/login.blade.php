@@ -48,6 +48,8 @@
     </form>
 </div>
 
+@include('popup.sorry')
+
 <script>
     function login(){
         $('#username_msg').html("");
@@ -61,9 +63,31 @@
             dataType: 'json',
             success: function(response) {
                 //console.log(response.token);
-                $('#token').val(response.token);
-                $('#role').val(response.role);
-                $('#form-login').submit();
+                var found = false;
+
+                if(response.result.hasOwnProperty('role')){
+                    let arr_role = response.result.role;
+                    arr_role.forEach(e => {
+                        if(e.slug_name === "dosen" || e.slug_name === "staff"){
+                            found = true;
+                        }
+                    });
+                } else {
+                    found = true;
+                }
+                
+                if(found){
+                    $('#token').val(response.token);
+                    $('#role').val(response.role);
+                    $('#form-login').submit();
+                } else {
+                    $('#username_msg').html("");
+                    $('#pass_msg').html("");
+                    $('#all_msg').html("");
+
+                    $('#text-sorry').text("Sorry, but only admin, lecturer, and staff who can access MI-FIK Web");
+                    $('#sorry_modal').modal('show');
+                }
             },
             error: function(response) {
                 var errorMessage = "Unknown error occurred";

@@ -25,9 +25,10 @@ class TagController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $tag = Tag::getFullTag("DESC", "DESC");
+
         if(session()->get('role_key') == 1){
+            $user_id = Generator::getUserIdV2(1);
             $setting = Setting::getSingleSetting("MOT_range", $user_id);
         }
 
@@ -67,7 +68,7 @@ class TagController extends Controller
         if((count($check) == 0 || $request->update_type == "desc") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
             $validator = Validation::getValidateTag($request);
             if ($validator->fails()) {
@@ -129,7 +130,7 @@ class TagController extends Controller
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
             $validator = Validation::getValidateTag($request);
             if ($validator->fails()) {

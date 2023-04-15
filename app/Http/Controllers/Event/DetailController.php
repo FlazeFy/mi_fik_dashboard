@@ -27,7 +27,7 @@ class DetailController extends Controller
      */
     public function index($slug_name)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         $tag = Tag::getFullTag("DESC", "DESC");
         $content = ContentHeader::getFullContentBySlug($slug_name);
@@ -92,7 +92,7 @@ class DetailController extends Controller
 
     public function delete_event($slug_name){
         $id = Generator::getContentId($slug_name);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($id != null){
             $data = new Request();

@@ -18,7 +18,6 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         //Required config
         $select_1 = "Notification";
 
@@ -42,7 +41,7 @@ class NotificationController extends Controller
 
     public function update_notif(Request $request, $id)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         $result = Notification::where('id', $id)->update([
             'notif_type' => $request->notif_type,
@@ -59,7 +58,7 @@ class NotificationController extends Controller
 
     public function delete_notif($id)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         
         $result = Notification::where('id', $id)->update([
             'deleted_at' => date("Y-m-d h:i"),

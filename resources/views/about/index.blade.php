@@ -95,7 +95,7 @@
                                                 @include('about.help.list')
                                             </div>
                                             <div class="col-lg-8 col-md-7 col-sm-12">
-
+                                                <span id="desc_holder_view"></span>
                                             </div>
                                         @endif
                                     @elseif($st == "contact us")

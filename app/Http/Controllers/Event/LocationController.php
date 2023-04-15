@@ -22,8 +22,6 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-
         //Chart query
         $location = ContentDetail::getContentLocation();
         $greet = Generator::getGreeting(date('h'));

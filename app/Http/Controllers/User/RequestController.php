@@ -22,7 +22,6 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
 
@@ -37,10 +36,7 @@ class RequestController extends Controller
 
     public function add_role_acc(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
         $tag = Converter::getTag($request->user_role);
         $new_user = $request->is_new;
@@ -69,11 +65,7 @@ class RequestController extends Controller
 
     public function add_acc(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([
@@ -89,11 +81,7 @@ class RequestController extends Controller
 
     public function add_suspend(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([
@@ -109,11 +97,7 @@ class RequestController extends Controller
 
     public function add_recover(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([

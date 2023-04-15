@@ -25,7 +25,6 @@ class GroupingController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
         $greet = Generator::getGreeting(date('h'));
         $info = Info::getAvailableInfo("user");
         $menu = Menu::getMenu();
@@ -46,7 +45,7 @@ class GroupingController extends Controller
         $check = UserGroup::where('group_name', $request->group_name)->get();
 
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->group_name)) != "all"){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
             $uuid = Generator::getUUID();
 
             $header = UserGroup::create([

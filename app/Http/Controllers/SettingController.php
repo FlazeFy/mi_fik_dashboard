@@ -23,7 +23,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(1);
         $setting = Setting::getChartSetting($user_id);
         $settingJobs = SettingSystem::getJobsSetting();
         $greet = Generator::getGreeting(date('h'));
@@ -42,7 +42,7 @@ class SettingController extends Controller
 
     public function update_chart(Request $request)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         //Helpers
         $validator = Validation::getValidateSetting($request);
@@ -67,7 +67,7 @@ class SettingController extends Controller
 
     public function update_jobs(Request $request, $id)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateJobs($request);
         if ($validator->fails()) {
