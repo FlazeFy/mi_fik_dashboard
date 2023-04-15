@@ -4,13 +4,13 @@
 </div>
 <form class="d-inline" id="form-edit-desc" method="POST" action="">
     @csrf
-    <input name="help_body" id="about_body" hidden>
+    <input name="help_body" id="about_body_help" hidden>
     <input name="help_category" id="about_category" hidden>
     <button class="btn btn-success mt-3" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Chages</button>
 </form>
 
 <script>
-    var desc = document.getElementById("about_body");
+    var desc = document.getElementById("about_body_help");
     var form = document.getElementById('form-edit-desc');
     var input_cat = document.getElementById("about_category");
     var id_body = " ";

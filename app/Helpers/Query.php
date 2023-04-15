@@ -16,10 +16,13 @@ class Query
                 1 as data_from";
 
         } else if($type == "content_detail"){
-            $query = "slug_name,content_title,content_desc,
+            $query = "ch.slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,content_date_end,
-                content_tag,content_attach,contents_headers.created_at,is_draft,
-                count(contents_viewers.id) as total_views";
+                content_tag,content_attach,ch.created_at,ch.updated_at,is_draft,
+                ac.username as admin_username_created, uc.username as user_username_created, 
+                au.username as admin_username_updated, uu.username as user_username_updated, 
+                ad.username as admin_username_deleted, ud.username as user_username_deleted,
+                count(cv.id) as total_views";
         
         } else if($type == "content_location"){
             $query = "content_id, slug_name, content_title, content_desc, content_date_start, 
@@ -82,6 +85,14 @@ class Query
                 LEFT JOIN users uu ON ".$initial.".updated_by = uu.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id";    
+        } else if($type == "content_detail"){
+            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+                LEFT JOIN users uc ON ".$initial.".created_by = uc.id
+                LEFT JOIN admins au ON ".$initial.".updated_by = au.id
+                LEFT JOIN users uu ON ".$initial.".updated_by = uu.id
+                LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
+                LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id
+                LEFT JOIN contents_viewers cv ON cv.content_id = ch.id";    
         }
     }
 

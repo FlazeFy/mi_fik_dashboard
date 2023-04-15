@@ -26,9 +26,14 @@ class Commands extends Controller
                 'status' => 422,
                 'result' => $errors,
                 'token' => null
-            ], Response::HTTP_OK);
+            ], Response::HTTP_UNPROCESSABLE_ENTITY);
         } else {
             $user = Admin::where('username', $request->username)->first();
+            $role = 1;
+            if($user == null){
+                $user = User::where('username', $request->username)->first();
+                $role = 0;
+            }
 
             if (!$user || ($request->password != $user->password)) {
                 throw ValidationException::withMessages([
@@ -40,7 +45,8 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 200,
                     'result' => $user,
-                    'token' => $token,                    
+                    'token' => $token,  
+                    'role' => $role                  
                 ], Response::HTTP_OK);
             }
         }

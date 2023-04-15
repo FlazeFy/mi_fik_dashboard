@@ -25,24 +25,18 @@ class GroupingController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $info = Info::getAvailableInfo("user");
-            $menu = Menu::getMenu();
+        $greet = Generator::getGreeting(date('h'));
+        $info = Info::getAvailableInfo("user");
+        $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'manageuser');
-            session()->put('active_subnav', 'grouping');
+        //Set active nav
+        session()->put('active_nav', 'manageuser');
+        session()->put('active_subnav', 'grouping');
 
-            return view('user.group.index')
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('greet',$greet);
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view('user.group.index')
+            ->with('menu', $menu)
+            ->with('info', $info)
+            ->with('greet',$greet);
     }
 
     public function add_group(Request $request)
@@ -51,7 +45,7 @@ class GroupingController extends Controller
         $check = UserGroup::where('group_name', $request->group_name)->get();
 
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->group_name)) != "all"){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
             $uuid = Generator::getUUID();
 
             $header = UserGroup::create([

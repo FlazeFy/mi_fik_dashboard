@@ -28,27 +28,20 @@ class TrashController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $settingJobs = SettingSystem::getJobsSetting();
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("trash");
-            
-            //Set active nav
-            session()->put('active_nav', 'trash');
-            session()->forget('active_subnav');
+        $greet = Generator::getGreeting(date('h'));
+        $settingJobs = SettingSystem::getJobsSetting();
+        $menu = Menu::getMenu();
+        $info = Info::getAvailableInfo("trash");
+        
+        //Set active nav
+        session()->put('active_nav', 'trash');
+        session()->forget('active_subnav');
 
-            return view ('trash.index')
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('settingJobs', $settingJobs)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('trash.index')
+            ->with('menu', $menu)
+            ->with('info', $info)
+            ->with('settingJobs', $settingJobs)
+            ->with('greet',$greet);
     }
 
     public function set_ordering_content($order)
@@ -60,7 +53,7 @@ class TrashController extends Controller
 
     public function recover_content($slug, $type)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($type == 1){
             $type = "event";
@@ -115,7 +108,7 @@ class TrashController extends Controller
 
     public function destroy_content(Request $request, $slug, $type)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($type == 1){
             $type = "event";

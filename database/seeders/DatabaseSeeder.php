@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\ContentHeader;
+use App\Models\Feedback;
+use App\Models\Tag;
 
 class DatabaseSeeder extends Seeder
 {
@@ -16,7 +18,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(10)->create();
-        // ContentHeader::factory(5)->create();
+        // User::factory(10)->create();
+        // ContentHeader::factory(3)->create();
+        // Feedback::factory(10)->create();
+        // Tag::factory(4)->create();
     }
 }

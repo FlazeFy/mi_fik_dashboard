@@ -47,9 +47,10 @@ use App\Http\Controllers\User\GroupingController;
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingController::class, 'index'])->name('landing');
     Route::post('/login', [LandingController::class, 'login_admin']);
+    Route::post('/v2/login', [LandingController::class, 'login_auth']);
 });
 
-Route::prefix('/homepage')->group(function () {
+Route::prefix('/homepage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
     Route::post('/add_event', [HomepageController::class, 'add_event']);
@@ -60,7 +61,7 @@ Route::prefix('/homepage')->group(function () {
     Route::post('/open/{slug_name}', [HomepageController::class, 'add_content_view']);
 });
 
-Route::prefix('/statistic')->group(function () {
+Route::prefix('/statistic')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [StatisticController::class, 'index']);
     Route::post('/update_mot/{id}', [StatisticController::class, 'update_mot']);
     Route::post('/update_mol/{id}', [StatisticController::class, 'update_mol']);
@@ -69,7 +70,7 @@ Route::prefix('/statistic')->group(function () {
     Route::post('/update_mve_view', [StatisticController::class, 'update_mve_view']);
 });
 
-Route::prefix('/event')->group(function () {
+Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/tag', [TagController::class, 'index']);
     Route::post('/tag/add', [TagController::class, 'add_tag']);
     Route::post('/tag/update/{id}', [TagController::class, 'update_tag']);
@@ -98,7 +99,7 @@ Route::prefix('/event')->group(function () {
     Route::get('/location', [LocationController::class, 'index']);
 });
 
-Route::prefix('/system')->group(function () {
+Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
     Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
@@ -111,7 +112,7 @@ Route::prefix('/system')->group(function () {
     Route::get('/maintenance', [MaintenanceController::class, 'index']);
 });
 
-Route::prefix('/user')->group(function () {
+Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/request', [RequestController::class, 'index']);
     Route::post('/request/manage_role_acc', [RequestController::class, 'add_role_acc']);
     Route::post('/request/manage_acc', [RequestController::class, 'add_acc']);
@@ -127,20 +128,20 @@ Route::prefix('/user')->group(function () {
     Route::post('/group/add', [GroupingController::class, 'add_group']);
 });
 
-Route::prefix('/setting')->group(function () {
+Route::prefix('/setting')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
     Route::post('/update_jobs/{id}', [SettingController::class, 'update_jobs']);
 });
 
-Route::prefix('/trash')->group(function () {
+Route::prefix('/trash')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [TrashController::class, 'index']);
     Route::post('/ordered/{order}', [TrashController::class, 'set_ordering_content']);
     Route::post('/recover/{slug}/{type}', [TrashController::class, 'recover_content']);
     Route::post('/destroy/{slug}/{type}', [TrashController::class, 'destroy_content']);
 });
 
-Route::prefix('/about')->group(function () {
+Route::prefix('/about')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [AboutController::class, 'index']);
     Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
@@ -149,11 +150,11 @@ Route::prefix('/about')->group(function () {
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 });
 
-Route::prefix('/history')->group(function () {
+Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HistoryController::class, 'index']);
 });
 
-Route::prefix('/social')->group(function () {
+Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index']);
     Route::post('/feedback/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 

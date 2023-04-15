@@ -1,5 +1,7 @@
 <?php
 namespace App\Helpers;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
@@ -8,6 +10,7 @@ use App\Models\Task;
 use App\Models\Tag;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Dictionary;
 
 use DateTime;
 
@@ -119,6 +122,22 @@ class Generator
             }
         } else {
             $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getUserIdV2($role){
+        $token = session()->get("token_key");
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if ($accessToken) {
+            Auth::login($accessToken->tokenable);
+            $user = Auth::user();
+            
+            $res = $user->id;
+        } else {
+            // do something LOL
         }
 
         return $res;
@@ -270,6 +289,69 @@ class Generator
 
     public static function getListFeedbackSection(){
         $res = ["list","most suggest"];
+        
+        return $res;
+    }
+
+    public static function getRandomYear(){
+        $now = (int)date("Y");
+        $res = $now + mt_rand(-3, 6); 
+        
+        return $res;
+    }
+
+    public static function getRandomRole(){
+        $total = mt_rand(0, 16); 
+
+        if($total != 0){
+            $tag = Tag::inRandomOrder()->take($total)->get();
+
+            foreach($tag as $tg){
+                $res[] = (object)[
+                    'slug_name' => $tg->slug_name,
+                    'tag_name' => $tg->tag_name,
+                ];
+            }
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
+    public static function getRandomDate($null){
+        if($null == 0){
+            $start = strtotime('2018-01-01 00:00:00');
+            $end = strtotime(date("Y-m-d H:i:s"));
+            $random = mt_rand($start, $end); 
+            $res = date('Y-m-d H:i:s', $random);
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getRandomAdmin($null){
+        if($null == 0){
+            $admin = Admin::inRandomOrder()->take(1)->get();
+
+            foreach($admin as $ad){
+                $res = $ad->id;
+            }
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
+    public static function getRandomFeedbackSuggest(){
+        $dictionary = Dictionary::where('dct_type', 'FBC-001')->inRandomOrder()->take(1)->get();
+
+        foreach($dictionary as $dct){
+            $res = $dct->slug_name;
+        }
         
         return $res;
     }

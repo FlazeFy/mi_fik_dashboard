@@ -25,34 +25,27 @@ class InfoController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $type = ["Info"];
+        $type = ["Info"];
 
-            $greet = Generator::getGreeting(date('h'));
-            $info = Info::getAllInfo();
-            $dictionary = Dictionary::getDictionaryByType($type);
-            $menu = Menu::getMenu();
+        $greet = Generator::getGreeting(date('h'));
+        $info = Info::getAllInfo();
+        $dictionary = Dictionary::getDictionaryByType($type);
+        $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'info');
+        //Set active nav
+        session()->put('active_nav', 'system');
+        session()->put('active_subnav', 'info');
 
-            return view ('system.info.index')
-                ->with('info', $info)
-                ->with('menu', $menu)
-                ->with('dictionary', $dictionary)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('system.info.index')
+            ->with('info', $info)
+            ->with('menu', $menu)
+            ->with('dictionary', $dictionary)
+            ->with('greet',$greet);
     }
 
     public function update_type(Request $request, $id)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         $validator = Validation::getValidateInfoType($request);
         if ($validator->fails()) {

@@ -35,90 +35,83 @@ class HomepageController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $type = ["Reminder", "Attachment"];
+        $type = ["Reminder", "Attachment"];
 
-            if(!session()->get('selected_tag_calendar')){
-                session()->put('selected_tag_calendar', "All");
-            }
-            if(!session()->get('selected_view_mve_chart')){
-                session()->put('selected_view_mve_chart', "All");
-            }
-            if(!session()->get('ordering_event')){
-                session()->put('ordering_event', "DESC");
-            }
-            if(!session()->get('ordering_trash')){
-                session()->put('ordering_trash', "DESC");
-            }
-            if(!session()->get('ordering_user_list')){
-                session()->put('ordering_user_list', "username__DESC");
-            }
-            if(!session()->get('ordering_group_list')){
-                session()->put('ordering_group_list', "group_name__DESC");
-            }
-            if(!session()->get('filtering_date')){
-                session()->put('filtering_date', "all");
-            }
-            if(!session()->get('filtering_trash')){
-                session()->put('filtering_trash', "all");
-            }
-            if(!session()->get('filtering_fname')){
-                session()->put('filtering_fname', "all");
-            }
-            if(!session()->get('filtering_lname')){
-                session()->put('filtering_lname', "all");
-            }
-            if(!session()->get('about_menu')){
-                $about_menu = Generator::getListAboutSection();
-                session()->put('about_menu', $about_menu);
-            }
-            if(!session()->get('calendar_menu')){
-                $calendar_menu = Generator::getListCalendarSection();
-                session()->put('calendar_menu', $calendar_menu);
-            }
-            if(!session()->get('feedback_menu')){
-                $feedback_menu = Generator::getListFeedbackSection();
-                session()->put('feedback_menu', $feedback_menu);
-            }
-
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("homepage");
-            $dictionary = Dictionary::getDictionaryByType($type);
-            //$archive = Archive::getMyArchive($user_id, "DESC");
-            $greet = Generator::getGreeting(date('h'));
-
-            if(Session::has('recatch_message')){
-                $count = [
-                    'count_request' => UserRequest::count(),
-                    'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
-                    'count_new' => User::whereNull('accepted_at')->count()
-                ];
-                $count = json_decode(json_encode($count), false);
-                
-                session()->put('recatch', true);
-            } else {
-                $count = null;
-            }
-            
-            //Set active nav
-            session()->put('active_nav', 'homepage');
-            session()->forget('active_subnav');
-
-            return view ('homepage.index')
-                ->with('tag', $tag)
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('dictionary', $dictionary)
-                ->with('count', $count)
-                //->with('archive', $archive)
-                ->with('greet',$greet);
-
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
+        if(!session()->get('selected_tag_calendar')){
+            session()->put('selected_tag_calendar', "All");
         }
+        if(!session()->get('selected_view_mve_chart')){
+            session()->put('selected_view_mve_chart', "All");
+        }
+        if(!session()->get('ordering_event')){
+            session()->put('ordering_event', "DESC");
+        }
+        if(!session()->get('ordering_trash')){
+            session()->put('ordering_trash', "DESC");
+        }
+        if(!session()->get('ordering_user_list')){
+            session()->put('ordering_user_list', "username__DESC");
+        }
+        if(!session()->get('ordering_group_list')){
+            session()->put('ordering_group_list', "group_name__DESC");
+        }
+        if(!session()->get('filtering_date')){
+            session()->put('filtering_date', "all");
+        }
+        if(!session()->get('filtering_trash')){
+            session()->put('filtering_trash', "all");
+        }
+        if(!session()->get('filtering_fname')){
+            session()->put('filtering_fname', "all");
+        }
+        if(!session()->get('filtering_lname')){
+            session()->put('filtering_lname', "all");
+        }
+        if(!session()->get('about_menu')){
+            $about_menu = Generator::getListAboutSection();
+            session()->put('about_menu', $about_menu);
+        }
+        if(!session()->get('calendar_menu')){
+            $calendar_menu = Generator::getListCalendarSection();
+            session()->put('calendar_menu', $calendar_menu);
+        }
+        if(!session()->get('feedback_menu')){
+            $feedback_menu = Generator::getListFeedbackSection();
+            session()->put('feedback_menu', $feedback_menu);
+        }
+
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $menu = Menu::getMenu();
+        $info = Info::getAvailableInfo("homepage");
+        $dictionary = Dictionary::getDictionaryByType($type);
+        //$archive = Archive::getMyArchive($user_id, "DESC");
+        $greet = Generator::getGreeting(date('h'));
+
+        if(Session::has('recatch_message')){
+            $count = [
+                'count_request' => UserRequest::count(),
+                'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
+                'count_new' => User::whereNull('accepted_at')->count()
+            ];
+            $count = json_decode(json_encode($count), false);
+            
+            session()->put('recatch', true);
+        } else {
+            $count = null;
+        }
+        
+        //Set active nav
+        session()->put('active_nav', 'homepage');
+        session()->forget('active_subnav');
+
+        return view ('homepage.index')
+            ->with('tag', $tag)
+            ->with('menu', $menu)
+            ->with('info', $info)
+            ->with('dictionary', $dictionary)
+            ->with('count', $count)
+            //->with('archive', $archive)
+            ->with('greet',$greet);
     }
 
     // ================================= MVC =================================
@@ -139,7 +132,7 @@ class HomepageController extends Controller
             $tag = Converter::getTag($request->content_tag);
             $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
             $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
             $slug = Generator::getSlugName($request->content_title, "content");
             $uuid = Generator::getUUID();
 
@@ -229,7 +222,7 @@ class HomepageController extends Controller
 
         $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
         $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $uuid = Generator::getUUID();
 
         $header = Task::create([
@@ -298,7 +291,7 @@ class HomepageController extends Controller
 
     public function add_content_view($slug_name){
         $content_id = Generator::getContentId($slug_name);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
 
         if($viewer){

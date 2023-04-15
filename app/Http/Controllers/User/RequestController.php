@@ -22,30 +22,21 @@ class RequestController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'manageuser');
-            session()->put('active_subnav', 'request');
+        //Set active nav
+        session()->put('active_nav', 'manageuser');
+        session()->put('active_subnav', 'request');
 
-            return view('user.request.index')
-                ->with('menu', $menu)
-                ->with('greet',$greet);
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view('user.request.index')
+            ->with('menu', $menu)
+            ->with('greet',$greet);
     }
 
     public function add_role_acc(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
         $tag = Converter::getTag($request->user_role);
         $new_user = $request->is_new;
@@ -74,11 +65,7 @@ class RequestController extends Controller
 
     public function add_acc(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([
@@ -94,11 +81,7 @@ class RequestController extends Controller
 
     public function add_suspend(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([
@@ -114,11 +97,7 @@ class RequestController extends Controller
 
     public function add_recover(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([

@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Helpers\Generator;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ContentHeader>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
  */
-class ContentHeaderFactory extends Factory
+class TagFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,21 +18,15 @@ class ContentHeaderFactory extends Factory
     public function definition()
     {
         $title = fake()->sentence();
-        $reminder = Generator::getRandomReminder();
-        $slug_name = Generator::getSlugName($title, "content");
+        $slug_name = Generator::getSlugName($title, "tag");
         $ran = mt_rand(0, 1);
         $ran2 = mt_rand(0, 1);
 
         return [
             'id' => Generator::getUUID(), 
             'slug_name' => $slug_name, 
-            'content_title' => $title, 
-            'content_desc' => fake()->paragraph(), 
-            'content_date_start' => fake()->dateTimeBetween('now', '+2 days'), 
-            'content_date_end' => fake()->dateTimeBetween('+2 days', '+1 weeks'), 
-            'content_reminder' => $reminder, 
-            'content_image' => null, 
-            'is_draft' => 0, 
+            'tag_name' => $title, 
+            'tag_desc' => fake()->paragraph(), 
             'created_at' => Generator::getRandomDate(0), 
             'created_by' => Generator::getRandomAdmin(0), 
             'updated_at' => Generator::getRandomDate($ran), 
