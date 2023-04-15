@@ -55,6 +55,21 @@ Directory               : public/css
 Access Local Path       : http://127.0.0.1:8000/css/<< CSS_FILENAME >>.css
 Access Global Path      : http://mifik.id/css/<< CSS_FILENAME >>.css
 
+JS
+Directory               : public/js
+Access Local Path       : http://127.0.0.1:8000/js/<< JS_FILENAME >>.css
+Access Global Path      : http://mifik.id/js/<< JS_FILENAME >>.css
+
+JSON
+Directory               : public/json
+Access Local Path       : http://127.0.0.1:8000/json/<< JSON_FILENAME >>.css
+Access Global Path      : http://mifik.id/json/<< JSON_FILENAME >>.css
+
+Assets (Image, Video)
+Directory               : public/assets
+Access Local Path       : http://127.0.0.1:8000/assets/<< ASSETS_FILENAME_TYPE >>
+Access Global Path      : http://mifik.id/assets/<< ASSETS_FILENAME_TYPE >>
+
 # API Controller
 Directory               : app/Http/Controllers/Api
 
@@ -69,7 +84,7 @@ Directory               : app/Http/Controllers/<< MENU_NAME/SUBMENU_NAME >>
 
 ============================ Rules ===============================
 # Penamaan CSS 
-> << CONTEXT_NAME >>_v1.0.css                       <= Iterate
+> << CONTEXT_NAME >>_v1.0.css                       <= Iterate 
 
 # Penamaan JS
 > << CONTEXT_NAME >>_v1.0.js                        <= Iterate
@@ -77,5 +92,9 @@ Directory               : app/Http/Controllers/<< MENU_NAME/SUBMENU_NAME >>
 # Secret JSON
 > << RANDOM_STRING >>_v1.0.js                       <= Iterate
 
+Note : 
+<< v1 + 1 >>.0  If major change
+v1.<< 1 + 1 >>  If minor change
+
 ==================================================================
-Last Updated : 14 Apr 2023
+Last Updated : 15 Apr 2023

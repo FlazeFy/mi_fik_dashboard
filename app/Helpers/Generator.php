@@ -10,6 +10,7 @@ use App\Models\Task;
 use App\Models\Tag;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Dictionary;
 
 use DateTime;
 
@@ -340,6 +341,16 @@ class Generator
             }
         } else {
             $res = null;
+        }
+        
+        return $res;
+    }
+
+    public static function getRandomFeedbackSuggest(){
+        $dictionary = Dictionary::where('dct_type', 'FBC-001')->inRandomOrder()->take(1)->get();
+
+        foreach($dictionary as $dct){
+            $res = $dct->slug_name;
         }
         
         return $res;
