@@ -21,7 +21,7 @@ class FeedbackFactory extends Factory
             'id' => Generator::getUUID(), 
             'feedback_body' => fake()->paragraph(), 
             'feedback_rate' => mt_rand(1, 5), 
-            'feedback_suggest' => Generator::getRandomFeedbackSuggest(), 
+            'feedback_suggest' => Generator::getRandomDictionaryType("FBC-001"), 
             'created_at' => Generator::getRandomDate(0), 
             'deleted_at' => Generator::getRandomDate(mt_rand(0,1)), 
         ];

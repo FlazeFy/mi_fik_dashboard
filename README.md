@@ -20,7 +20,9 @@ ex : php artisan serve # port=9000
 > php artisan migrate
 
 # Run Seeder
-> php artisan db:seed class=DatabaseSeeder
+> php artisan db:seed class=DatabaseSeeder 
+or
+> php artisan db:seed
 
 # Make Controller
 > php artisan make:controller <NAMA-Controller>Controller --resource

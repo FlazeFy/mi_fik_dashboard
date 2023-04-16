@@ -346,8 +346,8 @@ class Generator
         return $res;
     }
 
-    public static function getRandomFeedbackSuggest(){
-        $dictionary = Dictionary::where('dct_type', 'FBC-001')->inRandomOrder()->take(1)->get();
+    public static function getRandomDictionaryType($type){
+        $dictionary = Dictionary::where('dct_type', $type)->inRandomOrder()->take(1)->get();
 
         foreach($dictionary as $dct){
             $res = $dct->slug_name;
