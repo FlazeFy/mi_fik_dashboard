@@ -62,7 +62,7 @@
     <p class="quick-action-info">Event is a bla bla....</p>
 </button>
 
-<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEventModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
             <form action="/homepage/add_event" method="POST" enctype="multipart/form-data">

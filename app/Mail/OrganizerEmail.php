@@ -20,8 +20,7 @@ class OrganizerEmail extends Mailable
      */
     public function __construct()
     {
-        return $this->view('components.email.organizer')
-            ->subject('Welcome to My App');
+        return $this->view('components.email.organizer');
     }
 
     /**
@@ -32,7 +31,7 @@ class OrganizerEmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Organizer Email',
+            subject: 'Event Information',
         );
     }
 
