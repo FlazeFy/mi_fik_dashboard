@@ -23,7 +23,7 @@
             @php($i = 0)
             @foreach($info as $in)
                 <tr>
-                    <td style="width: 120px;">
+                    <td style="width: 140px;">
                         <form action="/system/info/update/type/{{$in->id}}" method="POST">
                             @csrf
                             <select class="form-select" name="info_type" title="Change Type" onchange="this.form.submit()">

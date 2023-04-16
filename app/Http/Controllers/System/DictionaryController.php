@@ -22,6 +22,7 @@ class DictionaryController extends Controller
     public function index()
     {
         $greet = Generator::getGreeting(date('h'));
+        $dictionary = Dictionary::all();
         $menu = Menu::getMenu();
         
         //Set active nav
@@ -30,6 +31,7 @@ class DictionaryController extends Controller
 
         return view ('system.dictionary.index')
             ->with('menu', $menu)
+            ->with('dictionary', $dictionary)
             ->with('greet',$greet);
     }
 

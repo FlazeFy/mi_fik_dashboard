@@ -26,6 +26,12 @@
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
+        <script type="text/javascript" charset="utf-8">
+            $(document).ready(function () {
+                $('#dctTable').DataTable();
+            });
+        </script>
+
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
@@ -35,8 +41,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
+        <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
     </head>
 
     <body>
@@ -50,7 +57,7 @@
                     @include('sidebar.navbar')
 
                     <div class="content-section">
-                       
+                        @include('system.dictionary.table')
                     </div>
                 </div>
             </div>
