@@ -24,7 +24,18 @@
             @foreach($dictionary as $dc)
                 <tr>
                     <td style="width: 140px;">
-                        {{$dc->dct_type}}
+                        <form action="/system/dictionary/update/type/{{$dc->id}}" method="POST">
+                            @csrf
+                            <select class="form-select" name="dct_type" title="Change Type" onchange="this.form.submit()">
+                                @foreach($dictionaryType as $dct)
+                                    @if($dc->dct_type == $dct->app_code)
+                                        <option selected value="{{$dct->app_code}}">{{$dct->type_name}}</option>
+                                    @else 
+                                        <option value="{{$dct->app_code}}">{{$dct->type_name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </form>
                     </td>
                     <td>{{$dc->slug_name}}</td>
                     <td>{{$dc->dct_name}}</td>

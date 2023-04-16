@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Rules\TwoTimeFormats;
 use App\Rules\TypeHistory;
 use App\Rules\TypeInfo;
+use App\Rules\TypeDictionary;
 
 class Validation
 {
@@ -120,6 +121,12 @@ class Validation
     public static function getValidateInfoType($request){ 
         return Validator::make($request->all(), [
             'info_type' => ['required', new TypeInfo],
+        ]);
+    }
+
+    public static function getValidateDictionaryType($request){ 
+        return Validator::make($request->all(), [
+            'dct_type' => ['required', new TypeDictionary],
         ]);
     }
 

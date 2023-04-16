@@ -109,6 +109,7 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/info/update/body/{id}', [InfoController::class, 'update_body']);
 
     Route::get('/dictionary', [DictionaryController::class, 'index']);
+    Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
 
     Route::get('/maintenance', [MaintenanceController::class, 'index']);
 });

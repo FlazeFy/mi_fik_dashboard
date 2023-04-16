@@ -63,6 +63,10 @@
             </div>
         </div>
 
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
+
         <script>
             //Popover
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
