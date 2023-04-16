@@ -12,6 +12,7 @@
                 margin-inline: auto !important;
                 border-radius: 20px;
                 width: 50vh;
+                min-width: 300px !important;
                 height: auto;
                 padding: 15px;
                 background: white;

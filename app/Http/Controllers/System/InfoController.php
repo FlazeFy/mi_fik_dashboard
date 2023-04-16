@@ -56,7 +56,7 @@ class InfoController extends Controller
             $data = new Request();
             $obj = [
                 'history_type' => "info",
-                'history_body' => "Has updated a info"
+                'history_body' => "Has updated a info type"
             ];
             $data->merge($obj);
 
@@ -87,15 +87,48 @@ class InfoController extends Controller
         }  
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update_body(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateInfoBody($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "info",
+                'history_body' => "Has updated a info body"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Info::where('id', $id)->update([
+                    'info_body' => $request->info_body,
+                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success updated info body');   
+            }
+        }  
     }
 
     /**

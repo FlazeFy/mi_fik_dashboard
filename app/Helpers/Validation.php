@@ -122,4 +122,10 @@ class Validation
             'info_type' => ['required', new TypeInfo],
         ]);
     }
+
+    public static function getValidateInfoBody($request){ 
+        return Validator::make($request->all(), [
+            'info_body' => 'nullable|min:2|max:500|string',
+        ]);
+    }
 }
