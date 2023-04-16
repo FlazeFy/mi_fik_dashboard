@@ -12,15 +12,18 @@ use Illuminate\Queue\SerializesModels;
 class OrganizerEmail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $header;
+    public $detail;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($header, $detail)
     {
-        return $this->view('components.email.organizer');
+        $this->header = $header;
+        $this->detail = $detail;
     }
 
     /**
@@ -36,15 +39,17 @@ class OrganizerEmail extends Mailable
     }
 
     /**
-     * Get the message content definition.
+     * Build the message.
      *
-     * @return \Illuminate\Mail\Mailables\Content
+     * @return $this
      */
-    public function content()
+    public function build()
     {
-        return new Content(
-            view: 'components.email.organizer',
-        );
+        return $this->view('components.email.organizer')
+            ->with([
+                'header' => $this->header,
+                'detail' => $this->detail,
+            ]);
     }
 
     /**

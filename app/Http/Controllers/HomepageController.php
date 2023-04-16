@@ -205,7 +205,7 @@ class HomepageController extends Controller
                     }
                 }
 
-                ContentDetail::create([
+                $detail = ContentDetail::create([
                     'id' => Generator::getUUID(),
                     'content_id' => $uuid, //for now
                     'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
@@ -216,7 +216,7 @@ class HomepageController extends Controller
                 ]);
             }
 
-            Mail::to(session()->get('email_key'))->send(new OrganizerEmail());
+            Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
 
             return redirect()->back()->with('success_message', 'Create content success');
         }
