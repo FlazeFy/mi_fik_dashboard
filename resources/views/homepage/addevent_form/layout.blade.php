@@ -62,10 +62,10 @@
     <p class="quick-action-info">Event is a bla bla....</p>
 </button>
 
-<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEventModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
-            <form action="/homepage/add_event" method="POST" enctype="multipart/form-data">
+            <form action="/homepage/add_event" method="POST" enctype="multipart/form-data" id="form-add-event">
                 @csrf 
                 <div class="modal-body pt-4">
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
@@ -134,6 +134,14 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('form-add-event').addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) { // 13 is the key code for Enter key
+            event.preventDefault(); 
+        }
+    });
+</script>
 
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 
