@@ -83,6 +83,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.failed')
 
         <script>
             //Popover

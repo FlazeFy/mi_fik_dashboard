@@ -1,10 +1,11 @@
 <div class="modal fade" id="accOldReqModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">  
-            <div class="modal-body p-4">
+            <div class="modal-body p-4 pb-1">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5 class="text-success">Accept Request</h5><hr>
-                <ol id="list_acc_holder"></ol>                
+                <ol id="list_acc_holder"></ol>   
+                <button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>             
             </div>
         </div>
     </div>

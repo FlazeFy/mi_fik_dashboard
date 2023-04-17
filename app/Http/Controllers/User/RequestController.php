@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
 use App\Helpers\Converter;
+use App\Helpers\Validation;
 
 use App\Models\User;
+use App\Models\UserRequest;
 use App\Models\Menu;
+use App\Models\History;
 
 class RequestController extends Controller
 {
@@ -107,5 +110,65 @@ class RequestController extends Controller
         ]);
 
         return redirect()->back()->with('success_message', 'Account recovered');
+    }
+
+    public function reject_request_multi(Request $request)
+    {
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
+        $data = new Request();
+        $obj = [
+            'history_type' => "request",
+            'history_body' => "request has been rejected"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $listreq = json_decode($request->list_request, true);
+
+            if($listreq !== null || json_last_error() === JSON_ERROR_NONE){
+                //$role_count = count($listreq);
+                $failed = 0;
+                foreach ($listreq as $key => $val) {
+                    $user_id = Generator::getUserId($val['slug_name'], 2);
+
+                    if($user_id != null){
+                        UserRequest::where('id',$val['id'])
+                            ->whereNull('accepted_at')
+                            ->whereNull('rejected_at')
+                            ->whereNull('is_rejected')
+                            ->update([
+                                'is_rejected' => 1,
+                                'rejected_at' => date("Y-m-d h:i:s"),
+                                'rejected_by' => $admin_id
+                            ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => strtolower($data->history_type), 
+                            'context_id' => $val['id'], 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => $user_id,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $admin_id
+                        ]);  
+                    } else {
+                        $failed++;
+                    }  
+                }
+
+                if($failed == 0){
+                    return redirect()->back()->with('success_message', ' request rejected');
+                } else {
+                    return redirect()->back()->with('success_message', ' request rejected and  request failed to reject');
+                }
+            } else {
+                return redirect()->back()->with('failed_message', 'invalid request list');
+            }       
+        }
     }
 }

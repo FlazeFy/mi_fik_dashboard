@@ -82,10 +82,10 @@
             $('#total_old_req').text(total);
 
             if (total == 0) {
-                $('#empty_item_holder_old_req').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                $('#empty_item_holder_old_req').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Request found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest request :)</h5>");
                 return;
             } else {
                 function getContentImage(img){
@@ -146,6 +146,7 @@
 
                 for(var i = 0; i < data.length; i++){
                     //Attribute
+                    var id = data[i].id;
                     var slug_name = data[i].slug_name;
                     var full_name = data[i].full_name;
                     var created_at = data[i].created_at;
@@ -166,7 +167,7 @@
                                     '</div> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
                                         '<input hidden id="tag_holder_' + slug_name + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+slug_name+'" onclick="addSelected('+"'"+slug_name+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
+                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+slug_name+'" onclick="addSelected('+"'"+id+"'"+','+"'"+slug_name+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -181,13 +182,14 @@
         });
     }
 
-    function addSelected(slug, type, fullname, checked){
+    function addSelected(id, slug, type, fullname, checked){
         var tag = document.getElementById("tag_holder_" + slug).value;
         var ddItemAcc = document.getElementById("acc_all_btn");
         var ddItemRej = document.getElementById("rej_all_btn");
        
         if(selectedOldUser.length == 0){
             selectedOldUser.push({
+                id : id,
                 slug_name : slug,
                 full_name : fullname,
                 request_type : type,
@@ -203,6 +205,7 @@
                 }
             } else {
                 selectedOldUser.push({
+                    id : id,
                     slug_name : slug,
                     full_name : fullname,
                     request_type : type,
