@@ -133,6 +133,8 @@ class RequestController extends Controller
             if($listreq !== null || json_last_error() === JSON_ERROR_NONE){
                 //$role_count = count($listreq);
                 $failed = 0;
+                $count = 0;
+
                 foreach ($listreq as $key => $val) {
                     $user_id = Generator::getUserId($val['slug_name'], 2);
 
@@ -156,15 +158,99 @@ class RequestController extends Controller
                             'created_at' => date("Y-m-d h:i:s"),
                             'created_by' => $admin_id
                         ]);  
+                        
+                        $count++;
                     } else {
                         $failed++;
                     }  
                 }
 
                 if($failed == 0){
-                    return redirect()->back()->with('success_message', ' request rejected');
+                    return redirect()->back()->with('success_message', $count.' request rejected');
                 } else {
-                    return redirect()->back()->with('success_message', ' request rejected and  request failed to reject');
+                    return redirect()->back()->with('success_message', $count.' request rejected and '.$failed.' request failed to reject');
+                }
+            } else {
+                return redirect()->back()->with('failed_message', 'invalid request list');
+            }       
+        }
+    }
+
+    public function accept_request_multi(Request $request)
+    {
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
+        $data = new Request();
+        $obj = [
+            'history_type' => "request",
+            'history_body' => "request has been approve"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $listreq = json_decode($request->list_request, true);
+
+            if($listreq !== null || json_last_error() === JSON_ERROR_NONE){
+                $failed = 0;
+                $count = 0;
+
+                foreach ($listreq as $key => $val) {
+                    $user_id = Generator::getUserId($val['slug_name'], 2);
+
+                    if($user_id != null){
+                        $newRoles = json_decode($val['tag_list'], true);
+
+                        if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
+                            $rolesOld = User::getUserRole($user_id);
+                            
+                            $mergedArray = array_merge($newRoles, $rolesOld[0]['role']);
+                            $uniqueMergedArray = array_map("unserialize", array_unique(array_map("serialize", $mergedArray)));
+                            $newRoles = json_encode($uniqueMergedArray);
+
+                            $count++; 
+
+                            User::where('id',$user_id)
+                                ->update([
+                                    'role' => $newRoles,
+                                    'updated_at' => date("Y-m-d h:i:s"),
+                                    'updated_by' => $admin_id
+                            ]);
+
+                            UserRequest::where('id',$val['id'])
+                                ->whereNull('accepted_at')
+                                ->whereNull('rejected_at')
+                                ->whereNull('is_rejected')
+                                ->update([
+                                    'is_accepted' => 1,
+                                    'accepted_at' => date("Y-m-d h:i:s"),
+                                    'accepted_by' => $admin_id
+                                ]);
+            
+                            History::create([
+                                'id' => Generator::getUUID(),
+                                'history_type' => strtolower($data->history_type), 
+                                'context_id' => $val['id'], 
+                                'history_body' => $data->history_body, 
+                                'history_send_to' => $user_id,
+                                'created_at' => date("Y-m-d h:i:s"),
+                                'created_by' => $admin_id
+                            ]); 
+                        } else {
+                            $failed++;
+                        } 
+                    } else {
+                        $failed++;
+                    }  
+                }
+
+                if($failed == 0){
+                    return redirect()->back()->with('success_message', $count.' request approved');
+                } else {
+                    return redirect()->back()->with('success_message', $count.' request aprroved and '.$failed.' request failed to approve');
                 }
             } else {
                 return redirect()->back()->with('failed_message', 'invalid request list');

@@ -5,7 +5,11 @@
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5 class="text-success">Accept Request</h5><hr>
                 <ol id="list_acc_holder"></ol>   
-                <button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>             
+                <form class="d-inline" action="/user/request/accept_request/multi" method="POST">
+                    @csrf
+                    <input hidden name="list_request" id="list_request_acc" value="">
+                    <button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button> 
+                </form>
             </div>
         </div>
     </div>
@@ -14,6 +18,7 @@
 <script>
     function refreshListAcc(){
         var holder = document.getElementById("list_acc_holder");
+        document.getElementById("list_request_acc").value = JSON.stringify(selectedOldUser);
         $("#list_acc_holder").empty();
 
         selectedOldUser.forEach(e => {
