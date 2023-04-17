@@ -6,3 +6,15 @@ function deleteAfterCharacter(str, character) {
         return str;
     }
 }
+
+function getTag(obj, padding, sz, margin){
+    var res = " ";
+
+    if(obj != null && obj.length > 0){
+        obj.forEach(e => {
+            res += " " + "<a class='btn btn-primary " + padding + " " + margin + " ' style='font-size:" + sz + "'>" + e.tag_name + "</a>";
+        });
+    } 
+
+    return res;
+}

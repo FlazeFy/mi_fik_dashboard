@@ -14,8 +14,8 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-old-req">
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-check text-success"></i> Accept All</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-xmark text-danger"></i>&nbsp Reject All</a>
+        <a class="dropdown-item" href="" data-bs-toggle="modal" id="acc_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc">Accept All</span></a>
+        <a class="dropdown-item" href="" data-bs-toggle="modal" id="rej_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_reject">Reject All</span></a>
     </div>
 
     <div class="user-req-holder" id="data_wrapper_old_req">
@@ -35,8 +35,14 @@
     </div>
 </div>
 
+@include('user.request.modal.acc')
+@include('user.request.modal.rej')
+@include('user.request.modal.prevent')
+
 <script>
     var page_old_req = 1;
+    var selectedOldUser = []; 
+
     infinteLoadMore_old_req(page_old_req);
 
     //Fix the sidebar & content page_old_req FE first to use this feature
@@ -154,12 +160,14 @@
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
-                                    '<div style="width: 60%;"> ' +
+                                    '<div style="width: 80%;"> ' +
                                         '<h6 class="user-box-desc">' + getContext(type, tag) + '</h6> ' +
                                         '<h6 class="user-box-date">' + getCreatedAt(created_at) + '</h6> ' +
                                     '</div> ' +
-                                    '<a class="btn btn-icon-rounded-danger" style="position:absolute; right: 15px; top:15px;" title="Reject Request"><i class="fa-solid fa-xmark"></i></a> ' +
-                                    '<a class="btn btn-icon-rounded-success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a> ' +
+                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
+                                        '<input hidden id="tag_holder_' + slug_name + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
+                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+slug_name+'" onclick="addSelected('+"'"+slug_name+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
+                                    '</div> ' +
                                 '</div> ' +
                             '</div> ' +
                         '</button>';
@@ -171,6 +179,55 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             console.log('Server error occured');
         });
+    }
+
+    function addSelected(slug, type, fullname, checked){
+        var tag = document.getElementById("tag_holder_" + slug).value;
+        var ddItemAcc = document.getElementById("acc_all_btn");
+        var ddItemRej = document.getElementById("rej_all_btn");
+       
+        if(selectedOldUser.length == 0){
+            selectedOldUser.push({
+                slug_name : slug,
+                full_name : fullname,
+                request_type : type,
+                tag_list : tag,
+            });
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedOldUser.findIndex(obj => obj.slug_name == slug);
+                if (indexToRemove !== -1) {
+                    selectedOldUser.splice(indexToRemove, 1);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedOldUser.push({
+                    slug_name : slug,
+                    full_name : fullname,
+                    request_type : type,
+                    tag_list : tag,
+                });
+            }
+        }
+        console.log(selectedOldUser);
+        
+        if(selectedOldUser.length > 0){
+            ddItemAcc.setAttribute('data-bs-target', '#accOldReqModal');
+            ddItemRej.setAttribute('data-bs-target', '#rejOldReqModal');
+            
+            document.getElementById("total_acc").innerHTML = selectedOldUser.length + " <i class='fa-solid fa-circle fa-2xs'></i> Accept All";
+            document.getElementById("total_reject").innerHTML = selectedOldUser.length + " <i class='fa-solid fa-circle fa-2xs'></i> Reject All";
+        } else {
+            ddItemAcc.setAttribute('data-bs-target', '#preventModal');
+            ddItemRej.setAttribute('data-bs-target', '#preventModal');
+
+            document.getElementById("total_acc").innerHTML = " Accept All";
+            document.getElementById("total_reject").innerHTML = " Reject All";
+        }
+
+        refreshListAcc()
+        refreshListRej()
     }
 
     function loadDetailGroup(slug){
