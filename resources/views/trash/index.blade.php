@@ -41,10 +41,10 @@
         <link rel="stylesheet" href="{{ asset('/css/task_box_v1.0.css') }}"/>
 
         <!-- JS Collection -->
+        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
+        <script src="{{ asset('/js/isotope_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/isotope_v1.0.js')}}"></script>
-
     </head>
 
     <body>
@@ -83,8 +83,5 @@
             })
 
         </script>
-
-        <!--Sidebar-->
-        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
     </body>
 </html>

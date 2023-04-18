@@ -56,33 +56,29 @@
                    
                     <div class="row">
                         <div class="col-lg-5 col-md-6 col-12">
-                            <div class="content-section">
+                            @include('profile.info')
 
-                            </div>
+                            @if(session()->get('role_key') == 0)
+                                <div class="content-section">
+                                    <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
+                                    @include('profile.tagpicker')
+                                </div>
+                            @endif
                         </div>
                         <div class="col-lg-7 col-md-6 col-12">
                             <div class="content-section">
                                 <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
                                 @include('profile.edit')
                             </div>
-                        </div>
-                    </div>
 
-                    @if(session()->get('role_key') == 0)
-                        <div class="row">
-                            <div class="col-lg-6 col-md-7 col-12">
+                            @if(session()->get('role_key') == 0)
                                 <div class="content-section">
                                     <h5 class="mx-3 text-secondary fw-bold">FAQ</h5>
                                     @include('profile.faq')
                                 </div>
-                            </div>
-                            <div class="col-lg-6 col-md-5 col-12">
-                                <div class="content-section">
-                                    <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
-                                </div>
-                            </div>
+                            @endif
                         </div>
-                    @endif
+                    </div>
                    
                 </div>
             </div>
