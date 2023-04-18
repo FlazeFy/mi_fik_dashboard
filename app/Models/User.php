@@ -23,6 +23,19 @@ class User extends Authenticatable
         'role' => 'array',
     ];
 
+    public static function getUserRole($id){
+        $res = User::select('role')
+            ->where('id', $id)
+            ->limit(1)
+            ->get();
+
+        if(count($res) == 0){
+            return null;
+        } else {
+            return $res;
+        }
+    }
+
     public static function getMostUsedRole(){
         //This query must directly return at least 10 most used tag
         $res = User::select('role')

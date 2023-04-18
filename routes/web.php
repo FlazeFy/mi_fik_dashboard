@@ -105,9 +105,11 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
 
     Route::get('/info', [InfoController::class, 'index']);
-    Route::post('/info/update/{id}', [InfoController::class, 'update_type']);
+    Route::post('/info/update/type/{id}', [InfoController::class, 'update_type']);
+    Route::post('/info/update/body/{id}', [InfoController::class, 'update_body']);
 
     Route::get('/dictionary', [DictionaryController::class, 'index']);
+    Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
 
     Route::get('/maintenance', [MaintenanceController::class, 'index']);
 });
@@ -118,6 +120,8 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/request/manage_acc', [RequestController::class, 'add_acc']);
     Route::post('/request/manage_suspend', [RequestController::class, 'add_suspend']);
     Route::post('/request/manage_recover', [RequestController::class, 'add_recover']);
+    Route::post('/request/reject_request/multi', [RequestController::class, 'reject_request_multi']);
+    Route::post('/request/accept_request/multi', [RequestController::class, 'accept_request_multi']);
 
     Route::get('/all', [AllController::class, 'index']);
     Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);

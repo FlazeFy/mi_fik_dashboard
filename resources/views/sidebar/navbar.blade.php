@@ -32,7 +32,7 @@
             </li>
             <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-bell me-2"></i> Notification</a>
-                <div class="item-notification" id="notif-holder"><img src='http://127.0.0.1:8000/assets/loading-notif.gif' style='height:24px; margin-top:-5px;'></div>
+                <div class="item-notification" id="notif-holder"><img src="{{ asset('/assets/loading-notif.gif')}}" style='height:24px; margin-top:-5px;'></div>
             </li>
             <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
                 <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>

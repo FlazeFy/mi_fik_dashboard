@@ -23,12 +23,18 @@
         <!-- Jquery DataTables -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
 
+        <!-- Include stylesheet -->
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        
+        <!-- Main Quill library -->
+        <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#notifTable').DataTable();
+                $('#infoTable').DataTable();
             });
         </script>
 
@@ -44,6 +50,10 @@
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
     </head>
 
     <body>

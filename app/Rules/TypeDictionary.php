@@ -4,7 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
-class TypeHistory implements Rule
+class TypeDictionary implements Rule
 {
     /**
      * Create a new rule instance.
@@ -18,7 +18,7 @@ class TypeHistory implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['event', 'user', 'task', 'maintenance', 'info', 'group', 'admin', 'scheduling', 'about', 'help', 'tag', 'request'];
+        $type = ['SLC-001', 'INF-001', 'ATT-001', 'NTF-001', 'QST-001', 'FBC-001'];
 
         foreach ($type as $format) {
             if ($format === $value) {
@@ -31,6 +31,6 @@ class TypeHistory implements Rule
 
     public function message()
     {
-        return 'History type is not available';
+        return 'Dictionary type is not available';
     }
 }
