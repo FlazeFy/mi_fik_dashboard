@@ -98,20 +98,24 @@
 
                 function getContext(type, tag){
                     if(type == "add"){
-                        var tags = "";
-
-                        for(var i = 0; i < tag.length; i++){
-                            if(i != tag.length - 1){
-                                tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>, ';
-                            } else {
-                                tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>';
-                            }
-                        }
-                        return "Requested " + tags
+                        var color = "success";
+                        var ctx = "Requested ";
                     } else if(type == "remove"){
-
-                        return "Want to remove " + tags
+                        var color = "danger";
+                        var ctx = "Want to remove ";
                     }
+
+                    var tags = "";
+
+                    for(var i = 0; i < tag.length; i++){
+                        if(i != tag.length - 1){
+                            tags += '<span class="text-' + color + ' fw-bold">#' + tag[i].tag_name + '</span>, ';
+                        } else {
+                            tags += '<span class="text-' + color + ' fw-bold">#' + tag[i].tag_name + '</span>';
+                        }
+                    }
+
+                    return ctx + tags;
                 }
 
                 function getCreatedAt(datetime){

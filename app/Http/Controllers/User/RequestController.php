@@ -158,7 +158,7 @@ class RequestController extends Controller
                             'created_at' => date("Y-m-d h:i:s"),
                             'created_by' => $admin_id
                         ]);  
-                        
+
                         $count++;
                     } else {
                         $failed++;
@@ -199,52 +199,101 @@ class RequestController extends Controller
                 $count = 0;
 
                 foreach ($listreq as $key => $val) {
+                    $status = false;
                     $user_id = Generator::getUserId($val['slug_name'], 2);
 
-                    if($user_id != null){
-                        $newRoles = json_decode($val['tag_list'], true);
+                    if($val['request_type'] == "add"){
+                        if($user_id != null){
+                            $newRoles = json_decode($val['tag_list'], true);
 
-                        if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
-                            $rolesOld = User::getUserRole($user_id);
-                            
-                            $mergedArray = array_merge($newRoles, $rolesOld[0]['role']);
-                            $uniqueMergedArray = array_map("unserialize", array_unique(array_map("serialize", $mergedArray)));
-                            $newRoles = json_encode($uniqueMergedArray);
+                            if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
+                                $rolesOld = User::getUserRole($user_id);
+                                
+                                //Bug if we use formal looping
+                                $merge = array_merge($newRoles, $rolesOld[0]['role']);
+                                $unique = array_map("unserialize", array_unique(array_map("serialize", $merge)));
+                                $newRoles = json_encode(array_values($unique));
 
-                            $count++; 
-
-                            User::where('id',$user_id)
-                                ->update([
-                                    'role' => $newRoles,
-                                    'updated_at' => date("Y-m-d h:i:s"),
-                                    'updated_by' => $admin_id
-                            ]);
-
-                            UserRequest::where('id',$val['id'])
-                                ->whereNull('accepted_at')
-                                ->whereNull('rejected_at')
-                                ->whereNull('is_rejected')
-                                ->update([
-                                    'is_accepted' => 1,
-                                    'accepted_at' => date("Y-m-d h:i:s"),
-                                    'accepted_by' => $admin_id
-                                ]);
-            
-                            History::create([
-                                'id' => Generator::getUUID(),
-                                'history_type' => strtolower($data->history_type), 
-                                'context_id' => $val['id'], 
-                                'history_body' => $data->history_body, 
-                                'history_send_to' => $user_id,
-                                'created_at' => date("Y-m-d h:i:s"),
-                                'created_by' => $admin_id
-                            ]); 
+                                $status = true; 
+                            } else {
+                                $status = false;
+                                $failed++;
+                            } 
                         } else {
+                            $status = false;
                             $failed++;
-                        } 
+                        }  
+                    } else if($val['request_type'] == "remove"){
+                        if($user_id != null){
+                            $newRoles = json_decode($val['tag_list'], true);
+
+                            if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
+                                $rolesOld = User::getUserRole($user_id);
+                                $uniqueKeys = [];
+                                $merge = array_merge($newRoles, $rolesOld[0]['role']);
+
+                                foreach ($merge as $mg) {
+                                    $key = $mg['slug_name'];
+                                    if (!in_array($key, $uniqueKeys)) {
+                                        $unique[] = $mg;
+                                        $uniqueKeys[] = $key;
+                                    } else {
+                                        $unique = array_filter($unique, 
+                                        function($val) use ($key) {
+                                            return $val['slug_name'] !== $key;
+                                        });
+                                    }
+                                }
+
+                                $newRoles = $unique;
+                                if(empty($newRoles)){
+                                    $newRoles = null;
+                                } else {
+                                    $newRoles = json_encode(array_values($newRoles));
+                                }
+                                $status = true; 
+                            } else {
+                                $status = false;
+                                $failed++;
+                            } 
+                        } else {
+                            $status = false;
+                            $failed++;
+                        }  
                     } else {
+                        $status = false;
                         $failed++;
-                    }  
+                    }
+
+                    if($status){
+                        User::where('id',$user_id)
+                            ->update([
+                                'role' => $newRoles,
+                                'updated_at' => date("Y-m-d h:i:s"),
+                                'updated_by' => $admin_id
+                        ]);
+
+                        UserRequest::where('id',$val['id'])
+                            ->whereNull('accepted_at')
+                            ->whereNull('rejected_at')
+                            ->whereNull('is_rejected')
+                            ->update([
+                                'is_accepted' => 1,
+                                'accepted_at' => date("Y-m-d h:i:s"),
+                                'accepted_by' => $admin_id
+                            ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => strtolower($data->history_type), 
+                            'context_id' => $val['id'], 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => $user_id,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $admin_id
+                        ]); 
+                    }
+                    $count++;
                 }
 
                 if($failed == 0){
