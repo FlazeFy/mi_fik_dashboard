@@ -11,6 +11,7 @@ use App\Http\Controllers\TrashController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
+use App\Http\Controllers\ProfileController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -163,6 +164,11 @@ Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/feedback/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 
     Route::get('/faq', [FaqController::class, 'index']);
+});
+
+Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [ProfileController::class, 'index']);
+    Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 });
 
 Route::post('/sign-out', [MultiController::class, 'sign_out']);

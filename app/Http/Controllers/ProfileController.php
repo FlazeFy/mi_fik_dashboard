@@ -6,8 +6,9 @@ use Illuminate\Support\Facades\DB;
 
 use App\Helpers\Generator;
 use App\Models\Menu;
+use App\Models\User;
 
-class HistoryController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,13 +19,15 @@ class HistoryController extends Controller
     {
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
+        $user = User::getProfileByUsername(session()->get("username_key"));
         
         //Set active nav
-        session()->put('active_nav', 'history');
+        session()->put('active_nav', 'profile');
         session()->forget('active_subnav');
 
-        return view ('history.index')
+        return view ('profile.index')
             ->with('menu', $menu)
+            ->with('user', $user)
             ->with('greet',$greet);
     }
 

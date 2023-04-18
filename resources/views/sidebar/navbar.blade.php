@@ -25,7 +25,7 @@
         </div>
         <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1" id="dd-menu-profile">
             <li class="position-relative">
-                <a class="dropdown-item" href="#"><i class="fa-solid fa-user me-2"></i> Profile</a>
+                <a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i> Profile</a>
                 <div class="item-notification">
                     <i class="fa-solid fa-triangle-exclamation me-2"></i>
                 </div>
