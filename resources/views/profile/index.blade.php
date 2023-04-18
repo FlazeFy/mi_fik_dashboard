@@ -35,7 +35,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
+
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/message_v1.0.css') }}"/>
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
@@ -51,39 +53,44 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    @foreach($user as $us)
-                        <div class="row">
-                            <div class="col-lg-5 col-md-6 col-12">
-                                <div class="content-section">
+                   
+                    <div class="row">
+                        <div class="col-lg-5 col-md-6 col-12">
+                            <div class="content-section">
 
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-6 col-12">
+                            <div class="content-section">
+                                <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
+                                @include('profile.edit')
+                            </div>
+                        </div>
+                    </div>
+
+                    @if(session()->get('role_key') == 0)
+                        <div class="row">
+                            <div class="col-lg-6 col-md-7 col-12">
+                                <div class="content-section">
+                                    <h5 class="mx-3 text-secondary fw-bold">FAQ</h5>
+                                    @include('profile.faq')
                                 </div>
                             </div>
-                            <div class="col-lg-7 col-md-6 col-12">
+                            <div class="col-lg-6 col-md-5 col-12">
                                 <div class="content-section">
-                                    <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
-                                    @include('profile.edit')
+                                    <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
                                 </div>
                             </div>
                         </div>
-
-                        @if(session()->get('role_key') == 0)
-                            <div class="row">
-                                <div class="col-lg-5 col-md-6 col-12">
-                                    <div class="content-section">
-                                        <h5 class="mx-3 text-secondary fw-bold">FAQ</h5>
-                                    </div>
-                                </div>
-                                <div class="col-lg-7 col-md-6 col-12">
-                                    <div class="content-section">
-                                        <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
+                    @endif
+                   
                 </div>
             </div>
         </div>
+
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
 
         <script>
             //Popover
