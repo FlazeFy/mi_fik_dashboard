@@ -18,6 +18,7 @@
 <script>
     var page = 1;
     var active_help_cat = "";
+    var role = "<?= session()->get('role_key'); ?>";
 
     //Fix the sidebar & content page FE first to use this feature
     // window.onscroll = function() { 
@@ -61,11 +62,13 @@
 
             if (total == 0) {
                 $('#empty_item_holder-{{str_replace(' ', '', $hl->help_type)}}').html("<img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Category found</h6>");
-                var elmt = " " +
-                    '<div class="position-relative"> ' +
-                        '<button class="btn btn-icon-rounded-success position-absolute" style="left:0px;" onclick="getInputHelpCat<?= str_replace(' ', '', $hl->help_type); ?>('+"'"+'{{$hl->help_type}}'+"'"+')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
-                    '</div>';
-                $("#category_holder-{{str_replace(' ', '', $hl->help_type)}}").append(elmt);
+                if(role == 1){
+                    var elmt = " " +
+                        '<div class="position-relative"> ' +
+                            '<button class="btn btn-icon-rounded-success position-absolute" style="left:0px;" onclick="getInputHelpCat<?= str_replace(' ', '', $hl->help_type); ?>('+"'"+'{{$hl->help_type}}'+"'"+')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
+                        '</div>';
+                    $("#category_holder-{{str_replace(' ', '', $hl->help_type)}}").append(elmt);
+                }
             } else if (data.length == 0) {
                 $('.auto-load-{{str_replace(' ', '', $hl->help_type)}}').html("<h5 class='text-primary'>Woah!, You have see all the category</h5>");
                 return;
@@ -79,7 +82,7 @@
                     var username = data[i].username;
                     var updated_at = data[i].updated_at;
 
-                    if(i == data.length - 1){
+                    if(i == data.length - 1 && role == 1){
                         var elmt = " " +
                         '<div class="position-relative"> ' +
                             '<button class="btn btn-icon-rounded-success position-absolute" style="left:0px;" onclick="getInputHelpCat<?= str_replace(' ', '', $hl->help_type); ?>(' + "'" + help_type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
@@ -115,13 +118,25 @@
                 '</div> ' +
             '</form>';
         $("#category_holder-{{str_replace(' ', '', $hl->help_type)}}").append(elmt);
-        console.log("{{str_replace(' ', '', $hl->help_type)}}");
+        //console.log("{{str_replace(' ', '', $hl->help_type)}}");
     }
 
     function loadDetailDesc(cat, desc, user, updated, id){
         var cat2 = cat.split(" ").join("");
         setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "btn-category-help", " ", cat2);
-        loadRichTextDesc(desc, user, updated, cat);
+        <?php
+            if(session()->get('role_key') == 1){
+                echo "loadRichTextDesc(desc, user, updated, cat);";
+            } else {
+                echo "loadDesc(desc);";
+            }
+        ?>
         id_body = id;
+    }
+
+    function loadDesc(desc){
+        var desc_holder = document.getElementById("desc_holder_view");
+        desc_holder.innerHTML = " ";
+        desc_holder.innerHTML = desc;
     }
 </script>

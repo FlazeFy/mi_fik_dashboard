@@ -25,21 +25,26 @@ class TagController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $tag = Tag::getFullTag("DESC", "DESC");
+        $tag = Tag::getFullTag("DESC", "DESC");
+
+        if(session()->get('role_key') == 1){
+            $user_id = Generator::getUserIdV2(1);
             $setting = Setting::getSingleSetting("MOT_range", $user_id);
+        }
 
-            //Chart query
+        //Chart query
+        if(session()->get('role_key') == 1){
             $mostTag = ContentDetail::getMostUsedTag();
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
             $history = History::getHistoryByType("tag");
+        }
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'event');
-            session()->put('active_subnav', 'tag');
+        //Set active nav
+        session()->put('active_nav', 'event');
+        session()->put('active_subnav', 'tag');
 
+        if(session()->get('role_key') == 1){
             return view ('event.tag.index')
                 ->with('mostTag', $mostTag)
                 ->with('tag', $tag)
@@ -47,10 +52,11 @@ class TagController extends Controller
                 ->with('setting', $setting)
                 ->with('history', $history)
                 ->with('greet',$greet);
-                
         } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
+            return view ('event.tag.index')
+                ->with('tag', $tag)
+                ->with('menu', $menu)
+                ->with('greet',$greet);
         }
     }
 
@@ -62,7 +68,7 @@ class TagController extends Controller
         if((count($check) == 0 || $request->update_type == "desc") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
             $validator = Validation::getValidateTag($request);
             if ($validator->fails()) {
@@ -124,7 +130,7 @@ class TagController extends Controller
         if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
             $validator = Validation::getValidateTag($request);
             if ($validator->fails()) {

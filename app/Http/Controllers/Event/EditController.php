@@ -28,43 +28,37 @@ class EditController extends Controller
      */
     public function index($slug_name)
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $type = ["Reminder", "Attachment"];
+        $type = ["Reminder", "Attachment"];
 
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $content = ContentHeader::getFullContentBySlug($slug_name);
-            $greet = Generator::getGreeting(date('h'));
-            $dictionary = Dictionary::getDictionaryByType($type);
-            $history = History::getContentHistory($slug_name);
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("event/edit");
+        $tag = Tag::getFullTag("DESC", "DESC");
+        $content = ContentHeader::getFullContentBySlug($slug_name);
+        $greet = Generator::getGreeting(date('h'));
+        $dictionary = Dictionary::getDictionaryByType($type);
+        $history = History::getContentHistory($slug_name);
+        $menu = Menu::getMenu();
+        $info = Info::getAvailableInfo("event/edit");
 
-            //Set active nav
-            session()->put('active_nav', 'event');
+        //Set active nav
+        session()->put('active_nav', 'event');
 
-            $title = $content[0]['content_title'];
+        $title = $content[0]->content_title;
 
-            return view ('event.edit.index')
-                ->with('tag', $tag)
-                ->with('content', $content)
-                ->with('title', $title)
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('history', $history)
-                ->with('dictionary', $dictionary)
-                ->with('greet',$greet);
+        return view ('event.edit.index')
+            ->with('tag', $tag)
+            ->with('content', $content)
+            ->with('title', $title)
+            ->with('menu', $menu)
+            ->with('info', $info)
+            ->with('history', $history)
+            ->with('dictionary', $dictionary)
+            ->with('greet',$greet);
                 
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
     }
 
     public function update_event_info(Request $request, $slug)
     {
         $id = Generator::getContentId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($id != null){
             $validator = Validation::getValidateEventInfo($request);
@@ -114,7 +108,7 @@ class EditController extends Controller
     public function update_event_draft(Request $request, $slug)
     {
         $id = Generator::getContentId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($id != null){
             if($request->is_draft == 1){
@@ -163,7 +157,7 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $att = Generator::getContentAtt($id_detail);
         $arrobj = json_decode($att);
 
@@ -228,7 +222,7 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $att = Generator::getContentAtt($id_detail);
         $oldobj = json_decode($att);
 
@@ -295,7 +289,7 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $tag =  ContentDetail::getContentTag($id_detail);
         $oldobj = json_decode($tag);
 
@@ -362,7 +356,7 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $tag =  ContentDetail::getContentTag($id_detail);
         $oldobj = json_decode($tag);
 
@@ -426,7 +420,7 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($id != null && $id_detail != null){
             $data = new Request();
@@ -478,7 +472,7 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         if($id != null && $id_detail != null){
             $data = new Request();

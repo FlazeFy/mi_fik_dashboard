@@ -9,7 +9,7 @@
 </style>
 
 <div class="table-responsive">
-    <table class="table table-paginate" id="notifTable" cellspacing="0">
+    <table class="table table-paginate" id="infoTable" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col">Type</th>
@@ -23,8 +23,8 @@
             @php($i = 0)
             @foreach($info as $in)
                 <tr>
-                    <td>
-                        <form action="/system/info/update/{{$in->id}}" method="POST">
+                    <td style="width: 140px;">
+                        <form action="/system/info/update/type/{{$in->id}}" method="POST">
                             @csrf
                             <select class="form-select" name="info_type" title="Change Type" onchange="this.form.submit()">
                                 @foreach($dictionary as $dct)
@@ -41,12 +41,12 @@
                         <p class="mb-0">Page : <a class="text-primary" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
                         <p>Location : {{$in->info_location}}</p>
                     </td>
-                    <td >
-                        <div style="word-break: break-all; width: 300px;">
+                    <td>
+                        <div style="word-break: break-all; width: 400px;" id="info_body_holder_{{$in->id}}">
                             <?= $in->info_body; ?>
                         </div>
                     </td>
-                    <td>
+                    <td style="width: 180px;">
                         <h6>Created By</h6>
                         <div class="row p-0 m-0">
                             <div class="col-3 p-0">
@@ -83,7 +83,7 @@
                         @endif
                     </td>
                     <td>
-                        <button class="btn btn-warning" data-bs-target="#editModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
+                        <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$in->info_body}}","{{$in->id}}")'><i class="fa-solid fa-edit"></i></button>
                         <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
@@ -93,3 +93,54 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    var id_body = " ";
+
+    function toogleInfoDescEdit(info_body, id){
+        var holder_body = document.getElementById("info_body_holder_"+id);
+
+        holder_body.innerHTML = " ";
+        holder_body.innerHTML = " <div id='rich_box_" + id + "' style='height: 200px !important;'></div> " +
+        "<form class='d-inline' id='form-edit-desc_" + id + "' method='POST' action=''> " +
+            '@csrf ' +
+            "<input name='info_body' id='info_body_" + id + "' hidden> " +
+            "<button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("+ '"' + id + '"' +")'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
+        "</form> ";
+        
+        var quill<?= str_replace("-", "", $in->id) ?> = new Quill('#rich_box_' + id, {
+            theme: 'snow'
+        });
+
+        var info_input = document.getElementById("info_body_" + id);
+        var parent = document.getElementById("rich_box_" + id);
+        var child = parent.getElementsByClassName("ql-editor")[0];
+        if(info_body != null || info_body != "null"){
+            child.innerHTML = info_body;
+        } else {
+            child.innerHTML = " ";
+        }
+    }
+
+    function getRichTextHelpDesc(id){
+        var rawText = document.getElementById("rich_box_"+ id).innerHTML;
+        var input_body = document.getElementById("info_body_"+id);
+        var form = document.getElementById("form-edit-desc_" + id);
+
+        //Remove quills element from raw text
+        var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','').replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">');
+        //Check this clean text 2!!!
+        cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
+        
+        //Pass html quilss as input value
+        var characterToDeleteAfter = "</div>";
+        var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
+        input_body.value = modifiedString;
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            form.action = '/system/info/update/body/' + id;
+            form.submit();
+        });
+    }
+</script>

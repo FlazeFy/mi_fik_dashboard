@@ -20,27 +20,20 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $suggestion = Feedback::getAllFeedbackSuggestion();
-            $feedback = Feedback::getAllFeedback(100);
-            
-            //Set active nav
-            session()->put('active_nav', 'social');
-            session()->put('active_subnav', 'feedback');
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        $suggestion = Feedback::getAllFeedbackSuggestion();
+        $feedback = Feedback::getAllFeedback(100);
+        
+        //Set active nav
+        session()->put('active_nav', 'social');
+        session()->put('active_subnav', 'feedback');
 
-            return view ('social.feedback.index')
-                ->with('menu', $menu)
-                ->with('suggestion', $suggestion)
-                ->with('feedback', $feedback)
-                ->with('greet',$greet);
-                
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view ('social.feedback.index')
+            ->with('menu', $menu)
+            ->with('suggestion', $suggestion)
+            ->with('feedback', $feedback)
+            ->with('greet',$greet);
     }
 
     /**

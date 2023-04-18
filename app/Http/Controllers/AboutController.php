@@ -21,37 +21,41 @@ class AboutController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $about = Help::getAboutApp();
-            $helplist = Help::getHelpListNType();
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
+        $about = Help::getAboutApp();
+        $helplist = Help::getHelpListNType();
+        
+        if(session()->get('role_key') == 1){
             $history_about = History::getHistoryByType("about");
             $history_help = History::getHistoryByType("help");
-            
-            //Set active nav
-            session()->put('active_nav', 'about');
-            session()->forget('active_subnav');
+        }
+        
+        //Set active nav
+        session()->put('active_nav', 'about');
+        session()->forget('active_subnav');
 
+        if(session()->get('role_key') == 1){
             return view ('about.index')
                 ->with('menu', $menu)
                 ->with('about', $about)
                 ->with('h_help', $history_help)
                 ->with('h_about', $history_about)
                 ->with('helplist', $helplist)
-                ->with('greet',$greet);
-                
+                ->with('greet',$greet);      
         } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+            return view ('about.index')
+                ->with('menu', $menu)
+                ->with('about', $about)
+                ->with('helplist', $helplist)
+                ->with('greet',$greet);   
+        }   
     }
 
     
     public function edit_about_app(Request $request)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateAboutApp($request);
         if ($validator->fails()) {
@@ -99,7 +103,7 @@ class AboutController extends Controller
 
     public function add_help_type(Request $request)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateHelp($request);
         if ($validator->fails()) {
@@ -157,7 +161,7 @@ class AboutController extends Controller
 
     public function edit_help_body(Request $request, $id)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateBodyTypeEdit($request);
         if ($validator->fails()) {
@@ -201,7 +205,7 @@ class AboutController extends Controller
 
     public function add_help_cat(Request $request)
     {
-        $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role')); 
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
         $validator = Validation::getValidateBodyTypeEdit($request);
         if ($validator->fails()) {

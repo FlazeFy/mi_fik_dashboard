@@ -50,7 +50,9 @@
                     @include('sidebar.navbar')
 
                     @foreach($content as $c)
-                        @include('event.detail.navigator')
+                        @if(session()->get('role_key') == 1 || $c->user_username_created == session()->get('username_key'))
+                            @include('event.detail.navigator')
+                        @endif
 
                         <div class="container-fluid bg-white mt-2 mb-3 p-0 shadow" style="border-radius: 18px !important;">
                             @include('event.detail.layout')

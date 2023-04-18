@@ -26,7 +26,7 @@
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-        <!--CSS Collection-->
+        <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -38,6 +38,10 @@
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
         
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
+
     </head>
 
     <body>
@@ -79,6 +83,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.failed')
 
         <script>
             //Popover

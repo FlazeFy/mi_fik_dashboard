@@ -69,30 +69,47 @@
                             <div class="p-3">
                                 <div class="row">
                                     @if($st == "about us")
-                                        <div class="col-lg-9 col-md-8 col-sm-12">
+                                        @if(session()->get('role_key') == 1)
+                                            <div class="col-lg-9 col-md-8 col-sm-12">
+                                                @include('about.app')
+                                            </div>
+                                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                                <h5 class="text-secondary fw-bold">History</h5>
+                                                @include('components.history', ['history' => $h_about])
+                                            </div>
+                                        @else
                                             @include('about.app')
-                                        </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-12">
-                                            <h5 class="text-secondary fw-bold">History</h5>
-                                            @include('components.history', ['history' => $h_about])
-                                        </div>
+                                        @endif
                                     @elseif($st == "helps editor")
-                                        <div class="col-lg-4 col-md-5 col-sm-12">
-                                            @include('about.help.list')
-                                            <h5 class="text-secondary fw-bold">History</h5>
-                                            @include('components.history', ['history' => $h_help])
-                                        </div>
-                                        <div class="col-lg-8 col-md-7 col-sm-12">
-                                            @include('about.help.context')
-                                        </div>
+                                        @if(session()->get('role_key') == 1)
+                                            <div class="col-lg-4 col-md-5 col-sm-12">
+                                                @include('about.help.list')
+                                                <h5 class="text-secondary fw-bold">History</h5>
+                                                @include('components.history', ['history' => $h_help])
+                                            </div>
+                                            <div class="col-lg-8 col-md-7 col-sm-12">
+                                                @include('about.help.context')
+                                            </div>
+                                        @else
+                                            <div class="col-lg-4 col-md-5 col-sm-12">
+                                                @include('about.help.list')
+                                            </div>
+                                            <div class="col-lg-8 col-md-7 col-sm-12">
+                                                <span id="desc_holder_view"></span>
+                                            </div>
+                                        @endif
                                     @elseif($st == "contact us")
-                                        <div class="col-lg-9 col-md-8 col-sm-12">
+                                        @if(session()->get('role_key') == 1)
+                                            <div class="col-lg-9 col-md-8 col-sm-12">
+                                                @include('about.contact')
+                                            </div>
+                                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                                <h5 class="text-secondary fw-bold">History</h5>
+                                                @include('components.history', ['history' => []])
+                                            </div>
+                                        @else
                                             @include('about.contact')
-                                        </div>
-                                        <div class="col-lg-3 col-md-4 col-sm-12">
-                                            <h5 class="text-secondary fw-bold">History</h5>
-                                            @include('components.history', ['history' => []])
-                                        </div>
+                                        @endif
                                     @endif
                                 </div>
                             </div>

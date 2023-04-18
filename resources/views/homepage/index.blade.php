@@ -72,6 +72,7 @@
                                 @include('homepage.datefilter')
                                 @include('homepage.searchbar')
                             </div>
+                            @include('components.activefilter')
                 
                             @include('homepage.event')
                         </div>

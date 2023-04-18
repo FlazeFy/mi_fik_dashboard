@@ -9,9 +9,12 @@ use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
 use App\Helpers\Converter;
+use App\Helpers\Validation;
 
 use App\Models\User;
+use App\Models\UserRequest;
 use App\Models\Menu;
+use App\Models\History;
 
 class RequestController extends Controller
 {
@@ -22,30 +25,21 @@ class RequestController extends Controller
      */
     public function index()
     {
-        if(session()->get('slug_key')){
-            $user_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
+        $greet = Generator::getGreeting(date('h'));
+        $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'manageuser');
-            session()->put('active_subnav', 'request');
+        //Set active nav
+        session()->put('active_nav', 'manageuser');
+        session()->put('active_subnav', 'request');
 
-            return view('user.request.index')
-                ->with('menu', $menu)
-                ->with('greet',$greet);
-        } else {
-            return redirect()->route('landing')
-                ->with('failed_message', 'Your session time is expired. Please login again!');
-        }
+        return view('user.request.index')
+            ->with('menu', $menu)
+            ->with('greet',$greet);
     }
 
     public function add_role_acc(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
         $tag = Converter::getTag($request->user_role);
         $new_user = $request->is_new;
@@ -74,11 +68,7 @@ class RequestController extends Controller
 
     public function add_acc(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([
@@ -94,11 +84,7 @@ class RequestController extends Controller
 
     public function add_suspend(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([
@@ -114,11 +100,7 @@ class RequestController extends Controller
 
     public function add_recover(Request $request)
     {
-        //Helpers
-        if(session()->get('slug_key')){
-            $admin_id = Generator::getUserId(session()->get('slug_key'), session()->get('role'));
-        }
-
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $user_id = Generator::getUserId($request->slug_user, 2); 
 
         User::where('id', $user_id)->update([
@@ -128,5 +110,200 @@ class RequestController extends Controller
         ]);
 
         return redirect()->back()->with('success_message', 'Account recovered');
+    }
+
+    public function reject_request_multi(Request $request)
+    {
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
+        $data = new Request();
+        $obj = [
+            'history_type' => "request",
+            'history_body' => "request has been rejected"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $listreq = json_decode($request->list_request, true);
+
+            if($listreq !== null || json_last_error() === JSON_ERROR_NONE){
+                //$role_count = count($listreq);
+                $failed = 0;
+                $count = 0;
+
+                foreach ($listreq as $key => $val) {
+                    $user_id = Generator::getUserId($val['slug_name'], 2);
+
+                    if($user_id != null){
+                        UserRequest::where('id',$val['id'])
+                            ->whereNull('accepted_at')
+                            ->whereNull('rejected_at')
+                            ->whereNull('is_rejected')
+                            ->update([
+                                'is_rejected' => 1,
+                                'rejected_at' => date("Y-m-d h:i:s"),
+                                'rejected_by' => $admin_id
+                            ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => strtolower($data->history_type), 
+                            'context_id' => $val['id'], 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => $user_id,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $admin_id
+                        ]);  
+
+                        $count++;
+                    } else {
+                        $failed++;
+                    }  
+                }
+
+                if($failed == 0){
+                    return redirect()->back()->with('success_message', $count.' request rejected');
+                } else {
+                    return redirect()->back()->with('success_message', $count.' request rejected and '.$failed.' request failed to reject');
+                }
+            } else {
+                return redirect()->back()->with('failed_message', 'invalid request list');
+            }       
+        }
+    }
+
+    public function accept_request_multi(Request $request)
+    {
+        $admin_id = Generator::getUserIdV2(session()->get('role_key'));
+        $data = new Request();
+        $obj = [
+            'history_type' => "request",
+            'history_body' => "request has been approve"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $listreq = json_decode($request->list_request, true);
+
+            if($listreq !== null || json_last_error() === JSON_ERROR_NONE){
+                $failed = 0;
+                $count = 0;
+
+                foreach ($listreq as $key => $val) {
+                    $status = false;
+                    $user_id = Generator::getUserId($val['slug_name'], 2);
+
+                    if($val['request_type'] == "add"){
+                        if($user_id != null){
+                            $newRoles = json_decode($val['tag_list'], true);
+
+                            if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
+                                $rolesOld = User::getUserRole($user_id);
+                                
+                                //Bug if we use formal looping
+                                $merge = array_merge($newRoles, $rolesOld[0]['role']);
+                                $unique = array_map("unserialize", array_unique(array_map("serialize", $merge)));
+                                $newRoles = json_encode(array_values($unique));
+
+                                $status = true; 
+                            } else {
+                                $status = false;
+                                $failed++;
+                            } 
+                        } else {
+                            $status = false;
+                            $failed++;
+                        }  
+                    } else if($val['request_type'] == "remove"){
+                        if($user_id != null){
+                            $newRoles = json_decode($val['tag_list'], true);
+
+                            if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
+                                $rolesOld = User::getUserRole($user_id);
+                                $uniqueKeys = [];
+                                $merge = array_merge($newRoles, $rolesOld[0]['role']);
+
+                                foreach ($merge as $mg) {
+                                    $key = $mg['slug_name'];
+                                    if (!in_array($key, $uniqueKeys)) {
+                                        $unique[] = $mg;
+                                        $uniqueKeys[] = $key;
+                                    } else {
+                                        $unique = array_filter($unique, 
+                                        function($val) use ($key) {
+                                            return $val['slug_name'] !== $key;
+                                        });
+                                    }
+                                }
+
+                                $newRoles = $unique;
+                                if(empty($newRoles)){
+                                    $newRoles = null;
+                                } else {
+                                    $newRoles = json_encode(array_values($newRoles));
+                                }
+                                $status = true; 
+                            } else {
+                                $status = false;
+                                $failed++;
+                            } 
+                        } else {
+                            $status = false;
+                            $failed++;
+                        }  
+                    } else {
+                        $status = false;
+                        $failed++;
+                    }
+
+                    if($status){
+                        User::where('id',$user_id)
+                            ->update([
+                                'role' => $newRoles,
+                                'updated_at' => date("Y-m-d h:i:s"),
+                                'updated_by' => $admin_id
+                        ]);
+
+                        UserRequest::where('id',$val['id'])
+                            ->whereNull('accepted_at')
+                            ->whereNull('rejected_at')
+                            ->whereNull('is_rejected')
+                            ->update([
+                                'is_accepted' => 1,
+                                'accepted_at' => date("Y-m-d h:i:s"),
+                                'accepted_by' => $admin_id
+                            ]);
+        
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => strtolower($data->history_type), 
+                            'context_id' => $val['id'], 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => $user_id,
+                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_by' => $admin_id
+                        ]); 
+                    }
+                    $count++;
+                }
+
+                if($failed == 0){
+                    return redirect()->back()->with('success_message', $count.' request approved');
+                } else {
+                    return redirect()->back()->with('success_message', $count.' request aprroved and '.$failed.' request failed to approve');
+                }
+            } else {
+                return redirect()->back()->with('failed_message', 'invalid request list');
+            }       
+        }
     }
 }

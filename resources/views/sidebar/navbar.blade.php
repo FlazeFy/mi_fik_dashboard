@@ -32,7 +32,7 @@
             </li>
             <li>
                 <a class="dropdown-item" href="#"><i class="fa-solid fa-bell me-2"></i> Notification</a>
-                <div class="item-notification" id="notif-holder"><img src='http://127.0.0.1:8000/assets/loading-notif.gif' style='height:24px; margin-top:-5px;'></div>
+                <div class="item-notification" id="notif-holder"><img src="{{ asset('/assets/loading-notif.gif')}}" style='height:24px; margin-top:-5px;'></div>
             </li>
             <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
                 <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
@@ -46,10 +46,10 @@
         <div class='modal-content'>
             <div class='modal-body text-center pt-4'>
                 <button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
-                <form class='d-inline' action='/sign-out' method='POST'>
+                <form class='d-inline' action='/sign-out' method='POST' id="form-signout">
                     @csrf
                     <p style='font-weight:500;'>Are you sure want to sign out?</p>
-                    <button class='btn btn-danger' type='submit' onclick="sessionStorage.clear()">Sign Out</button>
+                    <a onclick="signout()" class='btn btn-danger'>Sign Out</a>
                 </form>
             </div>
         </div>
@@ -104,5 +104,23 @@
                 }
             }
        });
+    }
+
+    function signout() {
+        $.ajax({
+            url: "/api/v1/logout",
+            type: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer <?= session()->get("token_key"); ?>"
+            },
+            success: function(data, textStatus, jqXHR) {
+                sessionStorage.clear();
+                $('#form-signout').submit();
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Sign out failed " + jqXHR.status);
+            }
+        });
     }
 </script>

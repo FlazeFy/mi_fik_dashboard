@@ -19,9 +19,12 @@ class ContentHeaderFactory extends Factory
     {
         $title = fake()->sentence();
         $reminder = Generator::getRandomReminder();
-        $slug_name = Generator::getSlugName($request->content_title, "content");
-        
+        $slug_name = Generator::getSlugName($title, "content");
+        $ran = mt_rand(0, 1);
+        $ran2 = mt_rand(0, 1);
+
         return [
+            'id' => Generator::getUUID(), 
             'slug_name' => $slug_name, 
             'content_title' => $title, 
             'content_desc' => fake()->paragraph(), 
@@ -30,12 +33,12 @@ class ContentHeaderFactory extends Factory
             'content_reminder' => $reminder, 
             'content_image' => null, 
             'is_draft' => 0, 
-            'created_at' => now(), 
-            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002', 
-            'updated_at' => null, 
-            'updated_by' => null,
-            'deleted_at' => null, 
-            'deleted_by' => null,
+            'created_at' => Generator::getRandomDate(0), 
+            'created_by' => Generator::getRandomAdmin(0), 
+            'updated_at' => Generator::getRandomDate($ran), 
+            'updated_by' => Generator::getRandomAdmin($ran), 
+            'deleted_at' => Generator::getRandomDate($ran2), 
+            'deleted_by' => Generator::getRandomAdmin($ran2), 
         ];
     }
 }
