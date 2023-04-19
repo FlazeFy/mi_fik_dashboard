@@ -135,4 +135,12 @@ class Validation
             'info_body' => 'nullable|min:2|max:500|string',
         ]);
     }
+
+    public static function getValidateEditProfile($request){ 
+        return Validator::make($request->all(), [
+            'first_name' => 'required|min:2|max:35|string',
+            'last_name' => 'nullable|min:2|max:35|string',
+            'password' => 'required|min:2|max:50|string',
+        ]);
+    }
 }
