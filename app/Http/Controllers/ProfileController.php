@@ -28,6 +28,7 @@ class ProfileController extends Controller
         $menu = Menu::getMenu();
         $user = User::find($user_id);
         $faq = Question::getQuestionByUserId($user_id);
+        $myreq = UserRequest::getRecentlyRequest($user_id);
         
         //Set active nav
         session()->put('active_nav', 'profile');
@@ -37,6 +38,7 @@ class ProfileController extends Controller
             ->with('menu', $menu)
             ->with('user', $user)
             ->with('faq', $faq)
+            ->with('myreq', $myreq)
             ->with('greet',$greet);
     }
 
@@ -110,7 +112,7 @@ class ProfileController extends Controller
             if($check !== null || json_last_error() === JSON_ERROR_NONE){
                 UserRequest::create([
                     'id' => Generator::getUUID(),
-                    'tag_slug_name' => $role,
+                    'tag_slug_name' => $check,
                     'request_type' => "add",
                     'created_at' => date("Y-m-d h:i:s"),
                     'created_by' => $user_id,

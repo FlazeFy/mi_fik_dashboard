@@ -11,9 +11,10 @@
     .info-box-profile .body-box{
         background: white;
         padding: 30px;
+        padding-bottom: 10px;
         margin: 0;
         width: 100%;
-        height: 30vh;
+        min-height: 30vh;
         margin-top: 30px;
         border-radius: 36px 36px 12px 12px; 
     }
@@ -41,12 +42,16 @@
             @endif
         </div>
 
-        <div class="sub-holder text-start">
+        <div class="sub-holder text-start position-relative">
             <h5 class="text-secondary">My Roles</h5>
-            @php($tags = $user->role)
-            @foreach($tags as $tg)
-                <a class="btn btn-primary mb-1 me-1">{{$tg['tag_name']}}</a>
-            @endforeach
+            <a class="btn btn-link-danger position-absolute" style="right:0; top:-10px;" onclick="getRequestRemove()"><i class="fa-solid fa-trash-can"></i> Remove</a>
+
+            <div id="my_tag_list">
+                @php($tags = $user->role)
+                @foreach($tags as $tg)
+                    <a class="btn btn-primary mb-2 me-1" id="tag_collection_{{$tg['slug_name']}}" style="cursor: default;">{{$tg['tag_name']}}</a>
+                @endforeach
+            </div>
         </div>
 
         <div class="sub-holder text-start" id="body-eng">
@@ -65,3 +70,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    var myTag = [<?php
+        $tag = $user->role;
+        foreach($tag as $tg){
+            echo "{".
+                    '"'."slug_name".'":"'.$tg['slug_name'].'",'.
+                    '"'."tag_name".'":"'.$tg['tag_name'].'"'
+                ."},";
+        }
+    ?>];
+
+    function getRequestRemove(){
+        stylingTagManage();
+        for(var i = 0; i < myTag.length; i++){
+            var slug = myTag[i]['slug_name'];
+            var name = myTag[i]['tag_name'];
+            var tag_div = document.getElementById("tag_collection_"+slug);
+            
+            $(tag_div).attr({
+                "class": "btn btn-danger mb-2 me-1",
+                "title": "Remove tag " + name,
+                "style": "cursor: pointer;",
+                "onclick": "addSelectedTag("+'"'+ slug +'"'+", "+'"'+name+'"'+", true, 'remove')"
+            });
+        }
+    }
+</script>
