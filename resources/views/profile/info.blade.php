@@ -56,8 +56,12 @@
             <h6 class="text-secondary text-center">Created Event</h6>
         </div>
         <div class="sub-holder text-start" id="body-req">
-            <h5 class="text-secondary">Requested Tag</h5>
-            <div id="slct_holder"></div>
+            <form action="/profile/request/add" method="POST" id="request_add_form">
+                @csrf
+                <h5 class="text-secondary">Requested Tag</h5>
+                <div id="slct_holder"></div>
+                <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</a></span>
+            </form>
         </div>
     </div>
 </div>

@@ -169,6 +169,7 @@ Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {
 Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ProfileController::class, 'index']);
     Route::post('/edit/profile', [ProfileController::class, 'edit_profile']);
+    Route::post('/request/add', [ProfileController::class, 'request_add']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']); // Not finished
 });
 

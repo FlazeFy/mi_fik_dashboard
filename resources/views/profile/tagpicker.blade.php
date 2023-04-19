@@ -6,7 +6,6 @@
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOL">
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
-        <a class="dropdown-item text-success" href=""><i class="fa-solid fa-paper-plane"></i> Send Request</a>
     </div>
 
     <div class="" id="start-section-manage">
@@ -169,6 +168,43 @@
             slct_list.push(slug_name);
             $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected bg-success' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
         }
+
+        getButtonSubmitTag();
+    }
+
+    function getButtonSubmitTag(){
+        if(slct_list.length > 0){
+            var tags = "";
+
+            for(var i = 0; i < slct_list.length; i++){
+                if(i != slct_list.length - 1){
+                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>, ';
+                } else {
+                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>';
+                }
+            }
+            
+            $("#btn-submit-tag-holder").html(''+
+                '<a class="btn btn-submit-form mt-3" title="Submit Role"  data-bs-toggle="modal" href="#requestRoleAdd"><i class="fa-solid fa-paper-plane"></i> Request</a> ' +
+                '<div class="modal fade" id="requestRoleAdd" tabindex="-1" aria-labelledby="requestRoleAddLabel" aria-hidden="true"> ' +
+                '<div class="modal-dialog"> ' +
+                    '<div class="modal-content"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="requestRoleAddLabel">Request Selected Tags</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to request ' + tags + '</h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-submit-form" onclick="submitAddForm()"><i class="fa-solid fa-paper-plane"></i> Send</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</div> ' +
+                '</div>') ;
+        } else {
+            return $("#btn-submit-tag-holder").text('')
+        }
     }
 
     function removeSelectedTag(slug_name, tag_name){
@@ -180,7 +216,7 @@
         //Return selected tag to tag collection
         $("#data_wrapper_manage_tag").append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+"slct"+'"'+")'>"+tag_name+"</a>");
 
-        console.log(slct_list)
+        getButtonSubmitTag();
     }
 
     function abortTagPicker(){
@@ -190,5 +226,12 @@
         document.getElementById("data_wrapper_manage_tag").innerHTML = "";
         document.getElementById("empty_item_holder").innerHTML = "";
         document.getElementById("load_more").innerHTML = "";
+    }
+
+    function submitAddForm(){
+        var form = document.getElementById('request_add_form');
+        form.addEventListener('submit', (event) => {
+            form.submit(); 
+        });
     }
 </script>

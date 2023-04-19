@@ -6,9 +6,11 @@ use Illuminate\Support\Facades\DB;
 
 use App\Helpers\Generator;
 use App\Helpers\Validation;
+use App\Helpers\Converter;
 
 use App\Models\Menu;
 use App\Models\User;
+use App\Models\UserRequest;
 use App\Models\History;
 use App\Models\Question;
 
@@ -84,15 +86,59 @@ class ProfileController extends Controller
         } 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function request_add(Request $request)
     {
-        //
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+        $data = new Request();
+        $obj = [
+            'history_type' => "user",
+            'history_body' => "request to add some role"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $role = Converter::getTag($request->user_role);
+        
+            $check = json_decode($role, true);
+
+            if($check !== null || json_last_error() === JSON_ERROR_NONE){
+                UserRequest::create([
+                    'id' => Generator::getUUID(),
+                    'tag_slug_name' => $role,
+                    'request_type' => "add",
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id,
+                    'updated_at' => null,
+                    'updated_by' => null,
+                    'is_rejected' => null,
+                    'rejected_at' => null,
+                    'rejected_by' => null,
+                    'is_accepted' => 0,
+                    'accepted_at' => null,
+                    'accepted_by' => null,
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', "Request sended"); 
+            } else {
+                return redirect()->back()->with('success_message', "Failed to send request, tag list not valid"); 
+            } 
+        }
     }
 
     /**
