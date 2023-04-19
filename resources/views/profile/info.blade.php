@@ -6,6 +6,7 @@
         padding-top: 25px;
         border-radius: 12px; 
         text-align: center;
+        position: relative !important;
     }
     .info-box-profile .body-box{
         background: white;
@@ -21,22 +22,24 @@
     }
 </style>
 
-<div class="info-box-profile">
+<div class="info-box-profile" id="info-box-profile">
     @if(!$user->image_url)
         @if(session()->get('role_key') == 0)
-            <img class="img img-fluid rounded-circle shadow m-2 d-block mx-auto" style="max-width:40%;" src="{{ asset('/assets/default_lecturer.png')}}">
+            <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{ asset('/assets/default_lecturer.png')}}" id="profile_image_info">
         @endif
     @else
-        <img class="img img-fluid rounded-circle shadow m-2" src="{{$user->image_url}}">
+        <img class="img img-fluid rounded-circle shadow mx-4" src="{{$user->image_url}}" id="profile_image_info">
     @endif
     <div class="body-box">
-        <h5 style="color:#414141;">{{$user->first_name}} {{$user->last_name}}</h5>
+        <div id="body-title">
+            <h5>{{$user->first_name}} {{$user->last_name}}</h5>
 
-        @if(session()->get('role_key') == 0)
-            <h6 class="text-secondary">Lecturer / Staff</h6>
-        @else
-            <h6 class="text-secondary">Admin</h6>
-        @endif
+            @if(session()->get('role_key') == 0)
+                <h6>Lecturer / Staff</h6>
+            @else
+                <h6>Admin</h6>
+            @endif
+        </div>
 
         <div class="sub-holder text-start">
             <h5 class="text-secondary">My Roles</h5>
@@ -46,11 +49,15 @@
             @endforeach
         </div>
 
-        <div class="sub-holder text-start">
+        <div class="sub-holder text-start" id="body-eng">
             <h5 class="text-secondary">Engagement</h5>
 
             <h4 class="text-center">0</h4>
             <h6 class="text-secondary text-center">Created Event</h6>
+        </div>
+        <div class="sub-holder text-start" id="body-req">
+            <h5 class="text-secondary">Requested Tag</h5>
+            <div id="slct_holder"></div>
         </div>
     </div>
 </div>
