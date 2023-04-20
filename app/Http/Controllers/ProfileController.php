@@ -88,58 +88,111 @@ class ProfileController extends Controller
         } 
     }
 
-    public function request_add(Request $request)
+    public function request_role(Request $request)
     {
         $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
-        $data = new Request();
-        $obj = [
+        $hsAdd = new Request();
+        $hsRemove = new Request();
+
+        $objAdd = [
             'history_type' => "user",
             'history_body' => "request to add some role"
         ];
-        $data->merge($obj);
+        $objRemove = [
+            'history_type' => "user",
+            'history_body' => "request to remove some role"
+        ];
 
-        $validatorHistory = Validation::getValidateHistory($data);
-        if ($validatorHistory->fails()) {
-            $errors = $validatorHistory->messages();
+        $hsAdd->merge($objAdd);
+        $hsRemove->merge($objRemove);
+
+        $validatorHistoryAdd = Validation::getValidateHistory($hsAdd);
+        $validatorHistoryRemove = Validation::getValidateHistory($hsRemove);
+
+        if ($validatorHistoryAdd->fails() || $validatorHistoryRemove->fails()) {
+            $errors = $validatorHistoryAdd->messages()." | ".$validatorHistoryRemove->messages();
 
             return redirect()->back()->with('failed_message', $errors);
         } else {
-            $role = Converter::getTag($request->user_role);
+            $add = [];
+            $remove = [];
+
+            $countAll = count($request->req_type); 
+            for($i = 0; $i < $countAll; $i++){
+                if($request->req_type[$i] == "add"){
+                    array_push($add, $request->user_role[$i]);
+                } else if($request->req_type[$i] == "remove"){
+                    array_push($remove, $request->user_role[$i]);
+                }
+            }
+
+            $roleAdd = Converter::getTag($add);
+            $roleRemove = Converter::getTag($remove);
+
+            $checkAdd = json_decode($roleAdd, true);
+            $checkRemove = json_decode($roleRemove, true);
+
+            if($checkAdd !== null || $checkRemove !== null || json_last_error() === JSON_ERROR_NONE){
+                if(count($add) > 0){
+                    UserRequest::create([
+                        'id' => Generator::getUUID(),
+                        'tag_slug_name' => $checkAdd,
+                        'request_type' => "add",
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id,
+                        'updated_at' => null,
+                        'updated_by' => null,
+                        'is_rejected' => null,
+                        'rejected_at' => null,
+                        'rejected_by' => null,
+                        'is_accepted' => 0,
+                        'accepted_at' => null,
+                        'accepted_by' => null,
+                    ]);
         
-            $check = json_decode($role, true);
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $hsAdd->history_type, 
+                        'context_id' => null, 
+                        'history_body' => $hsAdd->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                }
+                if(count($remove) > 0){
+                    UserRequest::create([
+                        'id' => Generator::getUUID(),
+                        'tag_slug_name' => $checkRemove,
+                        'request_type' => "remove",
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id,
+                        'updated_at' => null,
+                        'updated_by' => null,
+                        'is_rejected' => null,
+                        'rejected_at' => null,
+                        'rejected_by' => null,
+                        'is_accepted' => 0,
+                        'accepted_at' => null,
+                        'accepted_by' => null,
+                    ]);
+        
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $hsRemove->history_type, 
+                        'context_id' => null, 
+                        'history_body' => $hsRemove->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                }
 
-            if($check !== null || json_last_error() === JSON_ERROR_NONE){
-                UserRequest::create([
-                    'id' => Generator::getUUID(),
-                    'tag_slug_name' => $check,
-                    'request_type' => "add",
-                    'created_at' => date("Y-m-d h:i:s"),
-                    'created_by' => $user_id,
-                    'updated_at' => null,
-                    'updated_by' => null,
-                    'is_rejected' => null,
-                    'rejected_at' => null,
-                    'rejected_by' => null,
-                    'is_accepted' => 0,
-                    'accepted_at' => null,
-                    'accepted_by' => null,
-                ]);
-
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
-                    'context_id' => null, 
-                    'history_body' => $data->history_body, 
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
-                    'created_by' => $user_id
-                ]);
-                
                 return redirect()->back()->with('success_message', "Request sended"); 
             } else {
-                return redirect()->back()->with('success_message', "Failed to send request, tag list not valid"); 
-            } 
+                return redirect()->back()->with('failed_message', "Request failed to sended. Format not valid"); 
+            }            
         }
     }
 

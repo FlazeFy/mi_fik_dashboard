@@ -61,7 +61,7 @@
             <h6 class="text-secondary text-center">Created Event</h6>
         </div>
         <div class="sub-holder text-start" id="body-req">
-            <form action="/profile/request/add" method="POST" id="request_add_form">
+            <form action="/profile/request" method="POST" id="request_add_form">
                 @csrf
                 <h5 class="text-secondary">Requested Tag</h5>
                 <div id="slct_holder"></div>

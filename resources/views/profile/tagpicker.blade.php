@@ -178,18 +178,26 @@
         if(slct_list.length > 0){
             //Check if tag is exist in selected tag.
             slct_list.map((val, index) => {
-                if(val == slug_name){
+                if(val['slug_name'] == slug_name){
                     found = true;
                 }
             });
 
             if(found == false){
-                slct_list.push(slug_name);
+                slct_list.push({
+                    "slug_name": slug_name,
+                    "tag_name": tag_name,
+                    "type": type
+                });
                 //Check this append input value again!
                 $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'>"+tag_name+"</a></div>");
             }
         } else {
-            slct_list.push(slug_name);
+            slct_list.push({
+                "slug_name": slug_name,
+                "tag_name": tag_name,
+                "type": type
+            });
             $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'>"+tag_name+"</a></div>");
         }
 
@@ -201,10 +209,16 @@
             var tags = "";
 
             for(var i = 0; i < slct_list.length; i++){
+                if(slct_list[i]['type'] == "add"){
+                    var color = "text-success";
+                } else if(slct_list[i]['type'] == "remove"){
+                    var color = "text-danger";
+                }
+
                 if(i != slct_list.length - 1){
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>, ';
+                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>, ';
                 } else {
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>';
+                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>';
                 }
             }
             
@@ -234,7 +248,7 @@
     function removeSelectedTag(slug_name, tag_name, type){
         //Remove selected tag
         var tag = document.getElementById('tagger_'+slug_name);
-        slct_list = slct_list.filter(function(e) { return e !== slug_name })
+        slct_list = slct_list.filter(function(e) { return e['slug_name'] !== slug_name })
         tag.parentNode.removeChild(tag);
 
         //Return selected tag to tag collection
@@ -248,12 +262,7 @@
     }
 
     function abortTagPicker(){
-        selectedTag = [];
-        start_section.setAttribute('class', '');
-        load_section.setAttribute('class', 'd-none');
-        document.getElementById("data_wrapper_manage_tag").innerHTML = "";
-        document.getElementById("empty_item_holder").innerHTML = "";
-        document.getElementById("load_more").innerHTML = "";
+        location.reload();
     }
 
     function submitAddForm(){
