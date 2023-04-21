@@ -12,6 +12,8 @@ use App\Models\Menu;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\UserRequest;
+use App\Models\Notification;
+use App\Models\ContentHeader;
 use App\Models\History;
 use App\Models\Question;
 
@@ -27,11 +29,15 @@ class ProfileController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
-
+        
         if(session()->get('role_key') == 0){
             $user = User::find($user_id);
+            $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
+            $totalNotif = null;
         } else {
             $user = Admin::find($user_id);
+            $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
+            $totalNotif = Notification::getCountEngPostNotif($user_id);
         }
         
         $faq = Question::getQuestionByUserId($user_id);
@@ -44,6 +50,8 @@ class ProfileController extends Controller
         return view ('profile.index')
             ->with('menu', $menu)
             ->with('user', $user)
+            ->with('totalEvent', $totalEvent)
+            ->with('totalNotif', $totalNotif)
             ->with('faq', $faq)
             ->with('myreq', $myreq)
             ->with('greet',$greet);

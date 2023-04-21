@@ -60,9 +60,19 @@
 
         <div class="sub-holder text-start" id="body-eng">
             <h5 class="text-secondary">Engagement</h5>
+            <div class="text-center mt-4">
+                <div class="d-inline-block mx-2">
+                    <h4 class="text-center">{{$totalEvent}}</h4>
+                    <h6 class="text-secondary text-center">Posted Event</h6>
+                </div>
 
-            <h4 class="text-center">0</h4>
-            <h6 class="text-secondary text-center">Created Event</h6>
+                @if(session()->get('role_key') == 1)
+                    <div class="d-inline-block mx-2">
+                        <h4 class="text-center">{{$totalNotif}}</h4>
+                        <h6 class="text-secondary text-center">Posted Notification</h6>
+                    </div>
+                @endif
+            </div>
         </div>
 
         @if(session()->get('role_key') == 0)
