@@ -32,24 +32,17 @@ use App\Http\Controllers\User\RequestController;
 use App\Http\Controllers\User\AllController;
 use App\Http\Controllers\User\GroupingController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Route::get('/homepage', [HomepageController::class, 'index'])->name('dashboard');
+######################### Public Route #########################
 
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingController::class, 'index'])->name('landing');
     Route::post('/login', [LandingController::class, 'login_admin']);
     Route::post('/v2/login', [LandingController::class, 'login_auth']);
 });
+
+######################### Private Route #########################
+
+Route::post('/sign-out', [MultiController::class, 'sign_out'])->middleware(['auth_v2:sanctum']);
 
 Route::prefix('/homepage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HomepageController::class, 'index'])->name('homepage');
@@ -172,5 +165,3 @@ Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/request', [ProfileController::class, 'request_role']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']); // Not finished
 });
-
-Route::post('/sign-out', [MultiController::class, 'sign_out']);

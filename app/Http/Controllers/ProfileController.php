@@ -9,6 +9,7 @@ use App\Helpers\Validation;
 use App\Helpers\Converter;
 
 use App\Models\Menu;
+use App\Models\Admin;
 use App\Models\User;
 use App\Models\UserRequest;
 use App\Models\History;
@@ -26,7 +27,13 @@ class ProfileController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
-        $user = User::find($user_id);
+
+        if(session()->get('role_key') == 0){
+            $user = User::find($user_id);
+        } else {
+            $user = Admin::find($user_id);
+        }
+        
         $faq = Question::getQuestionByUserId($user_id);
         $myreq = UserRequest::getRecentlyRequest($user_id);
         

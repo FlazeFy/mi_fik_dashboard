@@ -72,7 +72,9 @@
             url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
-            beforeSend: function () {
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
                 $('.auto-load').show();
             }
         })
