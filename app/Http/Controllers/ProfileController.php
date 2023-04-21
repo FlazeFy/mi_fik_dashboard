@@ -59,9 +59,17 @@ class ProfileController extends Controller
 
     public function edit_profile(Request $request)
     {
-        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+        $role_key = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role_key); 
 
-        $validator = Validation::getValidateEditProfile($request);
+        if($role_key == 1){
+            $role = "admin";
+            $validator = Validation::getValidateEditProfile($request, $role);
+        } else {
+            $role = "user";
+            $validator = Validation::getValidateEditProfile($request, $role);
+        }
+
         if ($validator->fails()) {
             $errors = $validator->messages();
 
@@ -69,7 +77,7 @@ class ProfileController extends Controller
         } else {
             $data = new Request();
             $obj = [
-                'history_type' => "user",
+                'history_type' => $role,
                 'history_body' => "has updated the profile"
             ];
             $data->merge($obj);
@@ -80,13 +88,23 @@ class ProfileController extends Controller
 
                 return redirect()->back()->with('failed_message', $errors);
             } else {
-                User::where('id', $user_id)->update([
-                    'first_name' => $request->first_name,
-                    'last_name' => $request->last_name,
-                    'password' => $request->password,
-                    'updated_at' => date("Y-m-d H:i"),
-                    'updated_by' => $user_id,
-                ]);
+                if($role_key == 1){
+                    Admin::where('id', $user_id)->update([
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'phone' => $request->phone,
+                        'password' => $request->password,
+                        'updated_at' => date("Y-m-d H:i"),
+                    ]);
+                } else {
+                    User::where('id', $user_id)->update([
+                        'first_name' => $request->first_name,
+                        'last_name' => $request->last_name,
+                        'password' => $request->password,
+                        'updated_at' => date("Y-m-d H:i"),
+                        'updated_by' => $user_id,
+                    ]);
+                }
 
                 History::create([
                     'id' => Generator::getUUID(),
