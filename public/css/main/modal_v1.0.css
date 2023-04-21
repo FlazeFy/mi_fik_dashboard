@@ -41,3 +41,9 @@
     background:#00C363;
     color:whitesmoke;
 }
+
+.popover-header{
+    background:#F85D59;
+    color:whitesmoke;
+    border: none;
+} 

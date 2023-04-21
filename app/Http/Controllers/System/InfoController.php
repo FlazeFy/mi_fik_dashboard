@@ -131,48 +131,40 @@ class InfoController extends Controller
         }  
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function delete($id)
     {
-        //
-    }
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $data = new Request();
+        $obj = [
+            'history_type' => "info",
+            'history_body' => "Has delete a info"
+        ];
+        $data->merge($obj);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            Info::where('id', $id)->update([
+                'deleted_at' => date("Y-m-d h:i:s"),
+                'updated_by' => $user_id
+            ]);
+
+            History::create([
+                'id' => Generator::getUUID(),
+                'history_type' => $data->history_type, 
+                'context_id' => null, 
+                'history_body' => $data->history_body, 
+                'history_send_to' => null,
+                'created_at' => date("Y-m-d h:i:s"),
+                'created_by' => $user_id
+            ]);
+            
+            return redirect()->back()->with('success_message', 'Success deleted a info');   
+        }
+        
     }
 }

@@ -131,6 +131,15 @@
     font-weight:500;
     font-size:16px;
 }
+.btn-link-danger{
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:5px;
+    color:#D5534C !important;
+    background:transparent;
+    font-weight:500;
+    font-size:16px;
+}
 .btn-link:hover{
     color:white;
     background:#F78A00;

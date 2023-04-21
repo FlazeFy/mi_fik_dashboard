@@ -9,7 +9,7 @@
 </style>
 
 <div class="table-responsive">
-    <table class="table table-paginate" id="infoTable" cellspacing="0">
+    <table class="table tabular table-paginate" id="infoTable" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col">Type</th>
@@ -19,10 +19,15 @@
                 <th scope="col">Properties</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="tabular-body">
             @php($i = 0)
             @foreach($info as $in)
-                <tr>
+                @php($bg = "")
+                @if($in->is_active == 0)
+                    @php($bg = "waiting")
+                @endif
+
+                <tr class="tabular-item {{$bg}}">
                     <td style="width: 140px;">
                         <form action="/system/info/update/type/{{$in->id}}" method="POST">
                             @csrf
@@ -84,9 +89,15 @@
                     </td>
                     <td>
                         <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$in->info_body}}","{{$in->id}}")'><i class="fa-solid fa-edit"></i></button>
-                        <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                        @if($in->info_location != "delete_info")
+                            <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                        @endif
                     </td>
                 </tr>
+
+                @if($in->info_location != "delete_info")
+                    @include('system.info.delete')
+                @endif
                 
                 @php($i++)
             @endforeach

@@ -20,4 +20,19 @@ class UserRequest extends Model
     protected $casts = [
         'tag_slug_name' => 'array'
     ];
+
+    public static function getRecentlyRequest($id){
+        $res = UserRequest::select('tag_slug_name', 'request_type', 'created_at')
+            ->where('created_by', $id)
+            ->where('is_accepted', 0)
+            ->whereNull('is_rejected')
+            ->limit(1)
+            ->get();
+
+        if(count($res) == 0){
+            return null;
+        } else {
+            return $res;
+        }
+    }
 }

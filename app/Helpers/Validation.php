@@ -137,12 +137,21 @@ class Validation
         ]);
     }
 
-    public static function getValidateEditProfile($request){ 
-        return Validator::make($request->all(), [
-            'first_name' => 'required|min:2|max:35|string',
-            'last_name' => 'nullable|min:2|max:35|string',
-            'password' => 'required|min:2|max:50|string',
-        ]);
+    public static function getValidateEditProfile($request, $role){ 
+        if($role == "admin"){
+            return Validator::make($request->all(), [
+                'first_name' => 'required|min:2|max:35|string',
+                'last_name' => 'nullable|min:2|max:35|string',
+                'password' => 'required|min:2|max:50|string',
+                'phone' => 'required|min:9|max:14|string',
+            ]);
+        } else {
+            return Validator::make($request->all(), [
+                'first_name' => 'required|min:2|max:35|string',
+                'last_name' => 'nullable|min:2|max:35|string',
+                'password' => 'required|min:2|max:50|string',
+            ]);
+        }
     }
     
     public static function getFeedbackCreate($request){

@@ -80,6 +80,10 @@
             url: '/api/v1/notification',
             type: 'get',
             dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            },
             success: function(response){
                 var response = response.data;
                 var len = 0;

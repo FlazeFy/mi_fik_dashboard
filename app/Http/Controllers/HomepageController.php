@@ -90,7 +90,7 @@ class HomepageController extends Controller
         //$archive = Archive::getMyArchive($user_id, "DESC");
         $greet = Generator::getGreeting(date('h'));
 
-        if(Session::has('recatch_message')){
+        if(Session::has('recatch_message') && session()->get('role_key') == 1){
             $count = [
                 'count_request' => UserRequest::count(),
                 'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),

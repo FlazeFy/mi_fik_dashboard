@@ -122,7 +122,9 @@
             url: "/api/v1/user/all_all/limit/100/order/first_name__DESC?page=" + page_new_req,
             datatype: "json",
             type: "get",
-            beforeSend: function () {
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
                 $('.auto-load').show();
             }
         })

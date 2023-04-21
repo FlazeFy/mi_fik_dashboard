@@ -51,7 +51,9 @@
             url: "/api/v1/user/" + name_filter + "/limit/100/order/" + order + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
-            beforeSend: function () {
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
                 $('.auto-load').show();
             }
         })

@@ -84,7 +84,9 @@
         <!--Modal-->
         @include('popup.success')
         @include('popup.failed')
-        @include('components.recatch')
+        @if(session()->get('role_key') == 1)
+            @include('components.recatch')
+        @endif
 
         <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>

@@ -3,6 +3,11 @@
         { id: "first_name", req: true, len: 35 },
         { id: "last_name", req: false, len: 35 },
         { id: "password", req: true, len: 50 },
+        <?php
+            if(session()->get("role_key") == 1){
+                echo '{ id: "phone", req: true, len: 14 }';
+            }
+        ?>
     ];
 </script>
 
@@ -33,6 +38,13 @@
             <label for="username">Username</label>
             <a id="username_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
+        @if(session()->get("role_key") == 1)
+            <div class="form-floating mb-3">
+                <input type="phone" class="form-control nameInput" id="phone" name="phone" value="{{$user->phone}}" oninput="validateForm(validation)" maxlength="14" required>
+                <label for="phone">Phone</label>
+                <a id="phone_msg" class="text-danger my-2" style="font-size:13px;"></a>
+            </div>
+        @endif
         <div class="form-floating mb-3">
             <input type="email" class="form-control nameInput" id="email" name="email" value="{{$user->email}}" disabled required>
             <label for="email">Email</label>
