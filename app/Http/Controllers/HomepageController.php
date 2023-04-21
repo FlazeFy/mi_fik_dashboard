@@ -82,6 +82,10 @@ class HomepageController extends Controller
             $feedback_menu = Generator::getListFeedbackSection();
             session()->put('feedback_menu', $feedback_menu);
         }
+        if(!session()->get('faq_menu')){
+            $faq_menu = Generator::getListFAQSection();
+            session()->put('faq_menu', $faq_menu);
+        }
 
         $tag = Tag::getFullTag("DESC", "DESC");
         $menu = Menu::getMenu();

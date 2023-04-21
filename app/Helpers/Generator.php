@@ -293,6 +293,12 @@ class Generator
         return $res;
     }
 
+    public static function getListFAQSection(){
+        $res = ["question","answer"];
+        
+        return $res;
+    }
+
     public static function getRandomYear(){
         $now = (int)date("Y");
         $res = $now + mt_rand(-3, 6); 

@@ -64,7 +64,7 @@
                         <div class="content-section p-0 pt-3">
                             <header>
                                 <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
-                                @include('components.controlsection')
+                                @include('components.controlsection', ['type' => "vertical"])
                             </header>
                             <div class="p-3">
                                 <div class="row">

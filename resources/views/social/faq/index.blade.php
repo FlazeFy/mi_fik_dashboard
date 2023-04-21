@@ -49,8 +49,30 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
-                        
+                    <div class="row">
+                        @php($sort = session()->get('faq_menu'))
+                        @php($i = 0)
+                        @php($count = count($sort))
+                        @foreach($sort as $st)
+                            <div class="col-lg-6 col-md-6 col-sm-12 ">
+                                <div class="content-section p-0 pt-3">
+                                    <header>
+                                        <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                        @include('components.controlsection', ['type' => "horizontal"])
+                                    </header>
+                                    <div class="p-3">
+                                        <div class="row">
+                                            @if($st == "question")
+                                                @include('social.faq.question', ['question' => []])
+                                            @elseif($st == "answer")
+                                                @include('social.faq.answer', ['answer' => []])
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @php($i++)
+                        @endforeach
                     </div>
                 </div>
             </div>
