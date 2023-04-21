@@ -11,6 +11,7 @@ use App\Helpers\Converter;
 use App\Models\Menu;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Task;
 use App\Models\UserRequest;
 use App\Models\Notification;
 use App\Models\ContentHeader;
@@ -34,10 +35,16 @@ class ProfileController extends Controller
             $user = User::find($user_id);
             $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
             $totalNotif = null;
+            $totalAcc = null;
+            $totalQue = null;
+            $totalTask = Task::getCountEngTask($user_id);
         } else {
             $user = Admin::find($user_id);
             $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
             $totalNotif = Notification::getCountEngPostNotif($user_id);
+            $totalAcc = UserRequest::getCountEngAccReq($user_id);
+            $totalQue = Question::getCountEngQuestionAnswer($user_id);
+            $totalTask = null;
         }
         
         $faq = Question::getQuestionByUserId($user_id);
@@ -52,6 +59,9 @@ class ProfileController extends Controller
             ->with('user', $user)
             ->with('totalEvent', $totalEvent)
             ->with('totalNotif', $totalNotif)
+            ->with('totalQue', $totalQue)
+            ->with('totalAcc', $totalAcc)
+            ->with('totalTask', $totalTask)
             ->with('faq', $faq)
             ->with('myreq', $myreq)
             ->with('greet',$greet);

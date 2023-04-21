@@ -33,10 +33,21 @@
                 </div>
             </div>
         </div>
-        <div class="form-floating mb-3">
-            <input type="username" class="form-control nameInput" id="username" name="username" value="{{$user->username}}" disabled required>
-            <label for="username">Username</label>
-            <a id="username_msg" class="text-danger my-2" style="font-size:13px;"></a>
+        <div class="row mb-2">
+            <div class="col-lg-8 col-md-7 col-sm-12">
+                <div class="form-floating mb-3">
+                    <input type="username" class="form-control nameInput" id="username" name="username" value="{{$user->username}}" disabled required>
+                    <label for="username">Username</label>
+                    <a id="username_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-5 col-sm-12"> 
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control nameInput" id="valid_until" name="valid_until" value="{{$user->valid_until}}" disabled required>
+                    <label for="valid_until">Valid Until</label>
+                    <a id="valid_until_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                </div>
+            </div>
         </div>
         @if(session()->get("role_key") == 1)
             <div class="form-floating mb-3">

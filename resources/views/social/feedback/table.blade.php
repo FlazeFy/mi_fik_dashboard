@@ -1,5 +1,5 @@
-<div class="text-nowrap table-responsive">
-    <table class="table table-paginate" id="feedbackTable" cellspacing="0">
+<div class="table-responsive">
+    <table class="table tabular table-paginate" id="feedbackTable" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col">Feedback</th>
@@ -9,10 +9,10 @@
                 <th scope="col">Delete</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="tabular-body">
             @foreach($feedback as $fb)
                 <tr>
-                    <td>{{$fb->feedback_body}}</td>
+                    <td><div style="word-break: break-all; width: 360px;">{{$fb->feedback_body}}</div></td>
                     <td>
                         @php($total = $fb->feedback_rate)
                         @for($i = 0; $i < $total; $i++)

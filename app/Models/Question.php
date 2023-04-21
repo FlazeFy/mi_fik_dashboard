@@ -24,4 +24,21 @@ class Question extends Model
 
         return $res;
     }
+
+    public static function getCountEngQuestionAnswer($id){
+        $res = Question::selectRaw('COUNT(1) as total')
+            ->where('updated_by', $id)
+            ->groupBy('updated_by')
+            ->get();
+
+        if(count($res) != null){
+            foreach($res as $r){
+                $res = $r->total;
+            }
+        } else {
+            $res = 0;
+        }
+
+        return $res;
+    }
 }
