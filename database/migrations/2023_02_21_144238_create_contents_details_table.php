@@ -17,11 +17,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('content_id', 75);
             $table->longText('content_attach')->nullable();
-            $table->longText('content_tag');
+            $table->longText('content_tag')->nullable();
             $table->longText('content_loc')->nullable();
 
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at', $precision = 0)->nullable();
+            $table->foregin('content_id')->references('id')->on('contents')->onDelete('cascade');
         });
     }
 

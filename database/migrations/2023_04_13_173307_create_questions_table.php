@@ -13,15 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users_groups', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('group_name', 75);
-            $table->string('group_desc', 255);
+            $table->string('question_type', 75);
+            $table->string('question_body', 255);
+            $table->string('question_answer', 500);
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 36);
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->string('updated_by', 36)->nullable();
+            $table->dateTime('deleted_at', $precision = 0)->nullable();
+            $table->string('deleted_by', 36)->nullable();
         });
     }
 
@@ -32,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users_groups');
+        Schema::dropIfExists('questions');
     }
 };

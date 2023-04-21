@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups_relations', function (Blueprint $table) {
+        Schema::create('feedbacks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('group_id', 75);
-            $table->string('user_id', 75);
+            $table->string('feedback_body', 255);
+            $table->integer('feedback_rate', 2);
+            $table->string('feedback_suggest', 35);
 
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 75);
-            $table->foreign('group_id')->references('id')->on('users_groups')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->dateTime('deleted_at', $precision = 0);
         });
     }
 
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups_relations');
+        Schema::dropIfExists('feedbacks');
     }
 };

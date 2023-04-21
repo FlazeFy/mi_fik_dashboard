@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('archive_desc', 255)->nullable();
 
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 75);
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->string('updated_by', 75)->nullable();
+            $table->string('created_by', 75);
         });
     }
 

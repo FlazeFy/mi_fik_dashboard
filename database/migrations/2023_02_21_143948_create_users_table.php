@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('username', 30);
             $table->string('email', 255)->unique();
             $table->string('password', 255);
-            $table->string('first_name', 75);
-            $table->string('last_name', 75)->nullable();
+            $table->string('first_name', 36);
+            $table->string('last_name', 36)->nullable();
             $table->longText('role')->nullable();
             $table->string('image_url', 255)->nullable();
-            
+
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->string('updated_by', 75)->nullable();

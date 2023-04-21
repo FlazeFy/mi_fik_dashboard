@@ -10,7 +10,10 @@ use App\Models\Task;
 
 class QueryTask extends Controller
 {
-    public function getMyTask($user_id) {
+    public function getMyTask(Request $request) {
+
+        $user_id = $request->user()->id;
+
         try{
             $archive = Task::select('slug_name','task_title','task_desc','task_date_start','task_date_end','task_reminder','created_at','updated_at')
                 ->where('created_by', $user_id)

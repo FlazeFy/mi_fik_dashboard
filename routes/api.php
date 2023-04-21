@@ -18,6 +18,11 @@ use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
 use App\Http\Controllers\Api\SystemApi\QueryDictionary as QueryDictionaryApi;
 use App\Http\Controllers\Api\SystemApi\QueryNotification as QueryNotificationApi;
 use App\Http\Controllers\Api\TrashApi\Queries as QueryTrashApi;
+use App\Http\Controllers\Api\QuestionApi\Commands as CommandQuestionApi;
+use App\Http\Controllers\Api\QuestionApi\Queries as QueryQuestionApi;
+use App\Http\Controllers\Api\FeedbackApi\Commands as CommandFeedbackApi;
+use App\Http\Controllers\Api\FeedbackApi\Queries as QueryFeedbackApi;
+use App\Http\Controllers\Api\SystemApi\QueryInfo as QueryInfoApi;
 
 ######################### Public Route #########################
 
@@ -75,7 +80,6 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/{user_id}', [QueryArchiveApi::class, 'getArchive']);
-
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
     Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
@@ -101,3 +105,23 @@ Route::prefix('/v1/group')->middleware(['auth:sanctum'])->group(function() {
 Route::prefix('/v1/trash')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/order/{order}/cat/{category}/find/{search}', [QueryTrashApi::class, 'getAllContentTrash']);
 });
+
+Route::prefix('/v1/help')->group(function() {
+    Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
+});
+
+Route::prefix('/v1/faq')->group(function() {
+    Route::get('/question/{limit}', [QueryQuestionApi::class, 'getQuestion']);
+    Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
+});
+
+Route::prefix('/v1/info')->group(function() {
+    Route::get('/', [QueryInfoApi::class, 'getAvailableInfoApi']);
+});
+
+Route::prefix('/v1/feedback')->group(function() {
+    Route::post('/create', [CommandFeedbackApi::class, 'insertFeedback']);
+    Route::get('/', [QueryFeedbackApi::class, 'getAllFeedbackSuggestionApi']);
+});
+
+Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
