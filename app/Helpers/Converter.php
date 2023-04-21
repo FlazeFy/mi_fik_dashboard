@@ -18,7 +18,7 @@ class Converter
             }
 
             //Clean the json from quotes mark
-            $tag = str_replace('"{',"{", json_encode($tag));
+            $tag = str_replace('"{',"{", json_encode($tag, true));
             $tag = str_replace('}"',"}", $tag);
             $tag = stripslashes($tag);
         } else {

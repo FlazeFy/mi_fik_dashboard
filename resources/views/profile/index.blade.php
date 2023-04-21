@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
         <meta name="description" content="" />
 
-        <title>Trash</title>
+        <title>Profile | {{session()->get("username_key")}}</title>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -26,7 +26,7 @@
         <!-- Bootstrap dataTables Javascript -->
         <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 
-        <!-- CSS Collection -->
+        <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -37,14 +37,10 @@
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
-        <link rel="stylesheet" href="{{ asset('/css/task_box_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/message_v1.0.css') }}"/>
 
         <!-- JS Collection -->
-        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
-        <script src="{{ asset('/js/isotope_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -57,16 +53,33 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-1 py-2 px-0">
-                        <div class="position-relative">
-                            <div class="mt-2 btn-config-holder">
-                                @include('trash.sorting')
-                                @include('trash.searchbar')
+                   
+                    <div class="row">
+                        <div class="col-lg-5 col-md-6 col-12">
+                            @include('profile.info')
+
+                            @if(session()->get('role_key') == 0)
+                                <div class="content-section">
+                                    <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
+                                    @include('profile.tagpicker')
+                                </div>
+                            @endif
+                        </div>
+                        <div class="col-lg-7 col-md-6 col-12">
+                            <div class="content-section">
+                                <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
+                                @include('profile.edit')
                             </div>
-                
-                            @include('trash.content')
+
+                            @if(session()->get('role_key') == 0)
+                                <div class="content-section">
+                                    <h5 class="mx-3 text-secondary fw-bold">FAQ</h5>
+                                    @include('profile.faq')
+                                </div>
+                            @endif
                         </div>
                     </div>
+                   
                 </div>
             </div>
         </div>
@@ -83,5 +96,9 @@
             })
 
         </script>
+
+        <!--Sidebar-->
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+
     </body>
 </html>

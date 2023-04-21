@@ -36,6 +36,19 @@ class User extends Authenticatable
         }
     }
 
+    public static function getProfileByUsername($username){
+        $res = User::select('*')
+            ->where('username', $username)
+            ->limit(1)
+            ->get();
+
+        if(count($res) == 0){
+            return null;
+        } else {
+            return $res;
+        }
+    }
+
     public static function getMostUsedRole(){
         //This query must directly return at least 10 most used tag
         $res = User::select('role')
