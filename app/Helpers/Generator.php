@@ -346,6 +346,20 @@ class Generator
         return $res;
     }
 
+    public static function getRandomUser($null){
+        if($null == 0){
+            $user = User::inRandomOrder()->take(1)->get();
+
+            foreach($user as $us){
+                $res = $us->id;
+            }
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
     public static function getRandomDictionaryType($type){
         $dictionary = Dictionary::where('dct_type', $type)->inRandomOrder()->take(1)->get();
 

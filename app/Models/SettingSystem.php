@@ -12,10 +12,10 @@ class SettingSystem extends Model
 
     protected $table = 'settings_systems';
     protected $primaryKey = 'id';
-    protected $fillable = ['id','DCD_range', 'DTD_range', 'created_at', 'created_by', 'updated_at', 'updated_by'];
+    protected $fillable = ['id','DCD_range', 'DTD_range', 'DHD_range', 'created_at', 'created_by', 'updated_at', 'updated_by'];
 
     public static function getJobsSetting(){
-        $res = SettingSystem::select('id','DCD_range', 'DTD_range', 'updated_at', 'updated_by')
+        $res = SettingSystem::select('id','DCD_range', 'DTD_range', 'DHD_range', 'updated_at', 'updated_by')
             ->get();
 
         return $res;

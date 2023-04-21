@@ -10,6 +10,7 @@ use App\Models\Question;
 use App\Models\Feedback;
 use App\Models\Tag;
 use App\Models\Task;
+use App\Models\Archive;
 
 class DatabaseSeeder extends Seeder
 {
@@ -26,5 +27,6 @@ class DatabaseSeeder extends Seeder
         // Question::factory(10)->create();
         // Tag::factory(4)->create();
         // Task::factory(10)->create();
+        // Archive::factory(10)->create();
     }
 }
