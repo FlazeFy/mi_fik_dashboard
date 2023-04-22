@@ -98,6 +98,8 @@
                 $('#load_more_question').html('<h6 class="text-secondary" style="font-size:14px;">No more item to show</h6>');
             }
 
+            $('#total').text(total);
+
             if (total == 0) {
                 $('#empty_question_holder').html("<img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Category found</h6>");
             } else if (data.length == 0) {
@@ -149,12 +151,16 @@
             setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
-        loadAnswer(answer);
+        loadAnswer(answer, id);
     }
 
-    function loadAnswer(answer){
+    function loadAnswer(answer, id){
         var question_holder = document.getElementById("question_answer");
+        var question_id = document.getElementById("question_id");
+
         question_holder.value = answer;
+        question_id.value = id;
+
         validateForm(validation);
     }
 </script>

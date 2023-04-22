@@ -161,4 +161,10 @@ class Validation
             'feedback_suggest' => ['required', new TypeSuggest],
         ]);
     }
+
+    public static function getValidateAnswerFaq($request){
+        return Validator::make($request->all(), [
+            'question_answer' => 'required|min:2|max:500|string',
+        ]);
+    }
 }

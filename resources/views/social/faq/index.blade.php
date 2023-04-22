@@ -63,8 +63,13 @@
                         @php($i = 0)
                         @php($count = count($sort))
                         @foreach($sort as $st)
-                            <div class="col-lg-6 col-md-6 col-sm-12 ">
-                                <div class="content-section p-0 pt-3">
+                            @php($style = "")
+                            @if($st == "answer")
+                                @php($style = "position: sticky; !important; position: -webkit-sticky; top:120px;")
+                                @php($style2 = "position: sticky; !important; position: -webkit-sticky; top:600px;")
+                            @endif
+                            <div class="col-lg-6 col-md-6 col-sm-12 " >
+                                <div class="content-section p-0 pt-3" style="{{$style}}">
                                     <header>
                                         <h5 class="mx-3 text-secondary fw-bold">
                                             @if($st == "question")
@@ -75,15 +80,20 @@
                                         @include('components.controlsection', ['type' => "horizontal"])
                                     </header>
                                     <div class="p-3">
-                                        <div class="row">
-                                            @if($st == "question")
-                                                @include('social.faq.question', ['question' => []])
-                                            @elseif($st == "answer")
-                                                @include('social.faq.answer', ['answer' => []])
-                                            @endif
-                                        </div>
+                                        @if($st == "question")
+                                            @include('social.faq.question', ['question' => []])
+                                        @elseif($st == "answer")
+                                            @include('social.faq.answer', ['answer' => []])
+                                        @endif
                                     </div>
                                 </div>
+
+                                @if($st == "answer")
+                                    <div class="content-section p-0 p-3" style="{{$style2}}">
+                                        <h5 class="text-secondary fw-bold">History</h5>
+                                        @include('components.history', ['history' => $history])
+                                    </div>
+                                @endif
                             </div>
                             @php($i++)
                         @endforeach
@@ -91,6 +101,10 @@
                 </div>
             </div>
         </div>
+
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
 
         <script>
             //Popover

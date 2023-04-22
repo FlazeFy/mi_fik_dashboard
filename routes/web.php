@@ -159,6 +159,7 @@ Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {
 
     Route::get('/faq', [FaqController::class, 'index']);
     Route::post('/faq/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
+    Route::post('/faq/answer', [FaqController::class, 'set_answer']);
 });
 
 Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {

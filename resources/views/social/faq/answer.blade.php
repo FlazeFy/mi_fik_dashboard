@@ -26,9 +26,10 @@
 </script>
 
 <div class="position-relative">
-    <form class="p-2 mt-2" action="/event/tag/add" method="POST">
+    <form class="p-2 mt-2" action="/social/faq/answer" method="POST">
         @csrf
         <div class="form-floating">
+            <input hidden value="" name="question_id" id="question_id">
             <textarea class="form-control" style="height: 270px" id="question_answer" name="question_answer" oninput="infinteLoadSuggest()" maxlength="500"></textarea>
             <label for="question_answer">FAQ Answer</label>
             <a id="question_answer_msg" class="text-danger my-2" style="font-size:13px;"></a>
@@ -83,8 +84,6 @@
                 var data =  response.data;
                 var total = response.data.length;
                 var last = response.data.last_page;
-
-                $('#total').text(total);
 
                 if (total == 0) {
                     $('#empty_suggest_holder').html("<img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No suggestion found</h6>");
