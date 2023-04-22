@@ -49,6 +49,7 @@ Route::prefix('/v1/feedback')->group(function() {
 Route::prefix('/v1/faq')->group(function() {
     Route::get('/question/{limit}', [QueryQuestionApi::class, 'getQuestion']);
     Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
+    Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
 });
 
 ######################### Private Route #########################

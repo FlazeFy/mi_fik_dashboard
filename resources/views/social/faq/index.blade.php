@@ -41,9 +41,14 @@
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/button_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
+        <script>
+            var answer_id = " ";
+        </script>
+
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -66,6 +71,7 @@
                                                 <span id="total" class="text-primary"></span> 
                                             @endif
                                         {{ucwords($st)}}</h5><hr>
+                                        @include('components.infosection', ['type' => $st])
                                         @include('components.controlsection', ['type' => "horizontal"])
                                     </header>
                                     <div class="p-3">

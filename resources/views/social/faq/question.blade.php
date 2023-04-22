@@ -98,8 +98,6 @@
                 $('#load_more_question').html('<h6 class="text-secondary" style="font-size:14px;">No more item to show</h6>');
             }
 
-            $('#total').text(total);
-
             if (total == 0) {
                 $('#empty_question_holder').html("<img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Category found</h6>");
             } else if (data.length == 0) {
@@ -115,14 +113,20 @@
                     var updatedAt = data[i].updated_at;
                     var username = data[i].username;
 
+                    if(data[i].question_answer){
+                        var questionAnswer = data[i].question_answer;
+                    } else {
+                        var questionAnswer = " ";
+                    }
+
                     if(updatedAt != null){
                         var status = "answered";
                     } else {
-                        var status = " ";
+                        var status = "";
                     }
 
                     var elmt = " " +
-                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionBody + "'" + ', ' 
+                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' 
                         + "'" + username + "'" + ', ' + "'" + id + "'" + ', ' + "'" + status + "'" + ')"> ' +
                         '<h6>' + ucFirst(questionType) + '</h6> ' +
                         ucEachWord(questionBody) + 
@@ -138,19 +142,19 @@
         });
     }
 
-    function loadDetailAnswer(question, user, id, status){
+    function loadDetailAnswer(answer, user, id, status){
         if(status == "answered"){
             setSelectedBtnStyle("background: #00c363; color: whitesmoke; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
             setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
-        loadAnswer(question);
+        loadAnswer(answer);
     }
 
-    function loadAnswer(question){
-        var question_holder = document.getElementById("question_holder_view");
-        question_holder.innerHTML = " ";
-        question_holder.innerHTML = question;
+    function loadAnswer(answer){
+        var question_holder = document.getElementById("question_answer");
+        question_holder.value = answer;
+        validateForm(validation);
     }
 </script>

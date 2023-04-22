@@ -13,7 +13,7 @@ class Queries extends Controller
     //
     public function getQuestion($limit) {
         try {
-            $question = Question::select('questions.id', 'question_type', 'question_body', 'questions.created_at', 'questions.updated_at', 'username')
+            $question = Question::select('questions.id', 'question_type', 'question_body', 'question_answer', 'questions.created_at', 'questions.updated_at', 'username')
                 ->join('users', 'users.id', '=', 'questions.created_by')
                 ->orderBy('created_at', 'DESC')
                 ->paginate($limit);
@@ -58,6 +58,36 @@ class Queries extends Controller
                     'status' => 'success',
                     'message' => 'Answer found',
                     'data' => $answer
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getAnswerSuggestion($answer) {
+        try {
+            $que = Question::select('question_answer', 'username')
+                ->join('admins', 'admins.id', '=', 'questions.updated_by')
+                ->where('question_answer', 'LIKE', '%'.$answer.'%')
+                ->whereNotNull('question_answer')
+                ->limit(10)
+                ->get();
+
+            if ($que->isEmpty()) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Answer not found',
+                    'data' => $que
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Answer found',
+                    'data' => $que
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
