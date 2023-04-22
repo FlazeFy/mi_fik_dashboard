@@ -7,10 +7,10 @@ function validateForm(rules){
         input = document.getElementById(e.id);
         msg = document.getElementById(e.id+"_msg");
 
-        if(input.value.length >= e.len){
+        if(input.value.trim().length >= e.len){
             msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Reaching maximum character length";
             res = false
-        } else if(input.value.length == 0 && e.req === true){
+        } else if(input.value.trim().length == 0 && e.req === true){
             msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Field can't be empty";
             res = false
         } else {

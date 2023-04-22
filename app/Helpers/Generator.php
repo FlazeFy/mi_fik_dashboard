@@ -293,6 +293,12 @@ class Generator
         return $res;
     }
 
+    public static function getListFAQSection(){
+        $res = ["question","answer"];
+        
+        return $res;
+    }
+
     public static function getRandomYear(){
         $now = (int)date("Y");
         $res = $now + mt_rand(-3, 6); 
@@ -338,6 +344,20 @@ class Generator
 
             foreach($admin as $ad){
                 $res = $ad->id;
+            }
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
+    public static function getRandomUser($null){
+        if($null == 0){
+            $user = User::inRandomOrder()->take(1)->get();
+
+            foreach($user as $us){
+                $res = $us->id;
             }
         } else {
             $res = null;

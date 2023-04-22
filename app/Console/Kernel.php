@@ -2,8 +2,12 @@
 
 namespace App\Console;
 
+use App\Schedule\HistorySchedule;
+
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Laravel\ScheduleMonitor\ScheduleHealth;
+
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +19,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        // In production
+        $schedule->call([new HistorySchedule, 'clean'])->dailyAt('00:40');
+
+        // In development
+        $schedule->command(HistorySchedule::clean())->everyMinute(); // Check this shit
     }
 
     /**

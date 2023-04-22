@@ -35,4 +35,21 @@ class UserRequest extends Model
             return $res;
         }
     }
+
+    public static function getCountEngAccReq($id){
+        $res = UserRequest::selectRaw('COUNT(1) as total')
+            ->where('accepted_by', $id)
+            ->groupBy('accepted_by')
+            ->get();
+            
+        if(count($res) != null){
+            foreach($res as $r){
+                $res = $r->total;
+            }
+        } else {
+            $res = 0;
+        }
+
+        return $res;
+    }
 }

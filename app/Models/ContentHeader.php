@@ -152,8 +152,12 @@ class ContentHeader extends Model
             ->groupBy('created_by')
             ->get();
 
-        foreach($res as $r){
-            $res = $r->total;
+        if(count($res) != null){
+            foreach($res as $r){
+                $res = $r->total;
+            }
+        } else {
+            $res = 0;
         }
 
         return $res;

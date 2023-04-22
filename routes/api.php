@@ -33,6 +33,25 @@ Route::prefix('/v1/dictionaries')->group(function() {
     Route::get('/type', [QueryDictionaryApi::class, 'getAllDictionaryType']);
 });
 
+Route::prefix('/v1/help')->group(function() {
+    Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
+});
+
+Route::prefix('/v1/info')->group(function() {
+    Route::get('/', [QueryInfoApi::class, 'getAvailableInfoApi']);
+});
+
+Route::prefix('/v1/feedback')->group(function() {
+    Route::post('/create', [CommandFeedbackApi::class, 'insertFeedback']);
+    Route::get('/', [QueryFeedbackApi::class, 'getAllFeedbackSuggestionApi']);
+});
+
+Route::prefix('/v1/faq')->group(function() {
+    Route::get('/question/{limit}', [QueryQuestionApi::class, 'getQuestion']);
+    Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
+    Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
+});
+
 ######################### Private Route #########################
 
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
@@ -106,22 +125,3 @@ Route::prefix('/v1/trash')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/order/{order}/cat/{category}/find/{search}', [QueryTrashApi::class, 'getAllContentTrash']);
 });
 
-Route::prefix('/v1/help')->group(function() {
-    Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
-});
-
-Route::prefix('/v1/faq')->group(function() {
-    Route::get('/question/{limit}', [QueryQuestionApi::class, 'getQuestion']);
-    Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
-});
-
-Route::prefix('/v1/info')->group(function() {
-    Route::get('/', [QueryInfoApi::class, 'getAvailableInfoApi']);
-});
-
-Route::prefix('/v1/feedback')->group(function() {
-    Route::post('/create', [CommandFeedbackApi::class, 'insertFeedback']);
-    Route::get('/', [QueryFeedbackApi::class, 'getAllFeedbackSuggestionApi']);
-});
-
-Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);

@@ -91,6 +91,7 @@ class SettingController extends Controller
                 SettingSystem::where('id', $id)->update([
                     'DCD_range' => $request->DCD_range,
                     'DTD_range' => $request->DTD_range,
+                    'DHD_range' => $request->DHD_range,
                     'updated_at' => date("Y-m-d H:i"),
                 ]);
 

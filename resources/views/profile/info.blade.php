@@ -21,6 +21,12 @@
     .info-box-profile .body-box .sub-holder{
         margin-bottom: 20px;
     }
+    .sub-holder h6{
+        font-size:13px;
+    }
+    .sub-holder h4{
+        font-size:20px;
+    }
 </style>
 
 <div class="info-box-profile" id="info-box-profile">
@@ -70,6 +76,21 @@
                     <div class="d-inline-block mx-2">
                         <h4 class="text-center">{{$totalNotif}}</h4>
                         <h6 class="text-secondary text-center">Posted Notification</h6>
+                    </div>
+                    <div class="d-inline-block mx-2">
+                        <h4 class="text-center">{{$totalAcc}}</h4>
+                        <h6 class="text-secondary text-center">Accepted Request</h6>
+                    </div>
+                    <div class="d-inline-block mx-2">
+                        <h4 class="text-center">{{$totalQue}}</h4>
+                        <h6 class="text-secondary text-center">Answered Question</h6>
+                    </div>
+                @endif
+
+                @if(session()->get('role_key') == 0)
+                    <div class="d-inline-block mx-2">
+                        <h4 class="text-center">{{$totalTask}}</h4>
+                        <h6 class="text-secondary text-center">Created Task</h6>
                     </div>
                 @endif
             </div>
