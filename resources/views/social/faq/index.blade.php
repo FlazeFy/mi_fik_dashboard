@@ -37,6 +37,10 @@
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/button_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -57,7 +61,11 @@
                             <div class="col-lg-6 col-md-6 col-sm-12 ">
                                 <div class="content-section p-0 pt-3">
                                     <header>
-                                        <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                        <h5 class="mx-3 text-secondary fw-bold">
+                                            @if($st == "question")
+                                                <span id="total" class="text-primary"></span> 
+                                            @endif
+                                        {{ucwords($st)}}</h5><hr>
                                         @include('components.controlsection', ['type' => "horizontal"])
                                     </header>
                                     <div class="p-3">

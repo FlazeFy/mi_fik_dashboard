@@ -13,7 +13,7 @@ class Queries extends Controller
     //
     public function getQuestion($limit) {
         try {
-            $question = Question::select('questions.id', 'question_type', 'question_body', 'questions.created_at', 'username')
+            $question = Question::select('questions.id', 'question_type', 'question_body', 'questions.created_at', 'questions.updated_at', 'username')
                 ->join('users', 'users.id', '=', 'questions.created_by')
                 ->orderBy('created_at', 'DESC')
                 ->paginate($limit);
