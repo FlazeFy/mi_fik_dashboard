@@ -30,10 +30,10 @@ class QueryContent extends Controller
 
             if ($content->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Content Not Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -52,19 +52,13 @@ class QueryContent extends Controller
     public function getContentBySlug($slug)
     {
         try{
-            $select = Query::getSelectTemplate("content_detail");
+            $content = ContentHeader::getFullContentBySlug($slug);
 
-            $content = ContentHeader::selectRaw($select)
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                ->groupBy('contents_headers.id')
-                ->where('slug_name', $slug)
-                ->get();
-
-            if ($content->isEmpty()) {
+            if (count($content) == 0) {
                 return response()->json([
-                    'status' => 'error',
-                    'message' => 'Content Not Found'
+                    'status' => 'failed',
+                    'message' => 'Content Not Found',
+                    'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
@@ -166,10 +160,10 @@ class QueryContent extends Controller
 
             if ($content->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Content Not Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -194,22 +188,22 @@ class QueryContent extends Controller
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = ?", $date)
                 ->whereNull('deleted_at')
-                ->orderBy('content_date_start', 'DESC');
+                ->orderBy('content_date_start', 'DESC')
+                ->get();
 
             $schedule = Task::selectRaw($select_task)
                 ->where('created_by', $request->user_id)
                 ->whereRaw("date(`task_date_start`) = ?", $date)
                 ->whereNull('deleted_at')
                 ->orderBy('tasks.task_date_start', 'DESC')
-                ->union($content)
                 ->get();
 
-            if ($schedule->isEmpty()) {
+            if ($schedule->isEmpty() && $content->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Content Not Found',
-                    'data' => $schedule
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -229,7 +223,6 @@ class QueryContent extends Controller
         try{
             $res= ContentDetail::getMostViewedEvent(7);
 
-
             if(count($res) > 0){
                 return response()->json([
                     'status' => 'success',
@@ -241,7 +234,7 @@ class QueryContent extends Controller
                     'status' => 'failed',
                     'message' => 'Statistic not found',
                     'data' => null
-                ], Response::HTTP_OK);
+                ], Response::HTTP_NOT_FOUND);
             }
 
         } catch(\Exception $e) {

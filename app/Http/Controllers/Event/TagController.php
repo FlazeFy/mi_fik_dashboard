@@ -93,6 +93,7 @@ class TagController extends Controller
                         'slug_name' => $slug,
                         'tag_name' => $request->tag_name,
                         'tag_desc' => $request->tag_desc,
+                        'tag_category' => $request->tag_category,
                         'updated_at' => date("Y-m-d h:i:s"),
                         'updated_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002'
                     ]);
@@ -156,6 +157,7 @@ class TagController extends Controller
                         'slug_name' => $slug,
                         'tag_name' => $request->tag_name,
                         'tag_desc' => $request->tag_desc,
+                        'tag_category' => $request->tag_category,
                         'created_at' => date("Y-m-d h:i:s"),
                         'created_by' => $user_id,
                         'updated_at' => null,

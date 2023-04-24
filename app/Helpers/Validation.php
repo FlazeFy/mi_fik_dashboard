@@ -88,6 +88,7 @@ class Validation
         return Validator::make($request->all(), [
             'tag_name' => 'required|min:2|max:30|string',
             'tag_desc' => 'nullable|max:255|string',
+            'tag_category' => 'required|max:75|string',
         ]);
     }
 

@@ -104,8 +104,8 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Content Not Found',
-                    'data' => $clean
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',

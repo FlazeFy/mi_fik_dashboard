@@ -107,7 +107,7 @@ Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
-    Route::get('/{slug_name}', [QueryUserApi::class, 'getUserDetail']);
+    Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
     Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
     Route::get('/request/old', [QueryUserApi::class, 'getOldUserRequest']);
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);

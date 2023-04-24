@@ -36,9 +36,11 @@ class Commands extends Controller
             }
 
             if (!$user || ($request->password != $user->password)) {
-                throw ValidationException::withMessages([
-                    'result' => ['The provided credentials are incorrect.'],
-                ]);
+                return response()->json([
+                    'status' => 401,
+                    'result' => 'Wrong password',
+                    'token' => null,                
+                ], Response::HTTP_UNAUTHORIZED);
             } else {
                 $token = $user->createToken('login')->plainTextToken;
 

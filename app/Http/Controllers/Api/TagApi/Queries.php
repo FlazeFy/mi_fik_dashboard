@@ -22,7 +22,7 @@ class Queries extends Controller
                     'status' => 'success',
                     'message' => 'Tag Not Found',
                     'data' => $tag
-                ], Response::HTTP_OK);
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',

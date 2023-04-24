@@ -30,8 +30,9 @@ class Queries extends Controller
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'status' => 'error',
-                    'message' => 'Feedback Suggestion Not Found'
+                    'status' => 'failed',
+                    'message' => 'Feedback Suggestion Not Found',
+                    'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
         } catch (\Exception $e) {
