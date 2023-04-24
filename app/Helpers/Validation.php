@@ -164,6 +164,12 @@ class Validation
             ]);
         }
     }
+
+    public static function getValidateEditProfileImage($request){ 
+        return Validator::make($request->all(), [
+            'image_url' => 'nullable|max:255|url',
+        ]);
+    }
     
     public static function getFeedbackCreate($request){
         return Validator::make($request->all(), [

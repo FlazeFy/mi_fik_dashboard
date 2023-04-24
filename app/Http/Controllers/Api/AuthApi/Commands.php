@@ -23,7 +23,7 @@ class Commands extends Controller
             $errors = $validator->messages();
 
             return response()->json([
-                'status' => 422,
+                'status' => 'failed',
                 'result' => $errors,
                 'token' => null
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -37,7 +37,7 @@ class Commands extends Controller
 
             if (!$user || ($request->password != $user->password)) {
                 return response()->json([
-                    'status' => 401,
+                    'status' => 'failed',
                     'result' => 'Wrong password',
                     'token' => null,                
                 ], Response::HTTP_UNAUTHORIZED);
@@ -45,7 +45,7 @@ class Commands extends Controller
                 $token = $user->createToken('login')->plainTextToken;
 
                 return response()->json([
-                    'status' => 200,
+                    'status' => 'success',
                     'result' => $user,
                     'token' => $token,  
                     'role' => $role                  

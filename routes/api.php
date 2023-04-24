@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
 use App\Http\Controllers\Api\ContentApi\CommandTask as CommandTaskApi;
 use App\Http\Controllers\Api\ContentApi\QueryTask as QueryTaskApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
+use App\Http\Controllers\Api\UserApi\Commands as CommandUserApi;
 use App\Http\Controllers\Api\HelpApi\Queries as QueryHelpApi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
@@ -112,6 +113,8 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
     Route::get('/request/old', [QueryUserApi::class, 'getOldUserRequest']);
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
+    Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
+    Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {
