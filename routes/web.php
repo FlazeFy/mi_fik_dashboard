@@ -32,24 +32,17 @@ use App\Http\Controllers\User\RequestController;
 use App\Http\Controllers\User\AllController;
 use App\Http\Controllers\User\GroupingController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// Route::get('/homepage', [HomepageController::class, 'index'])->name('dashboard');
+######################### Public Route #########################
 
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingController::class, 'index'])->name('landing');
     Route::post('/login', [LandingController::class, 'login_admin']);
     Route::post('/v2/login', [LandingController::class, 'login_auth']);
 });
+
+######################### Private Route #########################
+
+Route::post('/sign-out', [MultiController::class, 'sign_out'])->middleware(['auth_v2:sanctum']);
 
 Route::prefix('/homepage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HomepageController::class, 'index'])->name('homepage');
@@ -108,6 +101,7 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/info', [InfoController::class, 'index']);
     Route::post('/info/update/type/{id}', [InfoController::class, 'update_type']);
     Route::post('/info/update/body/{id}', [InfoController::class, 'update_body']);
+    Route::post('/info/delete/{id}', [InfoController::class, 'delete']);
 
     Route::get('/dictionary', [DictionaryController::class, 'index']);
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
@@ -164,13 +158,13 @@ Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/feedback/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 
     Route::get('/faq', [FaqController::class, 'index']);
+    Route::post('/faq/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
+    Route::post('/faq/answer', [FaqController::class, 'set_answer']);
 });
 
 Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ProfileController::class, 'index']);
     Route::post('/edit/profile', [ProfileController::class, 'edit_profile']);
-    Route::post('/request/add', [ProfileController::class, 'request_add']);
+    Route::post('/request', [ProfileController::class, 'request_role']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']); // Not finished
 });
-
-Route::post('/sign-out', [MultiController::class, 'sign_out']);

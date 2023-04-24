@@ -46,7 +46,7 @@ or
 > php artisan make:middleware <NAMA-MIDDLEWARE>
 
 # Make Mail
-> php artisan make:mail <NAMA-MAILER>
+> php artisan make:mail <NAMA-MAILER>Email
 
 # Make Deploy
 > php artisan route:cache

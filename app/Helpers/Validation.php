@@ -137,12 +137,21 @@ class Validation
         ]);
     }
 
-    public static function getValidateEditProfile($request){ 
-        return Validator::make($request->all(), [
-            'first_name' => 'required|min:2|max:35|string',
-            'last_name' => 'nullable|min:2|max:35|string',
-            'password' => 'required|min:2|max:50|string',
-        ]);
+    public static function getValidateEditProfile($request, $role){ 
+        if($role == "admin"){
+            return Validator::make($request->all(), [
+                'first_name' => 'required|min:2|max:35|string',
+                'last_name' => 'nullable|min:2|max:35|string',
+                'password' => 'required|min:2|max:50|string',
+                'phone' => 'required|min:9|max:14|string',
+            ]);
+        } else {
+            return Validator::make($request->all(), [
+                'first_name' => 'required|min:2|max:35|string',
+                'last_name' => 'nullable|min:2|max:35|string',
+                'password' => 'required|min:2|max:50|string',
+            ]);
+        }
     }
     
     public static function getFeedbackCreate($request){
@@ -150,6 +159,12 @@ class Validation
             'feedback_body' => 'required|min:2|max:255|string',
             'feedback_rate' => 'required|numeric|min:1|max:5',
             'feedback_suggest' => ['required', new TypeSuggest],
+        ]);
+    }
+
+    public static function getValidateAnswerFaq($request){
+        return Validator::make($request->all(), [
+            'question_answer' => 'required|min:2|max:500|string',
         ]);
     }
 }

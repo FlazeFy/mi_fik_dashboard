@@ -10,6 +10,10 @@
                 <input type="number" class="form-control" name="DTD_range" min="7" max="100" value="{{$stj->DTD_range}}" required>
                 <label for="floatingInput">Deleted Task Range (Days)</label>
             </div>
+            <div class="form-floating mb-3">
+                <input type="number" class="form-control" name="DHD_range" min="7" max="100" value="{{$stj->DHD_range}}" required>
+                <label for="floatingInput">Deleted History Range (Days)</label>
+            </div>
             <div class="position-absolute" style="right: 15px;">
                 <button class="btn btn-submit" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
             </div>

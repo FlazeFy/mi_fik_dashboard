@@ -82,6 +82,10 @@ class HomepageController extends Controller
             $feedback_menu = Generator::getListFeedbackSection();
             session()->put('feedback_menu', $feedback_menu);
         }
+        if(!session()->get('faq_menu')){
+            $faq_menu = Generator::getListFAQSection();
+            session()->put('faq_menu', $faq_menu);
+        }
 
         $tag = Tag::getFullTag("DESC", "DESC");
         $menu = Menu::getMenu();
@@ -90,7 +94,7 @@ class HomepageController extends Controller
         //$archive = Archive::getMyArchive($user_id, "DESC");
         $greet = Generator::getGreeting(date('h'));
 
-        if(Session::has('recatch_message')){
+        if(Session::has('recatch_message') && session()->get('role_key') == 1){
             $count = [
                 'count_request' => UserRequest::count(),
                 'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),

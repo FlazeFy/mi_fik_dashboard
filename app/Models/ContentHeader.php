@@ -145,4 +145,21 @@ class ContentHeader extends Model
 
         return $id;
     }
+
+    public static function getCountEngPostEvent($id){
+        $res = ContentHeader::selectRaw('COUNT(1) as total')
+            ->where('created_by', $id)
+            ->groupBy('created_by')
+            ->get();
+
+        if(count($res) != null){
+            foreach($res as $r){
+                $res = $r->total;
+            }
+        } else {
+            $res = 0;
+        }
+
+        return $res;
+    }
 }
