@@ -14,6 +14,7 @@ use App\Models\ContentDetail;
 use App\Models\Tag;
 use App\Models\Menu;
 use App\Models\Setting;
+use App\Models\Dictionary;
 use App\Models\History;
 
 class TagController extends Controller
@@ -30,6 +31,7 @@ class TagController extends Controller
         if(session()->get('role_key') == 1){
             $user_id = Generator::getUserIdV2(1);
             $setting = Setting::getSingleSetting("MOT_range", $user_id);
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
         }
 
         //Chart query
@@ -48,6 +50,7 @@ class TagController extends Controller
             return view ('event.tag.index')
                 ->with('mostTag', $mostTag)
                 ->with('tag', $tag)
+                ->with('dct_tag', $dct_tag)
                 ->with('menu', $menu)
                 ->with('setting', $setting)
                 ->with('history', $history)
@@ -60,7 +63,7 @@ class TagController extends Controller
         }
     }
 
-    public function update_tag(Request $request, $id)
+    public function update_tag(Request $request, $type, $id)
     {
         //Validate name avaiability
         $check = Tag::where('tag_name', $request->tag_name)->get();
@@ -70,7 +73,7 @@ class TagController extends Controller
 
             $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
-            $validator = Validation::getValidateTag($request);
+            $validator = Validation::getValidateTag($request, $type);
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
@@ -89,14 +92,19 @@ class TagController extends Controller
 
                     return redirect()->back()->with('failed_message', $errors);
                 } else {
-                    Tag::where('id', $id)->update([
-                        'slug_name' => $slug,
-                        'tag_name' => $request->tag_name,
-                        'tag_desc' => $request->tag_desc,
-                        'tag_category' => $request->tag_category,
-                        'updated_at' => date("Y-m-d h:i:s"),
-                        'updated_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002'
-                    ]);
+                    if($type == "desc"){
+                        Tag::where('id', $id)->update([
+                            'tag_desc' => $request->tag_desc,
+                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+                    } else if($type == "cat"){
+                        Tag::where('id', $id)->update([
+                            'tag_category' => $request->tag_category,
+                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+                    }
 
                     History::create([
                         'id' => Generator::getUUID(),
@@ -133,7 +141,7 @@ class TagController extends Controller
 
             $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
-            $validator = Validation::getValidateTag($request);
+            $validator = Validation::getValidateTag($request, "all");
             if ($validator->fails()) {
                 $errors = $validator->messages();
 

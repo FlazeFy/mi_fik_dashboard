@@ -67,7 +67,7 @@ Route::prefix('/statistic')->middleware(['auth_v2:sanctum'])->group(function () 
 Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/tag', [TagController::class, 'index']);
     Route::post('/tag/add', [TagController::class, 'add_tag']);
-    Route::post('/tag/update/{id}', [TagController::class, 'update_tag']);
+    Route::post('/tag/update/{type}/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 
     Route::get('/detail/{slug_name}', [DetailController::class, 'index']);

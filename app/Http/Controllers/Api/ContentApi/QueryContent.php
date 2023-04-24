@@ -11,6 +11,10 @@ use App\Helpers\Generator;
 use App\Helpers\Validation;
 use App\Helpers\Query;
 
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\ContentViewer;
@@ -183,22 +187,68 @@ class QueryContent extends Controller
         try{
             $select_content = Query::getSelectTemplate("content_schedule");
             $select_task = Query::getSelectTemplate("task_schedule");
+            $user_id = $request->user()->id;
 
             $content = ContentHeader::selectRaw($select_content)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = ?", $date)
                 ->whereNull('deleted_at')
-                ->orderBy('content_date_start', 'DESC')
-                ->get();
+                ->orderBy('content_date_start', 'DESC');
 
             $schedule = Task::selectRaw($select_task)
-                ->where('created_by', $request->user_id)
+                ->where('created_by', $user_id)
                 ->whereRaw("date(`task_date_start`) = ?", $date)
                 ->whereNull('deleted_at')
                 ->orderBy('tasks.task_date_start', 'DESC')
+                ->union($content)
                 ->get();
 
-            if ($schedule->isEmpty() && $content->isEmpty()) {
+            $clean = [];
+            $total_content = 0;
+            $total_task = 0;
+
+            foreach ($schedule as $result) {
+                $loc = json_decode($result->content_loc, true);
+                $tag = json_decode($result->content_tag, true);
+            
+                $slug = $result->slug_name;
+                $title = $result->content_title; 
+                $desc = $result->content_desc;
+                $date_start = $result->content_date_start; 
+                $date_end = $result->content_date_end; 
+                $from = $result->data_from; 
+
+                $clean[] = [
+                    'slug_name' => $slug,
+                    'content_title' => $title,
+                    'content_desc' => $desc,
+                    'content_tag' => $tag,
+                    'content_loc' => $loc,
+                    'content_date_start' => $date_start,
+                    'content_date_end' => $date_end,
+                    'data_from' => $from
+                ];
+
+                if($from == 1){
+                    $total_content++;
+                } else {
+                    $total_task++;
+                }
+            }
+
+            $collection = collect($clean);
+            $perPage = 12;
+            $page = request()->input('page', 1);
+            $paginator = new LengthAwarePaginator(
+                $collection->forPage($page, $perPage),
+                $collection->count(),
+                $perPage,
+                $page,
+                ['path' => url()->current()]
+            );
+            $clean = $paginator->appends(request()->except('page'));
+
+            if ($clean->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Content Not Found',
@@ -208,7 +258,11 @@ class QueryContent extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Content Found',
-                    'data' => $schedule
+                    'total' => [
+                        'content' => $total_content,
+                        'task' => $total_task,
+                    ],
+                    'data' => $clean
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {

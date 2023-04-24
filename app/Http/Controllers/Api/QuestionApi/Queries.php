@@ -20,7 +20,7 @@ class Queries extends Controller
 
             if ($question->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Question not found',
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);

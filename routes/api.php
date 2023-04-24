@@ -70,6 +70,7 @@ Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/tag')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/{limit}', [QueryTagApi::class, 'getAllTag']);
+    Route::get('/cat/{cat}/{limit}', [QueryTagApi::class, 'getAllTagByCat']);
     Route::post('/create', [CommandTagApi::class, 'addTag']);
     Route::put('/update/{id}', [CommandTagApi::class, 'updateTag']);
     Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag']);
