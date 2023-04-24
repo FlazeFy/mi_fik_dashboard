@@ -24,6 +24,7 @@
                     <td><button class="btn btn-danger" data-bs-target="#deleteModal-{{$fb->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button></td>
                 </tr>
 
+                @include("social.feedback.delete")
             @endforeach
         </tbody>
     </table>
