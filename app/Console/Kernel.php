@@ -3,6 +3,8 @@
 namespace App\Console;
 
 use App\Schedule\HistorySchedule;
+use App\Schedule\ContentSchedule;
+use App\Schedule\TaskSchedule;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -20,10 +22,17 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // In production
+
+        
+        // In staging
         $schedule->call([new HistorySchedule, 'clean'])->dailyAt('00:40');
+        $schedule->call([new ContentSchedule, 'clean'])->dailyAt('02:00');
+        $schedule->call([new TaskSchedule, 'clean'])->dailyAt('03:00');
 
         // In development
         $schedule->command(HistorySchedule::clean())->everyMinute(); // Check this shit
+        $schedule->command(ContentSchedule::clean())->everyMinute();
+        $schedule->command(TaskSchedule::clean())->everyMinute();
     }
 
     /**
