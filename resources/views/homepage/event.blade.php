@@ -19,6 +19,7 @@
 
 <script type="text/javascript">
     var page = 1;
+    var myname = "<?= session()->get("username_key") ?>";
     infinteLoadMore(page);
 
     //Fix the sidebar & content page FE first to use this feature
@@ -192,6 +193,35 @@
                     }
                 }
 
+                function getUserImage(img1, img2){
+                    if(img1 || img2){
+                        if(img1){
+                            return img1;
+                        } else {
+                            return img2;
+                        }
+                    } else {
+                        //Should make different between lecturer and admin image. but check the api response time first !
+                        return "{{ asset('/assets/default_lecturer.png')}}";
+                    }
+                }
+
+                function getUsername(username1, username2){
+                    if(username1){
+                        if(username1 == myname){
+                            return "You";
+                        } else {
+                            return username1;
+                        }
+                    } else {
+                        if(username2 == myname){
+                            return "You";
+                        } else {
+                            return username2;
+                        }
+                    }
+                }
+
                 function getEventStatus(start, end){
                     const c_start = new Date(start);
                     const c_end = new Date(end);
@@ -230,6 +260,11 @@
                     var content_loc = data[i].content_loc;
                     var content_tag = data[i].content_tag;
                     var content_image = data[i].content_image;
+                    var admin_image = data[i].admin_image_created;
+                    var user_image = data[i].user_image_created;
+                    var admin_username = data[i].admin_username_created;
+                    var user_username = data[i].user_username_created;
+                    var content_image = data[i].content_image;
                     var content_date_start = data[i].content_date_start;
                     var content_date_end = data[i].content_date_end;
                     var total_views = data[i].total_views;
@@ -245,11 +280,11 @@
                                 "<div class='card-body p-2 w-100'> " +
                                     "<div class='row px-2'> " +
                                         "<div class='col-lg-2 px-1'> " +
-                                            "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                                            "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image) + "' alt='username-profile-pic.png'> " +
                                         "</div> " +
                                         "<div class='col-lg-9 p-0 py-1'> " +
                                             "<h6 class='event-title'>" + content_title + "</h6> " +
-                                            "<h6 class='event-subtitle'>[username]</h6> " +
+                                            "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
                                         "</div> " +
                                     "</div> " +
                                     "<div style='height:45px;'> " +

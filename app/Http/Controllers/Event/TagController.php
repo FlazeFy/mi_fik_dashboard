@@ -31,7 +31,6 @@ class TagController extends Controller
         if(session()->get('role_key') == 1){
             $user_id = Generator::getUserIdV2(1);
             $setting = Setting::getSingleSetting("MOT_range", $user_id);
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
         }
 
         //Chart query
@@ -41,6 +40,7 @@ class TagController extends Controller
         }
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
+        $dct_tag = Dictionary::getDictionaryByType("Tag");
 
         //Set active nav
         session()->put('active_nav', 'event');
@@ -58,6 +58,7 @@ class TagController extends Controller
         } else {
             return view ('event.tag.index')
                 ->with('tag', $tag)
+                ->with('dct_tag', $dct_tag)
                 ->with('menu', $menu)
                 ->with('greet',$greet);
         }

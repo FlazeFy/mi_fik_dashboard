@@ -40,18 +40,27 @@
                         <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
                     </td>
                     <td>
-                        <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
-                            @csrf
-                            <select class="form-select" aria-label="Default select example" name="tag_category" onchange="this.form.submit()">
-                                @foreach($dct_tag as $dtag)
-                                    @if($dtag->slug_name == $tg->tag_category)
-                                        <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                    @else 
-                                        <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </form>
+                        @if(session()->get('role_key') == 1)
+                            <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
+                                @csrf
+                                <select class="form-select" aria-label="Default select example" name="tag_category" onchange="this.form.submit()">
+                                    @foreach($dct_tag as $dtag)
+                                        @if($dtag->slug_name == $tg->tag_category)
+                                            <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                                        @else 
+                                            <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </form>
+                        @else
+                            @foreach($dct_tag as $dtag)
+                                @if($dtag->slug_name == $tg->tag_category)
+                                    {{$dtag->dct_name}}
+                                    @break
+                                @endif
+                            @endforeach
+                        @endif
                     </td>
                     @if(session()->get('role_key') == 1)
                         <td>
