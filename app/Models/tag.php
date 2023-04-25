@@ -14,7 +14,7 @@ class Tag extends Model
 
     protected $table = 'tags';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'slug_name', 'tag_name', 'tag_desc', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['id', 'slug_name', 'tag_name', 'tag_category', 'tag_desc', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'];
 
     public static function getFullTag($order_1, $order_2){
         $res = Tag::orderBy('updated_at', $order_1)

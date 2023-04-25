@@ -19,10 +19,39 @@ class Queries extends Controller
 
             if ($tag->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Tag Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Tag Found',
                     'data' => $tag
                 ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getAllTagByCat($cat, $limit){
+        try{
+            $tag = Tag::select('slug_name', 'tag_name')
+                ->orderBy('created_at', 'DESC')
+                ->orderBy('id', 'DESC')
+                ->where('tag_category', $cat)
+                ->paginate($limit);
+
+            if ($tag->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Tag Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',

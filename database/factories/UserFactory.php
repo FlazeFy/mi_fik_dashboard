@@ -21,8 +21,6 @@ class UserFactory extends Factory
         $name = fake()->name();
         $split = explode(" ", $name);
 
-        $slug_name = strtolower($split[0])."_".strtolower($split[1]);
-
         $role = Generator::getRandomRole();
         $year = Generator::getRandomYear();
 
@@ -39,7 +37,6 @@ class UserFactory extends Factory
         
         return [
             'id' => Generator::getUUID(), 
-            'slug_name' => $slug_name, 
             'username' => fake()->username(),
             'email' => fake()->unique()->safeEmail(), 
             'password' => fake()->password(), 

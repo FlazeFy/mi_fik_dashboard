@@ -25,10 +25,10 @@ class Queries extends Controller
 
             if ($user->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'User request Not Found',
-                    'data' => $user
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -76,10 +76,10 @@ class Queries extends Controller
 
             if ($user->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'User Not Found',
-                    'data' => $user
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -109,10 +109,10 @@ class Queries extends Controller
 
             if ($user->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'User request Not Found',
-                    'data' => $user
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -144,10 +144,10 @@ class Queries extends Controller
 
             if ($user->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'User request Not Found',
-                    'data' => $user
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -163,21 +163,21 @@ class Queries extends Controller
         }
     }
 
-    public function getUserDetail($slug_name){
+    public function getUserDetail($username){
         try{
             $select = Query::getSelectTemplate("user_detail");
 
             $user = User::selectRaw($select)
-                ->where('slug_name', $slug_name)
+                ->where('username', $username)
                 ->limit(1)
                 ->get();
 
             if ($user->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'User Not Found',
-                    'data' => $user
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',

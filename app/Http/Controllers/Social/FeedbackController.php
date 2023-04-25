@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
+use App\Helpers\Validation;
 
 use App\Models\Menu;
+use App\Models\History;
 use App\Models\Feedback;
 
 class FeedbackController extends Controller
@@ -36,14 +38,39 @@ class FeedbackController extends Controller
             ->with('greet',$greet);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function delete_feedback(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+        $data = new Request();
+        $obj = [
+            'history_type' => "feedback",
+            'history_body' => "Has deleted a feedback"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            Feedback::where('id', $id)->update([
+                'deleted_at' => date("Y-m-d H:i"),
+            ]);
+
+            History::create([
+                'id' => Generator::getUUID(),
+                'history_type' => $data->history_type, 
+                'context_id' => null, 
+                'history_body' => $data->history_body, 
+                'history_send_to' => null,
+                'created_at' => date("Y-m-d h:i:s"),
+                'created_by' => $user_id
+            ]);
+            
+            return redirect()->back()->with('success_message', 'Success deleted a feedback');  
+        }
     }
 
     /**

@@ -20,10 +20,10 @@ class Queries extends Controller
 
             if ($question->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Question not found',
-                    'data' => $question
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -51,8 +51,8 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Answer not found',
-                    'data' => $answer
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
@@ -79,10 +79,10 @@ class Queries extends Controller
 
             if ($que->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Answer not found',
-                    'data' => $que
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',

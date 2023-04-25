@@ -21,10 +21,10 @@ class Queries extends Controller
 
             if ($help->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Help category not found',
-                    'data' => $help
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',

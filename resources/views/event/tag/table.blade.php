@@ -18,13 +18,12 @@
     /*Icon color must change on input focus*/
 </style>
 
-<div class="text-nowrap table-responsive">
+<div class="table-responsive">
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col">Tag Name</th>
-                <th scope="col">Created At</th>
-                <th scope="col">Updated At</th>
+                <th scope="col">Category</th>
                 @if(session()->get('role_key') == 1)
                     <th scope="col">Used</th>
                     <th scope="col">Delete</th>
@@ -37,13 +36,30 @@
         <tbody>
             @foreach($tag as $tg)
                 <tr>
-                    <td>{{$tg->tag_name}}</td>
-                    <td>{{date("d/m/y h:i", strtotime($tg->created_at))}}</td>
                     <td>
-                        @if($tg->updated_at)
-                            {{date("d/m/y h:i", strtotime($tg->updated_at))}}
+                        <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
+                    </td>
+                    <td>
+                        @if(session()->get('role_key') == 1)
+                            <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
+                                @csrf
+                                <select class="form-select" aria-label="Default select example" name="tag_category" onchange="this.form.submit()">
+                                    @foreach($dct_tag as $dtag)
+                                        @if($dtag->slug_name == $tg->tag_category)
+                                            <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                                        @else 
+                                            <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </form>
                         @else
-                            -
+                            @foreach($dct_tag as $dtag)
+                                @if($dtag->slug_name == $tg->tag_category)
+                                    {{$dtag->dct_name}}
+                                    @break
+                                @endif
+                            @endforeach
                         @endif
                     </td>
                     @if(session()->get('role_key') == 1)
@@ -69,10 +85,10 @@
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis-vertical more"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}">
+                                <div class="dropdown-menu dropdown-menu-end p-3 shadow" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}" style="width:250px !important;">
                                     <span class="dropdown-item">
                                         <label class="mb-2">Tag Description</label><br>
-                                        <form class="form-custom" method="POST" action="/event/tag/update/{{$tg->id}}">
+                                        <form class="form-custom" method="POST" action="/event/tag/update/desc/{{$tg->id}}">
                                             @csrf
                                             <i class="fa-solid fa-pencil position-absolute" style="top:3.5px; left:6px;"></i>
                                             <input name="tag_name" value="{{$tg->tag_name}}" hidden>
@@ -80,6 +96,13 @@
                                             <input class="input-custom" name="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()">
                                         </form>
                                     </span>
+                                    <h6>Properties</h6>
+                                    <p class="m-0">{{date("d M y", strtotime($tg->created_at))}} at {{date("h:i", strtotime($tg->created_at))}}</p>
+                                    @if($tg->updated_at)
+                                        <p>{{date("d M y", strtotime($tg->updated_at))}} at {{date("h:i", strtotime($tg->updated_at))}}</p>
+                                    @else
+                                        <p>-</p>
+                                    @endif
                                 </div>
                             </div>
                         </td>

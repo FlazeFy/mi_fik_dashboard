@@ -53,10 +53,10 @@ class Commands extends Controller
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
-                        'status' => 'success',
+                        'status' => 'failed',
                         'message' => 'Create tag failed, use unique name',
                         'data' => null
-                    ], Response::HTTP_OK);
+                    ], Response::HTTP_BAD_REQUEST);
                 }
             }
         } catch(\Exception $e) {

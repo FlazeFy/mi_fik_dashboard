@@ -27,7 +27,7 @@ class QueryDictionary extends Controller
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => 'Dictionary Not Found',
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
@@ -54,7 +54,7 @@ class QueryDictionary extends Controller
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => 'Dictionary type Not Found',
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);

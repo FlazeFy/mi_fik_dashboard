@@ -8,6 +8,7 @@
     let validation = [
         { id: "tag_name", req: true, len: 30 },
         { id: "tag_desc", req: false, len: 255 },
+        { id: "tag_category", req: true, len: 75 },
     ];
 </script>
 
@@ -22,6 +23,21 @@
             <input type="text" class="form-control nameInput" id="tag_name" name="tag_name" oninput="validateForm(validation)" maxlength="30" required>
             <label for="tag_name">Tag Name</label>
             <a id="tag_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
+        </div>
+        <div class="form-floating mb-2">
+            <select class="form-select" id="tag_category" name="tag_category" aria-label="Floating label select example" onchange="validateForm(validation)" required>
+                @php($i = 0)
+                @foreach($dct_tag as $dtag)
+                    @if($i == 0)
+                        <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                    @else 
+                        <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                    @endif
+                    @php($i++)
+                @endforeach
+            </select>
+            <label for="tag_category">Category</label>
+            <a id="tag_category_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
         <div class="form-floating">
             <textarea class="form-control" style="height: 100px" id="tag_desc" name="tag_desc" oninput="validateForm(validation)" maxlength="255"></textarea>
