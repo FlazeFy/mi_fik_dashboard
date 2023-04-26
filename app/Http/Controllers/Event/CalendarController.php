@@ -66,4 +66,11 @@ class CalendarController extends Controller
 
         return redirect()->back()->with('success_message', 'Content filtered');
     }
+
+    public function set_ordering_content($order)
+    {
+        session()->put('ordering_finished', $order);
+
+        return redirect()->back()->with('success_message', 'Content ordered');
+    }
 }

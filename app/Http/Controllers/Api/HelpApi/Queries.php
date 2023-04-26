@@ -39,4 +39,35 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getHelpType(){
+        try{
+            $help = Help::select('help_type')
+                ->whereNotNull('help_category')
+                ->where('help_type', '!=', 'about')
+                ->where('help_type', '!=', 'contact')
+                ->orderBy('help_type', 'DESC')
+                ->groupBy('help_type')
+                ->get();
+
+            if ($help->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Help type not found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Help type found',
+                    'data' => $help
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

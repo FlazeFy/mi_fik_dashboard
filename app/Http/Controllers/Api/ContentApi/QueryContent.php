@@ -191,6 +191,47 @@ class QueryContent extends Controller
         }
     }
 
+    public function getFinishedContent($order, $search)
+    {
+        $page = 12;
+
+        try{
+            $select = Query::getSelectTemplate("content_thumbnail");
+            $search = trim($search);
+            
+            $content = ContentHeader::selectRaw($select.",(DATEDIFF(content_date_end, now()) * -1) as days_passed")
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
+                ->groupBy('contents_headers.id')
+                ->orderBy('days_passed', $order)
+                ->whereNull('contents_headers.deleted_at')
+                ->whereRaw('(DATEDIFF(content_date_end, now()) * -1) > 1')
+                ->where('content_title', 'LIKE', '%' . $search . '%')
+                ->paginate($page);
+
+            if ($content->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Content Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content Header Found',
+                    'data' => $content
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function getAllContentSchedule(Request $request, $date){
         try{
             $select_content = Query::getSelectTemplate("content_schedule");

@@ -47,7 +47,7 @@ class LandingController extends Controller
             $check = User::select('id','slug_name', 'username','image_url')
                 ->where('username', $request->username)
                 ->where('password', $request->password)
-                ->whereRaw("role like '%dosen%' or '%staff%'")
+                ->whereRaw("role like '%lecturer%' or '%staff%'")
                 ->limit(1)
                 ->get();
 

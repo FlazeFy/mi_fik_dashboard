@@ -35,6 +35,7 @@ Route::prefix('/v1/dictionaries')->group(function() {
 });
 
 Route::prefix('/v1/help')->group(function() {
+    Route::get('/', [QueryHelpApi::class, 'getHelpType']);
     Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
 });
 
@@ -49,6 +50,7 @@ Route::prefix('/v1/feedback')->group(function() {
 
 Route::prefix('/v1/faq')->group(function() {
     Route::get('/question/{limit}', [QueryQuestionApi::class, 'getQuestion']);
+    Route::get('/question/active/{limit}', [QueryQuestionApi::class, 'getActiveQuestion']);
     Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
     Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
 });
@@ -56,10 +58,6 @@ Route::prefix('/v1/faq')->group(function() {
 ######################### Private Route #########################
 
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
-
-Route::prefix('/v1/help')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
-});
 
 Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/{id_user}', [QueryTaskApi::class, 'getMyTask']);
@@ -97,6 +95,7 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/slug/{slug}/order/{order}/date/{date}/find/{search}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/order/{order}/find/{search}', [QueryContentApi::class, 'getFinishedContent']);
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
@@ -108,6 +107,7 @@ Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
+    Route::get('/', [QueryUserApi::class, 'getMyProfile']);
     Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
     Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);

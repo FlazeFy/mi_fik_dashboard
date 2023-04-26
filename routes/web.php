@@ -88,6 +88,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
 
     Route::get('/calendar', [CalendarController::class, 'index']);
     Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
+    Route::post('/calendar/ordered/{order}', [CalendarController::class, 'set_ordering_content']);
     Route::post('/calendar/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 
     Route::get('/location', [LocationController::class, 'index']);

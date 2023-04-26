@@ -37,24 +37,24 @@ class Query
                 2 as data_from";
 
         } else if($type == "user_request_new"){
-            $query = "slug_name, username, CONCAT(first_name,' ',last_name) as full_name, 
+            $query = "username, CONCAT(first_name,' ',last_name) as full_name, 
                 role, created_at, accepted_at, is_accepted";
                 
         } else if($type == "user_request_old"){
 
-            $query = "users_requests.id, slug_name, username, CONCAT(first_name,' ',last_name) 
+            $query = "users_requests.id, username, CONCAT(first_name,' ',last_name) 
                 as full_name, tag_slug_name, request_type, users_requests.created_at, created_by";
 
         } else if($type == "user_detail"){
-            $query = "slug_name, username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
+            $query = "username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
 
         } else if($type == "group_detail"){
             $query = "users_groups.id, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
         } else if($type == "viewed_event_role"){ 
             $query = "contents_headers.id as id_content, content_title, COUNT(1) as total,
-                COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."dosen".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,
-                COUNT(CASE WHEN users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."dosen".'"'."%' AND users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_student";
+                COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,
+                COUNT(CASE WHEN users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' AND users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_student";
         } else if($type == "notif_my"){
             $query = "notifications.id, notif_type, notif_body, notif_send_to, is_pending, notifications.created_at, CONCAT(users.first_name, ' ', users.last_name) as users_fullname, 
                 CONCAT(admins.first_name, ' ', admins.last_name) as admins_fullname";

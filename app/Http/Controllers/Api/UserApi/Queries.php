@@ -192,4 +192,34 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getMyProfile(Request $request){
+        try{
+            $user_id = $request->user()->id;
+
+            $user = User::select('username', 'email', 'password', 'first_name', 'last_name', 'role', 'image_url', 'valid_until', 'created_at', 'updated_at')
+                ->where('id', $user_id)
+                ->limit(1)
+                ->get();
+
+            if ($user->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'User Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Found',
+                    'data' => $user
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

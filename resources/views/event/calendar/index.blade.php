@@ -40,8 +40,12 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-
         <link rel="stylesheet" href="{{ asset('/css/calendar_v1.0.css') }}"/>
+
+        <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -61,6 +65,10 @@
                         <div class="content-section p-0 pt-3">
                             <header>
                                 <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                @if($st == "finished")
+                                    @include("event.calendar.searchbar")
+                                    @include("event.calendar.sorting")
+                                @endif
                                 @include('components.controlsection', ['type' => "vertical"])
                             </header>
                             <div class="p-3">
