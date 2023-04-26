@@ -95,6 +95,7 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/slug/{slug}/order/{order}/date/{date}/find/{search}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/order/{order}/find/{search}', [QueryContentApi::class, 'getFinishedContent']);
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
@@ -106,6 +107,7 @@ Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
+    Route::get('/', [QueryUserApi::class, 'getMyProfile']);
     Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
     Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
