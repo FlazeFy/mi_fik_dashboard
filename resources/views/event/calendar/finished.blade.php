@@ -36,30 +36,7 @@
     }
 
     function infinteLoadMore(page) {
-        var tag = <?php
-            $tags = session()->get('selected_tag_calendar');
-            
-            if($tags != "All"){
-                echo "'";
-                $count_tag = count($tags);
-                $i = 1;
-
-                foreach($tags as $tg){
-                    if($i != $count_tag){
-                        echo $tg.",";
-                    } else {
-                        echo $tg;
-                    }
-                    $i++;
-                }
-                echo "'";
-            } else {
-                echo "'all'";
-            }
-        ?>;
-
-        var order = <?php echo '"'.session()->get('ordering_event').'";'; ?>
-        var date = <?php echo '"'.session()->get('filtering_date').'";'; ?>
+        var order = <?php echo '"'.session()->get('ordering_finished').'";'; ?>
 
         function getFind(check){
             if(check == null || check.trim() === ''){
