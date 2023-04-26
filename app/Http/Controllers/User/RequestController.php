@@ -40,7 +40,7 @@ class RequestController extends Controller
     public function add_role_acc(Request $request)
     {
         $admin_id = Generator::getUserIdV2(session()->get('role_key'));
-        $user_id = Generator::getUserId($request->slug_user, 2); 
+        $user_id = Generator::getUserId($request->username, 2); 
         $tag = Converter::getTag($request->user_role);
         $new_user = $request->is_new;
 
@@ -69,7 +69,7 @@ class RequestController extends Controller
     public function add_acc(Request $request)
     {
         $admin_id = Generator::getUserIdV2(session()->get('role_key'));
-        $user_id = Generator::getUserId($request->slug_user, 2); 
+        $user_id = Generator::getUserId($request->username, 2); 
 
         User::where('id', $user_id)->update([
             'updated_by' => $admin_id,
@@ -85,7 +85,7 @@ class RequestController extends Controller
     public function add_suspend(Request $request)
     {
         $admin_id = Generator::getUserIdV2(session()->get('role_key'));
-        $user_id = Generator::getUserId($request->slug_user, 2); 
+        $user_id = Generator::getUserId($request->username, 2); 
 
         User::where('id', $user_id)->update([
             'updated_by' => $admin_id,
@@ -101,7 +101,7 @@ class RequestController extends Controller
     public function add_recover(Request $request)
     {
         $admin_id = Generator::getUserIdV2(session()->get('role_key'));
-        $user_id = Generator::getUserId($request->slug_user, 2); 
+        $user_id = Generator::getUserId($request->username, 2); 
 
         User::where('id', $user_id)->update([
             'updated_by' => $admin_id,
@@ -136,7 +136,7 @@ class RequestController extends Controller
                 $count = 0;
 
                 foreach ($listreq as $key => $val) {
-                    $user_id = Generator::getUserId($val['slug_name'], 2);
+                    $user_id = Generator::getUserId($val['username'], 2);
 
                     if($user_id != null){
                         UserRequest::where('id',$val['id'])
@@ -200,7 +200,7 @@ class RequestController extends Controller
 
                 foreach ($listreq as $key => $val) {
                     $status = false;
-                    $user_id = Generator::getUserId($val['slug_name'], 2);
+                    $user_id = Generator::getUserId($val['username'], 2);
 
                     if($val['request_type'] == "add"){
                         if($user_id != null){

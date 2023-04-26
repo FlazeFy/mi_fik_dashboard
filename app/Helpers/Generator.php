@@ -94,24 +94,24 @@ class Generator
         return $reminder;
     }
 
-    public static function getUserId($slug_name, $role){
+    public static function getUserId($username, $role){
         if($role == 0){
             //for dashboard login and content views
             $query = Admin::select('id')
-                ->where('slug_name', $slug_name)
+                ->where('username', $username)
                 ->limit(1)
                 ->get();
         } else if($role == 1) {
             //for dashboard login and content views
             $query = User::select('id')
-                ->where('slug_name', $slug_name)
-                ->whereRaw("role like '%dosen%' or '%staff%'")
+                ->where('username', $username)
+                ->whereRaw("role like '%lecturer%' or '%staff%'")
                 ->limit(1)
                 ->get();
         } else if($role == 2) {
             //for content views only
             $query = User::select('id')
-                ->where('slug_name', $slug_name)
+                ->where('username', $username)
                 ->limit(1)
                 ->get();
         }

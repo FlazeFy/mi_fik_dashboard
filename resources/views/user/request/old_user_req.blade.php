@@ -153,14 +153,14 @@
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var id = data[i].id;
-                    var slug_name = data[i].slug_name;
+                    var username = data[i].username;
                     var full_name = data[i].full_name;
                     var created_at = data[i].created_at;
                     var tag = data[i].tag_slug_name;
                     var type = data[i].request_type;
 
                     var elmt = " " +
-                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + slug_name + "'" + ')"> ' +
+                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ')"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-3 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png"> ' +
@@ -172,8 +172,8 @@
                                         '<h6 class="user-box-date">' + getCreatedAt(created_at) + '</h6> ' +
                                     '</div> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input hidden id="tag_holder_' + slug_name + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+slug_name+'" onclick="addSelected('+"'"+id+"'"+','+"'"+slug_name+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
+                                        '<input hidden id="tag_holder_' + username + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
+                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -188,22 +188,22 @@
         });
     }
 
-    function addSelected(id, slug, type, fullname, checked){
-        var tag = document.getElementById("tag_holder_" + slug).value;
+    function addSelected(id, username, type, fullname, checked){
+        var tag = document.getElementById("tag_holder_" + username).value;
         var ddItemAcc = document.getElementById("acc_all_btn");
         var ddItemRej = document.getElementById("rej_all_btn");
        
         if(selectedOldUser.length == 0){
             selectedOldUser.push({
                 id : id,
-                slug_name : slug,
                 full_name : fullname,
+                username : username,
                 request_type : type,
                 tag_list : tag,
             });
         } else {
             if(checked === false){
-                let indexToRemove = selectedOldUser.findIndex(obj => obj.slug_name == slug);
+                let indexToRemove = selectedOldUser.findIndex(obj => obj.username == username);
                 if (indexToRemove !== -1) {
                     selectedOldUser.splice(indexToRemove, 1);
                 } else {
@@ -212,8 +212,8 @@
             } else {
                 selectedOldUser.push({
                     id : id,
-                    slug_name : slug,
                     full_name : fullname,
+                    username : username,
                     request_type : type,
                     tag_list : tag,
                 });
@@ -239,8 +239,8 @@
         refreshListRej()
     }
 
-    function loadDetailGroup(slug){
-        load_user_detail(slug)
+    function loadDetailGroup(username){
+        load_user_detail(username)
         infinteLoadMoreTag()
     }
 </script>
