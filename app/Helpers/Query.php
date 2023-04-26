@@ -8,6 +8,8 @@ class Query
             $query = "slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,
                 content_date_end,content_tag,contents_headers.created_at,
+                admins.username as admin_username_created, users.username as user_username_created, 
+                admins.image_url as admin_image_created, users.image_url as user_image_created, 
                 count(contents_viewers.id) as total_views";
 
         } else if($type == "content_schedule"){
@@ -59,6 +61,8 @@ class Query
         } else if($type == "event_dump"){
             $query = "ch.slug_name, content_title, content_desc, 
                 ac.username as admin_username_created, uc.username as user_username_created, 
+                ac.image_url as admin_image_created, uc.image_url as user_image_created,
+                ad.image_url as admin_image_deleted, ud.image_url as user_image_deleted,  
                 au.username as admin_username_updated, uu.username as user_username_updated, 
                 ad.username as admin_username_deleted, ud.username as user_username_deleted,
                 content_loc, content_tag, content_date_start, content_date_end, ch.created_at,
@@ -66,6 +70,8 @@ class Query
         } else if($type == "task_dump"){
             $query = "ts.slug_name, task_title as content_title, task_desc as content_desc, 
                 null as admin_username_created, uc.username as user_username_created, 
+                null as admin_image_created, uc.image_url as user_image_created, 
+                null as admin_image_deleted, ud.image_url as user_image_deleted,
                 null as admin_username_updated, uu.username as user_username_updated, 
                 null as admin_username_deleted, ud.username as user_username_deleted,
                 null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, ts.created_at,

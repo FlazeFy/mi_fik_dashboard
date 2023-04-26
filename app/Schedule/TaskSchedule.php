@@ -5,28 +5,35 @@ namespace App\Schedule;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\History;
+use App\Models\Task;
+use App\Models\ArchiveRelation;
 use App\Models\Admin;
 use App\Models\SettingSystem;
 
 use App\Mail\ScheduleEmail;
 use Illuminate\Support\Facades\Mail;
 
-class HistorySchedule
+class TaskSchedule
 {
     public static function clean()
     {
         $setting = SettingSystem::getJobsSetting();
         foreach($setting as $set){
-            $days = $set->DHD_range;
+            $days = $set->DTD_range;
         }
 
-        $schedule = History::whereDate('created_at', '<', Carbon::now()->subDays($days))
-            ->delete();
+        $contents = Task::whereDate('created_at', '<', Carbon::now()->subDays($days))
+            ->get();
 
-        if($schedule > 0){
-            $context = "Successfully removed ".$schedule." history with ".$days." days as it days limiter";
+        foreach($contents as $cts){
+            Task::where('id', $cts->id)->delete();
+            ArchiveRelation::where('content_id', $cts->id)->delete();
+        }
+
+        if($contents > 0){
+            $context = "Successfully removed ".count($contents)." task modules with ".$days." days as it days limiter";
         } else {
-            $context = "No data removed from history with ".$days." days as it days limiter";
+            $context = "No data removed from task modules with ".$days." days as it days limiter";
         }
 
         // Fix the mail problem on staging first

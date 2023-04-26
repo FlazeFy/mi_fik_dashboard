@@ -84,11 +84,22 @@ class Validation
         ]);
     }
 
-    public static function getValidateTag($request){
-        return Validator::make($request->all(), [
-            'tag_name' => 'required|min:2|max:30|string',
-            'tag_desc' => 'nullable|max:255|string',
-        ]);
+    public static function getValidateTag($request, $type){
+        if($type == "desc"){
+            return Validator::make($request->all(), [
+                'tag_desc' => 'nullable|max:255|string',
+            ]);
+        } else if($type == "cat"){
+            return Validator::make($request->all(), [
+                'tag_category' => 'required|max:75|string',
+            ]);
+        } else if($type == "all"){
+            return Validator::make($request->all(), [
+                'tag_name' => 'required|max:30|string',
+                'tag_desc' => 'nullable|max:255|string',
+                'tag_category' => 'required|max:75|string'
+            ]);
+        }
     }
 
     public static function getValidateHistory($request){
@@ -152,6 +163,12 @@ class Validation
                 'password' => 'required|min:2|max:50|string',
             ]);
         }
+    }
+
+    public static function getValidateEditProfileImage($request){ 
+        return Validator::make($request->all(), [
+            'image_url' => 'nullable|max:255|url',
+        ]);
     }
     
     public static function getFeedbackCreate($request){

@@ -19,6 +19,7 @@
 
 <script type="text/javascript">
     var page = 1;
+    var myname = "<?= session()->get("username_key") ?>";
     infinteLoadMore(page);
 
     //Fix the sidebar & content page FE first to use this feature
@@ -181,14 +182,6 @@
                     }
                 }
 
-                function getUsername(admin_username, user_username){
-                    if(admin_username){
-                        return admin_username
-                    } else {
-                        return user_username
-                    }
-                }
-
                 function getDaysRemaining(date, range){
                     date = new Date(date)
                     now = new Date()
@@ -242,6 +235,35 @@
                     "</div>";
                 }
 
+                function getUsername(username1, username2){
+                    if(username1){
+                        if(username1 == myname){
+                            return "You";
+                        } else {
+                            return username1;
+                        }
+                    } else {
+                        if(username2 == myname){
+                            return "You";
+                        } else {
+                            return username2;
+                        }
+                    }
+                }
+
+                function getUserImage(img1, img2){
+                    if(img1 || img2){
+                        if(img1){
+                            return img1;
+                        } else {
+                            return img2;
+                        }
+                    } else {
+                        //Should make different between lecturer and admin image. but check the api response time first !
+                        return "{{ asset('/assets/default_lecturer.png')}}";
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -257,10 +279,14 @@
                     var deleted_at = data[i].deleted_at;
                     var au_created = data[i].admin_username_created;
                     var uu_created = data[i].user_username_created;
+                    var ai_created = data[i].admin_image_created;
+                    var ui_created = data[i].user_image_created;
                     var au_updated = data[i].admin_username_updated;
                     var uu_updated = data[i].user_username_updated;
                     var au_deleted = data[i].admin_username_deleted;
                     var uu_deleted = data[i].user_username_deleted;
+                    var ai_deleted = data[i].admin_image_deleted;
+                    var ui_deleted = data[i].user_image_deleted;
 
                     if(data_from == 1){ // Event
                         var elmt = " " +
@@ -271,11 +297,11 @@
                                     "<div class='card-body p-2 w-100'> " +
                                         "<div class='row px-2'> " +
                                             "<div class='col-lg-2 px-1'> " +
-                                                "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                                                "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_created, ui_created) + "' alt='username-profile-pic.png'> " +
                                             "</div> " +
                                             "<div class='col-lg-9 p-0 py-1'> " +
                                                 "<h6 class='event-title'>" + content_title + "</h6> " +
-                                                "<h6 class='event-subtitle'>[username]</h6> " +
+                                                "<h6 class='event-subtitle'>" + getUsername(au_created, uu_created) + "</h6> " +
                                             "</div> " +
                                         "</div> " +
                                         "<div style='height:45px;'> " +
@@ -306,7 +332,7 @@
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class='row px-2'> " +
                                                 "<div class='col-lg-2 px-1'> " +
-                                                    "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                                                    "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted) + "' alt='username-profile-pic.png'> " +
                                                 "</div> " +
                                                 "<div class='col-lg-9 p-0 py-1'> " +
                                                     "<h6 class='event-title'>Deleted By ~ Deleted At</h6> " +
@@ -331,7 +357,7 @@
                                                 "</div> " +
                                                 "<div class='col-lg-9 p-0 py-1'> " +
                                                     "<h6 class='task-title'>" + content_title + "</h6> " +
-                                                    "<h6 class='task-subtitle'>[username]</h6> " +
+                                                    "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + "</h6> " +
                                                 "</div> " +
                                             "</div> " +
                                             "<div style='height:45px;'> " +

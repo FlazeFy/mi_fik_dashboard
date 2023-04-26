@@ -12,7 +12,7 @@ class Question extends Model
 
     protected $table = 'questions';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'question_type', 'question_body', 'question_answer', 'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
+    protected $fillable = ['id', 'question_type', 'question_body', 'question_answer', 'is_active' ,'created_at', 'created_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
 
     public static function getQuestionByUserId($id){
         $res = Question::selectRaw('questions.id, question_type, question_body, question_answer, questions.created_at, questions.updated_at')

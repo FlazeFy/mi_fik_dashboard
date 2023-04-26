@@ -57,6 +57,10 @@ class Queries extends Controller
                 $desc = $result->content_desc; 
                 $au_created = $result->admin_username_created; 
                 $uu_created = $result->user_username_created; 
+                $ai_created = $result->admin_image_created; 
+                $ui_created = $result->user_image_created; 
+                $ai_deleted = $result->admin_image_deleted; 
+                $ui_deleted = $result->user_image_deleted; 
                 $au_updated = $result->admin_username_updated; 
                 $uu_updated = $result->user_username_updated; 
                 $au_deleted = $result->admin_username_deleted; 
@@ -77,6 +81,10 @@ class Queries extends Controller
                     'user_username_updated' => $uu_updated,
                     'admin_username_deleted' => $au_deleted,
                     'user_username_deleted' => $uu_deleted,
+                    'admin_image_created' => $ai_created,
+                    'user_image_created' => $ui_created,
+                    'admin_image_deleted' => $ai_deleted,
+                    'user_image_deleted' => $ui_deleted,
                     'content_tag' => $tag,
                     'content_loc' => $loc,
                     'content_date_start' => $date_start,
@@ -102,10 +110,10 @@ class Queries extends Controller
 
             if (count($clean) == 0) {
                 return response()->json([
-                    'status' => 'success',
+                    'status' => 'failed',
                     'message' => 'Content Not Found',
-                    'data' => $clean
-                ], Response::HTTP_OK);
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',

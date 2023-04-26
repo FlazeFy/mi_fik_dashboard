@@ -366,6 +366,46 @@ class Generator
         return $res;
     }
 
+    public static function getRandomUserArchive($role){
+        if($role == 1){
+            $user = Archive::select('archives.id', 'archives.created_by')
+                ->join('users','users.id','=','archives.created_by')
+                ->where('content_title', 'LIKE', '%"slug_name":"lecturer"%')
+                ->inRandomOrder()->take(1)->get();
+        } else if($role == 2){
+            $user = Archive::select('archives.id', 'archives.created_by')
+                ->join('users','users.id','=','archives.created_by')
+                ->where('content_title', 'LIKE', '%"slug_name":"student"%')
+                ->inRandomOrder()->take(1)->get();
+        }
+
+        foreach($user as $us){
+            $res = [
+                'id' => $us->id,
+                'user_id' => $us->created_by,
+            ];
+        }
+
+        return $res;
+    }
+
+    public static function getRandomContent($role){
+        if($role == 1){
+            $role = "lecturer";
+        } else if($role == 2){
+            $role = "student";
+        }
+        $content = ContentDetail::select('content_id')
+            ->where('content_tag', 'LIKE', '%"slug_name":"'.$role.'"%')
+            ->inRandomOrder()->take(1)->get();
+
+        foreach($content as $ct){
+            $res = $ct->content_id;
+        }
+
+        return $res;
+    }
+
     public static function getRandomDictionaryType($type){
         $dictionary = Dictionary::where('dct_type', $type)->inRandomOrder()->take(1)->get();
 

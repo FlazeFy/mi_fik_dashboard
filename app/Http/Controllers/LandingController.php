@@ -75,7 +75,7 @@ class LandingController extends Controller
         $request->session()->put('token_key', $request->token);
         $request->session()->put('role_key', $request->role);
         $request->session()->put('email_key', $request->email);
-        $request->session()->put('profile_pic', null);
+        $request->session()->put('profile_pic', $request->profile_pic);
 
         return redirect()->route('homepage')->with('recatch_message', 'true');
     }

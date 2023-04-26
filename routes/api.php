@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
 use App\Http\Controllers\Api\ContentApi\CommandTask as CommandTaskApi;
 use App\Http\Controllers\Api\ContentApi\QueryTask as QueryTaskApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
+use App\Http\Controllers\Api\UserApi\Commands as CommandUserApi;
 use App\Http\Controllers\Api\HelpApi\Queries as QueryHelpApi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
@@ -70,6 +71,7 @@ Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/tag')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/{limit}', [QueryTagApi::class, 'getAllTag']);
+    Route::get('/cat/{cat}/{limit}', [QueryTagApi::class, 'getAllTagByCat']);
     Route::post('/create', [CommandTagApi::class, 'addTag']);
     Route::put('/update/{id}', [CommandTagApi::class, 'updateTag']);
     Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag']);
@@ -107,10 +109,12 @@ Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
-    Route::get('/{slug_name}', [QueryUserApi::class, 'getUserDetail']);
+    Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
     Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
     Route::get('/request/old', [QueryUserApi::class, 'getOldUserRequest']);
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
+    Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
+    Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {

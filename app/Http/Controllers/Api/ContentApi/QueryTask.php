@@ -28,7 +28,7 @@ class QueryTask extends Controller
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => 'Task Not Found',
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);

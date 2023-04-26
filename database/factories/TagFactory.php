@@ -27,6 +27,7 @@ class TagFactory extends Factory
             'slug_name' => $slug_name, 
             'tag_name' => $title, 
             'tag_desc' => fake()->paragraph(), 
+            'tag_category' => Generator::getRandomDictionaryType("TAG-001"), 
             'created_at' => Generator::getRandomDate(0), 
             'created_by' => Generator::getRandomAdmin(0), 
             'updated_at' => Generator::getRandomDate($ran), 
