@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('archives', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('slug_name', 255);
+            $table->string('slug_name', 85);
             $table->string('archive_name', 75);
             $table->string('archive_desc', 255)->nullable();
 
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at', $precision = 0)->nullable();
-            $table->string('updated_by', 75)->nullable();
-            $table->string('created_by', 75);
+            $table->string('updated_by', 36)->nullable();
+            $table->string('created_by', 36);
         });
     }
 

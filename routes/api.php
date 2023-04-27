@@ -32,6 +32,7 @@ Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 Route::prefix('/v1/dictionaries')->group(function() {
     Route::get('/', [QueryDictionaryApi::class, 'getAllDictionary']);
     Route::get('/type', [QueryDictionaryApi::class, 'getAllDictionaryType']);
+    Route::get('/type/{dct_type}', [QueryDictionaryApi::class, 'getAllDictionaryByType']);
 });
 
 Route::prefix('/v1/help')->group(function() {
@@ -115,6 +116,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
+    Route::post('/profile/role/request', [CommandUserApi::class, 'request_role_api']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {

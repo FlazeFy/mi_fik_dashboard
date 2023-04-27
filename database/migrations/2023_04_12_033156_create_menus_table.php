@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('menu_url', 125)->nullable();
             $table->string('menu_icon', 255);
             $table->boolean('menu_access_all');
-            $table->int('sort_number', 3);
+            $table->integer('sort_number')->length(3)->unsigned();
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 36);

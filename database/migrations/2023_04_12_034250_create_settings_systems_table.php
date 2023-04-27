@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('settings_systems', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('DCD_range', 3);
-            $table->integer('DTD_range', 3);
+            $table->integer('DCD_range')->length(3)->unsigned();
+            $table->integer('DTD_range')->length(3)->unsigned();
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 36);

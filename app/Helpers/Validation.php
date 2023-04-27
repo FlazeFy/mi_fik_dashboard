@@ -6,6 +6,7 @@ use App\Rules\TypeHistory;
 use App\Rules\TypeInfo;
 use App\Rules\TypeDictionary;
 use App\Rules\TypeSuggest;
+use App\Rules\TypeQuestion;
 
 class Validation
 {
@@ -148,7 +149,7 @@ class Validation
         ]);
     }
 
-    public static function getValidateEditProfile($request, $role){ 
+    public static function getValidateEditProfile($request, $role){
         if($role == "admin"){
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
@@ -165,12 +166,12 @@ class Validation
         }
     }
 
-    public static function getValidateEditProfileImage($request){ 
+    public static function getValidateEditProfileImage($request){
         return Validator::make($request->all(), [
             'image_url' => 'nullable|max:255|url',
         ]);
     }
-    
+
     public static function getFeedbackCreate($request){
         return Validator::make($request->all(), [
             'feedback_body' => 'required|min:2|max:255|string',
@@ -182,6 +183,13 @@ class Validation
     public static function getValidateAnswerFaq($request){
         return Validator::make($request->all(), [
             'question_answer' => 'required|min:2|max:500|string',
+        ]);
+    }
+
+    public static function getValidateQuestionFaq($request){
+        return Validator::make($request->all(), [
+            'question_body' => 'required|min:2|max:500|string',
+            'question_type' => ['required', new TypeQuestion],
         ]);
     }
 }
