@@ -15,15 +15,15 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('MOL_range');
-            $table->integer('MOT_range');
-            $table->integer('MVE_range');
-            $table->integer('CE_range');
+            $table->integer('MOT_range')->length(3)->unsigned();
+            $table->integer('MOL_range')->length(3)->unsigned();
+            $table->integer('CE_range')->length(3)->unsigned();
+            $table->integer('MVE_range')->length(3)->unsigned();
 
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 75);
             $table->dateTime('updated_at', $precision = 0)->nullable();
-            $table->string('updated_by', 75)->nullable();
+            $table->string('created_by', 36);
+            $table->string('updated_by', 36)->nullable();
         });
     }
 
