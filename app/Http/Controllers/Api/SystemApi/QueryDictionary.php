@@ -66,4 +66,32 @@ class QueryDictionary extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getAllDictionaryByType($dct_type) {
+        try{
+            $dictionary = Dictionary::select('slug_name', 'dct_name')
+                ->where('dct_type', $dct_type)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            if ($dictionary->count() > 0) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Dictionary Found',
+                    'data' => $dictionary
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Dictionary Not Found',
+                    'data' => null
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

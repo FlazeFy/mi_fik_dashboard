@@ -17,8 +17,8 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('maintenance_type', 75);
             $table->string('maintenance_title', 75);
-            $table->string('maintenance_desc', 500); //longText ga si ini??
-            $table->longText('maintenance_result');
+            $table->string('maintenance_desc', 500);
+            $table->string('maintenance_result', 500);
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 36);

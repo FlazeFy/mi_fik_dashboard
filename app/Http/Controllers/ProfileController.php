@@ -30,7 +30,7 @@ class ProfileController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
-        
+
         if(session()->get('role_key') == 0){
             $user = User::find($user_id);
             $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
@@ -46,10 +46,10 @@ class ProfileController extends Controller
             $totalQue = Question::getCountEngQuestionAnswer($user_id);
             $totalTask = null;
         }
-        
+
         $faq = Question::getQuestionByUserId($user_id);
         $myreq = UserRequest::getRecentlyRequest($user_id);
-        
+
         //Set active nav
         session()->put('active_nav', 'profile');
         session()->forget('active_subnav');
@@ -70,7 +70,7 @@ class ProfileController extends Controller
     public function edit_profile(Request $request)
     {
         $role_key = session()->get('role_key');
-        $user_id = Generator::getUserIdV2($role_key); 
+        $user_id = Generator::getUserIdV2($role_key);
 
         if($role_key == 1){
             $role = "admin";
@@ -118,22 +118,22 @@ class ProfileController extends Controller
 
                 History::create([
                     'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
-                    'context_id' => null, 
-                    'history_body' => $data->history_body, 
+                    'history_type' => $data->history_type,
+                    'context_id' => null,
+                    'history_body' => $data->history_body,
                     'history_send_to' => null,
                     'created_at' => date("Y-m-d h:i:s"),
                     'created_by' => $user_id
                 ]);
-                
-                return redirect()->back()->with('success_message', 'Profile updated');  
+
+                return redirect()->back()->with('success_message', 'Profile updated');
             }
-        } 
+        }
     }
 
     public function request_role(Request $request)
     {
-        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+        $user_id = $request->user()->id;
 
         $hsAdd = new Request();
         $hsRemove = new Request();
@@ -161,7 +161,7 @@ class ProfileController extends Controller
             $add = [];
             $remove = [];
 
-            $countAll = count($request->req_type); 
+            $countAll = count($request->req_type);
             for($i = 0; $i < $countAll; $i++){
                 if($request->req_type[$i] == "add"){
                     array_push($add, $request->user_role[$i]);
@@ -193,12 +193,12 @@ class ProfileController extends Controller
                         'accepted_at' => null,
                         'accepted_by' => null,
                     ]);
-        
+
                     History::create([
                         'id' => Generator::getUUID(),
-                        'history_type' => $hsAdd->history_type, 
-                        'context_id' => null, 
-                        'history_body' => $hsAdd->history_body, 
+                        'history_type' => $hsAdd->history_type,
+                        'context_id' => null,
+                        'history_body' => $hsAdd->history_body,
                         'history_send_to' => null,
                         'created_at' => date("Y-m-d h:i:s"),
                         'created_by' => $user_id
@@ -220,22 +220,22 @@ class ProfileController extends Controller
                         'accepted_at' => null,
                         'accepted_by' => null,
                     ]);
-        
+
                     History::create([
                         'id' => Generator::getUUID(),
-                        'history_type' => $hsRemove->history_type, 
-                        'context_id' => null, 
-                        'history_body' => $hsRemove->history_body, 
+                        'history_type' => $hsRemove->history_type,
+                        'context_id' => null,
+                        'history_body' => $hsRemove->history_body,
                         'history_send_to' => null,
                         'created_at' => date("Y-m-d h:i:s"),
                         'created_by' => $user_id
                     ]);
                 }
 
-                return redirect()->back()->with('success_message', "Request sended"); 
+                return redirect()->back()->with('success_message', "Request sended");
             } else {
-                return redirect()->back()->with('failed_message', "Request failed to sended. Format not valid"); 
-            }            
+                return redirect()->back()->with('failed_message', "Request failed to sended. Format not valid");
+            }
         }
     }
 

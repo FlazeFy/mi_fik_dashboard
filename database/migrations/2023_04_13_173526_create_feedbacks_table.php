@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('feedback_body', 255);
-            $table->integer('feedback_rate', 2);
+            $table->integer('feedback_rate')->length(1)->unsigned();
             $table->string('feedback_suggest', 35);
 
             $table->dateTime('created_at', $precision = 0);

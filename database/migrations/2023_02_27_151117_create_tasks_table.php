@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('slug_name', 75);
+            $table->string('slug_name', 85);
             $table->string('task_title', 75);
             $table->string('task_desc', 255)->nullable();
 
