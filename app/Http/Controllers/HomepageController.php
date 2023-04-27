@@ -49,6 +49,9 @@ class HomepageController extends Controller
         if(!session()->get('ordering_event')){
             session()->put('ordering_event', "DESC");
         }
+        if(!session()->get('ordering_finished')){
+            session()->put('ordering_finished', "ASC");
+        }
         if(!session()->get('ordering_trash')){
             session()->put('ordering_trash', "DESC");
         }

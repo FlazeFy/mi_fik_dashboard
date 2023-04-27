@@ -32,9 +32,9 @@
 <script>
     var page_tag = 1;
 
-    function load_user_detail(slug_name_search) {        
+    function load_user_detail(username_search) {        
         $.ajax({
-            url: "/api/v1/user/" + slug_name_search,
+            url: "/api/v1/user/" + username_search,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -140,7 +140,7 @@
                             '<div class="modal-content"> ' +
                             '<form action="/user/request/manage_acc" method="POST"> ' +
                                 '@csrf ' +
-                                '<input hidden name="slug_user" value="'+slug+'"> ' +
+                                '<input hidden name="username" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
                                     '<h5 class="modal-title" id="accLabel">Accept New User</h5> ' +
                                     '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
@@ -163,7 +163,7 @@
                             '<div class="modal-content"> ' +
                             '<form action="/user/request/manage_suspend" method="POST"> ' +
                                 '@csrf ' +
-                                '<input hidden name="slug_user" value="'+slug+'"> ' +
+                                '<input hidden name="username" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
                                     '<h5 class="modal-title" id="susLabel">Suspend User</h5> ' +
                                     '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
@@ -186,7 +186,7 @@
                             '<div class="modal-content"> ' +
                             '<form action="/user/request/manage_recover" method="POST"> ' +
                                 '@csrf ' +
-                                '<input hidden name="slug_user" value="'+slug+'"> ' +
+                                '<input hidden name="username" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
                                     '<h5 class="modal-title" id="recLabel">Recover User</h5> ' +
                                     '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
@@ -207,7 +207,7 @@
                     $("#data_wrapper_user_detail").empty();
 
                     //Attribute
-                    var slug_name = data[i].slug_name;
+                    var username = data[i].username;
                     var full_name = data[i].full_name;
                     var email = data[i].email;
                     var username = data[i].username;
@@ -217,7 +217,7 @@
                     var is_accepted = data[i].is_accepted;
 
                     var elmt = " " +
-                        '<input hidden name="slug_user" value="' + slug_name + '"> ' +
+                        '<input hidden name="username" value="' + username + '"> ' +
                         '<input hidden name="is_new" value="' + getNewUser(is_accepted) + '"> ' +
                         '<div class=""> ' +
                             '<div class="row"> ' +
@@ -262,11 +262,11 @@
                         '</div>';
 
                         if(!is_accepted && !accepted_at){
-                            getAccUser(slug_name, full_name);
+                            getAccUser(username, full_name);
                         } else if(is_accepted && accepted_at){ 
-                            getSuspendUser(slug_name, full_name);
+                            getSuspendUser(username, full_name);
                         } else if(!is_accepted && accepted_at){ 
-                            getRecoverUser(slug_name, full_name);
+                            getRecoverUser(username, full_name);
                         }
 
                     $("#data_wrapper_user_detail").append(elmt);

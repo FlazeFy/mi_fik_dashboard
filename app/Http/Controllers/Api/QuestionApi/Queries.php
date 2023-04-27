@@ -39,6 +39,35 @@ class Queries extends Controller
         }
     }
 
+    public function getActiveQuestion($limit) {
+        try {
+            $question = Question::select('question_type', 'question_body', 'question_answer')
+                ->where('is_active', '1')
+                ->whereNotNull('question_answer')
+                ->orderBy('created_at', 'DESC')
+                ->paginate($limit);
+
+            if ($question->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Question not found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Question found',
+                    'data' => $question
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function getAnswer($id) {
         try {
             $answer = Question::select('questions.id', 'question_answer', 'questions.updated_at', 'username')

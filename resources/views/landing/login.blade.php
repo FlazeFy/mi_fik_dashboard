@@ -70,7 +70,7 @@
                 if(response.result.hasOwnProperty('role')){
                     let arr_role = response.result.role;
                     arr_role.forEach(e => {
-                        if(e.slug_name === "dosen" || e.slug_name === "staff"){
+                        if(e.slug_name === "lecturer" || e.slug_name === "staff"){
                             found = true;
                         }
                     });
