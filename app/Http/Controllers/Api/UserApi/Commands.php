@@ -26,11 +26,9 @@ class Commands extends Controller
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
-                return redirect()->back()->with('failed_message', $errors);
                 return response()->json([
                     'status' => 'failed',
                     'result' => $errors,
-                    'token' => null
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $data = new Request();
@@ -44,7 +42,10 @@ class Commands extends Controller
                 if ($validatorHistory->fails()) {
                     $errors = $validatorHistory->messages();
 
-                    return redirect()->back()->with('failed_message', $errors);
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => $errors,
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
                     $user = User::where('id', $user_id)->update([
                         'first_name' => $request->first_name,
@@ -91,7 +92,6 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'result' => $errors,
-                    'token' => null
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $data = new Request();
@@ -105,7 +105,10 @@ class Commands extends Controller
                 if ($validatorHistory->fails()) {
                     $errors = $validatorHistory->messages();
 
-                    return redirect()->back()->with('failed_message', $errors);
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => $errors,
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
                     $user = User::where('id', $user_id)->update([
                         'image_url' => $request->image_url,
