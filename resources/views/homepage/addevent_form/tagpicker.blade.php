@@ -12,8 +12,18 @@
     //Tag collection
     tag_list = [
         <?php 
-            foreach($tag as $tg){
-                echo '{"slug_name":"'.$tg->slug_name.'", "tag_name":"'.$tg->tag_name.'"},';
+            if(session()->get('role_key') == 1){
+                $colltag = $tag;
+            } else {
+                $colltag = $mytag;
+            }
+           
+            foreach($colltag as $tg){
+                if(is_array($colltag)){
+                    echo '{"slug_name":"'.$tg['slug_name'].'", "tag_name":"'.$tg['tag_name'].'"},';
+                } else {
+                    echo '{"slug_name":"'.$tg->slug_name.'", "tag_name":"'.$tg->tag_name.'"},';
+                }
             }
         ?>];
     

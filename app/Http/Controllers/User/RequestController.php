@@ -207,7 +207,7 @@ class RequestController extends Controller
                             $newRoles = json_decode($val['tag_list'], true);
 
                             if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
-                                $rolesOld = User::getUserRole($user_id);
+                                $rolesOld = User::getUserRole($user_id, 0);
                                 
                                 //Bug if we use formal looping
                                 $merge = array_merge($newRoles, $rolesOld[0]['role']);
@@ -228,7 +228,7 @@ class RequestController extends Controller
                             $newRoles = json_decode($val['tag_list'], true);
 
                             if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
-                                $rolesOld = User::getUserRole($user_id);
+                                $rolesOld = User::getUserRole($user_id, 0);
                                 $uniqueKeys = [];
                                 $merge = array_merge($newRoles, $rolesOld[0]['role']);
 

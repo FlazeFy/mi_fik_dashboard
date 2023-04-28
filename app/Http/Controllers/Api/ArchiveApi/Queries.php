@@ -10,13 +10,15 @@ use App\Models\Archive;
 
 class Queries extends Controller
 {
-    public function getArchive(Request $request) {
-
-        $user_id = $request->user()->id;
-
+    public function getArchive(Request $request) 
+    {
         try{
+            $user_id = $request->user()->id;
+
             $archive = Archive::select('slug_name', 'archive_name', 'archive_desc')
                 ->where('created_by', $user_id)
+                ->orderBy('created_at', 'DESC')
+                ->orderBy('updated_at', 'DESC')
                 ->get();
 
             if ($archive->count() > 0) {

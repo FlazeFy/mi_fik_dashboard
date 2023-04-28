@@ -36,7 +36,7 @@ class HomepageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $type = ["Reminder", "Attachment"];
 
@@ -89,8 +89,7 @@ class HomepageController extends Controller
             $faq_menu = Generator::getListFAQSection();
             session()->put('faq_menu', $faq_menu);
         }
-
-        $tag = Tag::getFullTag("DESC", "DESC");
+        
         $menu = Menu::getMenu();
         $info = Info::getAvailableInfo("homepage");
         $dictionary = Dictionary::getDictionaryByType($type);
@@ -110,12 +109,25 @@ class HomepageController extends Controller
             $count = null;
         }
         
+        if(session()->get('role_key') == 1){
+            $tag = Tag::getFullTag("DESC", "DESC");
+            $mytag = null;
+        } else {
+            $tag = null;
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
+            $list = User::getUserRole($user_id, session()->get('role_key'));
+            foreach($list as $l){
+                $mytag = $l->role;
+            }
+        }
+        
         //Set active nav
         session()->put('active_nav', 'homepage');
         session()->forget('active_subnav');
 
         return view ('homepage.index')
             ->with('tag', $tag)
+            ->with('mytag', $mytag)
             ->with('menu', $menu)
             ->with('info', $info)
             ->with('dictionary', $dictionary)
