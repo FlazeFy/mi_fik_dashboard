@@ -18,7 +18,7 @@ class TypeQuestion implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['event', 'task', 'user', 'tag'];
+        $type = ['event', 'task', 'account', 'others', 'group','announcement'];
 
         foreach ($type as $format) {
             if ($format === $value) {

@@ -49,38 +49,33 @@ class Commands extends Controller
     public function createQuestion(Request $request) {
         try {
             $user_id = $request->user()->id;
-
             $validator = Validation::getValidateQuestionFaq($request);
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'status' => 'failed',
                     'message' => $validator->errors()
-                ], Response::HTTP_BAD_REQUEST);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $content = Question::create([
                     'id' => Generator::getUUID(),
-                    'question' => $request->question,
-                    'answer' => null,
+                    'question_type' => $request->question_type,
+                    'question_body' => $request->question_body,
+                    'question_answer' => null,
+                    'is_active' => 0,
                     'created_at' => date("Y-m-d h:i:s"),
                     'created_by' => $user_id,
                     'updated_at' => null,
                     'updated_by' => null,
+                    'deleted_at' => null,
+                    'deleted_by' => null,
                 ]);
 
-                if ($content) {
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Content created',
-                        'data' => $content
-                    ], Response::HTTP_CREATED);
-                } else {
-                    return response()->json([
-                        'status' => 'failed',
-                        'message' => 'Content not created',
-                        'data' => null
-                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
-                }
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Question created',
+                    'data' => $content
+                ], Response::HTTP_OK);
             }
         } catch (\Exception $e) {
             return response()->json([

@@ -174,23 +174,35 @@ class Commands extends Controller
                 $add = [];
                 $remove = [];
 
-                $countAll = count($request->req_type);
-                for($i = 0; $i < $countAll; $i++){
-                    if($request->req_type[$i] == "add"){
-                        array_push($add, $request->user_role[$i]);
-                    } else if($request->req_type[$i] == "remove"){
-                        array_push($remove, $request->user_role[$i]);
+                if(is_array($request->user_role)){
+                    $countAll = count($request->req_type);
+                    for($i = 0; $i < $countAll; $i++){
+                        if($request->req_type[$i] == "add"){
+                            array_push($add, $request->user_role[$i]);
+                        } else if($request->req_type[$i] == "remove"){
+                            array_push($remove, $request->user_role[$i]);
+                        }
+                    }
+
+                    $roleAdd = Converter::getTag($add);
+                    $roleRemove = Converter::getTag($remove);
+
+                    $checkAdd = json_decode($roleAdd, true);
+                    $checkRemove = json_decode($roleRemove, true);
+                } else {
+                    if($request->req_type == "add"){
+                        $checkAdd = $request->user_role;
+                        $roleAdd = Converter::getTag(json_decode($checkAdd));
+                        $checkAdd = json_decode($roleAdd, true);
+                    } else if($request->req_type == "remove"){
+                        $checkRemove = $request->user_role;
+                        $roleRemove = Converter::getTag(json_decode($checkRemove));
+                        $checkRemove = json_decode($roleRemove, true);
                     }
                 }
 
-                $roleAdd = Converter::getTag($add);
-                $roleRemove = Converter::getTag($remove);
-
-                $checkAdd = json_decode($roleAdd, true);
-                $checkRemove = json_decode($roleRemove, true);
-
                 if($checkAdd !== null || $checkRemove !== null || json_last_error() === JSON_ERROR_NONE){
-                    if(count($add) > 0){
+                    if(count($add) > 0 || (!is_array($request->user_role) && $request->req_type == "add")){
                         UserRequest::create([
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkAdd,
@@ -217,7 +229,7 @@ class Commands extends Controller
                             'created_by' => $user_id
                         ]);
                     }
-                    if(count($remove) > 0){
+                    if(count($remove) > 0 || (!is_array($request->user_role) && $request->req_type == "remove")){
                         UserRequest::create([
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkRemove,
@@ -248,13 +260,11 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => 'Request has been sended',
-                        'data' => $add." | ".$remove
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
                         'message' => 'Request failed',
-                        'data' => $add." | ".$remove
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }

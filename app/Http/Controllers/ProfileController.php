@@ -133,7 +133,8 @@ class ProfileController extends Controller
 
     public function request_role(Request $request)
     {
-        $user_id = $request->user()->id;
+        $role_key = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role_key);
 
         $hsAdd = new Request();
         $hsRemove = new Request();

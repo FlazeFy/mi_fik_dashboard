@@ -240,13 +240,15 @@ class QueryContent extends Controller
 
             $content = ContentHeader::selectRaw($select_content)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->whereRaw("date(`content_date_start`) = ?", $date)
+                ->whereRaw("date(`content_date_start`) = '".$date."'")
+                //->whereRaw("date(`content_date_start`) <= '".$date."' AND date(`content_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
             $schedule = Task::selectRaw($select_task)
                 ->where('created_by', $user_id)
-                ->whereRaw("date(`task_date_start`) = ?", $date)
+                ->whereRaw("date(`task_date_start`) = '".$date."'")
+                //->whereRaw("date(`task_date_start`) <= '".$date."' AND date(`task_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('tasks.task_date_start', 'DESC')
                 ->union($content)
@@ -286,6 +288,7 @@ class QueryContent extends Controller
             }
 
             $collection = collect($clean);
+            $collection = $collection->sortBy('content_date_start')->values();
             $perPage = 12;
             $page = request()->input('page', 1);
             $paginator = new LengthAwarePaginator(
@@ -301,16 +304,20 @@ class QueryContent extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Content Not Found',
+                    'total' => [[
+                        'content' => $total_content,
+                        'task' => $total_task,
+                    ]],
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Content Found',
-                    'total' => [
+                    'total' => [[
                         'content' => $total_content,
                         'task' => $total_task,
-                    ],
+                    ]],
                     'data' => $clean
                 ], Response::HTTP_OK);
             }

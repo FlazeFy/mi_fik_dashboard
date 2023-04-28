@@ -37,7 +37,8 @@ class CalendarController extends Controller
             $mytag = null;
         } else {
             $tag = null;
-            $list = User::getUserRole($request->user()->id, session()->get('role_key'));
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
+            $list = User::getUserRole($user_id, session()->get('role_key'));
             foreach($list as $l){
                 $mytag = $l->role;
             }
