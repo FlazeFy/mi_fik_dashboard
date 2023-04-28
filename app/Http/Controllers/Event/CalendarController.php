@@ -12,6 +12,7 @@ use App\Helpers\Generator;
 use App\Models\ContentHeader;
 use App\Models\Tag;
 use App\Models\Menu;
+use App\Models\User;
 
 class CalendarController extends Controller
 {
@@ -30,6 +31,17 @@ class CalendarController extends Controller
         $tag = Tag::getFullTag("DESC", "DESC");
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
+
+        if(session()->get('role_key') == 1){
+            $tag = Tag::getFullTag("DESC", "DESC");
+            $mytag = null;
+        } else {
+            $tag = null;
+            $list = User::getUserRole($request->user()->id, session()->get('role_key'));
+            foreach($list as $l){
+                $mytag = $l->role;
+            }
+        }
             
         //Set active nav
         session()->put('active_nav', 'event');
@@ -38,6 +50,7 @@ class CalendarController extends Controller
         return view ('event.calendar.index')
             ->with('content', $content)
             ->with('tag', $tag)
+            ->with('mytag', $mytag)
             ->with('menu', $menu)
             ->with('greet',$greet);
     }

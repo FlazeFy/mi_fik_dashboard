@@ -93,7 +93,7 @@
                     $('#sorry_modal').modal('show');
                 }
             },
-            error: function(response) {
+            error: function(response, jqXHR, textStatus, errorThrown) {
                 var errorMessage = "Unknown error occurred";
                 var usernameMsg = null;
                 var passMsg = null;
@@ -102,12 +102,17 @@
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation
-                    if(response.responseJSON.result.hasOwnProperty('username')){
-                        usernameMsg = response.responseJSON.result.username[0];
+                    if(typeof response.responseJSON.result === "string"){
+                        allMsg = response.responseJSON.result;
+                    } else {
+                        if(response.responseJSON.result.hasOwnProperty('username')){
+                            usernameMsg = response.responseJSON.result.username[0];
+                        }
+                        if(response.responseJSON.result.hasOwnProperty('password')){
+                            passMsg = response.responseJSON.result.password[0];
+                        }
                     }
-                    if(response.responseJSON.result.hasOwnProperty('password')){
-                        passMsg = response.responseJSON.result.password[0];
-                    }
+                    
                 } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
                     allMsg = response.responseJSON.errors.result[0]
                 } else {

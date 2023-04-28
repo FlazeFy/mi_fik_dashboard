@@ -20,7 +20,13 @@
             <div class="dropdown-body">
                 <form action="/event/calendar/set_filter_tag/0" method="POST" style="white-space:normal;">
                     @csrf
-                    @foreach($tag as $tg)
+                    @if(session()->get('role_key') == 1)
+                        @php($colltag = $tag)
+                    @else   
+                        @php($colltag = $mytag)
+                    @endif
+
+                    @foreach($colltag as $tg)
                         <!-- Initial variable -->
                         @php($found = false)
                         @php($check = "")
@@ -28,8 +34,14 @@
                         <!-- Check if tag is selected -->
                         @if(is_array(session()->get('selected_tag_calendar')))
                             @foreach(session()->get('selected_tag_calendar') as $slct)
-                                @if($slct == $tg->slug_name)
-                                    @php($found = true)
+                                @if(is_array($colltag))
+                                    @if($slct == $tg['slug_name'])
+                                        @php($found = true)
+                                    @endif
+                                @else 
+                                    @if($slct == $tg->slug_name)
+                                        @php($found = true)
+                                    @endif
                                 @endif
                             @endforeach
                         @endif
@@ -40,8 +52,13 @@
 
                         <a class="tag-check action">
                             <label>
-                                <input class="" name="slug_name[]" type="checkbox" value="{{$tg->slug_name}}" id="flexCheckDefault" <?php echo $check; ?>>
-                                <span>{{$tg->tag_name}}</span>
+                                @if(is_array($colltag))
+                                    <input class="" name="slug_name[]" type="checkbox" value="{{$tg['slug_name']}}" id="flexCheckDefault" <?php echo $check; ?>>
+                                    <span>{{$tg['tag_name']}}</span>
+                                @else 
+                                    <input class="" name="slug_name[]" type="checkbox" value="{{$tg->slug_name}}" id="flexCheckDefault" <?php echo $check; ?>>
+                                    <span>{{$tg->tag_name}}</span>
+                                @endif
                             </label>
                         </a>
                     @endforeach
