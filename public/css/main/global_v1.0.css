@@ -145,6 +145,11 @@
     text-decoration: none !important;
     cursor: pointer;
 }
+.link-external-dark{
+    color:#414141 !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
 .link-external:hover, .link-external-white:hover{
     text-decoration: underline !important;
 }
