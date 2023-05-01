@@ -262,6 +262,7 @@ class QueryContent extends Controller
                 $loc = json_decode($result->content_loc, true);
                 $tag = json_decode($result->content_tag, true);
             
+                $id = $result->id;
                 $slug = $result->slug_name;
                 $title = $result->content_title; 
                 $desc = $result->content_desc;
@@ -270,6 +271,7 @@ class QueryContent extends Controller
                 $from = $result->data_from; 
 
                 $clean[] = [
+                    'id' => $id,
                     'slug_name' => $slug,
                     'content_title' => $title,
                     'content_desc' => $desc,

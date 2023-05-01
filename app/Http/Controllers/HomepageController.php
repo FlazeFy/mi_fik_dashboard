@@ -98,7 +98,7 @@ class HomepageController extends Controller
 
         if(Session::has('recatch_message') && session()->get('role_key') == 1){
             $count = [
-                'count_request' => UserRequest::count(),
+                'count_request' => UserRequest::where('is_accepted',0)->whereNull('is_rejected')->count(),
                 'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
                 'count_new' => User::whereNull('accepted_at')->count()
             ];

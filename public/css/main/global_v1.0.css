@@ -14,6 +14,7 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
 }
 
+
 /* Container */
 .content-section{
     border-radius: 10px;
@@ -132,4 +133,23 @@
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 6px;
+}
+
+.link-external{
+    color:#F78A00 !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+.link-external-white{
+    color:white !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.link-external-dark{
+    color:#414141 !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.link-external:hover, .link-external-white:hover{
+    text-decoration: underline !important;
 }

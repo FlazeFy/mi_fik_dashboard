@@ -63,6 +63,12 @@
                                 @include('setting.jobs')
                             </div>
                         </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="content-section p-0 pt-3">
+                                <h5 class="mx-3">LandingPage Range</h5><hr>
+                                @include('setting.landing')
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,36 +1,10 @@
-<style>
-    .form-floating{
-        max-width: 400px;
-    }
-    .form-floating .form-control{
-        border: none;
-        border-bottom: 3px solid #212121;
-        border-radius: 0;
-    }
-    .btn-sign-in{
-        background: #F78A00;
-        border-radius: 30px;
-        color: whitesmoke !important;
-        font-weight: 500;
-        max-width: 400px;
-        padding: 8px;
-    }
-    .btn-forgot-password{
-        font-weight: 500;
-        max-width: 160px;
-        float: right !important;
-    }
-    .form-control:focus{
-        box-shadow: none !important;
-    }
-</style>
-
-<div class="container-fluid shadow rounded my-4 py-5 text-start d-block mx-auto" style="max-width:450px;">
+<div class="container-fluid rounded my-4 py-5 text-start" style="max-width:450px;">
     <form action="/v2/login/" method="POST" id="form-login">
         @csrf
-        <h4 class="fw-bold mt-4">Welcome Administrator</h4>
-        <h6 class="fw-bold mb-5">Silahkan login dan mulai mengatur data MI-FIK</h6>
-        <div class="form-floating mt-3">
+        <h1 class="fw-bold mt-4 text-primary">Welcome to Mi-Fik</h1>
+        <h6 class="mb-4">Mi-Fik is an app made for event organizing and announcement that will be used for lecturer, staff, and student of 
+            <a class="link-external" href="https://ifik.telkomuniversity.ac.id/">School of Creative Industries Telkom University</a></h6>
+        <div class="form-floating mt-1">
             <input type="text" class="form-control" id="floatingUsername" placeholder="Username" name="username" id="username" required>
             <label for="floatingUsername">Username</label>
             <a class="error_input" id="username_msg"></a>
@@ -40,13 +14,17 @@
             <label for="floatingPassword">Password</label>
             <a class="error_input" id="pass_msg"></a>
         </div>
+        <a class="btn btn-forgot-password mt-4">Forgot Password ?</a>
+
         <a class="error_input" id="all_msg"></a>
         <input hidden name="token" value="" id="token">
         <input hidden name="role" value="" id="role">
         <input hidden name="email" value="" id="email">
         <input hidden name="profile_pic" value="" id="profile_pic">
-        <a class="btn btn-forgot-password w-100 mt-5">Forgot Password ?</a>
-        <a onclick="login()" class="btn btn-sign-in w-100 mt-3 mb-5">Sign In</a>
+        <div class="position-relative mt-2 mb-2">
+            <a onclick="login()" class="btn btn-submit-form px-5 rounded-pill">Sign In</a>
+            <a onclick="" class="btn btn-primary-outlined position-absolute px-5 rounded-pill" style="right:0; top:7.5px;">Register</a>
+        </div>
     </form>
 </div>
 

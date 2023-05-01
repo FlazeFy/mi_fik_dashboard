@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Question;
+use App\Models\Help;
 use App\Models\UserRequest;
 
 class LandingController extends Controller
@@ -14,7 +16,12 @@ class LandingController extends Controller
     public function index()
     {
         if(!session()->get('slug_key')){
-            return view ('landing.index');
+            $faq = Question::getActiveFAQ();
+            $ctc = Help::getAboutContact();
+            
+            return view('landing.index')
+                ->with('faq',$faq)
+                ->with('ctc',$ctc);
         } else {
             return redirect()->route('homepage');
         }
