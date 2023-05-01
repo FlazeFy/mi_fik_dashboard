@@ -34,10 +34,9 @@ class QueryNotification extends Controller
         }
     }
 
-    //FIx this !!!
     public function getMyNotification(Request $request){
         try {
-            $user_id = $request->user_id;
+            $user_id = $request->user()->id;
 
             $select = Query::getSelectTemplate("notif_my");
 

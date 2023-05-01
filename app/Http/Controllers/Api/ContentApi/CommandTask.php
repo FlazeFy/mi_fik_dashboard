@@ -17,7 +17,7 @@ class CommandTask extends Controller
 {
     public function updateTask(Request $request, $id){
         try{
-            $validator = Validation::getValidateTask($request);
+            $validator = Validation::getValidateTaskV2($request);
             $user_id = $request->user()->id;
 
             if ($validator->fails()) {
@@ -25,7 +25,7 @@ class CommandTask extends Controller
 
                 return response()->json([
                     'status' => 'failed',
-                    'error' => $errors
+                    'result' => $errors
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $data = new Request();
@@ -57,7 +57,7 @@ class CommandTask extends Controller
                     History::create([
                         'id' => Generator::getUUID(),
                         'history_type' => $data->history_type, 
-                        'context_id' => $task->id, 
+                        'context_id' => $id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
                         'created_at' => date("Y-m-d h:i:s"),

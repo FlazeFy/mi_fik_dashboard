@@ -80,7 +80,7 @@ Route::prefix('/v1/tag')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueryNotificationApi::class, 'getAllNotification']);
-    Route::get('/{user_id}', [QueryNotificationApi::class, 'getMyNotification']);
+    Route::get('/my', [QueryNotificationApi::class, 'getMyNotification']);
 });
 
 Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {

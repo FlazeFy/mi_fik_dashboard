@@ -133,3 +133,12 @@
     font-weight: 500;
     margin-bottom: 6px;
 }
+
+.link-external{
+    color: #212121;
+    text-decoration: none;
+    cursor: pointer;
+}
+.link-external:hover{
+    color:#F78A00 ;
+}

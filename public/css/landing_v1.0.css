@@ -1,0 +1,26 @@
+.form-floating{
+    max-width: 400px;
+}
+.form-floating .form-control{
+    border: none;
+    border-bottom: 3px solid #212121;
+    border-radius: 0;
+}
+.btn-primary-outlined{
+    border: 2px solid #F78A00;
+    color: #F78A00;
+    max-width: 400px;
+}
+.btn-primary-outlined:hover{
+    background: #F78A00;
+    color: whitesmoke;
+}
+.btn-forgot-password{
+    color: #414141;
+}
+.btn-forgot-password:hover{
+    color: #F78A00;
+}
+.form-control:focus{
+    box-shadow: none !important;
+}
