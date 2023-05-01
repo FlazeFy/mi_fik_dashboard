@@ -1,4 +1,4 @@
-<div class="container-fluid rounded my-2 py-3">
+<div class="container-fluid my-2 py-3">
     <h1 class="fw-bold mt-2 mb-5 text-primary text-center">Our Features</h1>
     <div class="row">
         <div class="col-lg-4">

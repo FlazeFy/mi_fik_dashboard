@@ -19,8 +19,13 @@
     color: #414141;
 }
 .btn-forgot-password:hover{
-    color: #F78A00;
+    color: #F78A00 !important;
 }
 .form-control:focus{
     box-shadow: none !important;
+}
+.card-header.faq-header{
+    border-radius: 10px;
+    background: white;
+    box-shadow: rgba(0, 0, 0, 0.14) 0px 2.5px 6px;
 }

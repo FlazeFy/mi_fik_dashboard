@@ -99,6 +99,14 @@ class Validation
         return Validator::make($request->all(), [
             'DCD_range' => 'required|numeric|max:100|min:7',
             'DTD_range' => 'required|numeric|max:100|min:7',
+            'DHD_range' => 'required|numeric|max:100|min:7',
+        ]);
+    }
+
+    public static function getValidateLanding($request){
+        return Validator::make($request->all(), [
+            'FAQ_range' => 'required|numeric|max:99|min:4',
+            'FBC_range' => 'required|numeric|max:99|min:3',
         ]);
     }
 

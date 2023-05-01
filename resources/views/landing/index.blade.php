@@ -44,6 +44,8 @@
             @include('landing.features')
             <hr>
             @include('landing.roles')
+            <hr>
+            @include('landing.faq')
         </div>
 
         <!--Modal-->

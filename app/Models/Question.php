@@ -41,4 +41,19 @@ class Question extends Model
 
         return $res;
     }
+
+    public static function getActiveFAQ(){
+        $limit = SettingSystem::getLimitFAQ();
+
+        $res = Question::select('question_body','question_answer')
+            ->whereNotNull('question_answer')
+            ->whereNull('deleted_at')
+            ->where('is_active', 1)
+            ->orderBy('updated_at','DESC')
+            ->inRandomOrder()
+            ->take($limit)
+            ->get();
+
+        return $res;
+    }
 }

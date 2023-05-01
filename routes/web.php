@@ -132,6 +132,7 @@ Route::prefix('/setting')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
     Route::post('/update_jobs/{id}', [SettingController::class, 'update_jobs']);
+    Route::post('/update_landing/{id}', [SettingController::class, 'update_landing']);
 });
 
 Route::prefix('/trash')->middleware(['auth_v2:sanctum'])->group(function () {
