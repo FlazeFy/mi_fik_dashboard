@@ -136,10 +136,15 @@
 }
 
 .link-external{
-    color: #212121;
+    color:#F78A00 !important;
     text-decoration: none;
     cursor: pointer;
 }
-.link-external:hover{
-    color:#F78A00 ;
+.link-external-white{
+    color:white !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.link-external:hover, .link-external-white:hover{
+    text-decoration: underline !important;
 }

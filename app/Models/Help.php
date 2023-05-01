@@ -69,4 +69,12 @@ class Help extends Model
             return false;
         }
     }
+
+    public static function getAboutContact(){
+        $res = Help::select('help_category','help_body')
+            ->where('help_type', 'contact')
+            ->get();
+
+        return $res;
+    }
 }

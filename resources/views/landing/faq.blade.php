@@ -41,5 +41,7 @@
 
             @php($i++)
         @endforeach
+            </div> <!--Check this shit-->
+        </div>
 	</div>
 </div>

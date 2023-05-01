@@ -48,6 +48,8 @@
             @include('landing.faq')
         </div>
 
+        @include('landing.footer')
+
         <!--Modal-->
         @include('popup.success')
         @include('popup.failed')
