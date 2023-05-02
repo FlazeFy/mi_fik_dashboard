@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Question;
 use App\Models\Help;
 use App\Models\UserRequest;
+use App\Models\Feedback;
 
 class LandingController extends Controller
 {
@@ -18,9 +19,11 @@ class LandingController extends Controller
         if(!session()->get('slug_key')){
             $faq = Question::getActiveFAQ();
             $ctc = Help::getAboutContact();
+            $fbc = Feedback::getRandomFeedback();
             
             return view('landing.index')
                 ->with('faq',$faq)
+                ->with('fbc',$fbc)
                 ->with('ctc',$ctc);
         } else {
             return redirect()->route('homepage');

@@ -1,5 +1,5 @@
 <div class="container-fluid rounded mt-2 py-5">
-    <h1 class="fw-bold mt-2 mb-5 text-primary text-center">General Roles</h1>
+    <h1 class="fw-bold mt-2 mb-5 text-primary text-center">2 Type Of Users</h1>
     <div class="row">
         <div class="col-lg-6">
             <div class="feature-first text-center p-2">

@@ -24,13 +24,13 @@
                                                 @if($md->admin_image_created != null)
                                                     <img class='img img-fluid user-image-content' src="{{$md->admin_image_created}}" alt='username-profile-pic.png'>
                                                 @else
-                                                    <img class='img img-fluid user-image-content' src="{{asset('assets/default_admin.jpg')}}" alt='username-profile-pic.png'>
+                                                    <img class='img img-fluid user-image-content' src="{{asset('assets/default_admin.png')}}" alt='username-profile-pic.png'>
                                                 @endif
                                             @elseif($md->user_username_created != null)
                                                 @if($md->user_image_created)
                                                     <img class='img img-fluid user-image-content' src="{{$md->user_image_created}}" alt='username-profile-pic.png'>
                                                 @else
-                                                    <img class='img img-fluid user-image-content' src="{{asset('assets/default_lecturer.jpg')}}" alt='username-profile-pic.png'>
+                                                    <img class='img img-fluid user-image-content' src="{{asset('assets/default_lecturer.png')}}" alt='username-profile-pic.png'>
                                                 @endif
                                             @endif
                                         </div>

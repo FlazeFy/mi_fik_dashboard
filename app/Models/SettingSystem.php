@@ -34,4 +34,11 @@ class SettingSystem extends Model
 
         return $res->FAQ_range;
     }
+
+    public static function getLimitFeedback(){
+        $res = SettingSystem::select('FBC_range')
+            ->first();
+
+        return $res->FBC_range;
+    }
 }
