@@ -162,4 +162,33 @@ class ContentHeader extends Model
 
         return $res;
     }
+
+    public static function getMyDraft($role, $user_id){
+        $select = Query::getSelectTemplate("content_draft_homepage");
+
+        if($role == 1){
+            $res = ContentHeader::selectRaw($select)
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
+                ->orderBy('contents_headers.created_at', 'DESC')
+                ->orderBy('contents_headers.updated_at', 'DESC')
+                ->where('is_draft', 1)
+                ->whereNull('contents_headers.deleted_at')
+                ->get();
+        } else {
+            $res = ContentHeader::selectRaw($select)
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
+                ->orderBy('contents_headers.created_at', 'DESC')
+                ->orderBy('contents_headers.updated_at', 'DESC')
+                ->where('is_draft', 1)
+                ->where('contents_headers.created_by', $user_id)
+                ->whereNull('contents_headers.deleted_at')
+                ->get();
+        }   
+
+        return $res;
+    }
 }
