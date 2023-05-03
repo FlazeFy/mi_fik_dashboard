@@ -159,13 +159,13 @@
 
                 for(var i = 0; i < data.length; i++){
                     //Attribute
-                    var slugName = data[i].slug_name;
+                    var username = data[i].username;
                     var fullName = data[i].full_name;
 
                     var elmt = " " +
                         '<a class="user-check action py-2"> ' +
                             '<label> ' +
-                                '<input class="" name="slug_name[]" type="checkbox" value="' + slugName + '" id="flexCheckDefault"> ' +
+                                '<input class="" name="username[]" type="checkbox" value="' + username + '" id="flexCheckDefault"> ' +
                                 "<img class='img img-fluid rounded-circle d-block mx-auto' src='{{asset('assets/default_content.jpg')}}' style='height:45px; width:45px;'> " +
                                 '<span style="font-size:12px;" class="text-secondary">' + fullName + '</span> ' +
                             '</label> ' +

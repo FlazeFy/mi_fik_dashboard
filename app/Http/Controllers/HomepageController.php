@@ -282,7 +282,7 @@ class HomepageController extends Controller
                         'archive_id' => $request->archive_rel[$i],
                         'content_id' => $uuid,
                         'created_at' => date("Y-m-d H:i"),
-                        'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+                        'created_by' => $user_id
                     ]);
                 }
             }
@@ -299,13 +299,14 @@ class HomepageController extends Controller
 
             if(count($content) > 0){
                 $id = $content['id'][0];
+                $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
                 ArchiveRelation::create([
                     'id' => Generator::getUUID(),
                     'archive_id' => $request->archive_id,
                     'content_id' => $id,
                     'created_at' => date("Y-m-d H:i"),
-                    'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+                    'created_by' =>  $user_id
                 ]);
 
                 return redirect()->back()->with('success_message', 'Update item success');

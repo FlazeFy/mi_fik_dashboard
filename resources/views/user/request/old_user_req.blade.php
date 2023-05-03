@@ -7,7 +7,7 @@
 </style>
 
 <div class="incoming-req-box">
-    <h5 class="text-secondary fw-bold"><span class="text-primary" id="total_old_req"></span> Incoming Request</h5>
+    <h5 class="text-secondary fw-bold"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:15px; top:0px;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>

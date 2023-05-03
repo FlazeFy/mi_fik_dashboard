@@ -38,7 +38,7 @@ class Commands extends Controller
             if (!$user || ($request->password != $user->password)) {
                 return response()->json([
                     'status' => 'failed',
-                    'result' => 'Wrong password',
+                    'result' => 'Wrong username or password',
                     'token' => null,                
                 ], Response::HTTP_UNAUTHORIZED);
             } else {
