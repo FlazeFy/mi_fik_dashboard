@@ -52,6 +52,11 @@ class Query
 
         } else if($type == "user_detail"){
             $query = "username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
+                CASE 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' THEN 'Lecturer'
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 'Staff' 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."student".'"'."%' THEN 'Student'
+                END AS general_role,
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
 
         } else if($type == "group_detail"){

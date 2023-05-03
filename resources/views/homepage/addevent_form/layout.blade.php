@@ -59,14 +59,14 @@
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/event.png'); ?>"); background-color:#FB5E5B;'
     data-bs-target="
         <?php 
-            if(count($mydraft) > 2 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null)){
+            if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null)){
                 echo "#browseDraftEventModal";
             } else {
                 echo "#addEventModal";
             }
         ?>" data-bs-toggle="modal">
 
-    @if(count($mydraft) > 2 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
+    @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
         <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-exclamation"></i> {{count($mydraft)}}</a>
     @endif
 
@@ -74,7 +74,7 @@
     <p class="quick-action-info">Event is a bla bla....</p>
 </button>
 
-@if(count($mydraft) > 2 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
+@if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
     @include('homepage.addevent_form.draftevent')
 @endif
 

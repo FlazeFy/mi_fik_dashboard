@@ -1,55 +1,3 @@
-<style>
-    .user-check{
-        background: white;
-        border-radius: 20px;
-        border: 1.5px solid #D9D9D9;
-        overflow: hidden;
-        margin-top: 6px;
-        width: fit-content;
-        block-size: fit-content;    
-        margin-right: 4px;
-        display: inline-block;
-    }
-    .user-check:hover{
-        border: 1.5px solid #00c363;
-        background: #00c363 !important;
-    }
-    .user-check:hover label span{
-        color: #fff !important;
-    }
-
-    .user-check input:checked{
-        border: 1.5px solid #00c363 !important;
-    }
-    
-    .user-check label {
-        float: left; 
-        cursor: pointer !important;
-    }
-    
-    .user-check label span {
-        text-align: center;
-        padding: 4px 12px;
-        display: block;
-    }
-    
-    .user-check label input {
-        position: absolute;
-        display: none !important;
-        color: #fff !important;
-    }
-    .user-check label input + span{
-        color: #343434;
-    }  
-    .user-check input:checked + span {
-        background: #00c363 !important;
-    }
-    .Checked input:checked + span{
-        background: #00c363 !important;
-        /* background: transparent; */
-    }
-</style>
-
 <script>
     let validation = [
         { id: "group_name", req: true, len: 75 },
@@ -57,9 +5,19 @@
     ];
 </script>
 
+<style>
+    #user-list-holder{
+        padding: 5px 16px 0 5px;
+        display: flex;
+        flex-direction: column;
+        max-height: 70vh;
+        overflow-y: scroll;
+    }
+</style>
+
 <button class="btn btn-submit position-absolute" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Group</button>
-<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+<div class="modal fade" data-bs-backdrop="static" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
@@ -68,7 +26,7 @@
                 <form action="/user/group/add" method="POST">
                     @csrf 
                     <div class="row mt-4">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-floating">
                                 <input type="text" class="form-control nameInput" id="group_name" name="group_name" maxlength="75" oninput="validateForm(validation)" required>
                                 <label for="titleInput_event">Group Name</label>
@@ -80,6 +38,8 @@
                                 <a id="group_desc_msg" class="input-warning text-danger"></a>
                             </div>
 
+                            <h6 class="mt-2">Selected User</h6>
+                            <span id="slct-holder"><span>
                             @foreach($info as $in)
                                 @if($in->info_location == "add_group")
                                     <div class="info-box {{$in->info_type}}">
@@ -89,8 +49,13 @@
                                 @endif
                             @endforeach
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <h6>All User</h6>
                             <span id="user-list-holder"></span>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <h6>User Detail</h6>
+                            <span id="detail-holder"></span>
                         </div>
                     </div>
                     <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
@@ -115,6 +80,18 @@
     function loadmore_new_req(route){
         page_new_req++;
         infinteLoadMore(page_new_req);
+    }
+
+    function getUserImage(img, role){
+        if(img != null && img != "null"){
+            return img;
+        } else {
+            if(role == "Lecturer"){
+                return "{{ asset('/assets/default_lecturer.png')}}";
+            } else {
+                return "{{ asset('/assets/default_student.png')}}";
+            }
+        } 
     }
 
     function infinteLoadMore_new_req(page_new_req) {        
@@ -149,26 +126,38 @@
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
-                function getContentImage(img){
-                    if(img){
-                        return 'url("http://127.0.0.1:8000/storage/'+img+'")';
-                    } else {
-                        return "url({{asset('assets/default_content.jpg')}})";
-                    }
-                }
 
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var username = data[i].username;
                     var fullName = data[i].full_name;
+                    var grole = data[i].general_role;
+                    var img = data[i].image_url;
+                    var role = data[i].role;
+
+                    // var elmt = " " +
+                    //     '<a class="user-check action py-2"> ' +
+                    //         '<label> ' +
+                    //             '<input class="" name="username[]" type="checkbox" value="' + username + '" id="flexCheckDefault"> ' +
+                    //             "<img class='img img-fluid rounded-circle d-block mx-auto' src='{{asset('assets/default_content.jpg')}}' style='height:45px; width:45px;'> " +
+                    //             '<span style="font-size:12px;" class="text-secondary">' + fullName + '</span> ' +
+                    //         '</label> ' +
+                    //     '</a>';
 
                     var elmt = " " +
-                        '<a class="user-check action py-2"> ' +
-                            '<label> ' +
-                                '<input class="" name="username[]" type="checkbox" value="' + username + '" id="flexCheckDefault"> ' +
-                                "<img class='img img-fluid rounded-circle d-block mx-auto' src='{{asset('assets/default_content.jpg')}}' style='height:45px; width:45px;'> " +
-                                '<span style="font-size:12px;" class="text-secondary">' + fullName + '</span> ' +
-                            '</label> ' +
+                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + role + "'" + ')"> ' +
+                            '<div class="row ps-2"> ' +
+                                '<div class="col-2 p-0 py-2 ps-2"> ' +
+                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
+                                '</div> ' +
+                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
+                                    '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
+                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
+                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
+                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', this.checked)"> ' +
+                                    '</div> ' +
+                                '</div> ' +
+                            '</div> ' +
                         '</a>';
 
                     $("#user-list-holder").prepend(elmt);
@@ -178,6 +167,35 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             console.log('Server error occured');
         });
+    }
+
+    function getRoleArea(role){
+        var elmnt = ""
+
+        if(role){
+            for(var i = 0; i < role.length; i++){
+                elmnt += "<a class='btn btn-tag'>"+role[i]['tag_name']+"</a>"
+            }
+            return elmnt
+
+        } else {
+            return "<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-role'> " +
+                "<h6 class='text-center'>This user has no tag</h6>" ;
+        }
+    }
+
+    function loadDetailGroup(img, grole, fname, uname, ){
+        document.getElementById("detail-holder").innerHTML = "";
+
+        var elmt_detail = " " +
+            "<div class='m-2 p-3 text-center'> " +
+                '<img class="img img-fluid rounded-circle shadow" style="max-width:140px;" src="'+getUserImage(img, grole)+'"> ' +
+                '<h5 class="mt-3">'+fname+'</h5>' +
+                '<h6 class="mt-1 text-secondary">'+uname+'</h6>' +
+                
+            "</div>";
+        
+        document.getElementById("detail-holder").innerHTML = elmt_detail;
     }
 </script>
 
