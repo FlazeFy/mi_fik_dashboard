@@ -201,7 +201,6 @@
                             return img2;
                         }
                     } else {
-                        //Should make different between lecturer and admin image. but check the api response time first !
                         return "{{ asset('/assets/default_lecturer.png')}}";
                     }
                 }

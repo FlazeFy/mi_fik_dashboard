@@ -46,6 +46,8 @@
             @include('landing.roles')
             <hr>
             @include('landing.faq')
+            <hr>
+            @include('landing.feedback')
         </div>
 
         @include('landing.footer')

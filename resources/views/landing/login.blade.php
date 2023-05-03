@@ -22,7 +22,7 @@
         <input hidden name="email" value="" id="email">
         <input hidden name="profile_pic" value="" id="profile_pic">
         <div class="position-relative mt-2 mb-2">
-            <a onclick="login()" class="btn btn-submit-form px-5 rounded-pill">Sign In</a>
+            <input type="submit" onclick="login()" class="btn btn-submit-form px-5 rounded-pill" value="Sign In"></input>
             <a onclick="" class="btn btn-primary-outlined position-absolute px-5 rounded-pill" style="right:0; top:7.5px;">Register</a>
         </div>
     </form>

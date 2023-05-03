@@ -39,6 +39,8 @@ class HomepageController extends Controller
     public function index(Request $request)
     {
         $type = ["Reminder", "Attachment"];
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
         if(!session()->get('selected_tag_calendar')){
             session()->put('selected_tag_calendar', "All");
@@ -96,7 +98,7 @@ class HomepageController extends Controller
         //$archive = Archive::getMyArchive($user_id, "DESC");
         $greet = Generator::getGreeting(date('h'));
 
-        if(Session::has('recatch_message') && session()->get('role_key') == 1){
+        if(Session::has('recatch_message') && $role == 1){
             $count = [
                 'count_request' => UserRequest::where('is_accepted',0)->whereNull('is_rejected')->count(),
                 'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
@@ -109,13 +111,16 @@ class HomepageController extends Controller
             $count = null;
         }
         
-        if(session()->get('role_key') == 1){
+        
+        if($role == 1){
             $tag = Tag::getFullTag("DESC", "DESC");
+            $mydraft = ContentHeader::getMyDraft($role, $user_id);
             $mytag = null;
         } else {
             $tag = null;
-            $user_id = Generator::getUserIdV2(session()->get('role_key'));
-            $list = User::getUserRole($user_id, session()->get('role_key'));
+            $mydraft = ContentHeader::getMyDraft($role, $user_id);
+            $list = User::getUserRole($user_id,$role);
+
             foreach($list as $l){
                 $mytag = $l->role;
             }
@@ -130,6 +135,7 @@ class HomepageController extends Controller
             ->with('mytag', $mytag)
             ->with('menu', $menu)
             ->with('info', $info)
+            ->with('mydraft', $mydraft)
             ->with('dictionary', $dictionary)
             ->with('count', $count)
             //->with('archive', $archive)
@@ -276,7 +282,7 @@ class HomepageController extends Controller
                         'archive_id' => $request->archive_rel[$i],
                         'content_id' => $uuid,
                         'created_at' => date("Y-m-d H:i"),
-                        'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+                        'created_by' => $user_id
                     ]);
                 }
             }
@@ -293,13 +299,14 @@ class HomepageController extends Controller
 
             if(count($content) > 0){
                 $id = $content['id'][0];
+                $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
                 ArchiveRelation::create([
                     'id' => Generator::getUUID(),
                     'archive_id' => $request->archive_id,
                     'content_id' => $id,
                     'created_at' => date("Y-m-d H:i"),
-                    'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+                    'created_by' =>  $user_id
                 ]);
 
                 return redirect()->back()->with('success_message', 'Update item success');

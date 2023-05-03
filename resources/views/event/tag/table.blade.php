@@ -7,9 +7,7 @@
         color:#9c9c9c;
     }
     .input-custom{
-        border-radius:6px;
         padding:4px 4px 4px 25px;
-        border:none;
     }
     .input-custom:hover, .input-custom:focus{
         background:#f0f0f0;
@@ -40,27 +38,12 @@
                         <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
                     </td>
                     <td>
-                        @if(session()->get('role_key') == 1)
-                            <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
-                                @csrf
-                                <select class="form-select" aria-label="Default select example" name="tag_category" onchange="this.form.submit()">
-                                    @foreach($dct_tag as $dtag)
-                                        @if($dtag->slug_name == $tg->tag_category)
-                                            <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                        @else 
-                                            <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </form>
-                        @else
-                            @foreach($dct_tag as $dtag)
-                                @if($dtag->slug_name == $tg->tag_category)
-                                    {{$dtag->dct_name}}
-                                    @break
-                                @endif
-                            @endforeach
-                        @endif
+                        @foreach($dct_tag as $dtag)
+                            @if($dtag->slug_name == $tg->tag_category)
+                                {{$dtag->dct_name}}
+                                @break
+                            @endif
+                        @endforeach
                     </td>
                     @if(session()->get('role_key') == 1)
                         <td>
@@ -85,24 +68,40 @@
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis-vertical more"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-end p-3 shadow" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}" style="width:250px !important;">
-                                    <span class="dropdown-item">
-                                        <label class="mb-2">Tag Description</label><br>
+                                <div class="dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}" style="width:250px !important;">
+                                    <span class="dropdown-item p-3">
+                                        <h6>Tag Description</h6>
                                         <form class="form-custom" method="POST" action="/event/tag/update/desc/{{$tg->id}}">
                                             @csrf
-                                            <i class="fa-solid fa-pencil position-absolute" style="top:3.5px; left:6px;"></i>
-                                            <input name="tag_name" value="{{$tg->tag_name}}" hidden>
                                             <input name="update_type" value="desc" hidden>
-                                            <input class="input-custom" name="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()">
+                                            <input name="tag_name" value="{{$tg->tag_name}}" hidden>
+                                            <textarea class="form-control" style="height: 100px" id="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()" name="tag_desc" maxlength="255">{{$tg->tag_desc}}</textarea>
                                         </form>
+                                        <h6 class="my-2">Tag Category</h6>
+                                        @if(session()->get('role_key') == 1)
+                                            <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
+                                                @csrf
+                                                <select class="form-select" aria-label="Default select example" name="tag_category" onchange="this.form.submit()">
+                                                    @foreach($dct_tag as $dtag)
+                                                        @if($dtag->slug_name == $tg->tag_category)
+                                                            <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                                                        @else 
+                                                            <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </form>
+                                        @endif
                                     </span>
-                                    <h6>Properties</h6>
-                                    <p class="m-0">{{date("d M y", strtotime($tg->created_at))}} at {{date("h:i", strtotime($tg->created_at))}}</p>
-                                    @if($tg->updated_at)
-                                        <p>{{date("d M y", strtotime($tg->updated_at))}} at {{date("h:i", strtotime($tg->updated_at))}}</p>
-                                    @else
-                                        <p>-</p>
-                                    @endif
+                                    <span class="dropdown-item properties-box">
+                                        <h6 class="">Properties</h6>
+                                        <p>Created At : {{date("d M y", strtotime($tg->created_at))}} at {{date("h:i", strtotime($tg->created_at))}}</p>
+                                        @if($tg->updated_at)
+                                            <p>Updated At : {{date("d M y", strtotime($tg->updated_at))}} at {{date("h:i", strtotime($tg->updated_at))}}</p>
+                                        @else
+                                            <p>-</p>
+                                        @endif
+                                    </span>
                                 </div>
                             </div>
                         </td>

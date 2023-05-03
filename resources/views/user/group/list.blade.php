@@ -5,7 +5,6 @@
             <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
             <th scope="col">Total @include('user.group.sorting.total')</th>
             <th scope="col">Properties @include('user.group.sorting.created')</th>
-            <th scope="col">Member</th>
             <th scope="col">Manage</th>
         </tr>
     </thead>

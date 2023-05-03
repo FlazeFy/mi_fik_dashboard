@@ -58,11 +58,11 @@ class GroupingController extends Controller
                 'updated_by' => null,
             ]);
 
-            if(is_countable($request->slug_name)){
-                $user_count = count($request->slug_name);
+            if(is_countable($request->username)){
+                $user_count = count($request->username);
             
                 for($i = 0; $i < $user_count; $i++){
-                    $user_id_mng = Generator::getUserId($request->slug_name[$i], 2);
+                    $user_id_mng = Generator::getUserId($request->username[$i], 2);
 
                     GroupRelation::create([
                         'id' => Generator::getUUID(),

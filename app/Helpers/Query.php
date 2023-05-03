@@ -11,7 +11,12 @@ class Query
                 admins.username as admin_username_created, users.username as user_username_created, 
                 admins.image_url as admin_image_created, users.image_url as user_image_created, 
                 count(contents_viewers.id) as total_views";
-
+        } else if($type == "content_draft_homepage"){
+            $query = "slug_name,content_title,content_desc,
+                content_loc,content_image,content_date_start,
+                content_date_end,content_tag,contents_headers.created_at,
+                admins.username as admin_username_created, users.username as user_username_created, 
+                admins.image_url as admin_image_created, users.image_url as user_image_created";
         } else if($type == "content_schedule"){
             $query = "contents_headers.id, slug_name,content_title,content_desc, 
                 content_loc,content_tag, content_date_start, content_date_end, 
@@ -47,6 +52,11 @@ class Query
 
         } else if($type == "user_detail"){
             $query = "username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
+                CASE 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' THEN 'Lecturer'
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 'Staff' 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."student".'"'."%' THEN 'Student'
+                END AS general_role,
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
 
         } else if($type == "group_detail"){

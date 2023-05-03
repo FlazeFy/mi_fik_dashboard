@@ -9,7 +9,7 @@
 </div>
 
 <script type="text/javascript">
-    var search = " ";
+    var search = "";
     const search_storage = sessionStorage.getItem('search')
 
     if (search_storage == null) {
@@ -22,7 +22,7 @@
         var input_search = document.getElementById('title_search').value
 
         if(input_search == null || input_search.trim() === ''){
-            sessionStorage.setItem('search', ' ')
+            sessionStorage.setItem('search', '')
         } else {
             sessionStorage.setItem('search', input_search.trim())
         }
@@ -35,7 +35,7 @@
     }
 
     function resetTitleSearch(){
-        sessionStorage.setItem('search', ' ')
+        sessionStorage.setItem('search', '')
         location.reload()
     }
 </script>
