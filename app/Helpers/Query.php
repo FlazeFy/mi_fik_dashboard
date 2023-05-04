@@ -60,7 +60,7 @@ class Query
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
 
         } else if($type == "group_detail"){
-            $query = "users_groups.id, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
+            $query = "users_groups.id, slug_name, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
         } else if($type == "viewed_event_role"){ 
             $query = "contents_headers.id as id_content, content_title, COUNT(1) as total,
                 COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,

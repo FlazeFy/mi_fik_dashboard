@@ -1,5 +1,5 @@
 <div class="container-fluid rounded my-4 py-5 text-start" style="max-width:450px;">
-    <form id="form-login">
+    <form action="/v2/login" method="POST" id="form-login">
         @csrf
         <h1 class="fw-bold mt-4 text-primary">Welcome to Mi-Fik</h1>
         <h6 class="mb-4">Mi-Fik is an app made for event organizing and announcement that will be used for lecturer, staff, and student of 

@@ -129,6 +129,7 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
     Route::post('/group/add', [GroupingController::class, 'add_group']);
     Route::post('/group/delete/{id}', [GroupingController::class, 'delete_group']);
+    Route::post('/group/edit/{id}', [GroupingController::class, 'edit_group']);
 });
 
 Route::prefix('/setting')->middleware(['auth_v2:sanctum'])->group(function () {
