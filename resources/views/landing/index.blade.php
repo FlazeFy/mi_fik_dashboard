@@ -28,6 +28,9 @@
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/landing_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -48,6 +51,8 @@
             @include('landing.faq')
             <hr>
             @include('landing.feedback')
+            <hr>
+            @include('landing.rate')
         </div>
 
         @include('landing.footer')

@@ -202,7 +202,7 @@ class Validation
         ]);
     }
 
-    public static function getFeedbackCreate($request){
+    public static function getValidateFeedbackCreate($request){
         return Validator::make($request->all(), [
             'feedback_body' => 'required|min:2|max:255|string',
             'feedback_rate' => 'required|numeric|min:1|max:5',
