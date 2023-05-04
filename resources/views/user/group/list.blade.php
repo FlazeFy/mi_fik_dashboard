@@ -1,29 +1,31 @@
-<table class="table tabular">
-    <thead style="position:sticky; top:80px; background: white;">
-        <tr>
-            <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-            <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
-            <th scope="col">Total @include('user.group.sorting.total')</th>
-            <th scope="col">Properties @include('user.group.sorting.created')</th>
-            <th scope="col">Manage</th>
-        </tr>
-    </thead>
-    <tbody class="user-holder tabular-body" id="group-list-holder">
-        <!-- Loading -->
-        <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
-    </tbody>
-    <div id="empty_item_holder"></div>
-    <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
-    </div>
-</table>
+<div class="table-responsive">
+    <table class="table tabular">
+        <thead>
+            <tr>
+                <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
+                <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
+                <th scope="col">Total @include('user.group.sorting.total')</th>
+                <th scope="col">Properties @include('user.group.sorting.created')</th>
+                <th scope="col">Manage</th>
+            </tr>
+        </thead>
+        <tbody class="user-holder tabular-body" id="group-list-holder">
+            <!-- Loading -->
+            <div class="auto-load text-center">
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </tbody>
+        <div id="empty_item_holder"></div>
+        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
+        </div>
+    </table>
+</div>
 
 <script>
     var page_new_req = 1;

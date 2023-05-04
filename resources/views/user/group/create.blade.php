@@ -38,7 +38,11 @@
                                 <a id="group_desc_msg" class="input-warning text-danger"></a>
                             </div>
 
-                            <h6 class="mt-2">Selected User</h6>
+                            <span class="position-relative">
+                                <h6 class="mt-2">Selected User</h6>
+                                <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                            </span>
+                            <span id="user-selected-holder"></span>
                             <span id="slct-holder"><span>
                             @foreach($info as $in)
                                 @if($in->info_location == "add_group")
@@ -67,6 +71,7 @@
 
 <script>
     var page_new_req = 1;
+    var selectedUser = []; 
     infinteLoadMore_new_req(page_new_req);
 
     //Fix the sidebar & content page_new_req FE first to use this feature
@@ -134,6 +139,8 @@
                     var grole = data[i].general_role;
                     var img = data[i].image_url;
                     var role = data[i].role;
+                    var email = data[i].email;
+                    var joined = data[i].accepted_at;
 
                     // var elmt = " " +
                     //     '<a class="user-check action py-2"> ' +
@@ -145,7 +152,7 @@
                     //     '</a>';
 
                     var elmt = " " +
-                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + role + "'" + ')"> ' +
+                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-2 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
@@ -154,7 +161,7 @@
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
                                     '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', this.checked)"> ' +
+                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)"> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -169,14 +176,55 @@
         });
     }
 
+    function addSelected(username, fullname, checked){
+        if(selectedUser.length == 0){
+            selectedUser.push({
+                full_name : fullname,
+                username : username
+            });
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedUser.findIndex(obj => obj.username == username);
+                if (indexToRemove !== -1) {
+                    selectedUser.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected user list
+                    document.getElementById("check_"+username).checked = false; 
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedUser.push({
+                    full_name : fullname,
+                    username : username
+                });
+            }
+        }
+        console.log(selectedUser);
+        refreshList();
+    }
+
+    function refreshList(){
+        var holder = document.getElementById("user-selected-holder");
+        holder.innerHTML = "";
+
+        selectedUser.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addSelected('+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.full_name + '</a>';
+            holder.innerHTML += elmt;
+        });
+    }
+
     function getRoleArea(role){
-        var elmnt = ""
+        var elmnt = "";
 
         if(role){
             for(var i = 0; i < role.length; i++){
                 elmnt += "<a class='btn btn-tag'>"+role[i]['tag_name']+"</a>"
             }
-            return elmnt
+            return elmnt;
 
         } else {
             return "<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-role'> " +
@@ -184,15 +232,23 @@
         }
     }
 
-    function loadDetailGroup(img, grole, fname, uname, ){
+    function clearAll(){
+        document.getElementById("user-selected-holder").innerHTML = "";
+        selectedUser.forEach((e) => {
+            document.getElementById("check_"+e.username).checked = false; 
+        });
+        selectedUser = [];
+    }
+
+    function loadDetailGroup(img, grole, fname, uname, email, join){
         document.getElementById("detail-holder").innerHTML = "";
 
         var elmt_detail = " " +
             "<div class='m-2 p-3 text-center'> " +
                 '<img class="img img-fluid rounded-circle shadow" style="max-width:140px;" src="'+getUserImage(img, grole)+'"> ' +
                 '<h5 class="mt-3">'+fname+'</h5>' +
-                '<h6 class="mt-1 text-secondary">'+uname+'</h6>' +
-                
+                '<h6 class="mt-1 text-secondary">@'+uname+', <span style="font-size:13px;">Joined since ' + getDateToContext(join) + '</span></h6>' +
+                '<a class="mt-1 text-secondary link-external" title="Send email" href="mailto:' + email + '">'+email+'</a>' +
             "</div>";
         
         document.getElementById("detail-holder").innerHTML = elmt_detail;

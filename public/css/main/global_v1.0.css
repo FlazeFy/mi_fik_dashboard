@@ -153,3 +153,10 @@
 .link-external:hover, .link-external-white:hover{
     text-decoration: underline !important;
 }
+
+/* Check this shit */
+thead.thead-sticky{
+    position:sticky !important; 
+    top:80px; 
+    background: white;
+}
