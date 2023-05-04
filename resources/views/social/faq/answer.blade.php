@@ -7,16 +7,6 @@
         background: #FFDeB4;  
         border-radius: 6px;
     }
-    .remove_suggest{
-        padding-right: 0 !important;
-        border-radius: 6px;
-        color: #D5534C;
-        cursor: pointer;
-    }
-    .remove_suggest:hover{
-        background: #D5534C !important;
-        color: white;
-    }
 </style>
 
 <script>

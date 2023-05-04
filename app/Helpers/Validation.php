@@ -125,6 +125,11 @@ class Validation
                 'tag_desc' => 'nullable|max:255|string',
                 'tag_category' => 'required|max:75|string'
             ]);
+        } else if($type == "dct"){
+            return Validator::make($request->all(), [
+                'dct_name' => 'required|max:35|string',
+                'dct_desc' => 'nullable|max:255|string'
+            ]);
         }
     }
 
@@ -215,6 +220,13 @@ class Validation
         return Validator::make($request->all(), [
             'question_body' => 'required|min:2|max:255|string',
             'question_type' => ['required', new TypeQuestion],
+        ]);
+    }
+
+    public static function getValidateGroup($request){
+        return Validator::make($request->all(), [
+            'group_name' => 'required|min:3|max:35|string',
+            'group_desc' => 'nullable|min:3|max:255|string',
         ]);
     }
 }

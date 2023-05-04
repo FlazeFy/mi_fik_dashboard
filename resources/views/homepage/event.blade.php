@@ -210,13 +210,13 @@
                         if(username1 == myname){
                             return "You";
                         } else {
-                            return username1;
+                            return "@"+username1;
                         }
                     } else {
                         if(username2 == myname){
                             return "You";
                         } else {
-                            return username2;
+                            return "@"+username2;
                         }
                     }
                 }

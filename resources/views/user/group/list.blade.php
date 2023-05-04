@@ -1,29 +1,31 @@
-<table class="table tabular">
-    <thead>
-        <tr>
-            <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-            <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
-            <th scope="col">Total @include('user.group.sorting.total')</th>
-            <th scope="col">Properties @include('user.group.sorting.created')</th>
-            <th scope="col">Manage</th>
-        </tr>
-    </thead>
-    <tbody class="user-holder tabular-body" id="group-list-holder">
-        <!-- Loading -->
-        <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
-    </tbody>
-    <div id="empty_item_holder"></div>
-    <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
-    </div>
-</table>
+<div class="table-responsive">
+    <table class="table tabular">
+        <thead>
+            <tr>
+                <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
+                <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
+                <th scope="col">Total @include('user.group.sorting.total')</th>
+                <th scope="col">Properties @include('user.group.sorting.created')</th>
+                <th scope="col">Manage</th>
+            </tr>
+        </thead>
+        <tbody class="user-holder tabular-body" id="group-list-holder">
+            <!-- Loading -->
+            <div class="auto-load text-center">
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </tbody>
+        <div id="empty_item_holder"></div>
+        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
+        </div>
+    </table>
+</div>
 
 <script>
     var page_new_req = 1;
@@ -113,9 +115,41 @@
                     }
                 }
 
+                function deleteGroup(id, slug, name){
+                    var elmt = ' ' +
+                        '<div class="modal fade" id="delete-group-'+slug+'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
+                            '<div class="modal-dialog"> ' +
+                                '<div class="modal-content"> ' +
+                                    '<div class="modal-body text-center pt-4"> ' +
+                                        '<button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                        '<p style="font-weight:500;">Are you sure want to delete "' + name + '" group</p> ' +
+                                        '@foreach($info as $in) ' +
+                                            '@if($in->info_location == "delete_group") ' +
+                                                '<div class="info-box {{$in->info_type}}"> ' +
+                                                    '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
+                                                    "{!! $in->info_body !!} " +
+                                                '</div> ' +
+                                            '@endif ' +
+                                        '@endforeach ' +
+                                        '</p> ' +
+                                        '<form class="d-inline" action="/user/group/delete/'+id+'" method="POST"> ' +
+                                            '@csrf ' +
+                                            '<input hidden name="group_name" value="' + name + '"> ' +
+                                            '<button class="btn btn-danger float-end" type="submit">Delete</button> ' +
+                                        '</form> ' +
+                                    '</div> ' +
+                                '</div> ' +
+                            '</div> ' +
+                        '</div> ';
+                    
+                    return elmt;
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var groupName = data[i].group_name;
+                    var slug = data[i].slug_name;
+                    var id = data[i].id;
                     var groupDesc = data[i].group_desc;
                     var total = data[i].total;
                     var createdAt = data[i].created_at;
@@ -132,7 +166,23 @@
                                 '<h6>Updated At</h6> ' +
                                 '<a>' + getDateContext(updatedAt) + '</a> ' +
                             '</td> ' +
-                            '<td class="tabular-role-holder"></td> ' +
+                            '<td class="tabular-role-holder"> ' +
+                                '<div class="position-relative"> ' +
+                                    '<button class="btn btn-primary" type="button" data-bs-target="edit-group" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                        'aria-expanded="false"> ' +
+                                        '<i class="fa-solid fa-pen-to-square"></i> ' +
+                                    '</button> ' +
+                                    '<button class="btn btn-info" type="button" data-bs-target="add-rel" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                        'aria-expanded="false"> ' +
+                                        '<i class="fa-solid fa-user-plus"></i> ' +
+                                    '</button> ' +
+                                    '<button class="btn btn-danger" type="button" data-bs-target="#delete-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                        'aria-expanded="false"> ' +
+                                        '<i class="fa-solid fa-solid fa-trash"></i> ' +
+                                    '</button> ' +
+                                    deleteGroup(id, slug, groupName) +
+                                '</div> ' +
+                            '</td> ' +  
                         '</tr>';
 
                     $("#group-list-holder").prepend(elmt);

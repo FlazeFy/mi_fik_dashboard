@@ -21,6 +21,7 @@ class Queries extends Controller
                 ->leftjoin('groups_relations', 'groups_relations.group_id', '=', 'users_groups.id')
                 ->groupBy('users_groups.id')
                 ->orderBy($ord[0], $ord[1])
+                ->whereNull('deleted_at')
                 ->paginate($limit);
 
             if ($user->isEmpty()) {

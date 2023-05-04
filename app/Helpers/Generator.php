@@ -11,6 +11,7 @@ use App\Models\Tag;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Dictionary;
+use App\Models\UserGroup;
 
 use DateTime;
 
@@ -41,6 +42,17 @@ class Generator
                 ->get();
         } else if($type == "tag"){
             $check = Tag::select('slug_name')
+                ->where('slug_name', $replace)
+                ->limit(1)
+                ->get();
+        } else if($type == "dct_tag"){
+            $check = Dictionary::select('slug_name')
+                ->where('slug_name', $replace)
+                ->where('dct_type', 'TAG-001')
+                ->limit(1)
+                ->get();
+        } else if($type == "group"){
+            $check = UserGroup::select('slug_name')
                 ->where('slug_name', $replace)
                 ->limit(1)
                 ->get();

@@ -67,6 +67,7 @@ Route::prefix('/statistic')->middleware(['auth_v2:sanctum'])->group(function () 
 Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/tag', [TagController::class, 'index']);
     Route::post('/tag/add', [TagController::class, 'add_tag']);
+    Route::post('/tag/add_category', [TagController::class, 'add_tag_category']);
     Route::post('/tag/update/{type}/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 
@@ -126,6 +127,7 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/group', [GroupingController::class, 'index']);
     Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
     Route::post('/group/add', [GroupingController::class, 'add_group']);
+    Route::post('/group/delete/{id}', [GroupingController::class, 'delete_group']);
 });
 
 Route::prefix('/setting')->middleware(['auth_v2:sanctum'])->group(function () {
