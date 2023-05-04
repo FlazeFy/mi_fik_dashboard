@@ -52,6 +52,9 @@
 
                     <div class="mt-4 btn-config-holder">
                         @include('user.all.filtername')
+                        <div class="ms-3">
+                            @include("user.searchbar")
+                        </div>
                     </div>
 
                     <div class="content-section-small mt-3">

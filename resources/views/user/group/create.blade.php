@@ -10,7 +10,7 @@
         padding: 5px 16px 0 5px;
         display: flex;
         flex-direction: column;
-        max-height: 70vh;
+        max-height: 65vh;
         overflow-y: scroll;
     }
 </style>
@@ -55,6 +55,7 @@
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <h6>All User</h6>
+                            @include("user.searchbar")
                             <span id="user-list-holder"></span>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -72,15 +73,7 @@
 <script>
     var page_new_req = 1;
     var selectedUser = []; 
-    infinteLoadMore_new_req(page_new_req);
-
-    //Fix the sidebar & content page_new_req FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page_new_req++;
-    //         infinteLoadMore(page_new_req);
-    //     } 
-    // };
+    infinteLoadMore(page_new_req);
 
     function loadmore_new_req(route){
         page_new_req++;
@@ -99,9 +92,29 @@
         } 
     }
 
-    function infinteLoadMore_new_req(page_new_req) {        
+    function getFind(check){
+        if(check == null || check.trim() === ''){
+            return "all_all"
+        } else {
+            return check
+        }
+    }
+
+    function getChecked(username){
+        let find = selectedUser.findIndex(obj => obj.username == username);
+        if(find != -1){
+            return "checked";
+        } else {
+            return "";
+        }
+    }
+
+    function infinteLoadMore(page_new_req) {       
+        var find = document.getElementById("title_search").value;
+        document.getElementById("user-list-holder").innerHTML = "";
+
         $.ajax({
-            url: "/api/v1/user/all_all/limit/100/order/first_name__DESC?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(find) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -130,8 +143,7 @@
             } else if (data.length == 0) {
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
                 return;
-            } else {
-
+            } else {                
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var username = data[i].username;
@@ -161,7 +173,7 @@
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
                                     '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)"> ' +
+                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +

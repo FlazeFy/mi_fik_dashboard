@@ -45,12 +45,23 @@
         infinteLoadMore(page_new_req);
     }
 
-    function infinteLoadMore(page_new_req) {    
+    function infinteLoadMore(page_new_req) {  
+        function getFind(filter, find){
+            if(find== null || find.trim() === ''){
+                return filter;
+            } else {
+                return find;
+            }
+        }
+
         var name_filter = '<?= session()->get('filtering_fname')."_".session()->get('filtering_lname'); ?>';
         var order = '<?= session()->get('ordering_user_list'); ?>';
+
+        var find = document.getElementById("title_search").value;
+        document.getElementById("user-list-holder").innerHTML = "";
     
         $.ajax({
-            url: "/api/v1/user/" + name_filter + "/limit/100/order/" + order + "?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
