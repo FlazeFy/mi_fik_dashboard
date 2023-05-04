@@ -44,6 +44,12 @@ class Generator
                 ->where('slug_name', $replace)
                 ->limit(1)
                 ->get();
+        } else if($type == "dct_tag"){
+            $check = Dictionary::select('slug_name')
+                ->where('slug_name', $replace)
+                ->where('dct_type', 'TAG-001')
+                ->limit(1)
+                ->get();
         }
 
         if(count($check) > 0){

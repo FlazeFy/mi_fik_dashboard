@@ -1,5 +1,5 @@
 <table class="table tabular">
-    <thead>
+    <thead style="position:sticky; top:80px; background: white;">
         <tr>
             <th scope="col">Image</th>
             <th scope="col">Username @include('user.all.sorting.username')</th>

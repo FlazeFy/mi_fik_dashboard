@@ -1,5 +1,5 @@
 <table class="table tabular">
-    <thead>
+    <thead style="position:sticky; top:80px; background: white;">
         <tr>
             <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
             <th scope="col">Description @include('user.group.sorting.groupdesc')</th>

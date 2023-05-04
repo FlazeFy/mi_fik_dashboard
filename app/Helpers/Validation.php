@@ -125,6 +125,11 @@ class Validation
                 'tag_desc' => 'nullable|max:255|string',
                 'tag_category' => 'required|max:75|string'
             ]);
+        } else if($type == "dct"){
+            return Validator::make($request->all(), [
+                'dct_name' => 'required|max:35|string',
+                'dct_desc' => 'nullable|max:255|string'
+            ]);
         }
     }
 

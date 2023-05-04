@@ -70,16 +70,19 @@
                                         @include('event.tag.add')
                                     </div>
                                     <div class="content-section">
-                                        @include('statistic.mostTag')
+                                        @include('event.tag.category')
                                     </div>
-                                    <div class="content-section position-relative">
-                                        <h5 class="text-secondary fw-bold">History</h5>
-                                        @include('components.history', ['history' => $history])
+                                    <div class="content-section">
+                                        @include('statistic.mostTag')
                                     </div>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
                                     <div class="content-section">
                                         @include('event.tag.table')
+                                    </div>
+                                    <div class="content-section position-relative">
+                                        <h5 class="text-secondary fw-bold">History</h5>
+                                        @include('components.history', ['history' => $history])
                                     </div>
                                 </div>
                             </div>
