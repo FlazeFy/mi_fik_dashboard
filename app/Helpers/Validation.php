@@ -222,4 +222,11 @@ class Validation
             'question_type' => ['required', new TypeQuestion],
         ]);
     }
+
+    public static function getValidateGroup($request){
+        return Validator::make($request->all(), [
+            'group_name' => 'required|min:3|max:35|string',
+            'group_desc' => 'nullable|min:3|max:255|string',
+        ]);
+    }
 }

@@ -30,22 +30,22 @@
 
 <script>
     var page_new_req = 1;
-    infinteLoadMore(page_new_req);
+    infinteLoadMoreUser(page_new_req);
 
     //Fix the sidebar & content page_new_req FE first to use this feature
     // window.onscroll = function() { 
     //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
     //         page_new_req++;
-    //         infinteLoadMore(page_new_req);
+    //         infinteLoadMoreUser(page_new_req);
     //     } 
     // };
 
     function loadmore(route){
         page_new_req++;
-        infinteLoadMore(page_new_req);
+        infinteLoadMoreUser(page_new_req);
     }
 
-    function infinteLoadMore(page_new_req) {  
+    function infinteLoadMoreUser(page_new_req) {  
         function getFind(filter, find){
             if(find== null || find.trim() === ''){
                 return filter;

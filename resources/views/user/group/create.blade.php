@@ -63,6 +63,7 @@
                             <span id="detail-holder"></span>
                         </div>
                     </div>
+                    <input hidden name="selected_user" id="selected_user" value="">
                     <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </form>
             </div>
@@ -73,11 +74,11 @@
 <script>
     var page_new_req = 1;
     var selectedUser = []; 
-    infinteLoadMore(page_new_req);
+    infinteLoadMoreUser(page_new_req);
 
     function loadmore_new_req(route){
         page_new_req++;
-        infinteLoadMore(page_new_req);
+        infinteLoadMoreUser(page_new_req);
     }
 
     function getUserImage(img, role){
@@ -109,7 +110,7 @@
         }
     }
 
-    function infinteLoadMore(page_new_req) {       
+    function infinteLoadMoreUser(page_new_req) {       
         var find = document.getElementById("title_search").value;
         document.getElementById("user-list-holder").innerHTML = "";
 
@@ -189,11 +190,13 @@
     }
 
     function addSelected(username, fullname, checked){
+        var input_holder = document.getElementById("selected_user");
         if(selectedUser.length == 0){
             selectedUser.push({
                 full_name : fullname,
                 username : username
             });
+            input_holder.value = JSON.stringify(selectedUser);
         } else {
             if(checked === false){
                 let indexToRemove = selectedUser.findIndex(obj => obj.username == username);
@@ -202,6 +205,7 @@
 
                     // Make sure the item unchecked by remove from selected user list
                     document.getElementById("check_"+username).checked = false; 
+                    input_holder.value = JSON.stringify(selectedUser);
                 } else {
                     console.log('Item not found LOL');
                 }
@@ -210,9 +214,11 @@
                     full_name : fullname,
                     username : username
                 });
+                input_holder.value = JSON.stringify(selectedUser);
             }
         }
-        console.log(selectedUser);
+        //console.log(input_holder);
+        // console.log(selectedUser);
         refreshList();
     }
 

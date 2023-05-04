@@ -14,5 +14,5 @@ class UserGroup extends Model
 
     protected $table = 'users_groups';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'group_name', 'group_desc', 'created_at', 'created_by', 'updated_at', 'updated_by'];
+    protected $fillable = ['id', 'slug_name', 'group_name', 'group_desc', 'created_at', 'created_by', 'updated_at', 'updated_by'];
 }

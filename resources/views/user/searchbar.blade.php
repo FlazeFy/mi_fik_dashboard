@@ -4,13 +4,13 @@
     </div>
     <div class="col-10 position-relative">
         <i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i>
-        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="Search by fullname" onchange="infinteLoadMore(1)" maxlength="75">
+        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="Search by fullname" onchange="infinteLoadMoreUser(1)" maxlength="75">
     </div>
 </div>
 
 <script type="text/javascript">
     function resetTitleSearch(){
         document.getElementById("title_search").value = null;
-        infinteLoadMore(1);
+        infinteLoadMoreUser(1);
     }
 </script>
