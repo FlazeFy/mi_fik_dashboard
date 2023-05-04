@@ -28,7 +28,7 @@ class GroupingController extends Controller
     public function index()
     {
         $greet = Generator::getGreeting(date('h'));
-        $info = Info::getAvailableInfo("user");
+        $info = Info::getAvailableInfo("user/group");
         $menu = Menu::getMenu();
 
         //Set active nav
@@ -143,6 +143,42 @@ class GroupingController extends Controller
             }
         } else {
             return redirect()->back()->with('failed_message', 'Create group failed. Please use unique name');
+        }
+    }
+
+    public function delete_group(Request $request, $id)
+    {
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $data = new Request();
+        $obj = [
+            'history_type' => "group",
+            'history_body' => "Has deleted '".$request->dct_name."' group"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            UserGroup::where('id',$id)->update([
+                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_by' => $user_id
+            ]);
+
+            History::create([
+                'id' => Generator::getUUID(),
+                'history_type' => $data->history_type, 
+                'context_id' => $id, 
+                'history_body' => $data->history_body, 
+                'history_send_to' => null,
+                'created_at' => date("Y-m-d h:i:s"),
+                'created_by' => $user_id
+            ]);
+
+            return redirect()->back()->with('success_message', "'".$request->group_name."' group has been deleted");
         }
     }
 

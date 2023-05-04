@@ -115,9 +115,41 @@
                     }
                 }
 
+                function deleteGroup(id, slug, name){
+                    var elmt = ' ' +
+                        '<div class="modal fade" id="delete-group-'+slug+'" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
+                            '<div class="modal-dialog"> ' +
+                                '<div class="modal-content"> ' +
+                                    '<div class="modal-body text-center pt-4"> ' +
+                                        '<button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                        '<p style="font-weight:500;">Are you sure want to delete "' + name + '" group</p> ' +
+                                        '@foreach($info as $in) ' +
+                                            '@if($in->info_location == "delete_group") ' +
+                                                '<div class="info-box {{$in->info_type}}"> ' +
+                                                    '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
+                                                    "{!! $in->info_body !!} " +
+                                                '</div> ' +
+                                            '@endif ' +
+                                        '@endforeach ' +
+                                        '</p> ' +
+                                        '<form class="d-inline" action="/user/group/delete/'+id+'" method="POST"> ' +
+                                            '@csrf ' +
+                                            '<input hidden name="group_name" value="' + name + '"> ' +
+                                            '<button class="btn btn-danger float-end" type="submit">Delete</button> ' +
+                                        '</form> ' +
+                                    '</div> ' +
+                                '</div> ' +
+                            '</div> ' +
+                        '</div> ';
+                    
+                    return elmt;
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var groupName = data[i].group_name;
+                    var slug = data[i].slug_name;
+                    var id = data[i].id;
                     var groupDesc = data[i].group_desc;
                     var total = data[i].total;
                     var createdAt = data[i].created_at;
@@ -134,7 +166,23 @@
                                 '<h6>Updated At</h6> ' +
                                 '<a>' + getDateContext(updatedAt) + '</a> ' +
                             '</td> ' +
-                            '<td class="tabular-role-holder"></td> ' +
+                            '<td class="tabular-role-holder"> ' +
+                                '<div class="position-relative"> ' +
+                                    '<button class="btn btn-primary" type="button" data-bs-target="edit-group" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                        'aria-expanded="false"> ' +
+                                        '<i class="fa-solid fa-pen-to-square"></i> ' +
+                                    '</button> ' +
+                                    '<button class="btn btn-info" type="button" data-bs-target="add-rel" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                        'aria-expanded="false"> ' +
+                                        '<i class="fa-solid fa-user-plus"></i> ' +
+                                    '</button> ' +
+                                    '<button class="btn btn-danger" type="button" data-bs-target="#delete-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                        'aria-expanded="false"> ' +
+                                        '<i class="fa-solid fa-solid fa-trash"></i> ' +
+                                    '</button> ' +
+                                    deleteGroup(id, slug, groupName) +
+                                '</div> ' +
+                            '</td> ' +  
                         '</tr>';
 
                     $("#group-list-holder").prepend(elmt);
