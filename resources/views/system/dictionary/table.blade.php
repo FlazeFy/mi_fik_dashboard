@@ -56,7 +56,7 @@
                             </div>
                             <div class="col-9 p-0 ps-2 pt-1">
                                 <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($dc->created_at))}}</h6>
+                                <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($dc->created_at))}}</h6>
                             </div>
                         </div>    
                         @if($dc->updated_at)
@@ -67,7 +67,7 @@
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
                                     <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($dc->updated_at))}}</h6>
+                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($dc->updated_at))}}</h6>
                                 </div>
                             </div>   
                         @endif
@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
                                     <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($dc->deleted_at))}}</h6>
+                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($dc->deleted_at))}}</h6>
                                 </div>
                             </div>   
                         @endif

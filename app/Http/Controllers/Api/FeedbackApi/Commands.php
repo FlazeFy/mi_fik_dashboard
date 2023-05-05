@@ -18,7 +18,7 @@ class Commands extends Controller
 
         try {
 
-            $validator = Validation::getFeedbackCreate($request);
+            $validator = Validation::getValidateFeedbackCreate($request);
 
             if ($validator->fails()) {
                 return response()->json([

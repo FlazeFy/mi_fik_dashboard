@@ -50,7 +50,7 @@ class CommandTask extends Controller
                         'task_date_start' => $request->task_date_start,
                         'task_date_end' => $request->task_date_end,
                         'task_reminder' => $request->task_reminder,
-                        'updated_at' => date("Y-m-d h:i"),
+                        'updated_at' => date("Y-m-d H:i"),
                         'updated_by' => $user_id
                     ]);
 
@@ -60,7 +60,7 @@ class CommandTask extends Controller
                         'context_id' => $id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -100,7 +100,7 @@ class CommandTask extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $task = Task::where('id', $id)->update([
-                    'deleted_at' => date("Y-m-d h:i:s"),
+                    'deleted_at' => date("Y-m-d H:i:s"),
                     'deleted_by' => $user_id,
                 ]);
                 
@@ -114,7 +114,7 @@ class CommandTask extends Controller
                     'context_id' => $id, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
 
@@ -164,7 +164,7 @@ class CommandTask extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);  
 
@@ -222,7 +222,7 @@ class CommandTask extends Controller
                         'task_date_start' => $request->task_date_start,
                         'task_date_end' => $request->task_date_end,
                         'task_reminder' => $request->task_reminder,
-                        'created_at' => date("Y-m-d h:i"),
+                        'created_at' => date("Y-m-d H:i"),
                         'created_by' => $user_id,
                         'updated_at' => null,
                         'updated_by' => null,
@@ -236,7 +236,7 @@ class CommandTask extends Controller
                         'context_id' => $task->id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 

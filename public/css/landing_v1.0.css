@@ -1,7 +1,7 @@
 .form-floating{
     max-width: 400px;
 }
-.form-floating .form-control{
+.form-floating .form-control.login{
     border: none;
     border-bottom: 3px solid #212121;
     border-radius: 0;
@@ -21,7 +21,7 @@
 .btn-forgot-password:hover{
     color: #D5534C !important;
 }
-.form-control:focus{
+.form-control.login:focus{
     box-shadow: none !important;
 }
 .card-header.faq-header{

@@ -80,8 +80,8 @@ class Validation
         return Validator::make($request->all(), [
             'task_title' => 'required|min:6|max:75|string',
             'task_desc' => 'nullable|string|max:10000',
-            'task_date_start' => 'nullable|date_format:Y-m-d h:i',
-            'task_date_end' => 'nullable|date_format:Y-m-d h:i',
+            'task_date_start' => 'nullable|date_format:Y-m-d H:i',
+            'task_date_end' => 'nullable|date_format:Y-m-d H:i',
             'task_reminder' => 'required|string|max:75'
         ]);
     }
@@ -202,7 +202,7 @@ class Validation
         ]);
     }
 
-    public static function getFeedbackCreate($request){
+    public static function getValidateFeedbackCreate($request){
         return Validator::make($request->all(), [
             'feedback_body' => 'required|min:2|max:255|string',
             'feedback_rate' => 'required|numeric|min:1|max:5',

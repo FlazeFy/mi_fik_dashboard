@@ -16,7 +16,7 @@
 
                         <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
                             <button class='card shadow event-box p-2' style="min-height:160px; height:auto;" onclick='location.href="/event/detail/{{$md->slug_name}}";'>
-                                <div class='text-primary' style="font-size:12px;">{{date("Y/m/d h:i", strtotime($md->created_at))}}</div>
+                                <div class='text-primary' style="font-size:12px;">{{date("Y/m/d H:i", strtotime($md->created_at))}}</div>
                                 <div class='card-body p-2 w-100'>
                                     <div class='row px-2'>
                                         <div class='col-lg-3 px-1'>

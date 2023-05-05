@@ -11,20 +11,31 @@ use App\Helpers\Query;
 
 class Queries extends Controller
 {
-    public function getAllGroup($limit, $order)
+    public function getAllGroup($limit, $order, $find)
     {
         try{
             $select = Query::getSelectTemplate("group_detail");
             $ord = explode("__", $order);
+            $find = trim($find);
 
-            $user = UserGroup::selectRaw($select)
-                ->leftjoin('groups_relations', 'groups_relations.group_id', '=', 'users_groups.id')
-                ->groupBy('users_groups.id')
-                ->orderBy($ord[0], $ord[1])
-                ->whereNull('deleted_at')
-                ->paginate($limit);
+            if($find != null){
+                $group = UserGroup::selectRaw($select)
+                    ->leftjoin('groups_relations', 'groups_relations.group_id', '=', 'users_groups.id')
+                    ->groupBy('users_groups.id')
+                    ->orderBy($ord[0], $ord[1])
+                    ->whereNull('deleted_at')
+                    ->whereRaw("group_name LIKE '%".$find."%'")
+                    ->paginate($limit);
+            } else {
+                $group = UserGroup::selectRaw($select)
+                    ->leftjoin('groups_relations', 'groups_relations.group_id', '=', 'users_groups.id')
+                    ->groupBy('users_groups.id')
+                    ->orderBy($ord[0], $ord[1])
+                    ->whereNull('deleted_at')
+                    ->paginate($limit);
+            }
 
-            if ($user->isEmpty()) {
+            if ($group->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Group Not Found',
@@ -34,7 +45,7 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Group Found',
-                    'data' => $user
+                    'data' => $group
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {

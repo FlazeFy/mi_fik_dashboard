@@ -1,28 +1,29 @@
-<div class="container-fluid rounded my-4 py-5 text-start" style="max-width:450px;">
-    <form action="/v2/login/" method="POST" id="form-login">
+<div class="container-fluid rounded my-4 py-5 text-start welcome-container" style="max-width:450px;">
+    <form action="/v2/login" method="POST" id="form-login">
         @csrf
         <h1 class="fw-bold mt-4 text-primary">Welcome to Mi-Fik</h1>
         <h6 class="mb-4">Mi-Fik is an app made for event organizing and announcement that will be used for lecturer, staff, and student of 
             <a class="link-external" href="https://ifik.telkomuniversity.ac.id/">School of Creative Industries Telkom University</a></h6>
         <div class="form-floating mt-1">
-            <input type="text" class="form-control" id="floatingUsername" placeholder="Username" name="username" id="username" required>
+            <input type="text" class="form-control login" id="floatingUsername" placeholder="Username" name="username" id="username" onkeydown="return submitOnEnter(event)" required>
             <label for="floatingUsername">Username</label>
             <a class="error_input" id="username_msg"></a>
         </div>
         <div class="form-floating mt-3">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password" id="password" required>
+            <input type="password" class="form-control login" id="floatingPassword" placeholder="Password" name="password" id="password" onkeydown="return submitOnEnter(event)" required>
             <label for="floatingPassword">Password</label>
             <a class="error_input" id="pass_msg"></a>
         </div>
-        <a class="btn btn-forgot-password mt-4">Forgot Password ?</a>
+        <a class="error_input" id="all_msg"></a><br>
 
-        <a class="error_input" id="all_msg"></a>
+        <a class="btn btn-forgot-password mt-3">Forgot Password ?</a>
+
         <input hidden name="token" value="" id="token">
         <input hidden name="role" value="" id="role">
         <input hidden name="email" value="" id="email">
         <input hidden name="profile_pic" value="" id="profile_pic">
         <div class="position-relative mt-2 mb-2">
-            <input type="submit" onclick="login()" class="btn btn-submit-form px-5 rounded-pill" value="Sign In"></input>
+            <a onclick="login()" class="btn btn-submit-form px-5 rounded-pill">Sign In</a>
             <a onclick="" class="btn btn-primary-outlined position-absolute px-5 rounded-pill" style="right:0; top:7.5px;">Register</a>
         </div>
     </form>
@@ -109,5 +110,14 @@
                 }
             }
         });
+    }
+
+    function submitOnEnter(event) {
+        if (event.keyCode === 13) { 
+            event.preventDefault(); 
+            login();
+            return false; 
+        }
+        return true; 
     }
 </script>

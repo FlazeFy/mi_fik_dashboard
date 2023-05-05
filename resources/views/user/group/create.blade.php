@@ -93,11 +93,13 @@
         } 
     }
 
-    function getFind(check){
-        if(check == null || check.trim() === ''){
-            return "all_all"
+    function getFindUser(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "all_all";
         } else {
-            return check
+            document.getElementById("title_search").value = trim;
+            return trim;
         }
     }
 
@@ -115,7 +117,7 @@
         document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/" + getFind(find) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
+            url: "/api/v1/user/" + getFindUser(find) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

@@ -76,7 +76,7 @@ class GroupingController extends Controller
                         'slug_name' => $slug,
                         'group_name' => $request->group_name,
                         'group_desc' => $request->group_desc,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id,
                         'updated_at' => null,
                         'updated_by' => null,
@@ -92,7 +92,7 @@ class GroupingController extends Controller
                     //             'id' => Generator::getUUID(),
                     //             'group_id' => $uuid,
                     //             'user_id' => $user_id_mng,
-                    //             'created_at' => date("Y-m-d h:i:s"),
+                    //             'created_at' => date("Y-m-d H:i:s"),
                     //             'created_by' => $user_id,
                     //         ]);
                     //     }
@@ -111,7 +111,7 @@ class GroupingController extends Controller
                                     'id' => Generator::getUUID(),
                                     'group_id' => $uuid,
                                     'user_id' => $member_id,
-                                    'created_at' => date("Y-m-d h:i:s"),
+                                    'created_at' => date("Y-m-d H:i:s"),
                                     'created_by' => $user_id,
                                 ]);
                             }
@@ -130,7 +130,7 @@ class GroupingController extends Controller
                         'context_id' => $header->id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -164,7 +164,7 @@ class GroupingController extends Controller
             return redirect()->back()->with('failed_message', $errors);
         } else {
             UserGroup::where('id',$id)->update([
-                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_at' => date("Y-m-d H:i:s"),
                 'deleted_by' => $user_id
             ]);
 
@@ -174,11 +174,63 @@ class GroupingController extends Controller
                 'context_id' => $id, 
                 'history_body' => $data->history_body, 
                 'history_send_to' => null,
-                'created_at' => date("Y-m-d h:i:s"),
+                'created_at' => date("Y-m-d H:i:s"),
                 'created_by' => $user_id
             ]);
 
             return redirect()->back()->with('success_message', "'".$request->group_name."' group has been deleted");
+        }
+    }
+
+    public function edit_group(Request $request, $id)
+    {
+        //Validate name avaiability
+        $check = UserGroup::where('group_name', $request->group_name)->get();
+
+        if((count($check) == 0 && strtolower(str_replace(" ","", $request->group_name)) != "all") || $request->group_name == $request->old_group_name){
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+            $validator = Validation::getValidateGroup($request);
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $data = new Request();
+                $obj = [
+                    'history_type' => "group",
+                    'history_body' => "Has updated '".$request->group_name."' group"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    $header = UserGroup::where('id',$id)->update([
+                        'group_name' => $request->group_name,
+                        'group_desc' => $request->group_desc,
+                        'updated_at' => date("Y-m-d H:i:s"),
+                        'updated_by' => $user_id
+                    ]);
+
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+
+                    return redirect()->back()->with('success_message', "'".$request->group_name."' group has been updated");
+                }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', 'Create group failed. Please use unique name');
         }
     }
 

@@ -21,7 +21,7 @@ class Commands extends Controller
             $user_id = $request->user()->id;
 
             $content = Question::where('id', $id)->update([
-                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_at' => date("Y-m-d H:i:s"),
                 'deleted_by' => $user_id,
             ]);
 
@@ -63,7 +63,7 @@ class Commands extends Controller
                     'question_body' => $request->question_body,
                     'question_answer' => null,
                     'is_active' => 0,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id,
                     'updated_at' => null,
                     'updated_by' => null,

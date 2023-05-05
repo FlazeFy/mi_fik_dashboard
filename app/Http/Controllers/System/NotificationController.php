@@ -49,7 +49,7 @@ class NotificationController extends Controller
             //'notif_send_to' => $request->notif_send_to,
             'is_pending' => $request->is_pending,
             'pending_until' => $pending_date,
-            'updated_at' => date("Y-m-d h:i"),
+            'updated_at' => date("Y-m-d H:i"),
             'updated_by' => $user_id
         ]);
 
@@ -61,7 +61,7 @@ class NotificationController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         
         $result = Notification::where('id', $id)->update([
-            'deleted_at' => date("Y-m-d h:i"),
+            'deleted_at' => date("Y-m-d H:i"),
             'deleted_by' => $user_id
         ]);
 

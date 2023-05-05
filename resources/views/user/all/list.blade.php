@@ -47,10 +47,12 @@
 
     function infinteLoadMoreUser(page_new_req) {  
         function getFind(filter, find){
-            if(find== null || find.trim() === ''){
+            let trim = find.trim();
+            if(find == null || trim === ''){
                 return filter;
             } else {
-                return find;
+                document.getElementById("title_search").value = trim;
+                return trim;
             }
         }
 

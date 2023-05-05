@@ -259,7 +259,7 @@ class Generator
     }
 
     public static function getGreeting($datetime){
-        $hour = date('h', $datetime);
+        $hour = date('H', $datetime);
 
         if ($hour >= 3 && $hour <= 12) {
             $greet = "Good Morning";

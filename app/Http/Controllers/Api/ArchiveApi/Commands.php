@@ -64,7 +64,7 @@ class Commands extends Controller
                         'context_id' => $archive->id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -147,7 +147,7 @@ class Commands extends Controller
                         $result = Archive::where('id', $id)->update([
                             'archive_name' => $request->archive_name,
                             'archive_desc' => $request->archive_desc,
-                            'updated_at' => date("Y-m-d h:i"),
+                            'updated_at' => date("Y-m-d H:i"),
                             'updated_by' => $user_id
                         ]);
 
@@ -157,7 +157,7 @@ class Commands extends Controller
                             'context_id' => $id, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
 
@@ -216,7 +216,7 @@ class Commands extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
 

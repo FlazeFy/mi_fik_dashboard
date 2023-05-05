@@ -21,7 +21,7 @@ class CommandContent extends Controller
     public function deleteContent(Request $request, $id){
         try{
             $content = ContentHeader::where('id', $id)->update([
-                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_at' => date("Y-m-d H:i:s"),
                 'deleted_by' => $request->user_id,
             ]);
 
