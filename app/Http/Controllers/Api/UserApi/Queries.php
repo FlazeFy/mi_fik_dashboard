@@ -76,7 +76,7 @@ class Queries extends Controller
                 }
             } else {
                 $user = User::selectRaw($select)
-                    ->whereRaw("CONCAT(first_name, ' ', last_name) LIKE '%".$filter_name."%'")
+                    ->whereRaw("CONCAT(first_name, ' ', last_name) LIKE '%".trim($filter_name)."%'")
                     ->paginate($limit);
             }
 

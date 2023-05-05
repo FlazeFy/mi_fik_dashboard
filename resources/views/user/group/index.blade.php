@@ -52,8 +52,9 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
+                    <div class="content-section position-relative">
                         @include('user.group.create')
+                        @include('user.group.searchbar')
                         @include('user.group.list')
                     </div>
                 </div>

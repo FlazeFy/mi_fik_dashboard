@@ -22,7 +22,7 @@
             </svg>
         </tbody>
         <div id="empty_item_holder"></div>
-        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
+        <span id="load_more_holder" style="position:absolute; right:20px; top:20px;"></span>
         </div>
     </table>
 </div>
@@ -44,11 +44,23 @@
         infinteLoadMore(page_new_req);
     }
 
+    function getFind(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "%20"
+        } else {
+            document.getElementById("group_search").value = trim;
+            return trim
+        }
+    }
+
     function infinteLoadMore(page_new_req) {    
         var order = '<?= session()->get('ordering_group_list'); ?>';
+        var find = document.getElementById("group_search").value;
+        document.getElementById("group-list-holder").innerHTML = "";
     
         $.ajax({
-            url: "/api/v1/group/limit/100/order/" + order + "?page=" + page_new_req,
+            url: "/api/v1/group/limit/100/order/" + order + "/find/" + getFind(find) + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
