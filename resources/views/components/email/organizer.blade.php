@@ -73,7 +73,7 @@
             <h5 style="margin-bottom:10px;">Hello {{session()->get('username_key')}}, you just created a new event</h5>
             <h6 style="color:#F78A00;">Here's the detail</h6>
             <h6>Title : {{$header->content_title}}</h6>
-            <h6><i class="fa-regular fa-calendar"></i> Date : {{date("Y M d h:i", strtotime($header->content_date_start))}} until {{date("Y M d h:i", strtotime($header->content_date_end))}}</h6>
+            <h6><i class="fa-regular fa-calendar"></i> Date : {{date("Y M d H:i", strtotime($header->content_date_start))}} until {{date("Y M d H:i", strtotime($header->content_date_end))}}</h6>
 
             @if($detail->content_loc)
                 @php($loc = json_decode($detail->content_loc))
@@ -96,7 +96,7 @@
 
             <hr>
             <h6>Properties</h6>
-            <h6>Created At : {{date("Y M d h:i:s", strtotime($header->created_at))}}</h6>
+            <h6>Created At : {{date("Y M d H:i:s", strtotime($header->created_at))}}</h6>
         </div>
     </body>
 </html>

@@ -103,7 +103,7 @@ class SettingController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 
@@ -147,7 +147,7 @@ class SettingController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 

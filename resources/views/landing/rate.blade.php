@@ -4,7 +4,7 @@
     ];
 </script>
 
-<div class="container-fluid my-2 py-3">
+<div class="container-fluid my-5 py-4 rate-container">
     <div class="container shadow d-block mx-auto p-4 my-5" style="max-width:500px; border-radius:20px;">
         <h2 class="fw-bold mt-2 mb-4 text-primary text-center">Rate Us</h2>
         <form class="p-2 mt-2" action="/add_feedback" method="POST">

@@ -23,7 +23,7 @@
                 $dateItem = date('Y-m-d', strtotime($date)); 
                 $dateNow = date('Y-m-d'); 
                 $yesterday = date('Y-m-d', strtotime('-1 day'));
-                $timeItem = date('h:i', strtotime($date));
+                $timeItem = date('H:i', strtotime($date));
                 $hourItem = date('h', strtotime($date));
                 $hourNow = date('h');
                 $minItem = date('i', strtotime($date));
@@ -45,7 +45,7 @@
                 } else if ($dateItem == $yesterday) {
                     $result = "Yesterday at ".$timeItem;
                 } else {
-                    $result = date('Y-m-d h:i:s', strtotime($date)); 
+                    $result = date('Y-m-d H:i:s', strtotime($date)); 
                 }
             
                 return $result;

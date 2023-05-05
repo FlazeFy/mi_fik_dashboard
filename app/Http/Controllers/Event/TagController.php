@@ -96,13 +96,13 @@ class TagController extends Controller
                     if($type == "desc"){
                         Tag::where('id', $id)->update([
                             'tag_desc' => $request->tag_desc,
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
                     } else if($type == "cat"){
                         Tag::where('id', $id)->update([
                             'tag_category' => $request->tag_category,
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
                     }
@@ -113,7 +113,7 @@ class TagController extends Controller
                         'context_id' => $id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -168,7 +168,7 @@ class TagController extends Controller
                         'tag_name' => $request->tag_name,
                         'tag_desc' => $request->tag_desc,
                         'tag_category' => $request->tag_category,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id,
                         'updated_at' => null,
                         'deleted_at' => null,
@@ -182,7 +182,7 @@ class TagController extends Controller
                         'context_id' => $header->id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
                     return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
@@ -228,7 +228,7 @@ class TagController extends Controller
                         'dct_name' => $request->dct_name,
                         'dct_desc' => $request->dct_desc,
                         'dct_type' => "TAG-001",
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id,
                         'updated_at' => null,
                         'deleted_at' => null,
@@ -242,7 +242,7 @@ class TagController extends Controller
                         'context_id' => $header->id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
                     return redirect()->back()->with('success_message', "'".$request->dct_name."' Tag Category has been created");

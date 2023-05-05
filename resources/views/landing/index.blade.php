@@ -29,6 +29,12 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/landing_v1.0.css') }}"/>
 
+        <!--Scroll reveal-->
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            ScrollReveal({ reset: true });
+        </script>
+
         <!-- JS Collection -->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
@@ -61,4 +67,19 @@
         @include('popup.success')
         @include('popup.failed')
     </body>
+
+    <script>        
+        ScrollReveal().reveal('.welcome-container', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.faq-first', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.faq-second', { delay: 500, distance: '80px', origin: 'right', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-left', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-right', { delay: 500, distance: '80px', origin: 'right', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-top', { delay: 500, distance: '80px', origin: 'top', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-bottom', { delay: 500, distance: '80px', origin: 'bottom', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.feedback-first', { delay: 500, distance: '80px', origin: 'top', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.feedback-second', { delay: 500, distance: '80px', origin: 'bottom', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.roles-left', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out'  });
+        ScrollReveal().reveal('.roles-right', { delay: 500, distance: '80px', origin: 'right', easing: 'ease-in-out'  });
+        ScrollReveal().reveal('.rate-container', { delay: 500, distance: '80px', origin: 'bottom', easing: 'ease-in-out'  });
+    </script>
 </html>

@@ -111,7 +111,7 @@ class DetailController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 ContentHeader::where('id', $id)->update([
-                    'deleted_at' => date("Y-m-d h:i:s"),
+                    'deleted_at' => date("Y-m-d H:i:s"),
                     'deleted_by' => $user_id
                 ]);
 
@@ -121,7 +121,7 @@ class DetailController extends Controller
                     'context_id' => $id, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
 

@@ -38,7 +38,7 @@ class Commands extends Controller
                         'slug_name' => $slug,
                         'tag_name' => $request->tag_name,
                         'tag_desc' => $request->tag_desc,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'updated_at' => null,
                         'deleted_at' => null,
                         'created_by' => $request->user_id,
@@ -79,7 +79,7 @@ class Commands extends Controller
                     'slug_name' => $slug,
                     'tag_name' => $request->tag_name,
                     'tag_desc' => $request->tag_desc,
-                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
                     'updated_by' => $request->user_id,
                 ]);
 
@@ -114,7 +114,7 @@ class Commands extends Controller
     public function deleteTag(Request $request, $id){
         try{
             $tag = Tag::where('id', $id)->update([
-                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_at' => date("Y-m-d H:i:s"),
                 'deleted_by' => $request->user_id,
             ]);
 

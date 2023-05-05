@@ -73,7 +73,7 @@ class FaqController extends Controller
                     'context_id' => $request->question_id, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 

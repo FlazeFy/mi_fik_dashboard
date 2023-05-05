@@ -65,7 +65,7 @@ class DictionaryController extends Controller
             } else {
                 Dictionary::where('id', $id)->update([
                     'dct_type' => $request->dct_type,
-                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
                     'updated_by' => $user_id
                 ]);
 
@@ -75,7 +75,7 @@ class DictionaryController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 

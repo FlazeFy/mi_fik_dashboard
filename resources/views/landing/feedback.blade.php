@@ -1,4 +1,4 @@
-<div class="container-fluid my-2 py-3">
+<div class="container-fluid my-5 py-4">
     <h2 class="fw-bold mt-2 mb-5 text-primary text-center">What They Say About Us</h2>
     <div class="row">
         @php($i = 1)

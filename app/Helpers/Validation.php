@@ -80,8 +80,8 @@ class Validation
         return Validator::make($request->all(), [
             'task_title' => 'required|min:6|max:75|string',
             'task_desc' => 'nullable|string|max:10000',
-            'task_date_start' => 'nullable|date_format:Y-m-d h:i',
-            'task_date_end' => 'nullable|date_format:Y-m-d h:i',
+            'task_date_start' => 'nullable|date_format:Y-m-d H:i',
+            'task_date_end' => 'nullable|date_format:Y-m-d H:i',
             'task_reminder' => 'required|string|max:75'
         ]);
     }

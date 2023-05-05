@@ -1,4 +1,4 @@
-<div class="container-fluid rounded my-4 py-5 text-start" style="max-width:450px;">
+<div class="container-fluid rounded my-4 py-5 text-start welcome-container" style="max-width:450px;">
     <form action="/v2/login" method="POST" id="form-login">
         @csrf
         <h1 class="fw-bold mt-4 text-primary">Welcome to Mi-Fik</h1>

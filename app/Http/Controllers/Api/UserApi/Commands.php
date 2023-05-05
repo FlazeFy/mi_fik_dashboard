@@ -61,7 +61,7 @@ class Commands extends Controller
                         'context_id' => null,
                         'history_body' => $data->history_body,
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -122,7 +122,7 @@ class Commands extends Controller
                         'context_id' => null,
                         'history_body' => $data->history_body,
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -207,7 +207,7 @@ class Commands extends Controller
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkAdd,
                             'request_type' => "add",
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
                             'updated_at' => null,
                             'updated_by' => null,
@@ -225,7 +225,7 @@ class Commands extends Controller
                             'context_id' => null,
                             'history_body' => $hsAdd->history_body,
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
                     }
@@ -234,7 +234,7 @@ class Commands extends Controller
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkRemove,
                             'request_type' => "remove",
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
                             'updated_at' => null,
                             'updated_by' => null,
@@ -252,7 +252,7 @@ class Commands extends Controller
                             'context_id' => null,
                             'history_body' => $hsRemove->history_body,
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
                     }
