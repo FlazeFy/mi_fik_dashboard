@@ -47,14 +47,7 @@
 <script>
     var page_new_req = 1;
     infinteLoadMore(page_new_req);
-
-    //Fix the sidebar & content page_new_req FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page_new_req++;
-    //         infinteLoadMore(page_new_req);
-    //     } 
-    // };
+    var selectedMember = []; 
 
     function loadmore(route){
         page_new_req++;
@@ -220,7 +213,7 @@
                             '<div class="modal-dialog modal-xl"> ' +
                                 '<div class="modal-content"> ' +
                                     '<div class="modal-body text-left pt-4"> ' +
-                                        '<button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                        '<button type="button" class="custom-close-modal" onclick="clearAllNewMember(' + "'" + slug + "'" + ')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
                                         '<h5>Manage Group Relation</h5> ' +
                                         '<div class="row mt-4"> ' +
                                             '<div class="col-lg-8 col-md-7 col-sm-12"> ' +
@@ -229,6 +222,11 @@
                                                 '<h6>Available Member</h6> ' + 
                                                 '<span id="manage-rel-holder-'+slug+'" class="groups-rel-holder"></span> ' +
                                                 '<span id="err-rel-holder-'+slug+'"></span> ' +
+                                                '<span class="position-relative"> ' +
+                                                    '<h6 class="mt-2">Selected User</h6> ' +
+                                                    '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember(' + "'" + slug + "'" + ')"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                                                '</span> ' +
+                                                '<span id="user-selected-newmember-holder-'+slug+'"></span> ' +
                                             '</div> ' +
                                             '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
                                                 '<h6>All User</h6> ' + 
@@ -236,6 +234,7 @@
                                                 '<span id="err-ava-holder-'+slug+'"></span> ' +
                                             '</div> ' +
                                         '</div> ' +
+                                        '<input hidden name="selected_member" id="selected_member-'+slug+'" value=""> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -424,7 +423,7 @@
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
                                     '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
+                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_new_'+ username +'" onclick="addNewMember('+"'"+slug+"'"+', '+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -442,5 +441,58 @@
             }
             console.log('Server error occured');
         });
+    }
+
+    function addNewMember(slug, username, fullname, checked){
+        var input_holder = document.getElementById("selected_member-"+slug);
+        if(selectedMember.length == 0){
+            selectedMember.push({
+                full_name : fullname,
+                username : username
+            });
+            input_holder.value = JSON.stringify(selectedMember);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedMember.findIndex(obj => obj.username == username);
+                if (indexToRemove !== -1) {
+                    selectedMember.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected user list
+                    document.getElementById("check_new_"+username).checked = false; 
+                    input_holder.value = JSON.stringify(selectedMember);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedMember.push({
+                    full_name : fullname,
+                    username : username
+                });
+                input_holder.value = JSON.stringify(selectedMember);
+            }
+        }
+
+        refreshList(slug);
+    }
+
+    function refreshList(slug){
+        var holder = document.getElementById("user-selected-newmember-holder-"+slug);
+        holder.innerHTML = "";
+
+        selectedMember.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addNewMember('+"'"+slug+"'"+', '+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.full_name + '</a>';
+            holder.innerHTML += elmt;
+        });
+    }
+
+    function clearAllNewMember(slug){
+        document.getElementById("user-selected-newmember-holder-"+slug).innerHTML = "";
+        selectedMember.forEach((e) => {
+            document.getElementById("check_new_"+e.username).checked = false; 
+        });
+        selectedMember = [];
     }
 </script>
