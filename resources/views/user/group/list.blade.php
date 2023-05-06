@@ -1,5 +1,5 @@
 <style>
-    .groups-rel-holder{
+    .groups-rel-holder, .groups-ava-holder{
         padding: 5px 16px 0 5px;
         display: inline-block;
         flex-direction: column;
@@ -232,6 +232,8 @@
                                             '</div> ' +
                                             '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
                                                 '<h6>All User</h6> ' + 
+                                                '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
+                                                '<span id="err-ava-holder-'+slug+'"></span> ' +
                                             '</div> ' +
                                         '</div> ' +
                                     '</div> ' +
@@ -270,7 +272,7 @@
                                         '<i class="fa-solid fa-pen-to-square"></i> ' +
                                     '</button> ' +
                                     editGroup(id, slug, groupName, groupDesc, updatedAt) +
-                                    '<button class="btn btn-info" onclick="load_group_detail(' + "'" + slug + "'" + ')" type="button" data-bs-target="#manage-rel-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                    '<button class="btn btn-info" onclick="runManageFunc(' + "'" + slug + "'" + ')" type="button" data-bs-target="#manage-rel-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-user-plus"></i> ' +
                                     '</button> ' +
@@ -291,6 +293,11 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             console.log('Server error occured');
         });
+    }
+
+    function runManageFunc(slug){
+        load_group_detail(slug);
+        load_available_user(1,slug);
     }
 
     function load_group_detail(slug) {        
@@ -347,6 +354,89 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $("#err-rel-holder-"+slug).html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
+            } else {
+                // handle other errors
+            }
+            console.log('Server error occured');
+        });
+    }
+
+    function getFindUser(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "all_all";
+        } else {
+            document.getElementById("title_search").value = trim;
+            return trim;
+        }
+    }
+
+    function load_available_user(page_new_req,slug) {       
+        var find = document.getElementById("title_search").value;
+        document.getElementById("user-ava-holder-"+slug).innerHTML = "";
+
+        $.ajax({
+            url: "/api/v1/group/member/" + slug + "/" + getFindUser(find) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
+            datatype: "json",
+            type: "get",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+                $('.auto-load').show();
+            }
+        })
+        .done(function (response) {
+            $('.auto-load').hide();
+            var data =  response.data.data;
+            var total = response.data.total;
+            var last = response.data.last_page;
+
+            if(page_new_req != last){
+                $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            } else {
+                $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+            }
+
+            if (total == 0) {
+                $('#empty_item_holder_new_req').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                return;
+            } else if (data.length == 0) {
+                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                return;
+            } else {                
+                for(var i = 0; i < data.length; i++){
+                    //Attribute
+                    var username = data[i].username;
+                    var fullName = data[i].full_name;
+                    var grole = data[i].general_role;
+                    var img = data[i].image_url;
+                    var role = data[i].role;
+                    var email = data[i].email;
+                    var joined = data[i].accepted_at;
+
+                    var elmt = " " +
+                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
+                            '<div class="row ps-2"> ' +
+                                '<div class="col-2 p-0 py-2 ps-2"> ' +
+                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
+                                '</div> ' +
+                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
+                                    '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
+                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
+                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
+                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
+                                    '</div> ' +
+                                '</div> ' +
+                            '</div> ' +
+                        '</a>';
+
+                    $("#user-ava-holder-"+slug).prepend(elmt);
+                }   
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            if (jqXHR.status == 404) {
+                $("#err-ava-holder-"+slug).html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
             } else {
                 // handle other errors
             }
