@@ -1,3 +1,20 @@
+<style>
+    .groups-rel-holder{
+        padding: 5px 16px 0 5px;
+        display: inline-block;
+        flex-direction: column;
+        max-height: 65vh;
+        overflow-y: scroll;
+        white-space: normal;
+    }
+    .user-box.horizontal{
+        padding: 10px;
+        display: inline-block;
+        text-align:center;
+        margin-right: 14px;
+    }
+</style>
+
 <div class="table-responsive">
     <table class="table tabular">
         <thead>
@@ -197,6 +214,34 @@
                     return elmt;
                 }
 
+                function manageRel(slug){
+                    var elmt = ' ' +
+                        '<div class="modal fade" id="manage-rel-'+slug+'" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
+                            '<div class="modal-dialog modal-xl"> ' +
+                                '<div class="modal-content"> ' +
+                                    '<div class="modal-body text-left pt-4"> ' +
+                                        '<button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                        '<h5>Manage Group Relation</h5> ' +
+                                        '<div class="row mt-4"> ' +
+                                            '<div class="col-lg-8 col-md-7 col-sm-12"> ' +
+                                                '<h6>Engagement</h6> ' + 
+
+                                                '<h6>Available Member</h6> ' + 
+                                                '<span id="manage-rel-holder-'+slug+'" class="groups-rel-holder"></span> ' +
+                                                '<span id="err-rel-holder-'+slug+'"></span> ' +
+                                            '</div> ' +
+                                            '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
+                                                '<h6>All User</h6> ' + 
+                                            '</div> ' +
+                                        '</div> ' +
+                                    '</div> ' +
+                                '</div> ' +
+                            '</div> ' +
+                        '</div> ';
+                    
+                    return elmt;
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var groupName = data[i].group_name;
@@ -225,10 +270,11 @@
                                         '<i class="fa-solid fa-pen-to-square"></i> ' +
                                     '</button> ' +
                                     editGroup(id, slug, groupName, groupDesc, updatedAt) +
-                                    '<button class="btn btn-info" type="button" data-bs-target="add-rel" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                    '<button class="btn btn-info" onclick="load_group_detail(' + "'" + slug + "'" + ')" type="button" data-bs-target="#manage-rel-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-user-plus"></i> ' +
                                     '</button> ' +
+                                    manageRel(slug) +
                                     '<button class="btn btn-danger" type="button" data-bs-target="#delete-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-solid fa-trash"></i> ' +
@@ -243,6 +289,67 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
+            console.log('Server error occured');
+        });
+    }
+
+    function load_group_detail(slug) {        
+        document.getElementById("manage-rel-holder-"+slug).innerHTML = "";
+
+        $.ajax({
+            url: "/api/v1/group/member/" + slug + "/20?page=1",
+            datatype: "json",
+            type: "get",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+                $('.auto-load.group-rel').show();
+            }
+        })
+        .done(function (response) {
+            $('.auto-load.group-rel').hide();
+            var data =  response.data.data;
+            var total = response.data.total;
+            var last = response.data.last_page;
+
+            if(page_new_req != last){
+                $('#load_more_rel_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            } else {
+                $('#load_more_rel_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+            }
+
+            if (total == 0) {
+                $("#manage-rel-holder-"+slug).html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
+                return;
+            } else if (data.length == 0) {
+                $('.auto-load.group-rel').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                return;
+            } else {
+                for(var i = 0; i < data.length; i++){
+                    //Attribute
+                    var username = data[i].username;
+                    var fullName = data[i].full_name;
+                    var grole = data[i].general_role;
+                    var img = data[i].image_url;
+
+                    var elmt = " " +
+                        '<a class="btn user-box horizontal" style="width:150px;"> ' +
+                            '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
+                            '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
+                            '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
+                        '</a>';
+
+                    $("#manage-rel-holder-"+slug).append(elmt);
+                }   
+                
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            if (jqXHR.status == 404) {
+                $("#err-rel-holder-"+slug).html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
+            } else {
+                // handle other errors
+            }
             console.log('Server error occured');
         });
     }

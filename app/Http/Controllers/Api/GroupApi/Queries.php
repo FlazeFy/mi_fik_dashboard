@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Models\UserGroup;
+use App\Models\GroupRelation;
 use App\Helpers\Query;
 
 class Queries extends Controller
@@ -45,6 +46,38 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Group Found',
+                    'data' => $group
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getGroupRelationBySlug($slug, $limit)
+    {
+        try{
+            $select = Query::getSelectTemplate("group_relation");
+            
+            $group = GroupRelation::selectRaw($select)
+                ->join('users', 'users.id', '=', 'groups_relations.user_id')
+                ->join('users_groups', 'users_groups.id', '=', 'groups_relations.group_id')
+                ->where('users_groups.slug_name', $slug)
+                ->paginate($limit);
+
+            if ($group->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Group Relation Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Group Relation Found',
                     'data' => $group
                 ], Response::HTTP_OK);
             }

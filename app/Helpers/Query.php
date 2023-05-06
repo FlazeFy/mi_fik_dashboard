@@ -61,6 +61,14 @@ class Query
 
         } else if($type == "group_detail"){
             $query = "users_groups.id, slug_name, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
+        } else if($type == "group_relation"){
+            $query = "username, CONCAT(first_name,' ',last_name) as full_name, 
+                CASE 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' THEN 'Lecturer'
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 'Staff' 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."student".'"'."%' THEN 'Student'
+                END AS general_role,
+                image_url, email, users.accepted_at as joined_at, groups_relations.created_at as added_at";
         } else if($type == "viewed_event_role"){ 
             $query = "contents_headers.id as id_content, content_title, COUNT(1) as total,
                 COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,

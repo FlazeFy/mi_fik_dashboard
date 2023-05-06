@@ -15,3 +15,10 @@
     height: 140px;
     min-height: 80px;
 }
+.err-msg-data{
+    text-align: center;
+    display: block;
+    margin-inline: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}

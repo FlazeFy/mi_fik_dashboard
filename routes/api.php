@@ -126,6 +126,7 @@ Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/group')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/limit/{limit}/order/{order}/find/{find}', [QueryGroupApi::class, 'getAllGroup']);
+    Route::get('/member/{slug}/{limit}', [QueryGroupApi::class, 'getGroupRelationBySlug']);
 });
 
 Route::prefix('/v1/trash')->middleware(['auth:sanctum'])->group(function() {
