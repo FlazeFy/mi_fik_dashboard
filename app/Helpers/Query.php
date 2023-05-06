@@ -11,9 +11,14 @@ class Query
                 admins.username as admin_username_created, users.username as user_username_created, 
                 admins.image_url as admin_image_created, users.image_url as user_image_created, 
                 count(contents_viewers.id) as total_views";
-
+        } else if($type == "content_draft_homepage"){
+            $query = "slug_name,content_title,content_desc,
+                content_loc,content_image,content_date_start,
+                content_date_end,content_tag,contents_headers.created_at,
+                admins.username as admin_username_created, users.username as user_username_created, 
+                admins.image_url as admin_image_created, users.image_url as user_image_created";
         } else if($type == "content_schedule"){
-            $query = "slug_name,content_title,content_desc, 
+            $query = "contents_headers.id, slug_name,content_title,content_desc, 
                 content_loc,content_tag, content_date_start, content_date_end, 
                 1 as data_from";
 
@@ -31,7 +36,7 @@ class Query
                 content_date_end, content_loc";
                 
         } else if($type == "task_schedule"){
-            $query = "slug_name, task_title as content_title, 
+            $query = "tasks.id, slug_name, task_title as content_title, 
                 task_desc as content_desc, null as content_loc, null as content_tag, 
                 task_date_start as content_date_start, task_date_end as content_date_end, 
                 2 as data_from";
@@ -47,10 +52,15 @@ class Query
 
         } else if($type == "user_detail"){
             $query = "username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
+                CASE 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' THEN 'Lecturer'
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 'Staff' 
+                    WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."student".'"'."%' THEN 'Student'
+                END AS general_role,
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
 
         } else if($type == "group_detail"){
-            $query = "users_groups.id, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
+            $query = "users_groups.id, slug_name, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
         } else if($type == "viewed_event_role"){ 
             $query = "contents_headers.id as id_content, content_title, COUNT(1) as total,
                 COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,

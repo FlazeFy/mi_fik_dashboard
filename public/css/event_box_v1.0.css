@@ -63,6 +63,18 @@
     line-clamp: 2; 
     -webkit-box-orient: vertical;
 }
+.warning-draft{
+    padding: 7px 12px;
+    text-decoration: none;
+    font-size: 18px;
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    border: 1.75px solid white;
+    border-radius: 100px;
+    background: #D5534C;
+    color:white !important;
+}
 .btn-detail{
     text-decoration: none !important;
     border-radius: 6px;

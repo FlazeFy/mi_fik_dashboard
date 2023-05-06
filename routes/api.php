@@ -54,6 +54,7 @@ Route::prefix('/v1/faq')->group(function() {
     Route::get('/question/active/{limit}', [QueryQuestionApi::class, 'getActiveQuestion']);
     Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
     Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
+    Route::post('/question', [CommandQuestionApi::class, 'createQuestion'])->middleware(['auth:sanctum']);
 });
 
 ######################### Private Route #########################
@@ -61,8 +62,8 @@ Route::prefix('/v1/faq')->group(function() {
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
 
 Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/{id_user}', [QueryTaskApi::class, 'getMyTask']);
-    Route::post('/create/{id_user}', [CommandTaskApi::class, 'addTask']);
+    Route::get('/', [QueryTaskApi::class, 'getMyTask']);
+    Route::post('/create', [CommandTaskApi::class, 'addTask']);
     Route::put('/update/{id}', [CommandTaskApi::class, 'updateTask']);
     Route::delete('/delete/{id}', [CommandTaskApi::class, 'deleteTask']);
     Route::delete('/destroy/{id}', [CommandTaskApi::class, 'destroyTask']);
@@ -79,7 +80,7 @@ Route::prefix('/v1/tag')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueryNotificationApi::class, 'getAllNotification']);
-    Route::get('/{user_id}', [QueryNotificationApi::class, 'getMyNotification']);
+    Route::get('/my', [QueryNotificationApi::class, 'getMyNotification']);
 });
 
 Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
@@ -100,7 +101,7 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/{user_id}', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/', [QueryArchiveApi::class, 'getArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
     Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
@@ -116,7 +117,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
-    Route::post('/profile/role/request', [CommandUserApi::class, 'request_role_api']);
+    Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {
@@ -124,7 +125,7 @@ Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/group')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/limit/{limit}/order/{order}', [QueryGroupApi::class, 'getAllGroup']);
+    Route::get('/limit/{limit}/order/{order}/find/{find}', [QueryGroupApi::class, 'getAllGroup']);
 });
 
 Route::prefix('/v1/trash')->middleware(['auth:sanctum'])->group(function() {

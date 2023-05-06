@@ -83,7 +83,7 @@ class EditController extends Controller
                     ContentHeader::where('id', $id)->update([
                         'content_title' => $request->content_title,
                         'content_desc' => $request->content_desc,
-                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_at' => date("Y-m-d H:i:s"),
                         'updated_by' => $user_id
                     ]);
 
@@ -93,7 +93,7 @@ class EditController extends Controller
                         'context_id' => $id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
                 }
@@ -132,7 +132,7 @@ class EditController extends Controller
             } else {
                 ContentHeader::where('id', $id)->update([
                     'is_draft' => $request->is_draft,
-                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
                     'updated_by' => $user_id
                 ]);
 
@@ -142,7 +142,7 @@ class EditController extends Controller
                     'context_id' => $id, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
 
@@ -191,7 +191,7 @@ class EditController extends Controller
                         ]);
 
                         ContentHeader::where('id', $id)->update([
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
         
@@ -201,7 +201,7 @@ class EditController extends Controller
                             'context_id' => $id, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
         
@@ -258,7 +258,7 @@ class EditController extends Controller
                         ]);
 
                         ContentHeader::where('id', $id)->update([
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
         
@@ -268,7 +268,7 @@ class EditController extends Controller
                             'context_id' => $id, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
         
@@ -325,7 +325,7 @@ class EditController extends Controller
                         ]);
 
                         ContentHeader::where('id', $id)->update([
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
         
@@ -335,7 +335,7 @@ class EditController extends Controller
                             'context_id' => $id, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
         
@@ -389,7 +389,7 @@ class EditController extends Controller
                         ]);
 
                         ContentHeader::where('id', $id)->update([
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
         
@@ -399,7 +399,7 @@ class EditController extends Controller
                             'context_id' => $id, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
         
@@ -444,7 +444,7 @@ class EditController extends Controller
                     ]);
 
                     ContentHeader::where('id', $id)->update([
-                        'updated_at' => date("Y-m-d h:i:s"),
+                        'updated_at' => date("Y-m-d H:i:s"),
                         'updated_by' => $user_id
                     ]);
     
@@ -454,7 +454,7 @@ class EditController extends Controller
                         'context_id' => $id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
     
@@ -493,7 +493,7 @@ class EditController extends Controller
                 ]);
 
                 ContentHeader::where('id', $id)->update([
-                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
                     'updated_by' => $user_id
                 ]);
 
@@ -503,7 +503,7 @@ class EditController extends Controller
                     'context_id' => $id, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
 

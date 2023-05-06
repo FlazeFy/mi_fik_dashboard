@@ -37,6 +37,7 @@ use App\Http\Controllers\User\GroupingController;
 Route::prefix('/')->group(function () {
     Route::get('/', [LandingController::class, 'index'])->name('landing');
     Route::post('/login', [LandingController::class, 'login_admin']);
+    Route::post('/add_feedback', [LandingController::class, 'add_feedback']);
     Route::post('/v2/login', [LandingController::class, 'login_auth']);
 });
 
@@ -67,6 +68,7 @@ Route::prefix('/statistic')->middleware(['auth_v2:sanctum'])->group(function () 
 Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/tag', [TagController::class, 'index']);
     Route::post('/tag/add', [TagController::class, 'add_tag']);
+    Route::post('/tag/add_category', [TagController::class, 'add_tag_category']);
     Route::post('/tag/update/{type}/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
 
@@ -126,12 +128,15 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/group', [GroupingController::class, 'index']);
     Route::post('/group/ordered/{order}/{type}', [GroupingController::class, 'set_ordering_content']);
     Route::post('/group/add', [GroupingController::class, 'add_group']);
+    Route::post('/group/delete/{id}', [GroupingController::class, 'delete_group']);
+    Route::post('/group/edit/{id}', [GroupingController::class, 'edit_group']);
 });
 
 Route::prefix('/setting')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [SettingController::class, 'index']);
     Route::post('/update_chart', [SettingController::class, 'update_chart']);
     Route::post('/update_jobs/{id}', [SettingController::class, 'update_jobs']);
+    Route::post('/update_landing/{id}', [SettingController::class, 'update_landing']);
 });
 
 Route::prefix('/trash')->middleware(['auth_v2:sanctum'])->group(function () {

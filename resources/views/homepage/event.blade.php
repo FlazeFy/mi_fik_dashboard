@@ -201,7 +201,6 @@
                             return img2;
                         }
                     } else {
-                        //Should make different between lecturer and admin image. but check the api response time first !
                         return "{{ asset('/assets/default_lecturer.png')}}";
                     }
                 }
@@ -211,13 +210,13 @@
                         if(username1 == myname){
                             return "You";
                         } else {
-                            return username1;
+                            return "@"+username1;
                         }
                     } else {
                         if(username2 == myname){
                             return "You";
                         } else {
-                            return username2;
+                            return "@"+username2;
                         }
                     }
                 }

@@ -36,4 +36,17 @@ class Feedback extends Model
 
         return $res;
     }
+
+    public static function getRandomFeedback(){
+        $limit = SettingSystem::getLimitFeedback();
+
+        $res = Feedback::selectRaw('feedback_body, feedback_rate, substr(feedback_suggest,10) as feedback_suggest, created_at')
+            ->whereNull('deleted_at')
+            ->where('feedback_rate', '>=', 4)
+            ->inRandomOrder()
+            ->take($limit)
+            ->get();
+
+        return $res;
+    }
 }

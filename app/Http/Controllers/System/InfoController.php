@@ -68,7 +68,7 @@ class InfoController extends Controller
             } else {
                 Info::where('id', $id)->update([
                     'info_type' => $request->info_type,
-                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
                     'updated_by' => $user_id
                 ]);
 
@@ -78,7 +78,7 @@ class InfoController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 
@@ -112,7 +112,7 @@ class InfoController extends Controller
             } else {
                 Info::where('id', $id)->update([
                     'info_body' => $request->info_body,
-                    'updated_at' => date("Y-m-d h:i:s"),
+                    'updated_at' => date("Y-m-d H:i:s"),
                     'updated_by' => $user_id
                 ]);
 
@@ -122,7 +122,7 @@ class InfoController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 
@@ -149,7 +149,7 @@ class InfoController extends Controller
             return redirect()->back()->with('failed_message', $errors);
         } else {
             Info::where('id', $id)->update([
-                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_at' => date("Y-m-d H:i:s"),
                 'updated_by' => $user_id
             ]);
 
@@ -159,7 +159,7 @@ class InfoController extends Controller
                 'context_id' => null, 
                 'history_body' => $data->history_body, 
                 'history_send_to' => null,
-                'created_at' => date("Y-m-d h:i:s"),
+                'created_at' => date("Y-m-d H:i:s"),
                 'created_by' => $user_id
             ]);
             

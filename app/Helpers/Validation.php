@@ -57,6 +57,13 @@ class Validation
         ]);
     }
 
+    public static function getValidateArchive($request){
+        return Validator::make($request->all(), [
+            'archive_name' => 'required|min:2|max:75|string',
+            'archive_desc' => 'nullable|string|max:255'
+        ]);
+    }
+
     public static function getValidateTask($request){
         return Validator::make($request->all(), [
             'task_title' => 'required|min:6|max:75|string',
@@ -65,6 +72,16 @@ class Validation
             'task_date_end' => 'nullable|date_format:Y-m-d',
             'task_time_start' => ['required', new TwoTimeFormats],
             'task_time_end' => ['required', new TwoTimeFormats],
+            'task_reminder' => 'required|string|max:75'
+        ]);
+    }
+
+    public static function getValidateTaskV2($request){
+        return Validator::make($request->all(), [
+            'task_title' => 'required|min:6|max:75|string',
+            'task_desc' => 'nullable|string|max:10000',
+            'task_date_start' => 'nullable|date_format:Y-m-d H:i',
+            'task_date_end' => 'nullable|date_format:Y-m-d H:i',
             'task_reminder' => 'required|string|max:75'
         ]);
     }
@@ -82,6 +99,14 @@ class Validation
         return Validator::make($request->all(), [
             'DCD_range' => 'required|numeric|max:100|min:7',
             'DTD_range' => 'required|numeric|max:100|min:7',
+            'DHD_range' => 'required|numeric|max:100|min:7',
+        ]);
+    }
+
+    public static function getValidateLanding($request){
+        return Validator::make($request->all(), [
+            'FAQ_range' => 'required|numeric|max:99|min:4',
+            'FBC_range' => 'required|numeric|max:99|min:3',
         ]);
     }
 
@@ -99,6 +124,11 @@ class Validation
                 'tag_name' => 'required|max:30|string',
                 'tag_desc' => 'nullable|max:255|string',
                 'tag_category' => 'required|max:75|string'
+            ]);
+        } else if($type == "dct"){
+            return Validator::make($request->all(), [
+                'dct_name' => 'required|max:35|string',
+                'dct_desc' => 'nullable|max:255|string'
             ]);
         }
     }
@@ -154,14 +184,14 @@ class Validation
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:2|max:50|string',
+                'password' => 'required|min:6|max:50|string',
                 'phone' => 'required|min:9|max:14|string',
             ]);
         } else {
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:2|max:50|string',
+                'password' => 'required|min:6|max:50|string',
             ]);
         }
     }
@@ -172,7 +202,7 @@ class Validation
         ]);
     }
 
-    public static function getFeedbackCreate($request){
+    public static function getValidateFeedbackCreate($request){
         return Validator::make($request->all(), [
             'feedback_body' => 'required|min:2|max:255|string',
             'feedback_rate' => 'required|numeric|min:1|max:5',
@@ -188,8 +218,15 @@ class Validation
 
     public static function getValidateQuestionFaq($request){
         return Validator::make($request->all(), [
-            'question_body' => 'required|min:2|max:500|string',
+            'question_body' => 'required|min:2|max:255|string',
             'question_type' => ['required', new TypeQuestion],
+        ]);
+    }
+
+    public static function getValidateGroup($request){
+        return Validator::make($request->all(), [
+            'group_name' => 'required|min:3|max:35|string',
+            'group_desc' => 'nullable|min:3|max:255|string',
         ]);
     }
 }

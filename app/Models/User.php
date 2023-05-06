@@ -23,16 +23,20 @@ class User extends Authenticatable
         'role' => 'array',
     ];
 
-    public static function getUserRole($id){
-        $res = User::select('role')
-            ->where('id', $id)
-            ->limit(1)
-            ->get();
-
-        if(count($res) == 0){
+    public static function getUserRole($id, $role){
+        if($role == 1){
             return null;
         } else {
-            return $res;
+            $res = User::select('role')
+                ->where('id', $id)
+                ->limit(1)
+                ->get();
+
+            if(count($res) == 0){
+                return null;
+            } else {
+                return $res;
+            }
         }
     }
 

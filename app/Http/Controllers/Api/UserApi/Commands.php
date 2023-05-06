@@ -26,11 +26,9 @@ class Commands extends Controller
             if ($validator->fails()) {
                 $errors = $validator->messages();
 
-                return redirect()->back()->with('failed_message', $errors);
                 return response()->json([
                     'status' => 'failed',
                     'result' => $errors,
-                    'token' => null
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $data = new Request();
@@ -44,7 +42,10 @@ class Commands extends Controller
                 if ($validatorHistory->fails()) {
                     $errors = $validatorHistory->messages();
 
-                    return redirect()->back()->with('failed_message', $errors);
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => $errors,
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
                     $user = User::where('id', $user_id)->update([
                         'first_name' => $request->first_name,
@@ -60,7 +61,7 @@ class Commands extends Controller
                         'context_id' => null,
                         'history_body' => $data->history_body,
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -91,7 +92,6 @@ class Commands extends Controller
                 return response()->json([
                     'status' => 'failed',
                     'result' => $errors,
-                    'token' => null
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $data = new Request();
@@ -105,7 +105,10 @@ class Commands extends Controller
                 if ($validatorHistory->fails()) {
                     $errors = $validatorHistory->messages();
 
-                    return redirect()->back()->with('failed_message', $errors);
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => $errors,
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
                     $user = User::where('id', $user_id)->update([
                         'image_url' => $request->image_url,
@@ -119,7 +122,7 @@ class Commands extends Controller
                         'context_id' => null,
                         'history_body' => $data->history_body,
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -171,28 +174,40 @@ class Commands extends Controller
                 $add = [];
                 $remove = [];
 
-                $countAll = count($request->req_type);
-                for($i = 0; $i < $countAll; $i++){
-                    if($request->req_type[$i] == "add"){
-                        array_push($add, $request->user_role[$i]);
-                    } else if($request->req_type[$i] == "remove"){
-                        array_push($remove, $request->user_role[$i]);
+                if(is_array($request->user_role)){
+                    $countAll = count($request->req_type);
+                    for($i = 0; $i < $countAll; $i++){
+                        if($request->req_type[$i] == "add"){
+                            array_push($add, $request->user_role[$i]);
+                        } else if($request->req_type[$i] == "remove"){
+                            array_push($remove, $request->user_role[$i]);
+                        }
+                    }
+
+                    $roleAdd = Converter::getTag($add);
+                    $roleRemove = Converter::getTag($remove);
+
+                    $checkAdd = json_decode($roleAdd, true);
+                    $checkRemove = json_decode($roleRemove, true);
+                } else {
+                    if($request->req_type == "add"){
+                        $checkAdd = $request->user_role;
+                        $roleAdd = Converter::getTag(json_decode($checkAdd));
+                        $checkAdd = json_decode($roleAdd, true);
+                    } else if($request->req_type == "remove"){
+                        $checkRemove = $request->user_role;
+                        $roleRemove = Converter::getTag(json_decode($checkRemove));
+                        $checkRemove = json_decode($roleRemove, true);
                     }
                 }
 
-                $roleAdd = Converter::getTag($add);
-                $roleRemove = Converter::getTag($remove);
-
-                $checkAdd = json_decode($roleAdd, true);
-                $checkRemove = json_decode($roleRemove, true);
-
                 if($checkAdd !== null || $checkRemove !== null || json_last_error() === JSON_ERROR_NONE){
-                    if(count($add) > 0){
+                    if(count($add) > 0 || (!is_array($request->user_role) && $request->req_type == "add")){
                         UserRequest::create([
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkAdd,
                             'request_type' => "add",
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
                             'updated_at' => null,
                             'updated_by' => null,
@@ -210,16 +225,16 @@ class Commands extends Controller
                             'context_id' => null,
                             'history_body' => $hsAdd->history_body,
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
                     }
-                    if(count($remove) > 0){
+                    if(count($remove) > 0 || (!is_array($request->user_role) && $request->req_type == "remove")){
                         UserRequest::create([
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkRemove,
                             'request_type' => "remove",
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
                             'updated_at' => null,
                             'updated_by' => null,
@@ -237,7 +252,7 @@ class Commands extends Controller
                             'context_id' => null,
                             'history_body' => $hsRemove->history_body,
                             'history_send_to' => null,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
                     }
@@ -245,13 +260,11 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => 'Request has been sended',
-                        'data' => $add." | ".$remove
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
                         'message' => 'Request failed',
-                        'data' => $add." | ".$remove
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }

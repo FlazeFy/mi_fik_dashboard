@@ -252,3 +252,14 @@
     color: #00c363;
     background: transparent;
 }
+
+.remove_suggest{
+    padding-right: 0 !important;
+    border-radius: 6px;
+    color: #D5534C;
+    cursor: pointer;
+}
+.remove_suggest:hover{
+    background: #D5534C !important;
+    color: white;
+}

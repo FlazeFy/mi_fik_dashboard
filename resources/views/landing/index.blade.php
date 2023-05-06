@@ -27,22 +27,59 @@
         <link rel="stylesheet" href="{{ asset('/css/main/global_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/landing_v1.0.css') }}"/>
+
+        <!--Scroll reveal-->
+        <script src="https://unpkg.com/scrollreveal"></script>
+        <script>
+            ScrollReveal({ reset: true });
+        </script>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
-        <div class="wrapper d-flex align-items-stretch">
-            <div class="row px-3 w-100">
+        <div class="d-block mx-auto p-0 pt-5" style="max-width:1360px;">
+            <div class="row w-100">
                 <div class="col-lg-6 col-md-6 col-sm-12">
-
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 py-5">
                     @include('landing.login')
                 </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 py-5">
+                   
+                </div>
             </div>
+            <hr>
+            @include('landing.features')
+            <hr>
+            @include('landing.roles')
+            <hr>
+            @include('landing.faq')
+            <hr>
+            @include('landing.feedback')
+            <hr>
+            @include('landing.rate')
         </div>
+
+        @include('landing.footer')
 
         <!--Modal-->
         @include('popup.success')
         @include('popup.failed')
     </body>
+
+    <script>        
+        ScrollReveal().reveal('.welcome-container', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.faq-first', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.faq-second', { delay: 500, distance: '80px', origin: 'right', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-left', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-right', { delay: 500, distance: '80px', origin: 'right', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-top', { delay: 500, distance: '80px', origin: 'top', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.features-bottom', { delay: 500, distance: '80px', origin: 'bottom', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.feedback-first', { delay: 500, distance: '80px', origin: 'top', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.feedback-second', { delay: 500, distance: '80px', origin: 'bottom', easing: 'ease-in-out' });
+        ScrollReveal().reveal('.roles-left', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out'  });
+        ScrollReveal().reveal('.roles-right', { delay: 500, distance: '80px', origin: 'right', easing: 'ease-in-out'  });
+        ScrollReveal().reveal('.rate-container', { delay: 500, distance: '80px', origin: 'bottom', easing: 'ease-in-out'  });
+    </script>
 </html>

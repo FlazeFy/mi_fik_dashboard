@@ -96,13 +96,13 @@ class TagController extends Controller
                     if($type == "desc"){
                         Tag::where('id', $id)->update([
                             'tag_desc' => $request->tag_desc,
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
                     } else if($type == "cat"){
                         Tag::where('id', $id)->update([
                             'tag_category' => $request->tag_category,
-                            'updated_at' => date("Y-m-d h:i:s"),
+                            'updated_at' => date("Y-m-d H:i:s"),
                             'updated_by' => $user_id
                         ]);
                     }
@@ -113,7 +113,7 @@ class TagController extends Controller
                         'context_id' => $id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
 
@@ -137,7 +137,8 @@ class TagController extends Controller
         //Validate name avaiability
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
-        if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
+        if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all" && strtolower(str_replace(" ","", $request->tag_name)) != "lecturer" 
+            && strtolower(str_replace(" ","", $request->tag_name)) != "student" && strtolower(str_replace(" ","", $request->tag_name)) != "staff"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
             $user_id = Generator::getUserIdV2(session()->get('role_key')); 
@@ -167,7 +168,7 @@ class TagController extends Controller
                         'tag_name' => $request->tag_name,
                         'tag_desc' => $request->tag_desc,
                         'tag_category' => $request->tag_category,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id,
                         'updated_at' => null,
                         'deleted_at' => null,
@@ -181,10 +182,70 @@ class TagController extends Controller
                         'context_id' => $header->id, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
                     return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
+                }
+            }
+        } else {
+            return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
+        }
+    }
+
+    public function add_tag_category(Request $request)
+    {
+        //Validate name avaiability
+        $check = Dictionary::where('dct_name', $request->dct_name)->where('dct_type', 'TAG-001')->get();
+
+        if(count($check) == 0){
+            $slug = Generator::getSlugName($request->dct_name, "dct_tag");
+
+            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+            $validator = Validation::getValidateTag($request, "dct");
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $data = new Request();
+                $obj = [
+                    'history_type' => "tag",
+                    'history_body' => "Has created a tag category called '".$request->dct_name."'"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    $header = Dictionary::create([
+                        'id' => Generator::getUUID(),
+                        'slug_name' => $slug,
+                        'dct_name' => $request->dct_name,
+                        'dct_desc' => $request->dct_desc,
+                        'dct_type' => "TAG-001",
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id,
+                        'updated_at' => null,
+                        'deleted_at' => null,
+                        'updated_by' => null,
+                        'deleted_by' => null
+                    ]);
+
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $header->id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                    return redirect()->back()->with('success_message', "'".$request->dct_name."' Tag Category has been created");
                 }
             }
         } else {

@@ -61,7 +61,7 @@ class StatisticController extends Controller
     {
         Setting::where('id', $id)->update([
             'MOT_range' => $request->MOT_range,
-            'updated_at' => date("Y-m-d h:i"),
+            'updated_at' => date("Y-m-d H:i"),
         ]);
 
         return redirect()->back()->with('success_message', 'Chart range updated');
@@ -71,7 +71,7 @@ class StatisticController extends Controller
     {
         Setting::where('id', $id)->update([
             'MOL_range' => $request->MOL_range,
-            'updated_at' => date("Y-m-d h:i"),
+            'updated_at' => date("Y-m-d H:i"),
         ]);
 
         return redirect()->back()->with('success_message', 'Chart range updated');
@@ -81,7 +81,7 @@ class StatisticController extends Controller
     {
         Setting::where('id', $id)->update([
             'CE_range' => $request->CE_range,
-            'updated_at' => date("Y-m-d h:i"),
+            'updated_at' => date("Y-m-d H:i"),
         ]);
 
         return redirect()->back()->with('success_message', 'Chart range updated');
@@ -91,7 +91,7 @@ class StatisticController extends Controller
     {
         Setting::where('id', $id)->update([
             'MVE_range' => $request->MVE_range,
-            'updated_at' => date("Y-m-d h:i"),
+            'updated_at' => date("Y-m-d H:i"),
         ]);
 
         return redirect()->back()->with('success_message', 'Chart range updated');

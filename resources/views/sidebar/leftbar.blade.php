@@ -65,7 +65,7 @@
 
     /*li*/
     #sidebar ul li.active, #sidebar ul li:hover {
-        width:30vh;
+        width:95%;
         margin-left:-30px;
         padding: 5px 30px;
         border-radius: 0px 10px 10px 0px;

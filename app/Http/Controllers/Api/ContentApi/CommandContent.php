@@ -21,7 +21,7 @@ class CommandContent extends Controller
     public function deleteContent(Request $request, $id){
         try{
             $content = ContentHeader::where('id', $id)->update([
-                'deleted_at' => date("Y-m-d h:i:s"),
+                'deleted_at' => date("Y-m-d H:i:s"),
                 'deleted_by' => $request->user_id,
             ]);
 
@@ -79,12 +79,22 @@ class CommandContent extends Controller
                 $errors = $validator->messages();
 
                 return response()->json([
-                    'status' => 422,
+                    'status' => 'failed',
                     'message' => 'Add content failed',
-                    'error' => $errors
-                ], Response::HTTP_BAD_REQUEST);
+                    'result' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $tag = Converter::getTag($request->content_tag);
+                $tag = null;
+
+                if(is_array($request->content_tag) && $request->content_tag != null){
+                    $tag = Converter::getTag($request->content_tag);
+                    $tag = json_decode($tag, true);
+                } else if($request->content_tag != null){
+                    // $tag = Converter::getTag(json_decode($request->content_tag));
+                    // $tag = json_decode($tag, true);
+                    $tag = $request->content_tag;
+                } 
+                
                 $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
                 $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
                 $slug = Generator::getSlugName($request->content_title, "content");
@@ -156,7 +166,7 @@ class CommandContent extends Controller
                     'deleted_by' => null
                 ]);
 
-                if($tag || $request->has('content_attach')){
+                if($tag != null || $request->has('content_attach')){
                     function getFailedAttach($failed, $att_content){
                         if($failed){
                             return null;

@@ -25,6 +25,7 @@ class AboutController extends Controller
         $menu = Menu::getMenu();
         $about = Help::getAboutApp();
         $helplist = Help::getHelpListNType();
+        $ctc = Help::getAboutContact();
         
         if(session()->get('role_key') == 1){
             $history_about = History::getHistoryByType("about");
@@ -42,13 +43,15 @@ class AboutController extends Controller
                 ->with('h_help', $history_help)
                 ->with('h_about', $history_about)
                 ->with('helplist', $helplist)
-                ->with('greet',$greet);      
+                ->with('greet',$greet)
+                ->with('ctc',$ctc);      
         } else {
             return view ('about.index')
                 ->with('menu', $menu)
                 ->with('about', $about)
                 ->with('helplist', $helplist)
-                ->with('greet',$greet);   
+                ->with('greet',$greet)
+                ->with('ctc',$ctc);   
         }   
     }
 
@@ -92,7 +95,7 @@ class AboutController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 
@@ -147,7 +150,7 @@ class AboutController extends Controller
                         'context_id' => null, 
                         'history_body' => $data->history_body, 
                         'history_send_to' => null,
-                        'created_at' => date("Y-m-d h:i:s"),
+                        'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
                     
@@ -194,7 +197,7 @@ class AboutController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 
@@ -257,7 +260,7 @@ class AboutController extends Controller
                     'context_id' => null, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
                 

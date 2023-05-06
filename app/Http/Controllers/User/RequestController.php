@@ -145,7 +145,7 @@ class RequestController extends Controller
                             ->whereNull('is_rejected')
                             ->update([
                                 'is_rejected' => 1,
-                                'rejected_at' => date("Y-m-d h:i:s"),
+                                'rejected_at' => date("Y-m-d H:i:s"),
                                 'rejected_by' => $admin_id
                             ]);
         
@@ -155,7 +155,7 @@ class RequestController extends Controller
                             'context_id' => $val['id'], 
                             'history_body' => $data->history_body, 
                             'history_send_to' => $user_id,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $admin_id
                         ]);  
 
@@ -207,7 +207,7 @@ class RequestController extends Controller
                             $newRoles = json_decode($val['tag_list'], true);
 
                             if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
-                                $rolesOld = User::getUserRole($user_id);
+                                $rolesOld = User::getUserRole($user_id, 0);
                                 
                                 //Bug if we use formal looping
                                 $merge = array_merge($newRoles, $rolesOld[0]['role']);
@@ -228,7 +228,7 @@ class RequestController extends Controller
                             $newRoles = json_decode($val['tag_list'], true);
 
                             if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
-                                $rolesOld = User::getUserRole($user_id);
+                                $rolesOld = User::getUserRole($user_id, 0);
                                 $uniqueKeys = [];
                                 $merge = array_merge($newRoles, $rolesOld[0]['role']);
 
@@ -269,7 +269,7 @@ class RequestController extends Controller
                         User::where('id',$user_id)
                             ->update([
                                 'role' => $newRoles,
-                                'updated_at' => date("Y-m-d h:i:s"),
+                                'updated_at' => date("Y-m-d H:i:s"),
                                 'updated_by' => $admin_id
                         ]);
 
@@ -279,7 +279,7 @@ class RequestController extends Controller
                             ->whereNull('is_rejected')
                             ->update([
                                 'is_accepted' => 1,
-                                'accepted_at' => date("Y-m-d h:i:s"),
+                                'accepted_at' => date("Y-m-d H:i:s"),
                                 'accepted_by' => $admin_id
                             ]);
         
@@ -289,7 +289,7 @@ class RequestController extends Controller
                             'context_id' => $val['id'], 
                             'history_body' => $data->history_body, 
                             'history_send_to' => $user_id,
-                            'created_at' => date("Y-m-d h:i:s"),
+                            'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $admin_id
                         ]); 
                     }

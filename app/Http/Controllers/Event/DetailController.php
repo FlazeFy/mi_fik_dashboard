@@ -54,6 +54,7 @@ class DetailController extends Controller
 
     public function add_relation(Request $request, $slug_name)
     {
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $content_id = ContentHeader::getContentIdBySlug($slug_name);
 
         ArchiveRelation::create([
@@ -61,7 +62,7 @@ class DetailController extends Controller
             'archive_id' => $request->archive_id,
             'content_id' => $content_id,
             'created_at' => date("Y-m-d H:i"),
-            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002' //for now
+            'created_by' => $user_id
         ]);
 
         return redirect()->back()->with('success_message', 'Content has been added to archive');
@@ -75,13 +76,14 @@ class DetailController extends Controller
 
     public function add_archive(Request $request){
         $slug = Generator::getSlugName($request->archive_name, "archive");
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
         Archive::create([
             'id' => Generator::getUUID(),
             'slug_name' => $slug,
             'archive_name' => $request->archive_name,
             'archive_desc' => null,
-            'created_by' => 'dc4d52ec-afb1-11ed-afa1-0242ac120002', //for now
+            'created_by' => $user_id,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_by' => null,
             'updated_at' => null
@@ -109,7 +111,7 @@ class DetailController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 ContentHeader::where('id', $id)->update([
-                    'deleted_at' => date("Y-m-d h:i:s"),
+                    'deleted_at' => date("Y-m-d H:i:s"),
                     'deleted_by' => $user_id
                 ]);
 
@@ -119,7 +121,7 @@ class DetailController extends Controller
                     'context_id' => $id, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
-                    'created_at' => date("Y-m-d h:i:s"),
+                    'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
                 ]);
 
