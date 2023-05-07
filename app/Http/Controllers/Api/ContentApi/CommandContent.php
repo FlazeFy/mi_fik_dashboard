@@ -181,7 +181,7 @@ class CommandContent extends Controller
                         'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
                         'content_tag' => $tag,
                         'content_loc' => null, //for now
-                        'created_by' => date("Y-m-d H:i"),
+                        'created_at' => date("Y-m-d H:i"),
                         'updated_at' => null
                     ]);
                 }
