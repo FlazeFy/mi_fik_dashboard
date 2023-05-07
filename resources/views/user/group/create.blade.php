@@ -43,7 +43,6 @@
                                 <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
                             </span>
                             <span id="user-selected-holder"></span>
-                            <span id="slct-holder"><span>
                             @foreach($info as $in)
                                 @if($in->info_location == "add_group")
                                     <div class="info-box {{$in->info_type}}">
@@ -156,15 +155,6 @@
                     var role = data[i].role;
                     var email = data[i].email;
                     var joined = data[i].accepted_at;
-
-                    // var elmt = " " +
-                    //     '<a class="user-check action py-2"> ' +
-                    //         '<label> ' +
-                    //             '<input class="" name="username[]" type="checkbox" value="' + username + '" id="flexCheckDefault"> ' +
-                    //             "<img class='img img-fluid rounded-circle d-block mx-auto' src='{{asset('assets/default_content.jpg')}}' style='height:45px; width:45px;'> " +
-                    //             '<span style="font-size:12px;" class="text-secondary">' + fullName + '</span> ' +
-                    //         '</label> ' +
-                    //     '</a>';
 
                     var elmt = " " +
                         '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
