@@ -43,7 +43,6 @@
                                 <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
                             </span>
                             <span id="user-selected-holder"></span>
-                            <span id="slct-holder"><span>
                             @foreach($info as $in)
                                 @if($in->info_location == "add_group")
                                     <div class="info-box {{$in->info_type}}">

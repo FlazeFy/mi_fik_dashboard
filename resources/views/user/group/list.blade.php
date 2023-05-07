@@ -207,7 +207,7 @@
                     return elmt;
                 }
 
-                function manageRel(slug){
+                function manageRel(id, slug, name){
                     var elmt = ' ' +
                         '<div class="modal fade" id="manage-rel-'+slug+'" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
                             '<div class="modal-dialog modal-xl"> ' +
@@ -215,26 +215,31 @@
                                     '<div class="modal-body text-left pt-4"> ' +
                                         '<button type="button" class="custom-close-modal" onclick="clearAllNewMember(' + "'" + slug + "'" + ')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
                                         '<h5>Manage Group Relation</h5> ' +
-                                        '<div class="row mt-4"> ' +
-                                            '<div class="col-lg-8 col-md-7 col-sm-12"> ' +
-                                                '<h6>Engagement</h6> ' + 
+                                        '<form action="/user/group/member/add/'+id+'" method="POST"> ' +
+                                            '@csrf ' +
+                                            '<div class="row mt-4"> ' +
+                                                '<div class="col-lg-8 col-md-7 col-sm-12"> ' +
+                                                    '<h6>Engagement</h6> ' + 
 
-                                                '<h6>Available Member</h6> ' + 
-                                                '<span id="manage-rel-holder-'+slug+'" class="groups-rel-holder"></span> ' +
-                                                '<span id="err-rel-holder-'+slug+'"></span> ' +
-                                                '<span class="position-relative"> ' +
-                                                    '<h6 class="mt-2">Selected User</h6> ' +
-                                                    '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember(' + "'" + slug + "'" + ')"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
-                                                '</span> ' +
-                                                '<span id="user-selected-newmember-holder-'+slug+'"></span> ' +
+                                                    '<h6>Available Member</h6> ' + 
+                                                    '<span id="manage-rel-holder-'+slug+'" class="groups-rel-holder"></span> ' +
+                                                    '<span id="err-rel-holder-'+slug+'"></span> ' +
+                                                    '<span class="position-relative"> ' +
+                                                        '<h6 class="mt-2">Selected User</h6> ' +
+                                                        '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember(' + "'" + slug + "'" + ')"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                                                        '<span id="submit-rel-btn-holder-'+slug+'"></span>' +
+                                                    '</span> ' +
+                                                    '<span id="user-selected-newmember-holder-'+slug+'"></span> ' +
+                                                '</div> ' +
+                                                '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
+                                                    '<h6>All User</h6> ' + 
+                                                    '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
+                                                    '<span id="err-ava-holder-'+slug+'"></span> ' +
+                                                '</div> ' +
+                                                '<input hidden name="selected_member" id="selected_member-'+slug+'" value=""> ' +
+                                                '<input hidden name="group_name" value="' + name + '"> ' +
                                             '</div> ' +
-                                            '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
-                                                '<h6>All User</h6> ' + 
-                                                '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
-                                                '<span id="err-ava-holder-'+slug+'"></span> ' +
-                                            '</div> ' +
-                                        '</div> ' +
-                                        '<input hidden name="selected_member" id="selected_member-'+slug+'" value=""> ' +
+                                        '</form> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -275,7 +280,7 @@
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-user-plus"></i> ' +
                                     '</button> ' +
-                                    manageRel(slug) +
+                                    manageRel(id, slug, groupName) +
                                     '<button class="btn btn-danger" type="button" data-bs-target="#delete-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-solid fa-trash"></i> ' +
@@ -486,6 +491,13 @@
                 '<a>' + e.full_name + '</a>';
             holder.innerHTML += elmt;
         });
+
+        var submit_holder = document.getElementById('submit-rel-btn-holder-'+slug);
+        if(selectedMember.length > 0){
+            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;" onclick="clearAllNewMember(' + "'" + slug + "'" + ')"><i class="fa-solid fa-plus"></i> Assign All</button>';
+        } else {
+            submit_holder.innerHTML = '';
+        }
     }
 
     function clearAllNewMember(slug){

@@ -234,6 +234,59 @@ class GroupingController extends Controller
         }
     }
 
+    public function add_member(Request $request, $id)
+    {
+        $data = new Request();
+        $obj = [
+            'history_type' => "group",
+            'history_body' => "Has add some member to '".$request->group_name."'"
+        ];
+        $data->merge($obj);
+
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $users  = json_decode($request->selected_member, true);
+
+            if($users != null && json_last_error() === JSON_ERROR_NONE){
+
+                $count = count($users);
+                for($i = 0; $i < $count; $i++){
+                    $member_id = Generator::getUserId($users[$i]['username'], 2);
+
+                    GroupRelation::create([
+                        'id' => Generator::getUUID(),
+                        'group_id' => $id,
+                        'user_id' => $member_id,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id,
+                    ]);
+                }
+
+                $group_only = false;
+            } else {
+                $group_only = true;
+            }
+
+            History::create([
+                'id' => Generator::getUUID(),
+                'history_type' => $data->history_type, 
+                'context_id' => $id, 
+                'history_body' => $data->history_body, 
+                'history_send_to' => null,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $user_id
+            ]);
+
+            return redirect()->back()->with('success_message', "Some member has added to '".$request->group_name."' group");
+        }
+    }
+
     public function set_ordering_content($order, $type)
     {
         if($type == "group_name"){
