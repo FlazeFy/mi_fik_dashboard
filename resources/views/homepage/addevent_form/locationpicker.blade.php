@@ -42,6 +42,10 @@
         new google.maps.Marker({
             position: latLng,
             map: map,
+            icon: {
+                url: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
+                scaledSize: new google.maps.Size(40, 40),
+            }
         });
         map.panTo(latLng);
     }

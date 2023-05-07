@@ -38,7 +38,7 @@
                     
                     foreach($loc as $lc){
                         //Insert loc name to new array
-                        if($lc->type == "name"){
+                        if($lc->type == "name" && $lc->detail != null){
                             array_push($val, $lc->detail);
                         }
                     }   
@@ -84,7 +84,7 @@
                 
                 foreach($loc as $lc){
                     //Insert loc name to new array
-                    if($lc->type == "name"){
+                    if($lc->type == "name" && $lc->detail != null){
                         array_push($val, $lc->detail);
                     }
                 }   
@@ -117,6 +117,10 @@
             echo "'Others'";
         ?>
     ],
+    colors: ['#F9DB00','#009FF9','#FB8C00','#42C9E7'],
+    legend: {
+        position: 'bottom'
+    },
     responsive: [{
         // breakpoint: 480,
         options: {

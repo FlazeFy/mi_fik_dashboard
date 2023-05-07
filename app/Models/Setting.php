@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+//use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
     use HasFactory;
-    use HasUuids;
+    //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'settings';
     protected $primaryKey = 'id';
-    protected $fillable = ['MOT_range', 'MOL_range', 'MVE_range', 'CE_range', 'created_at', 'updated_at', 'created_by', 'updated_by'];
+    protected $fillable = ['id', 'MOT_range', 'MOL_range', 'MVE_range', 'CE_range', 'created_at', 'updated_at', 'created_by', 'updated_by'];
 
     public static function getChartSetting($user_id){
         $res = Setting::select('id', 'MOT_range', 'MOL_range', 'MVE_range', 'CE_range')

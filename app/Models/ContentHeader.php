@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Support\Facades\DB;
+//use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use App\Helpers\Query;
 
 class ContentHeader extends Model
 {
     use HasFactory;
-    use HasUuids;
+    //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'contents_headers';
     protected $primaryKey = 'id';
-    protected $fillable = ['slug_name', 'content_title', 'content_desc', 'content_date_start', 'content_date_end', 'content_reminder', 'content_image', 'is_draft', 'created_at', 'updated_at', 'deleted_at', 'deleted_by', 'created_by', 'updated_by'];
+    protected $fillable = ['id','slug_name', 'content_title', 'content_desc', 'content_date_start', 'content_date_end', 'content_reminder', 'content_image', 'is_draft', 'created_at', 'updated_at', 'deleted_at', 'deleted_by', 'created_by', 'updated_by'];
     protected $casts = [
         'content_attach' => 'array',
         'content_tag' => 'array',
@@ -65,17 +67,70 @@ class ContentHeader extends Model
     } 
 
     public static function getFullContentBySlug($slug_name){
-        $select = Query::getSelectTemplate("content_detail");
+        $select_content = Query::getSelectTemplate("content_detail");
+        $join_content = Query::getJoinTemplate("content_detail", "ch");
 
-        $res = ContentHeader::selectRaw($select)
-            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-            ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-            ->groupBy('contents_headers.id')
-            ->where('slug_name', $slug_name)
-            ->limit(1)
-            ->get();
+        $content = DB::select(DB::raw("
+            SELECT 
+                ".$select_content." 
+            FROM contents_headers ch
+            JOIN contents_details cd ON ch.id = cd.content_id
+            ".$join_content."
+            WHERE ch.deleted_at IS NULL
+            AND ch.slug_name = '".$slug_name."'
+            GROUP BY ch.id
+            LIMIT 1
+        ")); 
 
-        return $res;
+        $clean = [];
+        $obj;
+        foreach ($content as $result) {
+            $loc = json_decode($result->content_loc, true);
+            $tag = json_decode($result->content_tag, true);
+            $att = json_decode($result->content_attach, true);
+        
+            $slug = $result->slug_name;
+            $title = $result->content_title; 
+            $desc = $result->content_desc; 
+            $au_created = $result->admin_username_created; 
+            $uu_created = $result->user_username_created; 
+            $au_updated = $result->admin_username_updated; 
+            $uu_updated = $result->user_username_updated; 
+            $au_deleted = $result->admin_username_deleted; 
+            $uu_deleted = $result->user_username_deleted; 
+            $image = $result->content_image; 
+            $date_start = $result->content_date_start; 
+            $date_end = $result->content_date_end; 
+            $created_at = $result->created_at; 
+            $updated_at = $result->updated_at; 
+            $is_draft = $result->is_draft; 
+            $views = $result->total_views; 
+
+            $clean[] = (object)[
+                'slug_name' => $slug,
+                'content_title' => $title,
+                'content_desc' => $desc,
+                'admin_username_created' => $au_created,
+                'user_username_created' => $uu_created,
+                'admin_username_updated' => $au_updated,
+                'user_username_updated' => $uu_updated,
+                'admin_username_deleted' => $au_deleted,
+                'user_username_deleted' => $uu_deleted,
+                'content_tag' => $tag,
+                'content_image' => $image,
+                'content_attach' => $att,
+                'content_loc' => $loc,
+                'content_date_start' => $date_start,
+                'content_date_end' => $date_end,
+                'created_at' => $created_at,
+                'updated_at' => $updated_at,
+                'is_draft' => $is_draft,
+                'total_views' => $views,
+            ];
+        }
+
+        // $obj = (object)$clean;
+        return $clean;
     }
 
     public static function getContentIdBySlug($slug_name){
@@ -89,5 +144,51 @@ class ContentHeader extends Model
         }
 
         return $id;
+    }
+
+    public static function getCountEngPostEvent($id){
+        $res = ContentHeader::selectRaw('COUNT(1) as total')
+            ->where('created_by', $id)
+            ->groupBy('created_by')
+            ->get();
+
+        if(count($res) != null){
+            foreach($res as $r){
+                $res = $r->total;
+            }
+        } else {
+            $res = 0;
+        }
+
+        return $res;
+    }
+
+    public static function getMyDraft($role, $user_id){
+        $select = Query::getSelectTemplate("content_draft_homepage");
+
+        if($role == 1){
+            $res = ContentHeader::selectRaw($select)
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
+                ->orderBy('contents_headers.created_at', 'DESC')
+                ->orderBy('contents_headers.updated_at', 'DESC')
+                ->where('is_draft', 1)
+                ->whereNull('contents_headers.deleted_at')
+                ->get();
+        } else {
+            $res = ContentHeader::selectRaw($select)
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
+                ->orderBy('contents_headers.created_at', 'DESC')
+                ->orderBy('contents_headers.updated_at', 'DESC')
+                ->where('is_draft', 1)
+                ->where('contents_headers.created_by', $user_id)
+                ->whereNull('contents_headers.deleted_at')
+                ->get();
+        }   
+
+        return $res;
     }
 }

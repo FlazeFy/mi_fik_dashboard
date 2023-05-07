@@ -52,6 +52,9 @@
 
                     <div class="mt-4 btn-config-holder">
                         @include('user.all.filtername')
+                        <div class="ms-3">
+                            @include("user.searchbar")
+                        </div>
                     </div>
 
                     <div class="content-section-small mt-3">
@@ -74,7 +77,7 @@
         </script>
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
 
     </body>
 </html>

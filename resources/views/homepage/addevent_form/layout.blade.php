@@ -54,53 +54,34 @@
         margin:4px;
         color:whitesmoke !important;
     }
-
-    /*Richtext header*/
-    .ql-toolbar.ql-snow{
-        border:1.7px solid #F78A00;
-        margin-top:10px;
-        border-radius:10px 10px 0 0;
-    }
-    .ql-snow .ql-stroke {
-        stroke:#414141;
-    }
-    .ql-snow.ql-toolbar button{
-        border-radius:6px;
-        height:25px;
-        width:25px;
-        padding-left:3px;
-        margin-right:10px;
-        transition: all 0.4s;
-    }
-    .ql-snow.ql-toolbar button:hover .ql-stroke{
-        stroke:#F78A00;
-    }
-    button.ql-active{
-        background:#F78A00 !important;
-    }
-    button.ql-active svg .ql-stroke{
-        stroke:white !important;
-    }
-
-    /*Richtext body*/
-    .ql-toolbar.ql-snow + .ql-container.ql-snow{
-        height:30vh;
-    }
-    .input-title{
-        font-weight: 500;
-    }
 </style>
 
-<button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/event.png"); background-color:#FB5E5B;'
-    data-bs-target="#addEventModal" data-bs-toggle="modal">
+<button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/event.png'); ?>"); background-color:#FB5E5B;'
+    data-bs-target="
+        <?php 
+            if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null)){
+                echo "#browseDraftEventModal";
+            } else {
+                echo "#addEventModal";
+            }
+        ?>" data-bs-toggle="modal">
+
+    @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
+        <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-exclamation"></i> {{count($mydraft)}}</a>
+    @endif
+
     <h5 class="quick-action-text">Add Event</h5>
     <p class="quick-action-info">Event is a bla bla....</p>
 </button>
 
-<div class="modal fade" id="addEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+@if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
+    @include('homepage.addevent_form.draftevent')
+@endif
+
+<div class="modal fade" id="addEventModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
-            <form action="/homepage/add_event" method="POST" enctype="multipart/form-data">
+            <form action="/homepage/add_event" method="POST" enctype="multipart/form-data" id="form-add-event">
                 @csrf 
                 <div class="modal-body pt-4">
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
@@ -170,3 +151,27 @@
     </div>
 </div>
 
+<script>
+    document.getElementById('form-add-event').addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) { // 13 is the key code for Enter key
+            event.preventDefault(); 
+        }
+    });
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
+        authDomain: "mifik-83723.firebaseapp.com",
+        projectId: "mifik-83723",
+        storageBucket: "mifik-83723.appspot.com",
+        messagingSenderId: "38302719013",
+        appId: "1:38302719013:web:23e7dc410514ae43d573cc",
+        measurementId: "G-V13CR730JG"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+</script>

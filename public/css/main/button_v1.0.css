@@ -6,6 +6,15 @@
     background: #F78A00 !important;
     border:none;
 }
+.btn-success{
+    background: #00C363 !important;
+    border:none;
+}
+.btn-info{
+    background: #009FF9 !important;
+    color:white !important;
+    border:none;
+}
 .btn-noline{
     background: transparent;
     border:none;
@@ -40,6 +49,39 @@
     font-weight: 500;
     border: 1.5px solid #00c363;
 }
+.btn-category-help{
+    margin: 0 0 10px 50px;
+    border-left: 3px solid #F78A00;
+    background: #FFF1DF;
+    border-radius: 0;
+    padding: 8px 10px; 
+    width: 85%;
+    text-align: left;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+.btn-category-help:hover, .btn-category-help.active{
+    background: #F78A00;
+    color: whitesmoke;
+    border-radius: 10px;
+}
+
+.btn-submit-form:disabled, .btn-submit-form{
+    color:#00c363;
+    border-radius: 8px;
+    border: solid 1.75px #00c363;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    opacity: 1;
+}
+.btn-submit-form{
+    cursor: pointer;
+}
+.btn-submit-form:hover{
+    background:#00c363;
+    color: whitesmoke;
+}
 
 .btn-tag{
     background:white;
@@ -64,7 +106,7 @@
 .btn-detail-config.primary{
     background:#F78A00;
 }
-.btn-detail-config.danger{
+.btn-detail-config.danger, .hover-danger:hover{
     background:#D5534C;
 }
 .btn-detail-config.success{
@@ -85,6 +127,15 @@
     padding:10px 16px;
     border-radius:5px;
     color:#F78A00;
+    background:transparent;
+    font-weight:500;
+    font-size:16px;
+}
+.btn-link-danger{
+    text-decoration:none;
+    padding:10px 16px;
+    border-radius:5px;
+    color:#D5534C !important;
     background:transparent;
     font-weight:500;
     font-size:16px;
@@ -124,6 +175,13 @@
 }
 .btn-icon-rounded-primary:hover{
     background: #F78A00;
+    color: whitesmoke;
+}
+.btn-danger-icon-outlined{
+    border-radius: 100%;
+}
+.btn-danger-icon-outlined:hover{
+    background: #D5534C;
     color: whitesmoke;
 }
 
@@ -193,4 +251,72 @@
 .Checked input:checked + span{
     color: #00c363;
     background: transparent;
+}
+
+.user-check{
+    text-align: center;
+    padding: 0;
+    display: inline-block;
+    margin-right: 14px;
+    width:150px;
+    height:120px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background: white;
+    margin-bottom: 15px;
+}
+
+.user-check label {
+    padding:0 !important;
+    margin:0 !important;
+}
+.user-check .check-body{
+    padding: 10px;
+    margin: 0;
+    width: 100% !important;
+    border-radius: 10px;
+    height: 100% !important;
+}
+
+.user-check:hover{
+    border: 1.5px solid #D5534C;
+    background: #D5534C!important;
+}
+.user-check:hover label span{
+    color: #fff !important;
+}
+  
+.user-check label {
+    cursor: pointer !important;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+  
+.user-check label span {
+    text-align: center;
+}
+  
+.user-check label input {
+    position: absolute;
+    display: none !important;
+    color: #fff !important;
+}
+.user-check label input + span{
+    color: #343434;
+}  
+.user-check input:checked + .check-body {
+    background: #D5534C;
+    color: white;
+}
+
+.remove_suggest{
+    padding-right: 0 !important;
+    border-radius: 6px;
+    color: #D5534C;
+    cursor: pointer;
+}
+.remove_suggest:hover{
+    background: #D5534C !important;
+    color: white;
 }

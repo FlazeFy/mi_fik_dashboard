@@ -15,11 +15,14 @@ return new class extends Migration
     {
         Schema::create('archives_relations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('archive_id', 75);
-            $table->string('content_id', 75);
-            
+            $table->string('archive_id', 36);
+            $table->string('content_id', 36);
+
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 75);
+            $table->string('created_by', 36);
+
+            $table->foreign('archive_id')->references('id')->on('archives')->onDelete('cascade');
+            $table->foreign('content_id')->references('id')->on('contents_headers')->onDelete('cascade');
         });
     }
 

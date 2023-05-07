@@ -4,6 +4,16 @@
 .bg-primary{
     background: #F78A00 !important;
 }
+.bg-success{
+    background: #58C06E !important;
+}
+.bg-danger{
+    background: #D5534C !important;
+}
+.shadow{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+}
+
 
 /* Container */
 .content-section{
@@ -12,6 +22,9 @@
     margin-top: 40px;
     margin-bottom: 40px;
     padding: 25px;
+    position: relative;
+}
+.content-section header{
     position: relative;
 }
 .content-section-small{
@@ -56,6 +69,12 @@
     margin-inline:auto;
 }
 
+.control-holder{
+    position: absolute;
+    right: 10px;
+    top:-5px;
+}
+
 /* Drop down */
 .dd-profil .dropdown-menu hr{
     margin: 10px 0 10px 0;
@@ -97,15 +116,47 @@
 
 /* Tip / Warning box */
 .info-box{
-    background: #c6eff8;
     border-radius: 10px;
     color: #5B5B5B;
     font-size: 13.5px;
     padding: 14px;
     margin: 10px 0 10px 0;
+    text-align: start;
+}
+.info-box.tips{
+    background: #c6eff8 !important;
+}
+.info-box.warning{
+    background: #f7bdbd !important;
 }
 .info-box label{
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 6px;
+}
+
+.link-external{
+    color:#F78A00 !important;
+    text-decoration: none;
+    cursor: pointer;
+}
+.link-external-white{
+    color:white !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.link-external-dark{
+    color:#414141 !important;
+    text-decoration: none !important;
+    cursor: pointer;
+}
+.link-external:hover, .link-external-white:hover{
+    text-decoration: underline !important;
+}
+
+/* Check this shit */
+thead.thead-sticky{
+    position:sticky !important; 
+    top:80px; 
+    background: white;
 }

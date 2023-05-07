@@ -1,144 +1,25 @@
-<style>
-    .event-holder{
-        
-    }
-    .event-box{
-        border-radius:14px;
-        height:240px;
-        -webkit-transition: all 0.6s;
-        -o-transition: all 0.5s;
-        transition: all 0.5s;
-        cursor:pointer;
-        width: 100%;
-        padding:0px;
-        text-align:left;
-        position: relative;
-    }
-    .event-created-at{
-        position: absolute;
-        top: 7.5px;
-        right: 10px;
-        color: whitesmoke !important;
-        font-weight: 500;
-        font-size: 13.5px;
-    }
-    .event-views{
-        position: absolute;
-        top: 7.5px;
-        left: 10px;
-        color: whitesmoke !important;
-        font-weight: 500;
-        font-size: 13.5px;
-    }
-    .event-status{
-        position: absolute;
-        top: 7.5px;
-        left: 70px;
-        font-weight: 500;
-        font-size: 13.5px;
-    }
-    .event-box:hover{
-        transform: translateY(15px);
-    }
-    .event-box .event-title{
-        font-weight:bold;
-        font-size:14px;
-        color:#404040 !important;
-        margin:0px;
-    }
-    .event-box .event-subtitle{
-        font-weight:500;
-        font-size:12.5px;
-        color:#5B5B5B !important;
-        margin:0px;
-    }
-    .event-box .event-desc{
-        font-weight:400;
-        font-size:12px;
-        color:#989898 !important;
-        margin:0px;
-        overflow: hidden; 
-        text-overflow: ellipsis; 
-        display: -webkit-box; 
-        -webkit-line-clamp: 2; 
-        line-clamp: 2; 
-        -webkit-box-orient: vertical;
-    }
-    .btn-detail{
-        text-decoration: none !important;
-        border-radius: 6px;
-        font-size:12px;
-        font-weight:500;
-        padding: 5px;
-        color:#F78A00 !important;
-        cursor:pointer;
-    }
-    .user-image-content{
-        border:2px solid #F78A00;
-        width:40px;
-        height:40px;
-        cursor:pointer; /*if we can view other user profile*/
-        border-radius:30px;
-        margin-inline:auto;
-        display: block;
-    }
-    .header-image{
-        background-position: center;
-        background-repeat:no-repeat;
-        position: relative;
-        background-size: cover;
-        background-color: black;
-        height:110px;
-        width: 100%;
-        border-radius: 14px 14px 0px 0px !important;
-    }
-    .loc-limiter{
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 70%;
-    }
-
-    @media screen and (max-width: 1000px) {
-        .user-image-content{ /*Need to be fixed*/
-            position:absolute;
-            margin-top:-37.5px;
-            margin-left:35%;
-        }
-    }
-    /* @media screen and (max-width: 768px) {
-        
-    } */
-    .ajax-load{
-        padding: 10px 0px;
-        width: 100%;
-    }
-</style>
-
 <div class="container mt-3 p-0">
     <div class="event-holder row mt-3" >        
-    <div class="row p-0 m-0" id="data-wrapper"></div>
-    <!-- Loading -->
-    <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
+        <div class="row p-0 m-0" id="data-wrapper"></div>
+        <!-- Loading -->
+        <div class="auto-load text-center">
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
+        <div id="empty_item_holder"></div>
+        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
     </div>
-    <div id="empty_item_holder"></div>
-    <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
-</div>
-
-
-
 </div>
 
 <script type="text/javascript">
     var page = 1;
+    var myname = "<?= session()->get("username_key") ?>";
     infinteLoadMore(page);
 
     //Fix the sidebar & content page FE first to use this feature
@@ -179,12 +60,22 @@
 
         var order = <?php echo '"'.session()->get('ordering_event').'";'; ?>
         var date = <?php echo '"'.session()->get('filtering_date').'";'; ?>
+
+        function getFind(check){
+            if(check == null || check.trim() === ''){
+                return " "
+            } else {
+                return check
+            }
+        }
         
         $.ajax({
-            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "?page=" + page,
+            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
-            beforeSend: function () {
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
                 $('.auto-load').show();
             }
         })
@@ -285,49 +176,48 @@
 
                 //For now.
                 function removeTags(str) {
-                    if ((str===null) || (str===''))
-                        return false;
-                    else
+                    if ((str===null) || (str==='')){
+                        return "<span class='fst-italic'>No description provided</span>";
+                    } else {
                         str = str.toString();
+                    }
                         
                     return str.replace( /(<([^>]+)>)/ig, '');
                 }
 
                 function getContentImage(img){
                     if(img){
-                        return 'url("http://127.0.0.1:8000/storage/'+img+'")';
+                        return 'url("'+img+'")';
                     } else {
                         return "url({{asset('assets/default_content.jpg')}})";
                     }
                 }
 
-                function getCreatedAt(datetime){
-                    const result = new Date(datetime);
-                    const now = new Date(Date.now());
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    
-                    //FIx this!!!
-                    if(result.toDateString() === now.toDateString()){
-                        // $start_date = new DateTime(datetime);
-                        // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                        // if(result.getHours() == now.getHours()){
-                        //     const min = result.getMinutes() - now.getMinutes();
-                        //     if(min <= 10 && min > 0){
-                        //         return $since_start->m;
-                        //     } else {
-                        //         return  min + " minutes ago";    
-                        //     }
-                        // } else if(now.getHours() - result.getHours() <= 6){
-                        //     return now.getHours() - result.getHours() + " hours ago";    
-                        // } else {
-                            return "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        //}
-                    } else if(result.toDateString() === yesterday.toDateString()){
-                        return "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
+                function getUserImage(img1, img2){
+                    if(img1 || img2){
+                        if(img1){
+                            return img1;
+                        } else {
+                            return img2;
+                        }
                     } else {
-                        return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
+                        return "{{ asset('/assets/default_lecturer.png')}}";
+                    }
+                }
+
+                function getUsername(username1, username2){
+                    if(username1){
+                        if(username1 == myname){
+                            return "You";
+                        } else {
+                            return "@"+username1;
+                        }
+                    } else {
+                        if(username2 == myname){
+                            return "You";
+                        } else {
+                            return "@"+username2;
+                        }
                     }
                 }
 
@@ -369,6 +259,11 @@
                     var content_loc = data[i].content_loc;
                     var content_tag = data[i].content_tag;
                     var content_image = data[i].content_image;
+                    var admin_image = data[i].admin_image_created;
+                    var user_image = data[i].user_image_created;
+                    var admin_username = data[i].admin_username_created;
+                    var user_username = data[i].user_username_created;
+                    var content_image = data[i].content_image;
                     var content_date_start = data[i].content_date_start;
                     var content_date_end = data[i].content_date_end;
                     var total_views = data[i].total_views;
@@ -378,17 +273,17 @@
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
                             "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                 "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
-                                "<div class='event-created-at'>" + getCreatedAt(created_at) + "</div> " +
+                                "<div class='event-created-at'>" + getDateToContext(created_at) + "</div> " +
                                 "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
                                 "<div class='card-body p-2 w-100'> " +
                                     "<div class='row px-2'> " +
                                         "<div class='col-lg-2 px-1'> " +
-                                            "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                                            "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image) + "' alt='username-profile-pic.png'> " +
                                         "</div> " +
                                         "<div class='col-lg-9 p-0 py-1'> " +
                                             "<h6 class='event-title'>" + content_title + "</h6> " +
-                                            "<h6 class='event-subtitle'>[username]</h6> " +
+                                            "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
                                         "</div> " +
                                     "</div> " +
                                     "<div style='height:45px;'> " +

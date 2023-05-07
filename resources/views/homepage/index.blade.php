@@ -25,7 +25,7 @@
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-        <!--CSS Collection-->
+        <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -37,6 +37,13 @@
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/minicalendar_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/attachment_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/minicalendar_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -63,7 +70,9 @@
                                 @include('event.calendar.filter_tag')
                                 @include('homepage.sorting')
                                 @include('homepage.datefilter')
+                                @include('homepage.searchbar')
                             </div>
+                            @include('components.activefilter')
                 
                             @include('homepage.event')
                         </div>
@@ -75,10 +84,11 @@
         <!--Modal-->
         @include('popup.success')
         @include('popup.failed')
+        @if(session()->get('role_key') == 1)
+            @include('components.recatch')
+        @endif
 
         <!--Sidebar-->
-        <script src="{{ asset('/js/sidebar.js')}}"></script>
-        <script src="{{ asset('/js/minicalendar.js')}}"></script>
-
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
     </body>
 </html>

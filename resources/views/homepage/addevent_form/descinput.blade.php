@@ -4,16 +4,27 @@
 <script>
     var desc = document.getElementById("content_desc");
 
+    function deleteAfterCharacter(str, character) {
+        var index = str.indexOf(character);
+        if (index !== -1) {
+            return str.slice(0, index);
+        } else {
+            return str;
+        }
+    }
+
     function getRichText(){
         var rawText = document.getElementById("rich_box").innerHTML;
 
         //Remove quills element from raw text
-        var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','');
+        var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','').replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">');
         //Check this clean text 2!!!
         cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
         
         //Pass html quilss as input value
-        desc.value = cleanText;
+        var characterToDeleteAfter = "</div>";
+        var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
+        desc.value = modifiedString;
     }
 </script>
 

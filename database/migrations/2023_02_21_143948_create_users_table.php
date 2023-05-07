@@ -15,22 +15,22 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('slug_name', 255);
             $table->string('username', 30);
-            $table->string('email', 255)->unique();
-            $table->string('password', 255);
-            $table->string('first_name', 75);
-            $table->string('last_name', 75)->nullable();
+            $table->string('email', 75)->unique();
+            $table->string('password', 50);
+            $table->string('first_name', 36);
+            $table->string('last_name', 36)->nullable();
             $table->longText('role')->nullable();
             $table->string('image_url', 255)->nullable();
-            
+            $table->year('valid_until')->nullable();
+
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at', $precision = 0)->nullable();
-            $table->string('updated_by', 75)->nullable();
+            $table->string('updated_by', 36)->nullable();
             $table->dateTime('deleted_at', $precision = 0)->nullable();
-            $table->string('deleted_by', 75)->nullable();
+            $table->string('deleted_by', 36)->nullable();
             $table->dateTime('accepted_at', $precision = 0)->nullable();
-            $table->string('accepted_by', 75)->nullable();
+            $table->string('accepted_by', 36)->nullable();
             $table->boolean('is_accepted');
         });
     }

@@ -15,15 +15,14 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('slug_name', 255);
             $table->string('username', 30);
-            $table->string('email', 255)->unique();
+            $table->string('email', 75)->unique();
             $table->string('phone', 14)->unique();
-            $table->string('password', 255);
-            $table->string('first_name', 75);
-            $table->string('last_name', 75)->nullable();
+            $table->string('password', 50);
+            $table->string('first_name', 36);
+            $table->string('last_name', 36)->nullable();
             $table->string('image_url', 255)->nullable();
-            
+
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at', $precision = 0)->nullable();
         });

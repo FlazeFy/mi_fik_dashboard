@@ -65,7 +65,7 @@
 
     /*li*/
     #sidebar ul li.active, #sidebar ul li:hover {
-        width:30vh;
+        width:95%;
         margin-left:-30px;
         padding: 5px 30px;
         border-radius: 0px 10px 10px 0px;
@@ -77,8 +77,9 @@
         background:#F78A00;
         color:whitesmoke !important;
     }
-    #sidebar ul li:hover:not(.active) {
-        color:#F78A00;
+    #sidebar ul li:hover:not(.active), #sidebar ul li.sub.active {
+        color:#F78A00 !important;
+        background: white;
         border-left:12px solid #F78A00;
     }
     #sidebar ul li:hover:not(.active) .btn-accordion-custom {
@@ -155,6 +156,8 @@
                         <?php $icon = '<i class="fa-solid fa-globe me-3"></i>'; ?>
                     @elseif($menu_group == "manageuser")
                         <?php $icon = '<i class="fa-solid fa-user-pen me-3"></i>'; ?>
+                    @elseif($menu_group == "social")
+                        <?php $icon = '<i class="fa-regular fa-comments me-3"></i>'; ?>
                     @endif
                     
                     @if(!$group)
@@ -165,11 +168,22 @@
                     @endif
                     
                     @if($before == null || ($before != $menu_group && $group == true))
-                        <div class="collapse ps-4" id="clps{{$menu_group}}" data-bs-parent="#accordionExample">
+                        @if($menu_group == session()->get('active_nav'))
+                            @php($show = "show")
+                        @else
+                            @php($show = "")
+                        @endif
+
+                        <div class="collapse {{$show}} ps-4" id="clps{{$menu_group}}" data-bs-parent="#accordionExample">
                         @php($before = $menu_group)
                     @endif
 
-                    <li class="">
+                    @if($mn->menu_name == session()->get('active_subnav'))
+                        @php($active = "active")
+                    @else
+                        @php($active = "")
+                    @endif
+                    <li class="sub {{$active}}">
                         <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> {{ucfirst($mn->menu_name)}}</a>
                     </li>
                    
@@ -189,5 +203,3 @@
             data-bs-toggle="modal" data-bs-target="#sign-out-modal"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button> -->
     </div>
 </nav>
-
-@include('popup.signout')

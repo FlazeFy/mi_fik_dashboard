@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('group_desc', 255);
 
             $table->dateTime('created_at', $precision = 0);
-            $table->string('created_by', 75);
+            $table->string('created_by', 36);
             $table->dateTime('updated_at', $precision = 0)->nullable();
-            $table->string('updated_by', 75)->nullable();
+            $table->string('updated_by', 36)->nullable();
         });
     }
 

@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('tags', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('slug_name', 255);
-            $table->string('tag_name', 75)->unique();
+            $table->string('tag_name', 30)->unique();
             $table->string('tag_desc', 255)->nullable();
+            $table->string('tag_category', 75);
 
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 75);

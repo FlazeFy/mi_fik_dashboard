@@ -3,17 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+//use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class Dictionary extends Model
 {
     use HasFactory;
-    use HasUuids;
+    //use HasUuids;
+    public $incrementing = false;
 
     protected $table = 'dictionaries';
     protected $primaryKey = 'id';
-    protected $fillable = ['slug_name', 'dct_name', 'dct_desc', 'dct_type', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'];
+    protected $fillable = ['id','slug_name', 'dct_name', 'dct_desc', 'dct_type', 'created_at', 'updated_at', 'deleted_at', 'created_by', 'updated_by', 'deleted_by'];
 
     public static function getDictionaryByType($type){
         if(is_array($type)){

@@ -4,6 +4,14 @@
     }
 </style>
 
+<script>
+    let validation = [
+        { id: "tag_name", req: true, len: 30 },
+        { id: "tag_desc", req: false, len: 255 },
+        { id: "tag_category", req: true, len: 75 },
+    ];
+</script>
+
 <div class="position-relative">
     <h5 class="text-secondary fw-bold">Create New Tag</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button"
@@ -12,24 +20,30 @@
     <form class="p-2 mt-2" action="/event/tag/add" method="POST">
         @csrf
         <div class="form-floating mb-2">
-            <input type="text" class="form-control nameInput" id="tagNameInput" name="tag_name" oninput="validateTagName()" maxlength="35" required>
-            <label for="tagNameInput">Tag Name</label>
+            <input type="text" class="form-control nameInput" id="tag_name" name="tag_name" oninput="validateForm(validation)" maxlength="30" required>
+            <label for="tag_name">Tag Name</label>
+            <a id="tag_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
+        </div>
+        <div class="form-floating mb-2">
+            <select class="form-select" id="tag_category" name="tag_category" aria-label="Floating label select example" onchange="validateForm(validation)" required>
+                @php($i = 0)
+                @foreach($dct_tag as $dtag)
+                    @if($i == 0)
+                        <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                    @else 
+                        <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                    @endif
+                    @php($i++)
+                @endforeach
+            </select>
+            <label for="tag_category">Category</label>
+            <a id="tag_category_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
         <div class="form-floating">
-            <textarea class="form-control" id="floatingTextarea2" style="height: 100px" name="tag_desc"></textarea>
-            <label for="floatingTextarea2">Tag Description</label>
+            <textarea class="form-control" style="height: 100px" id="tag_desc" name="tag_desc" oninput="validateForm(validation)" maxlength="255"></textarea>
+            <label for="tag_desc">Tag Description</label>
+            <a id="tag_desc_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
-        <a id="tagName_msg" class="text-danger"></a>
-        <button class="btn btn-success mt-3" type="submit"><i class="fa-solid fa-plus"></i> Add Tag</button>
+        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
     </form>
 </div>
-
-<script>
-    function validateTagName(){
-        if($(".nameInput").val().length >= 35){ //Check again for the maximum length
-            $("#tagName_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Error. Reaching maximum character length");
-        } else {
-            $("#tagName_msg").text("");
-        }
-    }
-</script>

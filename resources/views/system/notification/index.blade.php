@@ -62,6 +62,10 @@
             </div>
         </div>
 
+        <!--Modal-->
+        @include('popup.success')
+        @include('popup.failed')
+
         <script>
             //Popover
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
@@ -72,7 +76,7 @@
         </script>
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
 
     </body>
 </html>

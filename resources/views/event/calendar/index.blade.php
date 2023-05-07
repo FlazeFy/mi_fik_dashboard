@@ -40,8 +40,12 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
-
         <link rel="stylesheet" href="{{ asset('/css/calendar_v1.0.css') }}"/>
+
+        <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -54,12 +58,33 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
-                        <div class="calendar-tag-holder">
-                            @include('event.calendar.filter_tag')
+                    @php($sort = session()->get('calendar_menu'))
+                    @php($i = 0)
+                    @php($count = count($sort))
+                    @foreach($sort as $st)
+                        <div class="content-section p-0 pt-3">
+                            <header>
+                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                @if($st == "finished")
+                                    @include("event.calendar.searchbar")
+                                    @include("event.calendar.sorting")
+                                @endif
+                                @include('components.controlsection', ['type' => "vertical"])
+                            </header>
+                            <div class="p-3">
+                                @if($st == "calendar")
+                                    <div class="calendar-tag-holder">
+                                        @include('event.calendar.filter_tag')
+                                    </div>
+                                    @include('event.calendar.calendar')
+                                @elseif($st == "finished")
+                                    @include('event.calendar.finished')
+                                @endif
+                            </div>
                         </div>
-                        @include('event.calendar.calendar')
-                    </div>
+                        @php($i++)
+                    @endforeach
+    
                 </div>
             </div>
         </div>
@@ -68,6 +93,6 @@
         @include('popup.success')
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
     </body>
 </html>

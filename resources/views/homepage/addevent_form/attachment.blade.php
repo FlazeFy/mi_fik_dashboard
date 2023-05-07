@@ -1,70 +1,3 @@
-<style>
-    .attachment-holder .attachment-item {
-        padding: 12px 20px 12px 12px !important;
-        margin-top: 15px !important;
-        margin-left:15px;
-        position: relative;
-        border-radius: 0 10px 10px 0;
-        min-height: 80px;
-        border-left: 3.5px solid #808080;
-        border-top: 1.75px solid #CED4DA;
-        border-right: 1.75px solid #CED4DA;
-        border-bottom: 1.75px solid #CED4DA;
-    }
-    .attachment-holder .attachment-item ul {
-        padding-left: 12px;
-    }
-    .attachment-holder .attachment-item ul li {
-        padding-bottom: 10px;
-    }
-    .attachment-holder .attachment-item:last-child {
-        padding-bottom: 0;
-    }
-    .attachment-holder .attachment-item::before {
-        content: "";
-        position: absolute;
-        width: 24px;
-        height: 24px;
-        border-radius: 50px;
-        left: -13px;
-        top: 36%;
-        background: white;
-        border: 3px solid var(--circle-attach-color-var);
-    }
-    .btn-icon-delete{
-        color: #F85D59 !important;
-        padding: 4px 8px;
-    }
-    .btn-icon-delete:hover{
-        background: #e74645 !important;
-        color:white !important;
-    }
-    .btn-icon-preview{
-        color: #808080 !important;
-        padding: 4px 8px;
-    }
-    .form-select.attachment{
-        padding: 4px !important;
-        font-size: 13px;
-        width: 100px;
-    }
-    .attach-upload-status, #content_loc_msg{
-        text-decoration: none;
-        font-style: italic;
-        font-size: 12.5px;
-        font-weight: 500;
-    }
-    .success{
-        color: #00c363 !important;
-    }
-    .failed{
-        color: #e74645 !important;
-    }
-    .warning{
-        color: #f78a00 !important;
-    }
-</style>
-
 <div>
     <a class="content-add mb-2" style="float:none;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
     <div class="attachment-holder" id="attachment-holder">
@@ -72,31 +5,14 @@
     <input hidden id="content_attach" name="content_attach">
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
-
-<script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyCN3J8nXpP1NuHwX7NjfYpMWkNGPzfV0X0",
-        authDomain: "mifik-ad2d9.firebaseapp.com",
-        projectId: "mifik-ad2d9",
-        storageBucket: "mifik-ad2d9.appspot.com",
-        messagingSenderId: "96469457737",
-        appId: "1:96469457737:web:f70e18e5dcfe41c66bd898",
-        measurementId: "G-PZDGL9X7T1"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-</script>
-
 <script>
     //Initial variable.
     var attach_list = []; //Store all attachment.
-    var i = 1;
 
     function addAttachmentForm(){
+        var id = getAttCode()
         let obj = {
-            "id": i,
+            "id": id,
             "attach_type":null, 
             "attach_name":null, 
             "attach_url":null
@@ -105,13 +21,13 @@
         attach_list.push(obj);
 
         $("#attachment-holder").append(' ' +
-            '<div class="attachment-item p-2 shadow" id="attachment_container_'+i+'" style="--circle-attach-color-var:#808080;"> ' + 
-                '<div class="row mb-1"> ' +
-                    '<div class="col-6"> ' +
+            '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:#808080;"> ' + 
+                '<div style="white-space:normal !important;"> ' +
+                    '<span class="d-inline-block me-1"> ' +
                         '<h6 class="mt-1">Attachment Type : </h6> ' +
-                    '</div> ' +
-                    '<div class="col-6"> ' +
-                        '<select class="form-select attachment" id="attach_type_'+i+'" name="attach_type" onChange="getAttachmentInput('+i+', this.value, false)" aria-label="Default select example"> ' +
+                    '</span> ' +
+                    '<span class="d-inline-block"> ' +
+                        '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
                             '<option selected>---</option> ' +
                             <?php
                                 foreach($dictionary as $dct){
@@ -121,19 +37,18 @@
                                 }
                             ?>
                         '</select> ' +
-                    '</div> ' +
+                    '</span> ' +
                 '</div> ' +
-                '<div id="attach-input-holder-'+i+'"></div> ' +
-                '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+i+')"> ' +
+                '<div id="attach-input-holder-'+id+'"></div> ' +
+                '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
                     '<i class="fa-solid fa-trash-can"></i></a> ' +
-                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-' + i + '"> ' +
+                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
                     '<i class="fa-regular fa-eye-slash"></i></a> ' +
-                '<a class="attach-upload-status success" id="attach-progress-'+i+'"></a>' +
-                '<a class="attach-upload-status danger" id="attach-failed-'+i+'"></a>' +
-                '<a class="attach-upload-status warning" id="attach-warning-'+i+'"></a>' +
-                '<span id="preview_holder_' + i + '"></span> ' +
+                '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
+                '<a class="attach-upload-status danger" id="attach-failed-'+id+'"></a>' +
+                '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
+                '<span id="preview_holder_'+id+'"></span> ' +
             '</div>');
-        i++;
     }
 
     function setValue(id, all){
@@ -150,8 +65,6 @@
             if(att_type != "attachment_url"){
                 var att_file_src = document.getElementById('attach_url_'+id).files[0];
                 var filePath = att_type + '/' + getUUID();
-
-                document.getElementById('attach_url_holder_'+id).value = filePath;
 
                 //Set upload path
                 var storageRef = firebase.storage().ref(filePath);
@@ -194,6 +107,7 @@
                                 "</div> " +
                             "</div>";
                         document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
+                        document.getElementById('attach_url_holder_'+id).value = downloadUrl;
                     });
                 });
             } else {
@@ -248,27 +162,38 @@
         );
     }
 
+    function getAttCode() {
+        let col = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let code = '';
+        for (let i = 0; i < 6; i++) {
+            let index = Math.floor(Math.random() * col.length);
+            code += col[index];
+        }
+        return code;
+    }
+
     function deleteAttachmentForm(index){
         let att_type = document.getElementById('attach_type_'+index).value;
 
         attach_list = attach_list.filter(object => {
             if(att_type != "attachment_url"){
-                var filePath =  document.getElementById('attach_url_holder_'+index).value;
+                var filePath = object.attach_url;
                 if(filePath){
-                    //Set upload path
-                    var storageRef = firebase.storage().ref(filePath);
-                
-                    storageRef.delete().then(() => {
-                        console.log("success");
-                        $("#attachment_container_"+index).remove();
+                    var storageRef = firebase.storage();
+                    var desertRef = storageRef.refFromURL(filePath);
+                    var msg = ""
 
+                    desertRef.delete().then(() => {
+                        msg = "Attachment has been removed";
+                        //Return msg not finished. i dont know what to do next LOL
                     }).catch((error) => {
-                        console.log("failed");
+                        msg = "Failed to deleted the Attachment";
+                        //Return msg not finished. i dont know what to do next LOL
                     });
                 }
-            } else {
-                $("#attachment_container_"+index).remove();
-            }
+            } 
+
+            $("#attachment_container_"+index).remove();
 
             return object.id !== index;
         });
@@ -292,15 +217,15 @@
         if(val == "attachment_url"){
             $("#attach-input-holder-"+index).append(' ' +
                 '<h6 class="mt-1">Attachment URL</h6> ' +
-                '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+index+', true)" required> ' +
+                '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)" required> ' +
                 '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
+                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
         } else {
             $("#attach-input-holder-"+index).append(' ' +
-                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+index+', true)"> ' +
+                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+"'"+index+"'"+', true)"> ' +
                 '<input type="text" id="attach_url_holder_'+index+'" hidden required> ' +
                 '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+index+', true)">');
+                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
         }
     }
 </script>

@@ -39,19 +39,19 @@
                     </td>
                     <td>{{$nt->notif_body}}</td>
                     <td>
-                        @php($ntJson = json_decode($nt->notif_send_to))
+                        @php($ntJson = $nt->notif_send_to)
                             
                         @foreach($ntJson as $nj)
-                            @if($nj->send_to == "all")
-                                {{ucfirst($nj->send_to)}}
+                            @if($nj['send_to'] == "all")
+                                {{ucfirst($nj['send_to'])}}
                             @else 
-                                {{$nj->user_id}}
+                                {{$nj['user_id']}}
                             @endif
                         @endforeach 
                     </td>
                     <td>
                         @if($nt->is_pending)
-                            Pending until {{date('Y-m-d h:i', strtotime($nt->pending_until))}}
+                            Pending until {{date('Y-m-d H:i', strtotime($nt->pending_until))}}
                         @else 
                             Announced
                         @endif
@@ -64,7 +64,7 @@
                             </div>
                             <div class="col-9 p-0 ps-2 pt-1">
                                 <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($nt->created_at))}}</h6>
+                                <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($nt->created_at))}}</h6>
                             </div>
                         </div>    
                         @if($nt->updated_at)
@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
                                     <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($nt->updated_at))}}</h6>
+                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($nt->updated_at))}}</h6>
                                 </div>
                             </div>   
                         @endif
@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
                                     <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d h:i', strtotime($nt->deleted_at))}}</h6>
+                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($nt->deleted_at))}}</h6>
                                 </div>
                             </div>   
                         @endif

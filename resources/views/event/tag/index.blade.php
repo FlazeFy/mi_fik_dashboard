@@ -35,7 +35,7 @@
         <!--Apex Chart-->
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
-        <!--CSS Collection-->
+        <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -44,7 +44,12 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
+
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -58,21 +63,34 @@
                     @include('sidebar.navbar')
 
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="row">
-                            <div class="col-lg-5 col-md-5 col-sm-12">
-                                <div class="content-section">
-                                    @include('event.tag.add')
+                        @if(session()->get('role_key') == 1)
+                            <div class="row">
+                                <div class="col-lg-5 col-md-5 col-sm-12">
+                                    <div class="content-section">
+                                        @include('event.tag.add')
+                                    </div>
+                                    <div class="content-section">
+                                        @include('event.tag.category')
+                                    </div>
+                                    <div class="content-section">
+                                        @include('statistic.mostTag')
+                                    </div>
                                 </div>
-                                <div class="content-section">
-                                    @include('statistic.mostTag')
+                                <div class="col-lg-7 col-md-7 col-sm-12">
+                                    <div class="content-section">
+                                        @include('event.tag.table')
+                                    </div>
+                                    <div class="content-section position-relative">
+                                        <h5 class="text-secondary fw-bold">History</h5>
+                                        @include('components.history', ['history' => $history])
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-lg-7 col-md-7 col-sm-12">
-                                <div class="content-section">
-                                    @include('event.tag.table')
-                                </div>
+                        @else 
+                            <div class="content-section">
+                                @include('event.tag.table')
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -92,7 +110,7 @@
         </script>
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
 
     </body>
 </html>

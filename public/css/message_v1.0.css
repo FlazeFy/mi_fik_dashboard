@@ -1,0 +1,125 @@
+.imessage {
+    border-radius: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto 1rem;
+    padding: 0.5rem 1.5rem;
+} 
+.imessage p {
+    border-radius: 1.15rem;
+    line-height: 1.25;
+    max-width: 75%;
+    padding: 0.5rem .875rem;
+    position: relative;
+    word-wrap: break-word;
+}  
+.imessage p::before,
+.imessage p::after {
+    bottom: -0.1rem;
+    content: "";
+    height: 1rem;
+    position: absolute;
+}  
+p.from-me {
+    align-self: flex-end;
+    background-color: #F78A00;
+    color: #fff; 
+}
+p.from-me::before {
+    border-bottom-left-radius: 0.8rem 0.7rem;
+    border-right: 1rem solid #F78A00;
+    right: -0.35rem;
+    transform: translate(0, -0.1rem);
+}
+a.from-me-clock{
+    text-decoration: none;
+    color: #414141;
+    font-size: 13.5px;
+    text-align: end;
+}
+a.from-them-clock{
+    text-decoration: none;
+    color: #414141;
+    font-size: 13.5px;
+    text-align: start;
+}
+  
+p.from-me::after {
+    background-color: #fff;
+    border-bottom-left-radius: 0.5rem;
+    right: -40px;
+    transform:translate(-30px, -2px);
+    width: 10px;
+}
+p[class^="from-"] {
+    margin: 0.5rem 0;
+    width: fit-content;
+}
+  
+p.from-me ~ p.from-me {
+    margin: 0.25rem 0 0;
+}
+p.from-me ~ p.from-me:not(:last-child) {
+    margin: 0.25rem 0 0;
+}
+p.from-me ~ p.from-me:last-child {
+    margin-bottom: 0.5rem;
+} 
+p.from-them {
+    align-items: flex-start;
+    background-color: #e5e5ea;
+    color: #414141;
+}
+p.from-them:before {
+    border-bottom-right-radius: 0.8rem 0.7rem;
+    border-left: 1rem solid #e5e5ea;
+    left: -0.35rem;
+    transform: translate(0, -0.1rem);
+}
+p.from-them::after {
+    background-color: #fff;
+    border-bottom-right-radius: 0.5rem;
+    left: 20px;
+    transform: translate(-30px, -2px);
+    width: 10px;
+}
+p[class^="from-"].emoji {
+    background: none;
+    font-size: 2.5rem;
+}
+p[class^="from-"].emoji::before {
+    content: none;
+}
+  
+.no-tail::before {
+    display: none;
+}
+.margin-b_none {
+    margin-bottom: 0 !important;
+}
+.margin-b_one {
+    margin-bottom: 1rem !important;
+}
+.margin-t_one {
+    margin-top: 1rem !important;
+}
+.comment {
+    color: #222;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+    max-width: 100%;
+    padding: 0;
+}
+  
+@media screen and (max-width: 800px) {
+    .imessage {
+        font-size: 1.05rem;
+        margin: 0 auto 1rem;
+        max-width: 600px;
+        padding: 0.25rem 0.875rem;
+    }
+
+    .imessage p {
+        margin: 0.5rem 0;
+    }
+}

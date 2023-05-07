@@ -1,12 +1,17 @@
 <?php
 namespace App\Helpers;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 use App\Models\ContentHeader;
+use App\Models\ContentDetail;
 use App\Models\Archive;
 use App\Models\Task;
 use App\Models\Tag;
 use App\Models\Admin;
 use App\Models\User;
+use App\Models\Dictionary;
+use App\Models\UserGroup;
 
 use DateTime;
 
@@ -16,8 +21,8 @@ class Generator
     // In : Leonardho R Sitanggang-01/02
     // Out : leonardho_r_sitanggang_0102
     public static function getSlugName($val, $type){ 
-        $replace = str_replace(" ","_", $val);
-        $replace = str_replace("-","_", $replace);
+        $replace = str_replace(" ","-", $val);
+        $replace = str_replace("_","-", $replace);
         $replace = preg_replace('/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/', '', $replace);
 
         if($type == "content"){
@@ -37,6 +42,17 @@ class Generator
                 ->get();
         } else if($type == "tag"){
             $check = Tag::select('slug_name')
+                ->where('slug_name', $replace)
+                ->limit(1)
+                ->get();
+        } else if($type == "dct_tag"){
+            $check = Dictionary::select('slug_name')
+                ->where('slug_name', $replace)
+                ->where('dct_type', 'TAG-001')
+                ->limit(1)
+                ->get();
+        } else if($type == "group"){
+            $check = UserGroup::select('slug_name')
                 ->where('slug_name', $replace)
                 ->limit(1)
                 ->get();
@@ -90,24 +106,24 @@ class Generator
         return $reminder;
     }
 
-    public static function getUserId($slug_name, $role){
+    public static function getUserId($username, $role){
         if($role == 0){
             //for dashboard login and content views
             $query = Admin::select('id')
-                ->where('slug_name', $slug_name)
+                ->where('username', $username)
                 ->limit(1)
                 ->get();
         } else if($role == 1) {
             //for dashboard login and content views
             $query = User::select('id')
-                ->where('slug_name', $slug_name)
-                ->whereRaw("role like '%dosen%' or '%staff%'")
+                ->where('username', $username)
+                ->whereRaw("role like '%lecturer%' or '%staff%'")
                 ->limit(1)
                 ->get();
         } else if($role == 2) {
             //for content views only
             $query = User::select('id')
-                ->where('slug_name', $slug_name)
+                ->where('username', $username)
                 ->limit(1)
                 ->get();
         }
@@ -118,6 +134,22 @@ class Generator
             }
         } else {
             $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getUserIdV2($role){
+        $token = session()->get("token_key");
+        $accessToken = PersonalAccessToken::findToken($token);
+
+        if ($accessToken) {
+            Auth::login($accessToken->tokenable);
+            $user = Auth::user();
+            
+            $res = $user->id;
+        } else {
+            // do something LOL
         }
 
         return $res;
@@ -140,8 +172,94 @@ class Generator
         return $res;
     }
 
+    public static function getContentOwner($slug_name){
+        $query = ContentHeader::select('created_by')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->created_by;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getTaskOwner($slug_name){
+        $query = Task::select('created_by')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->created_by;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getTaskId($slug_name){
+        $query = Task::select('id')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->id;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getContentDetailId($slug_name){
+        $query = ContentDetail::select('contents_details.id as id')
+            ->join('contents_headers', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->where('slug_name', $slug_name)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->id;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getContentAtt($id){
+        $query = ContentDetail::select('content_attach')
+            ->where('id', $id)
+            ->limit(1)
+            ->get();
+
+        if(count($query) > 0){
+            foreach($query as $q){
+                $res = $q->content_attach;
+            }
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
     public static function getGreeting($datetime){
-        $hour = date('h', $datetime);
+        $hour = date('H', $datetime);
 
         if ($hour >= 3 && $hour <= 12) {
             $greet = "Good Morning";
@@ -152,5 +270,161 @@ class Generator
         }
 
         return $greet;
+    }
+
+    public static function getUUID(){
+        $result = '';
+        $bytes = random_bytes(16);
+        $hex = bin2hex($bytes);
+        $time_low = substr($hex, 0, 8);
+        $time_mid = substr($hex, 8, 4);
+        $time_hi_and_version = substr($hex, 12, 4);
+        $clock_seq_hi_and_reserved = hexdec(substr($hex, 16, 2)) & 0x3f;
+        $clock_seq_low = hexdec(substr($hex, 18, 2));
+        $node = substr($hex, 20, 12);
+        $uuid = sprintf('%s-%s-%s-%02x%02x-%s', $time_low, $time_mid, $time_hi_and_version, $clock_seq_hi_and_reserved, $clock_seq_low, $node);
+        
+        return $uuid;
+    }
+
+    public static function getListAboutSection(){
+        $res = ["about us","helps editor","contact us"];
+        
+        return $res;
+    }
+
+    public static function getListCalendarSection(){
+        $res = ["calendar","finished"];
+        
+        return $res;
+    }
+
+    public static function getListFeedbackSection(){
+        $res = ["list","most suggest"];
+        
+        return $res;
+    }
+
+    public static function getListFAQSection(){
+        $res = ["question","answer"];
+        
+        return $res;
+    }
+
+    public static function getRandomYear(){
+        $now = (int)date("Y");
+        $res = $now + mt_rand(-3, 6); 
+        
+        return $res;
+    }
+
+    public static function getRandomRole(){
+        $total = mt_rand(0, 16); 
+
+        if($total != 0){
+            $tag = Tag::inRandomOrder()->take($total)->get();
+
+            foreach($tag as $tg){
+                $res[] = (object)[
+                    'slug_name' => $tg->slug_name,
+                    'tag_name' => $tg->tag_name,
+                ];
+            }
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
+    public static function getRandomDate($null){
+        if($null == 0){
+            $start = strtotime('2018-01-01 00:00:00');
+            $end = strtotime(date("Y-m-d H:i:s"));
+            $random = mt_rand($start, $end); 
+            $res = date('Y-m-d H:i:s', $random);
+        } else {
+            $res = null;
+        }
+
+        return $res;
+    }
+
+    public static function getRandomAdmin($null){
+        if($null == 0){
+            $admin = Admin::inRandomOrder()->take(1)->get();
+
+            foreach($admin as $ad){
+                $res = $ad->id;
+            }
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
+    public static function getRandomUser($null){
+        if($null == 0){
+            $user = User::inRandomOrder()->take(1)->get();
+
+            foreach($user as $us){
+                $res = $us->id;
+            }
+        } else {
+            $res = null;
+        }
+        
+        return $res;
+    }
+
+    public static function getRandomUserArchive($role){
+        if($role == 1){
+            $user = Archive::select('archives.id', 'archives.created_by')
+                ->join('users','users.id','=','archives.created_by')
+                ->where('content_title', 'LIKE', '%"slug_name":"lecturer"%')
+                ->inRandomOrder()->take(1)->get();
+        } else if($role == 2){
+            $user = Archive::select('archives.id', 'archives.created_by')
+                ->join('users','users.id','=','archives.created_by')
+                ->where('content_title', 'LIKE', '%"slug_name":"student"%')
+                ->inRandomOrder()->take(1)->get();
+        }
+
+        foreach($user as $us){
+            $res = [
+                'id' => $us->id,
+                'user_id' => $us->created_by,
+            ];
+        }
+
+        return $res;
+    }
+
+    public static function getRandomContent($role){
+        if($role == 1){
+            $role = "lecturer";
+        } else if($role == 2){
+            $role = "student";
+        }
+        $content = ContentDetail::select('content_id')
+            ->where('content_tag', 'LIKE', '%"slug_name":"'.$role.'"%')
+            ->inRandomOrder()->take(1)->get();
+
+        foreach($content as $ct){
+            $res = $ct->content_id;
+        }
+
+        return $res;
+    }
+
+    public static function getRandomDictionaryType($type){
+        $dictionary = Dictionary::where('dct_type', $type)->inRandomOrder()->take(1)->get();
+
+        foreach($dictionary as $dct){
+            $res = $dct->slug_name;
+        }
+        
+        return $res;
     }
 }

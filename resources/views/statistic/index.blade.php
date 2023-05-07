@@ -38,6 +38,12 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         
+        <style>
+            .dropdown-menu.dropdown-menu-end hr {
+                margin-top:5px !important; 
+                margin-bottom:5px !important;
+            }
+        </style>
     </head>
 
     <body>
@@ -54,20 +60,30 @@
                         @include('statistic.createdEvent')
                     </div>
                     <div class="row p-0 m-0">
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostTag')
-                                @include('statistic.mostRole')
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12 ps-0 py-0 my-0">
                             <div class="container-fluid bg-white rounded my-3 p-2">
                                 @include('statistic.mostLoc')
                             </div>
                         </div>
+                        <div class="col-lg-8 col-md-6 col-sm-12 pe-0 py-0 my-0">
+                            <div class="container-fluid bg-white rounded my-3 p-2">
+                                <div class="row p-0 m-0">
+                                    <div class="col-lg-6 col-md-12 col-sm-12">
+                                        @include('statistic.mostRole')
+                                    </div>
+                                    <div class="col-lg-6 col-md-12 col-sm-12">
+                                        @include('statistic.mostTag')
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
+                    <div class="container-fluid bg-white rounded mb-3 mt-2 p-2">
                        @include('statistic.mostViewedEvent')
+                    </div>
+                    <div class="container-fluid bg-white rounded mb-3 mt-2 p-2">
+                        <h5 class="text-secondary fw-bold">Most Suggestion Feedback</h5>
+                        @include('social.feedback.mostSuggest')
                     </div>
                 </div>
             </div>
@@ -78,6 +94,6 @@
         @include('popup.failed')
 
         <!--Sidebar-->
-        <script src="http://127.0.0.1:8000/js/sidebar.js"></script>
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
     </body>
 </html>
