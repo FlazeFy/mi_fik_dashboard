@@ -7,11 +7,13 @@
         overflow-y: scroll;
         white-space: normal;
     }
-    .user-box.horizontal{
-        padding: 10px;
-        display: inline-block;
-        text-align:center;
-        margin-right: 14px;
+    .user-check .user-check-title{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
 </style>
 
@@ -48,6 +50,7 @@
     var page_new_req = 1;
     infinteLoadMore(page_new_req);
     var selectedMember = []; 
+    var selectedMemberRemove = []; 
 
     function loadmore(route){
         page_new_req++;
@@ -108,23 +111,8 @@
                         var elmt = ""
                         yesterday.setDate(yesterday.getDate() - 1);
                         
-                        //FIx this!!!
                         if(result.toDateString() === now.toDateString()){
-                            // $start_date = new DateTime(datetime);
-                            // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                            // if(result.getHours() == now.getHours()){
-                            //     const min = result.getMinutes() - now.getMinutes();
-                            //     if(min <= 10 && min > 0){
-                            //         return $since_start->m;
-                            //     } else {
-                            //         return  min + " minutes ago";    
-                            //     }
-                            // } else if(now.getHours() - result.getHours() <= 6){
-                            //     return now.getHours() - result.getHours() + " hours ago";    
-                            // } else {
                             elmt = "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                            //}
                         } else if(result.toDateString() === yesterday.toDateString()){
                             elmt = "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
                         } else {
@@ -214,32 +202,44 @@
                                 '<div class="modal-content"> ' +
                                     '<div class="modal-body text-left pt-4"> ' +
                                         '<button type="button" class="custom-close-modal" onclick="clearAllNewMember(' + "'" + slug + "'" + ')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
-                                        '<h5>Manage Group Relation</h5> ' +
-                                        '<form action="/user/group/member/add/'+id+'" method="POST"> ' +
-                                            '@csrf ' +
-                                            '<div class="row mt-4"> ' +
-                                                '<div class="col-lg-8 col-md-7 col-sm-12"> ' +
-                                                    '<h6>Engagement</h6> ' + 
+                                        '<h5>Manage Group Relation</h5> ' +                                       
+                                        '<div class="row mt-4"> ' +
+                                            '<div class="col-lg-8 col-md-7 col-sm-12"> ' +
+                                                '<h6>Engagement</h6> ' + 
 
-                                                    '<h6>Available Member</h6> ' + 
+                                                '<form action="/user/group/member/remove/'+id+'" method="POST"> ' +
+                                                    '@csrf ' +
+                                                    '<span class="position-relative"> ' +
+                                                        '<h6 class="mt-2">Available Member</h6> ' +
+                                                        '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRemoveMember(' + "'" + slug + "'" + ')"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                                                        '<span id="submit-rel-remove-btn-holder-'+slug+'"></span>' +
+                                                    '</span> ' +
                                                     '<span id="manage-rel-holder-'+slug+'" class="groups-rel-holder"></span> ' +
-                                                    '<span id="err-rel-holder-'+slug+'"></span> ' +
+                                                    '<input hidden name="selected_member_remove" id="selected_member_remove-'+slug+'" value=""> ' +
+                                                    '<input hidden name="group_name" value="' + name + '"> ' +
+                                                '</form> ' +
+                                                '<span id="err-rel-holder-'+slug+'"></span> ' +
+
+                                                '<hr> ' +
+                                                '<form action="/user/group/member/add/'+id+'" method="POST"> ' +
+                                                    '@csrf ' +
                                                     '<span class="position-relative"> ' +
                                                         '<h6 class="mt-2">Selected User</h6> ' +
                                                         '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember(' + "'" + slug + "'" + ')"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
-                                                        '<span id="submit-rel-btn-holder-'+slug+'"></span>' +
+                                                        '<span id="submit-rel-add-btn-holder-'+slug+'"></span>' +
                                                     '</span> ' +
-                                                    '<span id="user-selected-newmember-holder-'+slug+'"></span> ' +
-                                                '</div> ' +
-                                                '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
-                                                    '<h6>All User</h6> ' + 
-                                                    '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
-                                                    '<span id="err-ava-holder-'+slug+'"></span> ' +
-                                                '</div> ' +
-                                                '<input hidden name="selected_member" id="selected_member-'+slug+'" value=""> ' +
-                                                '<input hidden name="group_name" value="' + name + '"> ' +
+                                                    '<input hidden name="selected_member" id="selected_member-'+slug+'" value=""> ' +
+                                                    '<input hidden name="group_name" value="' + name + '"> ' +
+                                                '</form> ' +
+
+                                                '<span id="user-selected-newmember-holder-'+slug+'"></span> ' +
                                             '</div> ' +
-                                        '</form> ' +
+                                            '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
+                                                '<h6>All User</h6> ' + 
+                                                '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
+                                                '<span id="err-ava-holder-'+slug+'"></span> ' +
+                                            '</div> ' +
+                                        '</div> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -271,17 +271,17 @@
                             '</td> ' +
                             '<td class="tabular-role-holder"> ' +
                                 '<div class="position-relative"> ' +
-                                    '<button class="btn btn-primary" type="button" data-bs-target="#edit-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                    '<button class="btn btn-primary mb-2 me-1" type="button" data-bs-target="#edit-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-pen-to-square"></i> ' +
                                     '</button> ' +
                                     editGroup(id, slug, groupName, groupDesc, updatedAt) +
-                                    '<button class="btn btn-info" onclick="runManageFunc(' + "'" + slug + "'" + ')" type="button" data-bs-target="#manage-rel-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                    '<button class="btn btn-info mb-2 me-1" onclick="runManageFunc(' + "'" + slug + "'" + ')" type="button" data-bs-target="#manage-rel-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-user-plus"></i> ' +
                                     '</button> ' +
                                     manageRel(id, slug, groupName) +
-                                    '<button class="btn btn-danger" type="button" data-bs-target="#delete-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
+                                    '<button class="btn btn-danger mb-2 me-1" type="button" data-bs-target="#delete-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
                                         '<i class="fa-solid fa-solid fa-trash"></i> ' +
                                     '</button> ' +
@@ -338,16 +338,22 @@
             } else {
                 for(var i = 0; i < data.length; i++){
                     //Attribute
+                    var id = data[i].id;
                     var username = data[i].username;
                     var fullName = data[i].full_name;
                     var grole = data[i].general_role;
                     var img = data[i].image_url;
 
                     var elmt = " " +
-                        '<a class="btn user-box horizontal" style="width:150px;"> ' +
-                            '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
-                            '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
-                            '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
+                        '<a class="btn card user-check action"> ' +
+                            '<label title="Remove member"> ' +
+                                '<input class="" name="username[]" id="check_remove_'+username+'" type="checkbox" onclick="removeMember('+"'"+slug+"'"+', '+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked, '+"'"+id+"'"+')" value="' + username + '"> ' +
+                                '<div class="check-body"> ' +
+                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
+                                    '<span class="user-check-title fw-normal">' + fullName + '</span>' +
+                                    '<span class="fw-bold" style="font-size:13px;">' + grole + '</span>' +
+                                '</div> ' +
+                            '</label> ' +
                         '</a>';
 
                     $("#manage-rel-holder-"+slug).append(elmt);
@@ -480,6 +486,42 @@
         refreshList(slug);
     }
 
+    function removeMember(slug, username, fullname, checked, id){
+        var input_holder = document.getElementById("selected_member_remove-"+slug);
+        if(selectedMemberRemove.length == 0){
+            selectedMemberRemove.push({
+                full_name : fullname,
+                username : username,
+                id_rel : id
+            });
+            input_holder.value = JSON.stringify(selectedMemberRemove);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedMemberRemove.findIndex(obj => obj.username == username);
+                if (indexToRemove !== -1) {
+                    selectedMemberRemove.splice(indexToRemove, 1);
+                    input_holder.value = JSON.stringify(selectedMemberRemove);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedMemberRemove.push({
+                    full_name : fullname,
+                    username : username,
+                    id_rel : id
+                });
+                input_holder.value = JSON.stringify(selectedMemberRemove);
+            }
+        }
+
+        var submit_holder = document.getElementById('submit-rel-remove-btn-holder-'+slug);
+        if(selectedMemberRemove.length > 0){
+            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-danger" style="float:right; margin-top:-35px;"><i class="fa-solid fa-xmark"></i> Remove Selected</button>';
+        } else {
+            submit_holder.innerHTML = '';
+        }
+    }
+
     function refreshList(slug){
         var holder = document.getElementById("user-selected-newmember-holder-"+slug);
         holder.innerHTML = "";
@@ -492,9 +534,9 @@
             holder.innerHTML += elmt;
         });
 
-        var submit_holder = document.getElementById('submit-rel-btn-holder-'+slug);
+        var submit_holder = document.getElementById('submit-rel-add-btn-holder-'+slug);
         if(selectedMember.length > 0){
-            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;" onclick="clearAllNewMember(' + "'" + slug + "'" + ')"><i class="fa-solid fa-plus"></i> Assign All</button>';
+            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;"><i class="fa-solid fa-plus"></i> Assign All</button>';
         } else {
             submit_holder.innerHTML = '';
         }
@@ -504,6 +546,13 @@
         document.getElementById("user-selected-newmember-holder-"+slug).innerHTML = "";
         selectedMember.forEach((e) => {
             document.getElementById("check_new_"+e.username).checked = false; 
+        });
+        selectedMember = [];
+    }
+
+    function clearAllRemoveMember(){
+        selectedMemberRemove.forEach((e) => {
+            document.getElementById("check_remove_"+e.username).checked = false; 
         });
         selectedMember = [];
     }

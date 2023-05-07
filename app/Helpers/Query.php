@@ -62,7 +62,7 @@ class Query
         } else if($type == "group_detail"){
             $query = "users_groups.id, slug_name, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
         } else if($type == "group_relation"){
-            $query = "username, CONCAT(first_name,' ',last_name) as full_name, 
+            $query = "groups_relations.id, username, CONCAT(first_name,' ',last_name) as full_name, 
                 CASE 
                     WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' THEN 'Lecturer'
                     WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 'Staff' 
