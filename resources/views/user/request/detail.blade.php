@@ -48,10 +48,7 @@
             var data =  response.data;
 
             if (data.length == 0) {
-                $('#empty_item_holder_user_detail').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
-                return;
-            } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('#empty_item_holder_user_detail').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No detail's found</h6>");
                 return;
             } else {
                 function getContentImage(img){

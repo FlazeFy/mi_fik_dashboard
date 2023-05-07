@@ -130,6 +130,8 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/group/add', [GroupingController::class, 'add_group']);
     Route::post('/group/delete/{id}', [GroupingController::class, 'delete_group']);
     Route::post('/group/edit/{id}', [GroupingController::class, 'edit_group']);
+    Route::post('/group/member/add/{id}', [GroupingController::class, 'add_member']);
+    Route::post('/group/member/remove/{id}', [GroupingController::class, 'remove_member']);
 });
 
 Route::prefix('/setting')->middleware(['auth_v2:sanctum'])->group(function () {
