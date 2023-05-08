@@ -24,18 +24,30 @@
             @foreach($dictionary as $dc)
                 <tr>
                     <td style="width: 140px;">
-                        <form action="/system/dictionary/update/type/{{$dc->id}}" method="POST">
-                            @csrf
-                            <select class="form-select" name="dct_type" title="Change Type" onchange="this.form.submit()">
-                                @foreach($dictionaryType as $dct)
-                                    @if($dc->dct_type == $dct->app_code)
-                                        <option selected value="{{$dct->app_code}}">{{$dct->type_name}}</option>
-                                    @else 
-                                        <option value="{{$dct->app_code}}">{{$dct->type_name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </form>
+                        <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$dc->id}}')" id="select-{{$dc->id}}">
+                            @foreach($dictionaryType as $dct)
+                                @if($dc->dct_type == $dct->app_code)
+                                    <option selected value="{{$dct->app_code}}" id="{{$dct->app_code}}{{$dc->id}}">{{$dct->type_name}}</option>
+                                @else 
+                                    <option value="{{$dct->app_code}}" id="{{$dct->app_code}}{{$dc->id}}">{{$dct->type_name}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        <div class="modal fade" id="edit-type-{{$dc->id}}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">   
+                                    <div class="modal-body text-center pt-4">
+                                        <button type="button" class="custom-close-modal" onclick="resetChange('select-{{$dc->id}}', '{{$dct->app_code}}')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                                        <p style="font-weight:500;">Are you sure want to change type to '<span id="dct_name{{$dc->id}}"></span>'</p>
+                                        <form action="/system/dictionary/update/type/{{$dc->id}}" method="POST">
+                                            @csrf
+                                            <input hidden id="dct_type_{{$dc->id}}" name="dct_type" value="">
+                                            <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> Save Changes</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                     <td>{{$dc->slug_name}}</td>
                     <td>{{$dc->dct_name}}</td>
@@ -111,4 +123,17 @@
         const date = new Date(e.textContent);
         e.textContent = getDateToContext(e.textContent, "datetime");
     });
+
+    function validateChange(slct, id){
+        document.getElementById("dct_type_"+id).value = slct;
+        document.getElementById("dct_name"+id).innerHTML = document.getElementById(slct+id).textContent;
+
+        var myModal = document.getElementById('edit-type-'+id);
+        var modal = new bootstrap.Modal(myModal);
+        modal.show();
+    }
+
+    function resetChange(id, app_code){
+        document.getElementById(id).value= app_code;
+    }
 </script>
