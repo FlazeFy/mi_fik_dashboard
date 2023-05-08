@@ -184,7 +184,7 @@
 
                 function manageRel(id, slug, name){
                     var elmt = ' ' +
-                        '<div class="modal fade" id="manage-rel-'+slug+'" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
+                        '<div class="modal fade" id="manage-rel-'+slug+'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
                             '<div class="modal-dialog modal-xl"> ' +
                                 '<div class="modal-content"> ' +
                                     '<div class="modal-body text-left pt-4"> ' +

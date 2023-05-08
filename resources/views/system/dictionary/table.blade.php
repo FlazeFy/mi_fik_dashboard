@@ -129,7 +129,10 @@
         document.getElementById("dct_name"+id).innerHTML = document.getElementById(slct+id).textContent;
 
         var myModal = document.getElementById('edit-type-'+id);
-        var modal = new bootstrap.Modal(myModal);
+        var modal = new bootstrap.Modal(myModal, {
+            backdrop: 'static',
+            keyboard: false
+        });
         modal.show();
     }
 
