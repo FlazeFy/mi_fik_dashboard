@@ -18,7 +18,7 @@ class TypeDictionary implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['SLC-001', 'INF-001', 'ATT-001', 'NTF-001', 'QST-001', 'FBC-001'];
+        $type = ['SLC-001', 'INF-001', 'ATT-001', 'NTF-001', 'QST-001', 'FBC-001','TAG-001'];
 
         foreach ($type as $format) {
             if ($format === $value) {

@@ -293,7 +293,7 @@
                             "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
                                 "<button class='card shadow event-box ultimate' onclick=''> " +
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
-                                    "<div class='event-created-at'>" + getDateToContext(created_at) + "</div> " +
+                                    "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                     "<div class='card-body p-2 w-100'> " +
                                         "<div class='row px-2'> " +
                                             "<div class='col-lg-2 px-1'> " +
@@ -336,7 +336,7 @@
                                                 "</div> " +
                                                 "<div class='col-lg-9 p-0 py-1'> " +
                                                     "<h6 class='event-title'>Deleted By ~ Deleted At</h6> " +
-                                                    "<h6 class='event-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at) + "</h6> " +
+                                                    "<h6 class='event-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
                                                 "</div> " +
                                             "</div> " +
                                         "</div> " +
@@ -349,7 +349,7 @@
                             var elmt = " " +
                                 "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
-                                        "<div class='task-created-at'>" + getDateToContext(created_at) + "</div> " +
+                                        "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                         "<div class='card-body p-2 w-100'> " +
                                             "<div class='row px-2'> " +
                                                 "<div class='col-lg-2 px-1'> " +
@@ -390,7 +390,7 @@
                                                     "</div> " +
                                                     "<div class='col-lg-9 p-0 py-1'> " +
                                                         "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
-                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at) + "</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
                                                     "</div> " +
                                                 "</div> " +
                                             "</div> " +

@@ -42,7 +42,10 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
 
+        <!--Sidebar-->
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -56,6 +59,7 @@
                     @include('sidebar.navbar')
 
                     <div class="content-section">
+                        @include('system.notification.create')
                         @include('system.notification.table')
                     </div>
                 </div>
@@ -75,8 +79,6 @@
 
         </script>
 
-        <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
-
     </body>
 </html>

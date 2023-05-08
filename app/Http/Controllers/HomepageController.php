@@ -236,7 +236,7 @@ class HomepageController extends Controller
                     'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
                     'content_tag' => $tag,
                     'content_loc' => $request->content_loc,
-                    'created_by' => date("Y-m-d H:i"),
+                    'created_at' => date("Y-m-d H:i"),
                     'updated_at' => null
                 ]);
             }

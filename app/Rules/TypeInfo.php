@@ -18,7 +18,7 @@ class TypeInfo implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['tips', 'warning'];
+        $type = ['tips', 'warning','security'];
 
         foreach ($type as $format) {
             if ($format === $value) {

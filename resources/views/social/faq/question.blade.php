@@ -8,6 +8,7 @@
         margin-bottom: 10px;
         text-decoration: none;
         position: relative;
+        width: 100%;
     }
     .question_holder .question_box.answered{
         border: 1.5px solid #00C363;
@@ -132,7 +133,7 @@
                         + "'" + username + "'" + ', ' + "'" + id + "'" + ', ' + "'" + status + "'" + ')"> ' +
                         '<h6>' + ucFirst(questionType) + '</h6> ' +
                         ucEachWord(questionBody) + 
-                        '<p class="m-0 mt-2">Created at' + getDateToContext(createdAt) + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
+                        '<p class="m-0 mt-2">' + getDateToContext(createdAt, "full") + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
                     '</button>';
 
                     $("#question_holder").append(elmt);

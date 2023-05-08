@@ -16,7 +16,7 @@
 </style>
 
 <button class="btn btn-submit position-absolute" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Group</button>
-<div class="modal fade" data-bs-backdrop="static" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
             <div class="modal-body pt-4">
@@ -257,7 +257,7 @@
             "<div class='m-2 p-3 text-center'> " +
                 '<img class="img img-fluid rounded-circle shadow" style="max-width:140px;" src="'+getUserImage(img, grole)+'"> ' +
                 '<h5 class="mt-3">'+fname+'</h5>' +
-                '<h6 class="mt-1 text-secondary">@'+uname+', <span style="font-size:13px;">Joined since ' + getDateToContext(join) + '</span></h6>' +
+                '<h6 class="mt-1 text-secondary">@'+uname+', <span style="font-size:13px;">Joined since ' + getDateToContext(join, "full") + '</span></h6>' +
                 '<a class="mt-1 text-secondary link-external" title="Send email" href="mailto:' + email + '">'+email+'</a>' +
             "</div>";
         

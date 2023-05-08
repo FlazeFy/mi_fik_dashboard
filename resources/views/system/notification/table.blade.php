@@ -45,7 +45,7 @@
                             @if($nj['send_to'] == "all")
                                 {{ucfirst($nj['send_to'])}}
                             @else 
-                                {{$nj['user_id']}}
+                                {{$nj['context_id']}}
                             @endif
                         @endforeach 
                     </td>

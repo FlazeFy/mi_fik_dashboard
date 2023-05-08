@@ -78,7 +78,7 @@
     @include('homepage.addevent_form.draftevent')
 @endif
 
-<div class="modal fade" id="addEventModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEventModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
             <form action="/homepage/add_event" method="POST" enctype="multipart/form-data" id="form-add-event">
