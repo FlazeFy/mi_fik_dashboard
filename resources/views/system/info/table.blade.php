@@ -58,8 +58,8 @@
                                 <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
                             </div>
                             <div class="col-9 p-0 ps-2 pt-1">
-                                <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($in->created_at))}}</h6>
+                                <h5 class="user-username-mini">Budi</h5>
+                                <h6 class="properties-date date_holder_1">{{($in->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                             </div>
                         </div>    
                         @if($in->updated_at)
@@ -69,8 +69,8 @@
                                     <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
-                                    <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($in->updated_at))}}</h6>
+                                    <h5 class="user-username-mini">Budi</h5>
+                                    <h6 class="properties-date date_holder_2">{{($in->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>   
                         @endif
@@ -81,8 +81,8 @@
                                     <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
-                                    <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($in->deleted_at))}}</h6>
+                                    <h5 class="user-username-mini">Budi</h5>
+                                    <h6 class="properties-date date_holder_3">{{($in->deleted_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>   
                         @endif
@@ -106,6 +106,25 @@
 </div>
 
 <script>
+    const date_holder_1 = document.querySelectorAll('.date_holder_1');
+    const date_holder_2 = document.querySelectorAll('.date_holder_2');
+    const date_holder_3 = document.querySelectorAll('.date_holder_3');
+
+    date_holder_1.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
+    date_holder_2.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
+    date_holder_3.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
     var id_body = " ";
 
     function toogleInfoDescEdit(info_body, id){

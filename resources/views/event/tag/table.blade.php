@@ -95,9 +95,9 @@
                                     </span>
                                     <span class="dropdown-item properties-box">
                                         <h6 class="">Properties</h6>
-                                        <p>Created At : {{date("d M y", strtotime($tg->created_at))}} at {{date("H:i", strtotime($tg->created_at))}}</p>
+                                        <p>Created At : <span class="date_holder_1">{{($tg->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @if($tg->updated_at)
-                                            <p>Updated At : {{date("d M y", strtotime($tg->updated_at))}} at {{date("H:i", strtotime($tg->updated_at))}}</p>
+                                            <p>Updated At : <span class="date_holder_2">{{($tg->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @else
                                             <p>-</p>
                                         @endif
@@ -115,3 +115,18 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    const date_holder_1 = document.querySelectorAll('.date_holder_1');
+    const date_holder_2 = document.querySelectorAll('.date_holder_2');
+
+    date_holder_1.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
+    date_holder_2.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+</script>

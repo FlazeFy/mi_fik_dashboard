@@ -44,6 +44,9 @@
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
+
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -76,8 +79,6 @@
 
         </script>
 
-        <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
-
     </body>
 </html>

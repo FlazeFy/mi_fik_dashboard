@@ -105,21 +105,8 @@
             } else {
                 function getDateContext(datetime){
                     if(datetime){
-                        const result = new Date(datetime);
-                        const now = new Date(Date.now());
-                        const yesterday = new Date();
-                        var elmt = ""
-                        yesterday.setDate(yesterday.getDate() - 1);
-                        
-                        if(result.toDateString() === now.toDateString()){
-                            elmt = "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        } else if(result.toDateString() === yesterday.toDateString()){
-                            elmt = "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        } else {
-                            elmt = result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
-                        }
 
-                        return "<span class='text-secondary'>" + elmt + "</span>"
+                        return "<span class='text-secondary'>" + getDateToContext(datetime, "full") + "</span>"
                     } else {
                         return "-"
                     }

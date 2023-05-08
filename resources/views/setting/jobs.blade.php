@@ -1,4 +1,4 @@
-<div class="position-relative px-3" style="padding-bottom:20px;">   
+<div class="position-relative px-3 pb-5">   
     @foreach($settingJobs as $stj)
         <form action="/setting/update_jobs/{{$stj->id}}" method="POST">
             @csrf
@@ -18,7 +18,5 @@
                 <button class="btn btn-submit" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
             </div>
         </form>
-        <h6 class="text-secondary mb-1" style="font-size:12px;">Last Updated :</h6>
-        <a style="font-size:12px;">{{$stj->updated_at}}</a>
     @endforeach
 </div>
