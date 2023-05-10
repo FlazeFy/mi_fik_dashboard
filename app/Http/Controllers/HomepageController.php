@@ -164,43 +164,10 @@ class HomepageController extends Controller
             $slug = Generator::getSlugName($request->content_title, "content");
             $uuid = Generator::getUUID();
 
-            // Attachment file upload
-            $status = true;
-
-            if(is_countable($request->attach_input)){
-                $att_count = count($request->attach_input);
-
-                for($i = 0; $i < $att_count; $i++){
-                    if($request->hasFile('attach_input.'.$i)){
-                        //validate image
-                        $this->validate($request, [
-                            'attach_input.'.$i     => 'required|max:10000',
-                        ]);
-
-                        //upload image
-                        $att_file = $request->file('attach_input.'.$i);
-                        $att_file->storeAs('public', $att_file->getClientOriginalName());
-
-                        //get success message
-                        // ????
-                        $status = true;
-                    } else {
-                        $status = false;
-                    }
-                }
-            } else {
-                $status = true;
-            }
-
             if($request->content_image || $request->content_image != ""){
                 $imageURL = $request->content_image;
             } else {
                 $imageURL = null;
-            }
-
-            if(!$status){
-                $draft = 1;
-                $failed_attach = true;
             }
 
             $header = ContentHeader::create([
@@ -222,18 +189,10 @@ class HomepageController extends Controller
             ]);
 
             if($tag || $request->has('content_attach')){
-                function getFailedAttach($failed, $att_content){
-                    if($failed){
-                        return null;
-                    } else {
-                        return $att_content;
-                    }
-                }
-
                 $detail = ContentDetail::create([
                     'id' => Generator::getUUID(),
                     'content_id' => $uuid, //for now
-                    'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
+                    'content_attach' => $request->content_attach,
                     'content_tag' => $tag,
                     'content_loc' => $request->content_loc,
                     'created_at' => date("Y-m-d H:i"),
