@@ -18,9 +18,9 @@
                     </path>
                 </svg>
             </div>
-            <div id="empty_item_holder_user_detail"></div>
             <span id="load_more_holder_user_detail" style="display: flex; justify-content:center;"></span>
         </div>
+        <div id="empty_item_holder_user_detail"></div>
     </form>
 
     <span id="acc-user-holder"></span>
@@ -31,6 +31,7 @@
 
 <script>
     var page_tag = 1;
+    load_user_detail("");
 
     function load_user_detail(username_search) {        
         $.ajax({
@@ -271,7 +272,12 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load').hide();
+                $("#empty_item_holder_user_detail").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata3.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>You have not select any user</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 
