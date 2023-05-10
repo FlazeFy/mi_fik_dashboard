@@ -295,11 +295,11 @@
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                     "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                     "<div class='card-body p-2 w-100'> " +
-                                        "<div class='row px-2'> " +
-                                            "<div class='col-lg-2 px-1'> " +
+                                        "<div class=''> " +
+                                            "<div class='d-inline-block'> " +
                                                 "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_created, ui_created) + "' alt='username-profile-pic.png'> " +
                                             "</div> " +
-                                            "<div class='col-lg-9 p-0 py-1'> " +
+                                            "<div class='d-inline-block position-relative w-75'> " +
                                                 "<h6 class='event-title'>" + content_title + "</h6> " +
                                                 "<h6 class='event-subtitle'>" + getUsername(au_created, uu_created) + "</h6> " +
                                             "</div> " +
@@ -330,11 +330,11 @@
                                         "</div> " +
                                         "<div class='collapse' id='collapseInfo_event_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
-                                            "<div class='row px-2'> " +
-                                                "<div class='col-lg-2 px-1'> " +
+                                            "<div class=''> " +
+                                                "<div class='d-inline-block'> " +
                                                     "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted) + "' alt='username-profile-pic.png'> " +
                                                 "</div> " +
-                                                "<div class='col-lg-9 p-0 py-1'> " +
+                                                "<div class='d-inline-block position-relative w-75'> " +
                                                     "<h6 class='event-title'>Deleted By ~ Deleted At</h6> " +
                                                     "<h6 class='event-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
                                                 "</div> " +
@@ -351,11 +351,11 @@
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
                                         "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                         "<div class='card-body p-2 w-100'> " +
-                                            "<div class='row px-2'> " +
-                                                "<div class='col-lg-2 px-1'> " +
+                                            "<div class=''> " +
+                                                "<div class='d-inline-block'> " +
                                                     "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
                                                 "</div> " +
-                                                "<div class='col-lg-9 p-0 py-1'> " +
+                                                "<div class='d-inline-block position-relative w-50'> " +
                                                     "<h6 class='task-title'>" + content_title + "</h6> " +
                                                     "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + "</h6> " +
                                                 "</div> " +
@@ -384,11 +384,11 @@
                                             "</div> " +
                                             "<div class='collapse' id='collapseInfo_task_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
                                                 "<hr style='margin-bottom:10px; margin-top:10px;'> " +
-                                                "<div class='row px-2'> " +
-                                                    "<div class='col-lg-2 px-1'> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
                                                         "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
                                                     "</div> " +
-                                                    "<div class='col-lg-9 p-0 py-1'> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
                                                         "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
                                                         "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
                                                     "</div> " +
