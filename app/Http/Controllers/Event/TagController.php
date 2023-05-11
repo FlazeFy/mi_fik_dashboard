@@ -16,6 +16,7 @@ use App\Models\Menu;
 use App\Models\Setting;
 use App\Models\Dictionary;
 use App\Models\History;
+use App\Models\Info;
 
 class TagController extends Controller
 {
@@ -26,7 +27,7 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tag = Tag::getFullTag("DESC", "DESC");
+        $tag = Tag::getFullTagByCat(session()->get('selected_tag_category'));
 
         if(session()->get('role_key') == 1){
             $user_id = Generator::getUserIdV2(1);
@@ -41,6 +42,7 @@ class TagController extends Controller
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
         $dct_tag = Dictionary::getDictionaryByType("Tag");
+        $info = Info::getAvailableInfo("event/tag");
 
         //Set active nav
         session()->put('active_nav', 'event');
@@ -54,12 +56,14 @@ class TagController extends Controller
                 ->with('menu', $menu)
                 ->with('setting', $setting)
                 ->with('history', $history)
+                ->with('info', $info)
                 ->with('greet',$greet);
         } else {
             return view ('event.tag.index')
                 ->with('tag', $tag)
                 ->with('dct_tag', $dct_tag)
                 ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('greet',$greet);
         }
     }
@@ -251,5 +255,12 @@ class TagController extends Controller
         } else {
             return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
         }
+    }
+
+    public function filter_category(Request $request)
+    {
+        session()->put('selected_tag_category', $request->tag_category);
+
+        return redirect()->back()->with('success_message', 'Tag filtered');
     }
 }

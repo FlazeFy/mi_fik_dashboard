@@ -255,11 +255,11 @@
                                 "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
                                 "<div class='card-body p-2 w-100'> " +
-                                    "<div class='row px-2'> " +
-                                        "<div class='col-lg-2 px-1'> " +
+                                    "<div class=''> " +
+                                        "<div class='d-inline-block'> " +
                                             "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image) + "' alt='username-profile-pic.png'> " +
                                         "</div> " +
-                                        "<div class='col-lg-9 p-0 py-1'> " +
+                                        "<div class='d-inline-block position-relative w-75'> " +
                                             "<h6 class='event-title'>" + content_title + "</h6> " +
                                             "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
                                         "</div> " +

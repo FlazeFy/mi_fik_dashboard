@@ -45,6 +45,9 @@ class HomepageController extends Controller
         if(!session()->get('selected_tag_calendar')){
             session()->put('selected_tag_calendar', "All");
         }
+        if(!session()->get('selected_tag_category')){
+            session()->put('selected_tag_category', "All");
+        }
         if(!session()->get('selected_view_mve_chart')){
             session()->put('selected_view_mve_chart', "All");
         }
