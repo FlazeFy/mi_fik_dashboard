@@ -19,7 +19,25 @@ class Tag extends Model
     public static function getFullTag($order_1, $order_2){
         $res = Tag::orderBy('updated_at', $order_1)
             ->orderBy('created_at', $order_2)
+            ->whereNull('deleted_at') 
             ->get();
+        
+        return $res;
+    }
+
+    public static function getFullTagByCat($category){
+        if($category != "All"){
+            $res = Tag::where('tag_category', $category)
+                ->whereNull('deleted_at') 
+                ->orderBy('created_at', 'DESC')
+                ->orderBy('updated_at', 'DESC')
+                ->get();
+        } else {
+            $res = Tag::whereNull('deleted_at') 
+                ->orderBy('created_at', 'DESC')
+                ->orderBy('updated_at', 'DESC')
+                ->get();
+        }
         
         return $res;
     }

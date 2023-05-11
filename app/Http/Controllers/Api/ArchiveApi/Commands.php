@@ -109,15 +109,15 @@ class Commands extends Controller
         }
     }
 
-    public function editArchive(Request $request, $id)
+    public function editArchive(Request $request, $slug)
     {
         try{
             $user_id = $request->user()->id;
            
             $check = Archive::where('archive_name', $request->archive_name)
-                ->where('id_user', $user_id)->get();
+                ->where('created_by', $user_id)->get();
 
-            if(count($check) == 0){
+            if(count($check) == 0 || ($request->archive_name_old == $request->archive_name)){
                 $validator = Validation::getValidateArchive($request);
 
                 if ($validator->fails()) {
@@ -144,17 +144,19 @@ class Commands extends Controller
                             'result' => $errors,
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     } else {
-                        $result = Archive::where('id', $id)->update([
+                        Archive::where('slug_name', $slug)->update([
                             'archive_name' => $request->archive_name,
                             'archive_desc' => $request->archive_desc,
                             'updated_at' => date("Y-m-d H:i"),
                             'updated_by' => $user_id
                         ]);
 
+                        $result = Archive::where('slug_name', $slug)->first();
+
                         History::create([
                             'id' => Generator::getUUID(),
                             'history_type' => $data->history_type, 
-                            'context_id' => $id, 
+                            'context_id' => $result->id, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
                             'created_at' => date("Y-m-d H:i:s"),
@@ -171,7 +173,7 @@ class Commands extends Controller
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Archive name must be unique',
+                    'result' => 'Archive name must be unique',
                     'data' => null
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
@@ -183,7 +185,7 @@ class Commands extends Controller
         }
     }
 
-    public function deleteArchive(Request $request, $id)
+    public function deleteArchive(Request $request, $slug)
     {
         try {
             $user_id = $request->user()->id;
@@ -204,10 +206,12 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $result = Archive::destroy($id);
+                ArchiveRelation::join('archives', 'archives_relations.archive_id','=','archives.id')
+                    ->where('slug_name', $slug)
+                    ->where('archives_relations.created_by', $user_id)
+                    ->delete();
 
-                ArchiveRelation::where('archive_id', $id)
-                    ->where('user_id', $user_id)
+                $result = Archive::where('slug_name', $slug)
                     ->delete();
 
                 History::create([

@@ -16,8 +16,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\ContentHeader;
+use App\Models\PersonalAccessTokens;
 use App\Models\ContentDetail;
 use App\Models\ContentViewer;
+use App\Models\User;
 use App\Models\Task;
 
 class QueryContent extends Controller
@@ -79,13 +81,35 @@ class QueryContent extends Controller
         }
     }
 
-    public function getContentBySlugLike($slug, $order, $date, $search)
+    public function getContentBySlugLike(Request $request, $slug, $order, $date, $search)
     {
-        $page = 12;
-
         try{
+            $page = 12;
             $select = Query::getSelectTemplate("content_thumbnail");
             $search = trim($search);
+            $based_role = null;
+            $filter_date = null;
+            $query = null;
+
+            $user_id = $request->user()->id;
+            $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
+            if($check->tokenable_type === "App\\Models\\User"){ // User
+                $user = User::where('id',$user_id)->first();
+
+                $roles = $user->role;
+                $arr_roles = "";
+                $total = count($roles);
+                for($i = 0; $i < $total; $i++){
+                    $end = "";
+                    if($i != $total - 1){
+                        $end = "|";
+                    } 
+                    $arr_roles .= $roles[$i]['slug_name'].$end;
+                }
+                $based_role = "JSON_EXTRACT(content_tag, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
+            } else {
+                $arr_roles = "admin";
+            }
 
             if($slug != "all"){
                 $i = 1;
@@ -102,73 +126,38 @@ class QueryContent extends Controller
                     }
                     $i++;
                 }
+            } 
+            if($date != "all"){
+                $date = explode("_", $date);
+                $ds = $date[0];
+                $de = $date[1];
+                $filter_date = Query::getWhereDateTemplate($ds, $de);
+            } 
 
-                if($date != "all"){
-                    $date = explode("_", $date);
-                    $ds = $date[0];
-                    $de = $date[1];
-                    $filter_date = Query::getWhereDateTemplate($ds, $de);
+            // General Syntax
+            $content = ContentHeader::selectRaw($select)
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
+                ->groupBy('contents_headers.id')
+                ->orderBy('contents_headers.content_date_start', $order)
+                ->where('is_draft', 0)
+                ->whereRaw('(DATEDIFF(content_date_end, now()) * -1) < 1')
+                ->whereNull('contents_headers.deleted_at')
+                ->where('content_title', 'LIKE', '%' . $search . '%');
 
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
-                        ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->where('is_draft', 0)
-                        ->whereNull('contents_headers.deleted_at')
-                        ->where('content_title', 'LIKE', '%' . $search . '%')
-                        ->whereRaw($query)
-                        ->whereRaw($filter_date)
-                        ->paginate($page);
-                } else {
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
-                        ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->where('is_draft', 0)
-                        ->whereNull('contents_headers.deleted_at')
-                        ->where('content_title', 'LIKE', '%' . $search . '%')
-                        ->whereRaw($query)
-                        ->paginate($page);
-                }
-            } else {
-                if($date != "all"){
-                    $date = explode("_", $date);
-                    $ds = $date[0];
-                    $de = $date[1];
-                    $filter_date = Query::getWhereDateTemplate($ds, $de);
-
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->leftjoin('admins', 'admins.id', '=', 'admins.created_by')
-                        ->leftjoin('users', 'users.id', '=', 'users.created_by')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->whereRaw($filter_date)
-                        ->where('is_draft', 0)
-                        ->whereNull('contents_headers.deleted_at')
-                        ->where('content_title', 'LIKE', '%' . $search . '%')
-                        ->paginate($page);
-                } else {
-                    $content = ContentHeader::selectRaw($select)
-                        ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                        ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
-                        ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
-                        ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
-                        ->groupBy('contents_headers.id')
-                        ->orderBy('contents_headers.content_date_start', $order)
-                        ->where('is_draft', 0)
-                        ->whereNull('contents_headers.deleted_at')
-                        ->where('content_title', 'LIKE', '%' . $search . '%')
-                        ->paginate($page);
-                }
+            // Filtering
+            if($query !== null){
+                $content->whereRaw($query);
             }
+            if($filter_date !== null){
+                $content->whereRaw($filter_date);
+            }
+            if ($based_role !== null) {
+                $content->whereRaw($based_role);
+            }
+            $content = $content->paginate($page);
 
             if ($content->isEmpty()) {
                 return response()->json([
@@ -179,6 +168,7 @@ class QueryContent extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
+                    'your_role' => str_replace("|",",",$arr_roles),
                     'message' => 'Content Header Found',
                     'data' => $content
                 ], Response::HTTP_OK);

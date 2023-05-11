@@ -67,7 +67,7 @@
         ?>" data-bs-toggle="modal">
 
     @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
-        <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-exclamation"></i> {{count($mydraft)}}</a>
+        <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>
     @endif
 
     <h5 class="quick-action-text">Add Event</h5>

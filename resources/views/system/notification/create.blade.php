@@ -1,5 +1,5 @@
 <style>
-    .btn-quick-action{
+    .btn-quick-action-notif{
         border-radius:6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         height:20vh;
@@ -14,26 +14,26 @@
         padding:10px;
         background-size: contain;
     }
-    .btn-quick-action:hover{
-        background: #F78A00 !important;
-        background-image:none !important;
+    .btn-quick-action-notif:hover{
+        /* background: #F78A00 !important; */
+        background-image:linear-gradient(to bottom right,#F78A00 20%, 70%, #5b5b5b) !important;
     }
-    .quick-action-text{
+    .quick-action-text-notif{
         font-size:24px;
         color:white;
         transition: 0.5s;
         margin-top:13vh;
     }
-    .quick-action-info{
+    .quick-action-info-notif{
         font-size:14px;
         color:white;
         transition: 0.5s;
         display:none;
     }
-    .btn-quick-action:hover .quick-action-text{
+    .btn-quick-action-notif:hover .quick-action-text-notif{
         margin-top:-4vh;
     }
-    .btn-quick-action:hover .quick-action-info{
+    .btn-quick-action-notif:hover .quick-action-info-notif{
         display:block;
     }
 
@@ -52,7 +52,6 @@
     ];
 </script>
 
-<button class="btn btn-submit" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i> Add Notification</button>
 <div class="modal fade" id="selectTypeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">  
@@ -62,31 +61,31 @@
                 
                 <div class="row px-2">
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
-                        <button class="btn-quick-action" onclick="setType('All User')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/global.png'); ?>"); background-color:#FB5E5B;'
+                        <button class="btn-quick-action-notif" onclick="setType('All User')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/global.png'); ?>"); background-color:#FB5E5B;'
                             data-bs-target="#addModal" title="All User" data-bs-toggle="modal">
-                            <h5 class="quick-action-text">All User</h5>
-                            <p class="quick-action-info">Send announcement to all user who is registered and accepted in Mi-FIK App</p>
+                            <h5 class="quick-action-text-notif">All User</h5>
+                            <p class="quick-action-info-notif">Send announcement to all user who is registered and accepted in Mi-FIK App</p>
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
-                        <button class="btn-quick-action" onclick="setType('Grouping')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/group.png'); ?>"); background-color:#FB5E5B;'
+                        <button class="btn-quick-action-notif" onclick="setType('Grouping')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/group.png'); ?>"); background-color:#FB5E5B;'
                             data-bs-target="#addModal" title="By Grouping" data-bs-toggle="modal">
-                            <h5 class="quick-action-text">By Grouping</h5>
-                            <p class="quick-action-info">Send announcement to specific group that containe some user</p>
+                            <h5 class="quick-action-text-notif">By Grouping</h5>
+                            <p class="quick-action-info-notif">Send announcement to specific group that containe some user</p>
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
-                        <button class="btn-quick-action" onclick="setType('Person')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/person.png'); ?>"); background-color:#FB5E5B;'
+                        <button class="btn-quick-action-notif" onclick="setType('Person')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/person.png'); ?>"); background-color:#FB5E5B;'
                             data-bs-target="#addModal" title="By Person" data-bs-toggle="modal">
-                            <h5 class="quick-action-text">By Person</h5>
-                            <p class="quick-action-info">Send announcement to one or some user with searching one by one</p>
+                            <h5 class="quick-action-text-notif">By Person</h5>
+                            <p class="quick-action-info-notif">Send announcement to one or some user with searching one by one</p>
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
-                        <button class="btn-quick-action" onclick="setType('Pending')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/pending.png'); ?>"); background-color:#FB5E5B;'
+                        <button class="btn-quick-action-notif" onclick="setType('Pending')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/pending.png'); ?>"); background-color:#FB5E5B;'
                             data-bs-target="#addModal" title="Pending" data-bs-toggle="modal">
-                            <h5 class="quick-action-text">Or, Pending</h5>
-                            <p class="quick-action-info">Make announcement and send it later with specific time and you can choose the type later</p>
+                            <h5 class="quick-action-text-notif">Or, Pending</h5>
+                            <p class="quick-action-info-notif">Make announcement and send it later with specific time and you can choose the type later</p>
                         </button>
                     </div>
                 </div>
@@ -100,15 +99,21 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>Add <span id="type-title"></span> Notif</h5>
-                
-                <span id="section-holder"></span>
+                <form action="/system/notification/add" method="POST">
+                    @csrf
+                    <h5>Add <span id="type-title"></span> Notif</h5>
+                    
+                    <span id="section-holder"></span>
+                </form>
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    var selectedUser = []; 
+    var selectedGroup = []; 
+
     function setType(type){
         document.getElementById("type-title").innerHTML = type;
         setFormSection(type);
@@ -125,6 +130,7 @@
         if(type == "All User"){
             var elmt = " " +
                 '<div class="px-2"> ' +
+                    '<input name="send_to" value="all" hidden> ' +
                     '<div class="form-floating mb-2"> ' +
                         '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
                         '<label for="notif_body">Notif Body</label> ' +
@@ -134,12 +140,14 @@
                         '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
                             '@php($i = 0) ' +
                             '@foreach($dictionary as $dct) ' +
-                                '@if($i == 0) ' +
-                                    '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
-                                '@else  ' +
-                                    '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                '@if($dct->type_name == "Notification") ' +
+                                    '@if($i == 0) ' +
+                                        '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                    '@else  ' +
+                                        '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                    '@endif ' +
+                                    '@php($i++) ' +
                                 '@endif ' +
-                                '@php($i++) ' +
                             '@endforeach ' +
                         '</select> ' +
                         '<label for="notif_type">Type</label> ' +
@@ -161,22 +169,29 @@
                             '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
                                 '@php($i = 0) ' +
                                 '@foreach($dictionary as $dct) ' +
-                                    '@if($i == 0) ' +
-                                        '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
-                                    '@else  ' +
-                                        '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                    '@if($dct->type_name == "Notification") ' +
+                                        '@if($i == 0) ' +
+                                            '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                        '@else  ' +
+                                            '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                        '@endif ' +
+                                        '@php($i++) ' +
                                     '@endif ' +
-                                    '@php($i++) ' +
                                 '@endforeach ' +
                             '</select> ' +
                             '<label for="notif_type">Type</label> ' +
                             '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
                         '<hr> ' +
-                        '<h6>Selected Group</h6> ' +
+                        '<span class="position-relative"> ' + 
+                            '<h6>Selected Group</h6> ' +
+                            '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllGroup()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                        '</span> ' +
+                        '<div id="slct-group-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                        '<input name="list_context" id="list_context_group"  value="" hidden> ' +
                         '<h6>All Group</h6> ' +
                         '<span id="group-list-holder"></span> ' +
                     '</div> ' +
@@ -195,12 +210,14 @@
                         '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
                             '@php($i = 0) ' +
                             '@foreach($dictionary as $dct) ' +
-                                '@if($i == 0) ' +
-                                    '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
-                                '@else  ' +
-                                    '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                '@if($dct->type_name == "Notification") ' +
+                                    '@if($i == 0) ' +
+                                        '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                    '@else  ' +
+                                        '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                    '@endif ' +
+                                    '@php($i++) ' +
                                 '@endif ' +
-                                '@php($i++) ' +
                             '@endforeach ' +
                         '</select> ' +
                         '<label for="notif_type">Type</label> ' +
@@ -212,6 +229,7 @@
         } else if(type == "Person"){
             var elmt = " " +
                 '<div class="row px-2"> ' +
+                    '<input name="send_to" value="person" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
                             '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
@@ -222,22 +240,29 @@
                             '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
                                 '@php($i = 0) ' +
                                 '@foreach($dictionary as $dct) ' +
-                                    '@if($i == 0) ' +
-                                        '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
-                                    '@else  ' +
-                                        '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                    '@if($dct->type_name == "Notification") ' +
+                                        '@if($i == 0) ' +
+                                            '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                        '@else  ' +
+                                            '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                        '@endif ' +
+                                        '@php($i++) ' +
                                     '@endif ' +
-                                    '@php($i++) ' +
                                 '@endforeach ' +
                             '</select> ' +
                             '<label for="notif_type">Type</label> ' +
                             '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
                         '<hr> ' +
-                        '<h6>Selected User</h6> ' +
+                        '<span class="position-relative"> ' + 
+                            '<h6>Selected User</h6> ' +
+                            '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllUser()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                        '</span> ' +
+                        '<div id="slct-user-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                        '<input name="list_context" id="list_context"  value="" hidden> ' +
                         '<h6>All User</h6> ' +
                         '<span id="user-list-holder"></span> ' +
                     '</div> ' +
@@ -294,7 +319,7 @@
                                 '<h6 class="text-secondary fw-normal">' + groupName + '</h6> ' +
                                 '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + groupDesc + '</h6> ' +
                                 '<div class="form-check position-absolute" style="right: 20px; top: 10px;"> ' +
-                                    '<input class="form-check-input" name="user_username[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ slug +'" onclick=""> ' +
+                                    '<input class="form-check-input" name="user_username[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_group_'+ slug +'" onclick="addSelectedGroup('+"'"+slug+"'"+', '+"'"+groupName+"'"+', this.checked)"> ' +
                                 '</div> ' +
                             '</div> ' +
                         '</a>';
@@ -363,7 +388,7 @@
                     var joined = data[i].accepted_at;
 
                     var elmt = " " +
-                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
+                        '<a class="btn user-box" style="height:80px;"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-2 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
@@ -372,7 +397,7 @@
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
                                     '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)"> ' +
+                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelectedUser('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)"> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -384,6 +409,110 @@
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             console.log('Server error occured');
+        });
+    }
+
+    function addSelectedUser(username, fullname, checked){
+        var input_holder = document.getElementById("list_context");
+        if(selectedUser.length == 0){
+            selectedUser.push({
+                full_name : fullname,
+                username : username
+            });
+            input_holder.value = JSON.stringify(selectedUser);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedUser.findIndex(obj => obj.username == username);
+                if (indexToRemove !== -1) {
+                    selectedUser.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected user list
+                    document.getElementById("check_"+username).checked = false; 
+                    input_holder.value = JSON.stringify(selectedUser);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedUser.push({
+                    full_name : fullname,
+                    username : username
+                });
+                input_holder.value = JSON.stringify(selectedUser);
+            }
+        }
+        refreshListUser();
+    }
+
+    function addSelectedGroup(slug, groupName, checked){
+        var input_holder = document.getElementById("list_context_group");
+        if(selectedGroup.length == 0){
+            selectedGroup.push({
+                slug : slug,
+                groupName : groupName
+            });
+            input_holder.value = JSON.stringify(selectedGroup);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedGroup.findIndex(obj => obj.slug == slug);
+                if (indexToRemove !== -1) {
+                    selectedGroup.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected user list
+                    document.getElementById("check_group_"+slug).checked = false; 
+                    input_holder.value = JSON.stringify(selectedGroup);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedGroup.push({
+                    slug : slug,
+                    groupName : groupName
+                });
+                input_holder.value = JSON.stringify(selectedGroup);
+            }
+        }
+        refreshListGroup();
+    }
+
+    function clearAllUser(){
+        document.getElementById("slct-user-list-holder").innerHTML = "";
+        selectedUser.forEach((e) => {
+            document.getElementById("check_"+e.username).checked = false; 
+        });
+        selectedUser = [];
+    }
+
+    function clearAllGroup(){
+        document.getElementById("slct-group-list-holder").innerHTML = "";
+        selectedUser.forEach((e) => {
+            document.getElementById("check_"+e.username).checked = false; 
+        });
+        selectedUser = [];
+    }
+
+    function refreshListUser(){
+        var holder = document.getElementById("slct-user-list-holder");
+        holder.innerHTML = " ";
+
+        selectedUser.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addSelectedUser('+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.full_name + '</a>';
+            holder.innerHTML += elmt;
+        });
+    }
+
+    function refreshListGroup(){
+        var holder = document.getElementById("slct-group-list-holder");
+        holder.innerHTML = " ";
+
+        selectedGroup.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addSelectedGroup('+"'"+e.slug+"'"+', '+"'"+e.groupName+"'"+', false)" title="Remove this group"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.groupName + '</a>';
+            holder.innerHTML += elmt;
         });
     }
 </script>

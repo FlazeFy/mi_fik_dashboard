@@ -17,6 +17,7 @@
 </style>
 
 <div class="table-responsive">
+    @include('event.tag.filterCategory')
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
             <tr>
@@ -61,7 +62,14 @@
 
                             {{$count}}
                         </td>
-                        <td><button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            @if($tg->slug_name != "lecturer" && $tg->slug_name != "staff" && $tg->slug_name != "student")
+                                <button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                            @else 
+                                <button class="btn btn-info" data-bs-target="#infoDefaultTag-{{$tg->id}}" data-bs-toggle="modal" style="padding:8px 18px;"><i class="fa-solid fa-info"></i></button>
+                                @include('event.tag.infoDefaultTag')
+                            @endif
+                        </td>
                         <td>
                             <div class="position-relative">
                                 <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"

@@ -28,7 +28,13 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#tagTable').DataTable();
+                $('#tagTable').DataTable({
+                    columnDefs: [
+                        { targets: 0, orderable: true }, 
+                        { targets: 1, orderable: true }, 
+                        { targets: '_all', orderable: false }
+                    ] 
+                });
             });
         </script>
 

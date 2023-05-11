@@ -6,7 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
+use App\Helpers\Query;
+
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 use App\Models\Archive;
+use App\Models\ContentHeader;
+use App\Models\Task;
 
 class Queries extends Controller
 {
@@ -33,6 +41,107 @@ class Queries extends Controller
                     'message' => 'Archive Not Found',
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getContentByArchive(Request $request, $slug) 
+    {
+        try{
+            $select_content = Query::getSelectTemplate("content_schedule");
+            $select_task = Query::getSelectTemplate("task_schedule");
+            $user_id = $request->user()->id;
+
+            $content = ContentHeader::selectRaw('archives_relations.archive_id, '.$select_content)
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('archives_relations', 'archives_relations.content_id', '=', 'contents_headers.id')
+                ->leftjoin('archives', 'archives.id', '=', 'archives_relations.archive_id')
+                ->where('archives.slug_name', $slug)
+                ->where('archives_relations.created_by', $user_id)
+                ->whereNull('deleted_at');
+
+            $schedule = Task::selectRaw('archives_relations.archive_id, '.$select_task)
+                ->leftjoin('archives_relations', 'archives_relations.content_id', '=', 'tasks.id')
+                ->leftjoin('archives', 'archives.id', '=', 'archives_relations.archive_id')
+                ->where('archives.slug_name', $slug)
+                ->where('archives_relations.created_by', $user_id)
+                ->whereNull('deleted_at')
+                ->union($content)
+                ->get();
+
+            $clean = [];
+            $total_content = 0;
+            $total_task = 0;
+
+            foreach ($schedule as $result) {
+                $loc = json_decode($result->content_loc, true);
+                $tag = json_decode($result->content_tag, true);
+            
+                $id = $result->id;
+                $slug = $result->slug_name;
+                $title = $result->content_title; 
+                $desc = $result->content_desc;
+                $date_start = $result->content_date_start; 
+                $date_end = $result->content_date_end; 
+                $from = $result->data_from; 
+
+                $clean[] = [
+                    'id' => $id,
+                    'slug_name' => $slug,
+                    'content_title' => $title,
+                    'content_desc' => $desc,
+                    'content_tag' => $tag,
+                    'content_loc' => $loc,
+                    'content_date_start' => $date_start,
+                    'content_date_end' => $date_end,
+                    'data_from' => $from
+                ];
+
+                if($from == 1){
+                    $total_content++;
+                } else {
+                    $total_task++;
+                }
+            }
+
+            $collection = collect($clean);
+            $collection = $collection->sortBy('content_date_start')->values();
+            $perPage = 12;
+            $page = request()->input('page', 1);
+            $paginator = new LengthAwarePaginator(
+                $collection->forPage($page, $perPage),
+                $collection->count(),
+                $perPage,
+                $page,
+                ['path' => url()->current()]
+            );
+            $clean = $paginator->appends(request()->except('page'));
+
+            if ($clean->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Content Not Found',
+                    'total' => [[
+                        'content' => $total_content,
+                        'task' => $total_task,
+                    ]],
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content Found',
+                    'total' => [[
+                        'content' => $total_content,
+                        'task' => $total_task,
+                    ]],
+                    'data' => $clean
+                ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([

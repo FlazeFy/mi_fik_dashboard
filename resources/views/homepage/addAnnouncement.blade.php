@@ -54,7 +54,9 @@
 </style>
 
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/announcement.png'); ?>"); background-color:#FB5E5B;'
-    data-bs-target="#addAnnModal" data-bs-toggle="modal">
+    data-bs-target="#selectTypeModal" data-bs-toggle="modal">
     <h5 class="quick-action-text">Add Notification</h5>
     <p class="quick-action-info">Notification is a bla bla....</p>
 </button>
+
+@include('system.notification.create')

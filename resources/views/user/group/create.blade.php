@@ -137,8 +137,6 @@
                 $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
             }
 
-            $('#total_new_req').text(total);
-
             if (total == 0) {
                 $('#empty_item_holder_new_req').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;

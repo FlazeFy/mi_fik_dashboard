@@ -100,52 +100,10 @@ class CommandContent extends Controller
                 $slug = Generator::getSlugName($request->content_title, "content");
                 $uuid = Generator::getUUID();
 
-                // Attachment file upload
-                $status = true;
-
-                if(is_countable($request->attach_input)){
-                    $att_count = count($request->attach_input);
-
-                    for($i = 0; $i < $att_count; $i++){
-                        if($request->hasFile('attach_input.'.$i)){
-                            //validate image
-                            $this->validate($request, [
-                                'attach_input.'.$i     => 'required|max:10000',
-                            ]);
-
-                            //upload image
-                            $att_file = $request->file('attach_input.'.$i);
-                            $att_file->storeAs('public', $att_file->getClientOriginalName());
-
-                            //get success message
-                            // ????
-                            $status = true;
-                        } else {
-                            $status = false;
-                        }
-                    }
-                } else {
-                    $status = true;
-                }
-
-                // Content image file upload
-                if($request->hasFile('content_image')){
-                    //validate image
-                    $this->validate($request, [
-                        'content_image'    => 'required|max:5000',
-                    ]);
-
-                    //upload image
-                    $att_file = $request->file('content_image');
-                    $imageURL = $att_file->hashName();
-                    $att_file->storeAs('public', $imageURL);
+                if($request->content_image || $request->content_image != ""){
+                    $imageURL = $request->content_image;
                 } else {
                     $imageURL = null;
-                }
-
-                if(!$status){
-                    $draft = 1;
-                    $failed_attach = true;
                 }
 
                 $header = ContentHeader::create([
@@ -167,18 +125,10 @@ class CommandContent extends Controller
                 ]);
 
                 if($tag != null || $request->has('content_attach')){
-                    function getFailedAttach($failed, $att_content){
-                        if($failed){
-                            return null;
-                        } else {
-                            return $att_content;
-                        }
-                    }
-
                     $detail = ContentDetail::create([
                         'id' => Generator::getUUID(),
-                        'content_id' => $uuid, //for now
-                        'content_attach' => getFailedAttach($failed_attach, $request->content_attach),
+                        'content_id' => $uuid, 
+                        'content_attach' => $request->content_attach,
                         'content_tag' => $tag,
                         'content_loc' => null, //for now
                         'created_at' => date("Y-m-d H:i"),

@@ -58,7 +58,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
+                    <button class="btn btn-submit mt-4" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i> Add Notification</button>
+                    <div class="content-section mt-3">
                         @include('system.notification.create')
                         @include('system.notification.table')
                     </div>

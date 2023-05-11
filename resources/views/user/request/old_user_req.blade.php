@@ -154,7 +154,12 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load').hide();
+                $("#empty_item_holder_old_req").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No request found</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 
