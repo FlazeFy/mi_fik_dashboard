@@ -73,12 +73,14 @@
     -webkit-box-orient: vertical;
 }
 .warning-draft{
-    padding: 7px 12px;
+    padding: 8px 12px;
     text-decoration: none;
     font-size: 18px;
     position: absolute;
     top: -20px;
     right: 20px;
+    min-width: 45px;
+    height: 45px;
     border: 1.75px solid white;
     border-radius: 100px;
     background: #D5534C;

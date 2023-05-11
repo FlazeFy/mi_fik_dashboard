@@ -491,7 +491,7 @@
             }
         }
 
-        refreshList(slug);
+        refreshListManage(slug);
     }
 
     function removeMember(slug, username, fullname, checked, id){
@@ -530,7 +530,7 @@
         }
     }
 
-    function refreshList(slug){
+    function refreshListManage(slug){
         var holder = document.getElementById("user-selected-newmember-holder-"+slug);
         holder.innerHTML = "";
 

@@ -111,6 +111,9 @@
 </div>
 
 <script>
+    var selectedUser = []; 
+    var selectedGroup = []; 
+
     function setType(type){
         document.getElementById("type-title").innerHTML = type;
         setFormSection(type);
@@ -180,10 +183,15 @@
                             '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
                         '<hr> ' +
-                        '<h6>Selected Group</h6> ' +
+                        '<span class="position-relative"> ' + 
+                            '<h6>Selected Group</h6> ' +
+                            '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllGroup()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                        '</span> ' +
+                        '<div id="slct-group-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                        '<input name="list_context" id="list_context_group"  value="" hidden> ' +
                         '<h6>All Group</h6> ' +
                         '<span id="group-list-holder"></span> ' +
                     '</div> ' +
@@ -221,6 +229,7 @@
         } else if(type == "Person"){
             var elmt = " " +
                 '<div class="row px-2"> ' +
+                    '<input name="send_to" value="person" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
                             '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
@@ -245,10 +254,15 @@
                             '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
                         '<hr> ' +
-                        '<h6>Selected User</h6> ' +
+                        '<span class="position-relative"> ' + 
+                            '<h6>Selected User</h6> ' +
+                            '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllUser()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                        '</span> ' +
+                        '<div id="slct-user-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                        '<input name="list_context" id="list_context"  value="" hidden> ' +
                         '<h6>All User</h6> ' +
                         '<span id="user-list-holder"></span> ' +
                     '</div> ' +
@@ -305,7 +319,7 @@
                                 '<h6 class="text-secondary fw-normal">' + groupName + '</h6> ' +
                                 '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + groupDesc + '</h6> ' +
                                 '<div class="form-check position-absolute" style="right: 20px; top: 10px;"> ' +
-                                    '<input class="form-check-input" name="user_username[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ slug +'" onclick=""> ' +
+                                    '<input class="form-check-input" name="user_username[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_group_'+ slug +'" onclick="addSelectedGroup('+"'"+slug+"'"+', '+"'"+groupName+"'"+', this.checked)"> ' +
                                 '</div> ' +
                             '</div> ' +
                         '</a>';
@@ -374,7 +388,7 @@
                     var joined = data[i].accepted_at;
 
                     var elmt = " " +
-                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
+                        '<a class="btn user-box" style="height:80px;"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-2 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
@@ -383,7 +397,7 @@
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
                                     '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)"> ' +
+                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelectedUser('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)"> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -395,6 +409,110 @@
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             console.log('Server error occured');
+        });
+    }
+
+    function addSelectedUser(username, fullname, checked){
+        var input_holder = document.getElementById("list_context");
+        if(selectedUser.length == 0){
+            selectedUser.push({
+                full_name : fullname,
+                username : username
+            });
+            input_holder.value = JSON.stringify(selectedUser);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedUser.findIndex(obj => obj.username == username);
+                if (indexToRemove !== -1) {
+                    selectedUser.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected user list
+                    document.getElementById("check_"+username).checked = false; 
+                    input_holder.value = JSON.stringify(selectedUser);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedUser.push({
+                    full_name : fullname,
+                    username : username
+                });
+                input_holder.value = JSON.stringify(selectedUser);
+            }
+        }
+        refreshListUser();
+    }
+
+    function addSelectedGroup(slug, groupName, checked){
+        var input_holder = document.getElementById("list_context_group");
+        if(selectedGroup.length == 0){
+            selectedGroup.push({
+                slug : slug,
+                groupName : groupName
+            });
+            input_holder.value = JSON.stringify(selectedGroup);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedGroup.findIndex(obj => obj.slug == slug);
+                if (indexToRemove !== -1) {
+                    selectedGroup.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected user list
+                    document.getElementById("check_group_"+slug).checked = false; 
+                    input_holder.value = JSON.stringify(selectedGroup);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedGroup.push({
+                    slug : slug,
+                    groupName : groupName
+                });
+                input_holder.value = JSON.stringify(selectedGroup);
+            }
+        }
+        refreshListGroup();
+    }
+
+    function clearAllUser(){
+        document.getElementById("slct-user-list-holder").innerHTML = "";
+        selectedUser.forEach((e) => {
+            document.getElementById("check_"+e.username).checked = false; 
+        });
+        selectedUser = [];
+    }
+
+    function clearAllGroup(){
+        document.getElementById("slct-group-list-holder").innerHTML = "";
+        selectedUser.forEach((e) => {
+            document.getElementById("check_"+e.username).checked = false; 
+        });
+        selectedUser = [];
+    }
+
+    function refreshListUser(){
+        var holder = document.getElementById("slct-user-list-holder");
+        holder.innerHTML = " ";
+
+        selectedUser.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addSelectedUser('+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.full_name + '</a>';
+            holder.innerHTML += elmt;
+        });
+    }
+
+    function refreshListGroup(){
+        var holder = document.getElementById("slct-group-list-holder");
+        holder.innerHTML = " ";
+
+        selectedGroup.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addSelectedGroup('+"'"+e.slug+"'"+', '+"'"+e.groupName+"'"+', false)" title="Remove this group"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.groupName + '</a>';
+            holder.innerHTML += elmt;
         });
     }
 </script>
