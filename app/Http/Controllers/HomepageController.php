@@ -38,7 +38,7 @@ class HomepageController extends Controller
      */
     public function index(Request $request)
     {
-        $type = ["Reminder", "Attachment"];
+        $type = ["Reminder", "Attachment", "Notification"];
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 

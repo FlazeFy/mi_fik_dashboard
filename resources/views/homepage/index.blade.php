@@ -40,6 +40,7 @@
         <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/attachment_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/minicalendar_v1.0.js')}}"></script>

@@ -99,6 +99,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
+    Route::post('/notification/add', [NotificationController::class, 'add_notif']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
     Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
 

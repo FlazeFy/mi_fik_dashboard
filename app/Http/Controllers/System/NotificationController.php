@@ -8,9 +8,12 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 use App\Helpers\Generator;
+use App\Helpers\Validation;
+use App\Helpers\Converter;
 
 use App\Models\Notification;
 use App\Models\Dictionary;
+use App\Models\History;
 use App\Models\Info;
 use App\Models\Menu;
 
@@ -66,5 +69,79 @@ class NotificationController extends Controller
         ]);
 
         return redirect()->back()->with('success_message', "Notification has been deleted");
+    }
+
+    public function add_notif(Request $request){
+        $data = new Request();
+        $obj = [
+            'history_type' => "notification",
+            'history_body' => "Has sended a new notification"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
+            $uuid = Generator::getUUID();
+            $sended_at = null;
+            $sended_by = null;
+            $is_pending = 0;
+            $pending_until = null;
+            $context_id = null;
+
+            if($request->send_to != "pending"){
+                $sended_at = date("Y-m-d H:i");
+                $sended_by = $user_id;
+                if($request->send_to != "person"){
+                    //
+                } else if($request->send_to != "group"){
+                    //
+                }
+            } else {
+                $is_pending = 1;
+                if($request->active_date == true){
+                    $pending_until = Converter::getFullDate($request->pending_date, $request->pending_type);
+                }                
+            }
+
+            $obj_send_to = [[
+                'send_to' => $request->send_to,
+                'context_id' => $context_id,
+                'status' => false //For now
+            ]];
+
+            $ntf = Notification::create([
+                'id' => $uuid,
+                'notif_type' => $request->notif_type, 
+                'notif_body' => $request->notif_body, 
+                'notif_send_to' => $obj_send_to, 
+                'is_pending' => $is_pending, 
+                'pending_until' => $pending_until,
+                'created_at' => date("Y-m-d H:i"),
+                'created_by' => $user_id,
+                'sended_at' => $sended_at,
+                'sended_by' => $sended_by,
+                'updated_at' => null,
+                'updated_by' => null,
+                'deleted_at' => null,
+                'deleted_by' => null
+            ]);
+
+            History::create([
+                'id' => Generator::getUUID(),
+                'history_type' => $data->history_type, 
+                'context_id' => $ntf->id, 
+                'history_body' => $data->history_body, 
+                'history_send_to' => null,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $user_id
+            ]);
+
+            return redirect()->back()->with('success_message', "Event successfully updated"); 
+        }
     }
 }
