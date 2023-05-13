@@ -177,5 +177,6 @@ Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ProfileController::class, 'index']);
     Route::post('/edit/profile', [ProfileController::class, 'edit_profile']);
     Route::post('/request', [ProfileController::class, 'request_role']);
+    Route::post('/faq', [ProfileController::class, 'add_faq']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']); // Not finished
 });

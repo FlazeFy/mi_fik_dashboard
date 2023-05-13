@@ -133,6 +133,19 @@ div[class^="from-"].emoji::before {
     max-width: 100%;
     padding: 0;
 }
+.msg-box{
+    background: white;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    width: 70%;
+    padding: 6px;
+    position: absolute;
+    right: 120px;
+    bottom: 60px;
+    -webkit-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+}
   
 @media screen and (max-width: 800px) {
     .imessage {
