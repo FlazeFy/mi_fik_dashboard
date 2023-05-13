@@ -16,6 +16,8 @@ use App\Models\Dictionary;
 use App\Models\History;
 use App\Models\Info;
 use App\Models\Menu;
+use App\Models\User;
+use App\Models\UserGroup;
 
 class NotificationController extends Controller
 {
@@ -96,10 +98,47 @@ class NotificationController extends Controller
             if($request->send_to != "pending"){
                 $sended_at = date("Y-m-d H:i");
                 $sended_by = $user_id;
-                if($request->send_to != "person"){
-                    //
-                } else if($request->send_to != "group"){
-                    //
+                if($request->send_to == "person"){
+                    $users = json_decode($request->list_context);
+                    $list_user_holder = [];
+
+                    foreach($users as $us){
+                        $result = User::selectRaw("id, CONCAT(first_name,' ',last_name) as full_name")
+                            ->where('username', $us->username)->first();
+                        $list_user_holder[] = [
+                            "id" => $result->id,
+                            "username" => $us->username,
+                            "fullname" => $us->full_name
+                        ];
+                    }
+                    $context_id = $list_user_holder;
+                } else if($request->send_to == "grouping"){
+                    $groups = json_decode($request->list_context);
+                    $list_group_holder = [];
+
+                    foreach($groups as $gs){
+                        $result = UserGroup::selectRaw("users_groups.id, user_id, username, CONCAT(first_name,' ',last_name) as full_name")
+                            ->join("groups_relations","groups_relations.group_id","=","users_groups.id")
+                            ->join("users","users.id","=","groups_relations.user_id")
+                            ->where("slug_name", $gs->slug)
+                            ->get();
+                        
+                        $list_user_holder = [];
+                        foreach($result as $rs){
+                            $list_user_holder[] = [
+                                "id" => $rs->user_id,
+                                "username" => $rs->username,
+                                "fullname" => $rs->full_name
+                            ];
+                        }
+
+                        $list_group_holder[] = [
+                            "id" => $result[0]->id,
+                            "groupname" => $gs->groupName,
+                            "user_list" => $list_user_holder
+                        ];
+                    }
+                    $context_id = $list_group_holder;
                 }
             } else {
                 $is_pending = 1;
@@ -141,7 +180,7 @@ class NotificationController extends Controller
                 'created_by' => $user_id
             ]);
 
-            return redirect()->back()->with('success_message', "Event successfully updated"); 
+            return redirect()->back()->with('success_message', "Notification has sended"); 
         }
     }
 }

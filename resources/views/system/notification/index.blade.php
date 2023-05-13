@@ -43,6 +43,7 @@
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/group_v1.0.css') }}"/>
 
         <!--Sidebar-->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>

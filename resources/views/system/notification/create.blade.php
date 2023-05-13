@@ -159,6 +159,7 @@
         } else if(type == "Grouping"){
             var elmt = " " +
                 '<div class="row px-2"> ' +
+                    '<input name="send_to" value="grouping" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
                             '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +

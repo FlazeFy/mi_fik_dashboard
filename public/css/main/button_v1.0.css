@@ -82,6 +82,27 @@
     background:#00c363;
     color: whitesmoke;
 }
+.btn-msg{
+    width: 48px;
+    border-radius: 100%;
+    font-size: 22px;
+    background: white;
+    position: absolute;
+    bottom: 60px;
+    right: 50px;
+    -webkit-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.btn-msg.text-success:hover{
+    background: #00c363;
+    color: white !important;
+}
+.btn-msg.text-danger:hover{
+    background: #D5534C;
+    color: white !important;
+}
 
 .btn-tag{
     background:white;
