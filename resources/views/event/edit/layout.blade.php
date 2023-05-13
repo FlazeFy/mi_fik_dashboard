@@ -18,7 +18,7 @@
         position: absolute;
         left: 10px;
         bottom: 10px;
-        color: whitesmoke;
+        color: #F5F5F5;
     }
     .event-header-size-toogle{
         color: #F78A00 !important;
@@ -31,7 +31,7 @@
     }
     .event-tag-box{
         border-radius:6px;
-        color:whitesmoke !important;
+        color:#F5F5F5 !important;
         background: #F78A00;
     }
     .event-detail{
@@ -83,7 +83,7 @@
     }
     .btn.archive-box .icon-holder{
         display: none;
-        color: whitesmoke;
+        color: #F5F5F5;
         position: absolute;
         top: 20px;
         left: -32.5px; 
@@ -96,12 +96,12 @@
         display: inline;
     }
     .btn.archive-box.active{
-        color: whitesmoke;
+        color: #F5F5F5;
         background: #F78A00;
         border: none !important;
     }
     .btn.archive-box.active h6{
-        color: whitesmoke !important;
+        color: #F5F5F5 !important;
     }
     .btn.archive-box.active:hover{
         border-left: 50px solid #E74645 !important;
