@@ -11,6 +11,14 @@ class Query
                 admins.username as admin_username_created, users.username as user_username_created, 
                 admins.image_url as admin_image_created, users.image_url as user_image_created, 
                 count(contents_viewers.id) as total_views";
+        } else if($type == "content_properties"){
+            $query = "admins.username as admin_username_created, users.username as user_username_created, 
+                admins.image_url as admin_image_created, users.image_url as user_image_created, 
+                count(contents_viewers.id) as total_views";
+        } else if($type == "content_properties_null"){
+            $query = "null as admin_username_created, null as user_username_created, 
+                null as admin_image_created, null as user_image_created, 
+                0 as total_views";
         } else if($type == "content_draft_homepage"){
             $query = "slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,
@@ -18,7 +26,7 @@ class Query
                 admins.username as admin_username_created, users.username as user_username_created, 
                 admins.image_url as admin_image_created, users.image_url as user_image_created";
         } else if($type == "content_schedule"){
-            $query = "contents_headers.id, slug_name,content_title,content_desc, 
+            $query = "contents_headers.id, contents_headers.slug_name, content_title,content_desc, 
                 content_loc,content_tag, content_date_start, content_date_end, 
                 1 as data_from";
 
@@ -36,7 +44,7 @@ class Query
                 content_date_end, content_loc";
                 
         } else if($type == "task_schedule"){
-            $query = "tasks.id, slug_name, task_title as content_title, 
+            $query = "tasks.id, tasks.slug_name, task_title as content_title, 
                 task_desc as content_desc, null as content_loc, null as content_tag, 
                 task_date_start as content_date_start, task_date_end as content_date_end, 
                 2 as data_from";

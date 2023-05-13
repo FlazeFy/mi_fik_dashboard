@@ -1,4 +1,4 @@
-<div class="modal fade" id="browseDraftEventModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="browseDraftEventModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">  
             <div class="modal-body pt-4">
@@ -17,9 +17,9 @@
                         <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
                             <button class='card shadow event-box p-2' style="min-height:160px; height:auto;" onclick='location.href="/event/detail/{{$md->slug_name}}";'>
                                 <div class='text-primary' style="font-size:12px;">{{date("Y/m/d H:i", strtotime($md->created_at))}}</div>
-                                <div class='card-body p-2 w-100'>
-                                    <div class='row px-2'>
-                                        <div class='col-lg-3 px-1'>
+                                <div class='card-body py-2 px-0 w-100'>
+                                    <div class=''>
+                                        <div class='d-inline-block'>
                                             @if($md->admin_username_created != null)
                                                 @if($md->admin_image_created != null)
                                                     <img class='img img-fluid user-image-content' src="{{$md->admin_image_created}}" alt='username-profile-pic.png'>
@@ -34,7 +34,7 @@
                                                 @endif
                                             @endif
                                         </div>
-                                        <div class='col-lg-9 p-0 py-1'>
+                                        <div class='d-inline-block position-relative w-75'>
                                             <h6 class='event-title'>{{$md->content_title}}</h6>
                                             <h6 class='event-subtitle'>{{$username}}</h6>
                                         </div>

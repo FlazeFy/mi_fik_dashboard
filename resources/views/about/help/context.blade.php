@@ -16,7 +16,7 @@
     var id_body = " ";
 
     function loadRichTextDesc(desc, user, updated, cat){
-        document.getElementById("desc_updated").innerHTML = user + " at " + getDateToContext(updated);
+        document.getElementById("desc_updated").innerHTML = user + " at " + getDateToContext(updated, "full");
         var parent = document.getElementById("rich_box_desc");
         var child = parent.getElementsByClassName("ql-editor")[0];
         input_cat.value = cat;

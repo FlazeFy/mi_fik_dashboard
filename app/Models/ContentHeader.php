@@ -6,7 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\DB;
 //use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+
 use App\Helpers\Query;
+use App\Helpers\Generator;
+
+use App\Models\User;
 
 class ContentHeader extends Model
 {
@@ -25,7 +30,32 @@ class ContentHeader extends Model
 
     //Fix this stupid code LOL
     //Should be use IN() instead of "WHERE & OR"
-    public static function getAllContentFilter($selected){
+    public static function getAllContentFilter($selected, $role){
+        if($role != 1){
+            $user_id = Generator::getUserIdV2(0);
+            $user = User::where('id',$user_id)->first();
+            $roles = $user->role;
+            $arr_roles = "";
+            $total = count($roles);
+            for($i = 0; $i < $total; $i++){
+                $end = "";
+                if($i != $total - 1){
+                    $end = "|";
+                } 
+                $arr_roles .= $roles[$i]['slug_name'].$end;
+            }
+            $based_role = "JSON_EXTRACT(content_tag, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
+        }
+
+        $res = ContentHeader::select('slug_name','content_title','content_image','content_date_start','content_date_end','content_tag')
+            ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+            ->whereNull('contents_headers.deleted_at')
+            ->where('is_draft', 0);
+
+        if($role != 1){
+            $res->whereRaw($based_role);
+        }
+
         if($selected != "All"){
             $i = 1;
             $query = "";
@@ -43,18 +73,10 @@ class ContentHeader extends Model
                 $i++;
             }
 
-            $res = ContentHeader::select('slug_name','content_title','content_image','content_date_start','content_date_end','content_tag')
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->whereRaw($query)
-                ->get();
+            $res->whereRaw($query);  
+        } 
 
-        } else {
-            $res = ContentHeader::select('slug_name','content_title','content_image','content_date_start','content_date_end','content_tag')
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->get();
-        }
-
-        return $res;
+        return $res->get();
     }   
 
     public static function getTotalContentByMonth($range){

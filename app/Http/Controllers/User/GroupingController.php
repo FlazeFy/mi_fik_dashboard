@@ -80,6 +80,8 @@ class GroupingController extends Controller
                         'created_by' => $user_id,
                         'updated_at' => null,
                         'updated_by' => null,
+                        'deleted_at' => null,
+                        'deleted_by' => null,
                     ]);
 
                     // if(is_countable($request->username)){

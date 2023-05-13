@@ -93,10 +93,10 @@ class Queries extends Controller
     public function getAvailableUserBySlug($slug, $filter_name, $limit, $order){
         try{
             $select = Query::getSelectTemplate("user_detail");
+            $ord = explode("__", $order);
             
             if(strpos($filter_name, "_")){
                 $name = explode("_", $filter_name);
-                $ord = explode("__", $order);
 
                 if($name[0] == "all" && $name[1] == "all"){
                     $group = User::selectRaw($select)->whereNotIn('id', function($query) use ($slug) {
@@ -136,7 +136,7 @@ class Queries extends Controller
                     ->paginate($limit);
                 }
             } else {
-                $group = User::selectRaw($select)->whereNotIn('id', function($query) {
+                $group = User::selectRaw($select)->whereNotIn('id', function($query) use ($slug) {
                     $query->select('user_id')
                     ->from('groups_relations')
                     ->join('users_groups', 'users_groups.id', '=', 'groups_relations.group_id')

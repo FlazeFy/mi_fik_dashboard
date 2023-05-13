@@ -21,8 +21,34 @@ class Question extends Model
             ->orderBy('questions.created_at', 'DESC')
             ->orderBy('questions.updated_at', 'DESC')
             ->get();
+        
+        $clean = [];
+        foreach($res as $r){  
+            $clean[] = [
+                'id' => "Q_".$r->id,
+                'question_type' => $r->question_type,
+                'question_from' => "me",
+                'msg_reply' => null,
+                'msg_body' => $r->question_body,
+                'created_at' => $r->created_at
+            ];
+          
+            if($r->updated_at){
+                $clean[] = [
+                    'id' => "A_".$r->id,
+                    'question_type' => $r->question_type,
+                    'question_from' => "them",
+                    'msg_reply' => $r->question_body,
+                    'msg_body' => $r->question_answer,
+                    'created_at' => $r->updated_at
+                ];
+            }
+        }
 
-        return $res;
+        $collection = collect($clean);
+        $collection = $collection->sortBy('created_at')->values();
+
+        return $collection;
     }
 
     public static function getCountEngQuestionAnswer($id){

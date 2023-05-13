@@ -17,6 +17,7 @@
 </style>
 
 <div class="table-responsive">
+    @include('event.tag.filterCategory')
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
             <tr>
@@ -61,7 +62,14 @@
 
                             {{$count}}
                         </td>
-                        <td><button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button></td>
+                        <td>
+                            @if($tg->slug_name != "lecturer" && $tg->slug_name != "staff" && $tg->slug_name != "student")
+                                <button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                            @else 
+                                <button class="btn btn-info" data-bs-target="#infoDefaultTag-{{$tg->id}}" data-bs-toggle="modal" style="padding:8px 18px;"><i class="fa-solid fa-info"></i></button>
+                                @include('event.tag.infoDefaultTag')
+                            @endif
+                        </td>
                         <td>
                             <div class="position-relative">
                                 <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -95,9 +103,9 @@
                                     </span>
                                     <span class="dropdown-item properties-box">
                                         <h6 class="">Properties</h6>
-                                        <p>Created At : {{date("d M y", strtotime($tg->created_at))}} at {{date("H:i", strtotime($tg->created_at))}}</p>
+                                        <p>Created At : <span class="date_holder_1">{{($tg->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @if($tg->updated_at)
-                                            <p>Updated At : {{date("d M y", strtotime($tg->updated_at))}} at {{date("H:i", strtotime($tg->updated_at))}}</p>
+                                            <p>Updated At : <span class="date_holder_2">{{($tg->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @else
                                             <p>-</p>
                                         @endif
@@ -115,3 +123,18 @@
         </tbody>
     </table>
 </div>
+
+<script>
+    const date_holder_1 = document.querySelectorAll('.date_holder_1');
+    const date_holder_2 = document.querySelectorAll('.date_holder_2');
+
+    date_holder_1.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
+    date_holder_2.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+</script>

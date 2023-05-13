@@ -1,0 +1,13 @@
+.group-box-notif{
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    background: #FFDEB4;
+    position: relative;
+}
+.collapse-group-box-toogle{
+    top: 4px;
+    right: 4px;
+    font-size: 14px;
+    position: absolute;
+}

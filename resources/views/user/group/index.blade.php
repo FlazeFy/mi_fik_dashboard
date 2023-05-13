@@ -40,6 +40,7 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -52,9 +53,11 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section position-relative">
+                    <div class="mt-4">
                         @include('user.group.create')
                         @include('user.group.searchbar')
+                    </div>
+                    <div class="content-section position-relative mt-3">
                         @include('user.group.list')
                     </div>
                 </div>
@@ -73,10 +76,7 @@
             })
 
         </script>
-
-        <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
 
     </body>
 </html>

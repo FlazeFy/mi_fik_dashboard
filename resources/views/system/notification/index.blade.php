@@ -42,7 +42,11 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/group_v1.0.css') }}"/>
 
+        <!--Sidebar-->
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -55,7 +59,9 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
+                    <button class="btn btn-submit mt-4" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i> Add Notification</button>
+                    <div class="content-section mt-3">
+                        @include('system.notification.create')
                         @include('system.notification.table')
                     </div>
                 </div>
@@ -75,8 +81,6 @@
 
         </script>
 
-        <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
-
     </body>
 </html>

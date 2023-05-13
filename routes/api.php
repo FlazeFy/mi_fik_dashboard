@@ -102,10 +102,11 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
-    Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
-    Route::delete('/delete/{id}', [CommandArchiveApi::class, 'deleteArchive']);
+    Route::put('/edit/{slug}', [CommandArchiveApi::class, 'editArchive']);
+    Route::delete('/delete/{slug}', [CommandArchiveApi::class, 'deleteArchive']);
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {

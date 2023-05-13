@@ -6,6 +6,7 @@
         max-height: 65vh;
         overflow-y: scroll;
         white-space: normal;
+        width: 100%;
     }
     .user-check .user-check-title{
         overflow: hidden;
@@ -40,10 +41,11 @@
                 </path>
             </svg>
         </tbody>
-        <div id="empty_item_holder"></div>
         <span id="load_more_holder" style="position:absolute; right:20px; top:20px;"></span>
         </div>
     </table>
+    <div id="empty_item_holder"></div>
+
 </div>
 
 <script>
@@ -94,8 +96,6 @@
                 $('#load_more_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
             }
 
-            $('#total_new_req').text(total);
-
             if (total == 0) {
                 $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
@@ -105,21 +105,8 @@
             } else {
                 function getDateContext(datetime){
                     if(datetime){
-                        const result = new Date(datetime);
-                        const now = new Date(Date.now());
-                        const yesterday = new Date();
-                        var elmt = ""
-                        yesterday.setDate(yesterday.getDate() - 1);
-                        
-                        if(result.toDateString() === now.toDateString()){
-                            elmt = "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        } else if(result.toDateString() === yesterday.toDateString()){
-                            elmt = "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        } else {
-                            elmt = result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
-                        }
 
-                        return "<span class='text-secondary'>" + elmt + "</span>"
+                        return "<span class='text-secondary'>" + getDateToContext(datetime, "full") + "</span>"
                     } else {
                         return "-"
                     }
@@ -197,7 +184,7 @@
 
                 function manageRel(id, slug, name){
                     var elmt = ' ' +
-                        '<div class="modal fade" id="manage-rel-'+slug+'" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
+                        '<div class="modal fade" id="manage-rel-'+slug+'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
                             '<div class="modal-dialog modal-xl"> ' +
                                 '<div class="modal-content"> ' +
                                     '<div class="modal-body text-left pt-4"> ' +
@@ -236,6 +223,15 @@
                                             '</div> ' +
                                             '<div class="col-lg-4 col-md-5 col-sm-12"> ' +
                                                 '<h6>All User</h6> ' + 
+                                                '<div class="row w-100 mb-2"> ' +
+                                                    '<div class="col-2"> ' +
+                                                        '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupFNameSearch(' + "'" + slug + "'" + ')"><i class="fa-solid fa-xmark"></i></a> ' +
+                                                    '</div> ' +
+                                                    '<div class="col-10 position-relative"> ' +
+                                                        '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                                        '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="user_available_search_' + slug + '" placeholder="Search by fullname" onchange="load_available_user(1,'+ "'" + slug + "'" +')" maxlength="75"> ' +
+                                                    '</div> ' +
+                                                '</div> ' +
                                                 '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
                                                 '<span id="err-ava-holder-'+slug+'"></span> ' +
                                             '</div> ' +
@@ -295,7 +291,12 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load').hide();
+                $("#empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>Sorry but we not found specific group</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 
@@ -371,22 +372,27 @@
         });
     }
 
-    function getFindUser(check){
+    function getFindUserAva(check,slug){
         let trim = check.trim();
         if(check == null || trim === ''){
             return "all_all";
         } else {
-            document.getElementById("title_search").value = trim;
+            document.getElementById("user_available_search_" + slug).value = trim;
             return trim;
         }
     }
 
+    function resetGroupFNameSearch(slug){
+        document.getElementById("user_available_search_" + slug).value = null;
+        load_available_user(1, slug);
+    }
+
     function load_available_user(page_new_req,slug) {       
-        var find = document.getElementById("title_search").value;
+        var find = document.getElementById("user_available_search_" + slug).value;
         document.getElementById("user-ava-holder-"+slug).innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/group/member/" + slug + "/" + getFindUser(find) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
+            url: "/api/v1/group/member/" + slug + "/" + getFindUserAva(find,slug) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -413,7 +419,9 @@
             } else if (data.length == 0) {
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
                 return;
-            } else {                
+            } else {      
+                $("#err-ava-holder-"+slug).html("");
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var username = data[i].username;
@@ -426,7 +434,7 @@
 
                     var elmt = " " +
                         '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
-                            '<div class="row ps-2"> ' +
+                            '<div class="row ps-2 w-100"> ' +
                                 '<div class="col-2 p-0 py-2 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
                                 '</div> ' +
@@ -483,7 +491,7 @@
             }
         }
 
-        refreshList(slug);
+        refreshListManage(slug);
     }
 
     function removeMember(slug, username, fullname, checked, id){
@@ -522,7 +530,7 @@
         }
     }
 
-    function refreshList(slug){
+    function refreshListManage(slug){
         var holder = document.getElementById("user-selected-newmember-holder-"+slug);
         holder.innerHTML = "";
 

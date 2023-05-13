@@ -67,7 +67,7 @@
         ?>" data-bs-toggle="modal">
 
     @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
-        <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-exclamation"></i> {{count($mydraft)}}</a>
+        <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>
     @endif
 
     <h5 class="quick-action-text">Add Event</h5>
@@ -78,7 +78,7 @@
     @include('homepage.addevent_form.draftevent')
 @endif
 
-<div class="modal fade" id="addEventModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEventModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
             <form action="/homepage/add_event" method="POST" enctype="multipart/form-data" id="form-add-event">

@@ -14,7 +14,7 @@
                         </h6>
                     </h4>
                     <a class="text-dark text-decoration-none">"{{$fc->feedback_body}}"</a>
-                    <a class="text-dark text-decoration-none fst-italic mt-2">on {{date("Y-m-d", strtotime($fc->created_at))}}</a>
+                    <a class="text-dark text-decoration-none fst-italic mt-2">on <span class="date_holder_1">{{DateTime::createFromFormat('Y-m-d h:i', date("Y-m-d h:i", strtotime($fc->created_at)))->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                 </div>
             @else 
                 <div class="card border-0 d-block mx-auto text-center mx-4 mt-5 pt-5 p-3 text-center feedback-second" style="width:25%;">
@@ -27,7 +27,7 @@
                         </h6>
                     </h4>
                     <a class="text-dark text-decoration-none">"{{$fc->feedback_body}}"</a>
-                    <a class="text-dark fst-italic text-decoration-none mt-2">on {{date("Y-m-d", strtotime($fc->created_at))}}</a>
+                    <a class="text-dark fst-italic text-decoration-none mt-2">on <span class="date_holder_1">{{DateTime::createFromFormat('Y-m-d h:i', date("Y-m-d h:i", strtotime($fc->created_at)))->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                 </div>
             @endif
 
@@ -35,3 +35,12 @@
         @endforeach
     </div>
 </div>
+
+<script>
+    const date_holder_1 = document.querySelectorAll('.date_holder_1');
+
+    date_holder_1.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+</script>
