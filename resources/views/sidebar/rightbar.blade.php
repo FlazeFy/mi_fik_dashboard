@@ -32,7 +32,7 @@
         margin-top:15px;
     }
     .check-title{
-        font-size:14.5px;
+        font-size:15px;
         margin:0px;
         color:#414141;
     }

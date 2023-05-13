@@ -15,7 +15,7 @@
                 min-width: 300px !important;
                 height: auto;
                 padding: 15px;
-                background: white;
+                background: #FFFFFF;
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 text-align: left;
                 color: #414141;
