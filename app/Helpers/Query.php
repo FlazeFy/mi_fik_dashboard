@@ -11,6 +11,14 @@ class Query
                 admins.username as admin_username_created, users.username as user_username_created, 
                 admins.image_url as admin_image_created, users.image_url as user_image_created, 
                 count(contents_viewers.id) as total_views";
+        } else if($type == "content_properties"){
+            $query = "admins.username as admin_username_created, users.username as user_username_created, 
+                admins.image_url as admin_image_created, users.image_url as user_image_created, 
+                count(contents_viewers.id) as total_views";
+        } else if($type == "content_properties_null"){
+            $query = "null as admin_username_created, null as user_username_created, 
+                null as admin_image_created, null as user_image_created, 
+                0 as total_views";
         } else if($type == "content_draft_homepage"){
             $query = "slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,

@@ -4,28 +4,51 @@
     flex-direction: column;
     margin: 0 auto 1rem;
     padding: 0.5rem 1.5rem;
+    max-height: 60vh;
+    overflow-y: scroll;
+    box-shadow: rgba(117, 117, 125, 0.25) 0px 12px 30px -10px inset, rgba(0, 0, 0, 0.3) 0px 10px 20px -14px inset;
 } 
-.imessage p {
+.imessage div.from-them, .imessage div.from-me {
     border-radius: 1.15rem;
     line-height: 1.25;
     max-width: 75%;
-    padding: 0.5rem .875rem;
+    padding: 12px;
     position: relative;
     word-wrap: break-word;
 }  
-.imessage p::before,
-.imessage p::after {
+.date-chip{
+    border-radius: 10px;
+    background: #FFDeB4;
+    width: 100px;
+    padding: 6px 3px;
+    font-size: 13px;
+    text-align: center;
+    display: block;
+    margin-inline: auto;
+    margin-bottom: 10px;
+}
+.box-replied{
+    background: #f8e5cc;
+    padding:6px;
+    margin: 6px 0 6px 0;
+    width: 100% !important;
+    border-radius: 0 10px 10px 0 !important;
+    border-left: 4px solid #F78A00;
+}
+
+.imessage div::before,
+.imessage div::after {
     bottom: -0.1rem;
     content: "";
     height: 1rem;
     position: absolute;
 }  
-p.from-me {
+div.from-me {
     align-self: flex-end;
     background-color: #F78A00;
     color: #fff; 
 }
-p.from-me::before {
+div.from-me::before {
     border-bottom-left-radius: 0.8rem 0.7rem;
     border-right: 1rem solid #F78A00;
     right: -0.35rem;
@@ -44,50 +67,50 @@ a.from-them-clock{
     text-align: start;
 }
   
-p.from-me::after {
+div.from-me::after {
     background-color: #fff;
     border-bottom-left-radius: 0.5rem;
     right: -40px;
     transform:translate(-30px, -2px);
     width: 10px;
 }
-p[class^="from-"] {
+div[class^="from-"] {
     margin: 0.5rem 0;
     width: fit-content;
 }
   
-p.from-me ~ p.from-me {
+div.from-me ~ div.from-me {
     margin: 0.25rem 0 0;
 }
-p.from-me ~ p.from-me:not(:last-child) {
+div.from-me ~ div.from-me:not(:last-child) {
     margin: 0.25rem 0 0;
 }
-p.from-me ~ p.from-me:last-child {
+div.from-me ~ div.from-me:last-child {
     margin-bottom: 0.5rem;
 } 
-p.from-them {
+div.from-them {
     align-items: flex-start;
     background-color: #e5e5ea;
     color: #414141;
 }
-p.from-them:before {
+div.from-them:before {
     border-bottom-right-radius: 0.8rem 0.7rem;
     border-left: 1rem solid #e5e5ea;
     left: -0.35rem;
     transform: translate(0, -0.1rem);
 }
-p.from-them::after {
+div.from-them::after {
     background-color: #fff;
     border-bottom-right-radius: 0.5rem;
     left: 20px;
     transform: translate(-30px, -2px);
     width: 10px;
 }
-p[class^="from-"].emoji {
+div[class^="from-"].emoji {
     background: none;
     font-size: 2.5rem;
 }
-p[class^="from-"].emoji::before {
+div[class^="from-"].emoji::before {
     content: none;
 }
   
@@ -119,7 +142,7 @@ p[class^="from-"].emoji::before {
         padding: 0.25rem 0.875rem;
     }
 
-    .imessage p {
+    .imessage div {
         margin: 0.5rem 0;
     }
 }

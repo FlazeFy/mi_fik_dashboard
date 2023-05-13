@@ -1,12 +1,25 @@
-<div class="imessage">
-    @foreach($faq as $fq)
-        <p class="from-me">{{$fq->question_body}}</p>
-        <a class="from-me-clock">{{($fq->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</a>
+<div class="imessage" id="imessage">
+    @php($datebefore = "")
 
-        @if($fq->question_answer)
-            <p class="from-them">{{$fq->question_answer}}</p>
-            <a class="from-them-clock">{{($fq->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</a>
+    @foreach($faq as $fq)
+        @php($check = date('Y-m-d', strtotime($fq['created_at'])))
+        @if($datebefore != $check)
+            @php($datebefore = $check)
+            <div class="date-chip">
+                {{date('Y-m-d', strtotime($datebefore))}}
+            </div>
         @endif
+
+    
+        <div class="from-{{$fq['question_from']}}">
+            @if($fq['question_from'] == "them")
+                <div class="box-replied">
+                    {{$fq['msg_reply']}}
+                </div>
+            @endif
+            {{$fq['msg_body']}}
+        </div>
+        <a class="from-{{$fq['question_from']}}-clock">{{($fq['created_at'])->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</a>
     @endforeach
 </div>
 
@@ -23,4 +36,7 @@
         const date = new Date(e.textContent);
         e.textContent = getDateToContext(e.textContent, "24h");
     });
+
+    var objDiv = document.getElementById("imessage");
+    objDiv.scrollTop = objDiv.scrollHeight;
 </script>

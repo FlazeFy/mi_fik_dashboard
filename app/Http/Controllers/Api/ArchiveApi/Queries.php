@@ -54,18 +54,23 @@ class Queries extends Controller
     {
         try{
             $select_content = Query::getSelectTemplate("content_schedule");
+            $select_properties = Query::getSelectTemplate("content_properties");
+            $select_properties_null = Query::getSelectTemplate("content_properties_null");
             $select_task = Query::getSelectTemplate("task_schedule");
             $user_id = $request->user()->id;
 
-            $content = ContentHeader::selectRaw('archives_relations.archive_id, '.$select_content)
+            $content = ContentHeader::selectRaw('archives_relations.archive_id, contents_headers.created_at, contents_headers.updated_at, '.$select_content.', '.$select_properties)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
                 ->leftjoin('archives_relations', 'archives_relations.content_id', '=', 'contents_headers.id')
                 ->leftjoin('archives', 'archives.id', '=', 'archives_relations.archive_id')
                 ->where('archives.slug_name', $slug)
                 ->where('archives_relations.created_by', $user_id)
-                ->whereNull('deleted_at');
+                ->whereNull('contents_headers.deleted_at');
 
-            $schedule = Task::selectRaw('archives_relations.archive_id, '.$select_task)
+            $schedule = Task::selectRaw('archives_relations.archive_id, tasks.created_at, tasks.updated_at, '.$select_task.', '.$select_properties_null)
                 ->leftjoin('archives_relations', 'archives_relations.content_id', '=', 'tasks.id')
                 ->leftjoin('archives', 'archives.id', '=', 'archives_relations.archive_id')
                 ->where('archives.slug_name', $slug)
@@ -89,6 +94,13 @@ class Queries extends Controller
                 $date_start = $result->content_date_start; 
                 $date_end = $result->content_date_end; 
                 $from = $result->data_from; 
+                $createdAt = $result->created_at;
+                $updatedAt = $result->updated_at;
+                $auc = $result->admin_username_created;
+                $uuc = $result->user_username_created;
+                $aic = $result->admin_image_created;
+                $uic = $result->user_image_created;
+                $total = $result->total_views;
 
                 $clean[] = [
                     'id' => $id,
@@ -99,7 +111,14 @@ class Queries extends Controller
                     'content_loc' => $loc,
                     'content_date_start' => $date_start,
                     'content_date_end' => $date_end,
-                    'data_from' => $from
+                    'data_from' => $from,
+                    'created_at' => $createdAt,
+                    'updated_at' => $updatedAt,
+                    'admin_username_created' => $auc,
+                    'user_username_created' => $uuc,
+                    'admin_image_created' => $aic,
+                    'user_image_created' => $aic,
+                    'total_views' => $total
                 ];
 
                 if($from == 1){
