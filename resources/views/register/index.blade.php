@@ -119,6 +119,7 @@
                     btn_steps_terms.style = "border-left: 6px solid #58C06E;";
                 } else if(now == "profiledata"){
                     now = "role";
+                    loadTag();
                     btn_steps_profiledata.setAttribute('data-bs-target', '#profiledata');
                     btn_steps_profiledata.style = "border-left: 6px solid #58C06E;";
                 } else if(now == "role"){
