@@ -37,7 +37,7 @@
         bottom: 10px; 
         left: 10px;
         background: #e74645 !important;
-        color:#ffffff !important;
+        color:#FFFFFF !important;
     }
     .content-image-holder .status-holder{
         position: absolute; 

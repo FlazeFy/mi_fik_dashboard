@@ -27,7 +27,7 @@
     border-radius: 50px;
     left: -13px;
     top: 36%;
-    background: white;
+    background: #FFFFFF;
     border: 3px solid var(--circle-attach-color-var);
 }
 .btn-icon-delete{
@@ -36,7 +36,7 @@
 }
 .btn-icon-delete:hover{
     background: #e74645 !important;
-    color:white !important;
+    color:#FFFFFF !important;
 }
 .btn-icon-preview{
     color: #808080 !important;
@@ -50,7 +50,7 @@
 .attach-upload-status, #content_loc_msg{
     text-decoration: none;
     font-style: italic;
-    font-size: 12.5px;
+    font-size: 13px;
     font-weight: 500;
 }
 .success{

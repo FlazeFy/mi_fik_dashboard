@@ -8,7 +8,7 @@
 .custom-close-modal{
     position:absolute !important;
     top:-20px;
-    background:white;
+    background:#FFFFFF;
     width:45px;
     right:10px;
     height:45px;
@@ -22,7 +22,7 @@
 .custom-submit-modal{
     position:absolute !important;
     bottom:-20px;
-    background:white;
+    background:#FFFFFF;
     right:10px;
     height:45px;
     padding:6px 12px;
@@ -35,15 +35,15 @@
 
 .custom-close-modal:hover{
     background:#F85D59;
-    color:whitesmoke;
+    color:#F5F5F5;
 }
 .custom-submit-modal:hover{
     background:#00C363;
-    color:whitesmoke;
+    color:#F5F5F5;
 }
 
 .popover-header{
     background:#F85D59;
-    color:whitesmoke;
+    color:#F5F5F5;
     border: none;
 } 

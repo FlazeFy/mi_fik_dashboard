@@ -22,13 +22,13 @@
     }
     .quick-action-text{
         font-size:24px;
-        color:white;
+        color:#FFFFFF;
         transition: 0.5s;
         margin-top:9vh;
     }
     .quick-action-info{
         font-size:16px;
-        color:white;
+        color:#FFFFFF;
         transition: 0.5s;
         display:none;
     }
@@ -39,9 +39,9 @@
         display:block;
     }
     .btn-tag{
-        background:white;
+        background:#FFFFFF;
         padding: 6px 8px;
-        border-radius:12px;
+        border-radius:10px;
         margin:4px;
         color:#414141;
         font-weight:400;
@@ -50,9 +50,9 @@
     .btn-tag:hover, .btn-tag-selected{
         background:#F78A00;
         padding: 6px 8px;
-        border-radius:12px;
+        border-radius:10px;
         margin:4px;
-        color:whitesmoke !important;
+        color:#F5F5F5 !important;
     }
 </style>
 

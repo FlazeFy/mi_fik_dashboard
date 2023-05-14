@@ -28,7 +28,7 @@
         font-size: 14px;
     }
     .list-help-holder .helps_type_box:hover h6, .list-help-holder .helps_type_box:hover p{
-        color: whitesmoke;
+        color: #F5F5F5;
     }
 </style>
 

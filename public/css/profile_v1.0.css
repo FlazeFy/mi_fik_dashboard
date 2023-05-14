@@ -25,13 +25,13 @@
 .sign-out-area{
     background: #F85D59;
     border-radius: 0 0  10px 10px;
-    color: white !important;
+    color: #FFFFFF !important;
     width: 100%;
     border: none;
     text-align: left;
 }
 .sign-out-area .dropdown-item{
-    color: white !important;
+    color: #FFFFFF !important;
 }
 .sign-out-area .dropdown-item .notification{
     position: absolute;
@@ -54,16 +54,16 @@
     font-size:18px;
     font-weight:500;
     margin:0px;
-    color: whitesmoke;
+    color: #F5F5F5;
 }
 .user-role{
     font-size:15px;
     font-weight:400;
     margin:0px;
-    color: whitesmoke;
+    color: #F5F5F5;
 }
 .user-image{
-    border:2px solid whitesmoke;
+    border:2px solid #F5F5F5;
     width:45px;
     height:45px;
     cursor:pointer; /*if we can view other user profile*/

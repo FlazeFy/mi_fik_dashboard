@@ -17,24 +17,24 @@
     position: absolute;
     top: 7.5px;
     right: 10px;
-    color: whitesmoke !important;
+    color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .event-views{
     position: absolute;
     top: 7.5px;
     left: 10px;
-    color: whitesmoke !important;
+    color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .event-status{
     position: absolute;
     top: 7.5px;
     left: 70px;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .event-box:hover{
     transform: translateY(15px);
@@ -54,7 +54,7 @@
 }
 .event-box .event-subtitle, .task-subtitle{
     font-weight:500;
-    font-size:12.5px;
+    font-size:13px;
     color:#5B5B5B !important;
     top: -20px;
 
@@ -81,10 +81,10 @@
     right: 20px;
     min-width: 45px;
     height: 45px;
-    border: 1.75px solid white;
+    border: 1.75px solid #FFFFFF;
     border-radius: 100px;
     background: #D5534C;
-    color:white !important;
+    color:#FFFFFF !important;
 }
 .btn-detail{
     text-decoration: none !important;

@@ -20,13 +20,13 @@
     }
     .quick-action-text-notif{
         font-size:24px;
-        color:white;
+        color:#FFFFFF;
         transition: 0.5s;
         margin-top:13vh;
     }
     .quick-action-info-notif{
         font-size:14px;
-        color:white;
+        color:#FFFFFF;
         transition: 0.5s;
         display:none;
     }

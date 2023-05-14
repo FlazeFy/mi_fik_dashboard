@@ -30,7 +30,7 @@
 .dropdown-menu .properties-box,.dropdown-menu .properties-box:hover{
     border-radius: 0 0 10px 10px;
     padding: 10px 15px !important;
-    color: white;
+    color: #FFFFFF;
     background-image: linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b) !important;
 }
 .dropdown-menu .properties-box p{
