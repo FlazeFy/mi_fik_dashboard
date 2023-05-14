@@ -11,6 +11,10 @@ use App\Helpers\Generator;
 use App\Helpers\Validation;
 use App\Helpers\Converter;
 
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FireNotif;
+
 use App\Models\Notification;
 use App\Models\Dictionary;
 use App\Models\History;
@@ -94,6 +98,8 @@ class NotificationController extends Controller
             $is_pending = 0;
             $pending_until = null;
             $context_id = null;
+            $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+            $messaging = $factory->createMessaging();
 
             if($request->send_to != "pending"){
                 $sended_at = date("Y-m-d H:i");
@@ -103,13 +109,22 @@ class NotificationController extends Controller
                     $list_user_holder = [];
 
                     foreach($users as $us){
-                        $result = User::selectRaw("id, CONCAT(first_name,' ',last_name) as full_name")
+                        $result = User::selectRaw("id, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token")
                             ->where('username', $us->username)->first();
                         $list_user_holder[] = [
                             "id" => $result->id,
                             "username" => $us->username,
                             "fullname" => $us->full_name
                         ];
+
+                        if($result->firebase_fcm_token){
+                            $message = CloudMessage::withTarget('token', $result->firebase_fcm_token)
+                                ->withNotification(FireNotif::create($request->notif_body))
+                                ->withData([
+                                    'notif_type' => $request->notif_type,
+                                ]);
+                            $response = $messaging->send($message);
+                        }
                     }
                     $context_id = $list_user_holder;
                 } else if($request->send_to == "grouping"){
@@ -117,7 +132,7 @@ class NotificationController extends Controller
                     $list_group_holder = [];
 
                     foreach($groups as $gs){
-                        $result = UserGroup::selectRaw("users_groups.id, user_id, username, CONCAT(first_name,' ',last_name) as full_name")
+                        $result = UserGroup::selectRaw("users_groups.id, user_id, username, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token")
                             ->join("groups_relations","groups_relations.group_id","=","users_groups.id")
                             ->join("users","users.id","=","groups_relations.user_id")
                             ->where("slug_name", $gs->slug)
@@ -130,6 +145,15 @@ class NotificationController extends Controller
                                 "username" => $rs->username,
                                 "fullname" => $rs->full_name
                             ];
+
+                            if($rs->firebase_fcm_token){
+                                $message = CloudMessage::withTarget('token', $rs->firebase_fcm_token)
+                                    ->withNotification(FireNotif::create($request->notif_body))
+                                    ->withData([
+                                        'notif_type' => $request->notif_type,
+                                    ]);
+                                $response = $messaging->send($message);
+                            }
                         }
 
                         $list_group_holder[] = [
