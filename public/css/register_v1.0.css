@@ -61,3 +61,15 @@
 .locked{
     cursor: default !important;
 }
+.selected-role{
+    background: #FFDEB4;
+    border-radius: 10px;
+    padding: 6px;
+    margin-bottom: 10px;
+}
+.important-category{
+    background: #fcc4c4;
+    border-radius: 10px;
+    padding: 6px;
+    padding-top: 3px;
+}

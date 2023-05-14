@@ -82,6 +82,8 @@
                             <div class="collapse" id="role" data-bs-parent="#accordionExample">
                                 @include('register.role')
                             </div>
+                            <div class="collapse" id="ready" data-bs-parent="#accordionExample">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -99,6 +101,7 @@
             var slct_role = [];
             var btn_profile_holder = document.getElementById("btn-next-profile-data-holder");
             var btn_role_holder = document.getElementById("btn-next-role-holder");
+            var btn_ready_holder = document.getElementById("btn-next-ready-holder");
 
             var msg_check_terms = document.getElementById("check_terms_msg");
             var msg_all_input = document.getElementById("input_all_profiledata_msg");
@@ -107,6 +110,7 @@
             var btn_steps_welcome = document.getElementById("btn-steps-welcome");
             var btn_steps_profiledata = document.getElementById("btn-steps-profiledata");
             var btn_steps_terms = document.getElementById("btn-steps-terms");
+            var btn_steps_role = document.getElementById("btn-steps-role");
 
             function routeStep(nav, now){
                 if(now == "welcoming"){
@@ -124,8 +128,8 @@
                     btn_steps_profiledata.style = "border-left: 6px solid #58C06E;";
                 } else if(now == "role"){
                     now = "ready";
-                    btn_steps_profiledata.setAttribute('data-bs-target', '#role');
-                    btn_steps_profiledata.style = "border-left: 6px solid #58C06E;";
+                    btn_steps_role.setAttribute('data-bs-target', '#role');
+                    btn_steps_role.style = "border-left: 6px solid #58C06E;";
                 }
             }
 
@@ -145,12 +149,25 @@
                         btn_role_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"profiledata"+'"'+")'></i> Locked</button>";
                     }
                 } else if(now == "role"){
-                    if(slct_role != null){
-                        msg_all_input.innerHTML = "";
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                    valid = false;
+                    slct_role.map((val, index) => {
+                        if(val.slug_name == "lecturer" || val.slug_name == "staff"){
+                            valid = true;
+                        }
+                    });
+
+                    if(slct_role.length > 0){
+                        document.getElementById("slct-box").style= "display:normal;";
+                        if(valid == true){
+                            msg_all_input.innerHTML = "";
+                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                        } else {
+                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
+                        }
                     } else {
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
-                    }
+                        document.getElementById("slct-box").style= "display:none;";
+                        btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
+                    }                    
                 }
             }
 
@@ -160,8 +177,8 @@
                 } else if(now == "profiledata"){
                     msg_all_input.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Some input may be empty or have reached maximum character";
                 } else if(now == "role"){
-                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant register without a tag. And you cant remove default tag, which is Lecturer";
-                }
+                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant register without a tag. And you must select one tag from 'General Role'";
+                } 
             }
         </script>
     </body>
