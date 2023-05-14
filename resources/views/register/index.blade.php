@@ -59,10 +59,6 @@
                             Let Us know you
                             <h6 class="text-secondary">Please provide some of information about you</h6>
                         </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-profileimage">
-                            Upload your profile image
-                            <h6 class="text-secondary">Don't worry, if you don't want to set your profile image. You can skip this steps</h6>
-                        </button>
                         <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-role">
                             Choose your role
                             <h6 class="text-secondary">As we tell you before. We need you to pick some role for our event's grouping</h6>
@@ -81,7 +77,10 @@
                                 @include('register.terms')
                             </div>
                             <div class="collapse" id="profiledata" data-bs-parent="#accordionExample">
-                               
+                                @include('register.profiledata')
+                            </div>
+                            <div class="collapse" id="role" data-bs-parent="#accordionExample">
+                                @include('register.role')
                             </div>
                         </div>
                     </div>
@@ -97,11 +96,17 @@
 
         <script>
             var nextStep = "welcoming";
+            var slct_role = [];
             var btn_profile_holder = document.getElementById("btn-next-profile-data-holder");
+            var btn_role_holder = document.getElementById("btn-next-role-holder");
 
             var msg_check_terms = document.getElementById("check_terms_msg");
+            var msg_all_input = document.getElementById("input_all_profiledata_msg");
+            var msg_all_role = document.getElementById("selected_role_msg");
 
             var btn_steps_welcome = document.getElementById("btn-steps-welcome");
+            var btn_steps_profiledata = document.getElementById("btn-steps-profiledata");
+            var btn_steps_terms = document.getElementById("btn-steps-terms");
 
             function routeStep(nav, now){
                 if(now == "welcoming"){
@@ -110,7 +115,16 @@
                     btn_steps_welcome.style = "border-left: 6px solid #58C06E;";
                 } else if(now == "terms"){
                     now = "profiledata";
-                    document.getElementById("btn-steps-welcome").setAttribute('data-bs-target', 'welcoming');
+                    btn_steps_terms.setAttribute('data-bs-target', '#terms');
+                    btn_steps_terms.style = "border-left: 6px solid #58C06E;";
+                } else if(now == "profiledata"){
+                    now = "role";
+                    btn_steps_profiledata.setAttribute('data-bs-target', '#profiledata');
+                    btn_steps_profiledata.style = "border-left: 6px solid #58C06E;";
+                } else if(now == "role"){
+                    now = "ready";
+                    btn_steps_profiledata.setAttribute('data-bs-target', '#role');
+                    btn_steps_profiledata.style = "border-left: 6px solid #58C06E;";
                 }
             }
 
@@ -118,20 +132,34 @@
                 if(now == "terms"){
                     if(document.getElementById("check-terms").checked == true){
                         msg_check_terms.innerHTML = "";
-                        btn_profile_holder.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='welcoming' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"welcoming"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Locked</button>";
+                        btn_profile_holder.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#profiledata' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"terms"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
                     } else {
                         btn_profile_holder.innerHTML = "<button class='btn-next-steps locked' id='btn-next-profile-data' onclick='warn("+'"'+"terms"+'"'+")'><i class='fa-solid fa-lock'></i> Locked</button>";
                     }   
-                } else {
-                    
+                } else if(now == "profiledata"){
+                    if(val1 == true && val2 == true){
+                        msg_all_input.innerHTML = "";
+                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"profiledata"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                    } else {
+                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"profiledata"+'"'+")'></i> Locked</button>";
+                    }
+                } else if(now == "role"){
+                    if(slct_role != null){
+                        msg_all_input.innerHTML = "";
+                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                    } else {
+                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
+                    }
                 }
             }
 
             function warn(now){
                 if(now == "terms"){
                     msg_check_terms.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You must check this checkbox";
-                } else {
-
+                } else if(now == "profiledata"){
+                    msg_all_input.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Some input may be empty or have reached maximum character";
+                } else if(now == "role"){
+                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant register without a tag. And you cant remove default tag, which is Lecturer";
                 }
             }
         </script>
