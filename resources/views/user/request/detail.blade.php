@@ -370,7 +370,6 @@
         }
 
         getButtonSubmitTag()
-        console.log(slct_list)
     }
 
     function removeSelectedTag(slug_name, tag_name){
@@ -383,7 +382,6 @@
         $("#data_wrapper_manage_tag").append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+"slct"+'"'+")'>"+tag_name+"</a>");
 
         getButtonSubmitTag()
-        console.log(slct_list)
     }
 
     function getButtonSubmitTag(){

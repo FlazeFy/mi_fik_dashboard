@@ -12,6 +12,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -39,6 +40,10 @@ Route::prefix('/')->group(function () {
     Route::post('/login', [LandingController::class, 'login_admin']);
     Route::post('/add_feedback', [LandingController::class, 'add_feedback']);
     Route::post('/v2/login', [LandingController::class, 'login_auth']);
+});
+
+Route::prefix('/register')->group(function () {
+    Route::get('/', [RegisterController::class, 'index'])->name('register');
 });
 
 ######################### Private Route #########################

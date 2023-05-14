@@ -69,13 +69,13 @@ Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
     Route::delete('/destroy/{id}', [CommandTaskApi::class, 'destroyTask']);
 });
 
-Route::prefix('/v1/tag')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag']);
+Route::prefix('/v1/tag')->group(function () {
     Route::get('/cat/{cat}/{limit}', [QueryTagApi::class, 'getAllTagByCat']);
-    Route::post('/create', [CommandTagApi::class, 'addTag']);
-    Route::put('/update/{id}', [CommandTagApi::class, 'updateTag']);
-    Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag']);
-    Route::delete('/destroy/{id}', [CommandTagApi::class, 'destroyTag']);
+    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag'])->middleware(['auth:sanctum']);
+    Route::post('/create', [CommandTagApi::class, 'addTag'])->middleware(['auth:sanctum']);
+    Route::put('/update/{id}', [CommandTagApi::class, 'updateTag'])->middleware(['auth:sanctum']);
+    Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag'])->middleware(['auth:sanctum']);
+    Route::delete('/destroy/{id}', [CommandTagApi::class, 'destroyTag'])->middleware(['auth:sanctum']);
 });
 
 Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function () {
