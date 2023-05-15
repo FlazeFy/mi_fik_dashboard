@@ -90,6 +90,7 @@ Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function 
 
 Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryContentApi::class, 'getContentHeader']);
+    Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
 
