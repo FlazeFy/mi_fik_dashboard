@@ -16,22 +16,22 @@
     right: 10px;
     color: #F78A00 !important;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .task-views{
     position: absolute;
     top: 7.5px;
     left: 10px;
-    color: whitesmoke !important;
+    color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .task-status{
     position: absolute;
     top: 7.5px;
     left: 70px;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .task-box:hover{
     transform: translateY(15px);
@@ -44,7 +44,7 @@
 }
 .task-box .task-subtitle{
     font-weight:500;
-    font-size:12.5px;
+    font-size:13px;
     color:#5B5B5B !important;
     margin:0px;
 }

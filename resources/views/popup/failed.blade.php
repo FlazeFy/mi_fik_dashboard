@@ -1,6 +1,6 @@
 <style>
     .modal-content{
-        background-color: white;
+        background-color: #FFFFFF;
         border:none;
     }
 </style>

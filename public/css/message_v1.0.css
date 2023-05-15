@@ -46,7 +46,7 @@
 div.from-me {
     align-self: flex-end;
     background-color: #F78A00;
-    color: #fff; 
+    color: #FFFFFF; 
 }
 div.from-me::before {
     border-bottom-left-radius: 0.8rem 0.7rem;
@@ -57,18 +57,18 @@ div.from-me::before {
 a.from-me-clock{
     text-decoration: none;
     color: #414141;
-    font-size: 13.5px;
+    font-size: 14px;
     text-align: end;
 }
 a.from-them-clock{
     text-decoration: none;
     color: #414141;
-    font-size: 13.5px;
+    font-size: 14px;
     text-align: start;
 }
   
 div.from-me::after {
-    background-color: #fff;
+    background-color: #FFFFFF;
     border-bottom-left-radius: 0.5rem;
     right: -40px;
     transform:translate(-30px, -2px);
@@ -100,7 +100,7 @@ div.from-them:before {
     transform: translate(0, -0.1rem);
 }
 div.from-them::after {
-    background-color: #fff;
+    background-color: #FFFFFF;
     border-bottom-right-radius: 0.5rem;
     left: 20px;
     transform: translate(-30px, -2px);
@@ -134,7 +134,7 @@ div[class^="from-"].emoji::before {
     padding: 0;
 }
 .msg-box{
-    background: white;
+    background: #FFFFFF;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 70%;

@@ -28,7 +28,7 @@
         padding: 0;
     }
     #sidebar ul li {
-        font-size: 15.5px;
+        font-size: 16px;
         padding:4px;
         font-weight:500;
         margin-bottom:18px;
@@ -75,11 +75,11 @@
     }
     #sidebar ul li.active, #sidebar ul li.active .btn-accordion-custom {
         background:#F78A00;
-        color:whitesmoke !important;
+        color:#F5F5F5 !important;
     }
     #sidebar ul li:hover:not(.active), #sidebar ul li.sub.active {
         color:#F78A00 !important;
-        background: white;
+        background: #FFFFFF;
         border-left:12px solid #F78A00;
     }
     #sidebar ul li:hover:not(.active) .btn-accordion-custom {
