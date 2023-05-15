@@ -15,7 +15,7 @@
                 min-width: 300px !important;
                 height: auto;
                 padding: 15px;
-                background: white;
+                background: #FFFFFF;
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 text-align: left;
                 color: #414141;
@@ -42,7 +42,7 @@
             }
             .btn-tag{
                 background : #FB8C00;
-                color: whitesmoke;
+                color: #F5F5F5;
                 font-size: 15px;
                 padding: 8px;
                 margin-right: 5px;
@@ -52,10 +52,10 @@
             }
             .btn-success{
                 background : #00C363;
-                color: whitesmoke;
+                color: #F5F5F5;
                 font-size: 16px;
                 padding: 10px;
-                border-radius: 12px;
+                border-radius: 10px;
                 text-decoration: none;
                 margin-top:20px; 
                 margin-bottom:20px; 

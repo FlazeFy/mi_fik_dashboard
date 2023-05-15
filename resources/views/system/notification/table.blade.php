@@ -4,26 +4,26 @@
         position:relative;
     }
     .form-custom i{
-        color:#9c9c9c;
+        color:#9c9c9c;  
     }
     .page-item.active .page-link{
         background:#F78A00 !important;
         border:none;
-        color:white;
+        color:#FFFFFF;
     }
     .page-item .page-link{
         color:#414141;
     }
 </style>
 
-<div class="text-nowrap table-responsive">
+<div class="table-responsive">
     <table class="table table-paginate" id="notifTable" cellspacing="0">
         <thead>
             <tr>
                 <th scope="col">Type</th>
                 <th scope="col">Body</th>
-                <th scope="col">Send To</th>
-                <th scope="col">Pending</th>
+                <th scope="col" style="max-width:300px;">Send To</th>
+                <th scope="col">Status</th>
                 <th scope="col">Manage By</th>
                 <th scope="col">Action</th>
             </tr>
@@ -40,12 +40,38 @@
                     <td>{{$nt->notif_body}}</td>
                     <td>
                         @php($ntJson = $nt->notif_send_to)
-                            
+                        
                         @foreach($ntJson as $nj)
                             @if($nj['send_to'] == "all")
-                                {{ucfirst($nj['send_to'])}}
-                            @else 
-                                {{$nj['user_id']}}
+                                <h6>Send to {{ucfirst($nj['send_to'])}}</h6>
+                            @elseif($nj['send_to'] == "person")
+                                <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                @if(is_array($nj['context_id']))
+                                    @php($list_user = $nj['context_id'])
+                                    @foreach($list_user as $lu)
+                                        <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                            title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
+                                    @endforeach
+                                @else
+                                    {{$nj['context_id']}}
+                                @endif
+                            @elseif($nj['send_to'] == "grouping")
+                                <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                @php($list_group = $nj['context_id'])
+                                @foreach($list_group as $lg)
+                                    <div class="group-box-notif">
+                                        <h6 class="mt-1">{{$lg['groupname']}} </h6>
+                                        <button class="btn btn-icon-preview collapse-group-box-toogle" title="Hide member" data-bs-toggle="collapse" href="#collapse_{{$nt['id']}}_{{$lg['id']}}">
+                                            <i class="fa-regular fa-eye-slash"></i></button>
+                                        @php($list_user = $lg['user_list'])
+                                        <div class="collapse" id="collapse_{{$nt['id']}}_{{$lg['id']}}">
+                                            @foreach($list_user as $lu)
+                                                <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                                    title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
                             @endif
                         @endforeach 
                     </td>
@@ -93,7 +119,9 @@
                         @endif
                     </td>
                     <td>
-                        <button class="btn btn-warning" data-bs-target="#editModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
+                        @if(!$nt->notif_send_to)
+                            <button class="btn btn-warning mb-2 me-1" data-bs-target="#editModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
+                        @endif
                         <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>

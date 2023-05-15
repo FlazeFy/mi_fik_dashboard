@@ -27,18 +27,19 @@ class CalendarController extends Controller
             session()->put('selected_tag_calendar', "All");
         }
 
-        $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'));       
+        $role = session()->get('role_key');
+        $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'), $role);       
         $tag = Tag::getFullTag("DESC", "DESC");
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
 
-        if(session()->get('role_key') == 1){
+        if($role == 1){
             $tag = Tag::getFullTag("DESC", "DESC");
             $mytag = null;
         } else {
             $tag = null;
-            $user_id = Generator::getUserIdV2(session()->get('role_key'));
-            $list = User::getUserRole($user_id, session()->get('role_key'));
+            $user_id = Generator::getUserIdV2($role);
+            $list = User::getUserRole($user_id, $role);
             foreach($list as $l){
                 $mytag = $l->role;
             }

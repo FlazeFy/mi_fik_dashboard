@@ -17,39 +17,48 @@
     position: absolute;
     top: 7.5px;
     right: 10px;
-    color: whitesmoke !important;
+    color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .event-views{
     position: absolute;
     top: 7.5px;
     left: 10px;
-    color: whitesmoke !important;
+    color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .event-status{
     position: absolute;
     top: 7.5px;
     left: 70px;
     font-weight: 500;
-    font-size: 13.5px;
+    font-size: 14px;
 }
 .event-box:hover{
     transform: translateY(15px);
 }
-.event-box .event-title{
+.event-box .event-title, .task-title{
     font-weight:bold;
     font-size:14px;
     color:#404040 !important;
-    margin:0px;
+    top: -40px;
+    position: absolute;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 1; 
+    line-clamp: 1; 
+    -webkit-box-orient: vertical;
 }
-.event-box .event-subtitle{
+.event-box .event-subtitle, .task-subtitle{
     font-weight:500;
-    font-size:12.5px;
+    font-size:13px;
     color:#5B5B5B !important;
-    margin:0px;
+    top: -20px;
+
+    position: absolute;
 }
 .event-box .event-desc{
     font-weight:400;
@@ -64,16 +73,18 @@
     -webkit-box-orient: vertical;
 }
 .warning-draft{
-    padding: 7px 12px;
+    padding: 8px 12px;
     text-decoration: none;
     font-size: 18px;
     position: absolute;
     top: -20px;
     right: 20px;
-    border: 1.75px solid white;
+    min-width: 45px;
+    height: 45px;
+    border: 1.75px solid #FFFFFF;
     border-radius: 100px;
     background: #D5534C;
-    color:white !important;
+    color:#FFFFFF !important;
 }
 .btn-detail{
     text-decoration: none !important;

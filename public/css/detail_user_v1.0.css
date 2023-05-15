@@ -18,16 +18,16 @@
     width: 100%;
     border: none;
     text-align: start;
-    background: white;
+    background: #FFFFFF;
     margin-bottom: 15px;
 }
 .user-box-desc{
-    font-size: 11.5px;
+    font-size: 12px;
     font-weight: normal;
     margin: 0;
 }
 .user-box-date{
-    font-size: 11.5px;
+    font-size: 12px;
     font-weight: normal;
     color: #808080;
     margin: 0;

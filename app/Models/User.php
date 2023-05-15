@@ -17,7 +17,7 @@ class User extends Authenticatable
 
     protected $table = 'users';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'username', 'email', 'password', 'first_name', 'last_name', 'role', 'image_url', 'valid_until', 'created_at', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by', 'accepted_at', 'accepted_by', 'is_accepted'];
+    protected $fillable = ['id', 'firebase_fcm_token', 'username', 'email', 'password', 'first_name', 'last_name', 'role', 'image_url', 'valid_until', 'created_at', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by', 'accepted_at', 'accepted_by', 'is_accepted'];
 
     protected $casts = [
         'role' => 'array',

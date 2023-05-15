@@ -8,7 +8,21 @@
 
                     @php($i = 0)
                     @foreach($count as $ct)
-                        @if(($count->count_request > 0 || $count->count_empty > 0  || $count->count_new > 0) && $i == 0)
+                        @php($req = 0)
+                        @php($empty = 0)
+                        @php($new = 0)
+
+                        @if(isset($count->count_request))
+                            @php($req = $count->count_request)
+                        @endif
+                        @if(isset($count->count_empty))
+                            @php($empty = $count->count_empty)
+                        @endif
+                        @if(isset($count->count_new))
+                            @php($new = $count->count_new)
+                        @endif
+
+                        @if(($req > 0 || $empty > 0  || $new > 0) && $i == 0)
                             <img class="img img-fluid d-block mx-auto" style="width: 320px;" src="{{'/assets/recatch.png'}}">
                             <h5 class="text-center">Welcome back {{session()->get('username_key')}}</h5>
                             <h6 class="text-center text-secondary">While you go. You have <span class="text-primary">{{$count->count_request}}</span> role's request, <span class="text-primary">{{$count->count_empty_role}}</span> empty role and <span class="text-primary">{{$count->count_new}}</span> new user who is waiting to join MI-FIK</h6>

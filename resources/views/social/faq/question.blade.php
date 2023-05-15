@@ -8,16 +8,17 @@
         margin-bottom: 10px;
         text-decoration: none;
         position: relative;
+        width: 100%;
     }
     .question_holder .question_box.answered{
         border: 1.5px solid #00C363;
     }
     .question_holder .question_box:hover{
         background: #F78A00;
-        color: white !important;
+        color: #FFFFFF !important;
     }
     .question_holder .question_box:hover p{
-        color: white;
+        color: #FFFFFF;
     }
     .question_holder .question_box.answered:hover{
         background: #00C363;
@@ -34,7 +35,7 @@
         font-size: 14px;
     }
     .question_holder .question_box:hover h6, .question_holder .question_box:hover p{
-        color: whitesmoke;
+        color: #F5F5F5;
     }
 </style>
 
@@ -132,7 +133,7 @@
                         + "'" + username + "'" + ', ' + "'" + id + "'" + ', ' + "'" + status + "'" + ')"> ' +
                         '<h6>' + ucFirst(questionType) + '</h6> ' +
                         ucEachWord(questionBody) + 
-                        '<p class="m-0 mt-2">Created at' + getDateToContext(createdAt) + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
+                        '<p class="m-0 mt-2">' + getDateToContext(createdAt, "full") + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
                     '</button>';
 
                     $("#question_holder").append(elmt);
@@ -146,9 +147,9 @@
 
     function loadDetailAnswer(answer, user, id, status){
         if(status == "answered"){
-            setSelectedBtnStyle("background: #00c363; color: whitesmoke; border-radius: 10px;", "question_box", " ", 'question_'+ id);
+            setSelectedBtnStyle("background: #00c363; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
-            setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "question_box", " ", 'question_'+ id);
+            setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
         loadAnswer(answer, id);

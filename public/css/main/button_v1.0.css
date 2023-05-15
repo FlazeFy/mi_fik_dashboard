@@ -1,6 +1,6 @@
 .btn-submit{
     background: #00c363;
-    color: whitesmoke !important;
+    color: #F5F5F5 !important;
 }
 .btn-primary{
     background: #F78A00 !important;
@@ -12,7 +12,7 @@
 }
 .btn-info{
     background: #009FF9 !important;
-    color:white !important;
+    color:#FFFFFF !important;
     border:none;
 }
 .btn-noline{
@@ -26,7 +26,7 @@
     z-index: 998 !important;
 }
 .btn-hide-bar{
-    color: white !important;
+    color: #FFFFFF !important;
 }
 .btn-config-holder{
     display:flex !important; 
@@ -36,12 +36,12 @@
 .btn-filter{
     color:#343434;
     border: 1.5px solid #D9D9D9;
-    font-size: 12.5px;
+    font-size: 13px;
     margin-top: 6px;
 }
 .btn-filter:hover{
     background:#00c363;
-    color: white;
+    color: #FFFFFF;
     border: 1.5px solid #00c363;
 }
 .btn-filter.selected{
@@ -63,7 +63,7 @@
 }
 .btn-category-help:hover, .btn-category-help.active{
     background: #F78A00;
-    color: whitesmoke;
+    color: #F5F5F5;
     border-radius: 10px;
 }
 
@@ -80,13 +80,34 @@
 }
 .btn-submit-form:hover{
     background:#00c363;
-    color: whitesmoke;
+    color: #F5F5F5;
+}
+.btn-msg{
+    width: 48px;
+    border-radius: 100%;
+    font-size: 22px;
+    background: #FFFFFF;
+    position: absolute;
+    bottom: 60px;
+    right: 50px;
+    -webkit-transition: all 0.6s;
+    -o-transition: all 0.6s;
+    transition: all 0.6s;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.btn-msg.text-success:hover{
+    background: #00c363;
+    color: #FFFFFF !important;
+}
+.btn-msg.text-danger:hover{
+    background: #D5534C;
+    color: #FFFFFF !important;
 }
 
 .btn-tag{
-    background:white;
+    background:#FFFFFF;
     padding: 6px 8px;
-    border-radius:12px;
+    border-radius:10px;
     margin:4px;
     color:#414141;
     font-weight:400;
@@ -95,12 +116,12 @@
 .btn-tag:hover, .btn-tag-selected{
     background:#F78A00;
     padding: 6px 8px;
-    border-radius:12px;
+    border-radius:10px;
     margin:4px;
-    color:whitesmoke !important;
+    color:#F5F5F5 !important;
 }
 .btn-detail-config{
-    color:whitesmoke !important;
+    color:#F5F5F5 !important;
     margin-right:6px;
 }
 .btn-detail-config.primary{
@@ -125,7 +146,7 @@
 .btn-link{
     text-decoration:none;
     padding:10px 16px;
-    border-radius:5px;
+    border-radius:6px;
     color:#F78A00;
     background:transparent;
     font-weight:500;
@@ -134,14 +155,14 @@
 .btn-link-danger{
     text-decoration:none;
     padding:10px 16px;
-    border-radius:5px;
+    border-radius:6px;
     color:#D5534C !important;
     background:transparent;
     font-weight:500;
     font-size:16px;
 }
 .btn-link:hover{
-    color:white;
+    color:#FFFFFF;
     background:#F78A00;
 }
 
@@ -153,7 +174,7 @@
 }
 .btn-icon-rounded-danger:hover{
     background: #D5534C;
-    color: whitesmoke;
+    color: #F5F5F5;
 }
 
 .btn-icon-rounded-success{
@@ -164,7 +185,7 @@
 }
 .btn-icon-rounded-success:hover{
     background: #58C06E;
-    color: whitesmoke;
+    color: #F5F5F5;
 }
 
 .btn-icon-rounded-primary{
@@ -175,36 +196,36 @@
 }
 .btn-icon-rounded-primary:hover{
     background: #F78A00;
-    color: whitesmoke;
+    color: #F5F5F5;
 }
 .btn-danger-icon-outlined{
     border-radius: 100%;
 }
 .btn-danger-icon-outlined:hover{
     background: #D5534C;
-    color: whitesmoke;
+    color: #F5F5F5;
 }
 
 .content-more-floating{
     font-weight:500;
     color:#F78A00;
-    background:white;
+    background:#FFFFFF;
     border:1.5px solid #F78A00;
     text-decoration:none !important;
     cursor: pointer;
     padding:3px 9px;
     margin:0px;
     border-radius:6px;
-    font-size: 12.5px;
+    font-size: 13px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .content-more-floating:hover{
-    color:whitesmoke;
+    color:#F5F5F5;
     background:#F78A00;
 }
 
 .tag-check{
-    background: white;
+    background: #FFFFFF;
     border-radius: 20px;
     border: 1.5px solid #D9D9D9;
     overflow: hidden;
@@ -219,7 +240,7 @@
     background: #00c363 !important;
 }
 .tag-check:hover label span{
-    color: #fff !important;
+    color: #FFFFFF !important;
 }
 
 .tag-check input:checked{
@@ -240,7 +261,7 @@
 .tag-check label input {
     position: absolute;
     display: none !important;
-    color: #fff !important;
+    color: #FFFFFF !important;
 }
 .tag-check label input + span{
     color: #343434;
@@ -262,7 +283,7 @@
     height:120px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    background: white;
+    background: #FFFFFF;
     margin-bottom: 15px;
 }
 
@@ -283,7 +304,7 @@
     background: #D5534C!important;
 }
 .user-check:hover label span{
-    color: #fff !important;
+    color: #FFFFFF !important;
 }
   
 .user-check label {
@@ -300,14 +321,14 @@
 .user-check label input {
     position: absolute;
     display: none !important;
-    color: #fff !important;
+    color: #FFFFFF !important;
 }
 .user-check label input + span{
     color: #343434;
 }  
 .user-check input:checked + .check-body {
     background: #D5534C;
-    color: white;
+    color: #FFFFFF;
 }
 
 .remove_suggest{
@@ -318,5 +339,5 @@
 }
 .remove_suggest:hover{
     background: #D5534C !important;
-    color: white;
+    color: #FFFFFF;
 }

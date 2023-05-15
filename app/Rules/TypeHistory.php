@@ -18,7 +18,7 @@ class TypeHistory implements Rule
 
     public function passes($attribute, $value)
     {
-        $type = ['event', 'archive', 'user', 'task', 'maintenance', 'info', 'group', 'admin', 'scheduling', 'about', 'help', 'tag', 'request', 'faq', 'feedback'];
+        $type = ['event', 'archive', 'user', 'task', 'maintenance', 'info', 'group', 'admin', 'scheduling', 'about', 'help', 'tag', 'request', 'faq', 'feedback', 'notification'];
 
         foreach ($type as $format) {
             if ($format === $value) {

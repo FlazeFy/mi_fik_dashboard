@@ -120,36 +120,6 @@
                     return ctx + tags;
                 }
 
-                function getCreatedAt(datetime){
-                    const result = new Date(datetime);
-                    const now = new Date(Date.now());
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    
-                    //FIx this!!!
-                    if(result.toDateString() === now.toDateString()){
-                        // $start_date = new DateTime(datetime);
-                        // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                        // if(result.getHours() == now.getHours()){
-                        //     const min = result.getMinutes() - now.getMinutes();
-                        //     if(min <= 10 && min > 0){
-                        //         return $since_start->m;
-                        //     } else {
-                        //         return  min + " minutes ago";    
-                        //     }
-                        // } else if(now.getHours() - result.getHours() <= 6){
-                        //     return now.getHours() - result.getHours() + " hours ago";    
-                        // } else {
-                            return "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        //}
-                    } else if(result.toDateString() === yesterday.toDateString()){
-                        return "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                    } else {
-                        return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
-                    }
-                }
-
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var id = data[i].id;
@@ -169,7 +139,7 @@
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
                                     '<div style="width: 80%;"> ' +
                                         '<h6 class="user-box-desc">' + getContext(type, tag) + '</h6> ' +
-                                        '<h6 class="user-box-date">' + getCreatedAt(created_at) + '</h6> ' +
+                                        '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
                                     '</div> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
                                         '<input hidden id="tag_holder_' + username + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
@@ -184,7 +154,12 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load').hide();
+                $("#empty_item_holder_old_req").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No request found</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 

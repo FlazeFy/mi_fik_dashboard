@@ -3,7 +3,7 @@
     border:1.7px solid #F78A00;
     margin-top:10px;
     border-radius:10px 10px 0 0;
-    background: white;
+    background: #FFFFFF;
 }
 .ql-snow .ql-stroke {
     stroke:#414141;
@@ -23,13 +23,13 @@ button.ql-active{
     background:#F78A00 !important;
 }
 button.ql-active svg .ql-stroke{
-    stroke:white !important;
+    stroke:#FFFFFF !important;
 }
 
 /*Richtext body*/
 .ql-toolbar.ql-snow + .ql-container.ql-snow{
     height:30vh;
-    background: white;
+    background: #FFFFFF;
 }
 .input-title{
     font-weight: 500;

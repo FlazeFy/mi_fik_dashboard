@@ -29,18 +29,30 @@
 
                 <tr class="tabular-item {{$bg}}">
                     <td style="width: 140px;">
-                        <form action="/system/info/update/type/{{$in->id}}" method="POST">
-                            @csrf
-                            <select class="form-select" name="info_type" title="Change Type" onchange="this.form.submit()">
-                                @foreach($dictionary as $dct)
-                                    @if($in->info_type == strtolower($dct->dct_name))
-                                        <option selected value="{{strtolower($dct->dct_name)}}">{{$dct->dct_name}}</option>
-                                    @else 
-                                        <option value="{{strtolower($dct->dct_name)}}">{{$dct->dct_name}}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </form>
+                        <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$in->id}}')" id="select-{{$in->id}}">
+                            @foreach($dictionary as $dct)
+                                @if($in->info_type == strtolower($dct->dct_name))
+                                    <option selected value="{{strtolower($dct->dct_name)}}" id="{{strtolower($dct->dct_name)}}{{$in->id}}">{{$dct->dct_name}}</option>
+                                @else 
+                                    <option value="{{strtolower($dct->dct_name)}}" id="{{strtolower($dct->dct_name)}}{{$in->id}}">{{$dct->dct_name}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        <div class="modal fade" id="edit-type-{{$in->id}}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">   
+                                    <div class="modal-body text-center pt-4">
+                                        <button type="button" class="custom-close-modal" onclick="resetChange('select-{{$in->id}}', '{{strtolower($dct->dct_name)}}')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                                        <p style="font-weight:500;">Are you sure want to change type to '<span id="dct_name{{$in->id}}"></span>'</p>
+                                        <form action="/system/info/update/type/{{$in->id}}" method="POST">
+                                            @csrf
+                                            <input hidden id="dct_name_{{$in->id}}" name="info_type" value="">
+                                            <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> Save Changes</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                     <td>
                         <p class="mb-0">Page : <a class="text-primary" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
@@ -58,8 +70,8 @@
                                 <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
                             </div>
                             <div class="col-9 p-0 ps-2 pt-1">
-                                <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($in->created_at))}}</h6>
+                                <h5 class="user-username-mini">Budi</h5>
+                                <h6 class="properties-date date_holder_1">{{($in->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                             </div>
                         </div>    
                         @if($in->updated_at)
@@ -69,8 +81,8 @@
                                     <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
-                                    <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($in->updated_at))}}</h6>
+                                    <h5 class="user-username-mini">Budi</h5>
+                                    <h6 class="properties-date date_holder_2">{{($in->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>   
                         @endif
@@ -81,8 +93,8 @@
                                     <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
                                 </div>
                                 <div class="col-9 p-0 ps-2 pt-1">
-                                    <h5 class="user-username-mini" title="View Profile">Budi</h5>
-                                    <h6 class="properties-date">{{date('Y-m-d H:i', strtotime($in->deleted_at))}}</h6>
+                                    <h5 class="user-username-mini">Budi</h5>
+                                    <h6 class="properties-date date_holder_3">{{($in->deleted_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>   
                         @endif
@@ -106,31 +118,71 @@
 </div>
 
 <script>
+    const date_holder_1 = document.querySelectorAll('.date_holder_1');
+    const date_holder_2 = document.querySelectorAll('.date_holder_2');
+    const date_holder_3 = document.querySelectorAll('.date_holder_3');
+
+    date_holder_1.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
+    date_holder_2.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
+    date_holder_3.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+
+    function validateChange(slct, id){
+        document.getElementById("dct_name_"+id).value = slct;
+        document.getElementById("dct_name"+id).innerHTML = document.getElementById(slct+id).textContent;
+
+        var myModal = document.getElementById('edit-type-'+id);
+        var modal = new bootstrap.Modal(myModal, {
+            backdrop: 'static',
+            keyboard: false
+        });
+        modal.show();
+    }
+
+    function resetChange(id, name){
+        document.getElementById(id).value= name;
+    }
+
     var id_body = " ";
+    var toogle = 0;
 
     function toogleInfoDescEdit(info_body, id){
         var holder_body = document.getElementById("info_body_holder_"+id);
 
-        holder_body.innerHTML = " ";
-        holder_body.innerHTML = " <div id='rich_box_" + id + "' style='height: 200px !important;'></div> " +
-        "<form class='d-inline' id='form-edit-desc_" + id + "' method='POST' action=''> " +
-            '@csrf ' +
-            "<input name='info_body' id='info_body_" + id + "' hidden> " +
-            "<button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("+ '"' + id + '"' +")'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
-        "</form> ";
-        
-        var quill<?= str_replace("-", "", $in->id) ?> = new Quill('#rich_box_' + id, {
-            theme: 'snow'
-        });
+        if(toogle % 2 == 0){
+            holder_body.innerHTML = " <div id='rich_box_" + id + "' style='height: 200px !important;'></div> " +
+            "<form class='d-inline' id='form-edit-desc_" + id + "' method='POST' action=''> " +
+                '@csrf ' +
+                "<input name='info_body' id='info_body_" + id + "' hidden> " +
+                "<button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("+ '"' + id + '"' +")'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
+            "</form> ";
+            
+            var quill<?= str_replace("-", "", $in->id) ?> = new Quill('#rich_box_' + id, {
+                theme: 'snow'
+            });
 
-        var info_input = document.getElementById("info_body_" + id);
-        var parent = document.getElementById("rich_box_" + id);
-        var child = parent.getElementsByClassName("ql-editor")[0];
-        if(info_body != null || info_body != "null"){
-            child.innerHTML = info_body;
+            var info_input = document.getElementById("info_body_" + id);
+            var parent = document.getElementById("rich_box_" + id);
+            var child = parent.getElementsByClassName("ql-editor")[0];
+            if(info_body != null || info_body != "null"){
+                child.innerHTML = info_body;
+            } else {
+                child.innerHTML = " ";
+            }
         } else {
-            child.innerHTML = " ";
+            holder_body.innerHTML = info_body;
         }
+        toogle++;
     }
 
     function getRichTextHelpDesc(id){

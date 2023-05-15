@@ -19,13 +19,13 @@
     }
     .quick-action-text{
         font-size:24px;
-        color:white;
+        color:#FFFFFF;
         transition: 0.5s;
         margin-top:9vh;
     }
     .quick-action-info{
         font-size:16px;
-        color:white;
+        color:#FFFFFF;
         transition: 0.5s;
         display:none;
     }
@@ -36,9 +36,9 @@
         display:block;
     }
     .btn-tag{
-        background:white;
+        background: #FFFFFF;
         padding: 6px 8px;
-        border-radius:12px;
+        border-radius:10px;
         margin:4px;
         color:#414141;
         font-weight:400;
@@ -47,14 +47,16 @@
     .btn-tag:hover, .btn-tag-selected{
         background:#F78A00;
         padding: 6px 8px;
-        border-radius:12px;
+        border-radius:10px;
         margin:4px;
-        color:whitesmoke !important;
+        color:#F5F5F5 !important;
     }
 </style>
 
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/announcement.png'); ?>"); background-color:#FB5E5B;'
-    data-bs-target="#addAnnModal" data-bs-toggle="modal">
+    data-bs-target="#selectTypeModal" data-bs-toggle="modal">
     <h5 class="quick-action-text">Add Notification</h5>
     <p class="quick-action-info">Notification is a bla bla....</p>
 </button>
+
+@include('system.notification.create')

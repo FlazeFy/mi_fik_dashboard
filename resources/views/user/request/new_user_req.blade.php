@@ -92,36 +92,6 @@
                     }
                 }
 
-                function getCreatedAt(datetime){
-                    const result = new Date(datetime);
-                    const now = new Date(Date.now());
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    
-                    //FIx this!!!
-                    if(result.toDateString() === now.toDateString()){
-                        // $start_date = new DateTime(datetime);
-                        // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                        // if(result.getHours() == now.getHours()){
-                        //     const min = result.getMinutes() - now.getMinutes();
-                        //     if(min <= 10 && min > 0){
-                        //         return $since_start->m;
-                        //     } else {
-                        //         return  min + " minutes ago";    
-                        //     }
-                        // } else if(now.getHours() - result.getHours() <= 6){
-                        //     return now.getHours() - result.getHours() + " hours ago";    
-                        // } else {
-                            return "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        //}
-                    } else if(result.toDateString() === yesterday.toDateString()){
-                        return "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                    } else {
-                        return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
-                    }
-                }
-
                 function getApprovedButton(acc){
                     if(!acc){
                         return '<a class="btn btn-icon-rounded-success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a>'
@@ -156,7 +126,7 @@
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
                                     '<h6 class="user-box-desc">' + getContext(is_accepted) + '</h6> ' +
-                                    '<h6 class="user-box-date">' + getCreatedAt(created_at) + '</h6> ' +
+                                    '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
                                     '<a class="btn btn-icon-rounded-primary" style="position:absolute; right: 15px; top:15px;" title="Accept Request & Give Role"><i class="fa-solid fa-add"></i></a> ' +
                                     getApprovedButton(accepted_at) +
                                 '</div> ' +
@@ -168,7 +138,12 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load').hide();
+                $("#empty_item_holder_new_req").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No request found</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 

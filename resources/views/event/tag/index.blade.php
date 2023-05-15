@@ -28,7 +28,13 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#tagTable').DataTable();
+                $('#tagTable').DataTable({
+                    columnDefs: [
+                        { targets: 0, orderable: true }, 
+                        { targets: 1, orderable: true }, 
+                        { targets: '_all', orderable: false }
+                    ] 
+                });
             });
         </script>
 
@@ -50,6 +56,7 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -106,11 +113,7 @@
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
             })
-
         </script>
-
-        <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
-
     </body>
 </html>

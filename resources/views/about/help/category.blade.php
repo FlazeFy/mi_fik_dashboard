@@ -125,7 +125,7 @@
 
     function loadDetailDesc(cat, desc, user, updated, id){
         var cat2 = cat.split(" ").join("");
-        setSelectedBtnStyle("background: #F78A00; color: whitesmoke; border-radius: 10px;", "btn-category-help", " ", cat2);
+        setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "btn-category-help", " ", cat2);
         <?php
             if(session()->get('role_key') == 1){
                 echo "loadRichTextDesc(desc, user, updated, cat);";

@@ -16,6 +16,7 @@ use App\Models\UserRequest;
 use App\Models\Notification;
 use App\Models\ContentHeader;
 use App\Models\History;
+use App\Models\Dictionary;
 use App\Models\Question;
 
 class ProfileController extends Controller
@@ -37,6 +38,7 @@ class ProfileController extends Controller
             $totalNotif = null;
             $totalAcc = null;
             $totalQue = null;
+            $dictionary = Dictionary::getDictionaryByType("Question");
             $totalTask = Task::getCountEngTask($user_id);
         } else {
             $user = Admin::find($user_id);
@@ -44,6 +46,7 @@ class ProfileController extends Controller
             $totalNotif = Notification::getCountEngPostNotif($user_id);
             $totalAcc = UserRequest::getCountEngAccReq($user_id);
             $totalQue = Question::getCountEngQuestionAnswer($user_id);
+            $dictionary = null;
             $totalTask = null;
         }
 
@@ -62,6 +65,7 @@ class ProfileController extends Controller
             ->with('totalQue', $totalQue)
             ->with('totalAcc', $totalAcc)
             ->with('totalTask', $totalTask)
+            ->with('dictionary', $dictionary)
             ->with('faq', $faq)
             ->with('myreq', $myreq)
             ->with('greet',$greet);
@@ -240,48 +244,56 @@ class ProfileController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function add_faq(Request $request)
     {
-        //
-    }
+        $role_key = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role_key);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $validator = Validation::getValidateQuestionFaq($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "faq",
+                'history_body' => "Has created a new question"
+            ];
+            $data->merge($obj);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $content = Question::create([
+                    'id' => Generator::getUUID(),
+                    'question_type' => $request->question_type,
+                    'question_body' => $request->question_body,
+                    'question_answer' => null,
+                    'is_active' => 0,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id,
+                    'updated_at' => null,
+                    'updated_by' => null,
+                    'deleted_at' => null,
+                    'deleted_by' => null,
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type,
+                    'context_id' => null,
+                    'history_body' => $data->history_body,
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+
+                return redirect()->back()->with('success_message', "Question has sended");
+            }
+        }
     }
 }

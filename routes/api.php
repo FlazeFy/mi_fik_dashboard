@@ -69,13 +69,13 @@ Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
     Route::delete('/destroy/{id}', [CommandTaskApi::class, 'destroyTask']);
 });
 
-Route::prefix('/v1/tag')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag']);
+Route::prefix('/v1/tag')->group(function () {
     Route::get('/cat/{cat}/{limit}', [QueryTagApi::class, 'getAllTagByCat']);
-    Route::post('/create', [CommandTagApi::class, 'addTag']);
-    Route::put('/update/{id}', [CommandTagApi::class, 'updateTag']);
-    Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag']);
-    Route::delete('/destroy/{id}', [CommandTagApi::class, 'destroyTag']);
+    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag'])->middleware(['auth:sanctum']);
+    Route::post('/create', [CommandTagApi::class, 'addTag'])->middleware(['auth:sanctum']);
+    Route::put('/update/{id}', [CommandTagApi::class, 'updateTag'])->middleware(['auth:sanctum']);
+    Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag'])->middleware(['auth:sanctum']);
+    Route::delete('/destroy/{id}', [CommandTagApi::class, 'destroyTag'])->middleware(['auth:sanctum']);
 });
 
 Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function () {
@@ -102,10 +102,11 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
-    Route::put('/edit/{id}', [CommandArchiveApi::class, 'editArchive']);
-    Route::delete('/delete/{id}', [CommandArchiveApi::class, 'deleteArchive']);
+    Route::put('/edit/{slug}', [CommandArchiveApi::class, 'editArchive']);
+    Route::delete('/delete/{slug}', [CommandArchiveApi::class, 'deleteArchive']);
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {

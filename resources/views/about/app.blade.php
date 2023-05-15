@@ -5,7 +5,7 @@
         }
     </style>   
     @foreach($about as $ab)
-        <h6 class="fst-italic" style="font-size:14px;"><span class="text-primary">Last Updated :</span> {{$ab->updated_at}}</h6>
+        <h6 class="fst-italic" style="font-size:14px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @endforeach
     <div id="rich_box">
         <?php
@@ -14,10 +14,11 @@
             }
         ?>
     </div>
+
     <form class="d-inline" method="POST" action="/about/edit/app">
         @csrf
         <input name="help_body" id="about_body" hidden>
-        <button class="btn btn-success mt-3" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Chages</button>
+        <button class="btn btn-success mt-3" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
     </form>
 
     <script>
@@ -50,3 +51,10 @@
         ?>
     </div>
 @endif
+
+<script>
+    const date_holder_1 = document.getElementById('date_holder_1');
+
+    const date = new Date(date_holder_1.textContent);
+    date_holder_1.textContent = getDateToContext(date, "datetime");
+</script>

@@ -12,6 +12,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -41,6 +42,10 @@ Route::prefix('/')->group(function () {
     Route::post('/v2/login', [LandingController::class, 'login_auth']);
 });
 
+Route::prefix('/register')->group(function () {
+    Route::get('/', [RegisterController::class, 'index'])->name('register');
+});
+
 ######################### Private Route #########################
 
 Route::post('/sign-out', [MultiController::class, 'sign_out'])->middleware(['auth_v2:sanctum']);
@@ -68,6 +73,7 @@ Route::prefix('/statistic')->middleware(['auth_v2:sanctum'])->group(function () 
 Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/tag', [TagController::class, 'index']);
     Route::post('/tag/add', [TagController::class, 'add_tag']);
+    Route::post('/tag/filter_category', [TagController::class, 'filter_category']);
     Route::post('/tag/add_category', [TagController::class, 'add_tag_category']);
     Route::post('/tag/update/{type}/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
@@ -98,6 +104,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
 
 Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/notification', [NotificationController::class, 'index']);
+    Route::post('/notification/add', [NotificationController::class, 'add_notif']);
     Route::post('/notification/update/{id}', [NotificationController::class, 'update_notif']);
     Route::post('/notification/delete/{id}', [NotificationController::class, 'delete_notif']);
 
@@ -175,5 +182,6 @@ Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [ProfileController::class, 'index']);
     Route::post('/edit/profile', [ProfileController::class, 'edit_profile']);
     Route::post('/request', [ProfileController::class, 'request_role']);
+    Route::post('/faq', [ProfileController::class, 'add_faq']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']); // Not finished
 });
