@@ -275,4 +275,77 @@ class Commands extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function check_user(Request $request){
+        try {
+            $validator = Validation::getValidateUserStarter($request);
+
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Validation failed, username and email cant be empty',
+                    'error' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $found = User::where('username', $request->username)
+                    ->orWhere('email', $request->email)
+                    ->exists();
+
+                if(!$found){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Validation success',
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => 'Validation failed, username or email already registered',
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function updateFirebaseToken(Request $request, $token){
+        try {
+            $data = new Request();
+            $obj = [
+                'firebase_fcm_token' => $token,
+            ];
+            $data->merge($obj);
+            $validator = Validation::getValidateFirebaseToken($data);
+
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'error' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $user_id = $request->user()->id;
+                
+                User::where('id',$user_id)->update([
+                    "firebase_fcm_token" => $token
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Token updated',
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

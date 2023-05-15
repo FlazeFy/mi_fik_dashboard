@@ -57,6 +57,10 @@ Route::prefix('/v1/faq')->group(function() {
     Route::post('/question', [CommandQuestionApi::class, 'createQuestion'])->middleware(['auth:sanctum']);
 });
 
+Route::prefix('/v1/check')->group(function() {
+    Route::post('/user', [CommandUserApi::class, 'check_user']);
+});
+
 ######################### Private Route #########################
 
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
@@ -118,6 +122,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
+    Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);
     Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
 });
 

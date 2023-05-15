@@ -7,6 +7,7 @@ use App\Rules\TypeInfo;
 use App\Rules\TypeDictionary;
 use App\Rules\TypeSuggest;
 use App\Rules\TypeQuestion;
+use Illuminate\Support\Str;
 
 class Validation
 {
@@ -227,6 +228,23 @@ class Validation
         return Validator::make($request->all(), [
             'group_name' => 'required|min:3|max:35|string',
             'group_desc' => 'nullable|min:3|max:255|string',
+        ]);
+    }
+
+    public static function getValidateFirebaseToken($request){
+        return Validator::make($request->all(), [
+            'firebase_fcm_token' => 'required|max:255|string',
+        ]);
+    }
+
+    public static function getValidateUserStarter($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:30|string',
+            'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
+                if (!Str::endsWith($val, '@gmail.com')) {
+                    $err('The '.$attr.' must be a valid Gmail address');
+                }
+            }],
         ]);
     }
 }
