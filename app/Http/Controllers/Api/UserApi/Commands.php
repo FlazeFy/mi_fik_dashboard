@@ -285,8 +285,7 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Validation failed, username and email cant be empty',
-                    'error' => $errors
+                    'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $found = User::where('username', $request->username)
@@ -301,14 +300,14 @@ class Commands extends Controller
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => 'Validation failed, username or email already registered',
+                        'result' => 'Validation failed, username or email already registered',
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'result' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
