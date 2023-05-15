@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-
 use App\Models\User;
+use App\Models\Archive;
 use App\Models\History;
 use App\Models\UserRequest;
 
@@ -344,6 +344,129 @@ class Commands extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function register(Request $request){
+        try {
+            $validator = Validation::getValidateUserRegister($request);
+
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => $errors,
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $found = User::where('username', $request->username)
+                    ->orWhere('email', $request->email)
+                    ->exists();
+
+                if(!$found){
+                    $uuid = Generator::getUUID();
+
+                    $user = User::create([
+                        'id' => $uuid, 
+                        'firebase_fcm_token' => null, 
+                        'username' => $request->username, 
+                        'email' => $request->email, 
+                        'password' => $request->password, 
+                        'first_name' => $request->first_name, 
+                        'last_name' => $request->last_name,  
+                        'role' => null, 
+                        'image_url' => null, 
+                        'valid_until' => $request->valid_until, 
+                        'created_at' => date("Y-m-d H:i:s"), 
+                        'updated_at' => null, 
+                        'updated_by' => null, 
+                        'deleted_at' => null,
+                        'deleted_by' => null,
+                        'accepted_at' => null,
+                        'accepted_by' => null, 
+                        'is_accepted' => 0
+                    ]);
+
+                    $data = new Request();
+                    $obj = [
+                        'history_type' => "user",
+                        'history_body' => "has registered"
+                    ];
+                    $data->merge($obj);
+
+                    $validatorHistory = Validation::getValidateHistory($data);
+                    if ($validatorHistory->fails()) {
+                        $errors = $validatorHistory->messages();
+
+                        return response()->json([
+                            'status' => 'failed',
+                            'result' => $errors,
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    } else {
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => null, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user->id,
+                        ]);
+
+                        $obj = [
+                            'history_type' => "archive",
+                            'history_body' => "has created a archive called 'My Archive'"
+                        ];
+                        $data->merge($obj);
+        
+                        $validatorHistory = Validation::getValidateHistory($data);
+                        if ($validatorHistory->fails()) {
+                            $errors = $validatorHistory->messages();
+
+                            return response()->json([
+                                'status' => 'failed',
+                                'result' => $errors,
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        } else {
+                            $archive = Archive::create([
+                                'id' => Generator::getUUID(),
+                                'slug_name' => "my-archive-".$uuid,
+                                'archive_name' => "My Archive",
+                                'archive_desc' => "This is default archive",
+                                'created_by' => $user->id,
+                                'created_at' => date('Y-m-d H:i:s'),
+                                'updated_by' => null,
+                                'updated_at' => null
+                            ]);
+
+                            History::create([
+                                'id' => Generator::getUUID(),
+                                'history_type' => $data->history_type, 
+                                'context_id' => $archive->id, 
+                                'history_body' => $data->history_body, 
+                                'history_send_to' => null,
+                                'created_at' => date("Y-m-d H:i:s"),
+                                'created_by' => $user->id,
+                            ]);
+
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => 'User registration complete',
+                            ], Response::HTTP_OK);
+                        }
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => 'Validation failed, username or email already registered',
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'result' => $e->getMessage()
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

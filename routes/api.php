@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\SystemApi\QueryInfo as QueryInfoApi;
 ######################### Public Route #########################
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
+Route::post('/v1/register', [CommandUserApi::class, 'register']);
 
 Route::prefix('/v1/dictionaries')->group(function() {
     Route::get('/', [QueryDictionaryApi::class, 'getAllDictionary']);
