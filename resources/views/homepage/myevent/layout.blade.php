@@ -11,6 +11,7 @@
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5>My Event</h5>
+                @include('homepage.myevent.searchbar')
                 <hr>
                 <div class="event-holder row mt-3"  style="display: flex; flex-direction: column; max-height: 75vh; overflow-y: scroll;">        
                     <div class="row p-0 m-0" id="data-wrapper-my-event"></div>
@@ -43,16 +44,21 @@
     }
 
     function infinteLoadMyEvent(page) {
+        var find = document.getElementById("myevent_search").value;
+        document.getElementById("data-wrapper-my-event").innerHTML = "";
+
         function getFind(check){
-            if(check == null || check.trim() === ''){
-                return " "
+            let trim = check.trim();
+            if(check == null || trim === ''){
+                return "%20"
             } else {
-                return check
+                document.getElementById("myevent_search").value = trim;
+                return trim
             }
         }
         
         $.ajax({
-            url: "/api/v1/content/my/order/desc/find/%20?page=" + page,
+            url: "/api/v1/content/my/order/desc/find/" + getFind(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -288,7 +294,14 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load-my-event').hide();
-                $("#empty_myevent_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>You haven't created any event</h6></div>");
+                var find = document.getElementById("myevent_search").value;
+                var msg = "";
+                if(find.trim() != ""){
+                    msg = "Sorry but we not found specific event";
+                } else {
+                    msg = "You haven't created any event yet";
+                }
+                $("#empty_myevent_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>" + msg + "</h6></div>");
             } else {
                 // handle other errors
             }
