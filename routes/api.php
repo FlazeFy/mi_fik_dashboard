@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\SystemApi\QueryInfo as QueryInfoApi;
 ######################### Public Route #########################
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
+Route::post('/v1/register', [CommandUserApi::class, 'register']);
 
 Route::prefix('/v1/dictionaries')->group(function() {
     Route::get('/', [QueryDictionaryApi::class, 'getAllDictionary']);
@@ -55,6 +56,10 @@ Route::prefix('/v1/faq')->group(function() {
     Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
     Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
     Route::post('/question', [CommandQuestionApi::class, 'createQuestion'])->middleware(['auth:sanctum']);
+});
+
+Route::prefix('/v1/check')->group(function() {
+    Route::post('/user', [CommandUserApi::class, 'check_user']);
 });
 
 ######################### Private Route #########################
@@ -118,6 +123,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
+    Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);
     Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
 });
 

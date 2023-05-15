@@ -26,6 +26,7 @@ class UserRequest extends Model
             ->where('created_by', $id)
             ->where('is_accepted', 0)
             ->whereNull('is_rejected')
+            ->where('is_accepted',0)
             ->limit(1)
             ->get();
 
