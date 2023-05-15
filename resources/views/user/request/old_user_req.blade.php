@@ -9,7 +9,7 @@
 <div class="incoming-req-box">
     <h5 class="text-secondary fw-bold"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:15px; top:0px;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
+        onclick="cleanReq()" aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-old-req">
@@ -130,7 +130,7 @@
                     var type = data[i].request_type;
 
                     var elmt = " " +
-                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ')"> ' +
+                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + ')"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-3 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png"> ' +
@@ -142,7 +142,8 @@
                                         '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
                                     '</div> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input hidden id="tag_holder_' + username + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
+                                        '<input hidden id="tag_holder_' + username + id + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
+                                        '<input hidden id="type_holder_' + username + id + '" value=' + "'" + type + "'" + '>' +
                                         '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
                                     '</div> ' +
                                 '</div> ' +
@@ -164,7 +165,7 @@
     }
 
     function addSelected(id, username, type, fullname, checked){
-        var tag = document.getElementById("tag_holder_" + username).value;
+        var tag = document.getElementById("tag_holder_" + username + id).value;
         var ddItemAcc = document.getElementById("acc_all_btn");
         var ddItemRej = document.getElementById("rej_all_btn");
        
@@ -214,8 +215,8 @@
         refreshListRej()
     }
 
-    function loadDetailGroup(username){
-        load_user_detail(username)
+    function loadDetailGroup(username, type, id){
+        load_user_detail(username, type, id)
         infinteLoadMoreTag()
     }
 </script>
