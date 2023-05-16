@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\ArchiveApi\Queries as QueryArchiveApi;
 use App\Http\Controllers\Api\ContentApi\CommandContent as CommandContentApi;
 use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
 use App\Http\Controllers\Api\SystemApi\QueryDictionary as QueryDictionaryApi;
+use App\Http\Controllers\Api\SystemApi\QueryAccess as QueryAccessApi;
 use App\Http\Controllers\Api\SystemApi\QueryNotification as QueryNotificationApi;
 use App\Http\Controllers\Api\TrashApi\Queries as QueryTrashApi;
 use App\Http\Controllers\Api\QuestionApi\Commands as CommandQuestionApi;
@@ -28,6 +29,7 @@ use App\Http\Controllers\Api\SystemApi\QueryInfo as QueryInfoApi;
 ######################### Public Route #########################
 
 Route::post('/v1/login', [CommandAuthApi::class, 'login']);
+Route::post('/v1/register', [CommandUserApi::class, 'register']);
 
 Route::prefix('/v1/dictionaries')->group(function() {
     Route::get('/', [QueryDictionaryApi::class, 'getAllDictionary']);
@@ -55,6 +57,10 @@ Route::prefix('/v1/faq')->group(function() {
     Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
     Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
     Route::post('/question', [CommandQuestionApi::class, 'createQuestion'])->middleware(['auth:sanctum']);
+});
+
+Route::prefix('/v1/check')->group(function() {
+    Route::post('/user', [CommandUserApi::class, 'check_user']);
 });
 
 ######################### Private Route #########################
@@ -85,6 +91,7 @@ Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function 
 
 Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryContentApi::class, 'getContentHeader']);
+    Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
 
@@ -113,11 +120,13 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryUserApi::class, 'getMyProfile']);
     Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
-    Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
-    Route::get('/request/old', [QueryUserApi::class, 'getOldUserRequest']);
+    Route::get('/request/new/{fullname}', [QueryUserApi::class, 'getNewUserRequest']);
+    Route::get('/request/old/{fullname}', [QueryUserApi::class, 'getOldUserRequest']);
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
+    Route::get('/access/history/{limit}', [QueryAccessApi::class, 'getAllPersonalAccessToken']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
+    Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);
     Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
 });
 

@@ -33,7 +33,9 @@
     var page_tag = 1;
     load_user_detail("");
 
-    function load_user_detail(username_search) {        
+    function load_user_detail(username_search, type, id) {      
+        $("#empty_item_holder_user_detail").html("");
+
         $.ajax({
             url: "/api/v1/user/" + username_search,
             datatype: "json",
@@ -68,21 +70,7 @@
                         var elmt = ""
                         yesterday.setDate(yesterday.getDate() - 1);
                         
-                        //FIx this!!!
                         if(result.toDateString() === now.toDateString()){
-                            // $start_date = new DateTime(datetime);
-                            // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                            // if(result.getHours() == now.getHours()){
-                            //     const min = result.getMinutes() - now.getMinutes();
-                            //     if(min <= 10 && min > 0){
-                            //         return $since_start->m;
-                            //     } else {
-                            //         return  min + " minutes ago";    
-                            //     }
-                            // } else if(now.getHours() - result.getHours() <= 6){
-                            //     return now.getHours() - result.getHours() + " hours ago";    
-                            // } else {
                             elmt = "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
                             //}
                         } else if(result.toDateString() === yesterday.toDateString()){
@@ -114,14 +102,24 @@
                     }
                 }
 
-                function getLifeButton(acc, acc_date){
-                    if(!acc && !acc_date){
-                        return '<a class="btn btn-detail-config success" title="Approve Account" data-bs-toggle="modal" href="#acc_user"><i class="fa-solid fa-check"></i></a>';
-                    } else if(!acc && acc_date){
-                        return '<a class="btn btn-detail-config success" title="Recover Account" data-bs-toggle="modal" href="#recover_user"><i class="fa-solid fa-rotate-right"></i></a>';
-                    } else if(acc && acc_date){
-                        return '<a class="btn btn-detail-config danger" title="Suspend Account" data-bs-toggle="modal" href="#suspend_user"><i class="fa-solid fa-power-off"></i></a>';
-                    } else {}
+                function getLifeButton(acc, acc_date, type, id, username, fullname){
+                    if(type == "new"){
+                        if(!acc && !acc_date){
+                            return '<a class="btn btn-detail-config success" title="Approve Account" data-bs-toggle="modal" href="#acc_user"><i class="fa-solid fa-check"></i></a>';
+                        } else if(!acc && acc_date){
+                            return '<a class="btn btn-detail-config success" title="Recover Account" data-bs-toggle="modal" href="#recover_user"><i class="fa-solid fa-rotate-right"></i></a>';
+                        } else if(acc && acc_date){
+                            return '<a class="btn btn-detail-config danger" title="Suspend Account" data-bs-toggle="modal" href="#suspend_user"><i class="fa-solid fa-power-off"></i></a>';
+                        }
+                    } else if(type == "old"){
+                        var req_type = document.getElementById("type_holder_" + username + id).value;
+                        
+                        if(req_type == "add"){
+                            return '<a class="btn btn-detail-config success" onclick="cleanReq(); addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+req_type+"'"+', '+"'"+fullname+"'"+', true)" title="Accept Request" data-bs-toggle="modal" data-bs-target="#accOldReqModal"><i class="fa-solid fa-check"></i></a>';
+                        } else if(req_type == "remove"){
+                            return '<a class="btn btn-detail-config danger" onclick="cleanReq(); addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+req_type+"'"+', '+"'"+fullname+"'"+', true)" title="Reject Request" data-bs-toggle="modal" data-bs-target="#rejOldReqModal"><i class="fa-solid fa-xmark"></i></a>';
+                        }
+                    }
                 }
 
                 function getNewUser(status){
@@ -201,6 +199,59 @@
                     '</div>');
                 }
 
+                function manageRole(type, username, id){
+                    if(type == "new"){
+                        var elmt = 
+                        '<h6 class="text-secondary my-4"> Manage Role</h6> ' +   
+                        '<div class="position-absolute" style="right:0; top:10px;"> ' +
+                            '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" aria-label="Floating label select example" required> ' +
+                                '@php($i = 0) ' +
+                                '@foreach($dct_tag as $dtag) ' +
+                                    '@if($i == 0) ' +
+                                        '<option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option> ' +
+                                        '<option value="all">All</option> ' +
+                                    '@else ' +
+                                        '<option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option> ' +
+                                    '@endif ' +
+                                    '@php($i++) ' +
+                                '@endforeach ' +
+                            '</select> ' +
+                        '</div> ' + 
+                        '<div class="tag-manage-holder" id="data_wrapper_manage_tag"> ' +
+                            '<div class="auto-load-tag text-center"> ' +
+                                '<svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ' +
+                                    'x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve"> ' +
+                                    '<path fill="#000" ' +
+                                        'd="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"> ' +
+                                        '<animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" ' +
+                                            'from="0 50 50" to="360 50 50" repeatCount="indefinite" /> ' +
+                                    '</path> ' +
+                                '</svg> ' +
+                            '</div> ' +
+                        '</div> ' +
+                        '<div id="empty_item_holder_manage_tag"></div> ' +
+                        '<span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span> ' +
+                        '<h6 class="text-secondary mt-3"> Selected Role</h6> ' +
+                        '<div id="slct_holder"></div> ';
+                    } else if(type == "old"){
+                        var passing_tag = document.getElementById("tag_holder_" + username + id).value;
+                        var list_request = JSON.parse(passing_tag);
+                        var req_hold = "";
+
+                        list_request.forEach(e => {
+                            req_hold += '<a class="btn btn-tag" id="tag_collection_' + e.slug_name +'" title="Select this tag" ' + 
+                                'onclick="addSelectedTag('+"'"+ e.slug_name +"'"+', '+"'"+e.tag_name+"'"+', true)">' + e.tag_name + '</a> ';
+                        });
+
+                        var elmt = '<h6 class="text-secondary mt-3"> Requested Role</h6> ' +
+                            '<div class="tag-manage-holder" id="manage-request-tag">'+req_hold+'</div> ' +
+                            '<h6 class="text-secondary mt-3"> Request Revision</h6> ' +
+                            '<div id="slct_holder"></div> ';
+                    }
+
+                    return elmt;
+                }
+
                 for(var i = 0; i < data.length; i++){
                     $("#data_wrapper_user_detail").empty();
 
@@ -228,33 +279,20 @@
                                     '<h6 class="user-box-date">' + getJoinedAt(accepted_at, is_accepted) + '</h6> ' +
                                 '</div> ' +
                             '</div> ' +
-                            '<h6 class="text-secondary"> Role</h6> ' +
-                            getRoleArea(role) +
-                            '<h6 class="text-secondary"> Manage Role</h6> ' +
-
-                            '<div class="tag-manage-holder" id="data_wrapper_manage_tag"> ' +
-                                '<div class="auto-load-tag text-center"> ' +
-                                '<svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" ' +
-                                    'x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve"> ' +
-                                    '<path fill="#000" ' +
-                                        'd="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50"> ' +
-                                        '<animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" ' +
-                                            'from="0 50 50" to="360 50 50" repeatCount="indefinite" /> ' +
-                                    '</path> ' +
-                                '</svg> ' +
+                            '<div class="scroll-role"> ' +
+                                '<h6 class="text-secondary"> Role</h6> ' +
+                                '<div> ' +
+                                    getRoleArea(role) +
+                                '</div> ' +
+                                '<div class="position-relative"> ' +
+                                    manageRole(type,username, id) +
+                                '</div> ' +
                             '</div> ' +
-                            '<div id="empty_item_holder_manage_tag"></div> ' +
-                            '<span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span> ' +
-                            '</div> ' +
-
-                            '<h6 class="text-secondary"> Selected Role</h6> ' +
-                            '<div id="slct_holder"></div> ' +
-
                             '<div class="config-btn-group">' +
                                 '<hr> ' +
                                 '<a class="btn btn-detail-config primary" title="Manage role" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></a>' +
                                 '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
-                                getLifeButton(is_accepted, accepted_at) +
+                                getLifeButton(is_accepted, accepted_at, type, id, username, full_name) +
                                 '<span id="btn-submit-tag-holder"></span> ' +
                             '</div> ' +
                         '</div>';
@@ -281,20 +319,31 @@
         });
     }
 
+    function cleanReq(){
+        selectedOldUser = [];
+    }
+
     // infinteLoadMoreTag(page_tag);
 
-    // function loadmoretag(route){
-    //     page_tag++;
-    //     infinteLoadMoreTag(page_tag);
-    // }
+    function loadmoretag(route){
+        page_tag++;
+        infinteLoadMoreTag(page_tag);
+    }
 
     //Initial variable.
     var tag_list = []; //Store all tag from db to js arr.
     var slct_list = []; //Store all tag's id.
+    var tag_cat = "<?= $dct_tag[0]['slug_name'] ?>";
 
-    function infinteLoadMoreTag(page_tag) { 
+    function setTagFilter(tag){
+        tag_cat = tag;
+        infinteLoadMoreTag(1);
+        $("#data_wrapper_manage_tag").empty();
+    }
+
+    function infinteLoadMoreTag(page_tag) {         
         $.ajax({
-            url: "/api/v1/tag/12"+ "?page=" + page_tag,
+            url: "/api/v1/tag/cat/" + tag_cat + "/12"+ "?page=" + page_tag,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -322,8 +371,8 @@
                 $('.auto-load-tag').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
-                $("#data_wrapper_manage_tag").empty();
-
+                $("#empty_item_holder_manage_tag").empty();
+                
                 for(var i = 0; i < data.length; i++){
 
                     //Attribute
@@ -337,8 +386,14 @@
                 }   
             }
         })
-        .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+        .fail(function (jqXHR, ajaxOptions, thrownError, response) {
+            if (jqXHR.status == 404) {
+                $('.auto-load-tag').hide();
+                $('#load_more_holder_manage_tag').empty();
+                $("#empty_item_holder_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 

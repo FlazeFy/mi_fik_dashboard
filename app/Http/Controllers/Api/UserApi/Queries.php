@@ -12,14 +12,16 @@ use App\Helpers\Query;
 
 class Queries extends Controller
 {
-    public function getNewUserRequest()
+    public function getNewUserRequest($fullname)
     {
         try{
             $select = Query::getSelectTemplate("user_request_new");
 
             $user = User::selectRaw($select)
                 ->where('role', null)
+                ->whereRaw("CONCAT(first_name,' ',last_name) LIKE '%".$fullname."%'")
                 ->orWhere('is_accepted', 0)
+                ->whereRaw("CONCAT(first_name,' ',last_name) LIKE '%".$fullname."%'")
                 ->orderBy('created_at', 'DESC')
                 ->paginate(12);
 
@@ -101,7 +103,7 @@ class Queries extends Controller
         }
     }
 
-    public function getOldUserRequest()
+    public function getOldUserRequest($fullname)
     {
         try{
             $select = Query::getSelectTemplate("user_request_old");
@@ -109,6 +111,7 @@ class Queries extends Controller
             $user = UserRequest::selectRaw($select)
                 ->join('users', 'users.id', '=', 'users_requests.created_by')
                 ->where('is_rejected', null)
+                ->whereRaw("CONCAT(first_name,' ',last_name) LIKE '%".$fullname."%'")
                 ->where('users_requests.is_accepted', 0)
                 ->orderBy('created_at', 'ASC')
                 ->paginate(12);

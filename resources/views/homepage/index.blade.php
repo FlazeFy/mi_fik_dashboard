@@ -60,12 +60,24 @@
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
                         <div class="position-relative">
                             <div class="row mt-3"> 
-                                <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
-                                    @include('homepage.addevent_form.layout')
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
-                                    @include('homepage.addAnnouncement')
-                                </div>
+                                @if(session()->get("role_key") == 0)
+                                    <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
+                                        @include('homepage.addevent_form.layout')
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
+                                        @include('homepage.myevent.layout')
+                                    </div>
+                                @else
+                                    <div class="col-lg-4 col-md-6 col-sm-12 pb-2">
+                                        @include('homepage.addevent_form.layout')
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-sm-12 pb-2">
+                                        @include('homepage.addAnnouncement')
+                                    </div>
+                                    <div class="col-lg-4 col-md-6 col-sm-12 pb-2">
+                                        @include('homepage.myevent.layout')
+                                    </div>
+                                @endif
                             </div>
                             <div class="mt-2 btn-config-holder">
                                 @include('event.calendar.filter_tag')

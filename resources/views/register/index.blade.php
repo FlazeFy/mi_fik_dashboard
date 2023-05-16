@@ -99,6 +99,7 @@
         <script>
             var nextStep = "welcoming";
             var slct_role = [];
+            var registered = false;
             var btn_profile_holder = document.getElementById("btn-next-profile-data-holder");
             var btn_role_holder = document.getElementById("btn-next-role-holder");
             var btn_ready_holder = document.getElementById("btn-next-ready-holder");
@@ -142,7 +143,10 @@
                         btn_profile_holder.innerHTML = "<button class='btn-next-steps locked' id='btn-next-profile-data' onclick='warn("+'"'+"terms"+'"'+")'><i class='fa-solid fa-lock'></i> Locked</button>";
                     }   
                 } else if(now == "profiledata"){
-                    if(val1 == true && val2 == true){
+                    if(val1 == true && val2 == true && registered == false){
+                        msg_all_input.innerHTML = "";
+                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' onclick='register()'><i class='fa-solid fa-arrow-up'></i> Register Now</button>";
+                    } else if(val1 == true && val2 == true && registered == true){
                         msg_all_input.innerHTML = "";
                         btn_role_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"profiledata"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
                     } else {

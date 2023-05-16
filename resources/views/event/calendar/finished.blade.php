@@ -252,7 +252,7 @@
                             "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                 "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                 "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
-                                "<div class='event-views'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
+                                "<div class='event-views' style='left:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
                                 "<div class='card-body p-2 w-100'> " +
                                     "<div class=''> " +

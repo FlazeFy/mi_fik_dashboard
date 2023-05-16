@@ -66,7 +66,10 @@ class Query
                     WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."student".'"'."%' THEN 'Student'
                 END AS general_role,
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
-
+        } else if($type == "access_info"){
+            $query = "personal_access_tokens.id, SUBSTR(tokenable_type, 12) as type, token, last_used_at, expires_at, personal_access_tokens.created_at, personal_access_tokens.updated_at,
+                admins.username as admin_username, users.username as user_username, CONCAT(admins.first_name,' ',admins.last_name) as admin_fullname, 
+                CONCAT(users.first_name,' ',users.last_name) as user_fullname";
         } else if($type == "group_detail"){
             $query = "users_groups.id, slug_name, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
         } else if($type == "group_relation"){
