@@ -14,7 +14,9 @@
         color: grey;
     }
 </style>
-
+<?php
+    use Carbon\Carbon;
+?>
 <div class="history-holder">
     <?php 
         if(!function_exists('getItemTimeString')) {
@@ -67,8 +69,17 @@
             </span>
             <span class="d-inline-block">
                 <span><b>{{$hs->admin_username}}{{$hs->user_username}}</b> {{$hs->history_body}}<span><br>
-                <span class="history-date">{{getItemTimeString($hs->created_at)}}</span>
+                <span class="history-date">{{Carbon::parse($hs->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span>
             </span>
         </div>
     @endforeach
 </div>
+
+<script>
+    const date_holder_hs = document.querySelectorAll('.history-date');
+
+    date_holder_hs.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+</script>

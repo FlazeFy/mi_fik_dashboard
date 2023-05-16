@@ -37,6 +37,7 @@ class EditController extends Controller
         $history = History::getContentHistory($slug_name);
         $menu = Menu::getMenu();
         $info = Info::getAvailableInfo("event/edit");
+        $dct_tag = Dictionary::getDictionaryByType("Tag");
 
         //Set active nav
         session()->put('active_nav', 'event');
@@ -50,6 +51,7 @@ class EditController extends Controller
             ->with('menu', $menu)
             ->with('info', $info)
             ->with('history', $history)
+            ->with('dct_tag', $dct_tag)
             ->with('dictionary', $dictionary)
             ->with('greet',$greet);
                 
