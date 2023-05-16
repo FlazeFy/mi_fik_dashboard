@@ -59,19 +59,21 @@
                             <div class="col-lg-8 col-md-7 col-sm-12">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                        <div class="content-section-small">
+                                        @include('user.request.control.searchbarold')
+                                        <div class="content-section-small mt-2">    
                                             @include('user.request.old_user_req')
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
-                                        <div class="content-section-small">
+                                        @include('user.request.control.searchbarnew')
+                                        <div class="content-section-small mt-2">
                                             @include('user.request.new_user_req')
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-md-5 col-sm-12">
-                                <div class="content-section-small">
+                                <div class="content-section-small mt-5">
                                     @include('user.request.detail')
                                 </div>
                             </div>
