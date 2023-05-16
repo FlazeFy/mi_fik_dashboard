@@ -55,7 +55,15 @@
     @foreach($history as $hs)
         <div class="container-fluid p-1 mb-1">
             <span class="d-inline-block">
-                <img class="img img-fluid user-image" style="margin-bottom: -8px;" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
+                @if($hs->history_type == "about" || $hs->history_type == "help" || $hs->history_type == "group" || $hs->history_type == "tag" || $hs->history_type == "info" || $hs->history_type == "notification" || $hs->history_type == "faq" || $hs->history_type == "feedback" || $hs->history_type == "event")
+                    @if($hs->admin_image)
+                        <img class="img img-fluid user-image" style="margin-bottom: -8px;" src="{{$hs->admin_image}}" alt="{{$hs->admin_image}}">
+                    @else 
+                        <img class="img img-fluid user-image" style="margin-bottom: -8px;" src="{{ asset('/assets/default_admin.png')}}" alt="{{ asset('/assets/default_admin.png')}}">
+                    @endif
+                @else 
+        
+                @endif
             </span>
             <span class="d-inline-block">
                 <span><b>{{$hs->admin_username}}{{$hs->user_username}}</b> {{$hs->history_body}}<span><br>

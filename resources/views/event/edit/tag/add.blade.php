@@ -48,7 +48,9 @@
             url: "/api/v1/tag/12"+ "?page=" + page_tag,
             datatype: "json",
             type: "get",
-            beforeSend: function () {
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
                 $('.auto-load-tag').show();
             }
         })

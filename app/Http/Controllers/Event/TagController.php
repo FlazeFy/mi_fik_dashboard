@@ -73,7 +73,7 @@ class TagController extends Controller
         //Validate name avaiability
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
-        if((count($check) == 0 || $request->update_type == "desc") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
+        if((count($check) == 0 || $request->update_type == "desc" || $request->update_type == "cat") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
             $user_id = Generator::getUserIdV2(session()->get('role_key')); 
