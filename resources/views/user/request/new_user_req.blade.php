@@ -20,20 +20,19 @@
     </div>
 
     <div class="user-req-holder" id="data_wrapper_new_req">
-        <!-- Loading -->
         <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
     </div>
-    <div id="empty_item_holder_new_req"></div>
     <span id="load_more_holder_new_req" style="display: flex; justify-content:center;"></span>
-    </div>
+    <div id="empty_item_holder_new_req"></div>
 </div>
 
 <script>
@@ -53,9 +52,22 @@
         infinteLoadMore(page_new_req);
     }
 
-    function infinteLoadMore_new_req(page_new_req) {        
+    function getFindNew(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "%20"
+        } else {
+            document.getElementById("fullname_search_new").value = trim;
+            return trim
+        }
+    }
+
+    function infinteLoadMore_new_req(page_new_req) {       
+        var find = document.getElementById("fullname_search_new").value;
+        document.getElementById("data_wrapper_new_req").innerHTML = "";
+
         $.ajax({
-            url: "/api/v1/user/request/new" + "?page=" + page_new_req,
+            url: "/api/v1/user/request/new/" + getFindNew(find) + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -142,6 +154,7 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
+                $('#total_new_req').text("0");
                 $("#empty_item_holder_new_req").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No request found</h6></div>");
             } else {
                 // handle other errors

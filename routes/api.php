@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\ArchiveApi\Queries as QueryArchiveApi;
 use App\Http\Controllers\Api\ContentApi\CommandContent as CommandContentApi;
 use App\Http\Controllers\Api\ContentApi\QueryContent as QueryContentApi;
 use App\Http\Controllers\Api\SystemApi\QueryDictionary as QueryDictionaryApi;
+use App\Http\Controllers\Api\SystemApi\QueryAccess as QueryAccessApi;
 use App\Http\Controllers\Api\SystemApi\QueryNotification as QueryNotificationApi;
 use App\Http\Controllers\Api\TrashApi\Queries as QueryTrashApi;
 use App\Http\Controllers\Api\QuestionApi\Commands as CommandQuestionApi;
@@ -90,6 +91,7 @@ Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function 
 
 Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryContentApi::class, 'getContentHeader']);
+    Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
 
@@ -118,9 +120,10 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryUserApi::class, 'getMyProfile']);
     Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
-    Route::get('/request/new', [QueryUserApi::class, 'getNewUserRequest']);
-    Route::get('/request/old', [QueryUserApi::class, 'getOldUserRequest']);
+    Route::get('/request/new/{fullname}', [QueryUserApi::class, 'getNewUserRequest']);
+    Route::get('/request/old/{fullname}', [QueryUserApi::class, 'getOldUserRequest']);
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
+    Route::get('/access/history/{limit}', [QueryAccessApi::class, 'getAllPersonalAccessToken']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
     Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);

@@ -25,6 +25,7 @@ use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
 use App\Http\Controllers\System\MaintenanceController;
 use App\Http\Controllers\System\DictionaryController;
+use App\Http\Controllers\System\AccessController;
 
 use App\Http\Controllers\Social\FeedbackController;
 use App\Http\Controllers\Social\FaqController;
@@ -117,6 +118,8 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
 
     Route::get('/maintenance', [MaintenanceController::class, 'index']);
+
+    Route::get('/access', [AccessController::class, 'index']);
 });
 
 Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {

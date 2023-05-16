@@ -24,7 +24,6 @@
 .event-views{
     position: absolute;
     top: 7.5px;
-    left: 10px;
     color: #F5F5F5 !important;
     font-weight: 500;
     font-size: 14px;
@@ -84,6 +83,20 @@
     border: 1.75px solid #FFFFFF;
     border-radius: 100px;
     background: #D5534C;
+    color:#FFFFFF !important;
+}
+.total-my-event{
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: 18px;
+    position: absolute;
+    top: -20px;
+    right: 20px;
+    min-width: 45px;
+    height: 45px;
+    border: 1.75px solid #FFFFFF;
+    border-radius: 100px;
+    background: #58C06E;
     color:#FFFFFF !important;
 }
 .btn-detail{
