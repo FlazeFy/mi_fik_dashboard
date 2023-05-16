@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\UserRequest;
 use App\Models\Menu;
 use App\Models\History;
+use App\Models\Dictionary;
 
 class RequestController extends Controller
 {
@@ -26,6 +27,7 @@ class RequestController extends Controller
     public function index()
     {
         $greet = Generator::getGreeting(date('h'));
+        $dct_tag = Dictionary::getDictionaryByType("Tag");
         $menu = Menu::getMenu();
 
         //Set active nav
@@ -34,6 +36,7 @@ class RequestController extends Controller
 
         return view('user.request.index')
             ->with('menu', $menu)
+            ->with('dct_tag', $dct_tag)
             ->with('greet',$greet);
     }
 

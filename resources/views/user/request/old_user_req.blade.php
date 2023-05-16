@@ -217,6 +217,6 @@
 
     function loadDetailGroup(username, type, id){
         load_user_detail(username, type, id)
-        infinteLoadMoreTag()
+        infinteLoadMoreTag(1)
     }
 </script>
