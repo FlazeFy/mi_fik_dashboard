@@ -35,3 +35,11 @@
 .detail-box{
     height: 70vh;
 }
+.scroll-role{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    max-height: 50vh;
+    flex-direction: column;
+    overflow-y: scroll;
+}

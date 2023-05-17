@@ -9,7 +9,7 @@
 <div class="incoming-req-box">
     <h5 class="text-secondary fw-bold"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:15px; top:0px;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
+        onclick="cleanReq()" aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-old-req">
@@ -21,18 +21,18 @@
     <div class="user-req-holder" id="data_wrapper_old_req">
         <!-- Loading -->
         <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
     </div>
     <div id="empty_item_holder_old_req"></div>
     <span id="load_more_holder_old_req" style="display: flex; justify-content:center;"></span>
-    </div>
 </div>
 
 @include('user.request.modal.acc')
@@ -58,9 +58,22 @@
         infinteLoadMore_old_req(page_old_req);
     }
 
-    function infinteLoadMore_old_req(page_old_req) {        
+    function getFindOld(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "%20"
+        } else {
+            document.getElementById("fullname_search_old").value = trim;
+            return trim
+        }
+    }
+
+    function infinteLoadMore_old_req(page_old_req) { 
+        var find = document.getElementById("fullname_search_old").value;
+        document.getElementById("data_wrapper_old_req").innerHTML = "";
+
         $.ajax({
-            url: "/api/v1/user/request/old" + "?page=" + page_old_req,
+            url: "/api/v1/user/request/old/" + getFindOld(find) + "?page=" + page_old_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -130,7 +143,7 @@
                     var type = data[i].request_type;
 
                     var elmt = " " +
-                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ')"> ' +
+                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + ')"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-3 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png"> ' +
@@ -142,7 +155,8 @@
                                         '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
                                     '</div> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input hidden id="tag_holder_' + username + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
+                                        '<input hidden id="tag_holder_' + username + id + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
+                                        '<input hidden id="type_holder_' + username + id + '" value=' + "'" + type + "'" + '>' +
                                         '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
                                     '</div> ' +
                                 '</div> ' +
@@ -156,6 +170,7 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
+                $('#total_old_req').text("0");
                 $("#empty_item_holder_old_req").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No request found</h6></div>");
             } else {
                 // handle other errors
@@ -164,7 +179,7 @@
     }
 
     function addSelected(id, username, type, fullname, checked){
-        var tag = document.getElementById("tag_holder_" + username).value;
+        var tag = document.getElementById("tag_holder_" + username + id).value;
         var ddItemAcc = document.getElementById("acc_all_btn");
         var ddItemRej = document.getElementById("rej_all_btn");
        
@@ -214,8 +229,8 @@
         refreshListRej()
     }
 
-    function loadDetailGroup(username){
-        load_user_detail(username)
-        infinteLoadMoreTag()
+    function loadDetailGroup(username, type, id){
+        load_user_detail(username, type, id)
+        infinteLoadMoreTag(1)
     }
 </script>

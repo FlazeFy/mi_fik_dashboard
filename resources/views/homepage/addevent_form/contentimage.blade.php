@@ -12,7 +12,7 @@
         background-repeat:no-repeat;
         position: relative;
         background-size: cover;
-        background-color: black;
+        background-color: #414141;
         height:200px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }

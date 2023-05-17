@@ -18,3 +18,23 @@ function getTag(obj, padding, sz, margin){
 
     return res;
 }
+
+function getName(val1 ,val2){
+    if(val1 == null || val1 == "null"){
+        return val2;
+    } else {
+        return val1;
+    }
+}
+
+function messageCopy(val){
+    navigator.clipboard.writeText(val)
+    .then(function() {
+        document.getElementById("success_toast_msg").innerHTML = "Token has been added to clipboard";
+        $('#success_toast').toast('show');
+    })
+    .catch(function(err) {
+        document.getElementById("err_modal_msg").innerHTML = err;
+        $('#error_modal').modal('show');
+    });
+}

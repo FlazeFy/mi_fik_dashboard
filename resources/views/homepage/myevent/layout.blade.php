@@ -1,101 +1,91 @@
-<div class="container mt-3 p-0">
-    <div class="event-holder row mt-3" >        
-        <div class="row p-0 m-0" id="data-wrapper"></div>
-        <!-- Loading -->
-        <div class="auto-load text-center">
-            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-                <path fill="#000"
-                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-                </path>
-            </svg>
+<button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/myevent.png'); ?>"); background-color:#FB5E5B;'
+    data-bs-target="#myevent" data-bs-toggle="modal">
+    <span id="total_my_event"></span>
+    <h5 class="quick-action-text">My Event</h5>
+    <p class="quick-action-info">My event is a bla bla....</p>
+</button>
+
+<div class="modal fade" id="myevent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">  
+            <div class="modal-body pt-4">
+                <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                <h5>My Event</h5>
+                @include('homepage.myevent.searchbar')
+                <hr>
+                <div class="event-holder row mt-3"  style="display: flex; flex-direction: column; max-height: 75vh; overflow-y: scroll;">        
+                    <div class="row p-0 m-0" id="data-wrapper-my-event"></div>
+                    <!-- Loading -->
+                    <div class="auto-load-my-event text-center">
+                        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                            <path fill="#000"
+                                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                            </path>
+                        </svg>
+                    </div>
+                    <div id="empty_myevent_holder"></div>
+                    <span id="load_more_myevent_holder" style="display: flex; justify-content:end;"></span>
+                </div>
+            </div>
         </div>
-        <div id="empty_item_holder"></div>
-        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
     </div>
 </div>
 
 <script type="text/javascript">
     var page = 1;
-    var myname = "<?= session()->get("username_key") ?>";
-    infinteLoadMore(page);
+    infinteLoadMyEvent(page);
 
-    //Fix the sidebar & content page FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page++;
-    //         infinteLoadMore(page);
-    //     } 
-    // };
-
-    function loadmore(route){
+    function loadMyEvent(route){
         page++;
-        infinteLoadMore(page);
+        infinteLoadMyEvent(page);
     }
 
-    function infinteLoadMore(page) {
-        var tag = <?php
-            $tags = session()->get('selected_tag_calendar');
-            
-            if($tags != "All"){
-                echo "'";
-                $count_tag = count($tags);
-                $i = 1;
-
-                foreach($tags as $tg){
-                    if($i != $count_tag){
-                        echo $tg.",";
-                    } else {
-                        echo $tg;
-                    }
-                    $i++;
-                }
-                echo "'";
-            } else {
-                echo "'all'";
-            }
-        ?>;
-
-        var order = <?php echo '"'.session()->get('ordering_event').'";'; ?>
-        var date = <?php echo '"'.session()->get('filtering_date').'";'; ?>
+    function infinteLoadMyEvent(page) {
+        var find = document.getElementById("myevent_search").value;
+        document.getElementById("data-wrapper-my-event").innerHTML = "";
 
         function getFind(check){
-            if(check == null || check.trim() === ''){
-                return " "
+            let trim = check.trim();
+            if(check == null || trim === ''){
+                return "%20"
             } else {
-                return check
+                document.getElementById("myevent_search").value = trim;
+                return trim
             }
         }
         
         $.ajax({
-            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "/find/" + getFind(search_storage) + "?page=" + page,
+            url: "/api/v1/content/my/order/desc/find/" + getFind(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
-                $('.auto-load').show();
+                $('.auto-load-my-event').show();
             }
         })
         .done(function (response) {
-            $('.auto-load').hide();
+            $('.auto-load-my-event').hide();
             var data =  response.data.data;
             var total = response.data.total;
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_myevent_holder').html('<button class="btn content-more-floating my-3 p-2 d-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
+                $('#load_more_myevent_holder').html('<h6 class="btn content-more-floating my-3 p-2 d-block mx-auto">No more item to show</h6>');
             }
 
+            $("#total_my_event").html('<a class="total-my-event" title="You have some draft event"><i class="fa-regular fa-calendar"></i> ' + total + ' </a>');
+
             if (total == 0) {
-                $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                $('#empty_myevent_holder').html("<img src='http://127.0.0.1:8000/assets/nodata2.png' class='img nodata-icon'><h6 class='text-secondary text-center'>My event is empty</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load-my-event').html("<h5 class='text-primary'>Woah!, You have see all the event :)</h5>");
                 return;
             } else {
                 function getEventLoc(loc){
@@ -271,12 +261,11 @@
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
-                            "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
-                                "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
-                                "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
-                                "<div class='event-views' style='left:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
+                            "<button class='card shadow event-box p-2' style='height:auto;' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
+                                "<div class='text-primary' style='font-size:12px;'>" + getDateToContext(created_at, "full") + "</div> " +
+                                "<div class='event-views' style='color:#414141 !important; right:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
-                                "<div class='card-body p-2 w-100'> " +
+                                "<div class='card-body py-2 px-0 w-100'> " +
                                     "<div class=''> " +
                                         "<div class='d-inline-block'> " +
                                             "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image) + "' alt='username-profile-pic.png'> " +
@@ -298,14 +287,21 @@
                             "</button> " +
                         "</div>";
 
-                    $("#data-wrapper").append(elmt);
+                    $("#data-wrapper-my-event").append(elmt);
                 }   
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
-                $('.auto-load').hide();
-                $("#empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>Sorry but we not found specific event</h6></div>");
+                $('.auto-load-my-event').hide();
+                var find = document.getElementById("myevent_search").value;
+                var msg = "";
+                if(find.trim() != ""){
+                    msg = "Sorry but we not found specific event";
+                } else {
+                    msg = "You haven't created any event yet";
+                }
+                $("#empty_myevent_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>" + msg + "</h6></div>");
             } else {
                 // handle other errors
             }

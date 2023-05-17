@@ -1,0 +1,82 @@
+.btn-register-steps{
+    font-size: 20px;
+    font-weight: 500;
+    padding: 18px 26px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-left: 6px solid #F78A00;
+    width: 100%;
+    text-align: start;
+    border-radius: 0 18px 18px 0;
+    margin-bottom: 20px;
+    cursor: pointer !important;
+    -webkit-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    transition: all 0.4s;
+}
+.btn-register-steps h6.text-secondary{
+    text-decoration: none;
+    font-size: 14px;
+    margin-top: 0;
+}
+.btn-register-steps:hover h6.text-secondary{
+    color: white !important;
+}
+.section-register{
+    padding: 18px 26px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border-radius: 18px;
+    min-height: 60vh;
+    margin-top: 10px;
+    position: relative;
+}
+
+.btn-close-register{
+    font-size: 16px;
+    color: #DE3534 !important;
+    margin-bottom: 20px;
+}
+
+.btn-register-steps:hover{
+    background:#F78A00;
+    color: white;
+}
+
+.btn-next-steps{
+    border: 2px solid #58C06E;
+    font-size: 16px;
+    color: #58C06E;
+    background: white;
+    border-radius: 10px;
+    padding: 6px;
+    width: 140px;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+}
+.btn-next-steps:hover{
+    color: white;
+    background: #58C06E;
+}
+
+.locked{
+    cursor: default !important;
+}
+.selected-role{
+    background: #FFDEB4;
+    border-radius: 10px;
+    padding: 6px;
+    margin-bottom: 10px;
+}
+.important-category{
+    background: #fcc4c4;
+    border-radius: 10px;
+    padding: 6px;
+    padding-top: 3px;
+}
+.registered-msg{
+    color: #00c363;
+    text-decoration: none;
+    position: absolute;
+    bottom: 30px;
+    right: 180px;
+}

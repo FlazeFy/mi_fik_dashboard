@@ -346,4 +346,46 @@ class QueryContent extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getMyContent(Request $request, $order, $search){
+        try{
+            $user_id = $request->user()->id;
+            $select = Query::getSelectTemplate("content_draft_homepage");
+            $search = trim($search);
+
+            $content = ContentHeader::selectRaw($select. " ,count(contents_viewers.id) as total_views")
+                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
+                ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
+                ->leftjoin('users', 'users.id', '=', 'contents_headers.created_by')
+                ->leftjoin('contents_viewers', 'contents_viewers.content_id', '=', 'contents_headers.id')
+                ->groupBy('contents_headers.id')
+                ->orderBy('contents_headers.updated_at', $order)
+                ->orderBy('contents_headers.created_at', $order)
+                ->where('contents_headers.created_by', $user_id)
+                ->where('is_draft', 0)
+                ->whereNull('contents_headers.deleted_at')
+                ->where('content_title', 'LIKE', '%' . $search . '%')
+                ->paginate(14);
+
+            if($content->count() > 0) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content Found',
+                    'data' => $content
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Content Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

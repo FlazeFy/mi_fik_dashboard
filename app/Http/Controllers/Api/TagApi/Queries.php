@@ -40,11 +40,18 @@ class Queries extends Controller
 
     public function getAllTagByCat($cat, $limit){
         try{
-            $tag = Tag::select('slug_name', 'tag_name')
-                ->orderBy('created_at', 'DESC')
-                ->orderBy('id', 'DESC')
-                ->where('tag_category', $cat)
-                ->paginate($limit);
+            if($cat != "all" && $cat != "All"){
+                $tag = Tag::select('slug_name', 'tag_name')
+                    ->orderBy('created_at', 'DESC')
+                    ->orderBy('id', 'DESC')
+                    ->where('tag_category', $cat)
+                    ->paginate($limit);
+            } else {
+                $tag = Tag::select('slug_name', 'tag_name')
+                    ->orderBy('created_at', 'DESC')
+                    ->orderBy('id', 'DESC')
+                    ->paginate($limit);
+            }
 
             if ($tag->isEmpty()) {
                 return response()->json([

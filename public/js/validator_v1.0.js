@@ -19,10 +19,20 @@ function validateForm(rules){
     });
 
     if(res){
-        btn.innerHTML = " ";
-        btn.innerHTML = "<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>";
+        if(typeof val1 !== 'undefined'){ 
+            val1 = true;
+            validate("profiledata");
+        } else {
+            btn.innerHTML = " ";
+            btn.innerHTML = "<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>";
+        }
     } else {
-        btn.innerHTML = "<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>";
+        if(typeof val1 === 'undefined'){ 
+            btn.innerHTML = "<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>";
+        } else {
+            val1 = false;
+            validate("profiledata");
+        }
     }
 }
 
@@ -48,9 +58,19 @@ function validateFormSecond(rules){
     });
 
     if(res){
-        btn.innerHTML = " ";
-        btn.innerHTML = "<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>";
+        if(typeof val2 !== 'undefined'){ 
+            val2 = true;
+            validate("profiledata");
+        } else {
+            btn.innerHTML = " ";
+            btn.innerHTML = "<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>";
+        }
     } else {
-        btn.innerHTML = "<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>";
+        if(typeof val2 === 'undefined'){ 
+            btn.innerHTML = "<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>";
+        } else {
+            val2 = false;
+            validate("profiledata");
+        }
     }
 }

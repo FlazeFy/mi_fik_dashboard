@@ -16,23 +16,23 @@
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-check text-success"></i> Accept All</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-xmark text-danger"></i>&nbsp Reject All</a>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-hashtag text-success"></i> Accept All & With Tag</a>
     </div>
 
     <div class="user-req-holder" id="data_wrapper_new_req">
-        <!-- Loading -->
         <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
+            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
+                <path fill="#000"
+                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
+                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
+                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
+                </path>
+            </svg>
+        </div>
     </div>
-    <div id="empty_item_holder_new_req"></div>
     <span id="load_more_holder_new_req" style="display: flex; justify-content:center;"></span>
-    </div>
+    <div id="empty_item_holder_new_req"></div>
 </div>
 
 <script>
@@ -52,9 +52,22 @@
         infinteLoadMore(page_new_req);
     }
 
-    function infinteLoadMore_new_req(page_new_req) {        
+    function getFindNew(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "%20"
+        } else {
+            document.getElementById("fullname_search_new").value = trim;
+            return trim
+        }
+    }
+
+    function infinteLoadMore_new_req(page_new_req) {       
+        var find = document.getElementById("fullname_search_new").value;
+        document.getElementById("data_wrapper_new_req").innerHTML = "";
+
         $.ajax({
-            url: "/api/v1/user/request/new" + "?page=" + page_new_req,
+            url: "/api/v1/user/request/new/" + getFindNew(find) + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -118,7 +131,7 @@
                     var accepted_at = data[i].accepted_at;
 
                     var elmt = " " +
-                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ')"> ' +
+                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'new'" + ', null)"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-3 ps-2"> ' +
                                     '<img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png"> ' +
@@ -127,8 +140,9 @@
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
                                     '<h6 class="user-box-desc">' + getContext(is_accepted) + '</h6> ' +
                                     '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
-                                    '<a class="btn btn-icon-rounded-primary" style="position:absolute; right: 15px; top:15px;" title="Accept Request & Give Role"><i class="fa-solid fa-add"></i></a> ' +
-                                    getApprovedButton(accepted_at) +
+                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
+                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected(this.checked)"> ' +
+                                    '</div> ' +
                                 '</div> ' +
                             '</div> ' +
                         '</button>';
@@ -140,15 +154,11 @@
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
+                $('#total_new_req').text("0");
                 $("#empty_item_holder_new_req").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No request found</h6></div>");
             } else {
                 // handle other errors
             }
         });
-    }
-
-    function loadDetailGroup(slug){
-        load_user_detail(slug)
-        infinteLoadMoreTag()
     }
 </script>

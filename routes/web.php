@@ -12,6 +12,7 @@ use App\Http\Controllers\AboutController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RegisterController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
 use App\Http\Controllers\System\MaintenanceController;
 use App\Http\Controllers\System\DictionaryController;
+use App\Http\Controllers\System\AccessController;
 
 use App\Http\Controllers\Social\FeedbackController;
 use App\Http\Controllers\Social\FaqController;
@@ -39,6 +41,10 @@ Route::prefix('/')->group(function () {
     Route::post('/login', [LandingController::class, 'login_admin']);
     Route::post('/add_feedback', [LandingController::class, 'add_feedback']);
     Route::post('/v2/login', [LandingController::class, 'login_auth']);
+});
+
+Route::prefix('/register')->group(function () {
+    Route::get('/', [RegisterController::class, 'index'])->name('register');
 });
 
 ######################### Private Route #########################
@@ -112,6 +118,8 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
 
     Route::get('/maintenance', [MaintenanceController::class, 'index']);
+
+    Route::get('/access', [AccessController::class, 'index']);
 });
 
 Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
