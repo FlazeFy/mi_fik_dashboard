@@ -7,7 +7,7 @@
                 <th scope="col">Email @include('user.all.sorting.email')</th>
                 <th scope="col">Full Name @include('user.all.sorting.fullname')</th>
                 <th scope="col">Properties @include('user.all.sorting.joined')</th>
-                <th scope="col">Role</th>
+                <th scope="col" style="width:200px;">Role</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body" id="user-list-holder">
@@ -128,11 +128,12 @@
                     var email = data[i].email;
                     var accStatus = data[i].is_accepted;
                     var accDate = data[i].accepted_at;
+                    var img = data[i].image_url;
                     var role = data[i].role;
 
                     var elmt = " " +
                         '<tr class="tabular-item ' + getItemBg(accDate, accStatus) + '"> ' +
-                            '<th scope="row">1</th> ' +
+                            '<th scope="row"> <img class="img img-fluid user-image" style="margin-top:45%;" src="' + getUserImageGeneral(img, role) + '"> </th> ' +
                             '<td>' + username + '</td> ' +
                             '<td class="email" title="Send Email" onclick="window.location = '+"'"+'mailto:'+email+"'"+'" href="mailto:' + email + '">' + email + '</td> ' +
                             '<td>' + fullname + '</td> ' +

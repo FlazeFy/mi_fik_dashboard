@@ -5,6 +5,7 @@
     margin: 0 auto 1rem;
     padding: 0.5rem 1.5rem;
     max-height: 60vh;
+    min-height: 42vh;
     overflow-y: scroll;
     box-shadow: rgba(117, 117, 125, 0.25) 0px 12px 30px -10px inset, rgba(0, 0, 0, 0.3) 0px 10px 20px -14px inset;
 } 

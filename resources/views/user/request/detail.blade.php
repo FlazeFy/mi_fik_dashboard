@@ -54,14 +54,6 @@
                 $('#empty_item_holder_user_detail').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No detail's found</h6>");
                 return;
             } else {
-                function getContentImage(img){
-                    if(img){
-                        return 'url("http://127.0.0.1:8000/storage/'+img+'")';
-                    } else {
-                        return "url({{asset('assets/default_content.jpg')}})";
-                    }
-                }
-
                 function getJoinedAt(datetime, acc){
                     if(datetime && acc){
                         const result = new Date(datetime);
@@ -72,14 +64,13 @@
                         
                         if(result.toDateString() === now.toDateString()){
                             elmt = "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                            //}
                         } else if(result.toDateString() === yesterday.toDateString()){
                             elmt = "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
                         } else {
                             elmt = result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
                         }
 
-                        return "<span class='text-success'>Joined since " + elmt + "</span>"
+                        return "<span class='text-success fw-bold'>Joined since " + elmt + "</span>"
                     } else if(!acc && !datetime){
                         return "<span class='text-danger fw-bold'>Waiting for admin approved</span>";
                     } else if(!acc && datetime){
@@ -261,6 +252,7 @@
                     var email = data[i].email;
                     var username = data[i].username;
                     var role = data[i].role;
+                    var img = data[i].image_url;
                     var created_at = data[i].created_at;
                     var accepted_at = data[i].accepted_at;
                     var is_accepted = data[i].is_accepted;
@@ -271,7 +263,7 @@
                         '<div class=""> ' +
                             '<div class="row"> ' +
                                 '<div class="col-2 p-0 py-3 ps-2"> ' +
-                                    '<img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png"> ' +
+                                    '<img class="img img-fluid user-image" src="' + getUserImageGeneral(img, role) + '">' +
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
@@ -337,7 +329,8 @@
 
     function setTagFilter(tag){
         tag_cat = tag;
-        infinteLoadMoreTag(1);
+        page_tag = 1;
+        infinteLoadMoreTag(page_tag);
         $("#data_wrapper_manage_tag").empty();
     }
 
@@ -361,14 +354,14 @@
             if(page_tag != last){
                 $('#load_more_holder_manage_tag').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>');
             } else {
-                $('#load_more_holder_manage_tag').html('<h6 class="text-primary my-3">No more item to show</h6>');
+                $('#load_more_holder_manage_tag').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
             }
 
             if (total == 0) {
                 $('#empty_item_holder_manage_tag').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-tag').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load-tag').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
                 $("#empty_item_holder_manage_tag").empty();

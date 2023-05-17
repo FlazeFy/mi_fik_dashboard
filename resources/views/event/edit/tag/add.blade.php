@@ -60,7 +60,8 @@
 
     function setTagFilter(tag){
         tag_cat = tag;
-        infinteLoadMoreTag(1);
+        page = 1;
+        infinteLoadMoreTag(page);
         $("#data_wrapper_manage_tag").empty();
     }
 
@@ -85,14 +86,14 @@
             if(page != last){
                 $('#load_more_holder_manage_tag').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>');
             } else {
-                $('#load_more_holder_manage_tag').html('<h6 class="text-primary my-3">No more item to show</h6>');
+                $('#load_more_holder_manage_tag').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
             }
 
             if (total == 0) {
                 $('#empty_item_holder_manage_tag').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-tag').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load-tag').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
                 return;
             } else {
                 $("#empty_item_holder_manage_tag").empty();

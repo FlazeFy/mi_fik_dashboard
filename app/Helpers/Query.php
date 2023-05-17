@@ -51,12 +51,12 @@ class Query
 
         } else if($type == "user_request_new"){
             $query = "username, CONCAT(first_name,' ',last_name) as full_name, 
-                role, created_at, accepted_at, is_accepted";
+                role, created_at, accepted_at, is_accepted, image_url";
                 
         } else if($type == "user_request_old"){
 
-            $query = "users_requests.id, username, CONCAT(first_name,' ',last_name) 
-                as full_name, tag_slug_name, request_type, users_requests.created_at, created_by";
+            $query = "users_requests.id, username, CONCAT(first_name,' ',last_name) as full_name, 
+                users.accepted_at, tag_slug_name, request_type, users_requests.created_at, created_by, image_url, role";
 
         } else if($type == "user_detail"){
             $query = "username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 

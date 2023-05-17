@@ -14,9 +14,9 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-new-req">
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-check text-success"></i> Accept All</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-xmark text-danger"></i>&nbsp Reject All</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-hashtag text-success"></i> Accept All & With Tag</a>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-check text-success"></i> Accept Selected</a>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-xmark text-danger"></i>&nbsp Reject Selected</a>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-hashtag text-success"></i> Accept Selected & With Tag</a>
     </div>
 
     <div class="user-req-holder" id="data_wrapper_new_req">
@@ -97,14 +97,6 @@
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest request :)</h5>");
                 return;
             } else {
-                function getContentImage(img){
-                    if(img){
-                        return 'url("http://127.0.0.1:8000/storage/'+img+'")';
-                    } else {
-                        return "url({{asset('assets/default_content.jpg')}})";
-                    }
-                }
-
                 function getApprovedButton(acc){
                     if(!acc){
                         return '<a class="btn btn-icon-rounded-success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a>'
@@ -125,6 +117,7 @@
                     //Attribute
                     var username = data[i].username;
                     var full_name = data[i].full_name;
+                    var img = data[i].image_url;
                     var role = data[i].role;
                     var created_at = data[i].created_at;
                     var is_accepted = data[i].is_accepted;
@@ -132,9 +125,9 @@
 
                     var elmt = " " +
                         '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'new'" + ', null)"> ' +
-                            '<div class="row ps-2"> ' +
-                                '<div class="col-2 p-0 py-3 ps-2"> ' +
-                                    '<img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png"> ' +
+                            '<div class="row ps-3"> ' +
+                                '<div class="col-2 p-0 ps-1"> ' +
+                                    '<img class="img img-fluid user-image" style="margin-top:30%;" src="' + getUserImageGeneral(img, role) + '">' +
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
