@@ -109,7 +109,7 @@
             }
 
             if (total == 0) {
-                $('#empty_item_holder-' + cat).html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                $('#empty_item_holder-' + cat).html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
                 $('.auto-load-'+cat).html("<h5 class='text-primary'>Woah!, You have see all the role</h5>");

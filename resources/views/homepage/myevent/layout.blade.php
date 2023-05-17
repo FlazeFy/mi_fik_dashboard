@@ -82,7 +82,7 @@
             $("#total_my_event").html('<a class="total-my-event" title="You have some draft event"><i class="fa-regular fa-calendar"></i> ' + total + ' </a>');
 
             if (total == 0) {
-                $('#empty_myevent_holder').html("<img src='http://127.0.0.1:8000/assets/nodata2.png' class='img nodata-icon'><h6 class='text-secondary text-center'>My event is empty</h6>");
+                $('#empty_myevent_holder').html("<img src="+'"'+"{{asset('assets/nodata2.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>My event is empty</h6>");
                 return;
             } else if (data.length == 0) {
                 $('.auto-load-my-event').html("<h5 class='text-primary'>Woah!, You have see all the event :)</h5>");

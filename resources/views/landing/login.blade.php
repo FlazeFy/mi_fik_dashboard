@@ -1,7 +1,7 @@
 <div class="container-fluid rounded my-4 py-5 text-start welcome-container" style="max-width:450px;">
     <form action="/v2/login" method="POST" id="form-login">
         @csrf
-        <h1 class="fw-bold mt-4 text-primary">Welcome to Mi-Fik</h1>
+        <h1 class="fw-bold mt-4 text-primary">Welcome to Mi-FIK</h1>
         <h6 class="mb-4">Mi-Fik is an app made for event organizing and announcement that will be used for lecturer, staff, and student of 
             <a class="link-external" href="https://ifik.telkomuniversity.ac.id/">School of Creative Industries Telkom University</a></h6>
         <div class="form-floating mt-1">
@@ -68,7 +68,7 @@
                     $('#pass_msg').html("");
                     $('#all_msg').html("");
 
-                    $('#text-sorry').text("Sorry, but only admin, lecturer, and staff who can access MI-FIK Web");
+                    $('#text-sorry').text("Sorry, but only admin, lecturer, and staff who can access Mi-FIK Web");
                     $('#sorry_modal').modal('show');
                 }
             },
