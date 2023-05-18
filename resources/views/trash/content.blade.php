@@ -22,14 +22,6 @@
     var myname = "<?= session()->get("username_key") ?>";
     infinteLoadMore(page);
 
-    //Fix the sidebar & content page FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page++;
-    //         infinteLoadMore(page);
-    //     } 
-    // };
-
     function loadmore(route){
         page++;
         infinteLoadMore(page);
@@ -456,6 +448,67 @@
                                 "</div> " +
                                 getRecoverModal("Tag", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
                                 getDestroyModal("Tag", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                        } else if(data_from == 4){ // Group
+                            var elmt = " " +
+                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
+                                    "<button class='card shadow task-box ultimate' onclick=''> " +
+                                        "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
+                                        "<div class='card-body p-2 w-100'> " +
+                                            "<div class='position-relative'> " +
+                                                "<div class='d-inline-block me-2'> " +
+                                                    '<i class="fa-solid fa-users fa-xl mt-3 text-primary"></i>' +
+                                                "</div> " +
+                                                "<div class='d-inline-block position-absolute w-50' style='top:37.5px;'> " +
+                                                    "<h6 class='task-title'>" + content_title + "</h6> " +
+                                                    "<h6 class='task-subtitle'>" + content_tag + "</h6> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<p class='task-desc mb-1 mt-3'>" + content_desc + "</p> " +
+                                            "<div class='row d-inline-block px-2'> " +
+                                                getEventDate(content_date_start, content_date_end) +
+                                                getDaysRemaining(deleted_at, dtd_range) +
+                                            "</div> " +
+                                            "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                            "<div class='position-relative'> " +
+                                                "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
+                                                    "<i class='fa-solid fa-info'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-arrow-rotate-right'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-fire-flame-curved'></i> " +
+                                                "</a> " +
+                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
+                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
+                                                "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                            "</div> " +
+                                        "</div> " +
+                                    "</button> " +
+                                "</div> " +
+                                getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                         }
 
                     $("#data-wrapper").append(elmt);

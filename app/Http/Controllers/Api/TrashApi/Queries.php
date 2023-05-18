@@ -23,9 +23,11 @@ class Queries extends Controller
             $select_content = Query::getSelectTemplate("event_dump");
             $select_task = Query::getSelectTemplate("task_dump");
             $select_tag = Query::getSelectTemplate("tag_dump");
+            $select_group = Query::getSelectTemplate("group_dump");
             $join_content = Query::getJoinTemplate("content_dump", "ch");
             $join_task = Query::getJoinTemplate("content_dump", "ts");
             $join_tag = Query::getJoinTemplate("content_dump", "tg");
+            $join_group = Query::getJoinTemplate("content_dump", "ug");
             $where_from = "WHERE ";
             $search = trim($search);
             
@@ -69,6 +71,14 @@ class Queries extends Controller
                         ".$join_tag."
                         JOIN dictionaries dt ON tg.tag_category = dt.slug_name
                         WHERE tg.deleted_at IS NOT NULL
+                    UNION 
+                        SELECT 
+                            ".$select_group." 
+                        FROM users_groups ug
+                        ".$join_group."
+                        LEFT JOIN groups_relations gr ON ug.id = gr.group_id
+                        WHERE ug.deleted_at IS NOT NULL
+                        GROUP BY ug.id
                     ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
                 "));      
             }    

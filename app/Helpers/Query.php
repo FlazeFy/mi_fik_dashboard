@@ -114,7 +114,16 @@ class Query
                 ad.username as admin_username_deleted, null as user_username_deleted,
                 null as content_loc, dct_name as content_tag, null as content_date_start, null as content_date_end, tg.created_at,
                 3 as data_from, tg.deleted_at as deleted_at";
-        }
+        } else if($type == "group_dump"){
+            $query = "ug.slug_name, group_name as content_title, group_desc as content_desc, 
+                ac.username as admin_username_created, null as user_username_created, 
+                ac.image_url as admin_image_created, null as user_image_created, 
+                ad.image_url as admin_image_deleted, null as user_image_deleted,
+                au.username as admin_username_updated, null as user_username_updated, 
+                ad.username as admin_username_deleted, null as user_username_deleted,
+                null as content_loc, CONCAT(count(gr.id), ' member') as content_tag, null as content_date_start, null as content_date_end, ug.created_at,
+                4 as data_from, ug.deleted_at as deleted_at";
+        }   
         // Make user's new request dump query
         // Make user's old request dump query
 
