@@ -118,10 +118,15 @@ class NotificationController extends Controller
                         ];
 
                         if($result->firebase_fcm_token){
+                            $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
                             $message = CloudMessage::withTarget('token', $result->firebase_fcm_token)
-                                ->withNotification(FireNotif::create($request->notif_body))
+                                ->withNotification(
+                                    FireNotif::create($request->notif_body)
+                                    ->withTitle($type)
+                                    ->withBody($request->notif_body)
+                                )
                                 ->withData([
-                                    'notif_type' => $request->notif_type,
+                                    'by' => 'person'
                                 ]);
                             $response = $messaging->send($message);
                         }
@@ -147,10 +152,15 @@ class NotificationController extends Controller
                             ];
 
                             if($rs->firebase_fcm_token){
+                                $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
                                 $message = CloudMessage::withTarget('token', $rs->firebase_fcm_token)
-                                    ->withNotification(FireNotif::create($request->notif_body))
+                                    ->withNotification(
+                                        FireNotif::create($request->notif_body)
+                                        ->withTitle($type)
+                                        ->withBody($request->notif_body)
+                                    )
                                     ->withData([
-                                        'notif_type' => $request->notif_type,
+                                        'by' => 'grouping'
                                     ]);
                                 $response = $messaging->send($message);
                             }

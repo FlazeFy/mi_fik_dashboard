@@ -117,10 +117,12 @@ class HomepageController extends Controller
         
         if($role == 1){
             $tag = Tag::getFullTag("DESC", "DESC");
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
             $mydraft = ContentHeader::getMyDraft($role, $user_id);
             $mytag = null;
         } else {
             $tag = null;
+            $dct_tag = null;
             $mydraft = ContentHeader::getMyDraft($role, $user_id);
             $list = User::getUserRole($user_id,$role);
 
@@ -139,6 +141,7 @@ class HomepageController extends Controller
             ->with('menu', $menu)
             ->with('info', $info)
             ->with('mydraft', $mydraft)
+            ->with('dct_tag', $dct_tag)
             ->with('dictionary', $dictionary)
             ->with('count', $count)
             //->with('archive', $archive)

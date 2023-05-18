@@ -51,12 +51,12 @@ class Query
 
         } else if($type == "user_request_new"){
             $query = "username, CONCAT(first_name,' ',last_name) as full_name, 
-                role, created_at, accepted_at, is_accepted";
+                role, created_at, accepted_at, is_accepted, image_url";
                 
         } else if($type == "user_request_old"){
 
-            $query = "users_requests.id, username, CONCAT(first_name,' ',last_name) 
-                as full_name, tag_slug_name, request_type, users_requests.created_at, created_by";
+            $query = "users_requests.id, username, CONCAT(first_name,' ',last_name) as full_name, 
+                users.accepted_at, tag_slug_name, request_type, users_requests.created_at, created_by, image_url, role";
 
         } else if($type == "user_detail"){
             $query = "username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
@@ -105,7 +105,25 @@ class Query
                 null as admin_username_deleted, ud.username as user_username_deleted,
                 null as content_loc, null as content_tag, task_date_start as content_date_start, task_date_end as content_date_end, ts.created_at,
                 2 as data_from, ts.deleted_at as deleted_at";
-        }
+        } else if($type == "tag_dump"){
+            $query = "tg.slug_name, tag_name as content_title, tag_desc as content_desc, 
+                ac.username as admin_username_created, null as user_username_created, 
+                ac.image_url as admin_image_created, null as user_image_created, 
+                ad.image_url as admin_image_deleted, null as user_image_deleted,
+                au.username as admin_username_updated, null as user_username_updated, 
+                ad.username as admin_username_deleted, null as user_username_deleted,
+                null as content_loc, dct_name as content_tag, null as content_date_start, null as content_date_end, tg.created_at,
+                3 as data_from, tg.deleted_at as deleted_at";
+        } else if($type == "group_dump"){
+            $query = "ug.slug_name, group_name as content_title, group_desc as content_desc, 
+                ac.username as admin_username_created, null as user_username_created, 
+                ac.image_url as admin_image_created, null as user_image_created, 
+                ad.image_url as admin_image_deleted, null as user_image_deleted,
+                au.username as admin_username_updated, null as user_username_updated, 
+                ad.username as admin_username_deleted, null as user_username_deleted,
+                null as content_loc, CONCAT(count(gr.id), ' member') as content_tag, null as content_date_start, null as content_date_end, ug.created_at,
+                4 as data_from, ug.deleted_at as deleted_at";
+        }   
         // Make user's new request dump query
         // Make user's old request dump query
 
@@ -128,6 +146,10 @@ class Query
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id
                 LEFT JOIN contents_viewers cv ON cv.content_id = ch.id";    
+        } else if($type == "tag"){
+            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+                LEFT JOIN admins au ON ".$initial.".updated_by = au.id
+                LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id";
         }
     }
 

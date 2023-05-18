@@ -89,6 +89,8 @@
                                         @if(session()->get('role_key') == 1)
                                             <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
                                                 @csrf
+                                                <input name="update_type" value="cat" hidden>
+                                                <input name="tag_name" value="{{$tg->tag_name}}" hidden>
                                                 <select class="form-select" aria-label="Default select example" name="tag_category" onchange="this.form.submit()">
                                                     @foreach($dct_tag as $dtag)
                                                         @if($dtag->slug_name == $tg->tag_category)
