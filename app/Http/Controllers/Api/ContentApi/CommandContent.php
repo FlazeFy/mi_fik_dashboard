@@ -159,10 +159,11 @@ class CommandContent extends Controller
         }
     }
 
-    public function addView($slug_name,$user_slug,$user_role){
+    public function addView($slug_name,$user_slug,$user_role, Request $request){
         try{
             $content_id = Generator::getContentId($slug_name); //Fix this
-            $user_id = Generator::getUserId($user_slug, $user_role);
+            // $user_id = Generator::getUserId($user_slug, $user_role);
+            $user_id = $request->user()->id;
             $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
 
             if($content_id != null && $user_id != null){
