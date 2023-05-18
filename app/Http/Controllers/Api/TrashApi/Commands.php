@@ -86,7 +86,8 @@ class Commands extends Controller
 
     public function destroy_content_api(Request $request, $slug, $type)
     {
-        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        // $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        $user_id = $request->user()->id;
 
         if($type == 1){
             $type = "event";

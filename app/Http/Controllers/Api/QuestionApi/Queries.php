@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\QuestionApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Question;
 
@@ -120,6 +121,33 @@ class Queries extends Controller
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getMyQuestions(Request $request) {
+        try {
+            $user_id = $request->user()->id;
+
+            $myQuestion = Question::getQuestionByUserId($user_id);
+
+            if($myQuestion->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Question not found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Question found',
+                    'data' => $myQuestion
+                ], Response::HTTP_OK);
+            }
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()

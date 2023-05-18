@@ -188,7 +188,7 @@ class QueryContent extends Controller
         try{
             $select = Query::getSelectTemplate("content_thumbnail");
             $search = trim($search);
-            
+
             $content = ContentHeader::selectRaw($select.",(DATEDIFF(content_date_end, now()) * -1) as days_passed")
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
@@ -251,14 +251,14 @@ class QueryContent extends Controller
             foreach ($schedule as $result) {
                 $loc = json_decode($result->content_loc, true);
                 $tag = json_decode($result->content_tag, true);
-            
+
                 $id = $result->id;
                 $slug = $result->slug_name;
-                $title = $result->content_title; 
+                $title = $result->content_title;
                 $desc = $result->content_desc;
-                $date_start = $result->content_date_start; 
-                $date_end = $result->content_date_end; 
-                $from = $result->data_from; 
+                $date_start = $result->content_date_start;
+                $date_end = $result->content_date_end;
+                $from = $result->data_from;
 
                 $clean[] = [
                     'id' => $id,

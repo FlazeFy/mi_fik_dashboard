@@ -21,9 +21,9 @@ class Question extends Model
             ->orderBy('questions.created_at', 'DESC')
             ->orderBy('questions.updated_at', 'DESC')
             ->get();
-        
+
         $clean = [];
-        foreach($res as $r){  
+        foreach($res as $r){
             $clean[] = [
                 'id' => "Q_".$r->id,
                 'question_type' => $r->question_type,
@@ -32,7 +32,7 @@ class Question extends Model
                 'msg_body' => $r->question_body,
                 'created_at' => $r->created_at
             ];
-          
+
             if($r->updated_at){
                 $clean[] = [
                     'id' => "A_".$r->id,
