@@ -43,7 +43,7 @@ function getUserImageGeneral(img, role){
     if(img){
         return img;
     } else {
-        if(role){
+        if(Array.isArray(role)){
             for(var i = 0; i < role.length; i++){
                 if(role[i].slug_name == "student"){
                     return "http://127.0.0.1:8000/assets/default_student.png";
@@ -52,7 +52,7 @@ function getUserImageGeneral(img, role){
                 }
             }
         } else {
-            return "http://127.0.0.1:8000/assets/default_student.png";
+            return "http://127.0.0.1:8000/assets/default_lecturer.png";
         }
     }
 }

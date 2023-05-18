@@ -14,15 +14,18 @@ use App\Helpers\Query;
 
 use App\Models\Task;
 use App\Models\ContentHeader;
+use App\Models\PersonalAccessTokens;
 
 class Queries extends Controller
 {
-    public function getAllContentTrash($order, $category, $search){
+    public function getAllContentTrash(Request $request, $order, $category, $search){
         try{
             $select_content = Query::getSelectTemplate("event_dump");
             $select_task = Query::getSelectTemplate("task_dump");
+            $select_tag = Query::getSelectTemplate("tag_dump");
             $join_content = Query::getJoinTemplate("content_dump", "ch");
             $join_task = Query::getJoinTemplate("content_dump", "ts");
+            $join_tag = Query::getJoinTemplate("content_dump", "tg");
             $where_from = "WHERE ";
             $search = trim($search);
             
@@ -30,27 +33,53 @@ class Queries extends Controller
                 $where_from = "WHERE data_from = ".$category." AND";
             } 
 
-            $content = DB::select(DB::raw("
-                SELECT * FROM (
-                    SELECT 
-                        ".$select_content." 
-                    FROM contents_headers ch
-                    JOIN contents_details cd ON ch.id = cd.content_id
-                    ".$join_content."
-                    WHERE ch.deleted_at IS NOT NULL
-                UNION
-                    SELECT 
-                        ".$select_task." 
-                    FROM tasks ts
-                    ".$join_task."
-                    WHERE ts.deleted_at IS NOT NULL
-                ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
-            "));           
+            $user_id = $request->user()->id;
+            $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
+            if($check->tokenable_type === "App\\Models\\User"){ // User
+                $content = DB::select(DB::raw("
+                    SELECT * FROM (
+                        SELECT 
+                            ".$select_content." 
+                        FROM contents_headers ch
+                        JOIN contents_details cd ON ch.id = cd.content_id
+                        ".$join_content."
+                        WHERE ch.deleted_at IS NOT NULL
+                    UNION
+                        SELECT 
+                            ".$select_task." 
+                        FROM tasks ts
+                        ".$join_task."
+                        WHERE ts.deleted_at IS NOT NULL
+                        AND ts.created_by = '".$user_id."'
+                    ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
+                "));      
+            } else {
+                $content = DB::select(DB::raw("
+                    SELECT * FROM (
+                        SELECT 
+                            ".$select_content." 
+                        FROM contents_headers ch
+                        JOIN contents_details cd ON ch.id = cd.content_id
+                        ".$join_content."
+                        WHERE ch.deleted_at IS NOT NULL
+                    UNION 
+                        SELECT 
+                            ".$select_tag." 
+                        FROM tags tg
+                        ".$join_tag."
+                        JOIN dictionaries dt ON tg.tag_category = dt.slug_name
+                        WHERE tg.deleted_at IS NOT NULL
+                    ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
+                "));      
+            }    
 
             $clean = [];
             foreach ($content as $result) {
                 $loc = json_decode($result->content_loc, true);
                 $tag = json_decode($result->content_tag, true);
+                if (json_last_error() !== JSON_ERROR_NONE && !is_array($tag)) {
+                    $tag = $result->content_tag;
+                } 
             
                 $slug = $result->slug_name;
                 $title = $result->content_title; 
