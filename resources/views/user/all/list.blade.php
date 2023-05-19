@@ -161,7 +161,7 @@
                 function manageRole(username){
                    
                     var elmt = 
-                        '<h6 class="text-secondary my-2"> Manage Role</h6> ' +   
+                        '<h6 class="text-secondary mt-2 mb-4"> Manage Role</h6> ' +   
                         '<div class="position-absolute" style="right:0; top:0;"> ' +
                             '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value, ' + "'" + username + "'" + ')" name="tag_category" aria-label="Floating label select example" required> ' +
                                 '@php($i = 0) ' +
@@ -191,8 +191,10 @@
                         '<div id="empty_item_holder_manage_tag_'+username+'"></div> ' +
                         '<span id="load_more_holder_manage_tag_'+username+'" style="display: flex; justify-content:center;"></span> ' +
                         '<h6 class="text-secondary mt-3"> Selected Role</h6> ' +
-                        '<form action="/user/request/manage_role_acc" id="add_role_form_'+username+'" method="POST"> ' +
+                        '<form id="add_role_form_'+username+'"> ' +
                             '@csrf ' +
+                            '<input hidden name="username" value="' + username + '"> ' +
+                            '<input name="user_role" id="user_role_' + username + '"> ' +
                             '<div id="slct_holder_'+username+'"></div> ' + 
                         '</form> ';
 
@@ -407,13 +409,14 @@
             if(found == false){
                 slct_list.push(slug_name);
                 //Check this append input value again!
-                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
             }
         } else {
             slct_list.push(slug_name);
-            $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
+            $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
         }
 
+        document.getElementById("user_role_"+username).value = JSON.stringify(slct_list);
         getButtonSubmitTag(username)
     }
 
@@ -425,7 +428,8 @@
 
         //Return selected tag to tag collection
         $("#data_wrapper_manage_tag_"+username).append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+username+'"'+")'>"+tag_name+"</a>");
-
+        
+        document.getElementById("user_role_"+username).value = JSON.stringify(slct_list);
         getButtonSubmitTag(username)
     }
 
@@ -468,5 +472,30 @@
         slct_list = [];
         $("#data_wrapper_manage_tag_"+username).empty();
         $("#slct_holder_"+username).empty();
+    }
+
+    function add_role(username){
+        $('#registered-msg').html("");
+
+        $.ajax({
+            url: '/api/v1/user/update/role/add',
+            type: 'POST',
+            data: $('#add_role_form_'+username).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                document.getElementById("registered-msg").innerHTML = response.responseJSON.message;
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+
+                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                   
+                    
+                } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
+                    allMsg += response.responseJSON.errors.result[0]
+                } else {
+                    allMsg += errorMessage
+                }
+            }
+        });
     }
 </script>

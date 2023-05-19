@@ -12,7 +12,7 @@ use App\Models\Notification;
 class QueryNotification extends Controller
 {
     public function getAllNotification(){
-        $notif = Notification::select('id', 'notif_type', 'notif_body', 'notif_send_to', 'is_pending','created_at','updated_at')
+        $notif = Notification::select('id', 'notif_type', 'notif_title', 'notif_body', 'notif_send_to', 'is_pending','created_at','updated_at')
             ->where('is_pending', 0)
             ->where(function ($query) {
                 $query->where('notif_send_to','LIKE','%send_to":"all"%');
