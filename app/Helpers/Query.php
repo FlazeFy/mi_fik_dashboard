@@ -123,7 +123,17 @@ class Query
                 ad.username as admin_username_deleted, null as user_username_deleted,
                 null as content_loc, CONCAT(count(gr.id), ' member') as content_tag, null as content_date_start, null as content_date_end, ug.created_at,
                 4 as data_from, ug.deleted_at as deleted_at";
-        }   
+        } else if($type == "dictionary_manage"){
+            $query = "dc.id,slug_name, dct_name, dct_desc, dct_type, dc.created_at, dc.updated_at, dc.deleted_at,
+                ac.username as admin_username_created, ac.image_url as admin_image_created, 
+                ad.image_url as admin_image_deleted, ad.username as admin_username_deleted,
+                au.username as admin_username_updated, au.image_url as admin_image_updated";
+        } else if($type == "info_manage"){
+            $query = "inf.id,info_type, info_page, info_location, info_body, is_active, inf.created_at, inf.updated_at, inf.deleted_at,
+                ac.username as admin_username_created, ac.image_url as admin_image_created, 
+                ad.image_url as admin_image_deleted, ad.username as admin_username_deleted,
+                au.username as admin_username_updated, au.image_url as admin_image_updated";
+        }
         // Make user's new request dump query
         // Make user's old request dump query
 

@@ -130,6 +130,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
     Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);
+    Route::post('/update/role/add', [CommandUserApi::class, 'add_role']);
     Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
 });
 

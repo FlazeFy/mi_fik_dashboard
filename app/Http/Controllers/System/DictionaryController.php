@@ -25,7 +25,7 @@ class DictionaryController extends Controller
     public function index()
     {
         $greet = Generator::getGreeting(date('h'));
-        $dictionary = Dictionary::all();
+        $dictionary = Dictionary::getAllDictionary();
         $dictionaryType = DictionaryType::all();
         $menu = Menu::getMenu();
         

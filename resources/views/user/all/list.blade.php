@@ -191,7 +191,10 @@
                         '<div id="empty_item_holder_manage_tag_'+username+'"></div> ' +
                         '<span id="load_more_holder_manage_tag_'+username+'" style="display: flex; justify-content:center;"></span> ' +
                         '<h6 class="text-secondary mt-3"> Selected Role</h6> ' +
-                        '<div id="slct_holder_'+username+'"></div>';
+                        '<form action="/user/request/manage_role_acc" id="add_role_form_'+username+'" method="POST"> ' +
+                            '@csrf ' +
+                            '<div id="slct_holder_'+username+'"></div> ' + 
+                        '</form> ';
 
                     return elmt;
                 }
@@ -231,7 +234,7 @@
                                         '<div class="modal-dialog modal-lg"> ' +
                                             '<div class="modal-content">  ' +
                                                 '<div class="modal-body pt-4" style="height:75vh;"> ' +
-                                                    '<button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                                    '<button type="button" class="custom-close-modal" onclick="clean('+"'"+unamepreg+"'"+')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
                                                     '<h5>User Profile</h5> ' +
                                                     '<div class=""> ' +
                                                         '<div class="row"> ' +
@@ -439,8 +442,8 @@
             }
             
             $("#btn-submit-tag-holder_"+username).html(''+
-                '<a class="btn btn-detail-config success float-end" title="Submit Role"  data-bs-toggle="modal" href="#assignRoleAcc"><i class="fa-solid fa-plus"></i> Assign</a> ' +
-                '<div class="modal fade" id="assignRoleAcc" tabindex="-1" aria-labelledby="assignRoleAccLabel" aria-hidden="true"> ' +
+                '<a class="btn btn-detail-config success float-end" title="Submit Role" data-bs-toggle="modal" href="#assignRoleAcc_'+username+'"><i class="fa-solid fa-plus"></i> Assign</a> ' +
+                '<div class="modal fade" id="assignRoleAcc_'+username+'" tabindex="-1" aria-labelledby="assignRoleAccLabel" aria-hidden="true"> ' +
                 '<div class="modal-dialog"> ' +
                     '<div class="modal-content"> ' +
                     '<div class="modal-header"> ' +
@@ -459,5 +462,11 @@
         } else {
             return $("#btn-submit-tag-holder_"+username).text('')
         }
+    }
+
+    function clean(username){
+        slct_list = [];
+        $("#data_wrapper_manage_tag_"+username).empty();
+        $("#slct_holder_"+username).empty();
     }
 </script>

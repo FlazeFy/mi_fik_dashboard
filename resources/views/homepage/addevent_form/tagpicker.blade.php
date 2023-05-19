@@ -181,4 +181,10 @@
 
         lengValidatorEvent('75', 'title');
     }
+
+    function clean(){
+        slct_list = [];
+        $("#tag_holder").empty();
+        $("#slct_holder").empty();
+    }
 </script>

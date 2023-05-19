@@ -55,7 +55,7 @@
                     
                     <div class="mt-4 btn-config-holder">
                         @include('user.group.create')
-                        <div class="ms-3">
+                        <div class="ms-1">
                             @include('user.group.searchbar')
                         </div>
                     </div>
