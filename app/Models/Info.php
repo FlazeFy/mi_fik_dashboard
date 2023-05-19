@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\Query;
+use Illuminate\Support\Facades\DB;
+
 class Info extends Model
 {
     use HasFactory;
@@ -26,11 +29,18 @@ class Info extends Model
         return $res;
     }
 
-    public static function getAllInfo(){
-        $res = Info::select('*')
-            ->orderBy('created_at', 'DESC')
-            ->orderBy('updated_at', 'DESC')
-            ->get();
+    public static function getAllInfo(){ 
+        $join = Query::getJoinTemplate("tag", "inf");
+        $select = Query::getSelectTemplate("info_manage");
+
+        $res = DB::select(DB::raw("
+            SELECT 
+                ".$select." 
+            FROM infos inf
+            ".$join."
+            WHERE inf.deleted_at IS NULL
+            ORDER BY inf.updated_at, inf.created_at DESC
+        "));     
 
         return $res;
     }

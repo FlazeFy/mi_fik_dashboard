@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col-lg-8 pb-2">
                                 <div class="form-floating">
-                                    <textarea class="form-control" id="bodyInput_{{$i}}" style="height:180px;" onkeyup="lengValidator(<?= $i; ?>)" onchange="lengValidator(<?= $i; ?>)">{{$nt->notif_body}}</textarea>
+                                    <textarea class="form-control" id="bodyInput_{{$i}}" style="height:180px;" onkeyup="lengValidator(<?= $i; ?>)" onchange="lengValidator(<?= $i; ?>)">{{$nt['notif_body']}}</textarea>
                                     <label for="floatingTextarea2">Notification Body</label>
                                 </div>
                                 <a id="body_msg" class="input-warning text-danger"></a>
@@ -30,7 +30,7 @@
                                 </div>
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="floatingSelect" name="is_pending" aria-label="Floating label select example" onchange="getPendingDate(this.value, <?= $i; ?>)">
-                                        @if($nt->is_pending == 1)
+                                        @if($nt['is_pending'] == 1)
                                             <option value="1" selected>Pending</option>
                                             <option value="0">Announced</option>
                                         @else
