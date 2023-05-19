@@ -146,7 +146,7 @@
                         return elmnt
 
                     } else {
-                        return "<h6 class='text-danger'>This user has no tag</h6>" ;
+                        return "<h6 class='text-danger'>This user has no role</h6>" ;
                     }
                 }
 
@@ -158,7 +158,7 @@
                     }
                 }
 
-                function manageRole(username){
+                function manageRole(username, real_username){
                    
                     var elmt = 
                         '<h6 class="text-secondary mt-2 mb-4"> Manage Role</h6> ' +   
@@ -193,8 +193,8 @@
                         '<h6 class="text-secondary mt-3"> Selected Role</h6> ' +
                         '<form id="add_role_form_'+username+'"> ' +
                             '@csrf ' +
-                            '<input hidden name="username" value="' + username + '"> ' +
-                            '<input name="user_role" id="user_role_' + username + '"> ' +
+                            '<input hidden name="username" value="' + real_username + '"> ' +
+                            '<input hidden name="user_role" id="user_role_' + username + '" value=""> ' +
                             '<div id="slct_holder_'+username+'"></div> ' + 
                         '</form> ';
 
@@ -219,7 +219,7 @@
                             '<th scope="row"> <img class="img img-fluid user-image" style="margin-top:45%;" src="' + getUserImageGeneral(img, role) + '"> </th> ' +
                             '<td>' + username + ' <input hidden id="user_tag_' + unamepreg + '" value=' + "'" + JSON.stringify(role) + "'" + '></td> ' +
                             '<td class="email" title="Send Email" onclick="window.location = '+"'"+'mailto:'+email+"'"+'" href="mailto:' + email + '">' + email + '</td> ' +
-                            '<td>' + fullname + '</td> ' +
+                            '<td style="width: 180px;">' + fullname + '</td> ' +
                             '<td class="properties"> ' +
                                 '<h6>Joined At</h6> ' +
                                 '<a>' + getDateToContext(createdAt, "datetime") + '</a> ' +
@@ -256,14 +256,17 @@
                                                         '<hr> ' +
                                                         '<div class="scroll-role" style="max-height:37.5vh;"> ' +
                                                             '<div class="position-relative"> ' +
-                                                                manageRole(unamepreg) +
+                                                                manageRole(unamepreg, username) +
                                                             '</div> ' +
                                                         '</div> ' +
                                                         '<div class="config-btn-group">' +
                                                             '<hr> ' +
                                                             '<a class="btn btn-detail-config success" title="Send" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '"><i class="fa-solid fa-bell"></i></a>' +
                                                             '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
-                                                            '<span id="btn-submit-tag-holder_' + unamepreg +'" style="position:absolute; right:-10px; bottom:0;"></span> ' +
+                                                            '<span style="position:absolute; right:-10px; bottom:0;"> ' +
+                                                                '<a class="text-success" id="registered-msg_' + unamepreg + '"></a> ' + 
+                                                                '<span id="btn-submit-tag-holder_' + unamepreg +'"></span> ' +
+                                                            '</span> ' +
                                                         '</div> ' +
                                                     '</div> ' +
                                                 '</div> ' +
@@ -401,18 +404,24 @@
         if(slct_list.length > 0){
             //Check if tag is exist in selected tag.
             slct_list.map((val, index) => {
-                if(val == slug_name){
+                if(val['slug_name'] == slug_name){
                     found = true;
                 }
             });
 
             if(found == false){
-                slct_list.push(slug_name);
+                slct_list.push({
+                    "slug_name": slug_name,
+                    "tag_name": tag_name,
+                });
                 //Check this append input value again!
                 $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
             }
         } else {
-            slct_list.push(slug_name);
+            slct_list.push({
+                "slug_name": slug_name,
+                "tag_name": tag_name,
+            });
             $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
         }
 
@@ -423,7 +432,7 @@
     function removeSelectedTag(slug_name, tag_name, username){
         //Remove selected tag
         var tag = document.getElementById('tagger_'+slug_name);
-        slct_list = slct_list.filter(function(e) { return e !== slug_name })
+        slct_list = slct_list.filter(function(e) { return e['slug_name'] !== slug_name })
         tag.parentNode.removeChild(tag);
 
         //Return selected tag to tag collection
@@ -446,23 +455,15 @@
             }
             
             $("#btn-submit-tag-holder_"+username).html(''+
-                '<a class="btn btn-detail-config success float-end" title="Submit Role" data-bs-toggle="modal" href="#assignRoleAcc_'+username+'"><i class="fa-solid fa-plus"></i> Assign</a> ' +
-                '<div class="modal fade" id="assignRoleAcc_'+username+'" tabindex="-1" aria-labelledby="assignRoleAccLabel" aria-hidden="true"> ' +
-                '<div class="modal-dialog"> ' +
-                    '<div class="modal-content"> ' +
-                    '<div class="modal-header"> ' +
-                        '<h5 class="modal-title" id="assignRoleAccLabel">Assign Selected Tags</h5> ' +
-                        '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                '<div class="accordion" id="accordion_'+username+'"> ' +
+                    '<div class="collapse show" id="assignRoleInit_'+username+'" data-bs-parent="#accordion_'+username+'"> ' +
+                        '<a class="btn btn-detail-config success float-end" title="Submit Role" data-bs-toggle="collapse" href="#assignRoleValid_'+username+'"><i class="fa-solid fa-plus"></i> Assign</a> ' +
                     '</div> ' +
-                    '<div class="modal-body"> ' +
-                        '<h6 class="fw-normal">Are you sure want to assign ' + tags + ' to this User</h6> ' +
+                    '<div class="collapse" id="assignRoleValid_'+username+'" data-bs-parent="#accordion_'+username+'"> ' +
+                        '<a class="btn btn-detail-config success float-end" onclick="add_role(' + "'" + username + "'" + ')"><i class="fa-solid fa-paper-plane"></i> Send</a> ' +
+                        '<a class="btn btn-detail-config danger float-end me-2" data-bs-toggle="collapse" href="#assignRoleInit_'+username+'"><i class="fa-solid fa-xmark"></i></a> ' +
                     '</div> ' +
-                    '<div class="modal-footer"> ' +
-                        '<button type="submit" class="btn btn-success">Submit</button> ' +
-                    '</div> ' +
-                    '</div> ' +
-                '</div> ' +
-                '</div>') ;
+                '</div> ') ;
         } else {
             return $("#btn-submit-tag-holder_"+username).text('')
         }
@@ -475,15 +476,22 @@
     }
 
     function add_role(username){
-        $('#registered-msg').html("");
+        $("registered-msg_"+username).html("");
 
         $.ajax({
             url: '/api/v1/user/update/role/add',
             type: 'POST',
             data: $('#add_role_form_'+username).serialize(),
             dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            },
             success: function(response) {
-                document.getElementById("registered-msg").innerHTML = response.responseJSON.message;
+                $("#slct_holder_"+username).html("");
+                slct_list = [];
+                getButtonSubmitTag(username);
+                document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
 
