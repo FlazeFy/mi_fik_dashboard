@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\Query;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection;
+
 class Notification extends Model
 {
     use HasFactory;
@@ -20,14 +24,69 @@ class Notification extends Model
         'notif_send_to' => 'array',
     ];
 
-    public static function getAllNotification($order_1, $order_2){
-        $res = Notification::select('*')
-            ->whereNull('deleted_at')
-            ->orderBy('updated_at', $order_1)
-            ->orderBy('created_at', $order_2)
-            ->get();
+    public static function getAllNotification(){
+        $join = Query::getJoinTemplate("notif", "nt");
+        $select = Query::getSelectTemplate("notif_manage");
 
-        return $res;
+        $res = DB::select(DB::raw("
+            SELECT 
+                ".$select." 
+            FROM notifications nt
+            ".$join."
+            WHERE nt.deleted_at IS NULL
+            ORDER BY nt.updated_at, nt.created_at DESC
+        ")); 
+        
+        $clean = [];
+
+        foreach ($res as $rs) {
+            $send_to = json_decode($rs->notif_send_to, true);
+
+            $id = $rs->id;
+            $ntype = $rs->notif_type;
+            $nbody = $rs->notif_body;
+            $nst = $send_to;
+            $isp = $rs->is_pending;
+            $pu = $rs->pending_until;
+            $createdAt = $rs->created_at;
+            $sendedAt = $rs->sended_at;
+            $updatedAt = $rs->updated_at;
+            $deletedAt = $rs->deleted_at;
+            $au_created = $rs->admin_username_created; 
+            $au_updated = $rs->admin_username_updated; 
+            $au_deleted = $rs->admin_username_deleted; 
+            $au_sended = $rs->admin_username_sended; 
+            $ai_created = $rs->admin_image_created; 
+            $ai_updated = $rs->admin_image_updated; 
+            $ai_deleted = $rs->admin_image_deleted; 
+            $ai_sended = $rs->admin_image_sended; 
+
+            $clean[] = [
+                'id' => $id,
+                'notif_type' => $ntype,
+                'notif_body' => $nbody,
+                'notif_send_to' => $nst,
+                'is_pending' => $isp,
+                'pending_until' => $pu,
+                'created_at' => $createdAt,
+                'sended_at' => $sendedAt,
+                'updated_at' => $updatedAt,
+                'deleted_at' => $deletedAt,
+                'admin_username_created' => $au_created,
+                'admin_username_updated' => $au_updated,
+                'admin_username_deleted' => $au_deleted,
+                'admin_username_sended' => $au_sended,
+                'admin_image_created' => $ai_created,
+                'admin_image_updated' => $ai_updated,
+                'admin_image_deleted' => $ai_deleted,
+                'admin_image_sended' => $ai_sended
+            ];
+        }
+
+        $collection = collect($clean);
+        $collection = $collection->sortBy('created_at')->values();
+
+        return $collection;
     }
 
     public static function getCountEngPostNotif($id){

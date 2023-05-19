@@ -10,6 +10,7 @@
 
 <?php
     use Carbon\Carbon;
+    use App\Helpers\Generator;
 ?>
 
 <div class="table-responsive">
@@ -53,8 +54,8 @@
                             </div>
                         </div>
                     </td>
-                    <td>{{$dc->slug_name}}</td>
-                    <td>{{$dc->dct_name}}</td>
+                    <td style="width: 100px;">{{$dc->slug_name}}</td>
+                    <td style="width: 100px;">{{$dc->dct_name}}</td>
                     <td>
                         <div style="word-break: break-all; width: 200px;">
                             @if($dc->dct_desc)
@@ -64,24 +65,26 @@
                             @endif
                         </div>
                     </td>
-                    <td style="width: 180px;">
+                    <td style="width: 220px;">
                         <h6>Created By</h6>
-                        <div class="row p-0 m-0">
-                            <div class="col-3 p-0">
-                                <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
+                        <div class="">
+                            <div class="d-inline-block">
+                                <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($dc->admin_username_created, null, $dc->admin_image_created, null)}}" 
+                                    alt="{{Generator::getProfileImageContent($dc->admin_username_created, null, $dc->admin_image_created, null)}}">
                             </div>
-                            <div class="col-9 p-0 ps-2 pt-1">
+                            <div class="d-inline-block position-relative w-75">
                                 <h5 class="user-username-mini" title="View Profile">{{$dc->admin_username_created}}</h5>
                                 <h6 class="properties-date date_holder_1">{{Carbon::parse($dc->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                             </div>
                         </div>    
                         @if($dc->updated_at)
                             <h6>Updated By</h6>
-                            <div class="row p-0 m-0">
-                                <div class="col-3 p-0">
-                                    <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
+                            <div class="">
+                                <div class="d-inline-block">
+                                    <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($dc->admin_username_updated, null, $dc->admin_image_updated, null)}}" 
+                                        alt="{{Generator::getProfileImageContent($dc->admin_username_updated, null, $dc->admin_image_updated, null)}}">
                                 </div>
-                                <div class="col-9 p-0 ps-2 pt-1">
+                                <div class="d-inline-block position-relative w-75">
                                     <h5 class="user-username-mini" title="View Profile">{{$dc->admin_username_updated}}</h5>
                                     <h6 class="properties-date date_holder_2">{{Carbon::parse($dc->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
@@ -89,11 +92,12 @@
                         @endif
                         @if($dc->deleted_at)
                             <h6>Deleted By</h6>
-                            <div class="row p-0 m-0">
-                                <div class="col-3 p-0">
-                                    <img class="img img-fluid user-image" src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28" alt="username-profile-pic.png">
+                            <div class="">
+                                <div class="d-inline-block">
+                                    <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($dc->admin_username_deleted, null, $dc->admin_image_deleted, null)}}" 
+                                        alt="{{Generator::getProfileImageContent($dc->admin_username_deleted, null, $dc->admin_image_deleted, null)}}">
                                 </div>
-                                <div class="col-9 p-0 ps-2 pt-1">
+                                <div class="d-inline-block position-relative w-75">
                                     <h5 class="user-username-mini" title="View Profile">{{$dc->admin_username_deleted}}</h5>
                                     <h6 class="properties-date date_holder_3">{{Carbon::parse($dc->deleted_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>

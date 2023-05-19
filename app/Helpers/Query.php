@@ -133,6 +133,12 @@ class Query
                 ac.username as admin_username_created, ac.image_url as admin_image_created, 
                 ad.image_url as admin_image_deleted, ad.username as admin_username_deleted,
                 au.username as admin_username_updated, au.image_url as admin_image_updated";
+        } else if($type == "notif_manage"){
+            $query = "nt.id, notif_type, notif_body, notif_send_to, is_pending, pending_until, nt.created_at, sended_at, nt.updated_at, nt.deleted_at,
+                ac.username as admin_username_created, ac.image_url as admin_image_created, 
+                ad.image_url as admin_image_deleted, ad.username as admin_username_deleted,
+                au.username as admin_username_updated, au.image_url as admin_image_updated,
+                asd.username as admin_username_sended, asd.image_url as admin_image_sended";
         }
         // Make user's new request dump query
         // Make user's old request dump query
@@ -160,6 +166,11 @@ class Query
             return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id";
+        } else if($type == "notif"){
+            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+                LEFT JOIN admins au ON ".$initial.".updated_by = au.id
+                LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
+                LEFT JOIN admins asd ON ".$initial.".sended_by = asd.id";
         }
     }
 

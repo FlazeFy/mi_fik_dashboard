@@ -427,4 +427,24 @@ class Generator
         
         return $res;
     }
+
+    public static function getProfileImageContent($admin_uname, $user_uname, $admin_img, $user_img){
+        // For admin and user (lecturer & staff)
+        $res = "";
+        if($admin_uname){
+            if($admin_img){
+                $res = $admin_img;
+            } else {
+                $res = "http://127.0.0.1:8000/assets/default_admin.png";
+            }
+        } else {
+            if($user_img){
+                $res = $user_img;
+            } else {
+                $res = "http://127.0.0.1:8000/assets/default_lecturer.png";
+            }
+        }
+
+        return $res;
+    }
 }

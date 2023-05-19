@@ -30,7 +30,7 @@ class NotificationController extends Controller
         //Required config
         $select_1 = "Notification";
 
-        $notification = Notification::getAllNotification("DESC", "DESC");
+        $notification = Notification::getAllNotification();
         $dictionary = Dictionary::getDictionaryByType($select_1);
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
