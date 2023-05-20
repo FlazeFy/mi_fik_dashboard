@@ -30,7 +30,7 @@
         <thead>
             <tr>
                 <th scope="col">Type</th>
-                <th scope="col">Body</th>
+                <th scope="col">Content</th>
                 <th scope="col" style="max-width:300px;">Send To</th>
                 <th scope="col">Status</th>
                 <th scope="col">Manage By</th>
@@ -47,7 +47,12 @@
                         @php($type = ucfirst($split[1]))
                         {{$type}}
                     </td>
-                    <td>{{$nt['notif_body']}}</td>
+                    <td style="font-size:14px;">
+                        <h6 class="mb-0">Title</h6>
+                        {{$nt['notif_title']}}
+                        <h6 class="mb-0 mt-2">Body</h6>
+                        {{$nt['notif_body']}}
+                    </td>
                     <td>
                         @php($ntJson = $nt['notif_send_to'])
                         
@@ -96,9 +101,9 @@
                     </td>
                     <td>
                         @if($nt['is_pending'])
-                            Pending until {{date('Y-m-d H:i', strtotime($nt['pending_until']))}}
+                            <span class="status-info bg-danger">Pending until {{date('Y-m-d H:i', strtotime($nt['pending_until']))}}</span>
                         @else 
-                            Announced
+                            <span class="status-info bg-success">Announced</span>
                         @endif
                     </td>
                     <td style="width: 220px;">

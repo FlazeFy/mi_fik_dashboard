@@ -145,11 +145,12 @@ class Commands extends Controller
         try {
             $user_id = $request->user()->id;
 
-            $roles = json_decode($request->user_role);
+            $roles = json_decode($request->user_role,true);
             $list_roles = "";
             foreach($roles as $rl){
-                $list_roles .= $rl->tag_name.",";
+                $list_roles .= $rl['tag_name'].",";
             }
+
             $hs = new Request();
             $obj = [
                 'history_type' => "user",
@@ -170,11 +171,16 @@ class Commands extends Controller
                     ->where('username',$request->username)
                     ->first(); 
 
-                $oldR = array_merge($oldR->role, $roles);
-                $newR = Converter::getTag($oldR);
+                if($oldR->role == null){
+                    $newR = $roles;
+                } else {
+                    $newR = array_merge($oldR->role, $roles);
+                }
+                
+                $newR = Converter::getTag($newR);
                 $newR = json_decode($newR, true);
 
-                $user = User::where('id', $user_id)->update([
+                $user = User::where('id', $oldR->id)->update([
                     'role' => $newR,
                     'updated_at' => date("Y-m-d H:i"),
                     'updated_by' => $user_id,

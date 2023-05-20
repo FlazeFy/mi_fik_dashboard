@@ -85,8 +85,7 @@ class Query
                 COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,
                 COUNT(CASE WHEN users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' AND users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_student";
         } else if($type == "notif_my"){
-            $query = "notifications.id, notif_type, notif_body, notif_send_to, is_pending, notifications.created_at, CONCAT(users.first_name, ' ', users.last_name) as users_fullname, 
-                CONCAT(admins.first_name, ' ', admins.last_name) as admins_fullname";
+            $query = "notifications.id, CONCAT(UPPER(SUBSTR(notif_type, 14)),' ',notif_body) as notif_body, notif_title, notifications.created_at, CONCAT(admins.first_name, ' ', admins.last_name) as admins_fullname";
         } else if($type == "event_dump"){
             $query = "ch.slug_name, content_title, content_desc, 
                 ac.username as admin_username_created, uc.username as user_username_created, 
@@ -134,7 +133,7 @@ class Query
                 ad.image_url as admin_image_deleted, ad.username as admin_username_deleted,
                 au.username as admin_username_updated, au.image_url as admin_image_updated";
         } else if($type == "notif_manage"){
-            $query = "nt.id, notif_type, notif_body, notif_send_to, is_pending, pending_until, nt.created_at, sended_at, nt.updated_at, nt.deleted_at,
+            $query = "nt.id, notif_type, notif_title, notif_body, notif_send_to, is_pending, pending_until, nt.created_at, sended_at, nt.updated_at, nt.deleted_at,
                 ac.username as admin_username_created, ac.image_url as admin_image_created, 
                 ad.image_url as admin_image_deleted, ad.username as admin_username_deleted,
                 au.username as admin_username_updated, au.image_url as admin_image_updated,

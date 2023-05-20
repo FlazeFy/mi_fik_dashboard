@@ -47,7 +47,7 @@ function getUserImageGeneral(img, role){
             for(var i = 0; i < role.length; i++){
                 if(role[i].slug_name == "student"){
                     return "http://127.0.0.1:8000/assets/default_student.png";
-                } else if(role[i].slug_name == "lecturer"){
+                } else if(role[i].slug_name == "lecturer" || role[i].slug_name == "staff"){
                     return "http://127.0.0.1:8000/assets/default_lecturer.png";
                 }
             }

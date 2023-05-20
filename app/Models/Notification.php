@@ -18,7 +18,7 @@ class Notification extends Model
 
     protected $table = 'notifications';
     protected $primaryKey = 'id';
-    protected $fillable = ['id','notif_type', 'notif_body', 'notif_send_to', 'is_pending', 'pending_until', 'created_at', 'created_by', 'sended_at', 'sended_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
+    protected $fillable = ['id','notif_type', 'notif_title', 'notif_body', 'notif_send_to', 'is_pending', 'pending_until', 'created_at', 'created_by', 'sended_at', 'sended_by', 'updated_at', 'updated_by', 'deleted_at', 'deleted_by'];
 
     protected $casts = [
         'notif_send_to' => 'array',
@@ -44,6 +44,7 @@ class Notification extends Model
 
             $id = $rs->id;
             $ntype = $rs->notif_type;
+            $ntitle = $rs->notif_title;
             $nbody = $rs->notif_body;
             $nst = $send_to;
             $isp = $rs->is_pending;
@@ -64,6 +65,7 @@ class Notification extends Model
             $clean[] = [
                 'id' => $id,
                 'notif_type' => $ntype,
+                'notif_title' => $ntitle,
                 'notif_body' => $nbody,
                 'notif_send_to' => $nst,
                 'is_pending' => $isp,

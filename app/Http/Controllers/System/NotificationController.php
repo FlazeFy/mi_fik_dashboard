@@ -122,8 +122,8 @@ class NotificationController extends Controller
                             $message = CloudMessage::withTarget('token', $result->firebase_fcm_token)
                                 ->withNotification(
                                     FireNotif::create($request->notif_body)
-                                    ->withTitle($type)
-                                    ->withBody($request->notif_body)
+                                    ->withTitle($request->notif_title)
+                                    ->withBody(strtoupper($type)." ".$request->notif_body)
                                 )
                                 ->withData([
                                     'by' => 'person'
@@ -156,8 +156,8 @@ class NotificationController extends Controller
                                 $message = CloudMessage::withTarget('token', $rs->firebase_fcm_token)
                                     ->withNotification(
                                         FireNotif::create($request->notif_body)
-                                        ->withTitle($type)
-                                        ->withBody($request->notif_body)
+                                        ->withTitle($request->notif_title)
+                                        ->withBody(strtoupper($type)." ".$request->notif_body)
                                     )
                                     ->withData([
                                         'by' => 'grouping'
@@ -190,6 +190,7 @@ class NotificationController extends Controller
             $ntf = Notification::create([
                 'id' => $uuid,
                 'notif_type' => $request->notif_type, 
+                'notif_title' => $request->notif_title, 
                 'notif_body' => $request->notif_body, 
                 'notif_send_to' => $obj_send_to, 
                 'is_pending' => $is_pending, 
