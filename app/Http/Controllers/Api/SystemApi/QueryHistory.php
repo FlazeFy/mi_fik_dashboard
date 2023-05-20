@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api\SystemApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\History;
 
@@ -16,14 +19,46 @@ class QueryHistory extends Controller
         try {
             $user_id = $request->user()->id;
 
-            $history = History::select('history_type', 'history_body', 'created_at')
+            $history = History::select('id','history_type', 'history_body', 'created_at')
                 ->where('context_id', $user_id)
                 ->orWhere('history_send_to', $user_id)
                 ->orWhere('created_by', $user_id)
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
-            if($history->isEmpty()) {
+            $clean = [];
+
+            foreach($history as $hs){
+                if($hs->history_type == "request"){
+                    $body = "Your ".trim($hs->history_body);
+                } else if($hs->history_type == "faq" || $hs->history_type == "task"){
+                    $body = "You ".trim($hs->history_body);
+                } else {
+                    $body = trim($hs->history_body);
+                }
+
+                $clean[] = [
+                    'id' => $hs->id,
+                    'history_type' => ucfirst($hs->history_type),
+                    'history_body' => ucfirst($body),
+                    'created_at' => $hs->created_at
+                ];
+            }
+
+            $collection = collect($clean);
+            $collection = $collection->sortByDesc('created_at')->values();
+            $perPage = 20;
+            $page = request()->input('page', 1);
+            $paginator = new LengthAwarePaginator(
+                $collection->forPage($page, $perPage),
+                $collection->count(),
+                $perPage,
+                $page,
+                ['path' => url()->current()]
+            );
+            $clean = $paginator->appends(request()->except('page'));
+
+            if($clean->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'History Not Found',
@@ -33,7 +68,7 @@ class QueryHistory extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'History Found',
-                    'data' => $history
+                    'data' => $clean
                 ], Response::HTTP_OK);
             }
         } catch (\Exception $e) {

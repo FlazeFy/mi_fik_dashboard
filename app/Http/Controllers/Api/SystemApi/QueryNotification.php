@@ -41,14 +41,14 @@ class QueryNotification extends Controller
             $select = Query::getSelectTemplate("notif_my");
 
             $notif = Notification::selectRaw($select)
-                ->leftJoin('users', 'users.id', '=', 'notifications.created_by')
+                //->leftJoin('users', 'users.id', '=', 'notifications.created_by')
                 ->leftJoin('admins', 'admins.id', '=', 'notifications.created_by')
                 ->where('is_pending', 0)
                 // ->where(function ($query) {
                 //     $query->where('notif_send_to','LIKE','%send_to":"'.$user_id.'"%') //Must use jsoncontains
                 //         ->orWhere('notif_send_to','LIKE','%send_to":"all"%');
                 // })"send_to":"all"
-                ->whereRaw("notif_send_to LIKE '%".'"'."user_id".'"'.":".'"'.$user_id.'"'."%'
+                ->whereRaw("notif_send_to LIKE '%".'"'."id".'"'.":".'"'.$user_id.'"'."%'
                     OR notif_send_to LIKE '%".'"'."send_to".'"'.":".'"'.'all"'."%'")
                 ->paginate(12);
 
