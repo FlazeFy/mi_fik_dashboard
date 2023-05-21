@@ -32,7 +32,7 @@
                     @php($bg = "waiting")
                 @endif
 
-                <tr class="tabular-item {{$bg}}">
+                <tr class="tabular-item normal{{$bg}}">
                     <td style="width: 140px;">
                         <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$in->id}}')" id="select-{{$in->id}}">
                             @foreach($dictionary as $dct)

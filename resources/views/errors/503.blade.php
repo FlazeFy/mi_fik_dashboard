@@ -13,7 +13,7 @@
         <p class="display-5" style="color:#F85D59;">Oops! Something is wrong.</p>
     </div>
     <div class="container p-4 w-25 d-block mx-auto text-center" style="background: #F85D59;">
-        <p><i class="fa-solid fa-circle-info"></i> Page doesn't exist. Please check the URL or back to the previous page</p>
+        <p><i class="fa-solid fa-circle-info"></i> The server is unable to handle the user's request at this time because it is temporarily unavailable</p>
     </div>
 </body>
 </html>
