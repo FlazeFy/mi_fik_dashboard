@@ -24,6 +24,7 @@
     <form action="/event/edit/update/loc/add/{{$c->slug_name}}" method="POST">
         @csrf
         <input hidden name="content_loc" id="content_loc">
+        <input hidden name="content_title" value="{{$c->content_title}}">
         <span id="content_loc_msg"></span>
         <div id="map-event"></div>
         <div id="map-save-button-holder"></div>

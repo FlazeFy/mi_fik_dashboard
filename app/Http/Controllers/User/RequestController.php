@@ -11,6 +11,10 @@ use App\Helpers\Generator;
 use App\Helpers\Converter;
 use App\Helpers\Validation;
 
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FireNotif;
+
 use App\Models\User;
 use App\Models\UserRequest;
 use App\Models\Menu;
@@ -118,6 +122,9 @@ class RequestController extends Controller
     public function reject_request_multi(Request $request)
     {
         $admin_id = Generator::getUserIdV2(session()->get('role_key'));
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
+        
         $data = new Request();
         $obj = [
             'history_type' => "request",
@@ -162,6 +169,24 @@ class RequestController extends Controller
                             'created_by' => $admin_id
                         ]);  
 
+                        $user = User::getUserRole($user_id, 0);
+                        $firebase_token = $user[0]['firebase_fcm_token'];
+
+                        if($firebase_token){
+                            $notif_body = "your role's request has been rejected";
+                            $notif_title = "Hello ".$user[0]['username'].", you got an information";
+                            $message = CloudMessage::withTarget('token', $firebase_token)
+                                ->withNotification(
+                                    FireNotif::create($notif_body)
+                                    ->withTitle($notif_title)
+                                    ->withBody("REJECTED"." ".$notif_body)
+                                )
+                                ->withData([
+                                    'by' => 'person'
+                                ]);
+                            $response = $messaging->send($message);
+                        }
+
                         $count++;
                     } else {
                         $failed++;
@@ -182,6 +207,9 @@ class RequestController extends Controller
     public function accept_request_multi(Request $request)
     {
         $admin_id = Generator::getUserIdV2(session()->get('role_key'));
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
+
         $data = new Request();
         $obj = [
             'history_type' => "request",
@@ -295,6 +323,22 @@ class RequestController extends Controller
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $admin_id
                         ]); 
+
+                        $firebase_token = $rolesOld[0]['firebase_fcm_token'];
+                        if($firebase_token){
+                            $notif_body = "your role has been updated";
+                            $notif_title = "Hello ".$rolesOld[0]['username'].", you got an information";
+                            $message = CloudMessage::withTarget('token', $firebase_token)
+                                ->withNotification(
+                                    FireNotif::create($notif_body)
+                                    ->withTitle($notif_title)
+                                    ->withBody("APPROVED"." ".$notif_body)
+                                )
+                                ->withData([
+                                    'by' => 'person'
+                                ]);
+                            $response = $messaging->send($message);
+                        }
                     }
                     $count++;
                 }

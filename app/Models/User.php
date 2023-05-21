@@ -27,7 +27,7 @@ class User extends Authenticatable
         if($role == 1){
             return null;
         } else {
-            $res = User::select('role')
+            $res = User::select('username','firebase_fcm_token','role')
                 ->where('id', $id)
                 ->limit(1)
                 ->get();
