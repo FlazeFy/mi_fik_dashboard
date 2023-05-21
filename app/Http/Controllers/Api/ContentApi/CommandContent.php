@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\ContentApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 use App\Helpers\Converter;
 use App\Helpers\Generator;
@@ -20,9 +21,11 @@ class CommandContent extends Controller
 {
     public function deleteContent(Request $request, $id){
         try{
+            $user_id = $request->user()->id;
+
             $content = ContentHeader::where('id', $id)->update([
                 'deleted_at' => date("Y-m-d H:i:s"),
-                'deleted_by' => $request->user_id,
+                'deleted_by' => $user_id,
             ]);
 
             if($content != 0){
@@ -71,6 +74,7 @@ class CommandContent extends Controller
             //Inital variable
             $draft = 0;
             $failed_attach = false;
+            $user_id = $request->user()->id;
 
             //Helpers
             $validator = Validation::getValidateEvent($request);
@@ -93,8 +97,8 @@ class CommandContent extends Controller
                     // $tag = Converter::getTag(json_decode($request->content_tag));
                     // $tag = json_decode($tag, true);
                     $tag = $request->content_tag;
-                } 
-                
+                }
+
                 $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
                 $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
                 $slug = Generator::getSlugName($request->content_title, "content");
@@ -117,7 +121,7 @@ class CommandContent extends Controller
                     'content_image' => $imageURL,
                     'is_draft' => $draft,
                     'created_at' => date("Y-m-d H:i"),
-                    'created_by' => $request->user_id, //for now
+                    'created_by' => $user_id, //for now
                     'updated_at' => null,
                     'updated_by' => null,
                     'deleted_at' => null,
@@ -127,7 +131,7 @@ class CommandContent extends Controller
                 if($tag != null || $request->has('content_attach')){
                     $detail = ContentDetail::create([
                         'id' => Generator::getUUID(),
-                        'content_id' => $uuid, 
+                        'content_id' => $uuid,
                         'content_attach' => $request->content_attach,
                         'content_tag' => $tag,
                         'content_loc' => null, //for now
@@ -155,10 +159,11 @@ class CommandContent extends Controller
         }
     }
 
-    public function addView($slug_name,$user_slug,$user_role){
+    public function addView($slug_name,$user_slug,$user_role, Request $request){
         try{
             $content_id = Generator::getContentId($slug_name); //Fix this
-            $user_id = Generator::getUserId($user_slug, $user_role);
+            // $user_id = Generator::getUserId($user_slug, $user_role);
+            $user_id = $request->user()->id;
             $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
 
             if($content_id != null && $user_id != null){

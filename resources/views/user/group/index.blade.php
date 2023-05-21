@@ -52,10 +52,12 @@
             <div id="content" class="p-4">
                 <div class="content-body">
                     @include('sidebar.navbar')
-
-                    <div class="mt-4">
+                    
+                    <div class="mt-4 btn-config-holder">
                         @include('user.group.create')
-                        @include('user.group.searchbar')
+                        <div class="ms-1">
+                            @include('user.group.searchbar')
+                        </div>
                     </div>
                     <div class="content-section position-relative mt-3">
                         @include('user.group.list')

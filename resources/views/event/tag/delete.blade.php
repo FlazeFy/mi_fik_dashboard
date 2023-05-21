@@ -14,6 +14,7 @@
                 @endforeach                
                 <form class="d-inline" action="/event/tag/delete/{{$tg->id}}" method="POST">
                     @csrf
+                    <input value="{{$tg->tag_name}}" name="tag_name" hidden>
                     <button class="btn btn-danger float-end" type="submit">Delete</button>
                 </form>
             </div>

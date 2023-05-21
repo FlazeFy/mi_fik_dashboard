@@ -73,7 +73,7 @@ class TagController extends Controller
         //Validate name avaiability
         $check = Tag::where('tag_name', $request->tag_name)->get();
 
-        if((count($check) == 0 || $request->update_type == "desc") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
+        if((count($check) == 0 || $request->update_type == "desc" || $request->update_type == "cat") && strtolower(str_replace(" ","", $request->tag_name)) != "all"){
             $slug = Generator::getSlugName($request->tag_name, "tag");
 
             $user_id = Generator::getUserIdV2(session()->get('role_key')); 
@@ -129,9 +129,38 @@ class TagController extends Controller
         }
     }
 
-    public function delete_tag($id)
+    public function delete_tag(Request $request, $id)
     {
-        Tag::destroy($id);
+        $data = new Request();
+        $obj = [
+            'history_type' => "tag",
+            'history_body' => "Has deleted '".$request->tag_name."' tag"
+        ];
+        $data->merge($obj);
+
+        $validatorHistory = Validation::getValidateHistory($data);
+        if ($validatorHistory->fails()) {
+            $errors = $validatorHistory->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+            Tag::where('id', $id)->update([
+                'deleted_at' => date("Y-m-d H:i:s"),
+                'deleted_by' => $user_id
+            ]);
+
+            History::create([
+                'id' => Generator::getUUID(),
+                'history_type' => $data->history_type, 
+                'context_id' => $id, 
+                'history_body' => $data->history_body, 
+                'history_send_to' => null,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $user_id
+            ]);
+        }
 
         return redirect()->back()->with('success_message', 'Tag has been deleted');
     }

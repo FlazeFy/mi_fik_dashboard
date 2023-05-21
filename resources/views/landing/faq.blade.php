@@ -21,10 +21,10 @@
             @endif
                     <div class="card bg-transparent border-0 mb-3">
                         <div class="card-header faq-header" id="heading{{$i}}">
-                            <a class="text-decoration-none" data-bs-toggle="collapse" href="#collapse{{$i}}" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                <h6 class="text-secondary">{{$fq->question_body}}
-                                <img src="{{asset('/assets/chevron_down.png')}}" style="width: 28px; float: right;"></h6>
-                            </a>
+                            <button class="btn btn-faq" data-bs-toggle="collapse" href="#collapse{{$i}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                <h6 class="text-secondary">{{$fq->question_body}}</h6>
+                                <img src="{{asset('/assets/chevron_down.png')}}" class="btn-faq-icon">
+                            </button>
                         </div>
                         <div id="collapse{{$i}}" class="collapse {{$con}}" aria-labelledby="heading{{$i}}" data-bs-parent="#accordion{{$ctx}}">
                             <div class="card-body text-secondary">

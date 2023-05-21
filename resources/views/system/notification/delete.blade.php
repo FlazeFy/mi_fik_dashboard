@@ -5,7 +5,7 @@
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5>Delete Notification</h5>
                 
-                <form action="/system/notification/delete/{{$nt->id}}" method="POST">
+                <form action="/system/notification/delete/{{$nt['id']}}" method="POST">
                     @csrf 
                     <h6 class="text-center">Are you sure want to delete this notification</h6>
                     @foreach($info as $in)

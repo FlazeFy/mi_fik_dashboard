@@ -10,12 +10,13 @@
 
 <div>
     <div id="map"></div>
+    <span id="content_loc_msg"></span>
+
     <div class="form-floating mt-3">
         <input type="text" class="form-control nameInput" id="content_loc_name" oninput="getContentLocation()">
         <label for="titleInput_event">Location Name</label>
     </div>
     <input hidden name="content_loc" id="content_loc">
-    <span id="content_loc_msg"></span>
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>

@@ -21,6 +21,25 @@
 .btn-forgot-password:hover{
     color: #D5534C !important;
 }
+.btn-faq{
+    text-decoration: none;
+    margin: 0;
+    width: 100%;
+    text-align: left;
+    position: relative;
+    background: none;
+    border: none;
+    min-height: 60px;
+}
+.btn-faq h6{
+    margin-right: 30px;
+}
+.btn-faq-icon{
+    position: absolute;
+    right: 10px;
+    width: 27.5px;
+    top: 35%;
+}
 .form-control.login:focus{
     box-shadow: none !important;
 }

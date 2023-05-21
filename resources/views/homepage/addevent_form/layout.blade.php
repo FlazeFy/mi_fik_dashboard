@@ -64,7 +64,7 @@
             } else {
                 echo "#addEventModal";
             }
-        ?>" data-bs-toggle="modal">
+        ?>" data-bs-toggle="modal" onclick="infinteLoadMoreTag(1)">
 
     @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
         <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>
@@ -84,7 +84,7 @@
             <form action="/homepage/add_event" method="POST" enctype="multipart/form-data" id="form-add-event">
                 @csrf 
                 <div class="modal-body pt-4">
-                    <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" class="custom-close-modal" onclick="clean()" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                     <h5>Create Event</h5>
                     <div class="row my-2">
                         <div class="col-lg-8">

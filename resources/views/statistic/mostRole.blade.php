@@ -3,7 +3,7 @@
     @if(count($mostRole) != 0)
         <div id="MOR_pie_chart"></div>
     @else
-        <img src="http://127.0.0.1:8000/assets/nodata.png" class="img nodata-icon">
+        <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
         <h6 class="text-center">No Data Available</h6>
     @endif
 </div>

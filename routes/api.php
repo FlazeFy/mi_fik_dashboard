@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\QuestionApi\Queries as QueryQuestionApi;
 use App\Http\Controllers\Api\FeedbackApi\Commands as CommandFeedbackApi;
 use App\Http\Controllers\Api\FeedbackApi\Queries as QueryFeedbackApi;
 use App\Http\Controllers\Api\SystemApi\QueryInfo as QueryInfoApi;
+use App\Http\Controllers\Api\SystemApi\QueryHistory as QueryHistoryApi;
 
 ######################### Public Route #########################
 
@@ -44,6 +45,7 @@ Route::prefix('/v1/help')->group(function() {
 
 Route::prefix('/v1/info')->group(function() {
     Route::get('/', [QueryInfoApi::class, 'getAvailableInfoApi']);
+    Route::get('/page/{page}/location/{location}', [QueryInfoApi::class, 'getInfoPageAndLocation']);
 });
 
 Route::prefix('/v1/feedback')->group(function() {
@@ -56,6 +58,7 @@ Route::prefix('/v1/faq')->group(function() {
     Route::get('/question/active/{limit}', [QueryQuestionApi::class, 'getActiveQuestion']);
     Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
     Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
+    Route::get('/question', [QueryQuestionApi::class, 'getMyQuestions'])->middleware(['auth:sanctum']);
     Route::post('/question', [CommandQuestionApi::class, 'createQuestion'])->middleware(['auth:sanctum']);
 });
 
@@ -96,7 +99,7 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
 
     Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
-    Route::delete('/destroy/{id}', [CommandContentApi::class, 'deleteContent']);
+    Route::delete('/destroy/{id}', [CommandContentApi::class, 'destroyContent']);
     Route::post('/create', [CommandContentApi::class, 'addContent']);
     Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [CommandContentApi::class, 'addView']);
     // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
@@ -127,7 +130,12 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
     Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);
+    Route::post('/update/role/add', [CommandUserApi::class, 'add_role']);
     Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
+});
+
+Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function() {
+    Route::get('/my', [QueryHistoryApi::class, 'getMyHistory']);
 });
 
 Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {

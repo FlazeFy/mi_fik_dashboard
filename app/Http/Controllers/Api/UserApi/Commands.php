@@ -141,6 +141,75 @@ class Commands extends Controller
         }
     }
 
+    public function add_role(Request $request){
+        try {
+            $user_id = $request->user()->id;
+
+            $roles = json_decode($request->user_role,true);
+            $list_roles = "";
+            foreach($roles as $rl){
+                $list_roles .= $rl['tag_name'].",";
+            }
+
+            $hs = new Request();
+            $obj = [
+                'history_type' => "user",
+                'history_body' => "add ".$list_roles." to ".$request->username." role"
+            ];
+            $hs->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($hs);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $oldR = User::select('id','role')
+                    ->where('username',$request->username)
+                    ->first(); 
+
+                if($oldR->role == null){
+                    $newR = $roles;
+                } else {
+                    $newR = array_merge($oldR->role, $roles);
+                }
+                
+                $newR = Converter::getTag($newR);
+                $newR = json_decode($newR, true);
+
+                $user = User::where('id', $oldR->id)->update([
+                    'role' => $newR,
+                    'updated_at' => date("Y-m-d H:i"),
+                    'updated_by' => $user_id,
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $hs->history_type,
+                    'context_id' => null,
+                    'history_body' => $hs->history_body,
+                    'history_send_to' => $oldR->id,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Role has been updated',
+                    'data' => $newR
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'result' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function request_role_api(Request $request) {
         try {
             $user_id = $request->user()->id;

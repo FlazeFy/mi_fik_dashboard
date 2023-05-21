@@ -12,6 +12,7 @@ use App\Helpers\Converter;
 
 use App\Models\User;
 use App\Models\Menu;
+use App\Models\Dictionary;
 
 class AllController extends Controller
 {
@@ -24,6 +25,7 @@ class AllController extends Controller
     {
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
+        $dct_tag = Dictionary::getDictionaryByType("Tag");
 
         //Set active nav
         session()->put('active_nav', 'manageuser');
@@ -31,6 +33,7 @@ class AllController extends Controller
 
         return view('user.all.index')
             ->with('menu', $menu)
+            ->with('dct_tag', $dct_tag)
             ->with('greet',$greet);
     }
 

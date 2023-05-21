@@ -41,4 +41,36 @@ class QueryInfo extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getInfoPageAndLocation($page, $location) {
+        try {
+
+            $newPage = str_replace("-","/",$page);
+
+            $info = Info::select('info_type', 'info_body', 'info_location')
+                ->where('is_active', 1)
+                ->where('info_location', $location)
+                ->where('info_page', $newPage)
+                ->first();
+
+            if (is_null($info)) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Info Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Info Found',
+                    'data' => $info
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

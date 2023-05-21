@@ -39,6 +39,7 @@
         <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/attachment_v1.0.css') }}"/>
 
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>

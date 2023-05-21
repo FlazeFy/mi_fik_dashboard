@@ -15,6 +15,23 @@
                 <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button>
             </h6>
         </div>
+        @if(session()->get('role_key') != 1)
+            <div class="position-absolute" style="right:60px; top:20px;">
+                <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" 
+                    style="font-size:13px;"aria-label="Floating label select example" required>
+                    @php($i = 0) 
+                    @foreach($dct_tag as $dtag) 
+                        @if($i == 0) 
+                            <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                            <option value="all">All</option>
+                        @else 
+                            <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                        @endif
+                        @php($i++) 
+                    @endforeach
+                </select>
+            </div> 
+        @endif
 
         <div class="user-req-holder" id="data_wrapper_manage_tag">
             <!-- Loading -->
@@ -59,7 +76,6 @@
 </div>
 
 <script>
-    var page = 1;
     var slct_list = [];
     var start_section = document.getElementById("start-section-manage");
     var load_section = document.getElementById("start-load");
@@ -88,13 +104,27 @@
         }, 400); 
     }
 
+    <?php 
+        if(session()->get('role_key') == 0){
+            echo 'var tag_cat = "'.$dct_tag[0]["slug_name"].'";';
+            echo 'var page_tag = 1;';
+        }
+    ?>
+
+    function setTagFilter(tag){
+        page = 1;
+        tag_cat = tag;
+        infinteLoadMore(page);
+        $("#data_wrapper_manage_tag").empty();
+    }
+
     function infinteLoadMore(page) {  
         stylingTagManage();  
         start_section.setAttribute('class', 'd-none');
         load_section.setAttribute('class', '');
         
         $.ajax({
-            url: "/api/v1/tag/20" + "?page=" + page,
+            url: "/api/v1/tag/cat/" + tag_cat + "/12?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -108,18 +138,19 @@
             var data =  response.data.data;
             var total = response.data.total;
             var last = response.data.last_page;
+            var start = 0;
 
             if(page != last){
-                $('#load_more').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more').html('<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more').html('<h6 class="btn content-more-floating mt-3 p-2">No more tag to show</h6>');
+                $('#load_more').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
             }
 
             if (total == 0) {
-                $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Tag found</h6>");
+                $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Tag found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the tags :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
                 return;
             } else {
                 if(myTag.length == 0){
@@ -152,13 +183,25 @@
                             'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
 
                             $("#data_wrapper_manage_tag").append(elmt);
+                            start++;
                         }
                     } 
+                }
+
+                if(start == 0){
+                    $('#load_more').empty();
+                    $("#data_wrapper_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>You have already pick all tag in this category</h6></div>");
                 }
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load-tag').hide();
+                $('#load_more').empty();
+                $("#data_wrapper_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 

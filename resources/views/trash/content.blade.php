@@ -22,14 +22,6 @@
     var myname = "<?= session()->get("username_key") ?>";
     infinteLoadMore(page);
 
-    //Fix the sidebar & content page FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page++;
-    //         infinteLoadMore(page);
-    //     } 
-    // };
-
     function loadmore(route){
         page++;
         infinteLoadMore(page);
@@ -77,14 +69,14 @@
             if(page != last){
                 $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2 d-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2 d-block mx-auto">No more item to show</h6>');
+                $('#load_more_holder').html('<h6 class="btn text-secondary my-3 p-2 d-block mx-auto">No more item to show</h6>');
             }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata2.png' class='img nodata-icon'><h6 class='text-secondary text-center'>Trash can is empty</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
                 function getEventLoc(loc){
@@ -291,7 +283,7 @@
                     if(data_from == 1){ // Event
                         var elmt = " " +
                             "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
-                                "<button class='card shadow event-box ultimate' onclick=''> " +
+                                "<button class='card shadow event-box ultimate' style='min-height:auto;' onclick=''> " +
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                     "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                     "<div class='card-body p-2 w-100'> " +
@@ -304,9 +296,7 @@
                                                 "<h6 class='event-subtitle'>" + getUsername(au_created, uu_created) + "</h6> " +
                                             "</div> " +
                                         "</div> " +
-                                        "<div style='height:45px;'> " +
-                                            "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
-                                        "</div> " +
+                                        "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
                                         "<div class='row d-inline-block px-2'> " +
                                             getEventLoc(content_loc) +
                                             getEventDate(content_date_start, content_date_end) +
@@ -353,16 +343,14 @@
                                         "<div class='card-body p-2 w-100'> " +
                                             "<div class=''> " +
                                                 "<div class='d-inline-block'> " +
-                                                    "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                                                    '<img class="img img-fluid user-image" src="' + getUserImageGeneral(ui_created, <?= session()->get('role_key'); ?>) + '">' +
                                                 "</div> " +
                                                 "<div class='d-inline-block position-relative w-50'> " +
                                                     "<h6 class='task-title'>" + content_title + "</h6> " +
                                                     "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + "</h6> " +
                                                 "</div> " +
                                             "</div> " +
-                                            "<div style='height:45px;'> " +
-                                                "<p class='task-desc my-1'>" + content_desc + "</p> " +
-                                            "</div> " +
+                                            "<p class='task-desc my-1'>" + content_desc + "</p> " +
                                             "<div class='row d-inline-block px-2'> " +
                                                 getEventDate(content_date_start, content_date_end) +
                                                 getDaysRemaining(deleted_at, dtd_range) +
@@ -386,7 +374,7 @@
                                                 "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                                 "<div class=''> " +
                                                     "<div class='d-inline-block'> " +
-                                                        "<img class='img img-fluid user-image-content' src='https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/719912cc-2649-41a1-9e66-ec5e6315cabb/d9a5mif-cc463e46-8bfa-4ed1-8ab0-b0cdf7dab5a7.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzcxOTkxMmNjLTI2NDktNDFhMS05ZTY2LWVjNWU2MzE1Y2FiYlwvZDlhNW1pZi1jYzQ2M2U0Ni04YmZhLTRlZDEtOGFiMC1iMGNkZjdkYWI1YTcuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.TxrhpoYcqn2CqCClDnY2C2Pet3mQM6BddV0HukU4u28' alt='username-profile-pic.png'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ui_deleted, <?= session()->get('role_key'); ?>) + "'> " +
                                                     "</div> " +
                                                     "<div class='d-inline-block position-relative w-75'> " +
                                                         "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
@@ -399,6 +387,128 @@
                                 "</div> " +
                                 getRecoverModal("Task", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
                                 getDestroyModal("Task", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                        } else if(data_from == 3){ // Tag
+                            var elmt = " " +
+                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
+                                    "<button class='card shadow task-box ultimate' onclick=''> " +
+                                        "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
+                                        "<div class='card-body p-2 w-100'> " +
+                                            "<div class='position-relative'> " +
+                                                "<div class='d-inline-block me-2'> " +
+                                                    '<i class="fa-solid fa-hashtag fa-xl mt-3 text-primary"></i>' +
+                                                "</div> " +
+                                                "<div class='d-inline-block position-absolute w-50' style='top:37.5px;'> " +
+                                                    "<h6 class='task-title'>" + content_title + "</h6> " +
+                                                    "<h6 class='task-subtitle'>" + content_tag + "</h6> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<p class='task-desc mb-1 mt-3'>" + content_desc + "</p> " +
+                                            "<div class='row d-inline-block px-2'> " +
+                                                getEventDate(content_date_start, content_date_end) +
+                                                getDaysRemaining(deleted_at, dtd_range) +
+                                            "</div> " +
+                                            "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                            "<div class='position-relative'> " +
+                                                "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
+                                                    "<i class='fa-solid fa-info'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-arrow-rotate-right'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-fire-flame-curved'></i> " +
+                                                "</a> " +
+                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
+                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
+                                                "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                            "</div> " +
+                                        "</div> " +
+                                    "</button> " +
+                                "</div> " +
+                                getRecoverModal("Tag", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Tag", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                        } else if(data_from == 4){ // Group
+                            var elmt = " " +
+                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
+                                    "<button class='card shadow task-box ultimate' onclick=''> " +
+                                        "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
+                                        "<div class='card-body p-2 w-100'> " +
+                                            "<div class='position-relative'> " +
+                                                "<div class='d-inline-block me-2'> " +
+                                                    '<i class="fa-solid fa-users fa-xl mt-3 text-primary"></i>' +
+                                                "</div> " +
+                                                "<div class='d-inline-block position-absolute w-50' style='top:37.5px;'> " +
+                                                    "<h6 class='task-title'>" + content_title + "</h6> " +
+                                                    "<h6 class='task-subtitle'>" + content_tag + "</h6> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<p class='task-desc mb-1 mt-3'>" + content_desc + "</p> " +
+                                            "<div class='row d-inline-block px-2'> " +
+                                                getEventDate(content_date_start, content_date_end) +
+                                                getDaysRemaining(deleted_at, dtd_range) +
+                                            "</div> " +
+                                            "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                            "<div class='position-relative'> " +
+                                                "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
+                                                    "<i class='fa-solid fa-info'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-arrow-rotate-right'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-fire-flame-curved'></i> " +
+                                                "</a> " +
+                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
+                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
+                                                "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                            "</div> " +
+                                        "</div> " +
+                                    "</button> " +
+                                "</div> " +
+                                getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                         }
 
                     $("#data-wrapper").append(elmt);

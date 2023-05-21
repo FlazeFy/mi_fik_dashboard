@@ -1,4 +1,4 @@
-<div style="max-width:300px; margin-left:120px;" class="row mb-2">
+<div style="max-width:300px; margin-left:10px;" class="row mb-2">
     <div class="col-2">
         <a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupSearch()"><i class="fa-solid fa-xmark"></i></a>
     </div>
