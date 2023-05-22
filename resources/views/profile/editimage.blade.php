@@ -48,7 +48,9 @@
     <form id="form-image" class="d-inline">
         <input hidden type="text" name="image_url" id="profile_image_url" value="">
     </form>
-    <a class="btn btn-reset-image" id="btn-reset-image" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
+    @if(session()->get("profile_pic") != null)
+        <a class="btn btn-reset-image" id="btn-reset-image" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
+    @endif
     <span class="status-holder">
         <span class="attach-upload-status success" id="header-progress"></span>
         <a class="attach-upload-status danger" id="header-failed"></a>
@@ -79,6 +81,20 @@
                 edit_image();
             });
         });
+    }
+
+    function clearImage() {
+        var storageRef = firebase.storage();
+        var desertRef = storageRef.refFromURL('<?= session()->get("profile_pic"); ?>');
+
+        desertRef.delete().then(() => {
+            document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>';
+        }).catch((error) => {
+            document.getElementById("header-failed").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>'+error+'</h6></span>';
+        });
+
+        document.getElementById("profile_image_url").value = null;
+        edit_image();
     }
 
     function edit_image(){
