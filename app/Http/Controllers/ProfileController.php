@@ -55,6 +55,9 @@ class ProfileController extends Controller
         $faq = Question::getQuestionByUserId($user_id);
         $myreq = UserRequest::getRecentlyRequest($user_id);
 
+        $image = User::getMyImage($user_id);
+        session()->put('profile_pic', $image->image_url);
+
         //Set active nav
         session()->put('active_nav', 'profile');
         session()->forget('active_subnav');

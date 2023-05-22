@@ -30,15 +30,8 @@
 </style>
 
 <div class="info-box-profile" id="info-box-profile">
-    @if(session()->get('profile_pic') == null)
-        @if(session()->get('role_key') == 0)
-            <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{ asset('/assets/default_lecturer.png')}}" id="profile_image_info">
-        @elseif(session()->get('role_key') == 1)
-            <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{ asset('/assets/default_admin.png')}}" id="profile_image_info">
-        @endif
-    @else
-        <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{session()->get('profile_pic')}}" alt="{{session()->get('profile_pic')}}" id="profile_image_info">
-    @endif
+    @include('profile.editimage')
+
     <div class="body-box">
         <div id="body-title">
             <h5>{{$user->first_name}} {{$user->last_name}}</h5>

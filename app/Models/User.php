@@ -27,7 +27,7 @@ class User extends Authenticatable
         if($role == 1){
             return null;
         } else {
-            $res = User::select('role')
+            $res = User::select('username','firebase_fcm_token','role')
                 ->where('id', $id)
                 ->limit(1)
                 ->get();
@@ -58,6 +58,15 @@ class User extends Authenticatable
         $res = User::select('role')
             ->whereNot('role', null)
             ->get();
+
+        return $res;
+    }
+
+    public static function getMyImage($id){
+        //This query must directly return at least 10 most used tag
+        $res = User::select('image_url')
+            ->where('id', $id)
+            ->first();
 
         return $res;
     }

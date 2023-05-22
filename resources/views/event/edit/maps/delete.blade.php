@@ -8,6 +8,7 @@
                 <p class="fw-normal">Are you sure want to remove <span class="text-primary">location</span> from this Event</p>
                 <form action="/event/edit/update/loc/remove/{{$c->slug_name}}" method="POST" >
                     @csrf
+                    <input hidden name="content_title" value="{{$c->content_title}}">
                     <button type="submit" class="btn btn-danger">Delete</button>
                 </form>
             </div>

@@ -129,7 +129,6 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => 'User profile image updated',
-                        'data' => $user." data updated"
                     ], Response::HTTP_OK);
                 }
             }

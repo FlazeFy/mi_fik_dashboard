@@ -19,6 +19,7 @@
 <div class="event-navigator">
     <span><a class="navigator-link" onclick="location.href='/homepage'">Event</a> > <a class="navigator-link" onclick="location.href='/event/detail/{{$c->slug_name}}'">Detail</a> > Edit > {{$c->content_title}}</span>
     <form action="/event/edit/update/draft/{{$c->slug_name}}" method="POST" class="d-inline">
+        <input hidden name="content_title" value="{{$c->content_title}}">
         @csrf
         @if($c->is_draft == 1)
             <input hidden name="is_draft" value="0">
