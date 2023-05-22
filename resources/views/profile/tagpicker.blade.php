@@ -102,6 +102,9 @@
             "width": "80px",
             "height": "80px",
         }, 400); 
+
+        $("#btn-change-image").css({"top":"65px", "right": "40px", "height":"50px", "width":"50px", "padding": "7.5px"});
+        $("#btn-reset-image").css({"top":"57.5px", "right": "-10px", "height":"50px", "width":"50px", "padding": "11px"});
     }
 
     <?php 

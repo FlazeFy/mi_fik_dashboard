@@ -341,3 +341,30 @@
     background: #D5534C !important;
     color: #FFFFFF;
 }
+.btn-change-image{
+    position: absolute;
+    background: #009FF9;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    padding: 9px;
+    border-radius: 21px;
+    top: 55px;
+    right: 20px;
+    border: 3px solid white;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.btn-reset-image{
+    height:50px; 
+    width:50px; 
+    background: #D5534C;
+    border-radius: 21px; 
+    padding: 11px;
+    position: absolute;
+    top: 47.5px;
+    right: -27.5px;
+    cursor: pointer;
+    color: white !important;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    border: 3px solid white;
+}   

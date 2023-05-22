@@ -159,7 +159,7 @@ class CommandContent extends Controller
         }
     }
 
-    public function addView($slug_name,$user_slug,$user_role, Request $request){
+    public function addView($slug_name, Request $request){
         try{
             $content_id = Generator::getContentId($slug_name); //Fix this
             // $user_id = Generator::getUserId($user_slug, $user_role);
@@ -171,6 +171,11 @@ class CommandContent extends Controller
                     $res = ContentViewer::where('id', $viewer)->update([
                         'created_at' => date("Y-m-d H:i:s")
                     ]);
+
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Content views updated',
+                    ], Response::HTTP_OK);
                 } else {
                     $res = ContentViewer::create([
                         'id' => Generator::getUUID(),
@@ -179,19 +184,19 @@ class CommandContent extends Controller
                         'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
-                }
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content views created',
-                    'data' => $res
-                ], Response::HTTP_OK);
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Content views created',
+                        'data' => $res
+                    ], Response::HTTP_OK);
+                }
             } else {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'User or content not found',
                     'data' => null
-                ], Response::HTTP_OK);
+                ], Response::HTTP_NOT_FOUND);
             }
 
         } catch(\Exception $e) {
