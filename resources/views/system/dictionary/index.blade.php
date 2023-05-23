@@ -6,6 +6,7 @@
         <meta name="description" content="" />
 
         <title>System | Dictionary</title>
+        <link rel="icon" type="image/png" href="{{asset('/assets/mifik_logo_launch.png')}}"/>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -47,6 +48,7 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>

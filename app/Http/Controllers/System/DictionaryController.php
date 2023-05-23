@@ -84,15 +84,49 @@ class DictionaryController extends Controller
         }  
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update_info(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateDictionaryInfo($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "info",
+                'history_body' => "Has updated a dictionary info"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Dictionary::where('id', $id)->update([
+                    'dct_name' => $request->dct_name,
+                    'dct_desc' => $request->dct_desc,
+                    'updated_at' => date("Y-m-d H:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success updated dictionary info');   
+            }
+        }  
     }
 
     /**
