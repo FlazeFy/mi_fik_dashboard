@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 //use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Helpers\Query;
+use Illuminate\Support\Facades\DB;
+
 class Dictionary extends Model
 {
     use HasFactory;
@@ -45,6 +48,22 @@ class Dictionary extends Model
                 ->orderBy('dictionaries.created_at', 'ASC')
                 ->get();
         }
+
+        return $res;
+    }
+
+    public static function getAllDictionary(){
+        $join = Query::getJoinTemplate("tag", "dc");
+        $select = Query::getSelectTemplate("dictionary_manage");
+
+        $res = DB::select(DB::raw("
+            SELECT 
+                ".$select." 
+            FROM dictionaries dc
+            ".$join."
+            WHERE dc.deleted_at IS NULL
+            ORDER BY dc.updated_at DESC
+        "));     
 
         return $res;
     }

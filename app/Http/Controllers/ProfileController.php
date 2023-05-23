@@ -34,6 +34,7 @@ class ProfileController extends Controller
 
         if(session()->get('role_key') == 0){
             $user = User::find($user_id);
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
             $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
             $totalNotif = null;
             $totalAcc = null;
@@ -42,6 +43,7 @@ class ProfileController extends Controller
             $totalTask = Task::getCountEngTask($user_id);
         } else {
             $user = Admin::find($user_id);
+            $dct_tag = null;
             $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
             $totalNotif = Notification::getCountEngPostNotif($user_id);
             $totalAcc = UserRequest::getCountEngAccReq($user_id);
@@ -52,6 +54,9 @@ class ProfileController extends Controller
 
         $faq = Question::getQuestionByUserId($user_id);
         $myreq = UserRequest::getRecentlyRequest($user_id);
+
+        $image = User::getMyImage($user_id);
+        session()->put('profile_pic', $image->image_url);
 
         //Set active nav
         session()->put('active_nav', 'profile');
@@ -67,6 +72,7 @@ class ProfileController extends Controller
             ->with('totalTask', $totalTask)
             ->with('dictionary', $dictionary)
             ->with('faq', $faq)
+            ->with('dct_tag', $dct_tag)
             ->with('myreq', $myreq)
             ->with('greet',$greet);
     }

@@ -32,9 +32,9 @@
                 @endif  
             </tr>
         </thead>
-        <tbody>
+        <tbody class="tabular-body">
             @foreach($tag as $tg)
-                <tr>
+                <tr class="tabular-item normal">
                     <td>
                         <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
                     </td>
@@ -83,12 +83,15 @@
                                             @csrf
                                             <input name="update_type" value="desc" hidden>
                                             <input name="tag_name" value="{{$tg->tag_name}}" hidden>
-                                            <textarea class="form-control" style="height: 100px" id="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()" name="tag_desc" maxlength="255">{{$tg->tag_desc}}</textarea>
+                                            <textarea class="form-control" style="height: 100px" id="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()" oninput="showSubmitMsg('{{$tg->id}}')" name="tag_desc" maxlength="255">{{$tg->tag_desc}}</textarea>
+                                            <span class="warning-input" id="tag-desc-msg-{{$tg->id}}"></span>
                                         </form>
                                         <h6 class="my-2">Tag Category</h6>
                                         @if(session()->get('role_key') == 1)
                                             <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
                                                 @csrf
+                                                <input name="update_type" value="cat" hidden>
+                                                <input name="tag_name" value="{{$tg->tag_name}}" hidden>
                                                 <select class="form-select" aria-label="Default select example" name="tag_category" onchange="this.form.submit()">
                                                     @foreach($dct_tag as $dtag)
                                                         @if($dtag->slug_name == $tg->tag_category)
@@ -137,4 +140,8 @@
         const date = new Date(e.textContent);
         e.textContent = getDateToContext(e.textContent, "datetime");
     });
+
+    function showSubmitMsg(id){
+        document.getElementById("tag-desc-msg-"+id).innerHTML = '<i class="fa-solid fa-triangle-exclamation text-primary"></i> Press esc or click outside the input to submit';
+    }
 </script>

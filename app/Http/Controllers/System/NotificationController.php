@@ -30,7 +30,7 @@ class NotificationController extends Controller
         //Required config
         $select_1 = "Notification";
 
-        $notification = Notification::getAllNotification("DESC", "DESC");
+        $notification = Notification::getAllNotification();
         $dictionary = Dictionary::getDictionaryByType($select_1);
         $greet = Generator::getGreeting(date('h'));
         $menu = Menu::getMenu();
@@ -118,10 +118,15 @@ class NotificationController extends Controller
                         ];
 
                         if($result->firebase_fcm_token){
+                            $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
                             $message = CloudMessage::withTarget('token', $result->firebase_fcm_token)
-                                ->withNotification(FireNotif::create($request->notif_body))
+                                ->withNotification(
+                                    FireNotif::create($request->notif_body)
+                                    ->withTitle($request->notif_title)
+                                    ->withBody(strtoupper($type)." ".$request->notif_body)
+                                )
                                 ->withData([
-                                    'notif_type' => $request->notif_type,
+                                    'by' => 'person'
                                 ]);
                             $response = $messaging->send($message);
                         }
@@ -147,10 +152,15 @@ class NotificationController extends Controller
                             ];
 
                             if($rs->firebase_fcm_token){
+                                $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
                                 $message = CloudMessage::withTarget('token', $rs->firebase_fcm_token)
-                                    ->withNotification(FireNotif::create($request->notif_body))
+                                    ->withNotification(
+                                        FireNotif::create($request->notif_body)
+                                        ->withTitle($request->notif_title)
+                                        ->withBody(strtoupper($type)." ".$request->notif_body)
+                                    )
                                     ->withData([
-                                        'notif_type' => $request->notif_type,
+                                        'by' => 'grouping'
                                     ]);
                                 $response = $messaging->send($message);
                             }
@@ -180,6 +190,7 @@ class NotificationController extends Controller
             $ntf = Notification::create([
                 'id' => $uuid,
                 'notif_type' => $request->notif_type, 
+                'notif_title' => $request->notif_title, 
                 'notif_body' => $request->notif_body, 
                 'notif_send_to' => $obj_send_to, 
                 'is_pending' => $is_pending, 

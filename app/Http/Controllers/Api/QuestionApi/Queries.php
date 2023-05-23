@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api\QuestionApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\Question;
 
@@ -134,7 +137,20 @@ class Queries extends Controller
 
             $myQuestion = Question::getQuestionByUserId($user_id);
 
-            if($myQuestion->isEmpty()) {
+            $collection = collect($myQuestion);
+            $collection = $collection->sortByDesc('created_at')->values(); // Fix this
+            $perPage = 10;
+            $page = request()->input('page', 1);
+            $paginator = new LengthAwarePaginator(
+                $collection->forPage($page, $perPage),
+                $collection->count(),
+                $perPage,
+                $page,
+                ['path' => url()->current()]
+            );
+            $clean = $paginator->appends(request()->except('page'));
+
+            if($clean->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Question not found',
@@ -144,7 +160,7 @@ class Queries extends Controller
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Question found',
-                    'data' => $myQuestion
+                    'data' => $clean
                 ], Response::HTTP_OK);
             }
         } catch (\Exception $e) {

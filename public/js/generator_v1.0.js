@@ -38,3 +38,27 @@ function messageCopy(val){
         $('#error_modal').modal('show');
     });
 }
+
+function getUserImageGeneral(img, role){
+    if(img){
+        return img;
+    } else {
+        if(Array.isArray(role)){
+            for(var i = 0; i < role.length; i++){
+                if(role[i].slug_name == "student"){
+                    return "http://127.0.0.1:8000/assets/default_student.png";
+                } else if(role[i].slug_name == "lecturer" || role[i].slug_name == "staff"){
+                    return "http://127.0.0.1:8000/assets/default_lecturer.png";
+                }
+            }
+        } else {
+            return "http://127.0.0.1:8000/assets/default_lecturer.png";
+        }
+    }
+}
+
+function getUUID() {
+    return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+}

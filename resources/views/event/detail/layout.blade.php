@@ -160,7 +160,7 @@
                 @if($c->content_loc)
                     @include('event.detail.maps')
                 @else 
-                    <img src="http://127.0.0.1:8000/assets/noloc.png" class="img nodata-icon" style="height:18vh;">
+                    <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon" style="height:18vh;">
                     <h6 class="text-center text-secondary">This Event doesn't have location</h6>
                 @endif
             </div>

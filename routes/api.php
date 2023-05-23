@@ -101,7 +101,7 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [CommandContentApi::class, 'destroyContent']);
     Route::post('/create', [CommandContentApi::class, 'addContent']);
-    Route::post('/open/{slug_name}/user/{user_slug}/role/{user_role}', [CommandContentApi::class, 'addView']);
+    Route::post('/open/{slug_name}', [CommandContentApi::class, 'addView']);
     // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
 });
 
@@ -130,6 +130,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
     Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);
+    Route::post('/update/role/add', [CommandUserApi::class, 'add_role']);
     Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
 });
 

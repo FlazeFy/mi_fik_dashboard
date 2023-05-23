@@ -11,9 +11,9 @@
         </thead>
         <tbody class="tabular-body">
             @foreach($feedback as $fb)
-                <tr>
+                <tr class="tabular-item normal">
                     <td><div style="word-break: break-all; width: 360px;">{{$fb->feedback_body}}</div></td>
-                    <td>
+                    <td style="width:140px;">
                         @php($total = $fb->feedback_rate)
                         @for($i = 0; $i < $total; $i++)
                             <i class="fa-solid fa-star" title="{{$i+1}} Stars" style="color: #ffd43b;"></i>

@@ -129,7 +129,7 @@
                 style='display: block; margin-left: auto; margin-right: auto;'>
         </div>
         <div class="col-8 pt-2">
-            <h1>MI-FIK</h1>
+            <h1>Mi-FIK</h1>
         </div>
     </div>
     <!--Main Navbar.-->

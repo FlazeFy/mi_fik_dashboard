@@ -22,10 +22,9 @@
     </form>
 
     <script>
-        var desc = document.getElementById("about_body");
-
         function getRichText(){
             var rawText = document.getElementById("rich_box").innerHTML;
+            var desc = document.getElementById("about_body");
 
             //Remove quills element from raw text
             var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','').replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">');

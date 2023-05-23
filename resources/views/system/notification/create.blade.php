@@ -49,6 +49,7 @@
 <script>
     let validation = [
         { id: "notif_body", req: true, len: 255 },
+        { id: "notif_title", req: true, len: 35 }
     ];
 </script>
 
@@ -132,8 +133,13 @@
                 '<div class="px-2"> ' +
                     '<input name="send_to" value="all" hidden> ' +
                     '<div class="form-floating mb-2"> ' +
+                        '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
+                        '<label for="notif_title">Title</label> ' +
+                        '<a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                    '</div> ' +
+                    '<div class="form-floating mb-2"> ' +
                         '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
-                        '<label for="notif_body">Notif Body</label> ' +
+                        '<label for="notif_body">Body</label> ' +
                         '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                     '</div> ' +
                     '<div class="form-floating"> ' +
@@ -162,8 +168,13 @@
                     '<input name="send_to" value="grouping" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
+                            '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
+                            '<label for="notif_title">Title</label> ' +
+                            '<a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                        '</div> ' +
+                        '<div class="form-floating mb-2"> ' +
                             '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
-                            '<label for="notif_body">Notif Body</label> ' +
+                            '<label for="notif_body">Body</label> ' +
                             '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
                         '<div class="form-floating mb-2"> ' +
@@ -203,8 +214,13 @@
             var elmt = " " +
                 '<div class="px-2"> ' +
                     '<div class="form-floating mb-2"> ' +
+                        '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
+                        '<label for="notif_title">Title</label> ' +
+                        '<a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                    '</div> ' +
+                    '<div class="form-floating mb-2"> ' +
                         '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
-                        '<label for="notif_body">Notif Body</label> ' +
+                        '<label for="notif_body">Body</label> ' +
                         '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                     '</div> ' +
                     '<div class="form-floating"> ' +
@@ -233,8 +249,13 @@
                     '<input name="send_to" value="person" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
+                            '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
+                            '<label for="notif_title">Title</label> ' +
+                            '<a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                        '</div> ' +
+                        '<div class="form-floating mb-2"> ' +
                             '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
-                            '<label for="notif_body">Notif Body</label> ' +
+                            '<label for="notif_body">Body</label> ' +
                             '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
                         '<div class="form-floating mb-2"> ' +
@@ -301,10 +322,10 @@
             }
 
             if (total == 0) {
-                $('#empty_item_holder_new_req').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {                
                 for(var i = 0; i < data.length; i++){
@@ -372,10 +393,10 @@
             }
 
             if (total == 0) {
-                $('#empty_item_holder_new_req').html("<img src='http://127.0.0.1:8000/assets/nodata.png' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {                
                 for(var i = 0; i < data.length; i++){

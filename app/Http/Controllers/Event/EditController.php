@@ -19,6 +19,10 @@ use App\Models\Info;
 use App\Models\History;
 use App\Models\Dictionary;
 
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FireNotif;
+
 class EditController extends Controller
 {
     /**
@@ -37,6 +41,7 @@ class EditController extends Controller
         $history = History::getContentHistory($slug_name);
         $menu = Menu::getMenu();
         $info = Info::getAvailableInfo("event/edit");
+        $dct_tag = Dictionary::getDictionaryByType("Tag");
 
         //Set active nav
         session()->put('active_nav', 'event');
@@ -50,6 +55,7 @@ class EditController extends Controller
             ->with('menu', $menu)
             ->with('info', $info)
             ->with('history', $history)
+            ->with('dct_tag', $dct_tag)
             ->with('dictionary', $dictionary)
             ->with('greet',$greet);
                 
@@ -109,6 +115,8 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
 
         if($id != null){
             if($request->is_draft == 1){
@@ -146,7 +154,34 @@ class EditController extends Controller
                     'created_by' => $user_id
                 ]);
 
-                return redirect()->back()->with('success_message', "Event successfully updated");             
+                $content_owner = ContentHeader::select('username','firebase_fcm_token')
+                    ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                    ->where('contents_headers.id', $id)
+                    ->first();
+
+                $firebase_token = $content_owner->firebase_fcm_token;
+                if($request->is_draft == 1){
+                    $state = "draft";
+                } else {
+                    $state = "public";
+                }
+                $notif_body = "your event '".$request->content_title."' is now set to ".$state;
+
+                if($firebase_token){
+                    $notif_title = "Hello ".$content_owner->username.", you got an information";
+                    $message = CloudMessage::withTarget('token', $firebase_token)
+                        ->withNotification(
+                            FireNotif::create($notif_body)
+                            ->withTitle($notif_title)
+                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                        )
+                        ->withData([
+                            'by' => 'person'
+                        ]);
+                    $response = $messaging->send($message);
+                }
+
+                return redirect()->back()->with('success_message', ucFirst($notif_body));             
             }
         } else {
             return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");   
@@ -421,6 +456,8 @@ class EditController extends Controller
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
 
         if($id != null && $id_detail != null){
             $data = new Request();
@@ -457,8 +494,30 @@ class EditController extends Controller
                         'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
+
+                    $content_owner = ContentHeader::select('username','firebase_fcm_token')
+                        ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                        ->where('contents_headers.id', $id)
+                        ->first();
     
-                    return redirect()->back()->with('success_message', "Event successfully updated"); 
+                    $firebase_token = $content_owner->firebase_fcm_token;
+                    $notif_body = "your event '".$request->content_title."' location has been updated";
+    
+                    if($firebase_token){
+                        $notif_title = "Hello ".$content_owner->username.", you got an information";
+                        $message = CloudMessage::withTarget('token', $firebase_token)
+                            ->withNotification(
+                                FireNotif::create($notif_body)
+                                ->withTitle($notif_title)
+                                ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                            )
+                            ->withData([
+                                'by' => 'person'
+                            ]);
+                        $response = $messaging->send($message);
+                    }
+    
+                    return redirect()->back()->with('success_message', ucFirst($notif_body));  
                 } else {
                     return redirect()->back()->with('failed_message', "Location is invalid");    
                 }
@@ -473,6 +532,8 @@ class EditController extends Controller
         $id = Generator::getContentId($slug);
         $id_detail = Generator::getContentDetailId($slug);
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
 
         if($id != null && $id_detail != null){
             $data = new Request();
@@ -507,7 +568,29 @@ class EditController extends Controller
                     'created_by' => $user_id
                 ]);
 
-                return redirect()->back()->with('success_message', "Event successfully updated"); 
+                $content_owner = ContentHeader::select('username','firebase_fcm_token')
+                    ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                    ->where('contents_headers.id', $id)
+                    ->first();
+
+                $firebase_token = $content_owner->firebase_fcm_token;
+                $notif_body = "your event '".$request->content_title."' location has been removed";
+
+                if($firebase_token){
+                    $notif_title = "Hello ".$content_owner->username.", you got an information";
+                    $message = CloudMessage::withTarget('token', $firebase_token)
+                        ->withNotification(
+                            FireNotif::create($notif_body)
+                            ->withTitle($notif_title)
+                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                        )
+                        ->withData([
+                            'by' => 'person'
+                        ]);
+                    $response = $messaging->send($message);
+                }
+
+                return redirect()->back()->with('success_message', ucFirst($notif_body));    
             }
         } else {
             return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");    

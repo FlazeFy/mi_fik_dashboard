@@ -35,6 +35,7 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
 
+        <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
@@ -52,10 +53,12 @@
             <div id="content" class="p-4">
                 <div class="content-body">
                     @include('sidebar.navbar')
-
-                    <div class="mt-4">
+                    
+                    <div class="mt-4 btn-config-holder">
                         @include('user.group.create')
-                        @include('user.group.searchbar')
+                        <div class="ms-1">
+                            @include('user.group.searchbar')
+                        </div>
                     </div>
                     <div class="content-section position-relative mt-3">
                         @include('user.group.list')

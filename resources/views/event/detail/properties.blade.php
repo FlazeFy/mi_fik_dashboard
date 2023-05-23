@@ -1,3 +1,7 @@
+<?php
+    use Carbon\Carbon;
+?>
+
 <div class="p-0 m-0">
     <!--Get event tag-->
     @if($c->content_tag)
@@ -12,18 +16,34 @@
     <!--Get event date start-->
     @if($c->content_date_start && $c->content_date_end)
         @if(date('y-m-d', strtotime($c->content_date_start)) == date('y-m-d', strtotime($c->content_date_end)))
-            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> {{date('y/m/d H:i A', strtotime($c->content_date_start))}} - {{date('H:i A', strtotime($c->content_date_end))}}</a>
+            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{Carbon::parse($c->content_date_start)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span> 
+                - <span class="hour-event">{{Carbon::parse($c->content_date_end)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
         @else
-            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> {{date('y/m/d H:i A', strtotime($c->content_date_start))}} - {{date('y/m/d H:i A', strtotime($c->content_date_end))}}</a>
+            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{Carbon::parse($c->content_date_start)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span> 
+                - <span class="date-event">{{Carbon::parse($c->content_date_end)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
         @endif
     @else
-        <img src="http://127.0.0.1:8000/assets/nodate.png" class="img nodata-icon" style="height:18vh;">
+        <img src="{{asset('assets/nodate.png')}}" class="img nodata-icon" style="height:18vh;">
         <h6 class="text-center text-secondary">This Event doesn't have date</h6>
     @endif
 
     <hr>
-    <h6 class="text-secondary" title="Event Created At">Created At : {{date('d M Y H:i:s', strtotime($c->created_at))}}</h6>
+    <h6 class="text-secondary" title="Event Created At">Created At : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @if($c->updated_at)
-        <h6 class="text-secondary" title="Event Updated At">Created At : {{date('d M Y H:i:s', strtotime($c->updated_at))}}</h6>
+        <h6 class="text-secondary" title="Event Updated At">Updated At : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @endif
 </div>
+
+<script>
+    const date_holder_evt = document.querySelectorAll('.date-event');
+    const hour_holder_evt = document.querySelectorAll('.hour-event');
+
+    date_holder_evt.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "datetime");
+    });
+    hour_holder_evt.forEach(e => {
+        const date = new Date(e.textContent);
+        e.textContent = getDateToContext(e.textContent, "24h");
+    });
+</script>

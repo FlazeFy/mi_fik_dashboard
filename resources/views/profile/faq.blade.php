@@ -5,28 +5,36 @@
 </script>
 
 <div class="imessage" id="imessage">
-    @php($datebefore = "")
+    @if(count($faq) > 0)
+        @php($datebefore = "")
 
-    @foreach($faq as $fq)
-        @php($check = date('Y-m-d', strtotime($fq['created_at'])))
-        @if($datebefore != $check)
-            @php($datebefore = $check)
-            <div class="date-chip">
-                {{date('Y-m-d', strtotime($datebefore))}}
-            </div>
-        @endif
-
-    
-        <div class="from-{{$fq['question_from']}}">
-            @if($fq['question_from'] == "them")
-                <div class="box-replied">
-                    {{$fq['msg_reply']}}
+        @foreach($faq as $fq)
+            @php($check = date('Y-m-d', strtotime($fq['created_at'])))
+            @if($datebefore != $check)
+                @php($datebefore = $check)
+                <div class="date-chip">
+                    {{date('Y-m-d', strtotime($datebefore))}}
                 </div>
             @endif
-            {{$fq['msg_body']}}
+
+        
+            <div class="from-{{$fq['question_from']}}">
+                @if($fq['question_from'] == "them")
+                    <div class="box-replied">
+                        {{$fq['msg_reply']}}
+                    </div>
+                @endif
+                {{$fq['msg_body']}}
+            </div>
+            <a class="from-{{$fq['question_from']}}-clock">{{($fq['created_at'])->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</a>
+        @endforeach
+    @else 
+        <div class="text-center p-2">
+            <img src="{{ asset('/assets/nodata3.png')}}" alt="{{ asset('/assets/nodata.png')}}" width="200" class="img-fluid d-block mx-auto mt-3">
+            <h3 class="text-primary mt-3">You have no question yet</h3>
+            <p class="text-secondary">You can ask about our app, and our admin will be respond your question. Your question may be public to other user, but it will anonym</p>
         </div>
-        <a class="from-{{$fq['question_from']}}-clock">{{($fq['created_at'])->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</a>
-    @endforeach
+    @endif
 
     <span id="toogle-msg-btn">
         <button class="btn btn-msg text-success" onclick="openForm()" title="Make a new question"><i class="fa-solid fa-paper-plane"></i></button>

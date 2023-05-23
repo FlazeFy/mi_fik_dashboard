@@ -38,8 +38,10 @@
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
 
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
     </head>
 
     <body>
