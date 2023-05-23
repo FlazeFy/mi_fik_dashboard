@@ -53,7 +53,7 @@
     @endif
     <span class="status-holder">
         <span class="attach-upload-status success" id="header-progress"></span>
-        <a class="attach-upload-status danger" id="header-failed"></a>
+        <a class="attach-upload-status failed" id="header-failed"></a>
         <a class="attach-upload-status warning" id="header-warning"></a>
     </span>
 </span>
@@ -61,26 +61,32 @@
 <script>        
     function setValueProfileImage(){
         var file_src = document.getElementById('file-input').files[0];
-        var filePath = 'profile_image/' + getUUID();
+        var maxSize = 4; // Mb
 
-        var storageRef = firebase.storage().ref(filePath);
-        var uploadTask = storageRef.put(file_src);
+        if(file_src.size <= maxSize * 1024 * 1024){
+            var filePath = 'profile_image/' + getUUID();
 
-        uploadTask.on('state_changed',function (snapshot) {
-            var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
-            document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
-        }, 
-        function (error) {
-            console.log(error.message);
-            document.getElementById('header-failed').innerHTML = "File upload is " + error.message;
-        }, 
-        function () {
-            uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
-                document.getElementById('profile_image_info').src = downloadUrl;
-                document.getElementById('profile_image_url').value = downloadUrl;
-                edit_image();
+            var storageRef = firebase.storage().ref(filePath);
+            var uploadTask = storageRef.put(file_src);
+
+            uploadTask.on('state_changed',function (snapshot) {
+                var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
+            }, 
+            function (error) {
+                console.log(error.message);
+                document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is " + error.message + "</h6></span>";
+            }, 
+            function () {
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
+                    document.getElementById('profile_image_info').src = downloadUrl;
+                    document.getElementById('profile_image_url').value = downloadUrl;
+                    edit_image();
+                });
             });
-        });
+        } else {
+            document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is " + maxSize + " mb </h6></span>";
+        }
     }
 
     function clearImage() {
