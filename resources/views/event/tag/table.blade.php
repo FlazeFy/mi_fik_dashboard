@@ -32,9 +32,9 @@
                 @endif  
             </tr>
         </thead>
-        <tbody>
+        <tbody class="tabular-body">
             @foreach($tag as $tg)
-                <tr>
+                <tr class="tabular-item normal">
                     <td>
                         <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
                     </td>
