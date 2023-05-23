@@ -18,9 +18,11 @@ use App\Models\ContentViewer;
 
 class Commands extends Controller
 {
-    public function recover_content_api($slug, $type)
+    public function recover_content_api($slug, $type, Request $request)
     {
-        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        // $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $user_id = $request->user()->id;
 
         if($type == 1){
             $type = "event";
