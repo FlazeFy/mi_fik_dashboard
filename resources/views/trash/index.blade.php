@@ -40,7 +40,7 @@
         <script src="{{ asset('/js/isotope_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -102,7 +102,7 @@
                                             </div>
                                             <div class="col-lg-4">
                                                 <div class="content-section-small mt-2">
-                                                    @include('trash.category', ["category" => "dictionary"])
+                                                    @include('trash.category', ["category" => "feedback"])
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
@@ -123,7 +123,7 @@
                                             </div>
                                             <div class="col-lg-4">
                                                 <div class="content-section-small mt-2">
-                                                    @include('trash.category', ["category" => "feedback"])
+                                                    @include('trash.category', ["category" => "dictionary"])
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">
@@ -159,6 +159,8 @@
         <!--Modal-->
         @include('popup.success')
         @include('popup.failed')
+
+        <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
 
         <script>
             //Popover

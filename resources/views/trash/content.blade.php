@@ -372,7 +372,15 @@
                                 getDestroyModal("Task", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                             
                             $("#data-wrapper-task").append(elmt);
-                        } else if(data_from == 3){ // Tag
+                        } else if(data_from == 3 || data_from == 5 || data_from == 4){ // Tag, Info, Group
+                            if(data_from == 3){
+                                var icon = 'fa-hashtag';
+                            } else if(data_from == 5) {
+                                var icon = 'fa-circle-info';
+                            } else if(data_from == 4) {
+                                var icon = 'fa-users';
+                            }
+
                             var elmt = " " +
                                 "<div class='pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
@@ -380,7 +388,7 @@
                                         "<div class='card-body p-2 w-100'> " +
                                             "<div class='position-relative'> " +
                                                 "<div class='d-inline-block me-2'> " +
-                                                    '<i class="fa-solid fa-hashtag fa-xl mt-3 text-primary"></i>' +
+                                                    '<i class="fa-solid '+icon+' fa-xl mt-3 text-primary"></i>' +
                                                 "</div> " +
                                                 "<div class='d-inline-block position-absolute w-50' style='top:37.5px;'> " +
                                                     "<h6 class='task-title'>" + content_title + "</h6> " +
@@ -430,12 +438,22 @@
                                             "</div> " +
                                         "</div> " +
                                     "</button> " +
-                                "</div> " +
+                                "</div> ";
+
+                            if(data_from == 3){
+                                $("#data-wrapper-tag").append(elmt);
                                 getRecoverModal("Tag", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
                                 getDestroyModal("Tag", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-
-                            $("#data-wrapper-tag").append(elmt);
-                        } else if(data_from == 4){ // Group
+                            } else if(data_from == 5) {
+                                $("#data-wrapper-info").append(elmt);
+                                getRecoverModal("Info", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Info", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                            } else if(data_from == 4) {
+                                $("#data-wrapper-group").append(elmt);
+                                getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                            }
+                        } else if(data_from == 6){ // Feedback
                             var elmt = " " +
                                 "<div class='pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
@@ -443,10 +461,9 @@
                                         "<div class='card-body p-2 w-100'> " +
                                             "<div class='position-relative'> " +
                                                 "<div class='d-inline-block me-2'> " +
-                                                    '<i class="fa-solid fa-users fa-xl mt-3 text-primary"></i>' +
+                                                    '<i class="fa-solid fa-star fa-lg mt-3 text-primary"> <span style="font-size:16px;">' + ucFirst(content_title) + '</span></i>' +
                                                 "</div> " +
-                                                "<div class='d-inline-block position-absolute w-50' style='top:37.5px;'> " +
-                                                    "<h6 class='task-title'>" + content_title + "</h6> " +
+                                                "<div class='d-inline-block position-absolute w-50' style='top:30px;'> " +
                                                     "<h6 class='task-subtitle'>" + content_tag + "</h6> " +
                                                 "</div> " +
                                             "</div> " +
@@ -494,10 +511,10 @@
                                         "</div> " +
                                     "</button> " +
                                 "</div> " +
-                                getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                                getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                                getRecoverModal("Feedback", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Feedback", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
 
-                            $("#data-wrapper-group").append(elmt);
+                            $("#data-wrapper-feedback").append(elmt);
                         }
                 }   
             }
