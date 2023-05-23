@@ -28,20 +28,27 @@ class TrashController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $settingJobs = SettingSystem::getJobsSetting();
-        $menu = Menu::getMenu();
-        $info = Info::getAvailableInfo("trash");
-        
-        //Set active nav
-        session()->put('active_nav', 'trash');
-        session()->forget('active_subnav');
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        return view ('trash.index')
-            ->with('menu', $menu)
-            ->with('info', $info)
-            ->with('settingJobs', $settingJobs)
-            ->with('greet',$greet);
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $settingJobs = SettingSystem::getJobsSetting();
+            $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("trash");
+            
+            //Set active nav
+            session()->put('active_nav', 'trash');
+            session()->forget('active_subnav');
+
+            return view ('trash.index')
+                ->with('menu', $menu)
+                ->with('info', $info)
+                ->with('settingJobs', $settingJobs)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function set_ordering_content($order)

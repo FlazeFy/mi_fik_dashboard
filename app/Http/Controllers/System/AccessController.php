@@ -20,16 +20,23 @@ class AccessController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
-        
-        //Set active nav
-        session()->put('active_nav', 'system');
-        session()->put('active_subnav', 'access');
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        return view ('system.access.index')
-            ->with('menu', $menu)
-            ->with('greet',$greet);
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+            
+            //Set active nav
+            session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'access');
+
+            return view ('system.access.index')
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     /**

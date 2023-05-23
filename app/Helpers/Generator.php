@@ -148,11 +148,11 @@ class Generator
             $user = Auth::user();
             
             $res = $user->id;
+            return $res;
         } else {
             // do something LOL
+            return null;
         }
-
-        return $res;
     }
 
     public static function getContentId($slug_name){

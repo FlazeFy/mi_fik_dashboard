@@ -28,54 +28,60 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user_id = Generator::getUserIdV2(session()->get('role_key'));
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        if(session()->get('role_key') == 0){
-            $user = User::find($user_id);
-            $image = Generator::getMyImage($user_id, 0);
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
-            $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
-            $totalNotif = null;
-            $totalAcc = null;
-            $totalQue = null;
-            $dictionary = Dictionary::getDictionaryByType("Question");
-            $totalTask = Task::getCountEngTask($user_id);
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+
+            if($role == 0){
+                $user = User::find($user_id);
+                $image = Generator::getMyImage($user_id, 0);
+                $dct_tag = Dictionary::getDictionaryByType("Tag");
+                $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
+                $totalNotif = null;
+                $totalAcc = null;
+                $totalQue = null;
+                $dictionary = Dictionary::getDictionaryByType("Question");
+                $totalTask = Task::getCountEngTask($user_id);
+            } else {
+                $user = Admin::find($user_id);
+                $image = Generator::getMyImage($user_id, 1);
+                $dct_tag = null;
+                $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
+                $totalNotif = Notification::getCountEngPostNotif($user_id);
+                $totalAcc = UserRequest::getCountEngAccReq($user_id);
+                $totalQue = Question::getCountEngQuestionAnswer($user_id);
+                $dictionary = null;
+                $totalTask = null;
+            }
+
+            $faq = Question::getQuestionByUserId($user_id);
+            $myreq = UserRequest::getRecentlyRequest($user_id);
+
+            session()->put('profile_pic', $image);
+
+            //Set active nav
+            session()->put('active_nav', 'profile');
+            session()->forget('active_subnav');
+
+            return view ('profile.index')
+                ->with('menu', $menu)
+                ->with('user', $user)
+                ->with('totalEvent', $totalEvent)
+                ->with('totalNotif', $totalNotif)
+                ->with('totalQue', $totalQue)
+                ->with('totalAcc', $totalAcc)
+                ->with('totalTask', $totalTask)
+                ->with('dictionary', $dictionary)
+                ->with('faq', $faq)
+                ->with('dct_tag', $dct_tag)
+                ->with('myreq', $myreq)
+                ->with('greet',$greet);
         } else {
-            $user = Admin::find($user_id);
-            $image = Generator::getMyImage($user_id, 1);
-            $dct_tag = null;
-            $totalEvent = ContentHeader::getCountEngPostEvent($user_id);
-            $totalNotif = Notification::getCountEngPostNotif($user_id);
-            $totalAcc = UserRequest::getCountEngAccReq($user_id);
-            $totalQue = Question::getCountEngQuestionAnswer($user_id);
-            $dictionary = null;
-            $totalTask = null;
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
         }
-
-        $faq = Question::getQuestionByUserId($user_id);
-        $myreq = UserRequest::getRecentlyRequest($user_id);
-
-        session()->put('profile_pic', $image);
-
-        //Set active nav
-        session()->put('active_nav', 'profile');
-        session()->forget('active_subnav');
-
-        return view ('profile.index')
-            ->with('menu', $menu)
-            ->with('user', $user)
-            ->with('totalEvent', $totalEvent)
-            ->with('totalNotif', $totalNotif)
-            ->with('totalQue', $totalQue)
-            ->with('totalAcc', $totalAcc)
-            ->with('totalTask', $totalTask)
-            ->with('dictionary', $dictionary)
-            ->with('faq', $faq)
-            ->with('dct_tag', $dct_tag)
-            ->with('myreq', $myreq)
-            ->with('greet',$greet);
     }
 
     public function edit_profile(Request $request)

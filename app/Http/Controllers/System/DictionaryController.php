@@ -24,20 +24,27 @@ class DictionaryController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $dictionary = Dictionary::getAllDictionary();
-        $dictionaryType = DictionaryType::all();
-        $menu = Menu::getMenu();
-        
-        //Set active nav
-        session()->put('active_nav', 'system');
-        session()->put('active_subnav', 'dictionary');
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        return view ('system.dictionary.index')
-            ->with('menu', $menu)
-            ->with('dictionary', $dictionary)
-            ->with('dictionaryType', $dictionaryType)
-            ->with('greet',$greet);
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $dictionary = Dictionary::getAllDictionary();
+            $dictionaryType = DictionaryType::all();
+            $menu = Menu::getMenu();
+            
+            //Set active nav
+            session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'dictionary');
+
+            return view ('system.dictionary.index')
+                ->with('menu', $menu)
+                ->with('dictionary', $dictionary)
+                ->with('dictionaryType', $dictionaryType)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function update_type(Request $request, $id)
