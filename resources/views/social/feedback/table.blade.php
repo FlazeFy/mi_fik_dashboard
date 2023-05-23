@@ -11,7 +11,7 @@
         </thead>
         <tbody class="tabular-body">
             @foreach($feedback as $fb)
-                <tr>
+                <tr class="tabular-item normal">
                     <td><div style="word-break: break-all; width: 360px;">{{$fb->feedback_body}}</div></td>
                     <td style="width:140px;">
                         @php($total = $fb->feedback_rate)

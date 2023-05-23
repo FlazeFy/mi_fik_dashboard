@@ -255,7 +255,7 @@
                     var updatedAt = data[i].updated_at;
 
                     var elmt = " " +
-                        '<tr class="tabular-item"> ' +
+                        '<tr class="tabular-item normal"> ' +
                             '<td>' + groupName + '</td> ' +
                             '<td>' + groupDesc + '</td> ' +
                             '<td>' + total + '</td> ' +

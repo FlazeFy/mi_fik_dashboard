@@ -24,10 +24,10 @@
                 <th scope="col">Action</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="tabular-body">
             @php($i = 0)
             @foreach($dictionary as $dc)
-                <tr>
+                <tr class="tabular-item normal">
                     <td style="width: 140px;">
                         <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$dc->id}}')" id="select-{{$dc->id}}">
                             @foreach($dictionaryType as $dct)
