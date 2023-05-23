@@ -33,9 +33,9 @@
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/event_box_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/task_box_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/trash_v1.0.css') }}"/>
 
         <!-- JS Collection -->
-        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.js"></script>
         <script src="{{ asset('/js/isotope_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
@@ -52,16 +52,105 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-1 py-2 px-0">
-                        <div class="position-relative">
-                            <div class="mt-2 btn-config-holder">
-                                @include('trash.sorting')
-                                @include('trash.searchbar')
+                    <div class="position-relative mt-3">
+                        @include('trash.sorting')
+                        @include('trash.searchbar')
+                        @if(session()->get('role_key') == 1)
+                            <div class="carousel-control-holder">
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                    <i class="fa-solid fa-angle-left fa-xl"></i><span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                    <i class="fa-solid fa-angle-right fa-xl"></i><span class="visually-hidden">Next</span>
+                                </button>
                             </div>
-                
-                            @include('trash.content')
-                        </div>
+                        @endif
                     </div>
+    
+                    @if(session()->get('role_key') == 1)
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">    
+                                                    @include('trash.category', ["category" => "event"])
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">
+                                                    @include('trash.category', ["category" => "tag"])
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">
+                                                    @include('trash.category', ["category" => "group"])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">    
+                                                    @include('trash.category', ["category" => "info"])
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">
+                                                    @include('trash.category', ["category" => "dictionary"])
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">
+                                                    @include('trash.category', ["category" => "question"])
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item">
+                                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">    
+                                                    @include('trash.category', ["category" => "notification"])
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div class="content-section-small mt-2">
+                                                    @include('trash.category', ["category" => "feedback"])
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else 
+                        <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="content-section-small mt-2">    
+                                        @include('trash.category', ["category" => "event"])
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="content-section-small mt-2">
+                                        @include('trash.category', ["category" => "task"])
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+                    @include('trash.content')
+
                 </div>
             </div>
         </div>

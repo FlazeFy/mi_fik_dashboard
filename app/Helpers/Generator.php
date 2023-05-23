@@ -447,4 +447,23 @@ class Generator
 
         return $res;
     }
+
+    public static function getMyImage($id, $role){
+        //This query must directly return at least 10 most used tag
+        if($role == 0){
+            $res = User::select('image_url')
+                ->where('id', $id)
+                ->first();
+        } else {
+            $res = Admin::select('image_url')
+                ->where('id', $id)
+                ->first();
+        }
+
+        if(!$res){
+            return null;
+        } else {
+            return $res->image_url;
+        }
+    }
 }

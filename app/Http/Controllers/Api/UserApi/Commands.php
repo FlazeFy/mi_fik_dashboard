@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\PersonalAccessTokens;
 use App\Models\Archive;
 use App\Models\History;
 use App\Models\UserRequest;
@@ -110,11 +112,19 @@ class Commands extends Controller
                         'result' => $errors,
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $user = User::where('id', $user_id)->update([
-                        'image_url' => $request->image_url,
-                        'updated_at' => date("Y-m-d H:i"),
-                        'updated_by' => $user_id,
-                    ]);
+                    $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
+                    if($check->tokenable_type === "App\\Models\\User"){ // User
+                        $user = User::where('id', $user_id)->update([
+                            'image_url' => $request->image_url,
+                            'updated_at' => date("Y-m-d H:i"),
+                            'updated_by' => $user_id,
+                        ]);
+                    } else {
+                        $user = Admin::where('id', $user_id)->update([
+                            'image_url' => $request->image_url,
+                            'updated_at' => date("Y-m-d H:i"),
+                        ]);
+                    }
 
                     History::create([
                         'id' => Generator::getUUID(),
