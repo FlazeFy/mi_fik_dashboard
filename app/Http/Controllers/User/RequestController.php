@@ -30,18 +30,25 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $dct_tag = Dictionary::getDictionaryByType("Tag");
-        $menu = Menu::getMenu();
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        //Set active nav
-        session()->put('active_nav', 'manageuser');
-        session()->put('active_subnav', 'request');
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
+            $menu = Menu::getMenu();
 
-        return view('user.request.index')
-            ->with('menu', $menu)
-            ->with('dct_tag', $dct_tag)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'manageuser');
+            session()->put('active_subnav', 'request');
+
+            return view('user.request.index')
+                ->with('menu', $menu)
+                ->with('dct_tag', $dct_tag)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function add_role_acc(Request $request)

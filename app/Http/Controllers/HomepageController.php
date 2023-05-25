@@ -42,110 +42,113 @@ class HomepageController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if(!session()->get('selected_tag_calendar')){
-            session()->put('selected_tag_calendar', "All");
-        }
-        if(!session()->get('selected_tag_category')){
-            session()->put('selected_tag_category', "All");
-        }
-        if(!session()->get('selected_view_mve_chart')){
-            session()->put('selected_view_mve_chart', "All");
-        }
-        if(!session()->get('ordering_event')){
-            session()->put('ordering_event', "DESC");
-        }
-        if(!session()->get('ordering_finished')){
-            session()->put('ordering_finished', "ASC");
-        }
-        if(!session()->get('ordering_trash')){
-            session()->put('ordering_trash', "DESC");
-        }
-        if(!session()->get('ordering_user_list')){
-            session()->put('ordering_user_list', "username__DESC");
-        }
-        if(!session()->get('ordering_group_list')){
-            session()->put('ordering_group_list', "group_name__DESC");
-        }
-        if(!session()->get('filtering_date')){
-            session()->put('filtering_date', "all");
-        }
-        if(!session()->get('filtering_trash')){
-            session()->put('filtering_trash', "all");
-        }
-        if(!session()->get('filtering_fname')){
-            session()->put('filtering_fname', "all");
-        }
-        if(!session()->get('filtering_lname')){
-            session()->put('filtering_lname', "all");
-        }
-        if(!session()->get('about_menu')){
-            $about_menu = Generator::getListAboutSection();
-            session()->put('about_menu', $about_menu);
-        }
-        if(!session()->get('calendar_menu')){
-            $calendar_menu = Generator::getListCalendarSection();
-            session()->put('calendar_menu', $calendar_menu);
-        }
-        if(!session()->get('feedback_menu')){
-            $feedback_menu = Generator::getListFeedbackSection();
-            session()->put('feedback_menu', $feedback_menu);
-        }
-        if(!session()->get('faq_menu')){
-            $faq_menu = Generator::getListFAQSection();
-            session()->put('faq_menu', $faq_menu);
-        }
-        
-        $menu = Menu::getMenu();
-        $info = Info::getAvailableInfo("homepage");
-        $dictionary = Dictionary::getDictionaryByType($type);
-        //$archive = Archive::getMyArchive($user_id, "DESC");
-        $greet = Generator::getGreeting(date('h'));
-
-        if(Session::has('recatch_message') && $role == 1){
-            $count = [
-                'count_request' => UserRequest::where('is_accepted',0)->whereNull('is_rejected')->count(),
-                'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
-                'count_new' => User::whereNull('accepted_at')->count()
-            ];
-            $count = json_decode(json_encode($count), false);
-            
-            session()->put('recatch', true);
-        } else {
-            $count = null;
-        }
-        
-        
-        if($role == 1){
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
-            $mydraft = ContentHeader::getMyDraft($role, $user_id);
-            $mytag = null;
-        } else {
-            $tag = null;
-            $dct_tag = null;
-            $mydraft = ContentHeader::getMyDraft($role, $user_id);
-            $list = User::getUserRole($user_id,$role);
-
-            foreach($list as $l){
-                $mytag = $l->role;
+        if($user_id != null){
+            if(!session()->get('selected_tag_calendar')){
+                session()->put('selected_tag_calendar', "All");
             }
-        }
-        
-        //Set active nav
-        session()->put('active_nav', 'homepage');
-        session()->forget('active_subnav');
+            if(!session()->get('selected_tag_category')){
+                session()->put('selected_tag_category', "All");
+            }
+            if(!session()->get('selected_view_mve_chart')){
+                session()->put('selected_view_mve_chart', "All");
+            }
+            if(!session()->get('ordering_event')){
+                session()->put('ordering_event', "DESC");
+            }
+            if(!session()->get('ordering_finished')){
+                session()->put('ordering_finished', "ASC");
+            }
+            if(!session()->get('ordering_trash')){
+                session()->put('ordering_trash', "DESC");
+            }
+            if(!session()->get('ordering_user_list')){
+                session()->put('ordering_user_list', "username__DESC");
+            }
+            if(!session()->get('ordering_group_list')){
+                session()->put('ordering_group_list', "group_name__DESC");
+            }
+            if(!session()->get('filtering_date')){
+                session()->put('filtering_date', "all");
+            }
+            if(!session()->get('filtering_trash')){
+                session()->put('filtering_trash', "all");
+            }
+            if(!session()->get('filtering_fname')){
+                session()->put('filtering_fname', "all");
+            }
+            if(!session()->get('filtering_lname')){
+                session()->put('filtering_lname', "all");
+            }
+            if(!session()->get('about_menu')){
+                $about_menu = Generator::getListAboutSection();
+                session()->put('about_menu', $about_menu);
+            }
+            if(!session()->get('calendar_menu')){
+                $calendar_menu = Generator::getListCalendarSection();
+                session()->put('calendar_menu', $calendar_menu);
+            }
+            if(!session()->get('feedback_menu')){
+                $feedback_menu = Generator::getListFeedbackSection();
+                session()->put('feedback_menu', $feedback_menu);
+            }
+            if(!session()->get('faq_menu')){
+                $faq_menu = Generator::getListFAQSection();
+                session()->put('faq_menu', $faq_menu);
+            }
+            
+            $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("homepage");
+            $dictionary = Dictionary::getDictionaryByType($type);
+            //$archive = Archive::getMyArchive($user_id, "DESC");
+            $greet = Generator::getGreeting(date('h'));
 
-        return view ('homepage.index')
-            ->with('tag', $tag)
-            ->with('mytag', $mytag)
-            ->with('menu', $menu)
-            ->with('info', $info)
-            ->with('mydraft', $mydraft)
-            ->with('dct_tag', $dct_tag)
-            ->with('dictionary', $dictionary)
-            ->with('count', $count)
-            //->with('archive', $archive)
-            ->with('greet',$greet);
+            if(Session::has('recatch_message') && $role == 1){
+                $count = [
+                    'count_request' => UserRequest::where('is_accepted',0)->whereNull('is_rejected')->count(),
+                    'count_empty_role' => User::whereNull('role')->whereNotNull('accepted_at')->count(),
+                    'count_new' => User::whereNull('accepted_at')->count()
+                ];
+                $count = json_decode(json_encode($count), false);
+                
+                session()->put('recatch', true);
+            } else {
+                $count = null;
+            }
+            
+            if($role == 1){
+                $tag = Tag::getFullTag("DESC", "DESC");
+                $dct_tag = Dictionary::getDictionaryByType("Tag");
+                $mydraft = ContentHeader::getMyDraft($role, $user_id);
+                $mytag = null;
+            } else {
+                $tag = null;
+                $dct_tag = null;
+                $mydraft = ContentHeader::getMyDraft($role, $user_id);
+                $list = User::getUserRole($user_id,$role);
+
+                foreach($list as $l){
+                    $mytag = $l->role;
+                }
+            }
+            
+            //Set active nav
+            session()->put('active_nav', 'homepage');
+            session()->forget('active_subnav');
+
+            return view ('homepage.index')
+                ->with('tag', $tag)
+                ->with('mytag', $mytag)
+                ->with('menu', $menu)
+                ->with('info', $info)
+                ->with('mydraft', $mydraft)
+                ->with('dct_tag', $dct_tag)
+                ->with('dictionary', $dictionary)
+                ->with('count', $count)
+                //->with('archive', $archive)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     // ================================= MVC =================================

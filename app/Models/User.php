@@ -61,13 +61,4 @@ class User extends Authenticatable
 
         return $res;
     }
-
-    public static function getMyImage($id){
-        //This query must directly return at least 10 most used tag
-        $res = User::select('image_url')
-            ->where('id', $id)
-            ->first();
-
-        return $res;
-    }
 }

@@ -23,38 +23,44 @@ class CalendarController extends Controller
      */
     public function index(Request $request)
     {        
-        if(!session()->get('selected_tag_calendar')){
-            session()->put('selected_tag_calendar', "All");
-        }
-
         $role = session()->get('role_key');
-        $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'), $role);       
-        $tag = Tag::getFullTag("DESC", "DESC");
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
+        $user_id = Generator::getUserIdV2($role);
 
-        if($role == 1){
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $mytag = null;
-        } else {
-            $tag = null;
-            $user_id = Generator::getUserIdV2($role);
-            $list = User::getUserRole($user_id, $role);
-            foreach($list as $l){
-                $mytag = $l->role;
+        if($user_id != null){
+            if(!session()->get('selected_tag_calendar')){
+                session()->put('selected_tag_calendar', "All");
             }
-        }
-            
-        //Set active nav
-        session()->put('active_nav', 'event');
-        session()->put('active_subnav', 'calendar');
 
-        return view ('event.calendar.index')
-            ->with('content', $content)
-            ->with('tag', $tag)
-            ->with('mytag', $mytag)
-            ->with('menu', $menu)
-            ->with('greet',$greet);
+            $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'), $role);       
+            $tag = Tag::getFullTag("DESC", "DESC");
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+
+            if($role == 1){
+                $tag = Tag::getFullTag("DESC", "DESC");
+                $mytag = null;
+            } else {
+                $tag = null;
+                $user_id = Generator::getUserIdV2($role);
+                $list = User::getUserRole($user_id, $role);
+                foreach($list as $l){
+                    $mytag = $l->role;
+                }
+            }
+                
+            //Set active nav
+            session()->put('active_nav', 'event');
+            session()->put('active_subnav', 'calendar');
+
+            return view ('event.calendar.index')
+                ->with('content', $content)
+                ->with('tag', $tag)
+                ->with('mytag', $mytag)
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function set_filter_tag(Request $request, $all)

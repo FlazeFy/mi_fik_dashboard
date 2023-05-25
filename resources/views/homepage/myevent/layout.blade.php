@@ -183,7 +183,7 @@
                     }
                 }
 
-                function getUserImage(img1, img2){
+                function getUserImage(img1, img2, admin, user){
                     if(img1 || img2){
                         if(img1){
                             return img1;
@@ -191,7 +191,11 @@
                             return img2;
                         }
                     } else {
-                        return "{{ asset('/assets/default_lecturer.png')}}";
+                        if(admin){
+                            return "{{ asset('/assets/default_admin.png')}}";
+                        } else {
+                            return "{{ asset('/assets/default_lecturer.png')}}";
+                        }
                     }
                 }
 
@@ -268,7 +272,7 @@
                                 "<div class='card-body py-2 px-0 w-100'> " +
                                     "<div class=''> " +
                                         "<div class='d-inline-block'> " +
-                                            "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image) + "' alt='username-profile-pic.png'> " +
+                                            "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image, admin_username, user_username) + "' alt='username-profile-pic.png'> " +
                                         "</div> " +
                                         "<div class='d-inline-block position-relative w-75'> " +
                                             "<h6 class='event-title'>" + content_title + "</h6> " +

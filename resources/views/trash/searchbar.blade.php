@@ -1,8 +1,8 @@
-<div style="position:absolute; right:0;" class="row">
-    <div class="col-2">
+<div style="top:0; left:160px;" class="position-absolute">
+    <div class="d-inline-block">
         <button class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></button>
     </div>
-    <div class="col-10">
+    <div class="d-inline-block">
         <input type="text" class="form-control rounded-pill" id="title_search" placeholder="Search by event title" onblur="checkTitleSearch()" maxlength="75">
     </div>
 </div>

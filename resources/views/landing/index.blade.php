@@ -6,10 +6,9 @@
         <meta name="description" content="" />
 
         <title>MI-FIK Dashboard</title>
+        <link rel="icon" type="image/png" href="{{asset('/assets/mifik_logo_launch.png')}}"/>
         
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
         <script src="https://kit.fontawesome.com/12801238e9.js" crossorigin="anonymous"></script>
 

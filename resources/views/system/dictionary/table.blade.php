@@ -19,9 +19,9 @@
             <tr>
                 <th scope="col">Type</th>
                 <th scope="col">Slug</th>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
+                <th scope="col">Info</th>
                 <th scope="col">Properties</th>
+                <th scope="col">Action</th>
             </tr>
         </thead>
         <tbody class="tabular-body">
@@ -54,18 +54,39 @@
                             </div>
                         </div>
                     </td>
-                    <td style="width: 100px;">{{$dc->slug_name}}</td>
-                    <td style="width: 100px;">{{$dc->dct_name}}</td>
-                    <td>
-                        <div style="word-break: break-all; width: 200px;">
-                            @if($dc->dct_desc)
-                                {{$dc->dct_desc}}
-                            @else 
-                                -
-                            @endif
-                        </div>
+                    <td style="width: 120px;">{{$dc->slug_name}}</td>
+                    <td style="width: 280px;">
+                        <span id="dct-holder-show-{{$dc->id}}">
+                            <h6 class="mb-0">Name</h6>
+                            {{$dc->dct_name}}
+
+                            <h6 class="mt-2 mb-0">Description</h6>
+                            <div style="word-break: break-all; width: 200px;">
+                                @if($dc->dct_desc)
+                                    {{$dc->dct_desc}}
+                                @else 
+                                    -
+                                @endif
+                            </div>
+                        </span>
+                        <span id="dct-holder-edit-{{$dc->id}}" class="d-none">
+                            <form class="d-inline" action="/system/dictionary/update/info/{{$dc->id}}" method="POST">
+                                @csrf
+                                <div class="form-floating mb-2">
+                                    <input type="text" class="form-control nameInput" id="dct_name_{{$dc->id}}" name="dct_name" value="{{$dc->dct_name}}" maxlength="30" required>
+                                    <label for="dct_name">Dictionary Name</label>
+                                    <a id="dct_name_{{$dc->id}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                                </div>
+                                <div class="form-floating">
+                                    <textarea class="form-control" style="height: 120px" id="dct_desc_{{$dc->id}}" name="dct_desc" value="{{$dc->dct_desc}}" maxlength="255">{{$dc->dct_desc}}</textarea>
+                                    <label for="dct_desc">Dictionary Description</label>
+                                    <a id="dct_desc_{{$dc->id}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                                </div>
+                                <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                            </form>
+                        </span>
                     </td>
-                    <td style="width: 220px;">
+                    <td style="width: 240px;">
                         <h6>Created By</h6>
                         <div class="">
                             <div class="d-inline-block">
@@ -103,6 +124,9 @@
                                 </div>
                             </div>   
                         @endif
+                    </td>
+                    <td>
+                        <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$dc->id}}")'><i class="fa-solid fa-edit"></i></button>
                     </td>
                 </tr>
                 
@@ -146,5 +170,29 @@
 
     function resetChange(id, app_code){
         document.getElementById(id).value= app_code;
+    }
+
+    var id_body = " ";
+    var toogle = 0;
+    let validation = [];
+
+    function toogleInfoDescEdit(id){
+        validation = [
+            { id: "dct_name_"+id, req: true, len: 35 },
+            { id: "dct_desc_"+id, req: false, len: 255 },
+        ];
+        
+        var holder_body = document.getElementById("info_body_holder_"+id);
+
+        if(toogle % 2 == 0){
+            document.getElementById("dct-holder-edit-" + id).setAttribute('class', 'd-normal');
+            document.getElementById("dct-holder-show-" + id).setAttribute('class', 'd-none');
+            document.getElementById("dct_name_" + id).setAttribute('oninput', 'validateForm(validation)');
+        } else {
+            document.getElementById("dct-holder-show-" + id).setAttribute('class', 'd-normal');
+            document.getElementById("dct-holder-edit-" + id).setAttribute('class', 'd-none');
+            document.getElementById("dct_name_" + id).setAttribute('oninput', '');
+        }
+        toogle++;
     }
 </script>

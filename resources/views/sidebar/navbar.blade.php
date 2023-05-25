@@ -135,7 +135,10 @@
                 $('#form-signout').submit();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                console.error("Sign out failed " + jqXHR.status);
+                if (jqXHR.status == 401) {
+                    sessionStorage.clear();
+                    window.location.href = "/";
+                }
             }
         });
     }

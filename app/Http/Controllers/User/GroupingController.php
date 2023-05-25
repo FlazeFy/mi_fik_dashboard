@@ -27,18 +27,25 @@ class GroupingController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $info = Info::getAvailableInfo("user/group");
-        $menu = Menu::getMenu();
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        //Set active nav
-        session()->put('active_nav', 'manageuser');
-        session()->put('active_subnav', 'grouping');
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $info = Info::getAvailableInfo("user/group");
+            $menu = Menu::getMenu();
 
-        return view('user.group.index')
-            ->with('menu', $menu)
-            ->with('info', $info)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'manageuser');
+            session()->put('active_subnav', 'grouping');
+
+            return view('user.group.index')
+                ->with('menu', $menu)
+                ->with('info', $info)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function add_group(Request $request)

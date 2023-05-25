@@ -16,16 +16,23 @@ class HistoryController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
-        
-        //Set active nav
-        session()->put('active_nav', 'history');
-        session()->forget('active_subnav');
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        return view ('history.index')
-            ->with('menu', $menu)
-            ->with('greet',$greet);
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+        
+            //Set active nav
+            session()->put('active_nav', 'history');
+            session()->forget('active_subnav');
+
+            return view ('history.index')
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     /**

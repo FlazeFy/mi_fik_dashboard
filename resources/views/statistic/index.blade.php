@@ -6,6 +6,7 @@
         <meta name="description" content="" />
 
         <title>Statistic</title>
+        <link rel="icon" type="image/png" href="{{asset('/assets/mifik_logo_launch.png')}}"/>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />

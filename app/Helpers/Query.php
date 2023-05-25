@@ -113,6 +113,24 @@ class Query
                 ad.username as admin_username_deleted, null as user_username_deleted,
                 null as content_loc, dct_name as content_tag, null as content_date_start, null as content_date_end, tg.created_at,
                 3 as data_from, tg.deleted_at as deleted_at";
+        } else if($type == "info_dump"){
+            $query = "inf.id, info_type as content_title, info_body as content_desc, 
+                ac.username as admin_username_created, null as user_username_created, 
+                ac.image_url as admin_image_created, null as user_image_created, 
+                ad.image_url as admin_image_deleted, null as user_image_deleted,
+                au.username as admin_username_updated, null as user_username_updated, 
+                ad.username as admin_username_deleted, null as user_username_deleted,
+                null as content_loc, CONCAT(info_page,'/',info_location) as content_tag, null as content_date_start, null as content_date_end, inf.created_at,
+                5 as data_from, inf.deleted_at as deleted_at";
+        } else if($type == "feedback_dump"){
+            $query = "fb.id, feedback_rate as content_title, feedback_body as content_desc, 
+                null as admin_username_created, null as user_username_created, 
+                null as admin_image_created, null as user_image_created, 
+                null as admin_image_deleted, null as user_image_deleted,
+                null as admin_username_updated, null as user_username_updated, 
+                null as admin_username_deleted, null as user_username_deleted,
+                null as content_loc, SUBSTR(feedback_suggest,10) as content_tag, null as content_date_start, null as content_date_end, null as created_at,
+                6 as data_from, fb.deleted_at as deleted_at";
         } else if($type == "group_dump"){
             $query = "ug.slug_name, group_name as content_title, group_desc as content_desc, 
                 ac.username as admin_username_created, null as user_username_created, 
@@ -170,6 +188,10 @@ class Query
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN admins asd ON ".$initial.".sended_by = asd.id";
+        } else if($type == "info"){
+            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+                LEFT JOIN admins au ON ".$initial.".updated_by = au.id
+                LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id";
         }
     }
 

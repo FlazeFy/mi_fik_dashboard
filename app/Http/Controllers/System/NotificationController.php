@@ -27,25 +27,32 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        //Required config
-        $select_1 = "Notification";
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        $notification = Notification::getAllNotification();
-        $dictionary = Dictionary::getDictionaryByType($select_1);
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
-        $info = Info::getAvailableInfo("system");
+        if($user_id != null){
+            //Required config
+            $select_1 = "Notification";
 
-        //Set active nav
-        session()->put('active_nav', 'system');
-        session()->put('active_subnav', 'notification');
+            $notification = Notification::getAllNotification();
+            $dictionary = Dictionary::getDictionaryByType($select_1);
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("system");
 
-        return view ('system.notification.index')
-            ->with('notification', $notification)
-            ->with('dictionary', $dictionary)
-            ->with('info', $info)
-            ->with('menu', $menu)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'notification');
+
+            return view ('system.notification.index')
+                ->with('notification', $notification)
+                ->with('dictionary', $dictionary)
+                ->with('info', $info)
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function update_notif(Request $request, $id)

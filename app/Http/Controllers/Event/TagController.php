@@ -27,44 +27,51 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tag = Tag::getFullTagByCat(session()->get('selected_tag_category'));
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        if(session()->get('role_key') == 1){
-            $user_id = Generator::getUserIdV2(1);
-            $setting = Setting::getSingleSetting("MOT_range", $user_id);
-        }
+        if($user_id != null){
+            $tag = Tag::getFullTagByCat(session()->get('selected_tag_category'));
 
-        //Chart query
-        if(session()->get('role_key') == 1){
-            $mostTag = ContentDetail::getMostUsedTag();
-            $history = History::getHistoryByType("tag");
-        }
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
-        $dct_tag = Dictionary::getDictionaryByType("Tag");
-        $info = Info::getAvailableInfo("event/tag");
+            if($role == 1){
+                $user_id = Generator::getUserIdV2(1);
+                $setting = Setting::getSingleSetting("MOT_range", $user_id);
+            }
 
-        //Set active nav
-        session()->put('active_nav', 'event');
-        session()->put('active_subnav', 'tag');
+            //Chart query
+            if($role == 1){
+                $mostTag = ContentDetail::getMostUsedTag();
+                $history = History::getHistoryByType("tag");
+            }
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
+            $info = Info::getAvailableInfo("event/tag");
 
-        if(session()->get('role_key') == 1){
-            return view ('event.tag.index')
-                ->with('mostTag', $mostTag)
-                ->with('tag', $tag)
-                ->with('dct_tag', $dct_tag)
-                ->with('menu', $menu)
-                ->with('setting', $setting)
-                ->with('history', $history)
-                ->with('info', $info)
-                ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'event');
+            session()->put('active_subnav', 'tag');
+
+            if($role == 1){
+                return view ('event.tag.index')
+                    ->with('mostTag', $mostTag)
+                    ->with('tag', $tag)
+                    ->with('dct_tag', $dct_tag)
+                    ->with('menu', $menu)
+                    ->with('setting', $setting)
+                    ->with('history', $history)
+                    ->with('info', $info)
+                    ->with('greet',$greet);
+            } else {
+                return view ('event.tag.index')
+                    ->with('tag', $tag)
+                    ->with('dct_tag', $dct_tag)
+                    ->with('menu', $menu)
+                    ->with('info', $info)
+                    ->with('greet',$greet);
+            }
         } else {
-            return view ('event.tag.index')
-                ->with('tag', $tag)
-                ->with('dct_tag', $dct_tag)
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('greet',$greet);
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
         }
     }
 
