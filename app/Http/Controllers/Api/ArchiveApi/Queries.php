@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Helpers\Query;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
@@ -18,18 +19,37 @@ use App\Models\Task;
 
 class Queries extends Controller
 {
-    public function getArchive(Request $request) 
+    public function getArchive(Request $request, $slug) 
     {
         try{
             $user_id = $request->user()->id;
+            if($slug != "%20" && trim($slug) != "" && trim($slug) != null){
+                $select = " ,
+                CASE 
+                    WHEN EXISTS (
+                        SELECT 1 FROM archives_relations ars
+                        JOIN contents_headers chq ON chq.id = ars.content_id
+                        WHERE ars.archive_id = a.id AND chq.slug_name = '".$slug."'
+                    ) THEN 1 
+                    ELSE 0
+                END AS found ";
+            } else {
+                $select = " , 0 as found";
+            }
 
-            $archive = Archive::select('slug_name', 'archive_name', 'archive_desc')
-                ->where('created_by', $user_id)
-                ->orderBy('created_at', 'DESC')
-                ->orderBy('updated_at', 'DESC')
-                ->get();
+            $archive  = DB::select(DB::raw("
+                SELECT a.slug_name, archive_name, archive_desc, COUNT(ch.id) AS total_event, COUNT(ts.id) AS total_task
+                ".$select."
+                FROM archives a
+                LEFT JOIN archives_relations ar ON ar.archive_id = a.id
+                LEFT JOIN contents_headers ch ON ch.id = ar.content_id
+                LEFT JOIN tasks ts ON ts.id = ar.content_id
+                WHERE a.created_by = '".$user_id."'
+                GROUP BY 1
+                ORDER BY ar.created_at DESC, a.updated_at DESC, a.created_at DESC
+            "));    
 
-            if ($archive->count() > 0) {
+            if (count($archive) > 0) {
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Archive Found',
@@ -84,47 +104,49 @@ class Queries extends Controller
             $total_task = 0;
 
             foreach ($schedule as $result) {
-                $loc = json_decode($result->content_loc, true);
-                $tag = json_decode($result->content_tag, true);
-            
-                $id = $result->id;
-                $slug = $result->slug_name;
-                $title = $result->content_title; 
-                $desc = $result->content_desc;
-                $date_start = $result->content_date_start; 
-                $date_end = $result->content_date_end; 
-                $from = $result->data_from; 
-                $createdAt = $result->created_at;
-                $updatedAt = $result->updated_at;
-                $auc = $result->admin_username_created;
-                $uuc = $result->user_username_created;
-                $aic = $result->admin_image_created;
-                $uic = $result->user_image_created;
-                $total = $result->total_views;
+                if($result->id != null){ // I dont know why on earth i put this
+                    $loc = json_decode($result->content_loc, true);
+                    $tag = json_decode($result->content_tag, true);
+                
+                    $id = $result->id;
+                    $slug = $result->slug_name;
+                    $title = $result->content_title; 
+                    $desc = $result->content_desc;
+                    $date_start = $result->content_date_start; 
+                    $date_end = $result->content_date_end; 
+                    $from = $result->data_from; 
+                    $createdAt = $result->created_at;
+                    $updatedAt = $result->updated_at;
+                    $auc = $result->admin_username_created;
+                    $uuc = $result->user_username_created;
+                    $aic = $result->admin_image_created;
+                    $uic = $result->user_image_created;
+                    $total = $result->total_views;
 
-                $clean[] = [
-                    'id' => $id,
-                    'slug_name' => $slug,
-                    'content_title' => $title,
-                    'content_desc' => $desc,
-                    'content_tag' => $tag,
-                    'content_loc' => $loc,
-                    'content_date_start' => $date_start,
-                    'content_date_end' => $date_end,
-                    'data_from' => $from,
-                    'created_at' => $createdAt,
-                    'updated_at' => $updatedAt,
-                    'admin_username_created' => $auc,
-                    'user_username_created' => $uuc,
-                    'admin_image_created' => $aic,
-                    'user_image_created' => $aic,
-                    'total_views' => $total
-                ];
+                    $clean[] = [
+                        'id' => $id,
+                        'slug_name' => $slug,
+                        'content_title' => $title,
+                        'content_desc' => $desc,
+                        'content_tag' => $tag,
+                        'content_loc' => $loc,
+                        'content_date_start' => $date_start,
+                        'content_date_end' => $date_end,
+                        'data_from' => $from,
+                        'created_at' => $createdAt,
+                        'updated_at' => $updatedAt,
+                        'admin_username_created' => $auc,
+                        'user_username_created' => $uuc,
+                        'admin_image_created' => $aic,
+                        'user_image_created' => $aic,
+                        'total_views' => $total
+                    ];
 
-                if($from == 1){
-                    $total_content++;
-                } else {
-                    $total_task++;
+                    if($from == 1){
+                        $total_content++;
+                    } else {
+                        $total_task++;
+                    }
                 }
             }
 

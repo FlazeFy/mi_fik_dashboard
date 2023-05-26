@@ -11,6 +11,7 @@ use App\Helpers\Validation;
 
 use App\Models\Archive;
 use App\Models\History;
+use App\Models\ContentHeader;
 use App\Models\ArchiveRelation;
 
 class Commands extends Controller
@@ -228,6 +229,63 @@ class Commands extends Controller
                     'status' => 'success',
                     'message' => 'Archive deleted'
                 ], Response::HTTP_OK);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function multiActionArchiveRelation(Request $request, $slug){
+        try{
+            $user_id = $request->user()->id;
+            $count_job = 0;
+            $list_action = json_decode($request->list_relation);
+            $cheader = ContentHeader::select('id')
+                ->where('slug_name',$slug)
+                ->first();
+
+            if($list_action !== null || json_last_error() === JSON_ERROR_NONE){
+                foreach($list_action as $la){
+                    $rel = ArchiveRelation::select('archives_relations.id')
+                        ->join('archives','archives.id','=','archives_relations.archive_id')
+                        ->where('content_id', $cheader->id)
+                        ->where('archives.slug_name', $la->slug_name)
+                        ->where('archives_relations.created_by', $user_id)
+                        ->first();
+
+                    if($la->check == 1 && $rel == null){
+                        $arc = Archive::select('id')
+                            ->where('slug_name',$la->slug_name)
+                            ->first();
+
+                        ArchiveRelation::create([
+                            'id' => Generator::getUUID(),
+                            'archive_id' => $arc->id,
+                            'content_id' => $cheader->id,
+                            'created_by' => $user_id,
+                            'created_at' => date('Y-m-d H:i:s')
+                        ]);
+                        $count_job++;
+                    } else if($la->check == 0 && $rel != null){
+                        ArchiveRelation::destroy($rel->id);
+                        $count_job++;
+                    } else {
+                        // Check this shit
+                    }
+                }
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content Added to Archive with '.$count_job.' changes',
+                ], Response::HTTP_OK);
+            } else {
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => 'Not a valid json array',
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         } catch (\Exception $e) {
             return response()->json([
