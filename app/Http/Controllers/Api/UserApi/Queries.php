@@ -231,4 +231,32 @@ class Queries extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function getMyRequest(Request $request){
+        try{
+            $user_id = $request->user()->id;
+            $select = Query::getSelectTemplate("user_request_old");
+
+            $user = UserRequest::getRecentlyRequest($user_id);
+
+            if ($user->isEmpty()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Request Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Request Found',
+                    'data' => $user
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

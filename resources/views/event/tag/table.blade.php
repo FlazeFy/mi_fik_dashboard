@@ -117,7 +117,7 @@
                             </div>
                         </td>
                     @else
-                        <td>{{$tg->tag_desc}}</td>
+                        <td> <div style="max-width:400px !important; word-break: break-all !important;">{{$tg->tag_desc}}</div></td>
                     @endif
                 </tr>
 

@@ -126,6 +126,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
     Route::get('/request/new/{fullname}', [QueryUserApi::class, 'getNewUserRequest']);
     Route::get('/request/old/{fullname}', [QueryUserApi::class, 'getOldUserRequest']);
+    Route::get('/request/my', [QueryUserApi::class, 'getMyRequest']);
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
     Route::get('/access/history/{limit}', [QueryAccessApi::class, 'getAllPersonalAccessToken']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
