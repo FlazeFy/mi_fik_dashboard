@@ -13,6 +13,7 @@ use App\Helpers\Validation;
 use App\Models\Dictionary;
 use App\Models\DictionaryType;
 use App\Models\Menu;
+use App\Models\Info;
 use App\Models\History;
 
 class DictionaryController extends Controller
@@ -31,6 +32,7 @@ class DictionaryController extends Controller
             $greet = Generator::getGreeting(date('h'));
             $dictionary = Dictionary::getAllDictionary();
             $dictionaryType = DictionaryType::all();
+            $info = Info::getAvailableInfo("system");
             $menu = Menu::getMenu();
             
             //Set active nav
@@ -39,6 +41,7 @@ class DictionaryController extends Controller
 
             return view ('system.dictionary.index')
                 ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('dictionary', $dictionary)
                 ->with('dictionaryType', $dictionaryType)
                 ->with('greet',$greet);
@@ -136,15 +139,47 @@ class DictionaryController extends Controller
         }  
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function delete(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateDictionaryInfo($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "dictionary",
+                'history_body' => "Has deleted a '".$request->dct_name."' dictionary"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Dictionary::where('id', $id)->update([
+                    'deleted_at' => date("Y-m-d H:i:s"),
+                    'deleted_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success deleted a dictionary');   
+            }
+        }  
     }
 
     /**
