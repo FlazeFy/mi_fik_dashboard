@@ -26,11 +26,16 @@ class Feedback extends Model
         return $res;
     }
 
-    public static function getAllFeedback($limit){
-        $res = Feedback::selectRaw('feedbacks.id, feedback_body, feedback_rate, dct_name as type, feedbacks.created_at')
+    public static function getAllFeedback($limit, $suggest){
+        $feedback = Feedback::selectRaw('feedbacks.id, feedback_body, feedback_rate, dct_name as type, feedbacks.created_at')
             ->join('dictionaries', 'dictionaries.slug_name', '=', 'feedbacks.feedback_suggest')
-            ->whereNull('feedbacks.deleted_at')
-            ->orderBy('feedbacks.created_at', 'DESC')
+            ->whereNull('feedbacks.deleted_at');
+  
+        if($suggest != "All"){
+            $feedback->where("feedback_suggest", $suggest);
+        }
+
+        $res = $feedback->orderBy('feedbacks.created_at', 'DESC')
             ->limit($limit)
             ->get();
 
