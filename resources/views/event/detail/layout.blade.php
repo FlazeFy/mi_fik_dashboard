@@ -151,12 +151,14 @@
                 <!--My Archive-->
                 <!-- include('event.detail.archive') -->
 
-                <span><?php echo $c->content_desc; ?></span>
+                <span><?php echo $c->content_desc; ?></span><br>
 
                 <!--Content attachment-->
+                <hr><h5>Attachment</h5>
                 @include('event.detail.attachment')
 
                 <!--Content location-->
+                <hr><h5>Location</h5>
                 @if($c->content_loc)
                     @include('event.detail.maps')
                 @else 

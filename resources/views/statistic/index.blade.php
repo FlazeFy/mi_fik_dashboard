@@ -84,7 +84,7 @@
                     </div>
                     <div class="container-fluid bg-white rounded mb-3 mt-2 p-2">
                         <h5 class="text-secondary fw-bold">Most Suggestion Feedback</h5>
-                        @include('social.feedback.mostSuggest')
+                        @include('social.feedback.mostsuggest')
                     </div>
                 </div>
             </div>

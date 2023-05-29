@@ -15,7 +15,7 @@
                 <form class="d-inline" action="/event/edit/update/attach/remove/{{$c->slug_name}}" method="POST">
                     @csrf
                     <input name="attachment_id" value="{{$at['id']}}" hidden>
-                    <button class="btn btn-danger float-end" type="submit">Delete</button>
+                    <button class="btn btn-danger float-end" type="submit" onclick="deleteAttachmentForm('<?= $at['id']; ?>','<?= $at['attach_type']; ?>')">Delete</button>
                 </form>
             </div>
         </div>

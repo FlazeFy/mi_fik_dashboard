@@ -72,17 +72,23 @@
                         <span id="dct-holder-edit-{{$dc->id}}" class="d-none">
                             <form class="d-inline" action="/system/dictionary/update/info/{{$dc->id}}" method="POST">
                                 @csrf
+                                <script>
+                                    let validation<?= str_replace('-', '', $dc->id); ?> = [
+                                        { id: "dct_name_{{str_replace('-', '', $dc->id)}}", req: true, len: 30 },
+                                        { id: "dct_desc_{{str_replace('-', '', $dc->id)}}", req: false, len: 255 },
+                                    ];
+                                </script>
                                 <div class="form-floating mb-2">
-                                    <input type="text" class="form-control nameInput" id="dct_name_{{$dc->id}}" name="dct_name" value="{{$dc->dct_name}}" maxlength="30" required>
+                                    <input type="text" class="form-control nameInput" id="dct_name_{{str_replace('-', '', $dc->id)}}" name="dct_name" value="{{$dc->dct_name}}" maxlength="30" oninput="validateFull(validation<?= str_replace('-', '', $dc->id); ?>, '<?= str_replace('-', '', $dc->id); ?>')" required>
                                     <label for="dct_name">Dictionary Name</label>
-                                    <a id="dct_name_{{$dc->id}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                                    <a id="dct_name_{{str_replace('-', '', $dc->id)}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                 </div>
                                 <div class="form-floating">
-                                    <textarea class="form-control" style="height: 120px" id="dct_desc_{{$dc->id}}" name="dct_desc" value="{{$dc->dct_desc}}" maxlength="255">{{$dc->dct_desc}}</textarea>
+                                    <textarea class="form-control" style="height: 120px" id="dct_desc_{{str_replace('-', '', $dc->id)}}" name="dct_desc" value="{{$dc->dct_desc}}" oninput="validateFull(validation<?= str_replace('-', '', $dc->id); ?>, '<?= str_replace('-', '', $dc->id); ?>')" maxlength="255">{{$dc->dct_desc}}</textarea>
                                     <label for="dct_desc">Dictionary Description</label>
-                                    <a id="dct_desc_{{$dc->id}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                                    <a id="dct_desc_{{str_replace('-', '', $dc->id)}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                 </div>
-                                <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                                <span id="submit_holder_{{str_replace('-', '', $dc->id)}}"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
                             </form>
                         </span>
                     </td>
@@ -127,6 +133,8 @@
                     </td>
                     <td>
                         <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$dc->id}}")'><i class="fa-solid fa-edit"></i></button>
+                        <button class="btn btn-danger" data-bs-target="#deleteModal-{{$dc->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                        @include('system.dictionary.delete')                            
                     </td>
                 </tr>
                 

@@ -62,3 +62,6 @@
 .warning{
     color: #f78a00 !important;
 }
+.document-grid{
+    width: 100%; 
+}

@@ -34,7 +34,6 @@ class Notification extends Model
             FROM notifications nt
             ".$join."
             WHERE nt.deleted_at IS NULL
-            ORDER BY nt.updated_at, nt.created_at DESC
         ")); 
         
         $clean = [];
@@ -86,7 +85,7 @@ class Notification extends Model
         }
 
         $collection = collect($clean);
-        $collection = $collection->sortBy('created_at')->values();
+        $collection = $collection->sortByDesc('created_at')->values();
 
         return $collection;
     }

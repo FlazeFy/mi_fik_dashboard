@@ -1,20 +1,20 @@
-<div class="position-absolute" style="top:25px; left:110px;">
+<div class="position-absolute" style="top:0; left:110px;">
     <div class="mb-2" style="font-size:15px;">
-        <label for="tag_category" >Show Category</label>
-        <form action="/event/tag/filter_category" method="POST">
+        <label for="tag_category" >Filter Suggestion</label>
+        <form action="/social/feedback/filter_suggest" method="POST">
             @csrf
-            <select class="form-select" style="font-size:14px; padding:4px auto;" id="tag_category" name="tag_category" onchange="this.form.submit()"  aria-label="Floating label select example" required>
+            <select class="form-select" style="font-size:14px; padding:4px auto;" id="feedback_suggest" name="feedback_suggest" onchange="this.form.submit()"  aria-label="Floating label select example" required>
                 @php($i=0)
-                @foreach($dct_tag as $dtag)
+                @foreach($dct as $dtag)
                     @if($i == 0)
-                        @if(session()->get("selected_tag_category") == "All")
+                        @if(session()->get("selected_filter_suggest") == "All")
                             <option value="All" selected>All</option>
                         @else
                             <option value="All">All</option>
                         @endif
                     @endif
 
-                    @if($dtag->slug_name == session()->get("selected_tag_category"))
+                    @if($dtag->slug_name == session()->get("selected_filter_suggest"))
                         <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
                     @else 
                         <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>

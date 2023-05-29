@@ -44,7 +44,9 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#feedbackTable').DataTable();
+                $('#feedbackTable').DataTable({
+                    searching: false,
+                });
             });
         </script>
 
@@ -73,7 +75,7 @@
                                 @if($st == "list")
                                     @include('social.feedback.table')
                                 @elseif($st == "most suggest")
-                                    @include('social.feedback.mostSuggest')
+                                    @include('social.feedback.mostsuggest')
                                 @endif
                             </div>
                         </div>

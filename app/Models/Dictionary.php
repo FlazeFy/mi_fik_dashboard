@@ -36,15 +36,17 @@ class Dictionary extends Model
                 $i++;
             }
 
-            $res = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
+            $res = Dictionary::select('slug_name','dct_name','dct_desc','type_name','deleted_at')
                 ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
-                ->whereRaw($query)
+                ->whereRaw(' ('.$query.') ')
+                ->whereNull('deleted_at')
                 ->orderBy('dictionaries.created_at', 'ASC')
                 ->get();
         } else {
-            $res = Dictionary::select('slug_name','dct_name','dct_desc','type_name')
+            $res = Dictionary::select('slug_name','dct_name','dct_desc','type_name','deleted_at')
                 ->join('dictionaries_types', 'dictionaries_types.app_code', '=', 'dictionaries.dct_type')
                 ->where('type_name', $type)
+                ->whereNull('deleted_at')
                 ->orderBy('dictionaries.created_at', 'ASC')
                 ->get();
         }

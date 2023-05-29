@@ -12,6 +12,7 @@ use App\Helpers\Validation;
 use App\Models\Menu;
 use App\Models\History;
 use App\Models\Feedback;
+use App\Models\Dictionary;
 
 class FeedbackController extends Controller
 {
@@ -29,7 +30,8 @@ class FeedbackController extends Controller
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $suggestion = Feedback::getAllFeedbackSuggestion();
-            $feedback = Feedback::getAllFeedback(100);
+            $feedback = Feedback::getAllFeedback(50, session()->get('selected_filter_suggest'));
+            $dct = Dictionary::getDictionaryByType("Feedback");
             
             //Set active nav
             session()->put('active_nav', 'social');
@@ -37,6 +39,7 @@ class FeedbackController extends Controller
 
             return view ('social.feedback.index')
                 ->with('menu', $menu)
+                ->with('dct', $dct)
                 ->with('suggestion', $suggestion)
                 ->with('feedback', $feedback)
                 ->with('greet',$greet);
@@ -80,15 +83,11 @@ class FeedbackController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function filter_suggest(Request $request)
     {
-        //
+        session()->put('selected_filter_suggest', $request->feedback_suggest);
+
+        return redirect()->back()->with('success_message', 'Suggestion filtered');
     }
 
     /**

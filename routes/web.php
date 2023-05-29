@@ -117,6 +117,7 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/dictionary', [DictionaryController::class, 'index']);
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
     Route::post('/dictionary/update/info/{id}', [DictionaryController::class, 'update_info']);
+    Route::post('/dictionary/delete/{id}', [DictionaryController::class, 'delete']);
 
     Route::get('/maintenance', [MaintenanceController::class, 'index']);
 
@@ -176,6 +177,7 @@ Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/feedback', [FeedbackController::class, 'index']);
     Route::post('/feedback/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
     Route::post('/feedback/delete/{id}', [FeedbackController::class, 'delete_feedback']);
+    Route::post('/feedback/filter_suggest', [FeedbackController::class, 'filter_suggest']);
 
     Route::get('/faq', [FaqController::class, 'index']);
     Route::post('/faq/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
