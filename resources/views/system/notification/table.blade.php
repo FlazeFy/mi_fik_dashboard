@@ -22,6 +22,7 @@
     .notif-result-box{
         border-radius: 10px;
         padding: 8px;
+        position: relative;
         background: #C6EFF8;
     }
     .notif-result-box label{
@@ -45,8 +46,8 @@
                 <th scope="col">Type</th>
                 <th scope="col">Content</th>
                 <th scope="col" style="max-width:300px;">Send To</th>
-                <th scope="col">Status</th>
-                <th scope="col">Manage By</th>
+                <th scope="col" style="width:160px;">Status</th>
+                <th scope="col" style="width:160px;">Manage By</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -68,61 +69,76 @@
                     </td>
                     <td>
                         @php($ntJson = $nt['notif_send_to'])
-                        
-                        @foreach($ntJson as $nj)
-                            @if($nj['send_to'] == "all")
-                                <h6>Send to {{ucfirst($nj['send_to'])}}</h6>
-                            @elseif($nj['send_to'] == "person")
-                                <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
-                                @if(is_array($nj['context_id']))
-                                    @php($list_user = $nj['context_id'])
-                                    @foreach($list_user as $lu)
-                                        <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
-                                            title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
-                                    @endforeach
-                                @else
-                                    {{$nj['context_id']}}
-                                @endif
-                            @elseif($nj['send_to'] == "grouping")
-                                <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
-                                @php($list_group = $nj['context_id'])
-                                @foreach($list_group as $lg)
-                                    <div class="group-box-notif">
-                                        <h6 class="mt-1">{{$lg['groupname']}} </h6>
-                                        <button class="btn btn-icon-preview collapse-group-box-toogle" title="Hide member" data-bs-toggle="collapse" href="#collapse_{{$nt['id']}}_{{$lg['id']}}" 
-                                            onclick="toggleIcon('fa-regular fa-eye-slash','fa-regular fa-eye','{{$j}}')">
-                                            <i class="fa-regular fa-eye-slash" id="icon-show-{{$j}}"></i></button>
-                                        @php($list_user = $lg['user_list'])
-                                        <div class="collapse" id="collapse_{{$nt['id']}}_{{$lg['id']}}">
-                                            @foreach($list_user as $lu)
-                                                <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
-                                                    title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
-                                            @endforeach
+
+                        @if($nt['is_pending'] == 0)
+                            @foreach($ntJson as $nj)
+                                @if($nj['send_to'] == "all")
+                                    <h6>Send to {{ucfirst($nj['send_to'])}}</h6>
+                                @elseif($nj['send_to'] == "person")
+                                    <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                    @if(is_array($nj['context_id']))
+                                        @php($list_user = $nj['context_id'])
+                                        @foreach($list_user as $lu)
+                                            <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                                title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
+                                        @endforeach
+                                    @else
+                                        {{$nj['context_id']}}
+                                    @endif
+                                @elseif($nj['send_to'] == "grouping")
+                                    <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                    @php($list_group = $nj['context_id'])
+                                    @foreach($list_group as $lg)
+                                        <div class="group-box-notif">
+                                            <h6 class="mt-1">{{$lg['groupname']}} </h6>
+                                            <button class="btn btn-icon-preview collapse-group-box-toogle" title="Hide member" data-bs-toggle="collapse" href="#collapse_{{$nt['id']}}_{{$lg['id']}}" 
+                                                onclick="toggleIcon('fa-regular fa-eye-slash','fa-regular fa-eye','{{$j}}')">
+                                                <i class="fa-regular fa-eye-slash" id="icon-show-{{$j}}"></i></button>
+                                            @php($list_user = $lg['user_list'])
+                                            <div class="collapse" id="collapse_{{$nt['id']}}_{{$lg['id']}}">
+                                                @foreach($list_user as $lu)
+                                                    <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                                        title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
+                                                @endforeach
+                                            </div>
                                         </div>
+
+                                        <script>
+                                            <?php 
+                                                echo "var no_".$j." = 1;"; 
+                                                echo "no_values[".$j."] = window['no_' + ".$j."];";
+                                            ?>
+                                        </script>
+                                        @php($j++)
+                                    @endforeach
+                                @endif
+
+                                <!-- Remove if equal to false later -->
+                                @if(isset($nj['status']) && $nj['status'] != false) 
+                                    <div class="notif-result-box mt-2">
+                                        <label><i class="fa-solid fa-circle-info"></i> Summary</label><br>
+                                        <h6 class="notif-result mb-0">{{$nj['status']}}</h6>
                                     </div>
+                                @endif
+                            @endforeach 
+                        @else 
+                            <div class="notif-result-box mt-2">
+                                <h6 class="mt-1" style="font-size:16px;">Resume</h6>
+                                <button class="btn btn-icon-preview collapse-group-box-toogle" title="Hide member" data-bs-toggle="collapse" href="#collapseResume_{{$nt['id']}}">
+                                    <i class="fa-solid fa-play"></i></button>
+                                <div class="collapse" id="collapseResume_{{$nt['id']}}">
 
-                                    <script>
-                                        <?php 
-                                            echo "var no_".$j." = 1;"; 
-                                            echo "no_values[".$j."] = window['no_' + ".$j."];";
-                                        ?>
-                                    </script>
-                                    @php($j++)
-                                @endforeach
-                            @endif
-
-                            <!-- Remove if equal to false later -->
-                            @if(isset($nj['status']) && $nj['status'] != false) 
-                                <div class="notif-result-box mt-2">
-                                    <label><i class="fa-solid fa-circle-info"></i> Summary</label><br>
-                                    <h6 class="notif-result mb-0">{{$nj['status']}}</h6>
                                 </div>
-                            @endif
-                        @endforeach 
+                            </div>
+                            @php($j++)
+                        @endif
                     </td>
-                    <td>
-                        @if($nt['is_pending'])
-                            <span class="status-info bg-danger">Pending until {{date('Y-m-d H:i', strtotime($nt['pending_until']))}}</span>
+                    <td class="text-center">
+                        @if($nt['is_pending'] && $nt['pending_until'])
+                            <div class="status-info bg-danger" style="font-size:12px;">Pending until <br>
+                                {{date('Y-m-d H:i', strtotime($nt['pending_until']))}}</div>
+                        @elseif($nt['is_pending'] && !$nt['pending_until'])
+                            <span class="status-info bg-danger">Pending</span>
                         @else 
                             <span class="status-info bg-success">Announced</span>
                         @endif

@@ -142,22 +142,36 @@
                         '<label for="notif_body">Body</label> ' +
                         '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                     '</div> ' +
-                    '<div class="form-floating"> ' +
-                        '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
-                            '@php($i = 0) ' +
-                            '@foreach($dictionary as $dct) ' +
-                                '@if($dct->type_name == "Notification") ' +
-                                    '@if($i == 0) ' +
-                                        '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
-                                    '@else  ' +
-                                        '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
-                                    '@endif ' +
-                                    '@php($i++) ' +
-                                '@endif ' +
-                            '@endforeach ' +
-                        '</select> ' +
-                        '<label for="notif_type">Type</label> ' +
-                        '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                    '<div class="row mb-2"> ' +
+                        '<div class="col-lg-6"> ' +
+                            '<div class="form-floating"> ' +
+                                '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
+                                    '@php($i = 0) ' +
+                                    '@foreach($dictionary as $dct) ' +
+                                        '@if($dct->type_name == "Notification") ' +
+                                            '@if($i == 0) ' +
+                                                '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                            '@else  ' +
+                                                '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                            '@endif ' +
+                                            '@php($i++) ' +
+                                        '@endif ' +
+                                    '@endforeach ' +
+                                '</select> ' +
+                                '<label for="notif_type">Type</label> ' +
+                                '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                            '</div> ' +
+                        '</div> ' +
+                        '<div class="col-lg-6"> ' +
+                            '<div class="form-floating"> ' +
+                                '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                                    '<option value="now" selected>Now</option> ' +
+                                    '<option value="manual">Manual</option> ' +
+                                '</select> ' +
+                                '<label for="send_time">Send Time</label> ' +
+                            '</div> ' +
+                        '</div> ' +
+                        '<div id="datetime-picker-box"></div> ' +
                     '</div> ' +
                     '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                 '</div> ';
@@ -177,22 +191,36 @@
                             '<label for="notif_body">Body</label> ' +
                             '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
-                        '<div class="form-floating mb-2"> ' +
-                            '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
-                                '@php($i = 0) ' +
-                                '@foreach($dictionary as $dct) ' +
-                                    '@if($dct->type_name == "Notification") ' +
-                                        '@if($i == 0) ' +
-                                            '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
-                                        '@else  ' +
-                                            '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
-                                        '@endif ' +
-                                        '@php($i++) ' +
-                                    '@endif ' +
-                                '@endforeach ' +
-                            '</select> ' +
-                            '<label for="notif_type">Type</label> ' +
-                            '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                        '<div class="row mb-2"> ' +
+                            '<div class="col-lg-6"> ' +
+                                '<div class="form-floating"> ' +
+                                    '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
+                                        '@php($i = 0) ' +
+                                        '@foreach($dictionary as $dct) ' +
+                                            '@if($dct->type_name == "Notification") ' +
+                                                '@if($i == 0) ' +
+                                                    '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                                '@else  ' +
+                                                    '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                                '@endif ' +
+                                                '@php($i++) ' +
+                                            '@endif ' +
+                                        '@endforeach ' +
+                                    '</select> ' +
+                                    '<label for="notif_type">Type</label> ' +
+                                    '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div class="col-lg-6"> ' +
+                                '<div class="form-floating"> ' +
+                                    '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                                        '<option value="now" selected>Now</option> ' +
+                                        '<option value="manual">Manual</option> ' +
+                                    '</select> ' +
+                                    '<label for="send_time">Send Time</label> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div id="datetime-picker-box"></div> ' +
                         '</div> ' +
                         '<hr> ' +
                         '<span class="position-relative"> ' + 
@@ -213,6 +241,7 @@
         } else if(type == "Pending"){
             var elmt = " " +
                 '<div class="px-2"> ' +
+                    '<input name="send_to" value="pending" hidden> ' +
                     '<div class="form-floating mb-2"> ' +
                         '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
                         '<label for="notif_title">Title</label> ' +
@@ -258,22 +287,36 @@
                             '<label for="notif_body">Body</label> ' +
                             '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
                         '</div> ' +
-                        '<div class="form-floating mb-2"> ' +
-                            '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
-                                '@php($i = 0) ' +
-                                '@foreach($dictionary as $dct) ' +
-                                    '@if($dct->type_name == "Notification") ' +
-                                        '@if($i == 0) ' +
-                                            '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
-                                        '@else  ' +
-                                            '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
-                                        '@endif ' +
-                                        '@php($i++) ' +
-                                    '@endif ' +
-                                '@endforeach ' +
-                            '</select> ' +
-                            '<label for="notif_type">Type</label> ' +
-                            '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                        '<div class="row mb-2"> ' +
+                           '<div class="col-lg-6"> ' +
+                                '<div class="form-floating"> ' +
+                                    '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
+                                        '@php($i = 0) ' +
+                                        '@foreach($dictionary as $dct) ' +
+                                            '@if($dct->type_name == "Notification") ' +
+                                                '@if($i == 0) ' +
+                                                    '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                                '@else  ' +
+                                                    '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                                '@endif ' +
+                                                '@php($i++) ' +
+                                            '@endif ' +
+                                        '@endforeach ' +
+                                    '</select> ' +
+                                    '<label for="notif_type">Type</label> ' +
+                                    '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div class="col-lg-6"> ' +
+                                '<div class="form-floating"> ' +
+                                    '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                                        '<option value="now" selected>Now</option> ' +
+                                        '<option value="manual">Manual</option> ' +
+                                    '</select> ' +
+                                    '<label for="send_time">Send Time</label> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div id="datetime-picker-box"></div> ' +
                         '</div> ' +
                         '<hr> ' +
                         '<span class="position-relative"> ' + 
@@ -294,6 +337,25 @@
         }
 
         sec.innerHTML = elmt;
+    }
+
+    function toogleTimePicker(){
+        var time = document.getElementById("send_time").value;
+
+        var elmt = " "+
+            '<div class="row"> ' +
+                '<div class="col-lg-6"> ' +
+                    '<label>Set Date</label> ' +
+                    '<input type="date" name="sended_date" id="sended_date" onchange="" class="form-control"> ' +
+                '</div> ' +
+                '<div class="col-lg-6"> ' +
+                    '<label>Set Time</label> ' +
+                    '<input type="time" name="sended_time" id="sended_time" onchange="" class="form-control"> ' +
+                    '<a id="dateEnd_event_msg" class="input-warning text-danger"></a> ' +
+                '</div> ' +
+            '</div> ';
+
+        document.getElementById("datetime-picker-box").innerHTML = elmt;
     }
 
     function infinteLoadGroup(page_group_list) {       

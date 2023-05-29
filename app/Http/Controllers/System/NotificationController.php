@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use DateTime;
+use DateTimeZone;
 
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -140,7 +142,13 @@ class NotificationController extends Controller
                                     ->withData([
                                         'by' => 'person'
                                     ]);
-                                $response = $messaging->send($message);
+
+                                if($request->send_time != "now"){
+                                    // Do something
+                                    $response = $messaging->send($message);
+                                } else {
+                                    $response = $messaging->send($message);
+                                }
                                 $success++;
                             } else {
                                 User::where('id', $result->id)->update([
@@ -186,7 +194,13 @@ class NotificationController extends Controller
                                         ->withData([
                                             'by' => 'grouping'
                                         ]);
-                                    $response = $messaging->send($message);
+                                    
+                                    if($request->send_time != "now"){
+                                        // Do something
+                                        $response = $messaging->send($message);
+                                    } else {
+                                        $response = $messaging->send($message);
+                                    }
                                     $success++;
                                 } else {
                                     User::where('id', $rs->user_id)->update([
@@ -225,7 +239,13 @@ class NotificationController extends Controller
                                     ->withData([
                                         'by' => 'all'
                                     ]);
-                                $response = $messaging->send($message);
+
+                                if($request->send_time != "now"){
+                                    // Do something
+                                    $response = $messaging->send($message);
+                                } else {
+                                    $response = $messaging->send($message);
+                                }
                                 $success++;
                             } else {
                                 User::where('id', $us->id)->update([
@@ -239,8 +259,12 @@ class NotificationController extends Controller
                     }
                     $context_id = null;
                 }
+                $status = "Notification sended to ".$success." user and failed to ".$failed." user";
             } else {
                 $is_pending = 1;
+                $sended_at = null;
+                $sended_by = null;
+                $status = null;
                 if($request->active_date == true){
                     $pending_until = Converter::getFullDate($request->pending_date, $request->pending_type);
                 }                
@@ -249,7 +273,7 @@ class NotificationController extends Controller
             $obj_send_to = [[
                 'send_to' => $request->send_to,
                 'context_id' => $context_id,
-                'status' => "Notification sended to ".$success." user and failed to ".$failed." user"
+                'status' => $status
             ]];
 
             $ntf = Notification::create([
