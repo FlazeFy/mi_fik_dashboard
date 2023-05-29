@@ -42,11 +42,36 @@
             @elseif($at['attach_type'] == "attachment_url")
                 <h6>{{$at['attach_name']}}</h6>
                 <a>{{$at['attach_url']}}</a><br>
-            @elseif($at['attach_type'] == "attachment_document")
-                <!-- ...... -->
+            @elseif($at['attach_type'] == "attachment_doc")
+                <div class='collapse show' id="collapsePreview{{$at['id']}}">
+                    <h6>{{$at['attach_name']}}</h6>
+                    <embed class="document-grid mb-2 rounded" alt="{{$at['attach_url']}}" style="height: 600px;" src="{{$at['attach_url']}}"/>
+                </div>
             @endif
             
             @include('event.edit.attachment.delete')
         </div>
+
+        @if($at['attach_type'] != "attachment_url")
+            <input hidden value="{{$at['attach_url']}}" id="attach_url_del_{{$at['id']}}">
+        @endif
     @endforeach
 @endif
+
+<script>
+    function deleteAttachmentForm(index, type){
+        let att_val = document.getElementById('attach_url_del_'+index).value;
+
+        if(type != "attachment_url" && att_val){
+            var storageRef = firebase.storage();
+            var desertRef = storageRef.refFromURL(att_val);
+            desertRef.delete().then(() => {
+                msg = "Attachment has been removed";
+                //Return msg not finished. i dont know what to do next LOL
+            }).catch((error) => {
+                msg = "Failed to deleted the Attachment";
+                //Return msg not finished. i dont know what to do next LOL
+            });
+        } 
+    }
+</script>

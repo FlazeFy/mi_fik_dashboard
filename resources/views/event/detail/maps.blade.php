@@ -8,9 +8,8 @@
     }
 </style>
 
-<div class="my-3"><hr>
-    <h6 class="mt-2">Event Location</h6>
-    <h6>Location : {{$c->content_loc[0]['detail']}}</h6>
+<div class="my-3">
+    <h6>Detail : {{$c->content_loc[0]['detail']}}</h6>
     <div id="map-event"></div>
 </div>
 

@@ -10,7 +10,7 @@
     var attach_list = []; //Store all attachment.
     var maxSizeImage = 4; // Mb
     var maxSizeVideo = 20; // Mb
-    var maxSizeDoc = 4; // Mb
+    var maxSizeDoc = 15; // Mb
 
     function addAttachmentForm(){
         var id = getAttCode()
@@ -74,7 +74,7 @@
                 } else if(att_type == "attachment_image"){
                     max = maxSizeImage;
                 } else if(att_type == "attachment_doc"){
-                    // 
+                    max = maxSizeDoc;
                 }
 
                 if(att_file_src.size <= max * 1024 * 1024){
@@ -109,16 +109,19 @@
                     function () {
                         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
                             document.getElementById('attach_url_'+id).disabled = true;
-
                             var att_url = downloadUrl;
                             attach_list[objIndex]['attach_url'] =  downloadUrl;
+                            
                             if(att_type == "attachment_image"){
                                 var att_preview_elmt = "<img class='img img-fluid mx-auto rounded mt-2' src='" + downloadUrl + "' alt='" + downloadUrl + "'>";
                             } else if(att_type == "attachment_video"){
                                 var att_preview_elmt = "<video controls class='rounded w-100 mx-auto mt-2' alt='" + downloadUrl + "'> " +
                                     "<source src='" + downloadUrl + "'> " +
                                 "</video>";
+                            } else if(att_type == "attachment_doc"){
+                                var att_preview_elmt = "<embed class='document-grid mb-2 rounded' alt='" + downloadUrl + "' style='height: 450px;' src='" + downloadUrl + "'/>";
                             }
+
                             var preview_elmt = "<div class='collapse' id='collapsePreview-" + id + "'> " +
                                     "<div class='container w-100 m-0 p-0'> " +
                                         att_preview_elmt +
@@ -242,11 +245,11 @@
 
         //Allowed type
         if(val == 'attachment_image'){
-            var allowed = 'accept="image/*"'
+            var allowed = 'accept="image/*"';
         } else if(val == 'attachment_video'){
-            var allowed = 'accept="video/*"'
+            var allowed = 'accept="video/*"';
         } else if(val == 'attachment_doc'){
-            var allowed = 'accept="MIME_type/*"' //Check this again...
+            var allowed = 'accept="application/pdf"'; //Check this again...
         }
 
         if(val == "attachment_url"){
