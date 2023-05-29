@@ -14,6 +14,19 @@
     .page-item .page-link{
         color:#414141;
     }
+    .notif-result{
+        font-size: 12.5px;
+        font-weight: 400;
+        color: #5B5B5B;
+    }
+    .notif-result-box{
+        border-radius: 10px;
+        padding: 8px;
+        background: #C6EFF8;
+    }
+    .notif-result-box label{
+        font-size: 12.5px;
+    }
 </style>
 
 <?php
@@ -96,6 +109,14 @@
                                     </script>
                                     @php($j++)
                                 @endforeach
+                            @endif
+
+                            <!-- Remove if equal to false later -->
+                            @if(isset($nj['status']) && $nj['status'] != false) 
+                                <div class="notif-result-box mt-2">
+                                    <label><i class="fa-solid fa-circle-info"></i> Summary</label><br>
+                                    <h6 class="notif-result mb-0">{{$nj['status']}}</h6>
+                                </div>
                             @endif
                         @endforeach 
                     </td>
