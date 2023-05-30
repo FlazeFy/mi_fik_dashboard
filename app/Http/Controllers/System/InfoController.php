@@ -25,22 +25,29 @@ class InfoController extends Controller
      */
     public function index()
     {
-        $type = ["Info"];
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        $greet = Generator::getGreeting(date('h'));
-        $info = Info::getAllInfo();
-        $dictionary = Dictionary::getDictionaryByType($type);
-        $menu = Menu::getMenu();
+        if($user_id != null){
+            $type = ["Info"];
 
-        //Set active nav
-        session()->put('active_nav', 'system');
-        session()->put('active_subnav', 'info');
+            $greet = Generator::getGreeting(date('h'));
+            $info = Info::getAllInfo();
+            $dictionary = Dictionary::getDictionaryByType($type);
+            $menu = Menu::getMenu();
 
-        return view ('system.info.index')
-            ->with('info', $info)
-            ->with('menu', $menu)
-            ->with('dictionary', $dictionary)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'info');
+
+            return view ('system.info.index')
+                ->with('info', $info)
+                ->with('menu', $menu)
+                ->with('dictionary', $dictionary)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function update_type(Request $request, $id)

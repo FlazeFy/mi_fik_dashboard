@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use DateTime;
+use DateTimeZone;
 
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -27,25 +29,32 @@ class NotificationController extends Controller
 {
     public function index()
     {
-        //Required config
-        $select_1 = "Notification";
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        $notification = Notification::getAllNotification();
-        $dictionary = Dictionary::getDictionaryByType($select_1);
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
-        $info = Info::getAvailableInfo("system");
+        if($user_id != null){
+            //Required config
+            $select_1 = "Notification";
 
-        //Set active nav
-        session()->put('active_nav', 'system');
-        session()->put('active_subnav', 'notification');
+            $notification = Notification::getAllNotification();
+            $dictionary = Dictionary::getDictionaryByType($select_1);
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("system");
 
-        return view ('system.notification.index')
-            ->with('notification', $notification)
-            ->with('dictionary', $dictionary)
-            ->with('info', $info)
-            ->with('menu', $menu)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'notification');
+
+            return view ('system.notification.index')
+                ->with('notification', $notification)
+                ->with('dictionary', $dictionary)
+                ->with('info', $info)
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function update_notif(Request $request, $id)
@@ -100,6 +109,8 @@ class NotificationController extends Controller
             $context_id = null;
             $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
             $messaging = $factory->createMessaging();
+            $success = 0;
+            $failed = 0;
 
             if($request->send_to != "pending"){
                 $sended_at = date("Y-m-d H:i");
@@ -118,17 +129,35 @@ class NotificationController extends Controller
                         ];
 
                         if($result->firebase_fcm_token){
-                            $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
-                            $message = CloudMessage::withTarget('token', $result->firebase_fcm_token)
-                                ->withNotification(
-                                    FireNotif::create($request->notif_body)
-                                    ->withTitle($request->notif_title)
-                                    ->withBody(strtoupper($type)." ".$request->notif_body)
-                                )
-                                ->withData([
-                                    'by' => 'person'
+                            $validateRegister = $messaging->validateRegistrationTokens($result->firebase_fcm_token);
+
+                            if($validateRegister['valid'] != null){
+                                $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
+                                $message = CloudMessage::withTarget('token', $result->firebase_fcm_token)
+                                    ->withNotification(
+                                        FireNotif::create($request->notif_body)
+                                        ->withTitle($request->notif_title)
+                                        ->withBody(strtoupper($type)." ".$request->notif_body)
+                                    )
+                                    ->withData([
+                                        'by' => 'person'
+                                    ]);
+
+                                if($request->send_time != "now"){
+                                    // Do something
+                                    $response = $messaging->send($message);
+                                } else {
+                                    $response = $messaging->send($message);
+                                }
+                                $success++;
+                            } else {
+                                User::where('id', $result->id)->update([
+                                    "firebase_fcm_token" => null
                                 ]);
-                            $response = $messaging->send($message);
+                                $failed++;
+                            }
+                        } else {
+                            $failed++;
                         }
                     }
                     $context_id = $list_user_holder;
@@ -152,17 +181,35 @@ class NotificationController extends Controller
                             ];
 
                             if($rs->firebase_fcm_token){
-                                $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
-                                $message = CloudMessage::withTarget('token', $rs->firebase_fcm_token)
-                                    ->withNotification(
-                                        FireNotif::create($request->notif_body)
-                                        ->withTitle($request->notif_title)
-                                        ->withBody(strtoupper($type)." ".$request->notif_body)
-                                    )
-                                    ->withData([
-                                        'by' => 'grouping'
+                                $validateRegister = $messaging->validateRegistrationTokens($rs->firebase_fcm_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
+                                    $message = CloudMessage::withTarget('token', $rs->firebase_fcm_token)
+                                        ->withNotification(
+                                            FireNotif::create($request->notif_body)
+                                            ->withTitle($request->notif_title)
+                                            ->withBody(strtoupper($type)." ".$request->notif_body)
+                                        )
+                                        ->withData([
+                                            'by' => 'grouping'
+                                        ]);
+                                    
+                                    if($request->send_time != "now"){
+                                        // Do something
+                                        $response = $messaging->send($message);
+                                    } else {
+                                        $response = $messaging->send($message);
+                                    }
+                                    $success++;
+                                } else {
+                                    User::where('id', $rs->user_id)->update([
+                                        "firebase_fcm_token" => null
                                     ]);
-                                $response = $messaging->send($message);
+                                    $failed++;
+                                }
+                            } else {
+                                $failed++;
                             }
                         }
 
@@ -173,9 +220,51 @@ class NotificationController extends Controller
                         ];
                     }
                     $context_id = $list_group_holder;
+                } else if($request->send_to == "all"){
+                    $users = User::select("id","firebase_fcm_token")
+                        ->get();
+
+                    foreach($users as $us){
+                        if($us->firebase_fcm_token){
+                            $validateRegister = $messaging->validateRegistrationTokens($us->firebase_fcm_token);
+
+                            if($validateRegister['valid'] != null){
+                                $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
+                                $message = CloudMessage::withTarget('token', $us->firebase_fcm_token)
+                                    ->withNotification(
+                                        FireNotif::create($request->notif_body)
+                                        ->withTitle($request->notif_title)
+                                        ->withBody(strtoupper($type)." ".$request->notif_body)
+                                    )
+                                    ->withData([
+                                        'by' => 'all'
+                                    ]);
+
+                                if($request->send_time != "now"){
+                                    // Do something
+                                    $response = $messaging->send($message);
+                                } else {
+                                    $response = $messaging->send($message);
+                                }
+                                $success++;
+                            } else {
+                                User::where('id', $us->id)->update([
+                                    "firebase_fcm_token" => null
+                                ]);
+                                $failed++;
+                            }
+                        } else {
+                            $failed++;
+                        }
+                    }
+                    $context_id = null;
                 }
+                $status = "Notification sended to ".$success." user and failed to ".$failed." user";
             } else {
                 $is_pending = 1;
+                $sended_at = null;
+                $sended_by = null;
+                $status = null;
                 if($request->active_date == true){
                     $pending_until = Converter::getFullDate($request->pending_date, $request->pending_type);
                 }                
@@ -184,7 +273,7 @@ class NotificationController extends Controller
             $obj_send_to = [[
                 'send_to' => $request->send_to,
                 'context_id' => $context_id,
-                'status' => false //For now
+                'status' => $status
             ]];
 
             $ntf = Notification::create([

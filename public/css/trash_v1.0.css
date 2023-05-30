@@ -1,0 +1,24 @@
+.holder-trash-category{
+    display: flex;
+    flex-direction: column;
+    padding-inline: 5px;
+    height: 65vh;
+    overflow-y: scroll;
+}
+.carousel-control-holder{
+    position: absolute;
+    right: 60px;
+    top: -10px;
+}
+.carousel-control-prev, .carousel-control-next{
+    color: #F78A00 !important;
+    height: 50px;
+    width: 50px;
+    border-radius: 12px;
+    margin: 10px;
+    padding: 10px;
+    opacity: 1;
+}
+.carousel-control-prev:hover, .carousel-control-next:hover{
+    background: #FADFB9;
+}

@@ -9,7 +9,8 @@
         <!-- Show file -->
         @if($at['attach_type'] == "attachment_url")
             <input id="copy_url_{{$at['id']}}" value="{{$at['attach_url']}}" hidden>
-            <a class="btn-copy-link" title="Copy this link" onclick="copylink(<?php echo $at['id']; ?>)"><i class="fa-solid fa-copy"></i> </a><a class="text-link" title="Open this link" href="{{$at['attach_url']}}" target="_blank">{{$at['attach_url']}}</a>
+            <a class="btn-copy-link" title="Copy this link" onclick="copylink(<?php echo $at['id']; ?>)"><i class="fa-solid fa-copy"></i></a>
+            <a class="text-link" title="Open this link" href="{{$at['attach_url']}}" target="_blank">{{$at['attach_url']}}</a><br><br>
         @elseif($at['attach_type'] == "attachment_image")
             <img class="img img-fluid mx-auto rounded mb-2" src="{{$at['attach_url']}}" alt="{{$at['attach_url']}}">
         @elseif($at['attach_type'] == "attachment_video")
@@ -17,7 +18,7 @@
                 <source src="{{$at['attach_url']}}">
             </video>
         @elseif($at['attach_type'] == "attachment_doc")
-            <!-- ??? -->
+            <embed class="document-grid mb-2 rounded" alt="{{$at['attach_url']}}" style="height: 600px;" src="{{$at['attach_url']}}"/>
         @endif
     @endforeach
 @endif

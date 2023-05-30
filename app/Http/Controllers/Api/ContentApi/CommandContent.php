@@ -134,7 +134,7 @@ class CommandContent extends Controller
                         'content_id' => $uuid,
                         'content_attach' => $request->content_attach,
                         'content_tag' => $tag,
-                        'content_loc' => null, //for now
+                        'content_loc' => $request->content_loc,
                         'created_at' => date("Y-m-d H:i"),
                         'updated_at' => null
                     ]);

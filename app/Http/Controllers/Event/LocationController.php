@@ -22,19 +22,26 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //Chart query
-        $location = ContentDetail::getContentLocation();
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        //Set active nav
-        session()->put('active_nav', 'event');
-        session()->put('active_subnav', 'location');
+        if($user_id != null){
+            //Chart query
+            $location = ContentDetail::getContentLocation();
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
 
-        return view ('event.location.index')
-            ->with('location', $location)
-            ->with('menu', $menu)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'event');
+            session()->put('active_subnav', 'location');
+
+            return view ('event.location.index')
+                ->with('location', $location)
+                ->with('menu', $menu)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     /**

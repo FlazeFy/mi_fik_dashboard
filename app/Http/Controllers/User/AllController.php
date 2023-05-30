@@ -23,18 +23,25 @@ class AllController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
-        $dct_tag = Dictionary::getDictionaryByType("Tag");
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        //Set active nav
-        session()->put('active_nav', 'manageuser');
-        session()->put('active_subnav', 'all user');
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
 
-        return view('user.all.index')
-            ->with('menu', $menu)
-            ->with('dct_tag', $dct_tag)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'manageuser');
+            session()->put('active_subnav', 'all user');
+
+            return view('user.all.index')
+                ->with('menu', $menu)
+                ->with('dct_tag', $dct_tag)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     /**

@@ -228,14 +228,14 @@ class QueryContent extends Controller
             $select_task = Query::getSelectTemplate("task_schedule");
             $user_id = $request->user()->id;
 
-            $content = ContentHeader::selectRaw($select_content)
+            $content = ContentHeader::selectRaw('content_reminder, '.$select_content)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = '".$date."'")
                 //->whereRaw("date(`content_date_start`) <= '".$date."' AND date(`content_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
-            $schedule = Task::selectRaw($select_task)
+            $schedule = Task::selectRaw('task_reminder as content_reminder, '.$select_task)
                 ->where('created_by', $user_id)
                 ->whereRaw("date(`task_date_start`) = '".$date."'")
                 //->whereRaw("date(`task_date_start`) <= '".$date."' AND date(`task_date_end`) >= '".$date."'")
@@ -259,6 +259,7 @@ class QueryContent extends Controller
                 $date_start = $result->content_date_start;
                 $date_end = $result->content_date_end;
                 $from = $result->data_from;
+                $reminder = $result->content_reminder;
 
                 $clean[] = [
                     'id' => $id,
@@ -269,7 +270,8 @@ class QueryContent extends Controller
                     'content_loc' => $loc,
                     'content_date_start' => $date_start,
                     'content_date_end' => $date_end,
-                    'data_from' => $from
+                    'data_from' => $from,
+                    'content_reminder' => $reminder
                 ];
 
                 if($from == 1){

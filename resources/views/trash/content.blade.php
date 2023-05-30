@@ -1,22 +1,3 @@
-<div class="container mt-5 p-0">
-    <div class="event-holder row mt-4" >        
-        <div class="accordion row p-0 m-0 content-container" id="data-wrapper"></div>
-        <!-- Loading -->
-        <div class="auto-load text-center">
-            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-                <path fill="#000"
-                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-                </path>
-            </svg>
-        </div>
-        <div id="empty_item_holder"></div>
-        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
-    </div>
-</div>
-
 <script type="text/javascript">
     var page = 1;
     var myname = "<?= session()->get("username_key") ?>";
@@ -282,7 +263,7 @@
 
                     if(data_from == 1){ // Event
                         var elmt = " " +
-                            "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
+                            "<div class='pb-3 content-item'> " +
                                 "<button class='card shadow event-box ultimate' style='min-height:auto;' onclick=''> " +
                                     "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
                                     "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
@@ -335,9 +316,11 @@
                             "</div> " +
                             getRecoverModal("Event", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) +
                             getDestroyModal("Event", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+
+                            $("#data-wrapper-event").append(elmt);
                         } else if(data_from == 2){ // Task
                             var elmt = " " +
-                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
+                                "<div class='pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
                                         "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                         "<div class='card-body p-2 w-100'> " +
@@ -387,15 +370,25 @@
                                 "</div> " +
                                 getRecoverModal("Task", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
                                 getDestroyModal("Task", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                        } else if(data_from == 3){ // Tag
+                            
+                            $("#data-wrapper-task").append(elmt);
+                        } else if(data_from == 3 || data_from == 5 || data_from == 4){ // Tag, Info, Group
+                            if(data_from == 3){
+                                var icon = 'fa-hashtag';
+                            } else if(data_from == 5) {
+                                var icon = 'fa-circle-info';
+                            } else if(data_from == 4) {
+                                var icon = 'fa-users';
+                            }
+
                             var elmt = " " +
-                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
+                                "<div class='pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
                                         "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                         "<div class='card-body p-2 w-100'> " +
                                             "<div class='position-relative'> " +
                                                 "<div class='d-inline-block me-2'> " +
-                                                    '<i class="fa-solid fa-hashtag fa-xl mt-3 text-primary"></i>' +
+                                                    '<i class="fa-solid '+icon+' fa-xl mt-3 text-primary"></i>' +
                                                 "</div> " +
                                                 "<div class='d-inline-block position-absolute w-50' style='top:37.5px;'> " +
                                                     "<h6 class='task-title'>" + content_title + "</h6> " +
@@ -445,21 +438,32 @@
                                             "</div> " +
                                         "</div> " +
                                     "</button> " +
-                                "</div> " +
+                                "</div> ";
+
+                            if(data_from == 3){
+                                $("#data-wrapper-tag").append(elmt);
                                 getRecoverModal("Tag", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
                                 getDestroyModal("Tag", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                        } else if(data_from == 4){ // Group
+                            } else if(data_from == 5) {
+                                $("#data-wrapper-info").append(elmt);
+                                getRecoverModal("Info", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Info", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                            } else if(data_from == 4) {
+                                $("#data-wrapper-group").append(elmt);
+                                getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                            }
+                        } else if(data_from == 6){ // Feedback
                             var elmt = " " +
-                                "<div class='col-lg-4 col-md-6 col-sm-12 pb-3 content-item'> " +
+                                "<div class='pb-3 content-item'> " +
                                     "<button class='card shadow task-box ultimate' onclick=''> " +
                                         "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                         "<div class='card-body p-2 w-100'> " +
                                             "<div class='position-relative'> " +
                                                 "<div class='d-inline-block me-2'> " +
-                                                    '<i class="fa-solid fa-users fa-xl mt-3 text-primary"></i>' +
+                                                    '<i class="fa-solid fa-star fa-lg mt-3 text-primary"> <span style="font-size:16px;">' + ucFirst(content_title) + '</span></i>' +
                                                 "</div> " +
-                                                "<div class='d-inline-block position-absolute w-50' style='top:37.5px;'> " +
-                                                    "<h6 class='task-title'>" + content_title + "</h6> " +
+                                                "<div class='d-inline-block position-absolute w-50' style='top:30px;'> " +
                                                     "<h6 class='task-subtitle'>" + content_tag + "</h6> " +
                                                 "</div> " +
                                             "</div> " +
@@ -507,11 +511,11 @@
                                         "</div> " +
                                     "</button> " +
                                 "</div> " +
-                                getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                                getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                        }
+                                getRecoverModal("Feedback", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Feedback", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
 
-                    $("#data-wrapper").append(elmt);
+                            $("#data-wrapper-feedback").append(elmt);
+                        }
                 }   
             }
         })

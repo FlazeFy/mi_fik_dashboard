@@ -30,18 +30,25 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $dct_tag = Dictionary::getDictionaryByType("Tag");
-        $menu = Menu::getMenu();
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        //Set active nav
-        session()->put('active_nav', 'manageuser');
-        session()->put('active_subnav', 'request');
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
+            $menu = Menu::getMenu();
 
-        return view('user.request.index')
-            ->with('menu', $menu)
-            ->with('dct_tag', $dct_tag)
-            ->with('greet',$greet);
+            //Set active nav
+            session()->put('active_nav', 'manageuser');
+            session()->put('active_subnav', 'request');
+
+            return view('user.request.index')
+                ->with('menu', $menu)
+                ->with('dct_tag', $dct_tag)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function add_role_acc(Request $request)
@@ -173,18 +180,26 @@ class RequestController extends Controller
                         $firebase_token = $user[0]['firebase_fcm_token'];
 
                         if($firebase_token){
-                            $notif_body = "your role's request has been rejected";
-                            $notif_title = "Hello ".$user[0]['username'].", you got an information";
-                            $message = CloudMessage::withTarget('token', $firebase_token)
-                                ->withNotification(
-                                    FireNotif::create($notif_body)
-                                    ->withTitle($notif_title)
-                                    ->withBody("REJECTED"." ".$notif_body)
-                                )
-                                ->withData([
-                                    'by' => 'person'
+                            $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                            if($validateRegister['valid'] != null){
+                                $notif_body = "your role's request has been rejected";
+                                $notif_title = "Hello ".$user[0]['username'].", you got an information";
+                                $message = CloudMessage::withTarget('token', $firebase_token)
+                                    ->withNotification(
+                                        FireNotif::create($notif_body)
+                                        ->withTitle($notif_title)
+                                        ->withBody("REJECTED"." ".$notif_body)
+                                    )
+                                    ->withData([
+                                        'by' => 'person'
+                                    ]);
+                                $response = $messaging->send($message);
+                            } else {
+                                User::where('id', $user_id)->update([
+                                    "firebase_fcm_token" => null
                                 ]);
-                            $response = $messaging->send($message);
+                            }
                         }
 
                         $count++;
@@ -326,18 +341,26 @@ class RequestController extends Controller
 
                         $firebase_token = $rolesOld[0]['firebase_fcm_token'];
                         if($firebase_token){
-                            $notif_body = "your role has been updated";
-                            $notif_title = "Hello ".$rolesOld[0]['username'].", you got an information";
-                            $message = CloudMessage::withTarget('token', $firebase_token)
-                                ->withNotification(
-                                    FireNotif::create($notif_body)
-                                    ->withTitle($notif_title)
-                                    ->withBody("APPROVED"." ".$notif_body)
-                                )
-                                ->withData([
-                                    'by' => 'person'
+                            $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                            if($validateRegister['valid'] != null){
+                                $notif_body = "your role has been updated";
+                                $notif_title = "Hello ".$rolesOld[0]['username'].", you got an information";
+                                $message = CloudMessage::withTarget('token', $firebase_token)
+                                    ->withNotification(
+                                        FireNotif::create($notif_body)
+                                        ->withTitle($notif_title)
+                                        ->withBody("APPROVED"." ".$notif_body)
+                                    )
+                                    ->withData([
+                                        'by' => 'person'
+                                    ]);
+                                $response = $messaging->send($message);
+                            } else {
+                                User::where('id', $user_id)->update([
+                                    "firebase_fcm_token" => null
                                 ]);
-                            $response = $messaging->send($message);
+                            }
                         }
                     }
                     $count++;

@@ -13,6 +13,7 @@ use App\Helpers\Validation;
 use App\Models\Dictionary;
 use App\Models\DictionaryType;
 use App\Models\Menu;
+use App\Models\Info;
 use App\Models\History;
 
 class DictionaryController extends Controller
@@ -24,20 +25,29 @@ class DictionaryController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $dictionary = Dictionary::getAllDictionary();
-        $dictionaryType = DictionaryType::all();
-        $menu = Menu::getMenu();
-        
-        //Set active nav
-        session()->put('active_nav', 'system');
-        session()->put('active_subnav', 'dictionary');
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        return view ('system.dictionary.index')
-            ->with('menu', $menu)
-            ->with('dictionary', $dictionary)
-            ->with('dictionaryType', $dictionaryType)
-            ->with('greet',$greet);
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $dictionary = Dictionary::getAllDictionary();
+            $dictionaryType = DictionaryType::all();
+            $info = Info::getAvailableInfo("system");
+            $menu = Menu::getMenu();
+            
+            //Set active nav
+            session()->put('active_nav', 'system');
+            session()->put('active_subnav', 'dictionary');
+
+            return view ('system.dictionary.index')
+                ->with('menu', $menu)
+                ->with('info', $info)
+                ->with('dictionary', $dictionary)
+                ->with('dictionaryType', $dictionaryType)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function update_type(Request $request, $id)
@@ -84,26 +94,92 @@ class DictionaryController extends Controller
         }  
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update_info(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateDictionaryInfo($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "info",
+                'history_body' => "Has updated a dictionary info"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Dictionary::where('id', $id)->update([
+                    'dct_name' => $request->dct_name,
+                    'dct_desc' => $request->dct_desc,
+                    'updated_at' => date("Y-m-d H:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success updated dictionary info');   
+            }
+        }  
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function delete(Request $request, $id)
     {
-        //
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateDictionaryInfo($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "dictionary",
+                'history_body' => "Has deleted a '".$request->dct_name."' dictionary"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Dictionary::where('id', $id)->update([
+                    'deleted_at' => date("Y-m-d H:i:s"),
+                    'deleted_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success deleted a dictionary');   
+            }
+        }  
     }
 
     /**

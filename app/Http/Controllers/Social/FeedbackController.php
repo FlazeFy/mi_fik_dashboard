@@ -12,6 +12,7 @@ use App\Helpers\Validation;
 use App\Models\Menu;
 use App\Models\History;
 use App\Models\Feedback;
+use App\Models\Dictionary;
 
 class FeedbackController extends Controller
 {
@@ -22,20 +23,29 @@ class FeedbackController extends Controller
      */
     public function index()
     {
-        $greet = Generator::getGreeting(date('h'));
-        $menu = Menu::getMenu();
-        $suggestion = Feedback::getAllFeedbackSuggestion();
-        $feedback = Feedback::getAllFeedback(100);
-        
-        //Set active nav
-        session()->put('active_nav', 'social');
-        session()->put('active_subnav', 'feedback');
+        $role = session()->get('role_key');
+        $user_id = Generator::getUserIdV2($role);
 
-        return view ('social.feedback.index')
-            ->with('menu', $menu)
-            ->with('suggestion', $suggestion)
-            ->with('feedback', $feedback)
-            ->with('greet',$greet);
+        if($user_id != null){
+            $greet = Generator::getGreeting(date('h'));
+            $menu = Menu::getMenu();
+            $suggestion = Feedback::getAllFeedbackSuggestion();
+            $feedback = Feedback::getAllFeedback(50, session()->get('selected_filter_suggest'));
+            $dct = Dictionary::getDictionaryByType("Feedback");
+            
+            //Set active nav
+            session()->put('active_nav', 'social');
+            session()->put('active_subnav', 'feedback');
+
+            return view ('social.feedback.index')
+                ->with('menu', $menu)
+                ->with('dct', $dct)
+                ->with('suggestion', $suggestion)
+                ->with('feedback', $feedback)
+                ->with('greet',$greet);
+        } else {
+            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+        }
     }
 
     public function delete_feedback(Request $request, $id)
@@ -73,15 +83,11 @@ class FeedbackController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function filter_suggest(Request $request)
     {
-        //
+        session()->put('selected_filter_suggest', $request->feedback_suggest);
+
+        return redirect()->back()->with('success_message', 'Suggestion filtered');
     }
 
     /**

@@ -6,6 +6,7 @@
         <meta name="description" content="" />
 
         <title>Social | Feedback</title>
+        <link rel="icon" type="image/png" href="{{asset('/assets/mifik_logo_launch.png')}}"/>
         
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,7 +44,9 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#feedbackTable').DataTable();
+                $('#feedbackTable').DataTable({
+                    searching: false,
+                });
             });
         </script>
 
@@ -72,7 +75,7 @@
                                 @if($st == "list")
                                     @include('social.feedback.table')
                                 @elseif($st == "most suggest")
-                                    @include('social.feedback.mostSuggest')
+                                    @include('social.feedback.mostsuggest')
                                 @endif
                             </div>
                         </div>

@@ -111,10 +111,11 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/', [QueryArchiveApi::class, 'getArchive']);
-    Route::get('/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
+    Route::get('/{id}', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/by/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
+    Route::post('/multirel/{slug}', [CommandArchiveApi::class, 'multiActionArchiveRelation']);
     Route::put('/edit/{slug}', [CommandArchiveApi::class, 'editArchive']);
     Route::delete('/delete/{slug}', [CommandArchiveApi::class, 'deleteArchive']);
 });
@@ -125,6 +126,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
     Route::get('/request/new/{fullname}', [QueryUserApi::class, 'getNewUserRequest']);
     Route::get('/request/old/{fullname}', [QueryUserApi::class, 'getOldUserRequest']);
+    Route::get('/request/my', [QueryUserApi::class, 'getMyRequest']);
     Route::get('/request/dump', [QueryUserApi::class, 'getUserRejectedRequest']);
     Route::get('/access/history/{limit}', [QueryAccessApi::class, 'getAllPersonalAccessToken']);
     Route::put('/update/data', [CommandUserApi::class, 'editUserData']);
