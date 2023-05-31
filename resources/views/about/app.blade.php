@@ -4,22 +4,39 @@
             height: 50vh !important;
         }
     </style>   
-    @foreach($about as $ab)
-        <h6 class="fst-italic" style="font-size:14px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
-    @endforeach
-    <div id="rich_box">
-        <?php
-            foreach($about as $ab){ 
-                echo $ab->help_body;
-            }
-        ?>
-    </div>
-
-    <form class="d-inline" method="POST" action="/about/edit/app">
-        @csrf
-        <input name="help_body" id="about_body" hidden>
-        <button class="btn btn-success mt-3" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
-    </form>
+    @if(session()->get('toogle_edit_app') == "true")
+        <div id="rich_box">
+            <?php
+                foreach($about as $ab){ 
+                    echo $ab->help_body;
+                }
+            ?>
+        </div>
+        <form class="d-inline" method="POST" action="/about/toogle/app/false">
+            @csrf
+            <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Cancel Edit</button>
+        </form>
+        <form class="d-inline position-relative" method="POST" action="/about/edit/app">
+            @csrf
+            <input name="help_body" id="about_body" hidden>
+            <button class="btn btn-success rounded-pill mt-3 px-3 py-2" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+            @foreach($about as $ab)
+                <a class="fst-italic text-decoration-none text-primary" style="font-size:14px; position:absolute; margin-left: 20px; top:10px; width:340px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+            @endforeach
+        </form>
+    @else 
+        <div class="px-4">
+            <?php
+                foreach($about as $ab){ 
+                    echo $ab->help_body;
+                }
+            ?>
+        </div>
+        <form class="d-inline" method="POST" action="/about/toogle/app/true">
+            @csrf
+            <button class="btn btn-info rounded-pill mt-3 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+        </form>
+    @endif
 
     <script>
         function getRichText(){
@@ -37,9 +54,13 @@
             desc.value = modifiedString;
         }
 
-        var quill = new Quill('#rich_box', {
-            theme: 'snow'
-        });
+        <?php
+            if(session()->get('toogle_edit_app') == "true"){
+                echo "var quill = new Quill('#rich_box', {
+                    theme: 'snow'
+                });";
+            }
+        ?>
     </script>
 @else 
     <div class="p-4">

@@ -41,10 +41,22 @@
 </div>
 
 <script>
-    const date_holder_hs = document.querySelectorAll('.history-date');
+    <?php
+        if(isset($second)){
+            echo "const date_holder_hs = document.querySelectorAll('.history-date');
 
-    date_holder_hs.forEach(e => {
-        const date = new Date(e.textContent);
-        e.textContent = getDateToContext(e.textContent, "datetime");
-    });
+            date_holder_hs.forEach(e => {
+                const date = new Date(e.textContent);
+                e.textContent = getDateToContext(e.textContent, 'datetime');
+            });";
+        } else {
+            echo "const date_holder_sc = document.querySelectorAll('.history-date');
+
+            date_holder_sc.forEach(e => {
+                const date = new Date(e.textContent);
+                e.textContent = getDateToContext(e.textContent, 'datetime');
+            });";
+        }
+       
+    ?>
 </script>

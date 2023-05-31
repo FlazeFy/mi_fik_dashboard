@@ -86,7 +86,7 @@
                                             <div class="col-lg-4 col-md-5 col-sm-12">
                                                 @include('about.help.list')
                                                 <h5 class="text-secondary fw-bold">History</h5>
-                                                @include('components.history', ['history' => $h_help])
+                                                @include('components.history', ['history' => $h_help, 'second'=> true])
                                             </div>
                                             <div class="col-lg-8 col-md-7 col-sm-12">
                                                 @include('about.help.context')
