@@ -7,7 +7,7 @@
     <link rel="icon" type="image/png" href="{{asset('/assets/mifik_logo_launch.png')}}"/>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://kit.fontawesome.com/12801238e9.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/328b2b4f87.js" crossorigin="anonymous"></script>
 </head>
 <body style="background:#FFFFFF;">
     <div class="container mt-4 pt-3 text-center">

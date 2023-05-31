@@ -45,6 +45,8 @@ class Queries extends Controller
                 LEFT JOIN contents_headers ch ON ch.id = ar.content_id
                 LEFT JOIN tasks ts ON ts.id = ar.content_id
                 WHERE a.created_by = '".$user_id."'
+                AND ch.deleted_at is NULL
+                AND ts.deleted_at is NULL
                 GROUP BY 1
                 ORDER BY ar.created_at DESC, a.updated_at DESC, a.created_at DESC
             "));    
@@ -88,7 +90,8 @@ class Queries extends Controller
                 ->leftjoin('archives', 'archives.id', '=', 'archives_relations.archive_id')
                 ->where('archives.slug_name', $slug)
                 ->where('archives_relations.created_by', $user_id)
-                ->whereNull('contents_headers.deleted_at');
+                ->whereNull('contents_headers.deleted_at')
+                ->groupBy('contents_viewers.content_id');
 
             $schedule = Task::selectRaw('archives_relations.archive_id, tasks.created_at, tasks.updated_at, task_reminder as content_reminder, '.$select_task.', '.$select_properties_null)
                 ->leftjoin('archives_relations', 'archives_relations.content_id', '=', 'tasks.id')

@@ -69,6 +69,13 @@
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
+                        <button class="btn-quick-action-notif" onclick="setType('Role')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/tag.png'); ?>"); background-color:#FB5E5B;'
+                            data-bs-target="#addModal" title="By Role" data-bs-toggle="modal">
+                            <h5 class="quick-action-text-notif">By Role</h5>
+                            <p class="quick-action-info-notif">Send announcement to specific role that containe some user</p>
+                        </button>
+                    </div>
+                    <div class="col-lg-6 col-md-12 col-sm-12 p-2">
                         <button class="btn-quick-action-notif" onclick="setType('Grouping')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/group.png'); ?>"); background-color:#FB5E5B;'
                             data-bs-target="#addModal" title="By Grouping" data-bs-toggle="modal">
                             <h5 class="quick-action-text-notif">By Grouping</h5>
@@ -82,7 +89,7 @@
                             <p class="quick-action-info-notif">Send announcement to one or some user with searching one by one</p>
                         </button>
                     </div>
-                    <div class="col-lg-6 col-md-12 col-sm-12 p-2">
+                    <div class="col-lg-12 col-md-12 col-sm-12 p-2">
                         <button class="btn-quick-action-notif" onclick="setType('Pending')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/pending.png'); ?>"); background-color:#FB5E5B;'
                             data-bs-target="#addModal" title="Pending" data-bs-toggle="modal">
                             <h5 class="quick-action-text-notif">Or, Pending</h5>
@@ -123,6 +130,8 @@
             infinteLoadGroup(1);
         } else if(type == "Person"){
             infinteLoadUser(1);
+        } else if(type == "Role"){
+            infinteLoadRole(1);
         }
     }
 
@@ -234,6 +243,68 @@
                         '<input name="list_context" id="list_context_group"  value="" hidden> ' +
                         '<h6>All Group</h6> ' +
                         '<span id="group-list-holder"></span> ' +
+                    '</div> ' +
+                '</div> ';
+
+            document.getElementById("modal-dialog").setAttribute('class', 'modal-dialog modal-lg');
+        } else if(type == "Role"){
+            var elmt = " " +
+                '<div class="row px-2"> ' +
+                    '<input name="send_to" value="role" hidden> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                        '<div class="form-floating mb-2"> ' +
+                            '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
+                            '<label for="notif_title">Title</label> ' +
+                            '<a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                        '</div> ' +
+                        '<div class="form-floating mb-2"> ' +
+                            '<textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea> ' +
+                            '<label for="notif_body">Body</label> ' +
+                            '<a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                        '</div> ' +
+                        '<div class="row mb-2"> ' +
+                            '<div class="col-lg-6"> ' +
+                                '<div class="form-floating"> ' +
+                                    '<select class="form-select" id="notif_type" name="notif_type" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
+                                        '@php($i = 0) ' +
+                                        '@foreach($dictionary as $dct) ' +
+                                            '@if($dct->type_name == "Notification") ' +
+                                                '@if($i == 0) ' +
+                                                    '<option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option> ' +
+                                                '@else  ' +
+                                                    '<option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option> ' +
+                                                '@endif ' +
+                                                '@php($i++) ' +
+                                            '@endif ' +
+                                        '@endforeach ' +
+                                    '</select> ' +
+                                    '<label for="notif_type">Type</label> ' +
+                                    '<a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div class="col-lg-6"> ' +
+                                '<div class="form-floating"> ' +
+                                    '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                                        '<option value="now" selected>Now</option> ' +
+                                        '<option value="manual">Manual</option> ' +
+                                    '</select> ' +
+                                    '<label for="send_time">Send Time</label> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div id="datetime-picker-box"></div> ' +
+                        '</div> ' +
+                        '<hr> ' +
+                        '<span class="position-relative"> ' + 
+                            '<h6>Selected Role</h6> ' +
+                            '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRole()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
+                        '</span> ' +
+                        '<div id="slct-role-list-holder"></div> ' +
+                        '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
+                    '</div> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                        '<input name="list_context" id="list_context_role"  value="" hidden> ' +
+                        '<h6>All Role</h6> ' +
+                        '<span id="role-list-holder"></span> ' +
                     '</div> ' +
                 '</div> ';
 
@@ -387,7 +458,7 @@
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the group</h5>");
                 return;
             } else {                
                 for(var i = 0; i < data.length; i++){
@@ -409,6 +480,68 @@
                         '</a>';
 
                     $("#group-list-holder").prepend(elmt);
+                }   
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            console.log('Server error occured');
+        });
+    }
+
+    function infinteLoadRole(page_role_list) {       
+        document.getElementById("role-list-holder").innerHTML = "";
+
+        $.ajax({
+            url: "/api/v1/tag/10?page=" + page_role_list,
+            datatype: "json",
+            type: "get",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+                $('.auto-load').show();
+            }
+        })
+        .done(function (response) {
+            $('.auto-load').hide();
+            var data =  response.data.data;
+            var total = response.data.total;
+            var last = response.data.last_page;
+
+            if(page_role_list != last){
+                $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            } else {
+                $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+            }
+
+            if (total == 0) {
+                $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                return;
+            } else if (data.length == 0) {
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the role</h5>");
+                return;
+            } else {                
+                for(var i = 0; i < data.length; i++){
+                    //Attribute
+                    var slug = data[i].slug_name;
+                    var tagName = data[i].tag_name;
+                    if(data[i].tag_category){
+                        var category = data[i].tag_category;
+                    } else {
+                        var category = "<span class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> No Category</span>";
+                    }
+
+                    var elmt = " " +
+                        '<a class="btn user-box py-3" style="height:80px;" onclick=""> ' +
+                            '<div class="position-relative ps-2"> ' +
+                                '<h6 class="text-secondary fw-normal">' + tagName + '</h6> ' +
+                                '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + category + '</h6> ' +
+                                '<div class="form-check position-absolute" style="right: 20px; top: 10px;"> ' +
+                                    '<input class="form-check-input" name="slug_name[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_role_'+ slug +'" onclick="addSelectedRole('+"'"+slug+"'"+', '+"'"+tagName+"'"+', this.checked)"> ' +
+                                '</div> ' +
+                            '</div> ' +
+                        '</a>';
+
+                    $("#role-list-holder").prepend(elmt);
                 }   
             }
         })
@@ -458,7 +591,7 @@
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the user :)</h5>");
                 return;
             } else {                
                 for(var i = 0; i < data.length; i++){
