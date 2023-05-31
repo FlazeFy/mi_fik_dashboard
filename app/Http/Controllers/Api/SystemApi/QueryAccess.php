@@ -21,6 +21,7 @@ class QueryAccess extends Controller
             $res = PersonalAccessTokens::selectRaw($select)
                 ->leftJoin('users', 'users.id', '=', 'personal_access_tokens.tokenable_id')
                 ->leftJoin('admins', 'admins.id', '=', 'personal_access_tokens.tokenable_id')
+                ->orderby('last_used_at','DESC')
                 ->paginate($limit);
 
             if ($res->isEmpty()) {

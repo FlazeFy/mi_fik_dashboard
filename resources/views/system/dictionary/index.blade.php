@@ -29,7 +29,9 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#dctTable').DataTable();
+                $('#dctTable').DataTable({
+                    "ordering": false
+                });
             });
         </script>
 

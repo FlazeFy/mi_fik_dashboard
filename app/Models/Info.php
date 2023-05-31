@@ -39,7 +39,10 @@ class Info extends Model
             FROM infos inf
             ".$join."
             WHERE inf.deleted_at IS NULL
-            ORDER BY inf.updated_at, inf.created_at DESC
+            ORDER BY CASE 
+                WHEN inf.updated_at is not null then inf.updated_at 
+                ELSE inf.created_at 
+            END DESC
         "));     
 
         return $res;

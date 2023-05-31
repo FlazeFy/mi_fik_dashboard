@@ -64,7 +64,10 @@ class Dictionary extends Model
             FROM dictionaries dc
             ".$join."
             WHERE dc.deleted_at IS NULL
-            ORDER BY dc.updated_at DESC
+            ORDER BY CASE 
+                WHEN dc.updated_at is not null then dc.updated_at 
+                ELSE dc.created_at 
+            END DESC
         "));     
 
         return $res;

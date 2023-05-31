@@ -29,7 +29,9 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#notifTable').DataTable();
+                $('#notifTable').DataTable({
+                    "ordering": false
+                });
             });
         </script>
 
