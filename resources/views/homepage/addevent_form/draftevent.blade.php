@@ -4,9 +4,15 @@
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5>Draft Event</h5>
-                <p class="text-secondary">You still have some unfinished event, you can resume these event or maybe 
-                    <a class="link-external" data-bs-dismiss="modal" data-bs-target="#addEventModal" data-bs-toggle="modal">Create a new one</a></p>
+                <p class="text-secondary">You still have some unfinished event, you can resume these event</p>
                 <div class="row p-0">
+                    <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
+                        <button class="container shadow bg-primary w-100 h-100 border-0" style="border-radius:12px;" data-bs-dismiss="modal" data-bs-target="#addEventModal" data-bs-toggle="modal">
+                            <i class="fa-solid fa-plus text-white" style="font-size:24px;"></i><br>
+                            <h5 class="text-white">Create a new one</h5>
+                        </button>
+                    </div>
+
                     @foreach($mydraft as $md)
                         @if($md->admin_username_created != null)
                             @php($username = $md->admin_username_created)

@@ -133,7 +133,7 @@
     <div class="box-event-detail">
         @if($c->content_image)
             <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('{{$c->content_image}}');" id="event-header-image">
-                <button class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+                <button class="event-header-size-toogle" title="Resize image" onclick="resize('<?= $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
                 <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
             </div>
         @else
@@ -187,7 +187,7 @@
 
     function resize(img){
         if(img){
-            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/storage/" + img + "');";
+            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('" + img + "');";
         } else {
             var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');";
         }

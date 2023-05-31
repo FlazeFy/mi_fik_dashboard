@@ -55,6 +55,12 @@ class HomepageController extends Controller
             if(!session()->get('selected_view_mve_chart')){
                 session()->put('selected_view_mve_chart', "All");
             }
+            if(!session()->get('toogle_edit_app')){
+                session()->put('toogle_edit_app', false);
+            }
+            if(!session()->get('toogle_edit_help')){
+                session()->put('toogle_edit_help', false);
+            }
             if(!session()->get('ordering_event')){
                 session()->put('ordering_event', "DESC");
             }

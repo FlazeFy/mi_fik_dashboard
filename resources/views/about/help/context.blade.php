@@ -1,13 +1,25 @@
-<h6 class="fst-italic" style="font-size:14px;">Last Updated By : <span class="text-primary" id="desc_updated"></span> </h6>
-<div id="rich_box_desc" style="height: 40vh !important;">
-    
-</div>
-<form class="d-inline" id="form-edit-desc" method="POST" action="">
-    @csrf
-    <input name="help_body" id="about_body_help" hidden>
-    <input name="help_category" id="about_category" hidden>
-    <button class="btn btn-success mt-3" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Chages</button>
-</form>
+
+@if(session()->get('toogle_edit_help') == "true")
+    <div id="rich_box_desc" style="height: 40vh !important;"></div>
+    <h6 class="fst-italic" style="font-size:14px;">Last Updated By : <span class="text-primary" id="desc_updated"></span> </h6>
+
+    <form class="d-inline" method="POST" action="/about/toogle/help/false">
+        @csrf
+        <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Cancel Edit</button>
+    </form>
+    <form class="d-inline" id="form-edit-desc" method="POST" action="">
+        @csrf
+        <input name="help_body" id="about_body_help" hidden>
+        <input name="help_category" id="about_category" hidden>
+        <button class="btn btn-success rounded-pill mt-3 px-3 py-2" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Chages</button>
+    </form>
+@else
+    <div class="px-2" id="desc_holder_view"></div>
+    <form class="d-inline" method="POST" action="/about/toogle/help/true">
+        @csrf
+        <button class="btn btn-info rounded-pill mt-3 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+    </form>
+@endif
 
 <script>
     var desc = document.getElementById("about_body_help");
@@ -47,7 +59,11 @@
         });
     }
 
-    var quill = new Quill('#rich_box_desc', {
-        theme: 'snow'
-    });
+    <?php
+        if(session()->get('toogle_edit_help') == "true"){
+            echo "var quill = new Quill('#rich_box_desc', {
+                theme: 'snow'
+            });";
+        }
+    ?>
 </script>

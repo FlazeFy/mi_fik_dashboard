@@ -92,7 +92,7 @@
                         
                         if(progress == 100){
                             att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
-                            submitHolder.html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+                            submitHolder.html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Publish Event</button>');
                         } else {
                             submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
                         }

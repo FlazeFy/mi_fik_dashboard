@@ -30,10 +30,17 @@ class Notification extends Model
 
         $res = DB::select(DB::raw("
             SELECT 
-                ".$select." 
+                ".$select."
             FROM notifications nt
             ".$join."
             WHERE nt.deleted_at IS NULL
+            ORDER BY CASE 
+                WHEN nt.sended_at is not null AND nt.updated_at is null then nt.sended_at 
+                WHEN nt.sended_at is not null AND nt.updated_at is not null then nt.sended_at 
+                WHEN nt.sended_at is null AND nt.updated_at is not null then nt.updated_at 
+                WHEN nt.sended_at is null AND nt.updated_at is null then nt.created_at
+                ELSE nt.created_at
+            END DESC
         ")); 
         
         $clean = [];
@@ -85,7 +92,7 @@ class Notification extends Model
         }
 
         $collection = collect($clean);
-        $collection = $collection->sortByDesc('created_at')->values();
+        $collection = $collection->values();
 
         return $collection;
     }
