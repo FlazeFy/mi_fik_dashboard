@@ -64,6 +64,7 @@
                     @include('sidebar.navbar')
 
                     <div class="content-section">
+                        @include('system.dictionary.create')
                         @include('system.dictionary.table')
                     </div>
                 </div>
