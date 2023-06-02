@@ -128,7 +128,7 @@
                             '</td> ' +
                         '</tr>';
 
-                    $("#user-list-holder").prepend(elmt);
+                    $("#user-list-holder").append(elmt);
                 }   
             }
         })

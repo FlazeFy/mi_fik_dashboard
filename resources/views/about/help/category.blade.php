@@ -127,7 +127,7 @@
         var cat2 = cat.split(" ").join("");
         setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "btn-category-help", " ", cat2);
         <?php
-            if(session()->get('role_key') == 1){
+            if(session()->get('role_key') == 1 && session()->get('toogle_edit_help') == "true"){
                 echo "loadRichTextDesc(desc, user, updated, cat);";
             } else {
                 echo "loadDesc(desc);";
@@ -139,6 +139,6 @@
     function loadDesc(desc){
         var desc_holder = document.getElementById("desc_holder_view");
         desc_holder.innerHTML = " ";
-        desc_holder.innerHTML = desc;
+        desc_holder.innerHTML = "<h5>Help Detail</h5><br>"+desc;
     }
 </script>

@@ -26,7 +26,7 @@
             if($("#titleInput_event").val().length <= 6 || slct_list.length == 0 || (!Date.parse(date_start_event) && !Date.parse(date_end_event) && !Date.parse(time_start_event) && !Date.parse(time_end_event)) && error){
                 $("#btn-submit-holder-event").html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
             } else {
-                $("#btn-submit-holder-event").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+                $("#btn-submit-holder-event").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Publish Event</button>');
             }
         }
     }

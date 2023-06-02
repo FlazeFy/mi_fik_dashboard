@@ -46,7 +46,7 @@
                 <th scope="col">Type</th>
                 <th scope="col">Content</th>
                 <th scope="col" style="max-width:300px;">Send To</th>
-                <th scope="col" style="width:160px;">Status</th>
+                <th scope="col" style="width:120px;">Status</th>
                 <th scope="col" style="width:160px;">Manage By</th>
                 <th scope="col">Action</th>
             </tr>
@@ -138,9 +138,9 @@
                             <div class="status-info bg-danger" style="font-size:12px;">Pending until <br>
                                 {{date('Y-m-d H:i', strtotime($nt['pending_until']))}}</div>
                         @elseif($nt['is_pending'] && !$nt['pending_until'])
-                            <span class="status-info bg-danger">Pending</span>
+                            <div class="status-info bg-danger w-100">Draft</div>
                         @else 
-                            <span class="status-info bg-success">Announced</span>
+                            <div class="status-info bg-success w-100">Announced</div>
                         @endif
                     </td>
                     <td style="width: 220px;">

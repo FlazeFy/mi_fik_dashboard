@@ -1,6 +1,6 @@
 
 <a class="btn btn-info" data-bs-toggle="collapse" href="#collapseManageTag" title="Manage Tag" role="button" aria-expanded="false" style="margin-top:-5px;">
-    <i class="fa-solid fa-gear"></i>
+    <i class="fa-solid fa-magnifying-glass"></i>
 </a>
 
 <div class="card p-2 my-2 collapse" id="collapseManageTag">

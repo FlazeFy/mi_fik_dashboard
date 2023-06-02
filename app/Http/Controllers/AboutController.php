@@ -276,14 +276,14 @@ class AboutController extends Controller
         }  
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function toogle_edit_app($ctx, $switch)
     {
-        //
+        session()->put('toogle_edit_'.$ctx, $switch);
+
+        if($switch == "true"){
+            return redirect()->back()->with('success_message', "You're in edit mode");
+        } else {
+            return redirect()->back()->with('success_message', "You're in view mode");
+        }
     }
 }

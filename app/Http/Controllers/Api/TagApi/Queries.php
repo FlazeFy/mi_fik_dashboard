@@ -12,9 +12,10 @@ class Queries extends Controller
 {
     public function getAllTag($limit){
         try{
-            $tag = Tag::select('slug_name', 'tag_name')
-                ->orderBy('created_at', 'DESC')
-                ->orderBy('id', 'DESC')
+            $tag = Tag::select('tags.slug_name', 'tag_name', 'dictionaries.dct_name as tag_category')
+                ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
+                ->orderBy('tags.created_at', 'DESC')
+                ->orderBy('tags.id', 'DESC')
                 ->paginate($limit);
 
             if ($tag->isEmpty()) {
