@@ -80,7 +80,7 @@
                                         @php($list_user = $nj['context_id'])
                                         @foreach($list_user as $lu)
                                             <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
-                                                title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
+                                                title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
                                         @endforeach
                                     @else
                                         {{$nj['context_id']}}
@@ -98,7 +98,7 @@
                                             <div class="collapse" id="collapse_{{$nt['id']}}_{{$lg['id']}}">
                                                 @foreach($list_user as $lu)
                                                     <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
-                                                        title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}">{{$lu['fullname']}}</a>
+                                                        title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
                                                 @endforeach
                                             </div>
                                         </div>
@@ -111,6 +111,34 @@
                                         </script>
                                         @php($j++)
                                     @endforeach
+                                @elseif($nj['send_to'] == "role")
+                                    <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                    <div class="group-box-notif">
+                                        <div class="mt-1">
+                                            @php($tag_list = $nj['context_id']['tag_list'])
+                                            @foreach($tag_list as $tgl)
+                                                <a class="btn btn-tag me-0" style="font-size:12px;"><i class="fa-solid fa-hashtag"></i> {{$tgl['tag_name']}}</a>
+                                            @endforeach
+                                        </div>
+                                        <button class="btn btn-icon-preview collapse-group-box-toogle" title="Hide member" data-bs-toggle="collapse" href="#collapse_{{$nt['id']}}_role" 
+                                            onclick="toggleIcon('fa-regular fa-eye-slash','fa-regular fa-eye','{{$j}}')">
+                                            <i class="fa-regular fa-eye-slash" id="icon-show-{{$j}}"></i></button>
+                                        @php($user_list = $nj['context_id']['user_list'])
+                                        <div class="collapse" id="collapse_{{$nt['id']}}_role">
+                                            @foreach($user_list as $lu)
+                                                <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                                    title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
+                                            @endforeach
+                                        </div>
+
+                                        <script>
+                                            <?php 
+                                                echo "var no_".$j." = 1;"; 
+                                                echo "no_values[".$j."] = window['no_' + ".$j."];";
+                                            ?>
+                                        </script>
+                                        @php($j++)
+                                    </div>
                                 @endif
 
                                 <!-- Remove if equal to false later -->
