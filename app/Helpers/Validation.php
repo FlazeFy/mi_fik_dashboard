@@ -181,6 +181,14 @@ class Validation
         ]);
     }
 
+    public static function getValidateDictionary($request){
+        return Validator::make($request->all(), [
+            'dct_name' => 'required|min:2|max:75|string',
+            'dct_desc' => 'nullable|min:2|max:255|string',
+            'dct_type' => ['required', new TypeDictionary],
+        ]);
+    }
+
     public static function getValidateInfoBody($request){
         return Validator::make($request->all(), [
             'info_body' => 'nullable|min:2|max:500|string',

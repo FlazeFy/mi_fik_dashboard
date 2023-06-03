@@ -51,6 +51,11 @@ class Generator
                 ->where('dct_type', 'TAG-001')
                 ->limit(1)
                 ->get();
+        } else if($type == "dct"){
+            $check = Dictionary::select('slug_name')
+                ->where('slug_name', $replace)
+                ->limit(1)
+                ->get();
         } else if($type == "group"){
             $check = UserGroup::select('slug_name')
                 ->where('slug_name', $replace)

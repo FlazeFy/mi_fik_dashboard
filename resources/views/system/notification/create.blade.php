@@ -121,6 +121,7 @@
 <script>
     var selectedUser = []; 
     var selectedGroup = []; 
+    var selectedRole = [];
 
     function setType(type){
         document.getElementById("type-title").innerHTML = type;
@@ -629,6 +630,38 @@
         });
     }
 
+    function addSelectedRole(slug, tagname, checked){
+        var input_holder = document.getElementById("list_context_role");
+        if(selectedRole.length == 0){
+            selectedRole.push({
+                tag_name : tagname,
+                slug_name : slug
+            });
+            input_holder.value = JSON.stringify(selectedRole);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedRole.findIndex(obj => obj.slug_name == slug);
+                if (indexToRemove !== -1) {
+                    selectedRole.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected role list
+                    document.getElementById("check_role_"+slug).checked = false; 
+                    input_holder.value = JSON.stringify(selectedRole);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedRole.push({
+                    tag_name : tagname,
+                    slug_name : slug
+                });
+                input_holder.value = JSON.stringify(selectedRole);
+            }
+        }
+        console.log(selectedRole)
+        refreshListRole();
+    }
+
     function addSelectedUser(username, fullname, checked){
         var input_holder = document.getElementById("list_context");
         if(selectedUser.length == 0){
@@ -716,6 +749,19 @@
                 '<a class="remove_suggest" onclick="addSelectedUser('+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
                 '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
                 '<a>' + e.full_name + '</a>';
+            holder.innerHTML += elmt;
+        });
+    }
+
+    function refreshListRole(){
+        var holder = document.getElementById("slct-role-list-holder");
+        holder.innerHTML = " ";
+
+        selectedRole.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addSelectedRole('+"'"+e.slug_name+"'"+', '+"'"+e.tag_name+"'"+', false)" title="Remove this role"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.tag_name + '</a>';
             holder.innerHTML += elmt;
         });
     }

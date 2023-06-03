@@ -131,6 +131,15 @@ class Query
                 null as admin_username_deleted, null as user_username_deleted,
                 null as content_loc, SUBSTR(feedback_suggest,10) as content_tag, null as content_date_start, null as content_date_end, null as created_at,
                 6 as data_from, fb.deleted_at as deleted_at";
+        } else if($type == "dictionary_dump"){
+            $query = "dct.id, dct_name as content_title, dct_desc as content_desc, 
+                null as admin_username_created, null as user_username_created, 
+                null as admin_image_created, null as user_image_created, 
+                null as admin_image_deleted, null as user_image_deleted,
+                null as admin_username_updated, null as user_username_updated, 
+                null as admin_username_deleted, null as user_username_deleted,
+                null as content_loc, dct.slug_name as content_tag, null as content_date_start, null as content_date_end, dct.created_at as created_at,
+                7 as data_from, dct.deleted_at as deleted_at";
         } else if($type == "group_dump"){
             $query = "ug.slug_name, group_name as content_title, group_desc as content_desc, 
                 ac.username as admin_username_created, null as user_username_created, 
@@ -188,10 +197,6 @@ class Query
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN admins asd ON ".$initial.".sended_by = asd.id";
-        } else if($type == "info"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
-                LEFT JOIN admins au ON ".$initial.".updated_by = au.id
-                LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id";
         }
     }
 

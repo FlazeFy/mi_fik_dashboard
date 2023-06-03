@@ -372,13 +372,15 @@
                                 getDestroyModal("Task", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                             
                             $("#data-wrapper-task").append(elmt);
-                        } else if(data_from == 3 || data_from == 5 || data_from == 4){ // Tag, Info, Group
+                        } else if(data_from == 3 || data_from == 5 || data_from == 4 || data_from == 7){ // Tag, Info, Group
                             if(data_from == 3){
                                 var icon = 'fa-hashtag';
                             } else if(data_from == 5) {
                                 var icon = 'fa-circle-info';
                             } else if(data_from == 4) {
                                 var icon = 'fa-users';
+                            } else if(data_from == 7) {
+                                var icon = 'fa-book';
                             }
 
                             var elmt = " " +
@@ -452,6 +454,10 @@
                                 $("#data-wrapper-group").append(elmt);
                                 getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
                                 getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                            } else if(data_from == 7) {
+                                $("#data-wrapper-dictionary").append(elmt);
+                                getRecoverModal("Dictionary", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Dictionary", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                             }
                         } else if(data_from == 6){ // Feedback
                             var elmt = " " +

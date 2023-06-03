@@ -26,12 +26,14 @@ class Queries extends Controller
             $select_group = Query::getSelectTemplate("group_dump");
             $select_info = Query::getSelectTemplate("info_dump");
             $select_fbc = Query::getSelectTemplate("feedback_dump");
+            $select_dct = Query::getSelectTemplate("dictionary_dump");
 
             $join_content = Query::getJoinTemplate("content_dump", "ch");
             $join_task = Query::getJoinTemplate("content_dump", "ts");
             $join_tag = Query::getJoinTemplate("content_dump", "tg");
             $join_group = Query::getJoinTemplate("content_dump", "ug");
-            $join_info = Query::getJoinTemplate("content_dump", "inf");
+            $join_info = Query::getJoinTemplate("tag", "inf");
+            $join_dct = Query::getJoinTemplate("tag", "dct");
 
             $where_from = "WHERE ";
             $search = trim($search);
@@ -95,6 +97,11 @@ class Queries extends Controller
                             ".$select_fbc." 
                         FROM feedbacks fb
                         WHERE fb.deleted_at IS NOT NULL
+                    UNION 
+                        SELECT 
+                            ".$select_dct." 
+                        FROM dictionaries dct
+                        WHERE dct.deleted_at IS NOT NULL
                     ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
                 "));      
             }    

@@ -62,7 +62,7 @@ class DictionaryController extends Controller
         } else {
             $data = new Request();
             $obj = [
-                'history_type' => "info",
+                'history_type' => "dictionary",
                 'history_body' => "Has updated a dictionary type"
             ];
             $data->merge($obj);
@@ -94,6 +94,60 @@ class DictionaryController extends Controller
         }  
     }
 
+    public function create(Request $request)
+    {
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateDictionaryInfo($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "dictionary",
+                'history_body' => "Has updated a dictionary info"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $slug = Generator::getSlugName($request->dct_name, "dct");
+
+                Dictionary::create([
+                    'id' => Generator::getUUID(),
+                    'slug_name' => $slug,
+                    'dct_name' => $request->dct_name,
+                    'dct_desc' => $request->dct_desc,
+                    'dct_type' => $request->dct_type,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id,
+                    'updated_at' => null,
+                    'updated_by' => null,
+                    'deleted_at' => null,
+                    'deleted_by' => null
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success created new dictionary');   
+            }
+        }  
+    }
+
     public function update_info(Request $request, $id)
     {
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
@@ -106,7 +160,7 @@ class DictionaryController extends Controller
         } else {
             $data = new Request();
             $obj = [
-                'history_type' => "info",
+                'history_type' => "dictionary",
                 'history_body' => "Has updated a dictionary info"
             ];
             $data->merge($obj);

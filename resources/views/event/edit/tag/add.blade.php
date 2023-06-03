@@ -22,6 +22,7 @@
 
     <form action="/event/edit/update/tag/add/{{$c->slug_name}}" method="POST">
         @csrf
+        <input hidden name="content_title" value="{{$c->content_title}}">
         <div class="tag-manage-holder mt-3" id="data_wrapper_manage_tag">
             <div class="auto-load-tag text-center">
                 <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

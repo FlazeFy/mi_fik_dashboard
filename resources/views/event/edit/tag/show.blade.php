@@ -21,6 +21,7 @@
                             @endforeach
                             <form class="d-inline" action="/event/edit/update/tag/remove/{{$c->slug_name}}" method="POST">
                                 @csrf
+                                <input hidden name="content_title" value="{{$c->content_title}}">
                                 <input name="slug_name" value="{{$tg['slug_name']}}" hidden>
                                 <button class="btn btn-danger float-end" type="submit">Delete</button>
                             </form>

@@ -115,6 +115,7 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/info/delete/{id}', [InfoController::class, 'delete']);
 
     Route::get('/dictionary', [DictionaryController::class, 'index']);
+    Route::post('/dictionary/create', [DictionaryController::class, 'create']);
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
     Route::post('/dictionary/update/info/{id}', [DictionaryController::class, 'update_info']);
     Route::post('/dictionary/delete/{id}', [DictionaryController::class, 'delete']);

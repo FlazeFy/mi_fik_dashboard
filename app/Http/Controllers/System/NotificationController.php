@@ -220,6 +220,70 @@ class NotificationController extends Controller
                         ];
                     }
                     $context_id = $list_group_holder;
+                } else if($request->send_to == "role"){
+                    $roles = json_decode($request->list_context);
+                    $list_role_holder = [];
+                   
+                    $result = User::selectRaw("id, username, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token,role");
+
+                    $arr_roles = "";
+                    $total = count($roles);
+                    for($i = 0; $i < $total; $i++){
+                        $end = "";
+                        if($i != $total - 1){
+                            $end = "|";
+                        } 
+                        $arr_roles .= $roles[$i]->slug_name.$end;
+                    }
+                    $based_role = "JSON_EXTRACT(role, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
+
+                    $result = $result->whereRaw($based_role)->get();
+                    
+                    if($result->count() > 0){
+                        foreach($result as $rs){
+                            if($rs->firebase_fcm_token){
+                                $validateRegister = $messaging->validateRegistrationTokens($rs->firebase_fcm_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $type = ucfirst(substr($request->notif_type, strpos($request->notif_type, "_") + 1));  
+                                    $message = CloudMessage::withTarget('token', $rs->firebase_fcm_token)
+                                        ->withNotification(
+                                            FireNotif::create($request->notif_body)
+                                            ->withTitle($request->notif_title)
+                                            ->withBody(strtoupper($type)." ".$request->notif_body)
+                                        )
+                                        ->withData([
+                                            'by' => 'grouping'
+                                        ]);
+                                    
+                                    if($request->send_time != "now"){
+                                        // Do something
+                                        $response = $messaging->send($message);
+                                    } else {
+                                        $response = $messaging->send($message);
+                                    }
+                                    $success++;
+                                    $list_user_holder[] = [
+                                        "id" => $rs->id,
+                                        "username" => $rs->username,
+                                        "fullname" => $rs->full_name
+                                    ];
+                                } else {
+                                    User::where('id', $rs->id)->update([
+                                        "firebase_fcm_token" => null
+                                    ]);
+                                    $failed++;
+                                }
+                            } else {
+                                $failed++;
+                            }
+                        }
+                    } 
+                    $list_role_holder = [
+                        "tag_list" => json_decode(json_encode($roles), false),
+                        "user_list" => $list_user_holder // Check this performance
+                    ];
+                    $context_id = $list_role_holder;                    
                 } else if($request->send_to == "all"){
                     $users = User::select("id","firebase_fcm_token")
                         ->get();

@@ -166,7 +166,6 @@ class EditController extends Controller
                     ->where('contents_headers.id', $id)
                     ->first();
 
-                $firebase_token = $content_owner->firebase_fcm_token;
                 if($request->is_draft == 1){
                     $state = "draft";
                 } else {
@@ -174,25 +173,29 @@ class EditController extends Controller
                 }
                 $notif_body = "your event '".$request->content_title."' is now set to ".$state;
 
-                if($firebase_token){
-                    $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+                if($content_owner){
+                    $firebase_token = $content_owner->firebase_fcm_token;
 
-                    if($validateRegister['valid'] != null){
-                        $notif_title = "Hello ".$content_owner->username.", you got an information";
-                        $message = CloudMessage::withTarget('token', $firebase_token)
-                            ->withNotification(
-                                FireNotif::create($notif_body)
-                                ->withTitle($notif_title)
-                                ->withBody(strtoupper($data->history_type)." ".$notif_body)
-                            )
-                            ->withData([
-                                'by' => 'person'
+                    if($firebase_token){
+                        $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                        if($validateRegister['valid'] != null){
+                            $notif_title = "Hello ".$content_owner->username.", you got an information";
+                            $message = CloudMessage::withTarget('token', $firebase_token)
+                                ->withNotification(
+                                    FireNotif::create($notif_body)
+                                    ->withTitle($notif_title)
+                                    ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                )
+                                ->withData([
+                                    'by' => 'person'
+                                ]);
+                            $response = $messaging->send($message);
+                        } else {
+                            User::where('id', $content_owner->id)->update([
+                                "firebase_fcm_token" => null
                             ]);
-                        $response = $messaging->send($message);
-                    } else {
-                        User::where('id', $content_owner->id)->update([
-                            "firebase_fcm_token" => null
-                        ]);
+                        }
                     }
                 }
 
@@ -254,8 +257,41 @@ class EditController extends Controller
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
+
+                        $content_owner = ContentHeader::selectRaw('users.id, username, firebase_fcm_token')
+                            ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                            ->where('contents_headers.id', $id)
+                            ->first();
+
+                        $notif_body = "your event '".$request->content_title."' attachment has been updated";
+
+                        if($content_owner){
+                            $firebase_token = $content_owner->firebase_fcm_token;
+            
+                            if($firebase_token){
+                                $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $notif_title = "Hello ".$content_owner->username.", you got an information";
+                                    $message = CloudMessage::withTarget('token', $firebase_token)
+                                        ->withNotification(
+                                            FireNotif::create($notif_body)
+                                            ->withTitle($notif_title)
+                                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                        )
+                                        ->withData([
+                                            'by' => 'person'
+                                        ]);
+                                    $response = $messaging->send($message);
+                                } else {
+                                    User::where('id', $content_owner->id)->update([
+                                        "firebase_fcm_token" => null
+                                    ]);
+                                }
+                            }
+                        }
         
-                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                        return redirect()->back()->with('success_message', ucFirst($notif_body)); 
                     } else {
                         return redirect()->back()->with('failed_message', "Attachment is invalid");    
                     }
@@ -321,8 +357,41 @@ class EditController extends Controller
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
+
+                        $content_owner = ContentHeader::selectRaw('users.id, username, firebase_fcm_token')
+                            ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                            ->where('contents_headers.id', $id)
+                            ->first();
+
+                        $notif_body = "your event '".$request->content_title."' attachment has been updated";
+
+                        if($content_owner){
+                            $firebase_token = $content_owner->firebase_fcm_token;
+            
+                            if($firebase_token){
+                                $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $notif_title = "Hello ".$content_owner->username.", you got an information";
+                                    $message = CloudMessage::withTarget('token', $firebase_token)
+                                        ->withNotification(
+                                            FireNotif::create($notif_body)
+                                            ->withTitle($notif_title)
+                                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                        )
+                                        ->withData([
+                                            'by' => 'person'
+                                        ]);
+                                    $response = $messaging->send($message);
+                                } else {
+                                    User::where('id', $content_owner->id)->update([
+                                        "firebase_fcm_token" => null
+                                    ]);
+                                }
+                            }
+                        }
         
-                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                        return redirect()->back()->with('success_message', ucFirst($notif_body)); 
                     } else {
                         return redirect()->back()->with('failed_message', "Attachment is invalid");    
                     }
@@ -388,8 +457,41 @@ class EditController extends Controller
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
+                        
+                        $content_owner = ContentHeader::selectRaw('users.id, username, firebase_fcm_token')
+                            ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                            ->where('contents_headers.id', $id)
+                            ->first();
+
+                        $notif_body = "your event '".$request->content_title."' tag has been updated";
+
+                        if($content_owner){
+                            $firebase_token = $content_owner->firebase_fcm_token;
+            
+                            if($firebase_token){
+                                $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $notif_title = "Hello ".$content_owner->username.", you got an information";
+                                    $message = CloudMessage::withTarget('token', $firebase_token)
+                                        ->withNotification(
+                                            FireNotif::create($notif_body)
+                                            ->withTitle($notif_title)
+                                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                        )
+                                        ->withData([
+                                            'by' => 'person'
+                                        ]);
+                                    $response = $messaging->send($message);
+                                } else {
+                                    User::where('id', $content_owner->id)->update([
+                                        "firebase_fcm_token" => null
+                                    ]);
+                                }
+                            }
+                        }
         
-                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                        return redirect()->back()->with('success_message', ucFirst($notif_body)); 
                     } else {
                         return redirect()->back()->with('failed_message', "Tag is invalid");    
                     }
@@ -452,8 +554,41 @@ class EditController extends Controller
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id
                         ]);
+
+                        $content_owner = ContentHeader::selectRaw('users.id, username, firebase_fcm_token')
+                            ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                            ->where('contents_headers.id', $id)
+                            ->first();
+
+                        $notif_body = "your event '".$request->content_title."' tag has been updated";
+
+                        if($content_owner){
+                            $firebase_token = $content_owner->firebase_fcm_token;
+            
+                            if($firebase_token){
+                                $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $notif_title = "Hello ".$content_owner->username.", you got an information";
+                                    $message = CloudMessage::withTarget('token', $firebase_token)
+                                        ->withNotification(
+                                            FireNotif::create($notif_body)
+                                            ->withTitle($notif_title)
+                                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                        )
+                                        ->withData([
+                                            'by' => 'person'
+                                        ]);
+                                    $response = $messaging->send($message);
+                                } else {
+                                    User::where('id', $content_owner->id)->update([
+                                        "firebase_fcm_token" => null
+                                    ]);
+                                }
+                            }
+                        }
         
-                        return redirect()->back()->with('success_message', "Event successfully updated"); 
+                        return redirect()->back()->with('success_message', ucFirst($notif_body)); 
                     } else {
                         return redirect()->back()->with('failed_message', "Tag is invalid");    
                     }
@@ -514,29 +649,32 @@ class EditController extends Controller
                         ->join('users', 'users.id', '=', 'contents_headers.created_by')
                         ->where('contents_headers.id', $id)
                         ->first();
-    
-                    $firebase_token = $content_owner->firebase_fcm_token;
-                    $notif_body = "your event '".$request->content_title."' location has been updated";
-    
-                    if($firebase_token){
-                        $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
 
-                        if($validateRegister['valid'] != null){
-                            $notif_title = "Hello ".$content_owner->username.", you got an information";
-                            $message = CloudMessage::withTarget('token', $firebase_token)
-                                ->withNotification(
-                                    FireNotif::create($notif_body)
-                                    ->withTitle($notif_title)
-                                    ->withBody(strtoupper($data->history_type)." ".$notif_body)
-                                )
-                                ->withData([
-                                    'by' => 'person'
+                    $notif_body = "your event '".$request->content_title."' location has been updated";
+
+                    if($content_owner){
+                        $firebase_token = $content_owner->firebase_fcm_token;
+        
+                        if($firebase_token){
+                            $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                            if($validateRegister['valid'] != null){
+                                $notif_title = "Hello ".$content_owner->username.", you got an information";
+                                $message = CloudMessage::withTarget('token', $firebase_token)
+                                    ->withNotification(
+                                        FireNotif::create($notif_body)
+                                        ->withTitle($notif_title)
+                                        ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                    )
+                                    ->withData([
+                                        'by' => 'person'
+                                    ]);
+                                $response = $messaging->send($message);
+                            } else {
+                                User::where('id', $content_owner->id)->update([
+                                    "firebase_fcm_token" => null
                                 ]);
-                            $response = $messaging->send($message);
-                        } else {
-                            User::where('id', $content_owner->id)->update([
-                                "firebase_fcm_token" => null
-                            ]);
+                            }
                         }
                     }
     
@@ -596,28 +734,31 @@ class EditController extends Controller
                     ->where('contents_headers.id', $id)
                     ->first();
 
-                $firebase_token = $content_owner->firebase_fcm_token;
                 $notif_body = "your event '".$request->content_title."' location has been removed";
 
-                if($firebase_token){
-                    $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+                if($content_owner){
+                    $firebase_token = $content_owner->firebase_fcm_token;
 
-                    if($validateRegister['valid'] != null){
-                        $notif_title = "Hello ".$content_owner->username.", you got an information";
-                        $message = CloudMessage::withTarget('token', $firebase_token)
-                            ->withNotification(
-                                FireNotif::create($notif_body)
-                                ->withTitle($notif_title)
-                                ->withBody(strtoupper($data->history_type)." ".$notif_body)
-                            )
-                            ->withData([
-                                'by' => 'person'
+                    if($firebase_token){
+                        $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                        if($validateRegister['valid'] != null){
+                            $notif_title = "Hello ".$content_owner->username.", you got an information";
+                            $message = CloudMessage::withTarget('token', $firebase_token)
+                                ->withNotification(
+                                    FireNotif::create($notif_body)
+                                    ->withTitle($notif_title)
+                                    ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                )
+                                ->withData([
+                                    'by' => 'person'
+                                ]);
+                            $response = $messaging->send($message);
+                        } else {
+                            User::where('id', $content_owner->id)->update([
+                                "firebase_fcm_token" => null
                             ]);
-                        $response = $messaging->send($message);
-                    } else {
-                        User::where('id', $content_owner->id)->update([
-                            "firebase_fcm_token" => null
-                        ]);
+                        }
                     }
                 }
 
