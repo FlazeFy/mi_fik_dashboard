@@ -9,7 +9,7 @@
             <input type="time" name="content_time_start" id="time_start_event" value="{{date('H:i',strtotime($c->content_date_start))}}" onchange="validateDateEvent()" class="form-control mb-2">
         </div>
     </div>
-    <a id="dateStart_event_msg" class="input-warning text-danger"></a><br>
+    <a id="dateStart_event_msg" class="input-warning text-danger"></a>
 
     <label>Date End</label>
     <div class="row mt-2">
@@ -20,7 +20,7 @@
             <input type="time" name="content_time_end" id="time_end_event" value="{{date('H:i',strtotime($c->content_date_end))}}" onchange="validateDateEvent()" class="form-control mb-2">
         </div>
     </div>
-    <a id="dateEnd_event_msg" class="input-warning text-danger"></a><br>
+    <a id="dateEnd_event_msg" class="input-warning text-danger"></a>
     <a id="dateStartEnd_msg" class="input-warning text-danger"></a>
     <div id="btn-submit-holder-date"></div>
 </form>
@@ -103,13 +103,13 @@
 
             //Event date and today validator if only one datetime is filled
             if(ds < today && time_start_event){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateStart_event_msg").text("");
             }
             if(de < today && time_end_event){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateEnd_event_msg").text("");
@@ -125,14 +125,14 @@
             
             //Event date and today validator if only all datetime is filled
             if(ds < today){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateStart_event_msg").text("");
                 finalValidate();
             }
             if(de < today){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateEnd_event_msg").text("");

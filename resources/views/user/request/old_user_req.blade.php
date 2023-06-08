@@ -35,9 +35,9 @@
     <span id="load_more_holder_old_req" style="display: flex; justify-content:center;"></span>
 </div>
 
-@include('user.request.modal.acc')
-@include('user.request.modal.rej')
-@include('user.request.modal.prevent')
+@include('user.request.old_manage.acc')
+@include('user.request.old_manage.rej')
+@include('user.request.old_manage.prevent')
 
 <script>
     var page_old_req = 1;
