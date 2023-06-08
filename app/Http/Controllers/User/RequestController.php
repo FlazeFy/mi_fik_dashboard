@@ -380,7 +380,7 @@ class RequestController extends Controller
     // Accept and reject new user request to join mifik should be integrated into one function. 
     // But later, make sure the flow is complete and correct first. LOL
 
-    public function accept_join(Request $request)
+    public function accept_join(Request $request, $isrole)
     {
         $admin_id = Generator::getUserIdV2(session()->get('role_key'));
         $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
@@ -412,11 +412,22 @@ class RequestController extends Controller
                         ->first();
 
                     if($user_id != null){
-                        User::where("id",$user_id->id)->update([
-                            'accepted_at' => date("Y-m-d H:i:s"),
-                            'accepted_by' => $admin_id,
-                            'is_accepted' => 1
-                        ]);
+                        if($isrole){
+                            $role = Converter::getTag($request->role);
+                            
+                            User::where("id",$user_id->id)->update([
+                                'role' => $role,
+                                'accepted_at' => date("Y-m-d H:i:s"),
+                                'accepted_by' => $admin_id,
+                                'is_accepted' => 1
+                            ]);
+                        } else {
+                            User::where("id",$user_id->id)->update([
+                                'accepted_at' => date("Y-m-d H:i:s"),
+                                'accepted_by' => $admin_id,
+                                'is_accepted' => 1
+                            ]);
+                        }
 
                         $status = true; 
                     } else {

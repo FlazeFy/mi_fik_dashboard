@@ -16,6 +16,7 @@ use App\Helpers\Validation;
 use App\Models\ContentHeader;
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\History;
 use App\Models\Menu;
 use App\Models\Archive;
 use App\Models\ArchiveRelation;
@@ -164,63 +165,101 @@ class HomepageController extends Controller
 
     public function add_event(Request $request)
     {
-        //Inital variable
-        $draft = 0;
-        $failed_attach = false;
+        DB::beginTransaction();
 
-        //Helpers
-        $validator = Validation::getValidateEvent($request);
-        if ($validator->fails()) {
-            $errors = $validator->messages();
+        try{
+            //Inital variable
+            $draft = 0;
+            $failed_attach = false;
 
-            return redirect()->back()->with('failed_message', $errors);
-        } else {
-            $tag = Converter::getTag($request->content_tag);
-            $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
-            $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-            $user_id = Generator::getUserIdV2(session()->get('role_key'));
-            $slug = Generator::getSlugName($request->content_title, "content");
-            $uuid = Generator::getUUID();
+            //Helpers
+            $validator = Validation::getValidateEvent($request);
+            if ($validator->fails()) {
+                $errors = $validator->messages();
 
-            if($request->content_image || $request->content_image != ""){
-                $imageURL = $request->content_image;
+                return redirect()->back()->with('failed_message', $errors);
             } else {
-                $imageURL = null;
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "has created an event"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    $tag = Converter::getTag($request->content_tag);
+                    $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+                    $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+                    $user_id = Generator::getUserIdV2(session()->get('role_key'));
+                    $slug = Generator::getSlugName($request->content_title, "content");
+                    $uuid = Generator::getUUID();
+
+                    if($request->content_image || $request->content_image != ""){
+                        $imageURL = $request->content_image;
+                    } else {
+                        $imageURL = null;
+                    }
+
+                    $header = [
+                        'id' => $uuid,
+                        'slug_name' => $slug,
+                        'content_title' => $request->content_title,
+                        'content_desc' => $request->content_desc,
+                        'content_date_start' => $fulldate_start,
+                        'content_date_end' => $fulldate_end,
+                        'content_reminder' => $request->content_reminder,
+                        'content_image' => $imageURL,
+                        'is_draft' => $draft,
+                        'created_at' => date("Y-m-d H:i"),
+                        'created_by' => $user_id,
+                        'updated_at' => null,
+                        'updated_by' => null,
+                        'deleted_at' => null,
+                        'deleted_by' => null
+                    ];
+
+                    DB::table("contents_headers")->insert($header);
+
+                    if($tag || $request->has('content_attach')){
+                        $detail = [
+                            'id' => Generator::getUUID(),
+                            'content_id' => $uuid, 
+                            'content_attach' => $request->content_attach,
+                            'content_tag' => $tag,
+                            'content_loc' => $request->content_loc,
+                            'created_at' => date("Y-m-d H:i"),
+                            'updated_at' => null
+                        ];
+
+                        DB::table("contents_details")->insert($detail);
+                    }
+
+                    DB::table("histories")->insert([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type,
+                        'context_id' => $uuid,
+                        'history_body' => $data->history_body,
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+
+                    DB::commit();
+
+                    Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
+
+                    return redirect()->back()->with('success_message', 'Create content success');
+                }
             }
+        } catch(\Exception $e) {
+            DB::rollback();
 
-            $header = ContentHeader::create([
-                'id' => $uuid,
-                'slug_name' => $slug,
-                'content_title' => $request->content_title,
-                'content_desc' => $request->content_desc,
-                'content_date_start' => $fulldate_start,
-                'content_date_end' => $fulldate_end,
-                'content_reminder' => $request->content_reminder,
-                'content_image' => $imageURL,
-                'is_draft' => $draft,
-                'created_at' => date("Y-m-d H:i"),
-                'created_by' => $user_id,
-                'updated_at' => null,
-                'updated_by' => null,
-                'deleted_at' => null,
-                'deleted_by' => null
-            ]);
-
-            if($tag || $request->has('content_attach')){
-                $detail = ContentDetail::create([
-                    'id' => Generator::getUUID(),
-                    'content_id' => $uuid, //for now
-                    'content_attach' => $request->content_attach,
-                    'content_tag' => $tag,
-                    'content_loc' => $request->content_loc,
-                    'created_at' => date("Y-m-d H:i"),
-                    'updated_at' => null
-                ]);
-            }
-
-            Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
-
-            return redirect()->back()->with('success_message', 'Create content success');
+            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
         }
     }
 
