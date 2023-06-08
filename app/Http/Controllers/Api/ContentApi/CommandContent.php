@@ -22,6 +22,10 @@ use App\Models\History;
 use App\Mail\OrganizerEmail;
 use Illuminate\Support\Facades\Mail;
 
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FireNotif;
+
 class CommandContent extends Controller
 {
     public function deleteContent(Request $request, $id){
@@ -75,6 +79,9 @@ class CommandContent extends Controller
     }
 
     public function addContent(Request $request){
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
+
         DB::beginTransaction();
 
         try{
@@ -178,10 +185,38 @@ class CommandContent extends Controller
                         'created_at' => date("Y-m-d H:i:s"),
                         'created_by' => $user_id
                     ]);
+
+                    $users = DB::table("users")->select("username", "firebase_fcm_token")
+                        ->where("id",$user_id)
+                        ->first();
+
+                    if($users){
+                        $notif_body = "You has been created an event called '".$request->content_title."'";
+                        $firebase_token = $users->firebase_fcm_token;
+                        $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                        if($validateRegister['valid'] != null){
+                            $notif_title = "Hello ".$users->username.", you got an information";
+                            $message = CloudMessage::withTarget('token', $firebase_token)
+                                ->withNotification(
+                                    FireNotif::create($notif_body)
+                                    ->withTitle($notif_title)
+                                    ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                )
+                                ->withData([
+                                    'by' => 'person'
+                                ]);
+                            $response = $messaging->send($message);
+                        } else {
+                            DB::table("users")->where('id', $user_id)->update([
+                                "firebase_fcm_token" => null
+                            ]);
+                        }
+                    }
         
                     DB::commit();
 
-                    // Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
+                    Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
 
                     return response()->json([
                         'status' => 'success',
