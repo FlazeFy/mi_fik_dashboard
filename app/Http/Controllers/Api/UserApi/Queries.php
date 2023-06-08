@@ -239,7 +239,7 @@ class Queries extends Controller
 
             $user = UserRequest::getRecentlyRequest($user_id);
 
-            if ($user->isEmpty()) {
+            if ($user == null) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Request Not Found',

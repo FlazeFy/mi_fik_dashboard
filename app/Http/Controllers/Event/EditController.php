@@ -118,6 +118,59 @@ class EditController extends Controller
         }
     }
 
+    public function update_event_date(Request $request, $slug)
+    {
+        $id = Generator::getContentId($slug);
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        if($id != null){
+            $validator = Validation::getValidateEventDate($request);
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "Has updated this event date"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+                    $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+
+                    ContentHeader::where('id', $id)->update([
+                        'content_date_start' => $fulldate_start,
+                        'content_date_end' => $fulldate_end,
+                        'updated_at' => date("Y-m-d H:i:s"),
+                        'updated_by' => $user_id
+                    ]);
+
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                }
+
+                return redirect()->back()->with('success_message', "Event successfully updated");             
+            }
+        } else {
+            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");   
+        }
+    }
+
     public function update_event_draft(Request $request, $slug)
     {
         $id = Generator::getContentId($slug);

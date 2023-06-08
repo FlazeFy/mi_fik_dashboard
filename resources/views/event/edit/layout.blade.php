@@ -153,16 +153,20 @@
                 @include('event.edit.attachment.show')                
             </div>
             <div class="col-lg-4">
+                <h6 class="text-primary mt-3">Tag</h6>
+                    @include('event.edit.tag.show')
+                    @include('event.edit.tag.add')
+                <hr>
+
+                <h6 class="text-primary mt-3">Date & Time</h6>
+                    @include('event.edit.datepicker')
+                <hr>
+
                 <div class="position-relative">
                     <h6 class="text-primary">Event Location</h6>
                     @include('event.edit.maps.delete')
                 </div>
                 @include('event.edit.maps.add')
-                <hr>
-
-                <h6 class="text-primary mt-3">Tag</h6>
-                    @include('event.edit.tag.show')
-                    @include('event.edit.tag.add')
                 <hr>
 
                 <h6 class="text-primary mt-3">History</h6>

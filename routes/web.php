@@ -87,6 +87,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
 
     Route::get('/edit/{slug_name}', [EditController::class, 'index']);
     Route::post('/edit/update/info/{slug_name}', [EditController::class, 'update_event_info']);
+    Route::post('/edit/update/date/{slug_name}', [EditController::class, 'update_event_date']);
     Route::post('/edit/update/draft/{slug_name}', [EditController::class, 'update_event_draft']);
     Route::post('/edit/update/attach/add/{slug_name}', [EditController::class, 'update_event_add_attach']);
     Route::post('/edit/update/attach/remove/{slug_name}', [EditController::class, 'update_event_remove_attach']);
