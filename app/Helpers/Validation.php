@@ -177,6 +177,15 @@ class Validation
         ]);
     }
 
+    public static function getValidateInfoCreate($request){
+        return Validator::make($request->all(), [
+            'info_type' => ['required', new TypeInfo],
+            'info_page' => 'required|max:75|string',
+            'info_location' => 'required|max:75|string',
+            'info_body' => 'required|max:500|string',
+        ]);
+    }
+
     public static function getValidateDictionaryType($request){
         return Validator::make($request->all(), [
             'dct_type' => ['required', new TypeDictionary],
