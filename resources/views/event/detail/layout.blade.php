@@ -128,6 +128,17 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #555; 
     }
+    .image-att-zoomable{
+        cursor: pointer;
+        border-radius: 12px;
+    }
+    .image-att-zoomable:hover{
+        background: #212121;
+        opacity: 0.7;
+        -webkit-transition: all 0.2s;
+        -o-transition: all 0.2s;
+        transition: all 0.2s;
+    }
 </style>
 
     <div class="box-event-detail">

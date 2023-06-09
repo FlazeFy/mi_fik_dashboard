@@ -266,6 +266,8 @@ class EditController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $att = Generator::getContentAtt($id_detail);
         $arrobj = json_decode($att);
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
 
         if($id != null && $id_detail != null){
             if(($att && json_last_error() === JSON_ERROR_NONE) || $att == null){
@@ -364,6 +366,8 @@ class EditController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $att = Generator::getContentAtt($id_detail);
         $oldobj = json_decode($att);
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
 
         if($id != null && $id_detail != null){
             if($att && json_last_error() === JSON_ERROR_NONE){
@@ -464,6 +468,8 @@ class EditController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $tag =  ContentDetail::getContentTag($id_detail);
         $oldobj = json_decode($tag);
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
 
         if($id != null && $id_detail != null){
             if($tag && json_last_error() === JSON_ERROR_NONE){
@@ -564,6 +570,8 @@ class EditController extends Controller
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
         $tag =  ContentDetail::getContentTag($id_detail);
         $oldobj = json_decode($tag);
+        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+        $messaging = $factory->createMessaging();
 
         if($id != null && $id_detail != null){
             if($tag && json_last_error() === JSON_ERROR_NONE || $tag == null){

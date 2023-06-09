@@ -186,7 +186,7 @@ class CommandContent extends Controller
                         'created_by' => $user_id
                     ]);
 
-                    $users = DB::table("users")->select("username", "firebase_fcm_token")
+                    $users = DB::table("users")->select("username", "firebase_fcm_token","email")
                         ->where("id",$user_id)
                         ->first();
 
@@ -216,7 +216,7 @@ class CommandContent extends Controller
         
                     DB::commit();
 
-                    Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
+                    Mail::to($users->email)->send(new OrganizerEmail($header, $detail));
 
                     return response()->json([
                         'status' => 'success',
@@ -286,7 +286,6 @@ class CommandContent extends Controller
     public function getStatsMostViewedEvent(){
         try{
             $res= ContentDetail::getMostViewedEvent(7);
-
 
             if(count($res) > 0){
                 return response()->json([
