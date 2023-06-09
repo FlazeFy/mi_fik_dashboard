@@ -122,6 +122,15 @@
     var selectedUser = []; 
     var selectedGroup = []; 
     var selectedRole = [];
+    var tag_cat = '<?= $dct_tag[0]["slug_name"]; ?>';
+    var page_tag = 1;
+
+    function setTagFilter(tag){
+        tag_cat = tag;
+        page_tag = 1;
+        infinteLoadRole(page_tag);
+        $("#role-list-holder").empty();
+    }
 
     function setType(type){
         document.getElementById("type-title").innerHTML = type;
@@ -302,7 +311,22 @@
                         '<div id="slct-role-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
-                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
+                        '<div class="position-absolute" style="right:10px; top:-15px;"> ' +
+                            '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category"  ' +
+                                'style="font-size:13px;"aria-label="Floating label select example" required> ' +
+                                '@php($i = 0) ' +
+                                '@foreach($dct_tag as $dtag) ' +
+                                    '@if($i == 0) ' +
+                                        '<option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option> ' +
+                                        '<option value="all">All</option> ' +
+                                    '@else ' +
+                                        '<option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option> ' +
+                                    '@endif ' +
+                                    '@php($i++) ' +
+                                '@endforeach ' +
+                            '</select> ' +
+                        '</div> ' +
                         '<input name="list_context" id="list_context_role"  value="" hidden> ' +
                         '<h6>All Role</h6> ' +
                         '<span id="role-list-holder"></span> ' +
@@ -402,6 +426,8 @@
                         '<input name="list_context" id="list_context"  value="" hidden> ' +
                         '<h6>All User</h6> ' +
                         '<span id="user-list-holder"></span> ' +
+                        '<span id="empty_item_holder_manage_tag"></span> ' +
+                        '<span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span> ' +
                     '</div> ' +
                 '</div> ';
 
@@ -493,7 +519,7 @@
         document.getElementById("role-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/tag/10?page=" + page_role_list,
+            url: "/api/v1/tag/cat/" + tag_cat + "/12?page=" + page_tag,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -547,7 +573,13 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load-tag').hide();
+                $('#load_more_holder_manage_tag').empty();
+                $("#empty_item_holder_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 

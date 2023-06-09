@@ -39,6 +39,7 @@ class NotificationController extends Controller
             $notification = Notification::getAllNotification();
             $dictionary = Dictionary::getDictionaryByType($select_1);
             $greet = Generator::getGreeting(date('h'));
+            $dct_tag = Dictionary::getDictionaryByType("Tag");
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("system");
 
@@ -50,6 +51,7 @@ class NotificationController extends Controller
                 ->with('notification', $notification)
                 ->with('dictionary', $dictionary)
                 ->with('info', $info)
+                ->with('dct_tag', $dct_tag)
                 ->with('menu', $menu)
                 ->with('greet',$greet);
         } else {

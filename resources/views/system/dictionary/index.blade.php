@@ -63,8 +63,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
-                        @include('system.dictionary.create')
+                    @include('system.dictionary.create')
+                    <div class="content-section" style="margin-top:15px;">
                         @include('system.dictionary.table')
                     </div>
                 </div>

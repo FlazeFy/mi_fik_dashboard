@@ -71,8 +71,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
-                        @include('system.info.create')
+                    @include('system.info.create')
+                    <div class="content-section" style="margin-top:15px;">
                         @include('system.info.table')
                     </div>
                 </div>
