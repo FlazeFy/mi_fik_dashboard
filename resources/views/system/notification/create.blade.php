@@ -145,6 +145,16 @@
         }
     }
 
+    function resetGroupSearch(){
+        document.getElementById("group_search").value = null;
+        infinteLoadGroup(1);
+    }
+
+    function resetTitleSearch(){
+        document.getElementById("title_search").value = null;
+        infinteLoadUser(1);
+    }
+
     function setFormSection(type){
         var sec = document.getElementById("section-holder");
         if(type == "All User"){
@@ -249,9 +259,18 @@
                         '<div id="slct-group-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
-                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
                         '<input name="list_context" id="list_context_group"  value="" hidden> ' +
-                        '<h6>All Group</h6> ' +
+                        '<h6 class="mb-2">All Group</h6> ' +
+                        '<div style="max-width:300px; right:10px; top:-15px;" class="row mb-2 position-absolute"> ' +
+                            '<div class="col-2"> ' +
+                                '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupSearch()"><i class="fa-solid fa-xmark"></i></a> ' +
+                            '</div> ' +
+                            '<div class="col-10 position-relative"> ' +
+                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="group_search" placeholder="Search by group name" onchange="infinteLoadGroup(1)" maxlength="75"> ' +
+                            '</div> ' +
+                        '</div> ' +
                         '<span id="group-list-holder"></span> ' +
                     '</div> ' +
                 '</div> ';
@@ -422,12 +441,21 @@
                         '<div id="slct-user-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
-                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
                         '<input name="list_context" id="list_context"  value="" hidden> ' +
                         '<h6>All User</h6> ' +
-                        '<span id="user-list-holder"></span> ' +
-                        '<span id="empty_item_holder_manage_tag"></span> ' +
-                        '<span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span> ' +
+                        '<div style="max-width:300px; right:10px; top:-15px;" class="row mb-2 position-absolute"> ' +
+                            '<div class="col-2"> ' +
+                                '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></a> ' +
+                            '</div> ' +
+                            '<div class="col-10 position-relative"> ' +
+                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="Search by fullname" onchange="infinteLoadUser(1)" maxlength="75"> ' +
+                            '</div> ' +
+                        '</div> ' +
+                        '<div id="user-list-holder"></div> ' +
+                        '<span id="empty_item_holder_user"></span> ' +
+                        '<span id="load_more_holder_user" style="display: flex; justify-content:center;"></span> ' +
                     '</div> ' +
                 '</div> ';
 
@@ -456,11 +484,23 @@
         document.getElementById("datetime-picker-box").innerHTML = elmt;
     }
 
+    function getFind(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "%20"
+        } else {
+            document.getElementById("group_search").value = trim;
+            return trim
+        }
+    }
+
     function infinteLoadGroup(page_group_list) {       
+        var order = '<?= session()->get('ordering_group_list'); ?>';
+        var find = document.getElementById("group_search").value;
         document.getElementById("group-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/group/limit/100/order/group_name__DESC/find/%20?page=" + page_group_list,
+            url: "/api/v1/group/limit/100/order/" + order + "/find/" + getFind(find) + "?page=" + page_group_list,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -596,10 +636,24 @@
     }
 
     function infinteLoadUser(page_new_req) {       
-        document.getElementById("user-list-holder").innerHTML = "";
+        function getFind(filter, find){
+            let trim = find.trim();
+            if(find == null || trim === ''){
+                return filter;
+            } else {
+                document.getElementById("title_search").value = trim;
+                return trim;
+            }
+        }
+
+        var name_filter = 'all_all';
+        var order = '<?= session()->get('ordering_user_list'); ?>';
+
+        var find = document.getElementById("title_search").value;
+        //document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/%20/limit/100/order/first_name__DESC?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -610,6 +664,8 @@
         })
         .done(function (response) {
             $('.auto-load').hide();
+            $("#user-list-holder").empty();  
+            
             var data =  response.data.data;
             var total = response.data.total;
             var last = response.data.last_page;
@@ -626,7 +682,7 @@
             } else if (data.length == 0) {
                 $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the user :)</h5>");
                 return;
-            } else {                
+            } else {              
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var username = data[i].username;
@@ -653,12 +709,18 @@
                             '</div> ' +
                         '</a>';
 
+
                     $("#user-list-holder").prepend(elmt);
                 }   
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load').hide();
+                $("#empty_item_holder_user").html("<div class='err-msg-data d-block mx-auto' style='margin-top:-30% !important;'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 

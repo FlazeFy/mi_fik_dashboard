@@ -200,6 +200,7 @@
 
                     return elmt;
                 }
+                $("#empty_item_holder").empty();
 
                 for(var i = 0; i < data.length; i++){
                     //Attribute
