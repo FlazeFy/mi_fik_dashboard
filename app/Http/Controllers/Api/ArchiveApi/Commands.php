@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\ArchiveApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -188,6 +189,7 @@ class Commands extends Controller
 
     public function deleteArchive(Request $request, $slug)
     {
+        DB::beginTransaction();
         try {
             $user_id = $request->user()->id;
 
@@ -207,15 +209,16 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                ArchiveRelation::join('archives', 'archives_relations.archive_id','=','archives.id')
+                DB::table("archives_relations")
+                    ->join('archives', 'archives_relations.archive_id','=','archives.id')
                     ->where('slug_name', $slug)
                     ->where('archives_relations.created_by', $user_id)
                     ->delete();
 
-                $result = Archive::where('slug_name', $slug)
+                DB::table("archives")->where('slug_name', $slug)
                     ->delete();
 
-                History::create([
+                DB::table("histories")->insert([
                     'id' => Generator::getUUID(),
                     'history_type' => $data->history_type, 
                     'context_id' => null, 
@@ -225,12 +228,14 @@ class Commands extends Controller
                     'created_by' => $user_id
                 ]);
 
+                DB::commit();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Archive deleted'
                 ], Response::HTTP_OK);
             }
         } catch (\Exception $e) {
+            DB::rollback();
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -239,6 +244,7 @@ class Commands extends Controller
     }
 
     public function multiActionArchiveRelation(Request $request, $slug){
+        DB::beginTransaction();
         try{
             $user_id = $request->user()->id;
             $count_job = 0;
@@ -249,7 +255,8 @@ class Commands extends Controller
 
             if($list_action !== null || json_last_error() === JSON_ERROR_NONE){
                 foreach($list_action as $la){
-                    $rel = ArchiveRelation::select('archives_relations.id')
+                    $rel = DB::table("archives_relations")
+                        ->select('archives_relations.id')
                         ->join('archives','archives.id','=','archives_relations.archive_id')
                         ->where('content_id', $cheader->id)
                         ->where('archives.slug_name', $la->slug_name)
@@ -257,11 +264,11 @@ class Commands extends Controller
                         ->first();
 
                     if($la->check == 1 && $rel == null){
-                        $arc = Archive::select('id')
+                        $arc = DB::table("archives")->select('id')
                             ->where('slug_name',$la->slug_name)
                             ->first();
 
-                        ArchiveRelation::create([
+                        DB::table("archives_relations")->insert([
                             'id' => Generator::getUUID(),
                             'archive_id' => $arc->id,
                             'content_id' => $cheader->id,
@@ -270,13 +277,16 @@ class Commands extends Controller
                         ]);
                         $count_job++;
                     } else if($la->check == 0 && $rel != null){
-                        ArchiveRelation::destroy($rel->id);
+                        DB::table("archives_relations")
+                            ->where("id",$rel->id)
+                            ->delete();
                         $count_job++;
                     } else {
                         // Check this shit
                     }
                 }
 
+                DB::commit();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Content Added to Archive with '.$count_job.' changes',
@@ -288,6 +298,7 @@ class Commands extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         } catch (\Exception $e) {
+            DB::rollback();
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()

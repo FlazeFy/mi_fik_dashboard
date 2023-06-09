@@ -17,7 +17,6 @@ class Commands extends Controller
     //
     public function deleteQuestion(Request $request, $id){
         try{
-
             $user_id = $request->user()->id;
 
             $content = Question::where('id', $id)->update([

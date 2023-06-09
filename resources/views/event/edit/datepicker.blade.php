@@ -1,25 +1,29 @@
-<label>Set Date Start</label>
-<div class="row mt-2">
-    <div class="col-6">
-        <input type="date" name="content_date_start" min="{{date('Y-m-d')}}" id="date_start_event" onchange="validateDateEvent()" class="form-control">
+<form action="/event/edit/update/date/{{$c->slug_name}}" method="POST">
+    @csrf
+    <label>Date Start</label>
+    <div class="row mt-2">
+        <div class="col-6">
+            <input type="date" name="content_date_start" id="date_start_event" min="{{date('Y-m-d')}}" value="{{date('Y-m-d',strtotime($c->content_date_start))}}" onchange="validateDateEvent()" class="form-control">
+        </div>
+        <div class="col-6">
+            <input type="time" name="content_time_start" id="time_start_event" value="{{date('H:i',strtotime($c->content_date_start))}}" onchange="validateDateEvent()" class="form-control mb-2">
+        </div>
     </div>
-    <div class="col-6">
-        <input type="time" name="content_time_start" id="time_start_event" onchange="validateDateEvent()" class="form-control mb-2">
-    </div>
-</div>
-<a id="dateStart_event_msg" class="input-warning text-danger"></a>
+    <a id="dateStart_event_msg" class="input-warning text-danger"></a>
 
-<label>Set Date End</label>
-<div class="row mt-2">
-    <div class="col-6">
-        <input type="date" name="content_date_end" min="{{date('Y-m-d')}}" id="date_end_event" onchange="validateDateEvent()" class="form-control">
+    <label>Date End</label>
+    <div class="row mt-2">
+        <div class="col-6">
+            <input type="date" name="content_date_end" id="date_end_event" min="{{date('Y-m-d')}}" value="{{date('Y-m-d',strtotime($c->content_date_end))}}" onchange="validateDateEvent()" class="form-control">
+        </div>
+        <div class="col-6">
+            <input type="time" name="content_time_end" id="time_end_event" value="{{date('H:i',strtotime($c->content_date_end))}}" onchange="validateDateEvent()" class="form-control mb-2">
+        </div>
     </div>
-    <div class="col-6">
-        <input type="time" name="content_time_end" id="time_end_event" onchange="validateDateEvent()" class="form-control mb-2">
-    </div>
-</div>
-<a id="dateEnd_event_msg" class="input-warning text-danger"></a><br>
-<a id="dateStartEnd_msg" class="input-warning text-danger"></a>
+    <a id="dateEnd_event_msg" class="input-warning text-danger"></a>
+    <a id="dateStartEnd_msg" class="input-warning text-danger"></a>
+    <div id="btn-submit-holder-date"></div>
+</form>
 
 <script>
     var error = false;
@@ -40,7 +44,6 @@
                 error = true;
             } else {
                 $("#dateStartEnd_msg").text("");
-                lengValidatorEvent('75', 'title');
                 error = false;
             }
         }
@@ -100,13 +103,13 @@
 
             //Event date and today validator if only one datetime is filled
             if(ds < today && time_start_event){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateStart_event_msg").text("");
             }
             if(de < today && time_end_event){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateEnd_event_msg").text("");
@@ -122,14 +125,14 @@
             
             //Event date and today validator if only all datetime is filled
             if(ds < today){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateStart_event_msg").text("");
                 finalValidate();
             }
             if(de < today){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
                 error = true;
             } else {
                 $("#dateEnd_event_msg").text("");
@@ -137,10 +140,10 @@
             }
         }
 
-        // if(!error){
-        //     $("#btn-submit-holder-event").html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
-        // } else {
-        //     $("#btn-submit-holder-event").html("");
-        // }
+        if(!error){
+            $("#btn-submit-holder-date").html('<button type="submit" class="btn btn-submit"><i class="fa-solid fa-paper-plane"></i> Submit</button>');
+        } else {
+            $("#btn-submit-holder-date").html("");
+        }
     }
 </script>

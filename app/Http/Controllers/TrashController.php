@@ -115,58 +115,67 @@ class TrashController extends Controller
 
     public function destroy_content(Request $request, $slug, $type)
     {
-        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        DB::beginTransaction();
 
-        if($type == 1){
-            $type = "event";
-            $id = Generator::getContentId($slug);
-            $owner = Generator::getContentOwner($slug);
-        } else if($type == 2){
-            $type = "task";
-            $id = Generator::getTaskId($slug);
-            $owner = Generator::getTaskOwner($slug);
-        }
+        try{
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
-        if($slug != null && $type != null){
-            $data = new Request();
-            $obj = [
-                'history_type' => $type,
-                'history_body' => 'Has destroy a '.$type.' called "'.$request->content_title.'"'
-            ];
-            $data->merge($obj);
-
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
-
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                if($type == "event"){
-                    ContentHeader::destroy($id);
-                    ContentDetail::where('content_id', $id)->delete();
-                    ArchiveRelation::where('content_id', $id)->delete();
-                    History::where('context_id', $id)->where('history_type', 'event')->delete();
-                    ContentViewer::where('content_id', $id)->where('type_viewer', 0)->delete();
-                } else if($type == "task"){
-                    Task::destroy($id);
-                    ArchiveRelation::where('content_id', $id)->delete();
-                    History::where('context_id', $id)->where('history_type', 'task')->delete();
-                }
-
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
-                    'context_id' => null, 
-                    'history_body' => $data->history_body, 
-                    'history_send_to' => $owner,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
-                
-                return redirect()->back()->with('success_message', ucfirst($type)." successfully destroyed");    
+            if($type == 1){
+                $type = "event";
+                $id = Generator::getContentId($slug);
+                $owner = Generator::getContentOwner($slug);
+            } else if($type == 2){
+                $type = "task";
+                $id = Generator::getTaskId($slug);
+                $owner = Generator::getTaskOwner($slug);
             }
-        } else {
-            return redirect()->back()->with('failed_message', ucfirst($type)." destroy is failed, the event doesn't exist anymore");
+
+            if($slug != null && $type != null){
+                $data = new Request();
+                $obj = [
+                    'history_type' => $type,
+                    'history_body' => 'Has destroy a '.$type.' called "'.$request->content_title.'"'
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    if($type == "event"){
+                        DB::table("contents_headers")->where('id', $id)->delete();
+                        DB::table("contents_details")->where('content_id', $id)->delete();
+                        DB::table("archives_relations")->where('content_id', $id)->delete();
+                        DB::table("histories")->where('context_id', $id)->where('history_type', 'event')->delete();
+                        ContentViewer::where('content_id', $id)->where('type_viewer', 0)->delete();
+                    } else if($type == "task"){
+                        DB::table("tasks")->where('id', $id)->delete();
+                        DB::table("archives_relations")->where('content_id', $id)->delete();
+                        DB::table("histories")->where('context_id', $id)->where('history_type', 'task')->delete();
+                    }
+
+                    DB::table("histories")->insert([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => null, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => $owner,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                    
+                    DB::commit();
+                    return redirect()->back()->with('success_message', ucfirst($type)." successfully destroyed");    
+                }
+            } else {
+                return redirect()->back()->with('failed_message', ucfirst($type)." destroy is failed, the event doesn't exist anymore");
+            }
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
         }
     }
 }

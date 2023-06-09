@@ -14,9 +14,9 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-new-req">
         <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-check text-success"></i> Accept Selected</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-xmark text-danger"></i>&nbsp Reject Selected</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-hashtag text-success"></i> Accept Selected & With Tag</a>
+        <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc_new">Accept Selected</span></a>
+        <a class="dropdown-item" data-bs-toggle="modal" id="rej_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_rej_new">Reject Selected</span></a>
+        <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_tag_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-hashtag text-success"></i> <span class="text-success" id="total_acc_new_tag">Accept Selected & With Tag</span></a>
     </div>
 
     <div class="user-req-holder" id="data_wrapper_new_req">
@@ -35,8 +35,14 @@
     <div id="empty_item_holder_new_req"></div>
 </div>
 
+@include('user.request.new_manage.acc')
+@include('user.request.new_manage.withtag')
+@include('user.request.new_manage.rej')
+@include('user.request.new_manage.prevent')
+
 <script>
     var page_new_req = 1;
+    var selectedNewUser = []; 
     infinteLoadMore_new_req(page_new_req);
 
     //Fix the sidebar & content page_new_req FE first to use this feature
@@ -134,7 +140,7 @@
                                     '<h6 class="user-box-desc">' + getContext(is_accepted) + '</h6> ' +
                                     '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected(this.checked)"> ' +
+                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelectedNew('+"'"+username+"'"+', '+"'"+full_name+"'"+', this.checked)""> ' +
                                     '</div> ' +
                                 '</div> ' +
                             '</div> ' +
@@ -153,5 +159,55 @@
                 // handle other errors
             }
         });
+    }
+
+    function addSelectedNew(username, fullname, checked){
+        var ddItemAcc = document.getElementById("acc_all_new_btn");
+        var ddItemRej = document.getElementById("rej_all_new_btn");
+        var ddItemAccTag = document.getElementById("acc_all_new_tag_btn");
+       
+        if(selectedNewUser.length == 0){
+            selectedNewUser.push({
+                full_name : fullname,
+                username : username,
+            });
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedNewUser.findIndex(obj => obj.username == username);
+                if (indexToRemove !== -1) {
+                    selectedNewUser.splice(indexToRemove, 1);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedNewUser.push({
+                    full_name : fullname,
+                    username : username,
+                });
+            }
+        }
+        console.log(selectedNewUser);
+        
+        if(selectedNewUser.length > 0){
+            ddItemAcc.setAttribute('data-bs-target', '#accNewReqModal');
+            ddItemRej.setAttribute('data-bs-target', '#rejNewReqModal');
+            ddItemAccTag.setAttribute('data-bs-target', '#accNewReqTagModal');
+            
+            document.getElementById("total_acc_new").innerHTML = selectedNewUser.length + " <i class='fa-solid fa-circle fa-2xs'></i> Accept All";
+            document.getElementById("total_acc_new_tag").innerHTML = selectedNewUser.length + " <i class='fa-solid fa-circle fa-2xs'></i> Accept All with New Tag";
+            document.getElementById("total_rej_new").innerHTML = selectedNewUser.length + " <i class='fa-solid fa-circle fa-2xs'></i> Reject All";
+        } else {
+            ddItemAcc.setAttribute('data-bs-target', '#preventModalNew');
+            ddItemRej.setAttribute('data-bs-target', '#preventModalNew');
+            ddItemAccTag.setAttribute('data-bs-target', '#preventModalNew');
+
+            document.getElementById("total_acc_new").innerHTML = " Accept All";
+            document.getElementById("total_acc_new_tag").innerHTML = " Accept All with New Tag";
+            document.getElementById("total_rej_new").innerHTML = " Reject All";
+        }
+
+        refreshListAccNew();
+        refreshListAccNewTag();
+        refreshListRejNew();
     }
 </script>
