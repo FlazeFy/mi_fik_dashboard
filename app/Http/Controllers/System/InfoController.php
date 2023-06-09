@@ -138,6 +138,59 @@ class InfoController extends Controller
         }  
     }
 
+    public function create(Request $request)
+    {
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateInfoCreate($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "info",
+                'history_body' => "Has created an info"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Info::create([
+                    'id' => Generator::getUUID(),
+                    'info_type' => $request->info_type, 
+                    'info_page' => $request->info_page, 
+                    'info_location' => $request->info_location, 
+                    'info_body' => $request->info_body,  
+                    'is_active' => 1,  
+                    'created_at' => date("Y-m-d H:i:s"), 
+                    'created_by' => $user_id, 
+                    'updated_at' => null, 
+                    'updated_by' => null, 
+                    'deleted_at' => null, 
+                    'deleted_by' => null 
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success created an info');   
+            }
+        }  
+    }
+
     public function delete($id)
     {
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
@@ -145,7 +198,7 @@ class InfoController extends Controller
         $data = new Request();
         $obj = [
             'history_type' => "info",
-            'history_body' => "Has delete a info"
+            'history_body' => "Has delete an info"
         ];
         $data->merge($obj);
 

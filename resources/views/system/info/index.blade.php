@@ -58,6 +58,7 @@
         <!-- JS Collection -->
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -70,7 +71,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
+                    @include('system.info.create')
+                    <div class="content-section" style="margin-top:15px;">
                         @include('system.info.table')
                     </div>
                 </div>
