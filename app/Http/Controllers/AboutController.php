@@ -87,26 +87,31 @@ class AboutController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 $help = Help::getAboutApp();
-                foreach($help as $hp){
-                    $id = $hp->id;
+
+                if($help != null){
+                    foreach($help as $hp){
+                        $id = $hp->id;
+                    }
+
+                    Help::where('id', $id)->update([
+                        'help_body' => $request->help_body,
+                        'updated_at' => date("Y-m-d H:i"),
+                    ]);
+    
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => strtolower($data->history_type), 
+                        'context_id' => null, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                    
+                    return redirect()->back()->with('success_message', 'About Apps updated'); 
+                } else {
+                    return redirect()->back()->with('failed_message', 'Failed to update About Apps, the item doesnt exist anymore'); 
                 }
-
-                Help::where('id', $id)->update([
-                    'help_body' => $request->help_body,
-                    'updated_at' => date("Y-m-d H:i"),
-                ]);
-
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => strtolower($data->history_type), 
-                    'context_id' => null, 
-                    'history_body' => $data->history_body, 
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
-                
-                return redirect()->back()->with('success_message', 'About Apps updated');  
             }
         }  
     }
