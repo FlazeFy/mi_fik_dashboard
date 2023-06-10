@@ -1,7 +1,7 @@
 
 @if(session()->get('toogle_edit_help') == "true")
     <div id="rich_box_desc" style="height: 40vh !important;"></div>
-    <h6 class="fst-italic" style="font-size:14px;">Last Updated By : <span class="text-primary" id="desc_updated"></span> </h6>
+    <h6 class="fst-italic mt-2" style="font-size:14px;">Last Updated By : <span class="text-primary" id="desc_updated"></span> </h6>
 
     <form class="d-inline" method="POST" action="/about/toogle/help/false">
         @csrf
@@ -11,14 +11,16 @@
         @csrf
         <input name="help_body" id="about_body_help" hidden>
         <input name="help_category" id="about_category" hidden>
-        <button class="btn btn-success rounded-pill mt-3 px-3 py-2" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Chages</button>
+        <button class="btn btn-success rounded-pill mt-3 px-3 py-2" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
     </form>
 @else
-    <div class="px-2" id="desc_holder_view"></div>
-    <form class="d-inline" method="POST" action="/about/toogle/help/true">
-        @csrf
-        <button class="btn btn-info rounded-pill mt-3 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
-    </form>
+    <div class="px-2 position-relative">
+        <form class="d-inline position-absolute" style="right:0; top:-25px;" method="POST" action="/about/toogle/help/true">
+            @csrf
+            <button class="btn btn-info rounded-pill mt-3 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+        </form>
+        <div id="desc_holder_view"></div>
+    </div>
 @endif
 
 <script>
@@ -28,7 +30,12 @@
     var id_body = " ";
 
     function loadRichTextDesc(desc, user, updated, cat){
-        document.getElementById("desc_updated").innerHTML = user + " at " + getDateToContext(updated, "full");
+        if(user != "null"){
+            document.getElementById("desc_updated").innerHTML = user + " at " + getDateToContext(updated, "full");
+        } else {
+            document.getElementById("desc_updated").innerHTML = "-"
+        }
+
         var parent = document.getElementById("rich_box_desc");
         var child = parent.getElementsByClassName("ql-editor")[0];
         input_cat.value = cat;
