@@ -6,6 +6,13 @@
         max-height: 75vh;
         overflow-y: scroll;
     }
+    #history_holder_detail{
+        padding: 5px 16px 0 5px;
+        display: flex;
+        flex-direction: column;
+        max-height: 75vh;
+        overflow-y: scroll;
+    }
 </style>
 
 <div class="navbar-holder">
@@ -48,6 +55,9 @@
                 </div>
             </li>
             <li>
+                <a class="dropdown-item" data-bs-toggle='modal' href="#history-modal" onclick="toogleHistory()"><i class="fa-solid fa-clock-rotate-left me-2"></i> History</a>
+            </li>
+            <li>
                 <a class="dropdown-item" data-bs-toggle='modal' href="#notif-modal" onclick="toogleDetail()"><i class="fa-solid fa-bell me-2"></i> Notification</a>
                 <div class="item-notification" id="notif-holder"><img src="{{ asset('/assets/loading-notif.gif')}}" style='height:24px; margin-top:-5px;'></div>
             </li>
@@ -55,6 +65,18 @@
                 <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
             </button>
         </ul>
+    </div>
+</div>
+
+<div class='modal fade' id='history-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-body text-start pt-4'>
+                <button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
+                <h5>History</h5>
+                <div id="history_holder_detail"></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -88,6 +110,8 @@
 <script type="text/javascript">
     var initial = 2000;
     var showDetail = false;
+    var showHistory = false;
+    var pageHistory = 1;
 
     //Get data ajax
     $(document).ready(function() {
@@ -97,9 +121,18 @@
     function toogleDetail(){
         if(showDetail == false){
             showDetail = true;
-            notifdetail();
+            notifDetail();
         } else {
             showDetail = false;
+        }
+    }
+
+    function toogleHistory(){
+        if(showHistory == false){
+            showHistory = true;
+            historyDetail();
+        } else {
+            showHistory = false;
         }
     }
     
@@ -108,7 +141,10 @@
             update();
             clear();
             if(showDetail == true){
-                notifdetail();
+                notifDetail();
+            }
+            if(showHistory == true){
+                historyDetail();
             }
         }, initial); 
 
@@ -152,7 +188,7 @@
        });
     }
 
-    function notifdetail() {
+    function notifDetail() {
         $.ajax({
             url: '/api/v1/notification',
             type: 'get',
@@ -206,6 +242,62 @@
             if (jqXHR.status == 404) {
                 $('#notif_holder_detail').empty();
                 $("#notif_holder_detail").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
+            } else {
+                // handle other errors
+            }
+        });;
+    }
+
+    function historyDetail() {
+        $.ajax({
+            url: '/api/v1/history/my?page='+pageHistory,
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            },
+            success: function(response){
+                var response = response.data.data;
+                var len = 0;
+
+                $('#notif-holder').empty(); 
+                if(response != null){
+                    len = response.length;
+                }
+                
+                if(len > 0){
+                    $("#history_holder_detail").empty();
+
+                    for(var i = 0; i < len; i++){
+                        var historyType = response[i].history_type;
+                        var createdAt = response[i].created_at;
+                        var historyBody = response[i].history_body;
+
+                        var elmt = " " +
+                            "<div class='p-3 rounded shadow mb-3 text-start'> " +
+                                "<h6 class='fw-bolder'>" + historyType + "</h6> " +
+                                "<p class='mb-0'>" + historyBody + "</p> " +
+                                "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
+                            "</div>";
+
+                        $("#history_holder_detail").append(elmt);
+                    }
+                        
+                }else{
+                    var elmt = 
+                        "<span>" +
+                            " " + //Check this again
+                        "</span>";
+
+                    $("#history_holder_detail").append(elmt);
+                }
+            },
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            if (jqXHR.status == 404) {
+                $('#history_holder_detail').empty();
+                $("#history_holder_detail").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
             } else {
                 // handle other errors
             }
