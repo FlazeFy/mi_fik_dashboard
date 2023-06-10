@@ -1,6 +1,11 @@
 <style>
-   
-    
+    #notif_holder_detail{
+        padding: 5px 16px 0 5px;
+        display: flex;
+        flex-direction: column;
+        max-height: 75vh;
+        overflow-y: scroll;
+    }
 </style>
 
 <div class="navbar-holder">
@@ -43,13 +48,25 @@
                 </div>
             </li>
             <li>
-                <a class="dropdown-item" href="#"><i class="fa-solid fa-bell me-2"></i> Notification</a>
+                <a class="dropdown-item" data-bs-toggle='modal' href="#notif-modal" onclick="toogleDetail()"><i class="fa-solid fa-bell me-2"></i> Notification</a>
                 <div class="item-notification" id="notif-holder"><img src="{{ asset('/assets/loading-notif.gif')}}" style='height:24px; margin-top:-5px;'></div>
             </li>
             <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
                 <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
             </button>
         </ul>
+    </div>
+</div>
+
+<div class='modal fade' id='notif-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-body text-start pt-4'>
+                <button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
+                <h5>Notification</h5>
+                <div id="notif_holder_detail"></div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -69,21 +86,34 @@
 </div>
 
 <script type="text/javascript">
-    var initial = 2000
+    var initial = 2000;
+    var showDetail = false;
 
     //Get data ajax
     $(document).ready(function() {
         clear();
     });
+
+    function toogleDetail(){
+        if(showDetail == false){
+            showDetail = true;
+            notifdetail();
+        } else {
+            showDetail = false;
+        }
+    }
     
     function clear() {
         setTimeout(function() {
             update();
             clear();
+            if(showDetail == true){
+                notifdetail();
+            }
         }, initial); 
 
         if(initial == 2000){
-            initial = 15000
+            initial = 10000
         }
     }
     
@@ -120,6 +150,66 @@
                 }
             }
        });
+    }
+
+    function notifdetail() {
+        $.ajax({
+            url: '/api/v1/notification',
+            type: 'get',
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            },
+            success: function(response){
+                var response = response.data;
+                var len = 0;
+
+                $('#notif-holder').empty(); 
+                if(response != null){
+                    len = response.length;
+                }
+                
+                if(len > 0){
+                    $("#notif_holder_detail").empty();
+
+                    for(var i = 0; i < len; i++){
+                        var notifType = response[i].notif_type;
+                        notifType = notifType.split("_");
+                        notifType = ucEachWord(notifType[1]);
+
+                        var notifTitle = response[i].notif_title;
+                        var createdAt = response[i].created_at;
+                        var notifBody = response[i].notif_body;
+
+                        var elmt = " " +
+                            "<div class='p-3 rounded shadow mb-3 text-start'> " +
+                                "<h6 class='fw-bolder'>" + notifTitle + "</h6> " +
+                                "<p class='mb-0'>" + notifType + " " + notifBody + "</p> " +
+                                "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
+                            "</div>";
+
+                        $("#notif_holder_detail").append(elmt);
+                    }
+                        
+                }else{
+                    var elmt = 
+                        "<span>" +
+                            " " + //Check this again
+                        "</span>";
+
+                    $("#notif_holder_detail").append(elmt);
+                }
+            },
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError) {
+            if (jqXHR.status == 404) {
+                $('#notif_holder_detail').empty();
+                $("#notif_holder_detail").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
+            } else {
+                // handle other errors
+            }
+        });;
     }
 
     function signout() {

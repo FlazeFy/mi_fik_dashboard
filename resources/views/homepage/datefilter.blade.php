@@ -52,7 +52,7 @@
         </span>
 
         <!-- Mini calendar -->
-        <div class="calendar-section">
+        <!-- <div class="calendar-section">
             <div class="calendar calendar-first" id="calendar_first">
                 <div class="calendar_header">
                 <button class="switch-month switch-left">
@@ -67,7 +67,7 @@
                 <div class="calendar_weekdays"></div>
                 <div class="calendar_content"></div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 
