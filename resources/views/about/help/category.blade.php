@@ -1,4 +1,4 @@
-<div class="category_holder mb-3" id="category_holder-{{str_replace(' ', '', $hl->help_type)}}">
+<div class="category_holder mb-2" id="category_holder-{{str_replace(' ', '', $hl->help_type)}}">
     <!-- Loading -->
     <div class="auto-load-{{str_replace(' ', '', $hl->help_type)}} text-center">
         <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -106,21 +106,31 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                var elmt = " " +
+                    '<div class="position-relative"> ' +
+                        '<button class="btn btn-icon-rounded-success position-absolute" style="left:0px;" onclick="getInputHelpCat<?= str_replace(' ', '', $hl->help_type); ?>('+"'"+'{{$hl->help_type}}'+"'"+')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
+                    '</div>';
+                $("#category_holder-{{str_replace(' ', '', $hl->help_type)}}").append(elmt);
+                $("#category_holder-{{str_replace(' ', '', $hl->help_type)}}").css("padding-bottom","35px");
+            } else {
+                // handle other errors
+            }
         });
     }
 
     function getInputHelpCat<?= str_replace(' ', '', $hl->help_type); ?>(type){
+        $(".d-inline.form-add-cat").remove();
         var elmt = " " +
-            '<form class="d-inline" method="POST" action="/about/help/add/cat"> ' +
-                '@csrf' +
-                '<div class="btn btn-category-help"> ' +
+            '<form class="d-inline form-add-cat" method="POST" action="/about/help/add/cat"> ' +
+                '@csrf ' +
+                '<div class="btn btn-category-help add"> ' +
                     '<input name="help_type" value="' + type + '" hidden> ' +
-                    '<input class="form-control" name="help_category" type="text" maxlength="75" onblur="this.form.submit()" required>'
+                    '<input class="form-control" name="help_category" type="text" maxlength="75" onblur="this.form.submit()" required> ' +
+                    '<a class="warning-input"><i class="fa-solid fa-triangle-exclamation text-primary"></i> Press esc or click outside the input to submit</a> ' +
                 '</div> ' +
             '</form>';
         $("#category_holder-{{str_replace(' ', '', $hl->help_type)}}").append(elmt);
-        //console.log("{{str_replace(' ', '', $hl->help_type)}}");
     }
 
     function loadDetailDesc(cat, desc, user, updated, id){

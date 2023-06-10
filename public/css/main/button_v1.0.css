@@ -66,6 +66,9 @@
     color: #F5F5F5;
     border-radius: 10px;
 }
+.btn-category-help.add:hover{
+    background: #FFF1DF !important;
+}
 
 .btn-submit-form:disabled, .btn-submit-form{
     color:#00c363;
