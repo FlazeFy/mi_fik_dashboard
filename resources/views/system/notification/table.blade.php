@@ -96,10 +96,14 @@
                                                 <i class="fa-regular fa-eye-slash" id="icon-show-{{$j}}"></i></button>
                                             @php($list_user = $lg['user_list'])
                                             <div class="collapse" id="collapse_{{$nt['id']}}_{{$lg['id']}}">
-                                                @foreach($list_user as $lu)
-                                                    <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
-                                                        title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
-                                                @endforeach
+                                                @if($list_user)
+                                                    @foreach($list_user as $lu)
+                                                        <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                                            title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
+                                                    @endforeach
+                                                @else
+                                                    <a style="font-size:13px;">This group has no member</a>
+                                                @endif
                                             </div>
                                         </div>
 
