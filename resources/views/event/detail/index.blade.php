@@ -54,9 +54,7 @@
                     @include('sidebar.navbar')
 
                     @foreach($content as $c)
-                        @if(session()->get('role_key') == 1 || $c->user_username_created == session()->get('username_key'))
-                            @include('event.detail.navigator')
-                        @endif
+                        @include('event.detail.navigator')
 
                         <div class="container-fluid bg-white mt-2 mb-3 p-0 shadow" style="border-radius: 18px !important;">
                             @include('event.detail.layout')
@@ -71,5 +69,6 @@
 
         <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>
 </html>

@@ -53,6 +53,7 @@ class Queries extends Controller
                         JOIN contents_details cd ON ch.id = cd.content_id
                         ".$join_content."
                         WHERE ch.deleted_at IS NOT NULL
+                        AND ch.created_by = '".$user_id."'
                     UNION
                         SELECT 
                             ".$select_task." 

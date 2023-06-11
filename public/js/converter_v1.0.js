@@ -42,3 +42,61 @@ function getDateToContext(datetime, type){
         return "-";
     }
 }
+
+function getEventDate(dateStart, dateEnd){
+    if(dateStart && dateEnd){
+        const ds = new Date(dateStart);
+        const de = new Date(dateEnd);
+
+        if(ds.getFullYear() !== de.getFullYear()){
+            //Event year not same
+            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
+                " - " +
+                getDateMonth(de) + " " + de.getFullYear() + " " + getHourMinute(de) + "</a>";
+
+        } else if(ds.getMonth() !== de.getMonth()){
+            //If month not same
+            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
+                " - " +
+                getDateMonth(de) + " " + getHourMinute(de) + "</a>";
+
+        } else if(ds.getDate() !== de.getDate()){
+            //If date not same
+            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + getHourMinute(ds) + 
+                " - " +
+                getDateMonth(de) + " " + ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
+
+        } else if(ds.getDate() === de.getDate()){
+            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + getHourMinute(ds) + 
+                " - " +
+                getHourMinute(de) + "</a>";
+
+        }
+    } else {
+        return "";
+    }
+}
+
+function getDateMonth(date){
+    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    return ("0" + date.getDate()).slice(-2) + " " + month[date.getMonth()].slice(0, 3);
+}
+
+function getHourMinute(date){
+    return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+}
+
+function removeTags(str) {
+    if ((str===null) || (str==='')){
+        return "<span class='fst-italic'>No description provided</span>";
+    } else {
+        str = str.toString();
+    }
+        
+    return str.replace( /(<([^>]+)>)/ig, '');
+}

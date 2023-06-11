@@ -623,7 +623,7 @@
         });
     }
 
-    function getUserImage(img, role){
+    function getUserImageNoAdmin(img, role){
         if(img != null && img != "null"){
             return img;
         } else {
@@ -697,7 +697,7 @@
                         '<a class="btn user-box" style="height:80px;"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-2 ps-2"> ' +
-                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
+                                    '<img class="img img-fluid user-image" src="'+getUserImageNoAdmin(img, grole)+'" alt="username-profile-pic.png"> ' +
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +

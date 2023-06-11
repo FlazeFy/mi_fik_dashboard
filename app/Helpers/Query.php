@@ -207,11 +207,11 @@ class Query
             "; //Check this shit
         } else {
             $query = "
-                (content_date_start <= '".$date_start."' and content_date_end >= '".$date_start."')
+                ((content_date_start <= '".$date_start."' and content_date_end >= '".$date_start."')
                 OR
                 (content_date_start <= '".$date_end."' and content_date_end >= '".$date_end."')
                 OR
-                (content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."')
+                (content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'))
             ";
         }
         
