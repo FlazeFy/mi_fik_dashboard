@@ -9,14 +9,7 @@
     <div class="" id="data-wrapper"></div>
     <!-- Loading -->
     <div class="auto-load text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
+        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
     </div>
     <div id="empty_item_holder"></div>
     <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
@@ -58,14 +51,7 @@
                         "<h6 class='mt-2 mb-0'>" + dct_name + "</h6> " +
                         "<div class='' id='tag-cat-holder-" + slug_name + "'></div> " +
                         "<div class='auto-load-" + slug_name + " text-center'> " +
-                            "<svg version='1.1' id='L9' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' " +
-                                "x='0px' y='0px' height='60' viewBox='0 0 100 100' enable-background='new 0 0 0 0' xml:space='preserve'> " +
-                                "<path fill='#000' " +
-                                    "d='M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50'> " +
-                                    "<animateTransform attributeName='transform' attributeType='XML' type='rotate' dur='1s' " +
-                                        "from='0 50 50' to='360 50 50' repeatCount='indefinite' /> " +
-                                "</path> " +
-                            "</svg> " +
+                            '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
                         "</div> " +
                         "<div id='empty_item_holder_" + slug_name + "'></div> " +
                         "<span id='load_more_holder_" + slug_name + "' style='display: flex; justify-content:end;'></span> " +

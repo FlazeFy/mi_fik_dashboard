@@ -36,7 +36,7 @@
     font-size: 14px;
 }
 .event-box:hover{
-    transform: translateY(15px);
+    transform: scale(1.035);
 }
 .event-box .event-title, .task-title{
     font-weight:bold;

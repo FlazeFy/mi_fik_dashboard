@@ -60,101 +60,6 @@
                 $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
-                function getEventLoc(loc){
-                    if(loc){
-                        return "<span class='loc-limiter px-0 m-0'> " +
-                                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> "+loc[0].detail+"</a> " +
-                            "</span>";
-                    } else {
-                        return "";
-                    }
-                }
-
-                function getDateMonth(date){
-                    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-                    return ("0" + date.getDate()).slice(-2) + " " + month[date.getMonth()].slice(0, 3);
-                }
-
-                function getHourMinute(date){
-                    return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
-                }
-
-                function getEventTag(tag){
-                    if(tag){
-                        var str = "";
-
-                        for(var i = 0; i < tag.length; i++){
-                            if(i != tag.length - 1){
-                                str += tag[i].tag_name +", ";
-                            } else {
-                                str += tag[i].tag_name;
-                            }
-                        }
-
-                        return '<a class="btn-detail" title="'+ str +'"><i class="fa-solid fa-hashtag"></i>'+ tag.length +'</a>';
-                    } else {
-                        return "";
-                    }
-                }
-
-                function getEventDate(dateStart, dateEnd){
-                    if(dateStart && dateEnd){
-                        const ds = new Date(dateStart);
-                        const de = new Date(dateEnd);
-
-                        if(ds.getFullYear() !== de.getFullYear()){
-                            //Event year not same
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
-                                " - " +
-                                getDateMonth(de) + " " + de.getFullYear() + " " + getHourMinute(de) + "</a>";
-
-                        } else if(ds.getMonth() !== de.getMonth()){
-                            //If month not same
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
-                                " - " +
-                                getDateMonth(de) + " " + getHourMinute(de) + "</a>";
-
-                        } else if(ds.getDate() !== de.getDate()){
-                            //If date not same
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + getHourMinute(ds) + 
-                                " - " +
-                                getDateMonth(de) + " " + ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
-
-                        } else if(ds.getDate() === de.getDate()){
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + getHourMinute(ds) + 
-                                " - " +
-                                getHourMinute(de) + "</a>";
-
-                        }
-                    } else {
-                        return "";
-                    }
-                }
-
-                //For now.
-                function removeTags(str) {
-                    if ((str===null) || (str==='')){
-                        return "<span class='fst-italic'>No description provided</span>";
-                    } else {
-                        str = str.toString();
-                    }
-                        
-                    return str.replace( /(<([^>]+)>)/ig, '');
-                }
-
-                function getContentImage(img){
-                    if(img){
-                        return 'url("'+img+'")';
-                    } else {
-                        return "url({{asset('assets/default_content.jpg')}})";
-                    }
-                }
-
                 function getDaysRemaining(date, range){
                     date = new Date(date)
                     now = new Date()
@@ -208,35 +113,6 @@
                     "</div>";
                 }
 
-                function getUsername(username1, username2){
-                    if(username1){
-                        if(username1 == myname){
-                            return "You";
-                        } else {
-                            return username1;
-                        }
-                    } else {
-                        if(username2 == myname){
-                            return "You";
-                        } else {
-                            return username2;
-                        }
-                    }
-                }
-
-                function getUserImage(img1, img2){
-                    if(img1 || img2){
-                        if(img1){
-                            return img1;
-                        } else {
-                            return img2;
-                        }
-                    } else {
-                        //Should make different between lecturer and admin image. but check the api response time first !
-                        return "{{ asset('/assets/default_lecturer.png')}}";
-                    }
-                }
-
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -265,12 +141,12 @@
                         var elmt = " " +
                             "<div class='pb-3 content-item'> " +
                                 "<button class='card shadow event-box ultimate' style='min-height:auto;' onclick=''> " +
-                                    "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
+                                '<div class="card-header header-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), ' + getContentImage(content_image) + ';"></div> ' +
                                     "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                     "<div class='card-body p-2 w-100'> " +
                                         "<div class=''> " +
                                             "<div class='d-inline-block'> " +
-                                                "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_created, ui_created) + "' alt='username-profile-pic.png'> " +
+                                                "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_created, ui_created,au_created, uu_created) + "' alt='username-profile-pic.png'> " +
                                             "</div> " +
                                             "<div class='d-inline-block position-relative w-75'> " +
                                                 "<h6 class='event-title'>" + content_title + "</h6> " +
@@ -303,7 +179,7 @@
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class=''> " +
                                                 "<div class='d-inline-block'> " +
-                                                    "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted) + "' alt='username-profile-pic.png'> " +
+                                                    "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted,au_deleted, uu_deleted) + "' alt='username-profile-pic.png'> " +
                                                 "</div> " +
                                                 "<div class='d-inline-block position-relative w-75'> " +
                                                     "<h6 class='event-title'>Deleted By ~ Deleted At</h6> " +
@@ -524,11 +400,17 @@
                         }
                 }   
             }
+            var listCat = ["event","task","tag","info","group","dictionary","feedback","question","notification"];
+            listCat.forEach(e=>{
+                if($("#data-wrapper-"+e).children().length === 0){
+                    $("#data-wrapper-"+e).html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
+                }
+            });
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
-                $("#empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>Sorry but we not found specific content</h6></div>");
+                $(".empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
             } else {
                 // handle other errors
             }

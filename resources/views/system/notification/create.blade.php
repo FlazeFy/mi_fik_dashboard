@@ -528,18 +528,27 @@
                 $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the group</h5>");
                 return;
             } else {                
+                function getTotalMember(total){
+                    if(total > 0){
+                        return '<span class="text-primary" style="font-size:13px; font-weight:500;"><i class="fa-solid fa-user"></i> ' + total + '</span>';
+                    } else {
+                        return '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> No member</span>';
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug = data[i].slug_name;
                     var groupName = data[i].group_name;
                     var groupDesc = data[i].group_desc;
-                    var total = data[i].total;
+                    var totalMember = data[i].total;
 
                     var elmt = " " +
-                        '<a class="btn user-box py-3" style="height:80px;" onclick=""> ' +
+                        '<a class="btn user-box py-3" style="height:90px;" onclick=""> ' +
                             '<div class="position-relative ps-2"> ' +
                                 '<h6 class="text-secondary fw-normal">' + groupName + '</h6> ' +
-                                '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + groupDesc + '</h6> ' +
+                                '<h6 class="text-secondary fw-bold mb-0" style="font-size:13px;">' + groupDesc + '</h6> ' +
+                                getTotalMember(totalMember) + 
                                 '<div class="form-check position-absolute" style="right: 20px; top: 10px;"> ' +
                                     '<input class="form-check-input" name="user_username[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_group_'+ slug +'" onclick="addSelectedGroup('+"'"+slug+"'"+', '+"'"+groupName+"'"+', this.checked)"> ' +
                                 '</div> ' +
@@ -594,7 +603,7 @@
                     if(data[i].tag_category){
                         var category = data[i].tag_category;
                     } else {
-                        var category = "<span class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> No Category</span>";
+                        var category = "<span class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> No category</span>";
                     }
 
                     var elmt = " " +
@@ -623,7 +632,7 @@
         });
     }
 
-    function getUserImage(img, role){
+    function getUserImageNoAdmin(img, role){
         if(img != null && img != "null"){
             return img;
         } else {
@@ -697,7 +706,7 @@
                         '<a class="btn user-box" style="height:80px;"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-2 ps-2"> ' +
-                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
+                                    '<img class="img img-fluid user-image" src="'+getUserImageNoAdmin(img, grole)+'" alt="username-profile-pic.png"> ' +
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +

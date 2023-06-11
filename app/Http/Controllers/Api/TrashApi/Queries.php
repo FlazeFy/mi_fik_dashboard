@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Helpers\Query;
+use Carbon\Carbon;
 
 use App\Models\Task;
 use App\Models\ContentHeader;
@@ -53,6 +54,7 @@ class Queries extends Controller
                         JOIN contents_details cd ON ch.id = cd.content_id
                         ".$join_content."
                         WHERE ch.deleted_at IS NOT NULL
+                        AND ch.created_by = '".$user_id."'
                     UNION
                         SELECT 
                             ".$select_task." 
@@ -129,8 +131,8 @@ class Queries extends Controller
                 $uu_deleted = $result->user_username_deleted; 
                 $date_start = $result->content_date_start; 
                 $date_end = $result->content_date_end; 
-                $created_at = $result->created_at; 
-                $deleted_at = $result->deleted_at; 
+                $created_at = Carbon::parse($result->created_at)->toIso8601String();
+                $deleted_at = Carbon::parse($result->deleted_at)->toIso8601String();
                 $from = $result->data_from; 
 
                 $clean[] = [

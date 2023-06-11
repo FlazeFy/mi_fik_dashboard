@@ -33,7 +33,7 @@
     font-size: 14px;
 }
 .task-box:hover{
-    transform: translateY(15px);
+    transform: scale(1.035);
 }
 .task-box .task-title{
     font-weight:bold;

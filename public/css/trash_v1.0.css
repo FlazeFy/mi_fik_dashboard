@@ -1,7 +1,7 @@
 .holder-trash-category{
     display: flex;
     flex-direction: column;
-    padding-inline: 5px;
+    padding: 7.5px;
     height: 65vh;
     overflow-y: scroll;
 }

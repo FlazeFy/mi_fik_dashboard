@@ -262,7 +262,7 @@ class ProfileController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
+            return redirect()->back()->with('failed_message', 'Request failed to sended. '.$e);
         }
     }
 

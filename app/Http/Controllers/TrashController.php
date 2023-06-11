@@ -175,7 +175,7 @@ class TrashController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
+            return redirect()->back()->with('failed_message', 'Destroy is failed '.$e);
         }
     }
 }

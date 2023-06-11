@@ -78,21 +78,15 @@ a.fc-daygrid-day-number{
     height: 80px;
     overflow-y: scroll;
 } */
-.fc-daygrid-event:hover{
+.fc-daygrid-event, .fc-timegrid-event{
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
     transition: all 0.4s;
-    transform: scale(1.175);
     z-index: 999 !important;
 }
-.fc-timegrid-event:hover{
-    -webkit-transition: all 0.4s;
-    -o-transition: all 0.4s;
-    transition: all 0.4s;
-    transform: scaleX(1.1);
-    z-index: 999 !important;
+.fc-daygrid-event:hover, .fc-timegrid-event:hover{
+    background: #85def3 !important;
 }
-
 th.fc-col-header-cell.fc-day{
     background: #FFDEB4;
     padding: 10px;

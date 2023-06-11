@@ -39,11 +39,12 @@ class DetailController extends Controller
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("event/detail");
 
-            //Set active nav
-            session()->put('active_nav', 'event');
-            $title = $content[0]->content_title;
-
-            return view ('event.detail.index')
+            if($content){
+                //Set active nav
+                session()->put('active_nav', 'event');
+                $title = $content[0]->content_title;
+                
+                return view ('event.detail.index')
                 ->with('tag', $tag)
                 ->with('content', $content)
                 ->with('title', $title)
@@ -52,6 +53,9 @@ class DetailController extends Controller
                 ->with('info', $info)
                 ->with('archive_relation', $archive_relation)
                 ->with('greet',$greet);
+            } else {
+                return redirect("/404");
+            }
         } else {
             return redirect("/")->with('failed_message','Session lost, try to sign in again');
         }

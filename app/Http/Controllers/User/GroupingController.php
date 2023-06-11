@@ -50,108 +50,117 @@ class GroupingController extends Controller
 
     public function add_group(Request $request)
     {
-        //Validate name avaiability
-        $check = UserGroup::where('group_name', $request->group_name)->get();
+        DB::beginTransaction();
 
-        if(count($check) == 0 && strtolower(str_replace(" ","", $request->group_name)) != "all"){
-            $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        try{
+            //Validate name avaiability
+            $check = DB::table("users_groups")->where('group_name', $request->group_name)->get();
 
-            $validator = Validation::getValidateGroup($request);
-            if ($validator->fails()) {
-                $errors = $validator->messages();
+            if(count($check) == 0 && strtolower(str_replace(" ","", $request->group_name)) != "all"){
+                $user_id = Generator::getUserIdV2(session()->get('role_key'));
 
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                $data = new Request();
-                $obj = [
-                    'history_type' => "group",
-                    'history_body' => "Has created a group category called '".$request->dct_name."'"
-                ];
-                $data->merge($obj);
-
-                $validatorHistory = Validation::getValidateHistory($data);
-                if ($validatorHistory->fails()) {
-                    $errors = $validatorHistory->messages();
+                $validator = Validation::getValidateGroup($request);
+                if ($validator->fails()) {
+                    $errors = $validator->messages();
 
                     return redirect()->back()->with('failed_message', $errors);
                 } else {
-                    $slug = Generator::getSlugName($request->group_name, "group");
-                    $uuid = Generator::getUUID();
+                    $data = new Request();
+                    $obj = [
+                        'history_type' => "group",
+                        'history_body' => "Has created a group category called '".$request->dct_name."'"
+                    ];
+                    $data->merge($obj);
 
-                    $header = UserGroup::create([
-                        'id' => $uuid,
-                        'slug_name' => $slug,
-                        'group_name' => $request->group_name,
-                        'group_desc' => $request->group_desc,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id,
-                        'updated_at' => null,
-                        'updated_by' => null,
-                        'deleted_at' => null,
-                        'deleted_by' => null,
-                    ]);
+                    $validatorHistory = Validation::getValidateHistory($data);
+                    if ($validatorHistory->fails()) {
+                        $errors = $validatorHistory->messages();
 
-                    // if(is_countable($request->username)){
-                    //     $user_count = count($request->username);
-                    
-                    //     for($i = 0; $i < $user_count; $i++){
-                    //         $user_id_mng = Generator::getUserId($request->username[$i], 2);
+                        return redirect()->back()->with('failed_message', $errors);
+                    } else {
+                        $slug = Generator::getSlugName($request->group_name, "group");
+                        $uuid = Generator::getUUID();
 
-                    //         GroupRelation::create([
-                    //             'id' => Generator::getUUID(),
-                    //             'group_id' => $uuid,
-                    //             'user_id' => $user_id_mng,
-                    //             'created_at' => date("Y-m-d H:i:s"),
-                    //             'created_by' => $user_id,
-                    //         ]);
-                    //     }
-                    // } 
+                        $header = DB::table("users_groups")->insert([
+                            'id' => $uuid,
+                            'slug_name' => $slug,
+                            'group_name' => $request->group_name,
+                            'group_desc' => $request->group_desc,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id,
+                            'updated_at' => null,
+                            'updated_by' => null,
+                            'deleted_at' => null,
+                            'deleted_by' => null,
+                        ]);
 
-                    if($request->has('selected_user')){
-                        $users  = json_decode($request->selected_user, true);
+                        // if(is_countable($request->username)){
+                        //     $user_count = count($request->username);
+                        
+                        //     for($i = 0; $i < $user_count; $i++){
+                        //         $user_id_mng = Generator::getUserId($request->username[$i], 2);
 
-                        if($users != null && json_last_error() === JSON_ERROR_NONE){
+                        //         GroupRelation::create([
+                        //             'id' => Generator::getUUID(),
+                        //             'group_id' => $uuid,
+                        //             'user_id' => $user_id_mng,
+                        //             'created_at' => date("Y-m-d H:i:s"),
+                        //             'created_by' => $user_id,
+                        //         ]);
+                        //     }
+                        // } 
 
-                            $count = count($users);
-                            for($i = 0; $i < $count; $i++){
-                                $member_id = Generator::getUserId($users[$i]['username'], 2);
+                        if($request->has('selected_user')){
+                            $users  = json_decode($request->selected_user, true);
 
-                                GroupRelation::create([
-                                    'id' => Generator::getUUID(),
-                                    'group_id' => $uuid,
-                                    'user_id' => $member_id,
-                                    'created_at' => date("Y-m-d H:i:s"),
-                                    'created_by' => $user_id,
-                                ]);
+                            if($users != null && json_last_error() === JSON_ERROR_NONE){
+
+                                $count = count($users);
+                                for($i = 0; $i < $count; $i++){
+                                    $member_id = Generator::getUserId($users[$i]['username'], 2);
+
+                                    DB::table("groups_relations")->insert([
+                                        'id' => Generator::getUUID(),
+                                        'group_id' => $uuid,
+                                        'user_id' => $member_id,
+                                        'created_at' => date("Y-m-d H:i:s"),
+                                        'created_by' => $user_id,
+                                    ]);
+                                }
+
+                                $group_only = false;
+                            } else {
+                                $group_only = true;
                             }
-
-                            $group_only = false;
                         } else {
                             $group_only = true;
                         }
-                    } else {
-                        $group_only = true;
-                    }
 
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => $header->id, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
+                        DB::table("histories")->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $header->id, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
+                        ]);
 
-                    if($group_only == true){
-                        return redirect()->back()->with('success_message', "'".$request->group_name."' group has been created");
-                    } else {
-                        return redirect()->back()->with('success_message', "'".$request->group_name."' group has been created with ".$count." member");
+                        DB::commit();
+                        if($group_only == true){
+                            return redirect()->back()->with('success_message', "'".$request->group_name."' group has been created");
+                        } else {
+                            return redirect()->back()->with('success_message', "'".$request->group_name."' group has been created with ".$count." member");
+                        }
                     }
                 }
+            } else {
+                return redirect()->back()->with('failed_message', 'Create group failed. Please use unique name');
             }
-        } else {
-            return redirect()->back()->with('failed_message', 'Create group failed. Please use unique name');
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return redirect()->back()->with('failed_message', 'Create group failed '.$e);
         }
     }
 
