@@ -179,7 +179,7 @@
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class=''> " +
                                                 "<div class='d-inline-block'> " +
-                                                    "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted) + "' alt='username-profile-pic.png'> " +
+                                                    "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted,au_deleted, uu_deleted) + "' alt='username-profile-pic.png'> " +
                                                 "</div> " +
                                                 "<div class='d-inline-block position-relative w-75'> " +
                                                     "<h6 class='event-title'>Deleted By ~ Deleted At</h6> " +

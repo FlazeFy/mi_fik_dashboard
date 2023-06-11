@@ -60,7 +60,7 @@ class QueryContent extends Controller
         try{
             $content = ContentHeader::getFullContentBySlug($slug);
 
-            if (count($content) == 0) {
+            if (!$content) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Content Not Found',

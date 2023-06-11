@@ -47,21 +47,24 @@ class EditController extends Controller
             $info = Info::getAvailableInfo("event/edit");
             $dct_tag = Dictionary::getDictionaryByType("Tag");
 
-            //Set active nav
-            session()->put('active_nav', 'event');
+            if($content){
+                //Set active nav
+                session()->put('active_nav', 'event');
+                $title = $content[0]->content_title;
 
-            $title = $content[0]->content_title;
-
-            return view ('event.edit.index')
-                ->with('tag', $tag)
-                ->with('content', $content)
-                ->with('title', $title)
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('history', $history)
-                ->with('dct_tag', $dct_tag)
-                ->with('dictionary', $dictionary)
-                ->with('greet',$greet);
+                return view ('event.edit.index')
+                    ->with('tag', $tag)
+                    ->with('content', $content)
+                    ->with('title', $title)
+                    ->with('menu', $menu)
+                    ->with('info', $info)
+                    ->with('history', $history)
+                    ->with('dct_tag', $dct_tag)
+                    ->with('dictionary', $dictionary)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/404");
+            }
         } else {
             return redirect("/")->with('failed_message','Session lost, try to sign in again');
         }

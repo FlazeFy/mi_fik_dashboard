@@ -104,55 +104,58 @@ class ContentHeader extends Model
             LIMIT 1
         ")); 
 
-        $clean = [];
-        $obj;
-        foreach ($content as $result) {
-            $loc = json_decode($result->content_loc, true);
-            $tag = json_decode($result->content_tag, true);
-            $att = json_decode($result->content_attach, true);
-        
-            $slug = $result->slug_name;
-            $title = $result->content_title; 
-            $desc = $result->content_desc; 
-            $au_created = $result->admin_username_created; 
-            $uu_created = $result->user_username_created; 
-            $au_updated = $result->admin_username_updated; 
-            $uu_updated = $result->user_username_updated; 
-            $au_deleted = $result->admin_username_deleted; 
-            $uu_deleted = $result->user_username_deleted; 
-            $image = $result->content_image; 
-            $date_start = $result->content_date_start; 
-            $date_end = $result->content_date_end; 
-            $created_at = $result->created_at; 
-            $updated_at = $result->updated_at; 
-            $is_draft = $result->is_draft; 
-            $views = $result->total_views; 
-
-            $clean[] = (object)[
-                'slug_name' => $slug,
-                'content_title' => $title,
-                'content_desc' => $desc,
-                'admin_username_created' => $au_created,
-                'user_username_created' => $uu_created,
-                'admin_username_updated' => $au_updated,
-                'user_username_updated' => $uu_updated,
-                'admin_username_deleted' => $au_deleted,
-                'user_username_deleted' => $uu_deleted,
-                'content_tag' => $tag,
-                'content_image' => $image,
-                'content_attach' => $att,
-                'content_loc' => $loc,
-                'content_date_start' => $date_start,
-                'content_date_end' => $date_end,
-                'created_at' => $created_at,
-                'updated_at' => $updated_at,
-                'is_draft' => $is_draft,
-                'total_views' => $views,
-            ];
+        if($content){
+            $clean = [];
+            $obj;
+            foreach ($content as $result) {
+                $loc = json_decode($result->content_loc, true);
+                $tag = json_decode($result->content_tag, true);
+                $att = json_decode($result->content_attach, true);
+            
+                $slug = $result->slug_name;
+                $title = $result->content_title; 
+                $desc = $result->content_desc; 
+                $au_created = $result->admin_username_created; 
+                $uu_created = $result->user_username_created; 
+                $au_updated = $result->admin_username_updated; 
+                $uu_updated = $result->user_username_updated; 
+                $au_deleted = $result->admin_username_deleted; 
+                $uu_deleted = $result->user_username_deleted; 
+                $image = $result->content_image; 
+                $date_start = $result->content_date_start; 
+                $date_end = $result->content_date_end; 
+                $created_at = $result->created_at; 
+                $updated_at = $result->updated_at; 
+                $is_draft = $result->is_draft; 
+                $views = $result->total_views; 
+    
+                $clean[] = (object)[
+                    'slug_name' => $slug,
+                    'content_title' => $title,
+                    'content_desc' => $desc,
+                    'admin_username_created' => $au_created,
+                    'user_username_created' => $uu_created,
+                    'admin_username_updated' => $au_updated,
+                    'user_username_updated' => $uu_updated,
+                    'admin_username_deleted' => $au_deleted,
+                    'user_username_deleted' => $uu_deleted,
+                    'content_tag' => $tag,
+                    'content_image' => $image,
+                    'content_attach' => $att,
+                    'content_loc' => $loc,
+                    'content_date_start' => $date_start,
+                    'content_date_end' => $date_end,
+                    'created_at' => $created_at,
+                    'updated_at' => $updated_at,
+                    'is_draft' => $is_draft,
+                    'total_views' => $views,
+                ];
+            }
+            
+            return $clean;
+        } else {
+            return null;
         }
-
-        // $obj = (object)$clean;
-        return $clean;
     }
 
     public static function getContentIdBySlug($slug_name){

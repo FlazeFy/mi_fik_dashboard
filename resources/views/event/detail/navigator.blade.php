@@ -35,7 +35,7 @@
                             <input type="text" name="validation_name" class="form-control" id="validation_name" placeholder="Content Title" oninput="validateDelete()">
                             <label for="validation_name">Content Title</label>
                         </div>
-                        <span id="msg-validation-title"><label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label></span>
+                        <span id="msg-validation-title" class="float-start"><label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label></span><br>
                         
                         @foreach($info as $in)
                             @if($in->info_location == "delete_event")
@@ -45,7 +45,7 @@
                                 </div>
                             @endif
                         @endforeach
-                        <span id="btn-delete-holder"></span>
+                        <span id="btn-delete-holder"><button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-trash"></i> Locked</button></span>
                     </form>
                 </div>
             </div>
@@ -61,10 +61,10 @@
 
             if(val.value != check){
                 msg.innerHTML = '<label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label>';
-                btn_delete.innerHTML = ' ';
+                btn_delete.innerHTML = '<button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-lock"></i> Locked</button>';
             } else {
                 msg.innerHTML = '<label style="font-size:12px;" class="text-success fw-bold">Event title is valid</label>';
-                btn_delete.innerHTML = '<button class="btn btn-danger float-end" type="submit">Delete</button>';
+                btn_delete.innerHTML = '<button class="btn btn-delete-custom float-end" type="submit"><i class="fa-solid fa-trash"></i> Delete</button>';
             }   
         }
     </script>
