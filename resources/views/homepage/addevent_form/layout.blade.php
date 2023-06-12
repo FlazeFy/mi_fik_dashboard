@@ -144,7 +144,7 @@
                             @include('homepage.addevent_form.attachment')
                         </div>
                     </div>
-                    <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span><br>
                 </div>
             </form>
         </div>

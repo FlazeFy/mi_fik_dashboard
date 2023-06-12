@@ -76,10 +76,10 @@
             <h6><i class="fa-regular fa-calendar"></i> Date : {{date("Y M d H:i", strtotime($header['content_date_start']))}} until {{date("Y M d H:i", strtotime($header['content_date_end']))}}</h6>
 
             @if($detail['content_loc'])
-                @php($loc = json_decode($detail->content_loc']))
-                @if($loc[0]['detail'] != null)
-                    <h6><i class="fa-regular fa-calendar"></i> Location : {{$loc[0]['detail']}}</h6>
-                    <a class="btn btn-link" title="Visit on google maps" onclick="location.href'https://www.google.com/maps/dir/Current+Location/{{$loc[1]['detail']}}'"></a>
+                @php($loc = json_decode($detail['content_loc']))
+                @if($loc[0]->detail != null)
+                    <h6><i class="fa-regular fa-calendar"></i> Location : {{$loc[0]->detail}}</h6>
+                    <a class="btn btn-link" title="Visit on google maps" onclick="location.href'https://www.google.com/maps/dir/Current+Location/{{$loc[1]->detail}}'"></a>
                 @endif
             @endif
 
