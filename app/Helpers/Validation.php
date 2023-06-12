@@ -213,6 +213,13 @@ class Validation
         ]);
     }
 
+    public static function getValidateInfoPageLoc($request){
+        return Validator::make($request->all(), [
+            'info_page' => 'required|max:75|string',
+            'info_location' => 'required|max:75|string',
+        ]);
+    }
+
     public static function getValidateEditProfile($request, $role){
         if($role == "admin"){
             return Validator::make($request->all(), [

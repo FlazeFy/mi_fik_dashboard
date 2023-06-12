@@ -138,6 +138,51 @@ class InfoController extends Controller
         }  
     }
 
+    public function update_pagloc(Request $request, $id)
+    {
+        $user_id = Generator::getUserIdV2(session()->get('role_key'));
+
+        $validator = Validation::getValidateInfoPageLoc($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "info",
+                'history_body' => "Has updated a info page and location"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Info::where('id', $id)->update([
+                    'info_page' => $request->info_page, 
+                    'info_location' => $request->info_location, 
+                    'updated_at' => date("Y-m-d H:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success updated info page and location');   
+            }
+        }  
+    }
+
     public function create(Request $request)
     {
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
