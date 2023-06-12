@@ -32,7 +32,7 @@
                     @php($bg = "waiting")
                 @endif
 
-                <tr class="tabular-item normal{{$bg}}">
+                <tr class="tabular-item normal {{$bg}}">
                     <td style="width: 140px;">
                         <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$in->id}}')" id="select-{{$in->id}}">
                             @foreach($dictionary as $dct)
@@ -112,15 +112,19 @@
                     <td>
                         <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$in->info_body}}","{{$in->id}}","{{$in->info_page}}","{{$in->info_location}}")'><i class="fa-solid fa-edit"></i></button>
                         @if($in->info_location != "delete_info")
-                            <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                            @include('system.info.delete')
+                        @endif
+                        
+                        @if($in->is_active == 1)
+                            <button class="btn btn-danger" style="padding-inline:10px;" data-bs-target="#activeModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-toggle-off"></i></button>
+                            @include('system.info.active',['status' => "deactivate"])
+                        @else 
+                            <button class="btn btn-success" data-bs-target="#activeModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-toggle-on"></i></button>
+                            @include('system.info.active',['status' => "activate"])
                         @endif
                     </td>
                 </tr>
-
-                @if($in->info_location != "delete_info")
-                    @include('system.info.delete')
-                @endif
-                
                 @php($i++)
             @endforeach
         </tbody>

@@ -47,6 +47,14 @@
                     </div>
                     <div id="rich_box_create"></div>
                     <input name="info_body" id="info_body" hidden>
+                    @foreach($info as $in)
+                        @if($in->info_location == "add_info")
+                            <div class="info-box {{$in->info_type}}">
+                                <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                <?php echo $in->info_body; ?>
+                            </div>
+                        @endif
+                    @endforeach
                     <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </form>
             </div>

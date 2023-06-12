@@ -85,7 +85,7 @@
                                         @if(session()->get('role_key') == 1)
                                             <div class="col-lg-4 col-md-5 col-sm-12">
                                                 @include('about.help.list')
-                                                <h5 class="text-secondary fw-bold">History</h5>
+                                                <h5 class="text-secondary fw-bold mt-2">History</h5>
                                                 @include('components.history', ['history' => $h_help, 'second'=> true])
                                             </div>
                                             <div class="col-lg-8 col-md-7 col-sm-12">

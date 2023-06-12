@@ -32,6 +32,9 @@
     }
 </style>
 
+@if(session()->get('role_key') == 1)
+    @include('about.help.addType')
+@endif
 <div class="list-help-holder accordion" id="accordion_help">
     @php($i = 0)
 
@@ -51,11 +54,6 @@
             </div>
             @php($i++)
         @endforeach
-    @else 
-
-    @endif
-    @if(session()->get('role_key') == 1)
-        @include('about.help.addType')
     @endif
     <hr>
 </div>

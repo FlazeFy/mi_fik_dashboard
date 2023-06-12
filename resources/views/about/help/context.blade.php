@@ -19,6 +19,10 @@
             @csrf
             <button class="btn btn-info rounded-pill mt-3 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
         </form>
+        <div class="position-absolute text-center" id="no_cat_selected" style="top:100px; left:25%;">
+            <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:30vh; height:30vh;">
+            <h6 class='text-secondary text-center'>Choose the category in type section to see detail</h6>
+        </div>
         <div id="desc_holder_view"></div>
     </div>
 @endif

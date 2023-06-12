@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-success mt-2" style="border-radius:10px;" data-bs-toggle="modal" data-bs-target="#addHelpType">
+<button type="button" class="btn btn-success mb-2 w-100" style="border-radius:10px;" data-bs-toggle="modal" data-bs-target="#addHelpType">
     <i class="fa-solid fa-plus"></i> Add New Type
 </button>
 

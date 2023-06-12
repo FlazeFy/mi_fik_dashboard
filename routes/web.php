@@ -114,6 +114,7 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/info/update/type/{id}', [InfoController::class, 'update_type']);
     Route::post('/info/update/body/{id}', [InfoController::class, 'update_body']);
     Route::post('/info/update/pagloc/{id}', [InfoController::class, 'update_pagloc']);
+    Route::post('/info/update/active/{id}/{active}', [InfoController::class, 'update_active']);
     Route::post('/info/delete/{id}', [InfoController::class, 'delete']);
     Route::post('/info/create', [InfoController::class, 'create']);
 

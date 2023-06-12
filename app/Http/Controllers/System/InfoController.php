@@ -138,6 +138,52 @@ class InfoController extends Controller
         }  
     }
 
+    public function update_active(Request $request, $id, $active)
+    {
+        if ($active != "activate" && $active != "deactivate") {
+            return redirect()->back()->with('failed_message', 'invalid type');
+        } else {
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
+            $data = new Request();
+            $obj = [
+                'history_type' => "info",
+                'history_body' => "Has ".$active." an info"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                if($active == "activate"){
+                    $res = 1;
+                } else if($active == "deactivate"){
+                    $res = 0;
+                }
+
+                Info::where('id', $id)->update([
+                    'is_active' => $res,
+                    'updated_at' => date("Y-m-d H:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success '.$active.' an info');   
+            }
+        }  
+    }
+
     public function update_pagloc(Request $request, $id)
     {
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
