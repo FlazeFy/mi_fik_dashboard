@@ -39,7 +39,6 @@ Route::prefix('/v1/dictionaries')->group(function() {
 });
 
 Route::prefix('/v1/help')->group(function() {
-    Route::get('/', [QueryHelpApi::class, 'getHelpType']);
     Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
 });
 
@@ -69,6 +68,10 @@ Route::prefix('/v1/check')->group(function() {
 ######################### Private Route #########################
 
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
+
+Route::prefix('/v1/help')->middleware(['auth:sanctum'])->group(function() {
+    Route::get('/', [QueryHelpApi::class, 'getHelpType']);
+});
 
 Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueryTaskApi::class, 'getMyTask']);

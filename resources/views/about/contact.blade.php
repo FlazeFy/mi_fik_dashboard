@@ -1,5 +1,5 @@
 <script>
-    let validation = [
+    let vldtContact = [
         { id: "instagram", req: false, len: 255 },
         { id: "twitter", req: false, len: 255 },
         { id: "whatsapp", req: true, len: 50 },
@@ -29,17 +29,17 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <h6 class="mx-3 text-secondary fw-bold">Social Media</h6>
                 <div class="form-floating mb-2">
-                    <input type="text" class="form-control nameInput" id="instagram" name="instagram" value="{{$ig}}" oninput="validateForm(validation)" maxlength="255">
+                    <input type="text" class="form-control nameInput" id="instagram" name="instagram" value="{{$ig}}" oninput="validateForm(vldtContact)" maxlength="255">
                     <label for="instagram">Instagram</label>
                     <a id="instagram_msg" class="text-danger my-2" style="font-size:13px;"></a>
                 </div>
                 <div class="form-floating mb-2">
-                    <input type="text" class="form-control nameInput" id="twitter" name="twitter" value="{{$twt}}" oninput="validateForm(validation)" maxlength="255">
+                    <input type="text" class="form-control nameInput" id="twitter" name="twitter" value="{{$twt}}" oninput="validateForm(vldtContact)" maxlength="255">
                     <label for="twitter">Twitter</label>
                     <a id="twitter_msg" class="text-danger my-2" style="font-size:13px;"></a>
                 </div>
                 <div class="form-floating mb-2">
-                    <input type="text" class="form-control nameInput" id="whatsapp" name="whatsapp" value="{{$wa}}" oninput="validateForm(validation)" maxlength="50" required>
+                    <input type="text" class="form-control nameInput" id="whatsapp" name="whatsapp" value="{{$wa}}" oninput="validateForm(vldtContact)" maxlength="50" required>
                     <label for="whatsapp">Whatsapp</label>
                     <a id="whatsapp_msg" class="text-danger my-2" style="font-size:13px;"></a>
                 </div>
@@ -47,12 +47,12 @@
             <div class="col-lg-6 col-md-6 col-sm-12">
                 <h6 class="mx-3 text-secondary fw-bold">Address</h6>
                 <div class="form-floating mb-2">
-                    <textarea class="form-control" style="height: 100px" id="address" name="address" value="{{$adr}}" oninput="validateForm(validation)" maxlength="255">{{$adr}}</textarea>
+                    <textarea class="form-control" style="height: 100px" id="address" name="address" value="{{$adr}}" oninput="validateForm(vldtContact)" maxlength="255">{{$adr}}</textarea>
                     <label for="address">Address Location</label>
                     <a id="address_msg" class="text-danger my-2" style="font-size:13px;"></a>
                 </div>
                 <div class="form-floating mb-2">
-                    <input type="text" class="form-control nameInput" id="email" name="email" value="{{$email}}" oninput="validateForm(validation)" maxlength="50" required>
+                    <input type="text" class="form-control nameInput" id="email" name="email" value="{{$email}}" oninput="validateForm(vldtContact)" maxlength="50" required>
                     <label for="email">Email</label>
                     <a id="email_msg" class="text-danger my-2" style="font-size:13px;"></a>
                 </div>

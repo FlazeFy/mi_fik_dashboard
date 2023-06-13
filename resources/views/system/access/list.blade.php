@@ -12,10 +12,10 @@
         <tbody class="user-holder tabular-body" id="user-list-holder">
             <!-- Loading -->
             <div class="auto-load text-center">
-            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+                <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+            </div>
         </tbody>
         <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
-        </div>
     </table>
     <div id="empty_item_holder"></div>
 </div>

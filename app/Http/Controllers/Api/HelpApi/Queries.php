@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\HelpApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Models\PersonalAccessTokens;
 
 use App\Models\Help;
 
@@ -40,17 +41,25 @@ class Queries extends Controller
         }
     }
 
-    public function getHelpType(){
+    public function getHelpType(Request $request){
         try{
-            $help = Help::select('help_type')
-                ->whereNotNull('help_category')
-                ->where('help_type', '!=', 'about')
-                ->where('help_type', '!=', 'contact')
-                ->orderBy('help_type', 'DESC')
-                ->groupBy('help_type')
-                ->get();
+            $user_id = $request->user()->id;
+            $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
 
-            if ($help->isEmpty()) {
+            if($check->tokenable_type === "App\\Models\\User"){ // User
+                $help = Help::select('help_type')
+                    ->whereNotNull('help_category')
+                    ->where('help_type', '!=', 'about')
+                    ->where('help_type', '!=', 'contact')
+                    ->orderBy('created_at', 'DESC')
+                    ->orderBy('help_type', 'DESC')
+                    ->groupBy('help_type')
+                    ->get();
+            } else {
+                $help = Help::getHelpListNType();
+            }
+
+            if (count($help)==0) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Help type not found',

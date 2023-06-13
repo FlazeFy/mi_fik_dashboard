@@ -106,7 +106,7 @@
                                             </div>
                                             <div class="col-lg-3 col-md-4 col-sm-12">
                                                 <h5 class="text-secondary fw-bold">History</h5>
-                                                @include('components.history', ['history' => []])
+                                                @include('components.history', ['history' => [], 'third'=> true])
                                             </div>
                                         @else
                                             @include('about.contact')
