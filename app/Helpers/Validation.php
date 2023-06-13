@@ -156,6 +156,16 @@ class Validation
         ]);
     }
 
+    public static function getValidateAboutContact($request){
+        return Validator::make($request->all(), [
+            'instagram' => 'required|min:3|max:75|string',
+            'whatsapp' => 'required|min:8|max:14|string',
+            'twitter' => 'required|min:3|max:75|string',
+            'address' => 'required|min:3|max:255|string',
+            'email' => 'required|min:10|max:75|string',
+        ]);
+    }
+
     public static function getValidateHelp($request){
         return Validator::make($request->all(), [
             'help_type' => 'required|min:2|max:75|string',
@@ -210,6 +220,13 @@ class Validation
     public static function getValidateInfoBody($request){
         return Validator::make($request->all(), [
             'info_body' => 'nullable|min:2|max:500|string',
+        ]);
+    }
+
+    public static function getValidateInfoPageLoc($request){
+        return Validator::make($request->all(), [
+            'info_page' => 'required|max:75|string',
+            'info_location' => 'required|max:75|string',
         ]);
     }
 

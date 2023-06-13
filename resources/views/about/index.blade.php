@@ -85,7 +85,7 @@
                                         @if(session()->get('role_key') == 1)
                                             <div class="col-lg-4 col-md-5 col-sm-12">
                                                 @include('about.help.list')
-                                                <h5 class="text-secondary fw-bold">History</h5>
+                                                <h5 class="text-secondary fw-bold mt-2">History</h5>
                                                 @include('components.history', ['history' => $h_help, 'second'=> true])
                                             </div>
                                             <div class="col-lg-8 col-md-7 col-sm-12">
@@ -96,6 +96,10 @@
                                                 @include('about.help.list')
                                             </div>
                                             <div class="col-lg-8 col-md-7 col-sm-12">
+                                                <div class="position-absolute text-center" id="no_cat_selected" style="top:100px; left:45%;">
+                                                    <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:30vh; height:30vh;">
+                                                    <h6 class='text-secondary text-center'>Choose the category in type section to see detail</h6>
+                                                </div>
                                                 <span id="desc_holder_view"></span>
                                             </div>
                                         @endif
@@ -106,7 +110,7 @@
                                             </div>
                                             <div class="col-lg-3 col-md-4 col-sm-12">
                                                 <h5 class="text-secondary fw-bold">History</h5>
-                                                @include('components.history', ['history' => []])
+                                                @include('components.history', ['history' => [], 'third'=> true])
                                             </div>
                                         @else
                                             @include('about.contact')

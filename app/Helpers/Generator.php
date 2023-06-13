@@ -471,4 +471,16 @@ class Generator
             return $res->image_url;
         }
     }
+
+    public static function getContactTemplate($cat){
+        if($cat == "instagram"){
+            return "https://www.instagram.com/";
+        } else if($cat == "whatsapp"){
+            return "https://wa.me/";
+        } else if($cat == "twitter"){
+            return "https://www.twitter.com/";
+        } else {
+            return "";
+        }
+    }
 }

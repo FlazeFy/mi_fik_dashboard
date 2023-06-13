@@ -5,7 +5,7 @@
         <div id="tag_holder"></div>
     @else 
         <div class="position-absolute" style="right:0; top:0;">
-            <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" 
+            <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilterAddEvent(this.value)" name="tag_category" 
                 style="font-size:13px;"aria-label="Floating label select example" required>
                 @php($i = 0) 
                 @foreach($dct_tag as $dtag) 
@@ -63,7 +63,7 @@
         }
     ?>
 
-    function setTagFilter(tag){
+    function setTagFilterAddEvent(tag){
         tag_cat = tag;
         page_tag = 1;
         infinteLoadMoreTag(page_tag);

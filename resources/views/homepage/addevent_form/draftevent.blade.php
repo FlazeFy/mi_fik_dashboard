@@ -49,12 +49,11 @@
                                         <p class='event-desc my-1'>{{strip_tags($md->content_desc)}}</p>
                                     </div>
                                     <div class='row d-inline-block px-2'>
-                                        @php($loc = $md->content_loc)
                                         @php($tag = $md->content_tag)
 
-                                        @if($loc)
+                                        @if($md->content_loc)
                                             <span class='loc-limiter px-0 m-0'>
-                                                <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> {{$loc[0]['detail']}}</a>
+                                                <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> {{$md->content_loc[0]['detail']}}</a>
                                             </span>
                                         @endif
                                         

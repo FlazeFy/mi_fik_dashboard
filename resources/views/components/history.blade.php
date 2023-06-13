@@ -42,7 +42,14 @@
 
 <script>
     <?php
-        if(isset($second)){
+        if(isset($third)){
+            echo "const date_holder_th = document.querySelectorAll('.history-date');
+
+            date_holder_th.forEach(e => {
+                const date = new Date(e.textContent);
+                e.textContent = getDateToContext(e.textContent, 'datetime');
+            });";
+        } else if(isset($second)){
             echo "const date_holder_hs = document.querySelectorAll('.history-date');
 
             date_holder_hs.forEach(e => {

@@ -1,6 +1,5 @@
 <script>
     let validationAdd = [
-        { id: "info_page", req: true, len: 75 },
         { id: "info_location", req: true, len: 75 },
     ];
 </script>
@@ -18,7 +17,7 @@
                     <div class="row my-2">
                         <div class="col-lg-6 col-md-12 col-sm-12">
                             <div class="form-floating">
-                                <select class="form-select" id="info_type" title="Tag Category" name="info_type" aria-label="Floating label select example" required> 
+                                <select class="form-select" id="info_type" title="Info Type" name="info_type" aria-label="Floating label select example" required> 
                                     @foreach($dictionary as $dct)
                                         <option value="{{strtolower($dct->dct_name)}}">{{$dct->dct_name}}</option>
                                     @endforeach
@@ -28,9 +27,16 @@
                         </div>
                         <div class="col-lg-6 col-md-12 col-sm-12">
                             <div class="form-floating">
-                                <input type="text" class="form-control nameInput" id="info_page" name="info_page" maxlength="75" oninput="validateForm(validationAdd)" required>
+                                <select class="form-select" id="info_page" title="Info Page" name="info_page" aria-label="Floating label select example" required> 
+                                    @foreach($menu as $mn)
+                                        <option value="{{substr($mn->menu_url,1)}}">{{substr($mn->menu_url,1)}}</option>
+                                    @endforeach
+                                    <option value="register">register</option>
+                                    <option value="landing">landing</option>
+                                    <option value="event/detail">event/detail</option>
+                                    <option value="event/edit">event/edit</option>
+                                </select> 
                                 <label for="titleInput_event">Info Page</label>
-                                <a id="info_page_msg" class="text-danger my-2" style="font-size:13px;"></a>
                             </div>
                         </div>
                     </div>
@@ -41,6 +47,14 @@
                     </div>
                     <div id="rich_box_create"></div>
                     <input name="info_body" id="info_body" hidden>
+                    @foreach($info as $in)
+                        @if($in->info_location == "add_info")
+                            <div class="info-box {{$in->info_type}}">
+                                <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                <?php echo $in->info_body; ?>
+                            </div>
+                        @endif
+                    @endforeach
                     <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </form>
             </div>

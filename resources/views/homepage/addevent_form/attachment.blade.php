@@ -1,5 +1,5 @@
 <div>
-    <a class="content-add mb-2" style="float:none;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
+    <a class="btn btn-add-att mb-2" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
     <div class="attachment-holder" id="attachment-holder">
     </div>
     <input hidden id="content_attach" name="content_attach">
@@ -11,6 +11,7 @@
     var maxSizeImage = 4; // Mb
     var maxSizeVideo = 20; // Mb
     var maxSizeDoc = 15; // Mb
+    var err_att = false;
 
     function addAttachmentForm(){
         var id = getAttCode()
@@ -18,7 +19,8 @@
             "id": id,
             "attach_type":null, 
             "attach_name":null, 
-            "attach_url":null
+            "attach_url":null,
+            "is_error":false
         };
 
         attach_list.push(obj);
@@ -65,6 +67,7 @@
             //var att_url = document.getElementById('attach_url_'+id).value;
             var att_cont = document.getElementById('attachment_container_'+id);
             var submitHolder = $("#btn-submit-holder-event");
+            var add_att_btn = document.getElementById('add_att_btn');
             
             if(att_type != "attachment_url" && att_dsbld != true){
                 var att_file_src = document.getElementById('attach_url_'+id).files[0];
@@ -134,12 +137,19 @@
                                 "id": id,
                                 "attach_type": att_type, 
                                 "attach_name": att_name, 
-                                "attach_url": att_url
+                                "attach_url": att_url,
+                                "is_error":false
                             };
                             console.log(attach_list);
                         });
                     });
                 } else {
+                    err_att = true;
+                    attach_list[objIndex]['is_error'] = true;
+                    document.getElementById('attach_name_'+id).disabled = true;
+                    add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
+                    add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+
                     document.getElementById('attach-failed-'+id).innerHTML = "Upload failed. Maximum file size is " + max + " mb";
                     var att_url = null;
                     if(error.message){
@@ -161,7 +171,8 @@
                             "id": id,
                             "attach_type": att_type, 
                             "attach_name": att_name, 
-                            "attach_url": att_url
+                            "attach_url": att_url,
+                            "is_error":false
                         };
                         console.log(attach_list);
                     } else {
@@ -177,6 +188,7 @@
                     "attach_type": att_type, 
                     "attach_url": attach_list[objIndex].attach_url,
                     "attach_name": att_name, 
+                    "is_error":false
                 };
                 console.log(attach_list);
             }
@@ -210,12 +222,30 @@
         return code;
     }
 
+    function validateFailedAtt(){
+        var found = false;
+        attach_list.forEach(e => {
+            if(e.is_error == true){
+                found = true;
+            }
+        });
+
+        if(!found){
+            add_att_btn.setAttribute("class","btn btn-add-att mb-2");
+            add_att_btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Attachment';
+        } else {
+            add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
+            add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+        }
+    }
+
     function deleteAttachmentForm(index){
         let att_type = document.getElementById('attach_type_'+index).value;
 
         attach_list = attach_list.filter(object => {
-            if(att_type != "attachment_url"){
-                var filePath = object.attach_url;
+            var filePath = null;
+            if(att_type != "attachment_url" && object.id == index){
+                filePath = object.attach_url;
                 if(filePath){
                     var storageRef = firebase.storage();
                     var desertRef = storageRef.refFromURL(filePath);
@@ -236,6 +266,7 @@
             return object.id !== index;
         });
 
+        validateFailedAtt()
         lengValidatorEvent('75', 'title');
     }
 

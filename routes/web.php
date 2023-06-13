@@ -113,6 +113,8 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/info', [InfoController::class, 'index']);
     Route::post('/info/update/type/{id}', [InfoController::class, 'update_type']);
     Route::post('/info/update/body/{id}', [InfoController::class, 'update_body']);
+    Route::post('/info/update/pagloc/{id}', [InfoController::class, 'update_pagloc']);
+    Route::post('/info/update/active/{id}/{active}', [InfoController::class, 'update_active']);
     Route::post('/info/delete/{id}', [InfoController::class, 'delete']);
     Route::post('/info/create', [InfoController::class, 'create']);
 
@@ -168,6 +170,7 @@ Route::prefix('/trash')->middleware(['auth_v2:sanctum'])->group(function () {
 Route::prefix('/about')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [AboutController::class, 'index']);
     Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
+    Route::post('/edit/contact', [AboutController::class, 'edit_about_contact']);
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
