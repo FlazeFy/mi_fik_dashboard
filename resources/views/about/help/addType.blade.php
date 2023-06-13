@@ -32,7 +32,7 @@
                 validate("profiledata");
             } else {
                 btn.innerHTML = " ";
-                btn.innerHTML = "<button class='btn btn-submit-form' type='submit' onclick='loadType()' id='btn-submit' data-bs-dismiss='modal'><i class='fa-solid fa-paper-plane'></i> Submit</button>";
+                btn.innerHTML = "<a class='btn btn-submit-form' onclick='addType()' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</a>";
             }
         } else {
             if(typeof val1 === 'undefined'){ 
@@ -52,10 +52,10 @@
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5>Add Type</h5>
                 
-                <form action="/about/help/add/type" method="POST">
+                <form id="formAddType">
                     @csrf 
                     <div class="form-floating">
-                        <input type="text" class="form-control nameInput" id="help_type" name="help_type" maxlength="30" oninput="validateFormAddType(validation)" required>
+                        <input type="text" class="form-control nameInput" id="help_type" name="help_type" maxlength="30" oninput="validateFormAddType(validation)" onkeydown="return submitTypeOnEnter(event)" required>
                         <label for="help_type">Help Type</label>
                         <a id="help_type_msg" class="input-warning text-danger"></a>
                     </div>
@@ -65,3 +65,59 @@
         </div>
     </div>
 </div>
+
+<script>
+    function addType(){
+        $('#help_type_msg').html("");
+
+        $.ajax({
+            url: '/api/v1/help/type',
+            type: 'POST',
+            data: $('#formAddType').serialize(),
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            },
+            success: function(response) {
+                $("#addHelpType").modal('hide');
+                document.getElementById("help_type").value = "";
+                loadType();
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                var errorMessage = "Unknown error occurred";
+                var typeMsg = null;
+                var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
+                console.log(response.responseJSON)
+
+                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                    //Error validation
+                    if(typeof response.responseJSON.result === "string"){
+                        allMsg = response.responseJSON.result;
+                    } else {
+                        if(response.responseJSON.result.hasOwnProperty('help_type')){
+                            allMsg = response.responseJSON.result.help_type[0];
+                        }
+                    }
+                } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
+                    allMsg = response.responseJSON.errors.result[0]
+                } else {
+                    allMsg = errorMessage
+                }
+
+                //Set to html
+                if(allMsg){
+                    $('#help_type_msg').html(icon + allMsg);
+                }
+            }
+        });
+    }
+
+    function submitTypeOnEnter(event) {
+        if (event.keyCode === 13) { 
+            addType();
+            return false; 
+        }
+        return true; 
+    }
+</script>

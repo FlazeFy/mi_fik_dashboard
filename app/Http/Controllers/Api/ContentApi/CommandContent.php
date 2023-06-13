@@ -96,7 +96,11 @@ class CommandContent extends Controller
             if ($validatorHistory->fails()) {
                 $errors = $validatorHistory->messages();
 
-                return redirect()->back()->with('failed_message', $errors);
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Add content failed',
+                    'result' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 //Inital variable
                 $draft = 0;
@@ -221,7 +225,7 @@ class CommandContent extends Controller
                     return response()->json([
                         'status' => 'success',
                         'message' => 'Content created',
-                        // 'data' => $full_result
+                        'data' => $full_result
                     ], Response::HTTP_OK);
                 }
             }

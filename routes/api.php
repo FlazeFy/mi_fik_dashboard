@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ContentApi\QueryTask as QueryTaskApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
 use App\Http\Controllers\Api\UserApi\Commands as CommandUserApi;
 use App\Http\Controllers\Api\HelpApi\Queries as QueryHelpApi;
+use App\Http\Controllers\Api\HelpApi\Commands as CommandHelpApi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
 use App\Http\Controllers\Api\ArchiveApi\Commands as CommandArchiveApi;
@@ -71,6 +72,7 @@ Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:san
 
 Route::prefix('/v1/help')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryHelpApi::class, 'getHelpType']);
+    Route::post('/type', [CommandHelpApi::class, 'addHelpType']);
 });
 
 Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {

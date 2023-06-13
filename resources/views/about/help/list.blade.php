@@ -40,7 +40,7 @@
     <div class="auto-load text-center">
         <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
     </div>
-    <div id="empty_type_holder"></div>
+    <div id="item_type_holder"></div>
 </div>
 <hr>
 
@@ -51,6 +51,7 @@
     var role = "<?= session()->get('role_key'); ?>";
 
     function loadType() {  
+        $("#item_type_holder").empty();
         $.ajax({
             url: "/api/v1/help",
             datatype: "json",
@@ -96,14 +97,14 @@
                         '<span id="load_more_holder-'+helpType.replace(" ", "")+'" style="display: flex; justify-content:center;"></span> ' +
                     '</div>';
 
-                $("#empty_type_holder").append(elmt);
+                $("#item_type_holder").append(elmt);
             }   
             
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
-                $("#empty_type_holder").html("<div class='err-msg-data d-block mx-auto' style='margin-top:-30% !important;'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
+                $("#item_type_holder").html("<div class='err-msg-data d-block mx-auto' style='margin-top:-30% !important;'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
             } else {
                 // handle other errors
             }
