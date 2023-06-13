@@ -170,6 +170,7 @@ Route::prefix('/trash')->middleware(['auth_v2:sanctum'])->group(function () {
 Route::prefix('/about')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [AboutController::class, 'index']);
     Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
+    Route::post('/edit/contact', [AboutController::class, 'edit_about_contact']);
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);

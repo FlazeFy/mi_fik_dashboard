@@ -47,6 +47,7 @@
 <script>
     loadType();
     var page = 1;
+    var i = 0;
     var active_help_cat = "";
     var role = "<?= session()->get('role_key'); ?>";
 
@@ -76,26 +77,44 @@
 
             for(var i = 0; i < data.length; i++){
                 //Attribute
-                var id = data[i].id;
                 var helpType = data[i].help_type;
-                var helpCat = data[i].help_category;
-                var total = data[i].total;
 
-                var elmt = " " +
-                    '<div class="helps_type_box" data-bs-toggle="collapse" data-bs-target="#collapse_category_'+id+'" onclick="infinteLoadCategory('+"'"+id+"'"+','+"'"+helpType+"'"+')"> ' +
-                        '<h6>' + ucFirst(helpType) + '</h6> ' +
-                        '<p>' + getTotal(total, helpCat) + ' Category</p> ' +
-                    '</div> ' +
-                    
-                    '<div class="collapse p-2 pt-0" id="collapse_category_'+id+'" data-bs-parent="#accordion_help"> ' + 
-                        '<div class="category_holder mb-2" id="category_holder-'+helpType.replace(" ", "")+'"> ' +
-                            '<div class="auto-load-'+helpType.replace(" ", "")+' text-center"> ' +
-                                '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 150px; height: 150px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
-                            '</div> ' +
+                if(role == 1){
+                    var id = data[i].id;
+                    var total = data[i].total;
+                    var helpCat = data[i].help_category;
+
+                    var elmt = " " +
+                        '<div class="helps_type_box" data-bs-toggle="collapse" data-bs-target="#collapse_category_'+id+'" onclick="infinteLoadCategory('+"'"+id+"'"+','+"'"+helpType+"'"+')"> ' +
+                            '<h6>' + ucFirst(helpType) + '</h6> ' +
+                            '<p>' + getTotal(total, helpCat) + ' Category</p> ' +
                         '</div> ' +
-                        '<div id="empty_item_holder-'+helpType.replace(" ", "")+'"></div> ' +
-                        '<span id="load_more_holder-'+helpType.replace(" ", "")+'" style="display: flex; justify-content:center;"></span> ' +
-                    '</div>';
+                        
+                        '<div class="collapse p-2 pt-0" id="collapse_category_'+id+'" data-bs-parent="#accordion_help"> ' + 
+                            '<div class="category_holder mb-2" id="category_holder-'+helpType.replace(" ", "")+'"> ' +
+                                '<div class="auto-load-'+helpType.replace(" ", "")+' text-center"> ' +
+                                    '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 150px; height: 150px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div id="empty_item_holder-'+helpType.replace(" ", "")+'"></div> ' +
+                            '<span id="load_more_holder-'+helpType.replace(" ", "")+'" style="display: flex; justify-content:center;"></span> ' +
+                        '</div>';
+                } else {
+                    var elmt = " " +
+                        '<div class="helps_type_box" style="height:60px;" data-bs-toggle="collapse" data-bs-target="#collapse_category_'+i+'" onclick="infinteLoadCategory('+"'"+id+"'"+','+"'"+helpType+"'"+')"> ' +
+                            '<h6 class="mt-2">' + ucFirst(helpType) + '</h6> ' +
+                        '</div> ' +
+                        
+                        '<div class="collapse p-2 pt-0" id="collapse_category_'+i+'" data-bs-parent="#accordion_help"> ' + 
+                            '<div class="category_holder mb-2" id="category_holder-'+helpType.replace(" ", "")+'"> ' +
+                                '<div class="auto-load-'+helpType.replace(" ", "")+' text-center"> ' +
+                                    '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 150px; height: 150px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                                '</div> ' +
+                            '</div> ' +
+                            '<div id="empty_item_holder-'+helpType.replace(" ", "")+'"></div> ' +
+                            '<span id="load_more_holder-'+helpType.replace(" ", "")+'" style="display: flex; justify-content:center;"></span> ' +
+                        '</div>';
+                }
 
                 $("#item_type_holder").append(elmt);
             }   
@@ -170,7 +189,7 @@
                     if(i == data.length - 1 && role == 1){
                         var elmt = " " +
                         '<div class="position-relative"> ' +
-                            '<button class="btn btn-icon-rounded-success position-absolute" style="left:0px;" onclick="getInputHelpCat(' + "'" + id + "'" +',' + "'" + help_type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
+                            '<button class="btn btn-icon-rounded-success position-absolute" style="left:0px;" onclick="getInputHelpCat(' + "'" + type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
                             '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("") +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
                                 ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
                                 ucEachWord(help_category) + 
@@ -192,19 +211,19 @@
             if (jqXHR.status == 404) {
                 var elmt = " " +
                     '<div class="position-relative" style="height:50px;"> ' +
-                        '<button class="btn btn-icon-rounded-success position-absolute" style="left:10px;" onclick="getInputHelpCat(' + "'" + id + "'" +',' + "'" + help_type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
+                        '<button class="btn btn-icon-rounded-success position-absolute" style="left:10px;" onclick="getInputHelpCat(' + "'" + type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
                         '<h6 class="text-center text-secondary position-absolute" style="top:10px; left:60px;">No category on this type</h6> ' +
                     '</div>';
                 $("#category_holder-"+type.replace(" ", "")).append(elmt);
-                $("#category_holder-"+type.replace(" ", "")).css("padding-bottom","35px");
             } else {
                 // handle other errors
             }
         });
     }
 
-    function getInputHelpCat(id,type){
+    function getInputHelpCat(type){
         $(".d-inline.form-add-cat").remove();
+        console.log(type)
         var elmt = " " +
             '<form class="d-inline form-add-cat" method="POST" action="/about/help/add/cat"> ' +
                 '@csrf ' +

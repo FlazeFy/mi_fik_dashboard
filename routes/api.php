@@ -116,7 +116,7 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/{id}', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/{slug}', [QueryArchiveApi::class, 'getArchive']);
     Route::get('/by/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);

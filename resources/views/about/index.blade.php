@@ -96,6 +96,10 @@
                                                 @include('about.help.list')
                                             </div>
                                             <div class="col-lg-8 col-md-7 col-sm-12">
+                                                <div class="position-absolute text-center" id="no_cat_selected" style="top:100px; left:45%;">
+                                                    <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:30vh; height:30vh;">
+                                                    <h6 class='text-secondary text-center'>Choose the category in type section to see detail</h6>
+                                                </div>
                                                 <span id="desc_holder_view"></span>
                                             </div>
                                         @endif
