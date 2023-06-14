@@ -69,7 +69,7 @@ function messageCopy(val){
 
 function getContentImage(img){
     if(img){
-        return 'url("'+img+'")';
+        return "url('"+img+"')";
     } else {
         return "url('http://127.0.0.1:8000/assets/default_content.jpg')";
     }

@@ -68,11 +68,11 @@
     </div>
 </div>
 
-<div class='modal fade' id='history-modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+<div class='modal fade' id='history-modal' data-bs-backdrop="static" tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
     <div class='modal-dialog'>
         <div class='modal-content'>
             <div class='modal-body text-start pt-4'>
-                <button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
+                <button type='button' class='custom-close-modal' data-bs-dismiss='modal' onclick="cleanHistory()" aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
                 <h5>History</h5>
                 <div id="history_holder_detail"></div>
             </div>
@@ -248,6 +248,27 @@
         });;
     }
 
+    var listItem = document.getElementById("history_holder_detail");
+    listItem.addEventListener('scroll', function() {
+        var scrollPosition = listItem.scrollTop + listItem.clientHeight;
+        
+        if (scrollPosition >= listItem.scrollHeight) {
+            pageHistory++;
+
+            var elmt = " " +
+                "<div class='d-block mx-auto' id='load-page-"+pageHistory+"'> " +
+                    '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                "</div>";
+
+            $("#history_holder_detail").append(elmt);
+            historyDetail();
+        }
+    });
+
+    function cleanHistory(){
+        $("#history_holder_detail").empty();
+    }
+
     function historyDetail() {
         $.ajax({
             url: '/api/v1/history/my?page='+pageHistory,
@@ -258,16 +279,17 @@
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
             },
             success: function(response){
+                $("#load-page-"+pageHistory).remove();
+                
                 var response = response.data.data;
                 var len = 0;
 
-                $('#notif-holder').empty(); 
                 if(response != null){
                     len = response.length;
                 }
                 
                 if(len > 0){
-                    $("#history_holder_detail").empty();
+                    //$("#history_holder_detail").empty();
 
                     for(var i = 0; i < len; i++){
                         var historyType = response[i].history_type;

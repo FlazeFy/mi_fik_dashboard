@@ -1,4 +1,6 @@
 <div class="table-responsive">
+    <h6 class="mt-1">Page</h6>
+    <div id="user_navigate"></div>
     <table class="table tabular">
         <thead>
             <tr>
@@ -24,15 +26,12 @@
 </div>
 
 <script>
-    var page_new_req = 1;
-    infinteLoadMoreUser(page_new_req);
+    var pageUser = 1;
+    var lastPageUser = 0;  
+    infinteLoadMoreUser(pageUser);
 
-    function loadmore(route){
-        page_new_req++;
-        infinteLoadMoreUser(page_new_req);
-    }
-
-    function infinteLoadMoreUser(page_new_req) {  
+    function infinteLoadMoreUser(page) {  
+        pageUser = page;
         function getFind(filter, find){
             let trim = find.trim();
             if(find == null || trim === ''){
@@ -50,7 +49,7 @@
         document.getElementById("user-list-holder").innerHTML = "";
     
         $.ajax({
-            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/25/order/" + order + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -63,13 +62,13 @@
             $('.auto-load').hide();
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            lastPageUser = response.data.last_page;
 
-            if(page_new_req != last){
-                $('#load_more_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
-            } else {
-                $('#load_more_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
-            }
+            // if(page_new_req != lastPageUser){
+            //     $('#load_more_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            // } else {
+            //     $('#load_more_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+            // }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
@@ -277,6 +276,8 @@
                     $("#user-list-holder").prepend(elmt);
                 }   
             }
+
+            generatePageNav();
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
@@ -286,6 +287,18 @@
                 // handle other errors
             }
         });
+    }
+
+    function generatePageNav(){
+        $("#user_navigate").empty();
+        for(var i = 1; i <= lastPageUser; i++){
+            if(i == pageUser){
+                var elmt = "<a class='page-holder active'>"+i+"</a>";
+            } else {
+                var elmt = "<a class='page-holder' onclick='infinteLoadMoreUser("+'"'+i+'"'+")'>"+i+"</a>";
+            }
+            $("#user_navigate").append(elmt);
+        }
     }
 
     var page_tag = 1;

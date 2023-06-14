@@ -1,10 +1,6 @@
 <div class="container mt-3 p-0">
     <div class="event-holder row mt-3" >        
         <div class="row p-0 m-0" id="data-wrapper"></div>
-        <!-- Loading -->
-        <div class="auto-load text-center">
-            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
-        </div>
         <div id="empty_item_holder"></div>
         <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
     </div>
@@ -12,21 +8,34 @@
 
 <script type="text/javascript">
     var page = 1;
+    var last = 0;
+    var next_event;
     var myname = "<?= session()->get("username_key") ?>";
     infinteLoadMore(page);
 
-    //Fix the sidebar & content page FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page++;
-    //         infinteLoadMore(page);
-    //     } 
-    // };
+    var listEvent = document.getElementById("content");
+    listEvent.addEventListener('scroll', function() {
+        var scrollPosition = listEvent.scrollTop + listEvent.clientHeight;
+        if (scrollPosition >= listEvent.scrollHeight && page < last) {
+            page++;
+            var elmt = " " +
+            "<div class='d-block mx-auto' id='load-page-event-"+page+"'> " +
+                '<div class="row"> ' +
+                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
+                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
+                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
+                '</div> ' +
+            "</div>";
 
-    function loadmore(route){
-        page++;
-        infinteLoadMore(page);
-    }
+            $("#data-wrapper").append(elmt);
+            infinteLoadMore(page);
+        } else if (page >= last) {
+            var elmt = " " +
+            "<h6 id='load-page-event-"+page+"' class='text-center mt-3'> No more content to show</h6>";
+
+            $("#empty_item_holder").html(elmt);
+        }
+    });
 
     function infinteLoadMore(page) {
         var tag = <?php
@@ -74,15 +83,16 @@
         })
         .done(function (response) {
             $('.auto-load').hide();
+            $("#load-page-event-"+page).remove();
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            last = response.data.last_page;
 
-            if(page != last){
-                $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
-            } else {
-                $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
-            }
+            // if(page != last){
+            //     $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            // } else {
+            //     $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
+            // }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
