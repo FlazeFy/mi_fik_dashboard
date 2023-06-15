@@ -427,4 +427,58 @@ class CommandContent extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function editContentImage(Request $request,$slug){
+        try{
+            $data = new Request();
+            $obj = [
+                'history_type' => "event",
+                'history_body' => "has updated an event image header"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Edit event image failed',
+                    'result' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $user_id = $request->user()->id;
+
+                $content = ContentHeader::select("id")
+                    ->where("slug_name",$slug)
+                    ->first();
+
+                ContentHeader::where("id",$content->id)->update([
+                    'content_image'=> $request->content_image,
+                    'updated_at' => date("Y-m-d H:i:s"),
+                    'updated_by' => $user_id
+                ]);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type,
+                    'context_id' => $content->id,
+                    'history_body' => $data->history_body,
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Content image updated',
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 }

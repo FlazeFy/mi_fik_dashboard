@@ -12,13 +12,14 @@
         height:40px; 
         background:#F78A00;
         border-radius: 100%;
-        display: block;
-        margin-inline: auto;
+        position: absolute;
+        right:10px;
+        bottom:20px;
     }
-    .btn-icon-reset-image{
+    .btn-reset-image{
         position: absolute; 
-        bottom: 10px; 
-        left: 10px;
+        right:100px;
+        bottom:-25px;
         background: #e74645 !important;
         color:#FFFFFF !important;
     }
@@ -26,45 +27,48 @@
         position: absolute; 
         bottom: 10px; 
         left: 60px;
+        top:20px !important;
     }
 </style>
 
-<span class="position-relative">
-    @if(session()->get('profile_pic') == null)
-        @if(session()->get('role_key') == 0)
-            <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{ asset('/assets/default_lecturer.png')}}" id="profile_image_info">
-        @elseif(session()->get('role_key') == 1)
-            <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{ asset('/assets/default_admin.png')}}" id="profile_image_info">
-        @endif
+<div class="position-relative">
+    @if($c->content_image)
+        <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('{{$c->content_image}}');" id="event-header-image">
+            <a class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
+            <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
+        </div>
     @else
-        <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{session()->get('profile_pic')}}" alt="{{session()->get('profile_pic')}}" id="profile_image_info">
+        <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});" id="event-header-image">
+            <a class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
+            <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
+        </div>
     @endif
-    <div class='image-upload' id='formFileImg'>
-        <label for='file-input'>
-            <span class="btn-change-image" id="btn-change-image"><img class="img img-fluid" src="{{ asset('/assets/camera.png')}}"></span>
-        </label>
-        <input id='file-input' type='file' accept="image/*" value="" onchange='setValueProfileImage()'/>
-    </div>
-    <form id="form-image" class="d-inline">
-        <input hidden type="text" name="image_url" id="profile_image_url" value="">
-    </form>
-    @if(session()->get("profile_pic") != null)
-        <a class="btn btn-reset-image" id="btn-reset-image" style="top: 47.5px; right: -27.5px;" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
+        <div class='image-upload' id='formFileImg'>
+            <label for='file-input'>
+                <span class="btn-change-image" style="top:0 !important;" id="btn-change-image"><img class="img img-fluid" src="{{ asset('/assets/camera.png')}}"></span>
+            </label>
+            <input id='file-input' type='file' accept="image/*" value="" onchange='setContentImage()'/>
+        </div> 
+        <form id="form-image-content" class="d-inline">
+            <input hidden type="text" name="content_image" id="content_image_url" value="">
+        </form>
+    @if($c->content_image != null)
+        <a class="btn btn-reset-image" id="btn-reset-image" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
     @endif
     <span class="status-holder">
         <span class="attach-upload-status success" id="header-progress"></span>
         <a class="attach-upload-status failed" id="header-failed"></a>
         <a class="attach-upload-status warning" id="header-warning"></a>
     </span>
-</span>
+</div>
 
 <script>        
-    function setValueProfileImage(){
+    function setContentImage(){
         var file_src = document.getElementById('file-input').files[0];
         var maxSize = 4; // Mb
 
         if(file_src.size <= maxSize * 1024 * 1024){
-            var filePath = 'profile_image/' + getUUID();
+            var filePath = 'content_image/' + getUUID();
 
             var storageRef = firebase.storage().ref(filePath);
             var uploadTask = storageRef.put(file_src);
@@ -79,8 +83,7 @@
             }, 
             function () {
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
-                    document.getElementById('profile_image_info').src = downloadUrl;
-                    document.getElementById('profile_image_url').value = downloadUrl;
+                    document.getElementById('content_image_url').value = downloadUrl;
                     edit_image();
                 });
             });
@@ -91,23 +94,23 @@
 
     function clearImage() {
         var storageRef = firebase.storage();
-        var desertRef = storageRef.refFromURL('<?= session()->get("profile_pic"); ?>');
+        var desertRef = storageRef.refFromURL("{{$c->content_image}}");
 
         desertRef.delete().then(() => {
-            document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>';
+            document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Content image has been set to default</h6></span>';
         }).catch((error) => {
             document.getElementById("header-failed").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>'+error+'</h6></span>';
         });
 
-        document.getElementById("profile_image_url").value = null;
+        document.getElementById("content_image_url").value = null;
         edit_image();
     }
 
     function edit_image(){
         $.ajax({
-            url: '/api/v1/user/update/image',
+            url: '/api/v1/content/edit/image/{{$c->slug_name}}',
             type: 'PUT',
-            data: $('#form-image').serialize(),
+            data: $('#form-image-content').serialize(),
             dataType: 'json',
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
@@ -126,8 +129,8 @@
                     if(typeof response.responseJSON.result === "string"){
                         errorMsg = response.responseJSON.result;
                     } else {
-                        if(response.responseJSON.result.hasOwnProperty('image_url')){
-                            errorMsg = response.responseJSON.result.image_url[0];
+                        if(response.responseJSON.result.hasOwnProperty('content_image')){
+                            errorMsg = response.responseJSON.result.content_image[0];
                         }
                     }
                 } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
@@ -139,21 +142,19 @@
             }
         });
     }
-</script>
 
-<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+    function resize(img){
+        if(img){
+            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('" + img + "');";
+        } else {
+            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');";
+        }
 
-<script>
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-        apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
-        authDomain: "mifik-83723.firebaseapp.com",
-        projectId: "mifik-83723",
-        storageBucket: "mifik-83723.appspot.com",
-        messagingSenderId: "38302719013",
-        appId: "1:38302719013:web:23e7dc410514ae43d573cc",
-        measurementId: "G-V13CR730JG"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+        if(i % 2 == 0){
+            document.getElementById('event-header-image').style = "height: 100vh; " + img_url;
+        } else {
+            document.getElementById('event-header-image').style = "height: 30vh; " + img_url;
+        }
+        i++;
+    }
 </script>
