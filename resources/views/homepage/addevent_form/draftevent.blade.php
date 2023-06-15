@@ -49,24 +49,25 @@
                                         <p class='event-desc my-1'>{{strip_tags($md->content_desc)}}</p>
                                     </div>
                                     <div class='row d-inline-block px-2'>
-                                        @php($tag = $md->content_tag)
+                                        @if($md->content_tag)
+                                            @php($tag = $md->content_tag)
 
-                                        @if($md->content_loc)
-                                            <span class='loc-limiter px-0 m-0'>
-                                                <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> {{$md->content_loc[0]['detail']}}</a>
-                                            </span>
-                                        @endif
-                                        
-                                        @php($str = "")
-                                        @for($i = 0; $i < count($tag); $i++)
-                                            @if($i != count($tag) - 1)
-                                                @php($str .= "".$tag[$i]['tag_name'].", ")
-                                            @else
-                                                @php($str .= "".$tag[$i]['tag_name']."")
+                                            @if($md->content_loc)
+                                                <span class='loc-limiter px-0 m-0'>
+                                                    <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> {{$md->content_loc[0]['detail']}}</a>
+                                                </span>
                                             @endif
-                                        @endfor
-
-                                        <a class="btn-detail" title="{{$str}}"><i class="fa-solid fa-hashtag"></i>{{count($tag)}}</a>
+                                            
+                                            @php($str = "")
+                                            @for($i = 0; $i < count($tag); $i++)
+                                                @if($i != count($tag) - 1)
+                                                    @php($str .= "".$tag[$i]['tag_name'].", ")
+                                                @else
+                                                    @php($str .= "".$tag[$i]['tag_name']."")
+                                                @endif
+                                            @endfor
+                                            <a class="btn-detail" title="{{$str}}"><i class="fa-solid fa-hashtag"></i>{{count($tag)}}</a>
+                                        @endif
                                     </div>
                                 </div>
                             </button>
