@@ -85,6 +85,10 @@
     height: 200px;
     width: 100%;
 }
+.skeleton-box.user-box{
+    height: 100px;
+    width: 100%;
+}
   
 .skeleton-box::after {
     position: absolute;
@@ -115,10 +119,12 @@
     border: 1.5px solid #F78A00;
     padding: 6px 12px;
     margin-right: 6px;
+    margin-bottom: 6px;
     font-weight: 500;
     font-size: 16px;
     color: #F78A00;
     cursor: pointer;
+    display: inline-block;
 }
 .page-holder:hover{
     background: #F78A00;

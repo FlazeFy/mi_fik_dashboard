@@ -102,7 +102,7 @@
                                                             title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
                                                     @endforeach
                                                 @else
-                                                    <a style="font-size:13px;">This group has no member</a>
+                                                    <a style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> This group has no member</a>
                                                 @endif
                                             </div>
                                         </div>

@@ -138,7 +138,7 @@
                         return elmnt
 
                     } else {
-                        return "<h6 class='text-danger'>This user has no role</h6>" ;
+                        return "<h6 class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> This user has no role</h6>" ;
                     }
                 }
 
