@@ -24,13 +24,14 @@
             <textarea class="form-control" style="height: 270px" id="question_answer" name="question_answer" oninput="infinteLoadSuggest()" maxlength="500"></textarea>
             <label for="question_answer">FAQ Answer</label>
             <a id="question_answer_msg" class="text-danger my-2" style="font-size:13px;"></a>
-            <div class="form-check form-switch position-absolute" style="right: 0; bottom: -40px;">
+            <div class="form-check form-switch position-absolute" style="right: 60px; bottom: -40px;">
                 <input class="form-check-input me-2" type="checkbox" id="suggestion_search" style="width:40px; height: 20px;">
                 <label class="form-check-label" for="suggestion_search">Show Suggestion</label>
             </div>
         </div>
         <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
     </form>
+    <button class="btn btn-danger float-end" data-bs-target="#deleteModal" data-bs-toggle="modal" style="margin-top:-60px; margin-right:10px;"><i class="fa-solid fa-trash"></i></button>
 
     <div class="answer_suggestion" id="answer_suggestion">
         <!-- Loading -->

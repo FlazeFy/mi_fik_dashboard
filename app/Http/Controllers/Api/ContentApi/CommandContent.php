@@ -276,13 +276,14 @@ class CommandContent extends Controller
                         ->update($header);
                     
                 } else {
+                    $tags = null;
                     if(is_array($request->content_tag) && $request->content_tag != null){
-                        $tag = Converter::getTag($request->content_tag);
-                        $tag = json_decode($tag, true);
+                        $tags = Converter::getTag($request->content_tag);
+                        $tag = json_decode($tags, true);
                     } else if($request->content_tag != null){
                         // $tag = Converter::getTag(json_decode($request->content_tag));
                         // $tag = json_decode($tag, true);
-                        $tag = $request->content_tag;
+                        $tags = $request->content_tag;
                     }
 
                     $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
@@ -316,19 +317,17 @@ class CommandContent extends Controller
 
                     DB::table("contents_headers")->insert($header);
 
-                    if($tag != null || $request->has('content_attach')){
-                        $detail = [
-                            'id' => Generator::getUUID(),
-                            'content_id' => $uuid,
-                            'content_attach' => $request->content_attach,
-                            'content_tag' => $tag,
-                            'content_loc' => $request->content_loc,
-                            'created_at' => date("Y-m-d H:i"),
-                            'updated_at' => null
-                        ];
-
-                        DB::table("contents_details")->insert($detail);
-                    }
+                    $detail = [
+                        'id' => Generator::getUUID(),
+                        'content_id' => $uuid,
+                        'content_attach' => $request->content_attach,
+                        'content_tag' => $tags,
+                        'content_loc' => $request->content_loc,
+                        'created_at' => date("Y-m-d H:i"),
+                        'updated_at' => null
+                    ];
+                    DB::table("contents_details")->insert($detail);
+                
 
                     DB::commit();
                 }

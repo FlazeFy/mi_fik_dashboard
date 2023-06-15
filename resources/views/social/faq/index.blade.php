@@ -100,6 +100,7 @@
         <!--Modal-->
         @include('popup.success')
         @include('popup.failed')
+        @include('social.faq.delete')
 
         <script>
             //Popover

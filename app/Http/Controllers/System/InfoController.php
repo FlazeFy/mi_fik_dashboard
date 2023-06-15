@@ -301,7 +301,7 @@ class InfoController extends Controller
         } else {
             Info::where('id', $id)->update([
                 'deleted_at' => date("Y-m-d H:i:s"),
-                'updated_by' => $user_id
+                'deleted_by' => $user_id
             ]);
 
             History::create([

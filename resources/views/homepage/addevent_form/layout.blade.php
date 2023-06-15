@@ -170,7 +170,7 @@
             for (let i = 0; i < inputs.length; i++) {
                 const input = inputs[i];
                 
-                if (input.value.trim() !== '' && input.name != "_token") {
+                if (input.value.trim() !== '' && input.name != "_token" && document.getElementById("slug_name").value.trim() == "") {
                     is_editing = true;
                     break;
                 }
@@ -197,6 +197,7 @@
                 document.getElementById("draft-status").innerHTML = '<i class="fa-solid fa-circle-check"></i> Saved to draft';
                 document.getElementById("slug_name").value = response.data.header.slug_name;
                 document.getElementById("btn-draft-holder-event").innerHTML = '<a class="custom-submit-modal text-decoration-none pt-2" disabled style="right:120px;"><i class="fa-solid fa-arrows-rotate"></i> Event is drafted</a>';
+                $("#draft-btn-event").css("right", "170px");
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 console.log(response)
