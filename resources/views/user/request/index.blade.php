@@ -95,8 +95,16 @@
                 return new bootstrap.Popover(popoverTriggerEl)
             })
 
+            var isFormSubmitted = false;
+            var forms = document.getElementsByTagName('form');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function() {
+                    isFormSubmitted = true;
+                });
+            }
+
             window.addEventListener('beforeunload', function(event) {
-                if(selectedOldUser.length > 0 || selectedNewUser.length > 0 || slct_list.length > 0){
+                if((selectedOldUser.length > 0 || selectedNewUser.length > 0 || slct_list.length > 0) && !isFormSubmitted){
                     event.preventDefault();
                     event.returnValue = '';
                 }

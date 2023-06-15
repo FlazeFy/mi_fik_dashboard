@@ -80,7 +80,7 @@
     }
 
     window.addEventListener('beforeunload', function(event) {
-        if(slct_list.length > 0){
+        if(slct_list.length > 0 && !isFormSubmitted){
             event.preventDefault();
             event.returnValue = '';
         }

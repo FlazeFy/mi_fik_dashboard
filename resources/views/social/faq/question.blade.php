@@ -145,15 +145,17 @@
             setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
-        loadAnswer(answer, id);
+        loadAnswer(answer, id, status);
     }
 
-    function loadAnswer(answer, id){
+    function loadAnswer(answer, id, status){
         var question_holder = document.getElementById("question_answer");
         var question_id = document.getElementById("question_id");
+        var question_status = document.getElementById("question_status");
 
         question_holder.value = answer;
         question_id.value = id;
+        question_status.value = status;
 
         validateForm(validation);
     }

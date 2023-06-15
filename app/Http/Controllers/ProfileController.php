@@ -201,12 +201,10 @@ class ProfileController extends Controller
                     if(count($add) > 0){
                         DB::table("users_requests")->insert([
                             'id' => Generator::getUUID(),
-                            'tag_slug_name' => $checkAdd,
+                            'tag_slug_name' => $roleAdd,
                             'request_type' => "add",
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
-                            'updated_at' => null,
-                            'updated_by' => null,
                             'is_rejected' => null,
                             'rejected_at' => null,
                             'rejected_by' => null,
@@ -228,12 +226,10 @@ class ProfileController extends Controller
                     if(count($remove) > 0){
                         DB::table("users_requests")->insert([
                             'id' => Generator::getUUID(),
-                            'tag_slug_name' => $checkRemove,
+                            'tag_slug_name' => $roleRemove,
                             'request_type' => "remove",
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
-                            'updated_at' => null,
-                            'updated_by' => null,
                             'is_rejected' => null,
                             'rejected_at' => null,
                             'rejected_by' => null,

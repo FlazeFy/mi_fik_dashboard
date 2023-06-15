@@ -84,6 +84,13 @@
                 return new bootstrap.Popover(popoverTriggerEl)
             })
 
+            var isFormSubmitted = false;
+            var forms = document.getElementsByTagName('form');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function() {
+                    isFormSubmitted = true;
+                });
+            }
         </script>
 
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>

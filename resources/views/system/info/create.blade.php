@@ -93,34 +93,36 @@
     });
 
     window.addEventListener('beforeunload', function(event) {
-        var is_editing = false;
-        const form = document.getElementById('form-add-info');
-        const inputs = form.querySelectorAll('input');
-        var parentDiv = document.querySelector('#rich_box_create');
-        var richText = parentDiv.querySelector('.ql-editor');
+        if(!isFormSubmitted){
+            var is_editing = false;
+            const form = document.getElementById('form-add-info');
+            const inputs = form.querySelectorAll('input');
+            var parentDiv = document.querySelector('#rich_box_create');
+            var richText = parentDiv.querySelector('.ql-editor');
 
-        for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-            
-            if (input.value.trim() !== '' && input.name != "_token") {
-                is_editing = true;
-                console.log(input.name)
-                break;
-            }
-        }
-        if (richText) {
-            for (var i = 0; i < richText.childNodes.length; i++) {
-                var cNode = richText.childNodes[i];
-                if (cNode.nodeType === Node.ELEMENT_NODE && cNode.textContent.trim() !== '') {
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                
+                if (input.value.trim() !== '' && input.name != "_token") {
                     is_editing = true;
+                    console.log(input.name)
                     break;
                 }
             }
-        }
+            if (richText) {
+                for (var i = 0; i < richText.childNodes.length; i++) {
+                    var cNode = richText.childNodes[i];
+                    if (cNode.nodeType === Node.ELEMENT_NODE && cNode.textContent.trim() !== '') {
+                        is_editing = true;
+                        break;
+                    }
+                }
+            }
 
-        if(is_editing){
-            event.preventDefault();
-            event.returnValue = '';
+            if(is_editing){
+                event.preventDefault();
+                event.returnValue = '';
+            }
         }
     });
 </script>

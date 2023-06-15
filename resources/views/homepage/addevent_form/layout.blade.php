@@ -147,7 +147,7 @@
                         </div>
                     </div>
                     <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span><br>
-                    <span id="btn-draft-holder-event"><a class="custom-submit-modal text-decoration-none pt-2" onclick="savedraft()" style="right:120px;"><i class="fa-solid fa-pause"></i> Save as Draft</a></span>
+                    <span id="btn-draft-holder-event"><a class="custom-submit-modal text-decoration-none pt-2" id="draft-btn-event" onclick="savedraft()" style="right:120px;"><i class="fa-solid fa-pause"></i> Save as Draft</a></span>
                 </div>
             </form>
         </div>
@@ -162,22 +162,24 @@
     });
     
     window.addEventListener('beforeunload', function(event) {
-        var is_editing = false;
-        const form = document.getElementById('form-add-event');
-        const inputs = form.querySelectorAll('input');
+        if(!isFormSubmitted){
+            var is_editing = false;
+            const form = document.getElementById('form-add-event');
+            const inputs = form.querySelectorAll('input');
 
-        for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-            
-            if (input.value.trim() !== '' && input.name != "_token") {
-                is_editing = true;
-                break;
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                
+                if (input.value.trim() !== '' && input.name != "_token") {
+                    is_editing = true;
+                    break;
+                }
             }
-        }
 
-        if(is_editing || attach_list.length > 0){
-            event.preventDefault();
-            event.returnValue = '';
+            if(is_editing || attach_list.length > 0){
+                event.preventDefault();
+                event.returnValue = '';
+            }
         }
     });
 

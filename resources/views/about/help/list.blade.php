@@ -229,7 +229,7 @@
                 '@csrf ' +
                 '<div class="btn btn-category-help add"> ' +
                     '<input name="help_type" value="' + type + '" hidden> ' +
-                    '<input class="form-control" name="help_category" id="help_category_input" type="text" maxlength="75" onblur="this.form.submit()" required> ' +
+                    '<input class="form-control" name="help_category" id="help_category_input" type="text" maxlength="75" onblur="this.form.submit(); isFormSubmitted=true;" required> ' +
                     '<a class="warning-input"><i class="fa-solid fa-triangle-exclamation text-primary"></i> Press esc or click outside the input to submit</a> ' +
                 '</div> ' +
             '</form>';
@@ -237,7 +237,7 @@
     }
 
     window.addEventListener('beforeunload', function(event) {
-        if(document.getElementById("help_category_input").value.trim() != ""){
+        if(document.getElementById("help_category_input").value.trim() != "" && !isFormSubmitted){
             event.preventDefault();
             event.returnValue = '';
         }

@@ -99,7 +99,7 @@
     }
 
     window.addEventListener('beforeunload', function(event) {
-        if(document.getElementById("question_body").value.trim() != ""){
+        if(document.getElementById("question_body").value.trim() != "" && !isFormSubmitted){
             event.preventDefault();
             event.returnValue = '';
         }

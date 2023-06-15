@@ -50,22 +50,24 @@
 
 <script>
     window.addEventListener('beforeunload', function(event) {
-        var is_editing = false;
-        const form = document.getElementById('form-add-tag');
-        const inputs = form.querySelectorAll('input');
+        if(!isFormSubmitted){
+            var is_editing = false;
+            const form = document.getElementById('form-add-tag');
+            const inputs = form.querySelectorAll('input');
 
-        for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-            
-            if (input.value.trim() !== '' && input.name != "_token") {
-                is_editing = true;
-                break;
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                
+                if (input.value.trim() !== '' && input.name != "_token") {
+                    is_editing = true;
+                    break;
+                }
             }
-        }
 
-        if(is_editing){
-            event.preventDefault();
-            event.returnValue = '';
+            if(is_editing){
+                event.preventDefault();
+                event.returnValue = '';
+            }
         }
     });
 </script>

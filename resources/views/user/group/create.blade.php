@@ -81,23 +81,25 @@
     }
 
     window.addEventListener('beforeunload', function(event) {
-        var is_editing = false;
-        const form = document.getElementById('form-add-group');
-        const inputs = form.querySelectorAll('input');
+        if(!isFormSubmitted){
+            var is_editing = false;
+            const form = document.getElementById('form-add-group');
+            const inputs = form.querySelectorAll('input');
 
-        for (let i = 0; i < inputs.length; i++) {
-            const input = inputs[i];
-            
-            if (input.value.trim() !== '' && input.name != "_token" && input.name != "user_username[]") {
-                is_editing = true;
-                console.log(input.name)
-                break;
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                
+                if (input.value.trim() !== '' && input.name != "_token" && input.name != "user_username[]") {
+                    is_editing = true;
+                    console.log(input.name)
+                    break;
+                }
             }
-        }
 
-        if(is_editing || selectedUser.length > 0 || selectedMember.length > 0 || selectedMemberRemove.length > 0){
-            event.preventDefault();
-            event.returnValue = '';
+            if(is_editing || selectedUser.length > 0 || selectedMember.length > 0 || selectedMemberRemove.length > 0){
+                event.preventDefault();
+                event.returnValue = '';
+            }
         }
     });
 

@@ -68,7 +68,7 @@
 
 <script>
     window.addEventListener('beforeunload', function(event) {
-        if(document.getElementById("help_type").value.trim() != ""){
+        if(document.getElementById("help_type").value.trim() != "" && !isFormSubmitted){
             event.preventDefault();
             event.returnValue = '';
         }
