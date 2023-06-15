@@ -117,11 +117,6 @@
                                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
                                         <div class="row">
                                             <div class="col-lg-4">
-                                                <div class="content-section-small mt-2">    
-                                                    @include('trash.category', ["category" => "notification"])
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-4">
                                                 <div class="content-section-small mt-2">
                                                     @include('trash.category', ["category" => "dictionary"])
                                                 </div>
