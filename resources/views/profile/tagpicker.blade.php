@@ -79,6 +79,13 @@
         infinteLoadMore(page);
     }
 
+    window.addEventListener('beforeunload', function(event) {
+        if(slct_list.length > 0){
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
+
     function stylingTagManage(){
         $("#info-box-profile").css({"text-align":"left"});
 

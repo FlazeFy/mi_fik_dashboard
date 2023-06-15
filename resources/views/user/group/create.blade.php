@@ -23,7 +23,7 @@
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5>Add Grouping</h5>
                 
-                <form action="/user/group/add" method="POST">
+                <form action="/user/group/add" method="POST" id="form-add-group">
                     @csrf 
                     <div class="row mt-4">
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -79,6 +79,27 @@
         page_new_req++;
         infinteLoadMoreUser(page_new_req);
     }
+
+    window.addEventListener('beforeunload', function(event) {
+        var is_editing = false;
+        const form = document.getElementById('form-add-group');
+        const inputs = form.querySelectorAll('input');
+
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            
+            if (input.value.trim() !== '' && input.name != "_token" && input.name != "user_username[]") {
+                is_editing = true;
+                console.log(input.name)
+                break;
+            }
+        }
+
+        if(is_editing || selectedUser.length > 0 || selectedMember.length > 0 || selectedMemberRemove.length > 0){
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
 
     function getUserImage(img, role){
         if(img != null && img != "null"){

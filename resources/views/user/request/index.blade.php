@@ -95,7 +95,14 @@
                 return new bootstrap.Popover(popoverTriggerEl)
             })
 
+            window.addEventListener('beforeunload', function(event) {
+                if(selectedOldUser.length > 0 || selectedNewUser.length > 0 || slct_list.length > 0){
+                    event.preventDefault();
+                    event.returnValue = '';
+                }
+            });
         </script>
+
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>

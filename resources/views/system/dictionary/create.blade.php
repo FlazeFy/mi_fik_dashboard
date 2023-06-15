@@ -13,7 +13,7 @@
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5>Add Dictionary</h5>
                 
-                <form action="/system/dictionary/create" method="POST">
+                <form action="/system/dictionary/create" method="POST" id="form-add-dct">
                     @csrf 
                     <div class="form-floating">
                         <input type="text" class="form-control nameInput" id="dct_name" name="dct_name" maxlength="35" oninput="validateForm(validationAdd)" required>
@@ -39,3 +39,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    window.addEventListener('beforeunload', function(event) {
+        var is_editing = false;
+        const form = document.getElementById('form-add-dct');
+        const inputs = form.querySelectorAll('input');
+
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            
+            if (input.value.trim() !== '' && input.name != "_token") {
+                is_editing = true;
+                console.log(input.name)
+                break;
+            }
+        }
+
+        if(is_editing){
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
+</script>

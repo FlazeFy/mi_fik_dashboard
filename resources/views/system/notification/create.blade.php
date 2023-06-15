@@ -107,7 +107,7 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <form action="/system/notification/add" method="POST">
+                <form action="/system/notification/add" method="POST" id="form-add-notif">
                     @csrf
                     <h5>Add <span id="type-title"></span> Notif</h5>
                     
@@ -124,6 +124,27 @@
     var selectedRole = [];
     var tag_cat = '<?= $dct_tag[0]["slug_name"]; ?>';
     var page_tag = 1;
+
+    window.addEventListener('beforeunload', function(event) {
+        var is_editing = false;
+        const form = document.getElementById('form-add-notif');
+        const inputs = form.querySelectorAll('input');
+
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            
+            if (input.value.trim() !== '' && input.name != "_token" && input.name != "send_to" && input.name != "slug_name[]" && input.name != "user_username[]") {
+                is_editing = true;
+                console.log(input.name)
+                break;
+            }
+        }
+
+        if(is_editing || selectedUser.length > 0 || selectedGroup.length > 0 || selectedRole.length > 0){
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
 
     function setTagFilter(tag){
         tag_cat = tag;

@@ -12,7 +12,7 @@
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <h5>Add Info</h5>
                 
-                <form action="/system/info/create" method="POST" onsubmit="getRichTextCreate()">
+                <form action="/system/info/create" method="POST" onsubmit="getRichTextCreate()" id="form-add-info">
                     @csrf 
                     <div class="row my-2">
                         <div class="col-lg-6 col-md-12 col-sm-12">
@@ -90,5 +90,37 @@
 <script>
     var quill = new Quill('#rich_box_create', {
         theme: 'snow'
+    });
+
+    window.addEventListener('beforeunload', function(event) {
+        var is_editing = false;
+        const form = document.getElementById('form-add-info');
+        const inputs = form.querySelectorAll('input');
+        var parentDiv = document.querySelector('#rich_box_create');
+        var richText = parentDiv.querySelector('.ql-editor');
+
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i];
+            
+            if (input.value.trim() !== '' && input.name != "_token") {
+                is_editing = true;
+                console.log(input.name)
+                break;
+            }
+        }
+        if (richText) {
+            for (var i = 0; i < richText.childNodes.length; i++) {
+                var cNode = richText.childNodes[i];
+                if (cNode.nodeType === Node.ELEMENT_NODE && cNode.textContent.trim() !== '') {
+                    is_editing = true;
+                    break;
+                }
+            }
+        }
+
+        if(is_editing){
+            event.preventDefault();
+            event.returnValue = '';
+        }
     });
 </script>

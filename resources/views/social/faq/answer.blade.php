@@ -41,6 +41,13 @@
 </div>
 
 <script>
+    window.addEventListener('beforeunload', function(event) {
+        if(document.getElementById("question_answer").value.trim() != ''){
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
+
     function infinteLoadSuggest() {
         validateForm(validation);
 

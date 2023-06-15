@@ -80,6 +80,12 @@
                 return new bootstrap.Popover(popoverTriggerEl)
             })
 
+            window.addEventListener('beforeunload', function(event) {
+                if(slct_list.length > 0){
+                    event.preventDefault();
+                    event.returnValue = '';
+                }
+            });
         </script>
 
         <!--Sidebar-->
