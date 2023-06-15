@@ -102,10 +102,11 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
-
+    Route::put('/edit/image/{slug}', [CommandContentApi::class, 'editContentImage']);
     Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [CommandContentApi::class, 'destroyContent']);
     Route::post('/create', [CommandContentApi::class, 'addContent']);
+    Route::post('/draft', [CommandContentApi::class, 'addDraft']);
     Route::post('/open/{slug_name}', [CommandContentApi::class, 'addView']);
     // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
 });

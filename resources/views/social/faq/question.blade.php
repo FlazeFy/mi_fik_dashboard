@@ -122,10 +122,10 @@
                     }
 
                     var elmt = " " +
-                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' 
-                        + "'" + username + "'" + ', ' + "'" + id + "'" + ', ' + "'" + status + "'" + ')"> ' +
+                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' + 
+                        "'" + id + "'" + ', ' + "'" + status + "'" + ',' + "'" + ucFirst(questionBody) + "'" + ')"> ' +
                         '<h6>' + ucFirst(questionType) + '</h6> ' +
-                        ucEachWord(questionBody) + 
+                        ucFirst(questionBody) + 
                         '<p class="m-0 mt-2">' + getDateToContext(createdAt, "full") + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
                     '</button>';
 
@@ -138,22 +138,22 @@
         });
     }
 
-    function loadDetailAnswer(answer, user, id, status){
+    function loadDetailAnswer(answer, id, status, que){
         if(status == "answered"){
             setSelectedBtnStyle("background: #00c363; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
             setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
-        loadAnswer(answer, id);
+        loadAnswer(answer, id, status, que);
     }
 
-    function loadAnswer(answer, id){
-        var question_holder = document.getElementById("question_answer");
-        var question_id = document.getElementById("question_id");
-
-        question_holder.value = answer;
-        question_id.value = id;
+    function loadAnswer(answer, id, status, que){
+        document.getElementById("question_answer").value = answer;
+        document.getElementById("question_id").value = id;
+        document.getElementById("question_status").value = status;
+        document.getElementById("form-delete-faq").setAttribute("action","/social/faq/remove/"+id);
+        document.getElementById("question-delete-verify").innerHTML = '"'+que+'"';
 
         validateForm(validation);
     }

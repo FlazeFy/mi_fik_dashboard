@@ -51,6 +51,18 @@ class Validation
         ]);
     }
 
+    public static function getValidateEventDraft($request){
+        return Validator::make($request->all(), [
+            'content_title' => 'required|min:6|max:75|string',
+            'content_desc' => 'nullable|string|max:10000',
+            'content_date_start' => 'nullable|date_format:Y-m-d',
+            'content_date_end' => 'nullable|date_format:Y-m-d',
+            'content_time_start' => ['nullable', new TwoTimeFormats],
+            'content_time_end' => ['nullable', new TwoTimeFormats],
+            'content_reminder' => 'required|string|max:75',
+        ]);
+    }
+
     public static function getValidateEventDate($request){
         return Validator::make($request->all(), [
             'content_date_start' => 'required|date_format:Y-m-d',

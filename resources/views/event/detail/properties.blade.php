@@ -17,7 +17,7 @@
     @if($c->content_date_start && $c->content_date_end)
         @if(date('y-m-d', strtotime($c->content_date_start)) == date('y-m-d', strtotime($c->content_date_end)))
             <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_start))}}</span> 
-                - <span class="hour-event">{{date("H:i",strtotime($c->content_date_end))}}</span></a>
+                - <span class="hour-event">{{date("Y/m/d H:i",strtotime($c->content_date_end))}}</span></a>
         @else
             <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_start))}}</span> 
                 - <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_end))}}</span></a>

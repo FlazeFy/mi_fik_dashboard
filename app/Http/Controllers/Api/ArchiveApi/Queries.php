@@ -81,7 +81,7 @@ class Queries extends Controller
             $select_task = Query::getSelectTemplate("task_schedule");
             $user_id = $request->user()->id;
 
-            $content = ContentHeader::selectRaw('archives_relations.archive_id, contents_headers.created_at, contents_headers.updated_at, content_reminder, '.$select_content.', '.$select_properties)
+            $content = ContentHeader::selectRaw('archives_relations.archive_id, contents_headers.created_at, contents_headers.updated_at, content_reminder, content_image, '.$select_content.', '.$select_properties)
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->leftjoin('contents_viewers', 'contents_headers.id', '=', 'contents_viewers.content_id')
                 ->leftjoin('admins', 'admins.id', '=', 'contents_headers.created_by')
@@ -93,7 +93,7 @@ class Queries extends Controller
                 ->whereNull('contents_headers.deleted_at')
                 ->groupBy('contents_viewers.content_id');
 
-            $schedule = Task::selectRaw('archives_relations.archive_id, tasks.created_at, tasks.updated_at, task_reminder as content_reminder, '.$select_task.', '.$select_properties_null)
+            $schedule = Task::selectRaw('archives_relations.archive_id, tasks.created_at, tasks.updated_at, task_reminder as content_reminder, null as content_image, '.$select_task.', '.$select_properties_null)
                 ->leftjoin('archives_relations', 'archives_relations.content_id', '=', 'tasks.id')
                 ->leftjoin('archives', 'archives.id', '=', 'archives_relations.archive_id')
                 ->where('archives.slug_name', $slug)
@@ -121,6 +121,7 @@ class Queries extends Controller
                     $createdAt = $result->created_at;
                     $updatedAt = $result->updated_at;
                     $reminder = $result->content_reminder;
+                    $content_image = $result->content_image;
                     $auc = $result->admin_username_created;
                     $uuc = $result->user_username_created;
                     $aic = $result->admin_image_created;
@@ -136,6 +137,7 @@ class Queries extends Controller
                         'content_loc' => $loc,
                         'content_date_start' => $date_start,
                         'content_date_end' => $date_end,
+                        'content_image' => $content_image,
                         'data_from' => $from,
                         'created_at' => $createdAt,
                         'updated_at' => $updatedAt,

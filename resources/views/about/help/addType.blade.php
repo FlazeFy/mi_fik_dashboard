@@ -67,6 +67,13 @@
 </div>
 
 <script>
+    window.addEventListener('beforeunload', function(event) {
+        if(document.getElementById("help_type").value.trim() != "" && !isFormSubmitted){
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
+
     function addType(){
         $('#help_type_msg').html("");
 

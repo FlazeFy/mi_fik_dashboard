@@ -28,6 +28,7 @@ class Queries extends Controller
             $select_info = Query::getSelectTemplate("info_dump");
             $select_fbc = Query::getSelectTemplate("feedback_dump");
             $select_dct = Query::getSelectTemplate("dictionary_dump");
+            $select_qt = Query::getSelectTemplate("question_dump");
 
             $join_content = Query::getJoinTemplate("content_dump", "ch");
             $join_task = Query::getJoinTemplate("content_dump", "ts");
@@ -99,6 +100,11 @@ class Queries extends Controller
                             ".$select_fbc." 
                         FROM feedbacks fb
                         WHERE fb.deleted_at IS NOT NULL
+                    UNION 
+                        SELECT 
+                            ".$select_qt." 
+                        FROM questions qt
+                        WHERE qt.deleted_at IS NOT NULL
                     UNION 
                         SELECT 
                             ".$select_dct." 

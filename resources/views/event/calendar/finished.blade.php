@@ -11,22 +11,34 @@
 </div>
 
 <script type="text/javascript">
-    var page = 1;
+    var pageFinished = 1;
     var myname = "<?= session()->get("username_key") ?>";
-    infinteLoadMore(page);
+    infinteLoadMore(pageFinished);
 
-    //Fix the sidebar & content page FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page++;
-    //         infinteLoadMore(page);
-    //     } 
-    // };
+    var listEvent = document.getElementById("content");
+    listEvent.addEventListener('scroll', function() {
+        var scrollPosition = listEvent.scrollTop + listEvent.clientHeight;
+        console.log(pageFinished)
+        if (scrollPosition >= listEvent.scrollHeight && pageFinished < last) {
+            pageFinished++;
+            var elmt = " " +
+            "<div class='d-block mx-auto' id='load-page-event-"+pageFinished+"'> " +
+                '<div class="row"> ' +
+                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
+                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
+                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
+                '</div> ' +
+            "</div>";
 
-    function loadmore(route){
-        page++;
-        infinteLoadMore(page);
-    }
+            $("#data-wrapper").append(elmt);
+            infinteLoadMore(pageFinished);
+        } else if (pageFinished >= last) {
+            var elmt = " " +
+            "<h6 id='load-page-event-"+pageFinished+"' class='text-center mt-3'> No more content to show</h6>";
+
+            $("#empty_item_holder").html(elmt);
+        }
+    });
 
     function infinteLoadMore(page) {
         var order = <?php echo '"'.session()->get('ordering_finished').'";'; ?>
@@ -51,15 +63,16 @@
         })
         .done(function (response) {
             $('.auto-load').hide();
+            $("#load-page-event-"+page).remove();
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            last = response.data.last_page;
 
-            if(page != last){
-                $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
-            } else {
-                $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
-            }
+            // if(page != last){
+            //     $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            // } else {
+            //     $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
+            // }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
