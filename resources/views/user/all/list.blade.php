@@ -156,7 +156,7 @@
                 function manageRole(username, real_username){
                    
                     var elmt = 
-                        '<div id="section-role-picker-'+unamepreg+'"> ' +
+                        '<div id="section-role-picker-'+username+'"> ' +
                             '<h6 class="text-secondary mt-2 mb-4"> Manage Role</h6> ' +   
                             '<div class="position-absolute" style="right:10px; top:10px;"> ' +
                                 '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value, ' + "'" + username + "'" + ')" name="tag_category" aria-label="Floating label select example" required> ' +
@@ -227,7 +227,7 @@
                                         '<div class="modal-dialog modal-lg"> ' +
                                             '<div class="modal-content">  ' +
                                                 '<div class="modal-body pt-4" style="height:75vh;"> ' +
-                                                    '<button type="button" class="custom-close-modal" onclick="clean('+"'"+unamepreg+"'"+')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                                    '<button type="button" class="custom-close-modal" onclick="clean('+"'"+unamepreg+"'"+'); infinteLoadMoreUser('+"'"+pageUser+"'"+');" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
                                                     '<h5>User Profile</h5> ' +
                                                     '<div class=""> ' +
                                                         '<div class="row"> ' +
@@ -549,9 +549,11 @@
         if(is_added){
             var ctx = "<i class='fa-solid fa-trash'></i> Remove";
             var bg = "danger";
+            var fun = 'onclick="remove_role(' + "'" + username + "'" + ')"';
         } else {
             var ctx = "<i class='fa-solid fa-plus'></i> Assign";
             var bg = "success";
+            var fun = 'onclick="add_role(' + "'" + username + "'" + ')"';
         }
 
         if(slct_list.length > 0){
@@ -571,7 +573,7 @@
                         '<a class="btn btn-detail-config '+bg+' float-end" title="Submit Role" data-bs-toggle="collapse" href="#assignRoleValid_'+username+'">'+ctx+'</a> ' +
                     '</div> ' +
                     '<div class="collapse" id="assignRoleValid_'+username+'" data-bs-parent="#accordion_'+username+'"> ' +
-                        '<a class="btn btn-detail-config '+bg+' float-end" onclick="add_role(' + "'" + username + "'" + ')"><i class="fa-solid fa-paper-plane"></i> Send</a> ' +
+                        '<a class="btn btn-detail-config '+bg+' float-end" '+fun+'><i class="fa-solid fa-paper-plane"></i> Send</a> ' +
                         '<a class="btn btn-detail-config danger float-end me-2" data-bs-toggle="collapse" href="#assignRoleInit_'+username+'"><i class="fa-solid fa-xmark"></i></a> ' +
                     '</div> ' +
                 '</div> ') ;
@@ -582,8 +584,9 @@
 
     function clean(username){
         slct_list = [];
-        $("#data_wrapper_manage_tag_"+username).empty();
-        $("#slct_holder_"+username).empty();
+        toogleManage = "";
+        $("#data_wrapper_manage_tag_"+username).html("");
+        $("#slct_holder_"+username).html("");
     }
 
     function add_role(username){
@@ -601,11 +604,48 @@
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
             },
             success: function(response) {
-                $("#slct_holder_"+username).html("");
-                slct_list = [];
+                clean(upreg);
                 getButtonSubmitTag(username);
                 loadUserRole(upreg, username);
-                document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
+                infinteLoadMoreTag(page_tag, username);
+                //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                console.log(response)
+                // if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                   
+                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                    
+                // } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
+                //     allMsg += response.responseJSON.errors.result[0]
+                // } else {
+                //     allMsg += errorMessage
+                // }
+                }
+            }
+        });
+    }
+
+    function remove_role(username){
+        $("registered-msg_"+username).html("");
+        isFormSubmitted = true;
+        var upreg = username.replace(/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/, "");
+
+        $.ajax({
+            url: '/api/v1/user/update/role/remove',
+            type: 'POST',
+            data: $('#add_role_form_'+username).serialize(),
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            },
+            success: function(response) {
+                clean(upreg);
+                getButtonSubmitTag(username);
+                loadUserRole(upreg, username);
+                infinteLoadMoreTag(page_tag, username);
+                //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 console.log(response)

@@ -138,7 +138,7 @@
     
     function clear() {
         setTimeout(function() {
-            //update();
+            update();
             clear();
             if(showDetail == true){
                 notifDetail();
