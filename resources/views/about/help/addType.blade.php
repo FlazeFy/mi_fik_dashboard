@@ -9,7 +9,7 @@
     function validateFormAddType(rules){
         var input, msg;
         var res = true
-        var btn = document.getElementById("submit_holder"); 
+        var btn = document.getElementById("submit_holder_type"); 
 
         rules.forEach(e => {
             input = document.getElementById(e.id);
@@ -59,7 +59,7 @@
                         <label for="help_type">Help Type</label>
                         <a id="help_type_msg" class="input-warning text-danger"></a>
                     </div>
-                    <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder_type"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </form>
             </div>
         </div>

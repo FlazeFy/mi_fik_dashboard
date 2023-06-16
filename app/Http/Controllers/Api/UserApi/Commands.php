@@ -193,7 +193,7 @@ class Commands extends Controller
                 if($oldR->role == null){
                     $newR = $roles;
                 } else {
-                    $newR = array_merge($oldR->role, $roles);
+                    $newR = array_merge(json_decode($oldR->role), $roles);
                 }
                 
                 $newR = Converter::getTag($newR);
