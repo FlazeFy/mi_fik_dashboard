@@ -193,7 +193,7 @@ class Commands extends Controller
                 if($oldR->role == null){
                     $newR = $roles;
                 } else {
-                    $newR = array_merge($oldR->role, $roles);
+                    $newR = array_merge(json_decode($oldR->role), $roles);
                 }
                 
                 $newR = Converter::getTag($newR);
@@ -221,6 +221,95 @@ class Commands extends Controller
                     'status' => 'success',
                     'message' => 'Role has been updated',
                     'data' => $newR
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => 'error',
+                'result' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function remove_role(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $user_id = $request->user()->id;
+
+            $roles = json_decode($request->user_role,true);
+            $list_roles = "";
+            foreach($roles as $rl){
+                $list_roles .= $rl['tag_name'].",";
+            }
+
+            $hs = new Request();
+            $obj = [
+                'history_type' => "user",
+                'history_body' => "remove ".$list_roles." to ".$request->username." role"
+            ];
+            $hs->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($hs);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $oldR = DB::table("users")->select('id','role')
+                    ->where('username',$request->username)
+                    ->first(); 
+
+                $uniqueKeys = [];
+                $merge = array_merge($roles, json_decode($oldR->role, true));
+
+                foreach ($merge as $mg) {
+                    $key = $mg['slug_name'];
+                    if (!in_array($key, $uniqueKeys)) {
+                        $unique[] = $mg;
+                        $uniqueKeys[] = $key;
+                    } else {
+                        $unique = array_filter($unique, 
+                        function($val) use ($key) {
+                            return $val['slug_name'] !== $key;
+                        });
+                    }
+                }
+
+                $roles = $unique;
+                if(empty($roles)){
+                    $roles = null;
+                } else {
+                    $roles = json_encode(array_values($roles));
+                }
+
+                DB::table("users")
+                    ->where('id', $oldR->id)->update([
+                        'role' => $roles,
+                        'updated_at' => date("Y-m-d H:i"),
+                        'updated_by' => $user_id,
+                ]);
+
+                DB::table("histories")->insert([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $hs->history_type,
+                    'context_id' => null,
+                    'history_body' => $hs->history_body,
+                    'history_send_to' => $oldR->id,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+
+                DB::commit();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Role has been updated',
+                    'data' => $roles
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {

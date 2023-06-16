@@ -27,7 +27,10 @@
 
 <script>
     var pageUser = 1;
-    var lastPageUser = 0;  
+    var lastPageUser = 0;
+    var slct_list = [];
+    var toogleManage = "";
+
     infinteLoadMoreUser(pageUser);
 
     function infinteLoadMoreUser(page) {  
@@ -153,28 +156,30 @@
                 function manageRole(username, real_username){
                    
                     var elmt = 
-                        '<h6 class="text-secondary mt-2 mb-4"> Manage Role</h6> ' +   
-                        '<div class="position-absolute" style="right:0; top:0;"> ' +
-                            '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value, ' + "'" + username + "'" + ')" name="tag_category" aria-label="Floating label select example" required> ' +
-                                '@php($i = 0) ' +
-                                '@foreach($dct_tag as $dtag) ' +
-                                    '@if($i == 0) ' +
-                                        '<option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option> ' +
-                                        '<option value="all">All</option> ' +
-                                    '@else ' +
-                                        '<option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option> ' +
-                                    '@endif ' +
-                                    '@php($i++) ' +
-                                '@endforeach ' +
-                            '</select> ' +
-                        '</div> ' + 
-                        '<div class="tag-manage-holder" id="data_wrapper_manage_tag_'+username+'"> ' +
-                            '<div class="auto-load-tag text-center"> ' +
-                                '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                        '<div id="section-role-picker-'+username+'"> ' +
+                            '<h6 class="text-secondary mt-2 mb-4"> Manage Role</h6> ' +   
+                            '<div class="position-absolute" style="right:10px; top:10px;"> ' +
+                                '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value, ' + "'" + username + "'" + ')" name="tag_category" aria-label="Floating label select example" required> ' +
+                                    '@php($i = 0) ' +
+                                    '@foreach($dct_tag as $dtag) ' +
+                                        '@if($i == 0) ' +
+                                            '<option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option> ' +
+                                            '<option value="all">All</option> ' +
+                                        '@else ' +
+                                            '<option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option> ' +
+                                        '@endif ' +
+                                        '@php($i++) ' +
+                                    '@endforeach ' +
+                                '</select> ' +
+                            '</div> ' + 
+                            '<div class="tag-manage-holder" id="data_wrapper_manage_tag_'+username+'"> ' +
+                                '<div class="auto-load-tag text-center"> ' +
+                                    '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                                '</div> ' +
                             '</div> ' +
+                            '<div id="empty_item_holder_manage_tag_'+username+'"></div> ' +
+                            '<span id="load_more_holder_manage_tag_'+username+'" style="display: flex; justify-content:center;"></span> ' +
                         '</div> ' +
-                        '<div id="empty_item_holder_manage_tag_'+username+'"></div> ' +
-                        '<span id="load_more_holder_manage_tag_'+username+'" style="display: flex; justify-content:center;"></span> ' +
                         '<h6 class="text-secondary mt-3"> Selected Role</h6> ' +
                         '<form id="add_role_form_'+username+'"> ' +
                             '@csrf ' +
@@ -216,13 +221,13 @@
                                 getRole(role) +
                             '</td> ' +
                             '<td>'  +
-                                '<button class="btn btn-info" onclick="infinteLoadMoreTag(1, ' + "'" + unamepreg + "'" + ')" data-bs-toggle="modal" data-bs-target="#manageuser-' + unamepreg + '"><i class="fa-solid fa-gear"></i></button> ' +
+                                '<button class="btn btn-info" onclick="infinteLoadMoreTag(1, ' + "'" + unamepreg + "'" + '); loadUserRole(' + "'" + unamepreg + "'" + ', ' + "'" + username + "'" + ');" data-bs-toggle="modal" data-bs-target="#manageuser-' + unamepreg + '"><i class="fa-solid fa-gear"></i></button> ' +
                                 '<div class="position-relative"> ' +
                                     '<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="manageuser-' + unamepreg + '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
                                         '<div class="modal-dialog modal-lg"> ' +
                                             '<div class="modal-content">  ' +
                                                 '<div class="modal-body pt-4" style="height:75vh;"> ' +
-                                                    '<button type="button" class="custom-close-modal" onclick="clean('+"'"+unamepreg+"'"+')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                                    '<button type="button" class="custom-close-modal" onclick="clean('+"'"+unamepreg+"'"+'); infinteLoadMoreUser('+"'"+pageUser+"'"+');" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
                                                     '<h5>User Profile</h5> ' +
                                                     '<div class=""> ' +
                                                         '<div class="row"> ' +
@@ -233,9 +238,9 @@
                                                                 '<h5 class="text-secondary fw-normal">' + fullname + '</h5> ' +
                                                                 '<h6 class="user-box-desc">@' + username + " | " + email + '</h6> ' +
                                                                 '<h6 class="user-box-date" style="font-size:14px;">' + getJoinedAt(accDate, accStatus) + '</h6> ' +
-                                                                '<h6 class="text-secondary"> Role</h6> ' +
-                                                                '<div> ' +
-                                                                    getRoleArea(role) +
+                                                                '<div id="section-my-role-'+unamepreg+'"> ' +
+                                                                    '<h6 class="text-secondary"> Role</h6> ' +
+                                                                    '<div id="role-holder-'+unamepreg+'"></div> ' +
                                                                 '</div> ' +
                                                             '</div> ' +
                                                         '</div> ' +
@@ -247,7 +252,7 @@
                                                         '</div> ' +
                                                         '<div class="config-btn-group">' +
                                                             '<hr> ' +
-                                                            '<a class="btn btn-detail-config success" title="Send" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '"><i class="fa-solid fa-bell"></i></a>' +
+                                                            // '<a class="btn btn-detail-config success" title="Send" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '"><i class="fa-solid fa-bell"></i></a>' +
                                                             '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
                                                             '<span style="position:absolute; right:-10px; bottom:0;"> ' +
                                                                 '<a class="text-success" id="registered-msg_' + unamepreg + '"></a> ' + 
@@ -256,17 +261,18 @@
                                                         '</div> ' +
                                                     '</div> ' +
                                                 '</div> ' +
+                                                '<span class="position-absolute text-danger" style="bottom:20px; left: 75px;" id="msg-error-all"></span> ' +
                                             '</div> ' +
 
-                                            '<div class="collapse" id="collapse-' + unamepreg + '"> ' +
-                                                '<div class="modal-content">  ' +
-                                                    '<div class="modal-body pt-4"> ' +
-                                                        '<button type="button" class="custom-close-modal" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
-                                                        '<h5>Send Notification</h5> ' +
+                                            // '<div class="collapse" id="collapse-' + unamepreg + '"> ' +
+                                            //     '<div class="modal-content">  ' +
+                                            //         '<div class="modal-body pt-4"> ' +
+                                            //             '<button type="button" class="custom-close-modal" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
+                                            //             '<h5>Send Notification</h5> ' +
                                                         
-                                                    '</div> ' +
-                                                '</div> ' +
-                                            '</div> ' +
+                                            //         '</div> ' +
+                                            //     '</div> ' +
+                                            // '</div> ' +
                                         '</div> ' +
                                     '</div> ' +
                                 '</div> ' +
@@ -283,6 +289,44 @@
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
                 $("#empty_item_holder").html("<div class='err-msg-data d-block mx-auto' style='margin-top:-30% !important;'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
+            } else {
+                // handle other errors
+            }
+        });
+    }
+
+    function loadUserRole(upreg, username) { 
+        $.ajax({
+            url: "/api/v1/user/" + username + "/role",
+            datatype: "json",
+            type: "get",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            }
+        })
+        .done(function (response) {
+            var data =  response.data;
+
+            $("#role-holder-"+upreg).empty();
+            
+            if(data != null){
+                for(var i = 0; i < data.length; i++){
+                    var slug_name = data[i].slug_name;
+                    var tag_name = data[i].tag_name;
+
+                    var elmt = '<span class="btn btn-tag" title="Remove this role" id="tag_collection_remove_' + slug_name +'" ' +
+                        'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+ tag_name +"'"+', true, '+"'"+upreg+"'"+', true)">' + tag_name + '</span>';
+
+                    $("#role-holder-"+upreg).append(elmt);
+                }   
+            }
+        })
+        .fail(function (jqXHR, ajaxOptions, thrownError, response) {
+            if (jqXHR.status == 404) {
+                $('.auto-load-tag').hide();
+                $('#load_more_holder_manage_tag_'+upreg).empty();
+                $('#empty_item_holder_manage_tag_'+upreg).html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
             } else {
                 // handle other errors
             }
@@ -371,8 +415,8 @@
                     }
 
                     if(found != true){
-                        var elmt = '<a class="btn btn-tag" id="tag_collection_' + d_slug_name +'" title="Select this tag" ' + 
-                            'onclick="addSelectedTag('+"'"+ d_slug_name +"'"+', '+"'"+ d_tag_name +"'"+', true, '+"'"+username+"'"+')">' + d_tag_name + '</a> ';
+                        var elmt = '<a class="btn btn-tag" id="tag_collection_picker_' + d_slug_name +'" title="Select this tag" ' + 
+                            'onclick="addSelectedTag('+"'"+ d_slug_name +"'"+', '+"'"+ d_tag_name +"'"+', true, '+"'"+username+"'"+',false)">' + d_tag_name + '</a> ';
 
                         $("#data_wrapper_manage_tag_"+username).append(elmt);
                     }
@@ -390,59 +434,128 @@
         });
     }
 
-    var slct_list = [];
-
-    function addSelectedTag(slug_name, tag_name, is_deleted, username){
+    function addSelectedTag(slug_name, tag_name, is_deleted, username, is_added){
         var found = false;
 
         //Remove selected tag from tag collection
-        if(is_deleted){
-            var tag = document.getElementById('tag_collection_'+slug_name);
-            tag.parentNode.removeChild(tag);
+        if(is_added){
+            now = "remove";
+            var bg = "bg-danger";
+            var tag = document.getElementById('tag_collection_remove_'+slug_name);
+        } else {
+            now = "add";
+            var bg = "bg-success";
+            var tag = document.getElementById('tag_collection_picker_'+slug_name);
         }
 
-        if(slct_list.length > 0){
-            //Check if tag is exist in selected tag.
-            slct_list.map((val, index) => {
-                if(val['slug_name'] == slug_name){
-                    found = true;
-                }
-            });
+        if(toogleManage == "" || toogleManage == now){
+            toogleManage = now;
+            tag.parentNode.removeChild(tag);
 
-            if(found == false){
+            if(toogleManage == "remove"){
+                $("#section-my-role-"+username).css({
+                    "border":"",
+                    "border-radius":"",
+                    "padding":""
+                });
+            } else if(toogleManage == "add"){
+                $("#section-role-picker-"+username).css({
+                    "border":"",
+                    "border-radius":"",
+                    "padding":""
+                });
+            }
+            
+            if(slct_list.length > 0){
+                //Check if tag is exist in selected tag.
+                slct_list.map((val, index) => {
+                    if(val['slug_name'] == slug_name){
+                        found = true;
+                    }
+                });
+
+                if(found == false){
+                    slct_list.push({
+                        "slug_name": slug_name,
+                        "tag_name": tag_name,
+                    });
+                    //Check this append input value again!
+                    $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'>"+tag_name+"</a></div>");
+                }
+            } else {
                 slct_list.push({
                     "slug_name": slug_name,
                     "tag_name": tag_name,
                 });
-                //Check this append input value again!
-                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'>"+tag_name+"</a></div>");
             }
-        } else {
-            slct_list.push({
-                "slug_name": slug_name,
-                "tag_name": tag_name,
-            });
-            $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+")'>"+tag_name+"</a></div>");
-        }
+            document.getElementById("msg-error-all").innerHTML = "";
 
-        document.getElementById("user_role_"+username).value = JSON.stringify(slct_list);
-        getButtonSubmitTag(username)
+            document.getElementById("user_role_"+username).value = JSON.stringify(slct_list);
+            getButtonSubmitTag(username, is_added)
+        } else {
+            if(toogleManage == "remove"){
+                $("#section-my-role-"+username).css({
+                    "border":"2px solid #D5534C",
+                    "border-radius":"6px",
+                    "padding":"6px"
+                });
+            } else if(toogleManage == "add"){
+                $("#section-role-picker-"+username).css({
+                    "border":"2px solid #D5534C",
+                    "border-radius":"6px",
+                    "padding":"6px"
+                });
+            }
+            document.getElementById("msg-error-all").innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> You must select same tag type as previous select';
+        }
     }
 
-    function removeSelectedTag(slug_name, tag_name, username){
+    function removeSelectedTag(slug_name, tag_name, username, is_added){
         //Remove selected tag
         var tag = document.getElementById('tagger_'+slug_name);
         slct_list = slct_list.filter(function(e) { return e['slug_name'] !== slug_name })
         tag.parentNode.removeChild(tag);
 
         //Return selected tag to tag collection
-        $("#data_wrapper_manage_tag_"+username).append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+username+'"'+")'>"+tag_name+"</a>");
+        if(is_added){
+            $("#role-holder-"+username).append("<a class='btn btn-tag' id='tag_collection_remove_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+username+'"'+","+is_added+")'>"+tag_name+"</a>");
+        } else {
+            $("#data_wrapper_manage_tag_"+username).append("<a class='btn btn-tag' id='tag_collection_picker_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+username+'"'+","+is_added+")'>"+tag_name+"</a>");
+        }
         
         document.getElementById("user_role_"+username).value = JSON.stringify(slct_list);
-        getButtonSubmitTag(username)
+        getButtonSubmitTag(username,is_added)
+
+        if(slct_list.length == 0){
+            if(toogleManage == "remove"){
+                $("#section-my-role-"+username).css({
+                    "border":"",
+                    "border-radius":"",
+                    "padding":""
+                });
+            } else if(toogleManage == "add"){
+                $("#section-role-picker-"+username).css({
+                    "border":"",
+                    "border-radius":"",
+                    "padding":""
+                });
+            }
+            toogleManage = "";
+        }
     }
 
-    function getButtonSubmitTag(username){
+    function getButtonSubmitTag(username,is_added){
+        if(is_added){
+            var ctx = "<i class='fa-solid fa-trash'></i> Remove";
+            var bg = "danger";
+            var fun = 'onclick="remove_role(' + "'" + username + "'" + ')"';
+        } else {
+            var ctx = "<i class='fa-solid fa-plus'></i> Assign";
+            var bg = "success";
+            var fun = 'onclick="add_role(' + "'" + username + "'" + ')"';
+        }
+
         if(slct_list.length > 0){
             var tags = "";
 
@@ -457,26 +570,29 @@
             $("#btn-submit-tag-holder_"+username).html(''+
                 '<div class="accordion" id="accordion_'+username+'"> ' +
                     '<div class="collapse show" id="assignRoleInit_'+username+'" data-bs-parent="#accordion_'+username+'"> ' +
-                        '<a class="btn btn-detail-config success float-end" title="Submit Role" data-bs-toggle="collapse" href="#assignRoleValid_'+username+'"><i class="fa-solid fa-plus"></i> Assign</a> ' +
+                        '<a class="btn btn-detail-config '+bg+' float-end" title="Submit Role" data-bs-toggle="collapse" href="#assignRoleValid_'+username+'">'+ctx+'</a> ' +
                     '</div> ' +
                     '<div class="collapse" id="assignRoleValid_'+username+'" data-bs-parent="#accordion_'+username+'"> ' +
-                        '<a class="btn btn-detail-config success float-end" onclick="add_role(' + "'" + username + "'" + ')"><i class="fa-solid fa-paper-plane"></i> Send</a> ' +
+                        '<a class="btn btn-detail-config '+bg+' float-end" '+fun+'><i class="fa-solid fa-paper-plane"></i> Send</a> ' +
                         '<a class="btn btn-detail-config danger float-end me-2" data-bs-toggle="collapse" href="#assignRoleInit_'+username+'"><i class="fa-solid fa-xmark"></i></a> ' +
                     '</div> ' +
                 '</div> ') ;
         } else {
-            return $("#btn-submit-tag-holder_"+username).text('')
+            return $("#btn-submit-tag-holder_"+username).text('');
         }
     }
 
     function clean(username){
         slct_list = [];
-        $("#data_wrapper_manage_tag_"+username).empty();
-        $("#slct_holder_"+username).empty();
+        toogleManage = "";
+        $("#data_wrapper_manage_tag_"+username).html("");
+        $("#slct_holder_"+username).html("");
     }
 
     function add_role(username){
         $("registered-msg_"+username).html("");
+        isFormSubmitted = true;
+        var upreg = username.replace(/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/, "");
 
         $.ajax({
             url: '/api/v1/user/update/role/add',
@@ -488,20 +604,60 @@
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
             },
             success: function(response) {
-                $("#slct_holder_"+username).html("");
-                slct_list = [];
+                clean(upreg);
                 getButtonSubmitTag(username);
-                document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
+                loadUserRole(upreg, username);
+                infinteLoadMoreTag(page_tag, username);
+                //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-
-                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                console.log(response)
+                // if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                    
+                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     
-                } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
-                    allMsg += response.responseJSON.errors.result[0]
-                } else {
-                    allMsg += errorMessage
+                // } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
+                //     allMsg += response.responseJSON.errors.result[0]
+                // } else {
+                //     allMsg += errorMessage
+                // }
+                }
+            }
+        });
+    }
+
+    function remove_role(username){
+        $("registered-msg_"+username).html("");
+        isFormSubmitted = true;
+        var upreg = username.replace(/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/, "");
+
+        $.ajax({
+            url: '/api/v1/user/update/role/remove',
+            type: 'POST',
+            data: $('#add_role_form_'+username).serialize(),
+            dataType: 'json',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json");
+                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
+            },
+            success: function(response) {
+                clean(upreg);
+                getButtonSubmitTag(username);
+                loadUserRole(upreg, username);
+                infinteLoadMoreTag(page_tag, username);
+                //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
+            },
+            error: function(response, jqXHR, textStatus, errorThrown) {
+                console.log(response)
+                // if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                   
+                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                    
+                // } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
+                //     allMsg += response.responseJSON.errors.result[0]
+                // } else {
+                //     allMsg += errorMessage
+                // }
                 }
             }
         });
