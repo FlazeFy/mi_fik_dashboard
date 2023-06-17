@@ -273,45 +273,20 @@ class ProfileController extends Controller
 
             return redirect()->back()->with('failed_message', $errors);
         } else {
-            $data = new Request();
-            $obj = [
-                'history_type' => "faq",
-                'history_body' => "Has created a new question"
-            ];
-            $data->merge($obj);
-
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
-
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                $content = Question::create([
-                    'id' => Generator::getUUID(),
-                    'question_type' => $request->question_type,
-                    'question_body' => $request->question_body,
-                    'question_answer' => null,
-                    'is_active' => 0,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id,
-                    'updated_at' => null,
-                    'updated_by' => null,
-                    'deleted_at' => null,
-                    'deleted_by' => null,
-                ]);
-
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type,
-                    'context_id' => null,
-                    'history_body' => $data->history_body,
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
-
-                return redirect()->back()->with('success_message', "Question has sended");
-            }
+            $content = Question::create([
+                'id' => Generator::getUUID(),
+                'question_type' => $request->question_type,
+                'question_body' => $request->question_body,
+                'question_answer' => null,
+                'is_active' => 0,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $user_id,
+                'updated_at' => null,
+                'updated_by' => null,
+                'deleted_at' => null,
+                'deleted_by' => null,
+            ]);
+            return redirect()->back()->with('success_message', "Question has sended");
         }
     }
 }

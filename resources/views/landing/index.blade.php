@@ -45,8 +45,8 @@
                 <div class="col-lg-6 col-md-6 col-sm-12">
                     @include('landing.login')
                 </div>
-                <div class="col-lg-6 col-md-6 col-sm-12 py-5">
-                   
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <img src="{{ asset('/assets/fik_logo.png')}}" class='img nodata-icon-req' id='fik-logo'>
                 </div>
             </div>
             <hr>
