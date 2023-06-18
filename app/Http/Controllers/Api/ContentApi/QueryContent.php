@@ -230,14 +230,14 @@ class QueryContent extends Controller
             $select_task = Query::getSelectTemplate("task_schedule");
             $user_id = $request->user()->id;
 
-            $content = ContentHeader::selectRaw('content_reminder, '.$select_content)
+            $content = ContentHeader::selectRaw('content_reminder, '.$select_content.', contents_headers.created_at, contents_headers.updated_at')
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("date(`content_date_start`) = '".$date."'")
                 //->whereRaw("date(`content_date_start`) <= '".$date."' AND date(`content_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
-            $schedule = Task::selectRaw('task_reminder as content_reminder, '.$select_task)
+            $schedule = Task::selectRaw('task_reminder as content_reminder, '.$select_task.', tasks.created_at, tasks.updated_at')
                 ->where('created_by', $user_id)
                 ->whereRaw("date(`task_date_start`) = '".$date."'")
                 //->whereRaw("date(`task_date_start`) <= '".$date."' AND date(`task_date_end`) >= '".$date."'")
@@ -262,6 +262,8 @@ class QueryContent extends Controller
                 $date_end = $result->content_date_end;
                 $from = $result->data_from;
                 $reminder = $result->content_reminder;
+                $createdAt = $result->created_at;
+                $updatedAt = $result->updated_at;
 
                 $clean[] = [
                     'id' => $id,
@@ -273,7 +275,9 @@ class QueryContent extends Controller
                     'content_date_start' => $date_start,
                     'content_date_end' => $date_end,
                     'data_from' => $from,
-                    'content_reminder' => $reminder
+                    'content_reminder' => $reminder,
+                    'created_at' => $createdAt,
+                    'updated_at' => $updatedAt
                 ];
 
                 if($from == 1){

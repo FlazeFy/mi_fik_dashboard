@@ -85,7 +85,7 @@ Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/tag')->group(function () {
     Route::get('/cat/{cat}/{limit}', [QueryTagApi::class, 'getAllTagByCat']);
-    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag'])->middleware(['auth:sanctum']);
+    Route::get('/{find}/{limit}', [QueryTagApi::class, 'getAllTag']);
     Route::post('/create', [CommandTagApi::class, 'addTag'])->middleware(['auth:sanctum']);
     Route::put('/update/{id}', [CommandTagApi::class, 'updateTag'])->middleware(['auth:sanctum']);
     Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag'])->middleware(['auth:sanctum']);

@@ -614,8 +614,9 @@ class Commands extends Controller
                                 'result' => $errors,
                             ], Response::HTTP_UNPROCESSABLE_ENTITY);
                         } else {
+                            $archive_id = Generator::getUUID();
                             $archive = DB::table("archives")->insert([
-                                'id' => Generator::getUUID(),
+                                'id' => $archive_id,
                                 'slug_name' => "my-archive-".$uuid,
                                 'archive_name' => "My Archive",
                                 'archive_desc' => "This is default archive",
@@ -628,7 +629,7 @@ class Commands extends Controller
                             DB::table("histories")->insert([
                                 'id' => Generator::getUUID(),
                                 'history_type' => $data->history_type, 
-                                'context_id' => $archive->id, 
+                                'context_id' => $archive_id, 
                                 'history_body' => $data->history_body, 
                                 'history_send_to' => null,
                                 'created_at' => date("Y-m-d H:i:s"),
@@ -639,6 +640,7 @@ class Commands extends Controller
                             return response()->json([
                                 'status' => 'success',
                                 'message' => 'User registration complete',
+                                'data' => $user
                             ], Response::HTTP_OK);
                         }
                     }
