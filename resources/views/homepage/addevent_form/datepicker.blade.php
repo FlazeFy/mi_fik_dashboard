@@ -1,7 +1,7 @@
 <label>Set Date Start</label>
 <div class="row mt-2">
     <div class="col-6">
-        <input type="date" name="content_date_start" id="date_start_event" onchange="validateDateEvent()" class="form-control">
+        <input type="date" name="content_date_start" min="{{date('Y-m-d')}}" id="date_start_event" onchange="validateDateEvent()" class="form-control">
     </div>
     <div class="col-6">
         <input type="time" name="content_time_start" id="time_start_event" onchange="validateDateEvent()" class="form-control mb-2">
@@ -12,7 +12,7 @@
 <label>Set Date End</label>
 <div class="row mt-2">
     <div class="col-6">
-        <input type="date" name="content_date_end" id="date_end_event" onchange="validateDateEvent()" class="form-control">
+        <input type="date" name="content_date_end" min="{{date('Y-m-d')}}" id="date_end_event" onchange="validateDateEvent()" class="form-control">
     </div>
     <div class="col-6">
         <input type="time" name="content_time_end" id="time_end_event" onchange="validateDateEvent()" class="form-control mb-2">
@@ -44,6 +44,28 @@
                 error = false;
             }
         }
+
+        var val_ds = document.getElementById("date_start_event");
+        var val_ts = document.getElementById("time_start_event");
+        var val_de = document.getElementById("date_end_event");
+        var val_te = document.getElementById("time_end_event");
+
+        if(val_ds.value != null){
+            if(getDateToContext(val_ds.value, "date") == getDateToContext(today, "date")){
+                val_ts.setAttribute("min",getDateToContext(today, "24h"));
+                if(val_ts.value === ''){
+                    val_ts.value = getDateToContext(today, "24h");
+                }
+            }
+
+            // Set minimal date 
+            // val_de.removeAttribute("min");
+            // val_de.setAttribute("min",getDateToContext(val_ds.value, "date"));
+
+            if(val_ds.value > val_de.value){
+                val_de.value = getDateToContext(val_ds.value, "date");
+            }
+        } 
 
         //Check if empty.
         if(!date_start_event || !date_end_event || !time_start_event || !time_end_event){

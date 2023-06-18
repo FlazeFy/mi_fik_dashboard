@@ -107,7 +107,7 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <form action="/system/notification/add" method="POST">
+                <form action="/system/notification/add" method="POST" id="form-add-notif">
                     @csrf
                     <h5>Add <span id="type-title"></span> Notif</h5>
                     
@@ -121,6 +121,39 @@
 <script>
     var selectedUser = []; 
     var selectedGroup = []; 
+    var selectedRole = [];
+    var tag_cat = '<?= $dct_tag[0]["slug_name"]; ?>';
+    var page_tag = 1;
+
+    window.addEventListener('beforeunload', function(event) {
+        if(!isFormSubmitted){
+            var is_editing = false;
+            const form = document.getElementById('form-add-notif');
+            const inputs = form.querySelectorAll('input');
+
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                
+                if (input.value.trim() !== '' && input.name != "_token" && input.name != "send_to" && input.name != "slug_name[]" && input.name != "user_username[]") {
+                    is_editing = true;
+                    console.log(input.name)
+                    break;
+                }
+            }
+
+            if(is_editing || selectedUser.length > 0 || selectedGroup.length > 0 || selectedRole.length > 0){
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        }
+    });
+
+    function setTagFilter(tag){
+        tag_cat = tag;
+        page_tag = 1;
+        infinteLoadRole(page_tag);
+        $("#role-list-holder").empty();
+    }
 
     function setType(type){
         document.getElementById("type-title").innerHTML = type;
@@ -133,6 +166,16 @@
         } else if(type == "Role"){
             infinteLoadRole(1);
         }
+    }
+
+    function resetGroupSearch(){
+        document.getElementById("group_search").value = null;
+        infinteLoadGroup(1);
+    }
+
+    function resetTitleSearch(){
+        document.getElementById("title_search").value = null;
+        infinteLoadUser(1);
     }
 
     function setFormSection(type){
@@ -239,9 +282,18 @@
                         '<div id="slct-group-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
-                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
                         '<input name="list_context" id="list_context_group"  value="" hidden> ' +
-                        '<h6>All Group</h6> ' +
+                        '<h6 class="mb-2">All Group</h6> ' +
+                        '<div style="max-width:300px; right:10px; top:-15px;" class="row mb-2 position-absolute"> ' +
+                            '<div class="col-2"> ' +
+                                '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupSearch()"><i class="fa-solid fa-xmark"></i></a> ' +
+                            '</div> ' +
+                            '<div class="col-10 position-relative"> ' +
+                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="group_search" placeholder="Search by group name" onchange="infinteLoadGroup(1)" maxlength="75"> ' +
+                            '</div> ' +
+                        '</div> ' +
                         '<span id="group-list-holder"></span> ' +
                     '</div> ' +
                 '</div> ';
@@ -301,7 +353,22 @@
                         '<div id="slct-role-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
-                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
+                        '<div class="position-absolute" style="right:10px; top:-15px;"> ' +
+                            '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category"  ' +
+                                'style="font-size:13px;"aria-label="Floating label select example" required> ' +
+                                '@php($i = 0) ' +
+                                '@foreach($dct_tag as $dtag) ' +
+                                    '@if($i == 0) ' +
+                                        '<option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option> ' +
+                                        '<option value="all">All</option> ' +
+                                    '@else ' +
+                                        '<option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option> ' +
+                                    '@endif ' +
+                                    '@php($i++) ' +
+                                '@endforeach ' +
+                            '</select> ' +
+                        '</div> ' +
                         '<input name="list_context" id="list_context_role"  value="" hidden> ' +
                         '<h6>All Role</h6> ' +
                         '<span id="role-list-holder"></span> ' +
@@ -397,10 +464,21 @@
                         '<div id="slct-user-list-holder"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
-                    '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
+                    '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
                         '<input name="list_context" id="list_context"  value="" hidden> ' +
                         '<h6>All User</h6> ' +
-                        '<span id="user-list-holder"></span> ' +
+                        '<div style="max-width:300px; right:10px; top:-15px;" class="row mb-2 position-absolute"> ' +
+                            '<div class="col-2"> ' +
+                                '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></a> ' +
+                            '</div> ' +
+                            '<div class="col-10 position-relative"> ' +
+                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="Search by fullname" onchange="infinteLoadUser(1)" maxlength="75"> ' +
+                            '</div> ' +
+                        '</div> ' +
+                        '<div id="user-list-holder"></div> ' +
+                        '<span id="empty_item_holder_user"></span> ' +
+                        '<span id="load_more_holder_user" style="display: flex; justify-content:center;"></span> ' +
                     '</div> ' +
                 '</div> ';
 
@@ -429,11 +507,23 @@
         document.getElementById("datetime-picker-box").innerHTML = elmt;
     }
 
+    function getFind(check){
+        let trim = check.trim();
+        if(check == null || trim === ''){
+            return "%20"
+        } else {
+            document.getElementById("group_search").value = trim;
+            return trim
+        }
+    }
+
     function infinteLoadGroup(page_group_list) {       
+        var order = '<?= session()->get('ordering_group_list'); ?>';
+        var find = document.getElementById("group_search").value;
         document.getElementById("group-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/group/limit/100/order/group_name__DESC/find/%20?page=" + page_group_list,
+            url: "/api/v1/group/limit/100/order/" + order + "/find/" + getFind(find) + "?page=" + page_group_list,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -461,18 +551,27 @@
                 $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the group</h5>");
                 return;
             } else {                
+                function getTotalMember(total){
+                    if(total > 0){
+                        return '<span class="text-primary" style="font-size:13px; font-weight:500;"><i class="fa-solid fa-user"></i> ' + total + '</span>';
+                    } else {
+                        return '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> No member</span>';
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug = data[i].slug_name;
                     var groupName = data[i].group_name;
                     var groupDesc = data[i].group_desc;
-                    var total = data[i].total;
+                    var totalMember = data[i].total;
 
                     var elmt = " " +
-                        '<a class="btn user-box py-3" style="height:80px;" onclick=""> ' +
+                        '<a class="btn user-box py-3" style="height:90px;" onclick=""> ' +
                             '<div class="position-relative ps-2"> ' +
                                 '<h6 class="text-secondary fw-normal">' + groupName + '</h6> ' +
-                                '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + groupDesc + '</h6> ' +
+                                '<h6 class="text-secondary fw-bold mb-0" style="font-size:13px;">' + groupDesc + '</h6> ' +
+                                getTotalMember(totalMember) + 
                                 '<div class="form-check position-absolute" style="right: 20px; top: 10px;"> ' +
                                     '<input class="form-check-input" name="user_username[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_group_'+ slug +'" onclick="addSelectedGroup('+"'"+slug+"'"+', '+"'"+groupName+"'"+', this.checked)"> ' +
                                 '</div> ' +
@@ -492,7 +591,7 @@
         document.getElementById("role-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/tag/10?page=" + page_role_list,
+            url: "/api/v1/tag/cat/" + tag_cat + "/12?page=" + page_tag,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -527,7 +626,7 @@
                     if(data[i].tag_category){
                         var category = data[i].tag_category;
                     } else {
-                        var category = "<span class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> No Category</span>";
+                        var category = "<span class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> No category</span>";
                     }
 
                     var elmt = " " +
@@ -546,11 +645,17 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load-tag').hide();
+                $('#load_more_holder_manage_tag').empty();
+                $("#empty_item_holder_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
     }
 
-    function getUserImage(img, role){
+    function getUserImageNoAdmin(img, role){
         if(img != null && img != "null"){
             return img;
         } else {
@@ -563,10 +668,24 @@
     }
 
     function infinteLoadUser(page_new_req) {       
-        document.getElementById("user-list-holder").innerHTML = "";
+        function getFind(filter, find){
+            let trim = find.trim();
+            if(find == null || trim === ''){
+                return filter;
+            } else {
+                document.getElementById("title_search").value = trim;
+                return trim;
+            }
+        }
+
+        var name_filter = 'all_all';
+        var order = '<?= session()->get('ordering_user_list'); ?>';
+
+        var find = document.getElementById("title_search").value;
+        //document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/%20/limit/100/order/first_name__DESC?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -577,6 +696,8 @@
         })
         .done(function (response) {
             $('.auto-load').hide();
+            $("#user-list-holder").empty();  
+            
             var data =  response.data.data;
             var total = response.data.total;
             var last = response.data.last_page;
@@ -593,7 +714,7 @@
             } else if (data.length == 0) {
                 $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the user :)</h5>");
                 return;
-            } else {                
+            } else {              
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var username = data[i].username;
@@ -608,7 +729,7 @@
                         '<a class="btn user-box" style="height:80px;"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 py-2 ps-2"> ' +
-                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
+                                    '<img class="img img-fluid user-image" src="'+getUserImageNoAdmin(img, grole)+'" alt="username-profile-pic.png"> ' +
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
@@ -620,13 +741,51 @@
                             '</div> ' +
                         '</a>';
 
+
                     $("#user-list-holder").prepend(elmt);
                 }   
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            if (jqXHR.status == 404) {
+                $('.auto-load').hide();
+                $("#empty_item_holder_user").html("<div class='err-msg-data d-block mx-auto' style='margin-top:-30% !important;'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
+            } else {
+                // handle other errors
+            }
         });
+    }
+
+    function addSelectedRole(slug, tagname, checked){
+        var input_holder = document.getElementById("list_context_role");
+        if(selectedRole.length == 0){
+            selectedRole.push({
+                tag_name : tagname,
+                slug_name : slug
+            });
+            input_holder.value = JSON.stringify(selectedRole);
+        } else {
+            if(checked === false){
+                let indexToRemove = selectedRole.findIndex(obj => obj.slug_name == slug);
+                if (indexToRemove !== -1) {
+                    selectedRole.splice(indexToRemove, 1);
+
+                    // Make sure the item unchecked by remove from selected role list
+                    document.getElementById("check_role_"+slug).checked = false; 
+                    input_holder.value = JSON.stringify(selectedRole);
+                } else {
+                    console.log('Item not found LOL');
+                }
+            } else {
+                selectedRole.push({
+                    tag_name : tagname,
+                    slug_name : slug
+                });
+                input_holder.value = JSON.stringify(selectedRole);
+            }
+        }
+        console.log(selectedRole)
+        refreshListRole();
     }
 
     function addSelectedUser(username, fullname, checked){
@@ -716,6 +875,19 @@
                 '<a class="remove_suggest" onclick="addSelectedUser('+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
                 '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
                 '<a>' + e.full_name + '</a>';
+            holder.innerHTML += elmt;
+        });
+    }
+
+    function refreshListRole(){
+        var holder = document.getElementById("slct-role-list-holder");
+        holder.innerHTML = " ";
+
+        selectedRole.forEach((e) => {
+            var elmt = ' ' +
+                '<a class="remove_suggest" onclick="addSelectedRole('+"'"+e.slug_name+"'"+', '+"'"+e.tag_name+"'"+', false)" title="Remove this role"> ' +
+                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                '<a>' + e.tag_name + '</a>';
             holder.innerHTML += elmt;
         });
     }

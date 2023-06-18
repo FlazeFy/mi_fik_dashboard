@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\ContentApi\QueryTask as QueryTaskApi;
 use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
 use App\Http\Controllers\Api\UserApi\Commands as CommandUserApi;
 use App\Http\Controllers\Api\HelpApi\Queries as QueryHelpApi;
+use App\Http\Controllers\Api\HelpApi\Commands as CommandHelpApi;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
 use App\Http\Controllers\Api\ArchiveApi\Commands as CommandArchiveApi;
@@ -39,7 +40,6 @@ Route::prefix('/v1/dictionaries')->group(function() {
 });
 
 Route::prefix('/v1/help')->group(function() {
-    Route::get('/', [QueryHelpApi::class, 'getHelpType']);
     Route::get('/{type}', [QueryHelpApi::class, 'getHelpCategoryByType']);
 });
 
@@ -70,6 +70,11 @@ Route::prefix('/v1/check')->group(function() {
 
 Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
 
+Route::prefix('/v1/help')->middleware(['auth:sanctum'])->group(function() {
+    Route::get('/', [QueryHelpApi::class, 'getHelpType']);
+    Route::post('/type', [CommandHelpApi::class, 'addHelpType']);
+});
+
 Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/', [QueryTaskApi::class, 'getMyTask']);
     Route::post('/create', [CommandTaskApi::class, 'addTask']);
@@ -97,10 +102,11 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
-
+    Route::put('/edit/image/{slug}', [CommandContentApi::class, 'editContentImage']);
     Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [CommandContentApi::class, 'destroyContent']);
     Route::post('/create', [CommandContentApi::class, 'addContent']);
+    Route::post('/draft', [CommandContentApi::class, 'addDraft']);
     Route::post('/open/{slug_name}', [CommandContentApi::class, 'addView']);
     // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
 });
@@ -111,7 +117,7 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/{id}', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/{slug}', [QueryArchiveApi::class, 'getArchive']);
     Route::get('/by/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
@@ -124,6 +130,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryUserApi::class, 'getMyProfile']);
     Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
+    Route::get('/{username}/role', [QueryUserApi::class, 'getMyRole']);
     Route::get('/request/new/{fullname}', [QueryUserApi::class, 'getNewUserRequest']);
     Route::get('/request/old/{fullname}', [QueryUserApi::class, 'getOldUserRequest']);
     Route::get('/request/my', [QueryUserApi::class, 'getMyRequest']);
@@ -133,6 +140,7 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::put('/update/image', [CommandUserApi::class, 'editUserImage']);
     Route::put('/update/token/{token}', [CommandUserApi::class, 'updateFirebaseToken']);
     Route::post('/update/role/add', [CommandUserApi::class, 'add_role']);
+    Route::post('/update/role/remove', [CommandUserApi::class, 'remove_role']);
     Route::post('/request/role', [CommandUserApi::class, 'request_role_api']);
 });
 

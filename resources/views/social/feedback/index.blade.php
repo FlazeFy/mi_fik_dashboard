@@ -50,6 +50,8 @@
             });
         </script>
 
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
     </head>
 
     <body>

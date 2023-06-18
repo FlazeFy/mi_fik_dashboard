@@ -97,4 +97,11 @@
         btn_holder.innerHTML = '<button class="btn btn-msg text-success" onclick="openForm()" title="Make a new question"><i class="fa-solid fa-paper-plane"></i></button>';
         msg_holder.classList.add("d-none");
     }
+
+    window.addEventListener('beforeunload', function(event) {
+        if(document.getElementById("question_body").value.trim() != "" && !isFormSubmitted){
+            event.preventDefault();
+            event.returnValue = '';
+        }
+    });
 </script>

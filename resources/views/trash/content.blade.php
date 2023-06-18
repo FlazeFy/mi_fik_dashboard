@@ -60,101 +60,6 @@
                 $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
-                function getEventLoc(loc){
-                    if(loc){
-                        return "<span class='loc-limiter px-0 m-0'> " +
-                                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> "+loc[0].detail+"</a> " +
-                            "</span>";
-                    } else {
-                        return "";
-                    }
-                }
-
-                function getDateMonth(date){
-                    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-                    return ("0" + date.getDate()).slice(-2) + " " + month[date.getMonth()].slice(0, 3);
-                }
-
-                function getHourMinute(date){
-                    return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
-                }
-
-                function getEventTag(tag){
-                    if(tag){
-                        var str = "";
-
-                        for(var i = 0; i < tag.length; i++){
-                            if(i != tag.length - 1){
-                                str += tag[i].tag_name +", ";
-                            } else {
-                                str += tag[i].tag_name;
-                            }
-                        }
-
-                        return '<a class="btn-detail" title="'+ str +'"><i class="fa-solid fa-hashtag"></i>'+ tag.length +'</a>';
-                    } else {
-                        return "";
-                    }
-                }
-
-                function getEventDate(dateStart, dateEnd){
-                    if(dateStart && dateEnd){
-                        const ds = new Date(dateStart);
-                        const de = new Date(dateEnd);
-
-                        if(ds.getFullYear() !== de.getFullYear()){
-                            //Event year not same
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
-                                " - " +
-                                getDateMonth(de) + " " + de.getFullYear() + " " + getHourMinute(de) + "</a>";
-
-                        } else if(ds.getMonth() !== de.getMonth()){
-                            //If month not same
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
-                                " - " +
-                                getDateMonth(de) + " " + getHourMinute(de) + "</a>";
-
-                        } else if(ds.getDate() !== de.getDate()){
-                            //If date not same
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + getHourMinute(ds) + 
-                                " - " +
-                                getDateMonth(de) + " " + ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
-
-                        } else if(ds.getDate() === de.getDate()){
-                            return "<a class='btn-detail' title='Event Started Date'><i class='fa-regular fa-clock'></i> "+ 
-                                getDateMonth(ds) + " " + getHourMinute(ds) + 
-                                " - " +
-                                getHourMinute(de) + "</a>";
-
-                        }
-                    } else {
-                        return "";
-                    }
-                }
-
-                //For now.
-                function removeTags(str) {
-                    if ((str===null) || (str==='')){
-                        return "<span class='fst-italic'>No description provided</span>";
-                    } else {
-                        str = str.toString();
-                    }
-                        
-                    return str.replace( /(<([^>]+)>)/ig, '');
-                }
-
-                function getContentImage(img){
-                    if(img){
-                        return 'url("'+img+'")';
-                    } else {
-                        return "url({{asset('assets/default_content.jpg')}})";
-                    }
-                }
-
                 function getDaysRemaining(date, range){
                     date = new Date(date)
                     now = new Date()
@@ -208,35 +113,6 @@
                     "</div>";
                 }
 
-                function getUsername(username1, username2){
-                    if(username1){
-                        if(username1 == myname){
-                            return "You";
-                        } else {
-                            return username1;
-                        }
-                    } else {
-                        if(username2 == myname){
-                            return "You";
-                        } else {
-                            return username2;
-                        }
-                    }
-                }
-
-                function getUserImage(img1, img2){
-                    if(img1 || img2){
-                        if(img1){
-                            return img1;
-                        } else {
-                            return img2;
-                        }
-                    } else {
-                        //Should make different between lecturer and admin image. but check the api response time first !
-                        return "{{ asset('/assets/default_lecturer.png')}}";
-                    }
-                }
-
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -265,12 +141,12 @@
                         var elmt = " " +
                             "<div class='pb-3 content-item'> " +
                                 "<button class='card shadow event-box ultimate' style='min-height:auto;' onclick=''> " +
-                                    "<div class='card-header header-image' style='background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), " + getContentImage(content_image) + ";'></div> " +
+                                '<div class="card-header header-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), ' + getContentImage(content_image) + ';"></div> ' +
                                     "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                     "<div class='card-body p-2 w-100'> " +
                                         "<div class=''> " +
                                             "<div class='d-inline-block'> " +
-                                                "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_created, ui_created) + "' alt='username-profile-pic.png'> " +
+                                                "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_created, ui_created,au_created, uu_created) + "' alt='username-profile-pic.png'> " +
                                             "</div> " +
                                             "<div class='d-inline-block position-relative w-75'> " +
                                                 "<h6 class='event-title'>" + content_title + "</h6> " +
@@ -303,7 +179,7 @@
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class=''> " +
                                                 "<div class='d-inline-block'> " +
-                                                    "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted) + "' alt='username-profile-pic.png'> " +
+                                                    "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_deleted, ui_deleted,au_deleted, uu_deleted) + "' alt='username-profile-pic.png'> " +
                                                 "</div> " +
                                                 "<div class='d-inline-block position-relative w-75'> " +
                                                     "<h6 class='event-title'>Deleted By ~ Deleted At</h6> " +
@@ -372,13 +248,15 @@
                                 getDestroyModal("Task", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                             
                             $("#data-wrapper-task").append(elmt);
-                        } else if(data_from == 3 || data_from == 5 || data_from == 4){ // Tag, Info, Group
+                        } else if(data_from == 3 || data_from == 5 || data_from == 4 || data_from == 7){ // Tag, Info, Group
                             if(data_from == 3){
                                 var icon = 'fa-hashtag';
                             } else if(data_from == 5) {
                                 var icon = 'fa-circle-info';
                             } else if(data_from == 4) {
                                 var icon = 'fa-users';
+                            } else if(data_from == 7) {
+                                var icon = 'fa-book';
                             }
 
                             var elmt = " " +
@@ -452,7 +330,79 @@
                                 $("#data-wrapper-group").append(elmt);
                                 getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
                                 getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                            } else if(data_from == 7) {
+                                $("#data-wrapper-dictionary").append(elmt);
+                                getRecoverModal("Dictionary", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getDestroyModal("Dictionary", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                             }
+                        } else if(data_from == 8){ // Question
+                            var icon = 'fa-circle-question';
+
+                            var elmt = " " +
+                                "<div class='pb-3 content-item'> " +
+                                    "<button class='card shadow task-box ultimate' onclick=''> " +
+                                        "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
+                                        "<div class='card-body p-2 w-100'> " +
+                                            "<div class='position-relative'> " +
+                                                "<div class='d-inline-block me-2'> " +
+                                                    '<i class="fa-solid '+icon+' fa-xl mt-3 text-primary"></i>' +
+                                                "</div> " +
+                                                "<div class='d-inline-block position-absolute w-50' style='top:45px;'> " +
+                                                    "<h6 class='task-title'>" + content_title + "</h6> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<h6 class='mt-1' style='font-size:12px;'>Question</h6> " +
+                                            "<p class='task-desc mb-1'>" + content_desc + "</p> " +
+                                            "<h6 class='mt-2' style='font-size:12px;'>Answer</h6> " +
+                                            "<p class='task-desc mb-1'>" + content_tag + "</p> " +
+                                            "<div class='row d-inline-block px-2'> " +
+                                                getEventDate(content_date_start, content_date_end) +
+                                                getDaysRemaining(deleted_at, dtd_range) +
+                                            "</div> " +
+                                            "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                            "<div class='position-relative'> " +
+                                                "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
+                                                    "<i class='fa-solid fa-info'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-arrow-rotate-right'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-fire-flame-curved'></i> " +
+                                                "</a> " +
+                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
+                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
+                                                "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                            "</div> " +
+                                        "</div> " +
+                                    "</button> " +
+                                "</div> ";
+
+                            
+                            $("#data-wrapper-question").append(elmt);
+                            getRecoverModal("Question", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                            getDestroyModal("Question", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
                         } else if(data_from == 6){ // Feedback
                             var elmt = " " +
                                 "<div class='pb-3 content-item'> " +
@@ -518,11 +468,17 @@
                         }
                 }   
             }
+            var listCat = ["event","task","tag","info","group","dictionary","feedback","question","notification"];
+            listCat.forEach(e=>{
+                if($("#data-wrapper-"+e).children().length === 0){
+                    $("#data-wrapper-"+e).html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
+                }
+            });
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
-                $("#empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>Sorry but we not found specific content</h6></div>");
+                $(".empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
             } else {
                 // handle other errors
             }

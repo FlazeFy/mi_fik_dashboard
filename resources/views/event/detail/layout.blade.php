@@ -128,6 +128,17 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #555; 
     }
+    .image-att-zoomable{
+        cursor: pointer;
+        border-radius: 12px;
+    }
+    .image-att-zoomable:hover{
+        background: #212121;
+        opacity: 0.7;
+        -webkit-transition: all 0.2s;
+        -o-transition: all 0.2s;
+        transition: all 0.2s;
+    }
 </style>
 
     <div class="box-event-detail">
@@ -159,12 +170,7 @@
 
                 <!--Content location-->
                 <hr><h5>Location</h5>
-                @if($c->content_loc)
-                    @include('event.detail.maps')
-                @else 
-                    <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon" style="height:18vh;">
-                    <h6 class="text-center text-secondary">This Event doesn't have location</h6>
-                @endif
+                @include('event.detail.maps')
             </div>
             <div class="col-lg-4">
                 @include('event.detail.properties')

@@ -1,5 +1,6 @@
 <form class="mb-3" action="/event/edit/update/attach/add/{{$c->slug_name}}" method="POST">
     @csrf
+    <input hidden name="content_title" value="{{$c->content_title}}">
     <a class="content-add mb-2" style="float:none;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
     <div class="attachment-holder" id="attachment-holder">
     </div>

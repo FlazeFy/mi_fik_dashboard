@@ -43,6 +43,7 @@
 
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -79,10 +80,24 @@
                 return new bootstrap.Popover(popoverTriggerEl)
             })
 
+            var isFormSubmitted = false;
+            var forms = document.getElementsByTagName('form');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function() {
+                    isFormSubmitted = true;
+                });
+            }
+
+            window.addEventListener('beforeunload', function(event) {
+                if(slct_list.length > 0 && !isFormSubmitted){
+                    event.preventDefault();
+                    event.returnValue = '';
+                }
+            });
         </script>
 
         <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
-
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>
 </html>

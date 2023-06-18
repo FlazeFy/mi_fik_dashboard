@@ -58,6 +58,8 @@
         <!-- JS Collection -->
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -70,7 +72,8 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
+                    @include('system.info.create')
+                    <div class="content-section" style="margin-top:15px;">
                         @include('system.info.table')
                     </div>
                 </div>
@@ -87,6 +90,14 @@
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
             })
+
+            var isFormSubmitted = false;
+            var forms = document.getElementsByTagName('form');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function() {
+                    isFormSubmitted = true;
+                });
+            }
         </script>
 
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>

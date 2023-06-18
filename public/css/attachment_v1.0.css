@@ -47,6 +47,20 @@
     font-size: 13px;
     width: 100px;
 }
+.btn-add-att{
+    color:#F78A00 !important;
+    border-radius: 8px;
+    border: solid 2px #F78A00;
+    opacity: 1;
+    cursor: pointer;
+}
+.btn-add-att.disabled{
+    cursor: normal;
+}
+.btn-add-att:hover{
+    color:white !important;
+    background: #F78A00;
+}
 .attach-upload-status, #content_loc_msg{
     text-decoration: none;
     font-style: italic;

@@ -1,4 +1,4 @@
-<form action="" method="POST">
+<form action="/event/edit/update/info/{{$c->slug_name}}" method="POST">
     @csrf
     <div class="form-floating mb-2">
         <input type="text" class="form-control" id="floatingTitle" name="content_title" placeholder="{{$c->content_title}}" value="{{$c->content_title}}" required>

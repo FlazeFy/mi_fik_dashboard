@@ -42,14 +42,7 @@
 <div class="question_holder mb-3" id="question_holder">
     <!-- Loading -->
     <div class="auto-load-question text-center">
-        <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-            <path fill="#000"
-                d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                    from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-            </path>
-        </svg>
+        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
     </div>
 </div>
 <div id="empty_question_holder"></div>
@@ -129,10 +122,10 @@
                     }
 
                     var elmt = " " +
-                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' 
-                        + "'" + username + "'" + ', ' + "'" + id + "'" + ', ' + "'" + status + "'" + ')"> ' +
+                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' + 
+                        "'" + id + "'" + ', ' + "'" + status + "'" + ',' + "'" + ucFirst(questionBody) + "'" + ')"> ' +
                         '<h6>' + ucFirst(questionType) + '</h6> ' +
-                        ucEachWord(questionBody) + 
+                        ucFirst(questionBody) + 
                         '<p class="m-0 mt-2">' + getDateToContext(createdAt, "full") + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
                     '</button>';
 
@@ -145,22 +138,22 @@
         });
     }
 
-    function loadDetailAnswer(answer, user, id, status){
+    function loadDetailAnswer(answer, id, status, que){
         if(status == "answered"){
             setSelectedBtnStyle("background: #00c363; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
             setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
-        loadAnswer(answer, id);
+        loadAnswer(answer, id, status, que);
     }
 
-    function loadAnswer(answer, id){
-        var question_holder = document.getElementById("question_answer");
-        var question_id = document.getElementById("question_id");
-
-        question_holder.value = answer;
-        question_id.value = id;
+    function loadAnswer(answer, id, status, que){
+        document.getElementById("question_answer").value = answer;
+        document.getElementById("question_id").value = id;
+        document.getElementById("question_status").value = status;
+        document.getElementById("form-delete-faq").setAttribute("action","/social/faq/remove/"+id);
+        document.getElementById("question-delete-verify").innerHTML = '"'+que+'"';
 
         validateForm(validation);
     }

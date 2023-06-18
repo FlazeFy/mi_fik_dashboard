@@ -51,6 +51,11 @@ class Generator
                 ->where('dct_type', 'TAG-001')
                 ->limit(1)
                 ->get();
+        } else if($type == "dct"){
+            $check = Dictionary::select('slug_name')
+                ->where('slug_name', $replace)
+                ->limit(1)
+                ->get();
         } else if($type == "group"){
             $check = UserGroup::select('slug_name')
                 ->where('slug_name', $replace)
@@ -464,6 +469,18 @@ class Generator
             return null;
         } else {
             return $res->image_url;
+        }
+    }
+
+    public static function getContactTemplate($cat){
+        if($cat == "instagram"){
+            return "https://www.instagram.com/";
+        } else if($cat == "whatsapp"){
+            return "https://wa.me/";
+        } else if($cat == "twitter"){
+            return "https://www.twitter.com/";
+        } else {
+            return "";
         }
     }
 }

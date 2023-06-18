@@ -16,11 +16,11 @@
     <!--Get event date start-->
     @if($c->content_date_start && $c->content_date_end)
         @if(date('y-m-d', strtotime($c->content_date_start)) == date('y-m-d', strtotime($c->content_date_end)))
-            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{Carbon::parse($c->content_date_start)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span> 
-                - <span class="hour-event">{{Carbon::parse($c->content_date_end)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_start))}}</span> 
+                - <span class="hour-event">{{date("Y/m/d H:i",strtotime($c->content_date_end))}}</span></a>
         @else
-            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{Carbon::parse($c->content_date_start)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span> 
-                - <span class="date-event">{{Carbon::parse($c->content_date_end)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_start))}}</span> 
+                - <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_end))}}</span></a>
         @endif
     @else
         <img src="{{asset('assets/nodate.png')}}" class="img nodata-icon" style="height:18vh;">
@@ -28,9 +28,9 @@
     @endif
 
     <hr>
-    <h6 class="text-secondary" title="Event Created At">Created At : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
+    <h6 class="text-secondary">Posted At : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @if($c->updated_at)
-        <h6 class="text-secondary" title="Event Updated At">Updated At : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
+        <h6 class="text-secondary">Last Update : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @endif
 </div>
 

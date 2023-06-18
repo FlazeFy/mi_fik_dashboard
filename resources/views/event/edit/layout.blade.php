@@ -129,49 +129,41 @@
         background: #555; 
     }
 </style>
-<form action="/event/edit/update/info/{{$c->slug_name}}" method="POST">
-    @csrf
-    <div class="box-event-detail">
-        @if($c->content_image)
-            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('{{$c->content_image}}');" id="event-header-image">
-                <a class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
-                <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
-            </div>
-        @else
-            <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});" id="event-header-image">
-                <a class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
-                <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
-            </div>
-        @endif
-        <div class="row p-3">
-            <div class="col-lg-8">
-                @include('event.edit.titledescinput')<hr>
 
-                <h6 class="text-primary mt-3">Attachment</h6>
-                @include('event.edit.attachment.add')  
-                <br>
-                @include('event.edit.attachment.show')                
-            </div>
-            <div class="col-lg-4">
-                <div class="position-relative">
-                    <h6 class="text-primary">Event Location</h6>
-                    @include('event.edit.maps.delete')
-                </div>
-                @include('event.edit.maps.add')
-                <hr>
+<div class="box-event-detail">
+    @include('event.edit.image')
+    <div class="row p-3">
+        <div class="col-lg-8">
+            @include('event.edit.titledescinput')<hr>
 
-                <h6 class="text-primary mt-3">Tag</h6>
-                    @include('event.edit.tag.show')
-                    @include('event.edit.tag.add')
-                <hr>
+            <h6 class="text-primary mt-3">Attachment</h6>
+            @include('event.edit.attachment.add')  
+            <br>
+            @include('event.edit.attachment.show')                
+        </div>
+        <div class="col-lg-4">
+            <h6 class="text-primary mt-3">Tag</h6>
+                @include('event.edit.tag.show')
+                @include('event.edit.tag.add')
+            <hr>
 
-                <h6 class="text-primary mt-3">History</h6>
-                    @include('components.history')
-                <hr>
+            <h6 class="text-primary mt-3">Date & Time</h6>
+                @include('event.edit.datepicker')
+            <hr>
+
+            <div class="position-relative">
+                <h6 class="text-primary">Event Location</h6>
+                @include('event.edit.maps.delete')
             </div>
+            @include('event.edit.maps.add')
+            <hr>
+
+            <h6 class="text-primary mt-3">History</h6>
+                @include('components.history')
+            <hr>
         </div>
     </div>
-</form>
+</div>
 
 <script>
     var i = 0;
@@ -184,20 +176,5 @@
         copyText.setSelectionRange(0, 99999); // For mobile devices
 
         navigator.clipboard.writeText(copyText.value);
-    }
-
-    function resize(img){
-        if(img){
-            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/storage/" + img + "');";
-        } else {
-            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');";
-        }
-
-        if(i % 2 == 0){
-            document.getElementById('event-header-image').style = "height: 100vh; " + img_url;
-        } else {
-            document.getElementById('event-header-image').style = "height: 30vh; " + img_url;
-        }
-        i++;
     }
 </script>

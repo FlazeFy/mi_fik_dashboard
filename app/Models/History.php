@@ -33,7 +33,7 @@ class History extends Model
     }
 
     public static function getHistoryByType($type){
-        if($type == "about" || $type == "help" || $type == "group" || $type == "tag" || $type == "info" || $type == "notification" || $type == "faq" || $type == "feedback"){
+        if($type == "about" || $type == "help" || $type == "group" || $type == "tag" || $type == "info" || $type == "notification" || $type == "feedback"){
             $res = History::select('history_body', 'history_type', 'history_send_to', 'histories.created_at', 'admins.username as admin_username','admins.image_url as admin_image')
                 ->leftJoin('admins', 'admins.id', '=', 'histories.created_by')
                 ->where('history_type', $type)

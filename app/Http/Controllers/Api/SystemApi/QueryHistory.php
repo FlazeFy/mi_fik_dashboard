@@ -50,7 +50,7 @@ class QueryHistory extends Controller
             $perPage = 20;
             $page = request()->input('page', 1);
             $paginator = new LengthAwarePaginator(
-                $collection->forPage($page, $perPage),
+                $collection->forPage($page, $perPage)->values(),
                 $collection->count(),
                 $perPage,
                 $page,
@@ -58,7 +58,7 @@ class QueryHistory extends Controller
             );
             $clean = $paginator->appends(request()->except('page'));
 
-            if($clean->isEmpty()) {
+            if(count($clean) == 0) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'History Not Found',

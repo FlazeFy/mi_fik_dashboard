@@ -5,7 +5,9 @@ function getDateToContext(datetime, type){
         if(type == "full"){
             const now = new Date(Date.now());
             const yesterday = new Date();
+            const tomorrow = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
+            tomorrow.setDate(tomorrow.getDate() + 1);
             
             //FIx this!!!
             if(result.toDateString() === now.toDateString()){
@@ -26,6 +28,8 @@ function getDateToContext(datetime, type){
                 //}
             } else if(result.toDateString() === yesterday.toDateString()){
                 return " Yesterday at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
+            } else if(result.toDateString() === tomorrow.toDateString()){
+                return " Tomorrow at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
             } else {
                 return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
             }
@@ -35,8 +39,68 @@ function getDateToContext(datetime, type){
             return ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2); // Check this
         } else if(type == "datetime"){
             return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
+        } else if(type == "date"){
+            return result.getFullYear() + "-" + ("0" + (result.getMonth() + 1)).slice(-2) + "-" + ("0" + result.getDate()).slice(-2);  
         }
     } else {
         return "-";
     }
+}
+
+function getEventDate(dateStart, dateEnd){
+    if(dateStart && dateEnd){
+        const ds = new Date(dateStart);
+        const de = new Date(dateEnd);
+
+        if(ds.getFullYear() !== de.getFullYear()){
+            //Event year not same
+            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
+                " - " +
+                getDateMonth(de) + " " + de.getFullYear() + " " + getHourMinute(de) + "</a>";
+
+        } else if(ds.getMonth() !== de.getMonth()){
+            //If month not same
+            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
+                " - " +
+                getDateMonth(de) + " " + getHourMinute(de) + "</a>";
+
+        } else if(ds.getDate() !== de.getDate()){
+            //If date not same
+            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + getHourMinute(ds) + 
+                " - " +
+                getDateMonth(de) + " " + ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
+
+        } else if(ds.getDate() === de.getDate()){
+            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
+                getDateMonth(ds) + " " + getHourMinute(ds) + 
+                " - " +
+                getHourMinute(de) + "</a>";
+
+        }
+    } else {
+        return "";
+    }
+}
+
+function getDateMonth(date){
+    const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    return ("0" + date.getDate()).slice(-2) + " " + month[date.getMonth()].slice(0, 3);
+}
+
+function getHourMinute(date){
+    return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
+}
+
+function removeTags(str) {
+    if ((str===null) || (str==='')){
+        return "<span class='fst-italic'>No description provided</span>";
+    } else {
+        str = str.toString();
+    }
+        
+    return str.replace( /(<([^>]+)>)/ig, '');
 }

@@ -19,6 +19,8 @@
 </style>
 
 <div class="table-responsive">
+    <h6 class="mt-1">Page</h6>
+    <div id="group_navigate"></div>
     <table class="table tabular">
         <thead>
             <tr>
@@ -32,15 +34,7 @@
         <tbody class="user-holder tabular-body" id="group-list-holder">
             <!-- Loading -->
             <div class="auto-load text-center">
-            <svg version="1.1" id="L9" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                x="0px" y="0px" height="60" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve">
-                <path fill="#000"
-                    d="M73,50c0-12.7-10.3-23-23-23S27,37.3,27,50 M30.9,50c0-10.5,8.5-19.1,19.1-19.1S69.1,39.5,69.1,50">
-                    <animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s"
-                        from="0 50 50" to="360 50 50" repeatCount="indefinite" />
-                </path>
-            </svg>
-        </tbody>
+            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
         <span id="load_more_holder" style="position:absolute; right:20px; top:20px;"></span>
         </div>
     </table>
@@ -49,15 +43,14 @@
 </div>
 
 <script>
-    var page_new_req = 1;
-    infinteLoadMore(page_new_req);
+    var pageGroup = 1;
+    var lastPageGroup = 0; 
+    var lastPageUserAva = 0;
+    var pageUserAva = 0;
     var selectedMember = []; 
     var selectedMemberRemove = []; 
 
-    function loadmore(route){
-        page_new_req++;
-        infinteLoadMore(page_new_req);
-    }
+    infinteLoadMore(pageGroup);
 
     function getFind(check){
         let trim = check.trim();
@@ -69,13 +62,14 @@
         }
     }
 
-    function infinteLoadMore(page_new_req) {    
+    function infinteLoadMore(page) {    
+        pageGroup = page;
         var order = '<?= session()->get('ordering_group_list'); ?>';
         var find = document.getElementById("group_search").value;
         document.getElementById("group-list-holder").innerHTML = "";
     
         $.ajax({
-            url: "/api/v1/group/limit/100/order/" + order + "/find/" + getFind(find) + "?page=" + page_new_req,
+            url: "/api/v1/group/limit/25/order/" + order + "/find/" + getFind(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -88,13 +82,13 @@
             $('.auto-load').hide();
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            lastPageGroup = response.data.last_page;
 
-            if(page_new_req != last){
-                $('#load_more_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
-            } else {
-                $('#load_more_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
-            }
+            // if(page != last){
+            //     $('#load_more_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            // } else {
+            //     $('#load_more_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+            // }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
@@ -233,6 +227,8 @@
                                                     '</div> ' +
                                                 '</div> ' +
                                                 '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
+                                                '<h6>Page</h6> ' +
+                                                '<div id="user-ava-page-'+slug+'" class="mt-2"></div> ' +
                                                 '<span id="err-ava-holder-'+slug+'"></span> ' +
                                             '</div> ' +
                                         '</div> ' +
@@ -289,6 +285,8 @@
                     $("#group-list-holder").prepend(elmt);
                 }   
             }
+
+            generatePageNav(lastPageGroup);
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
@@ -298,6 +296,30 @@
                 // handle other errors
             }
         });
+    }
+
+    function generatePageNav(){
+        $("#group_navigate").empty();
+        for(var i = 1; i <= lastPageGroup; i++){
+            if(i == pageGroup){
+                var elmt = "<a class='page-holder active'>"+i+"</a>";
+            } else {
+                var elmt = "<a class='page-holder' onclick='infinteLoadMore("+'"'+i+'"'+")'>"+i+"</a>";
+            }
+            $("#group_navigate").append(elmt);
+        }
+    }
+
+    function generatePageUserNav(slug){
+        $("#user-ava-page-"+slug).empty();
+        for(var i = 1; i <= lastPageUserAva; i++){
+            if(i == pageUserAva){
+                var elmt = "<a class='page-holder active'>"+i+"</a>";
+            } else {
+                var elmt = "<a class='page-holder' onclick='load_available_user("+'"'+i+'"'+","+'"'+slug+'"'+")'>"+i+"</a>";
+            }
+            $("#user-ava-page-"+slug).append(elmt);
+        }
     }
 
     function runManageFunc(slug){
@@ -324,7 +346,7 @@
             var total = response.data.total;
             var last = response.data.last_page;
 
-            if(page_new_req != last){
+            if(pageGroup != last){
                 $('#load_more_rel_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
                 $('#load_more_rel_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
@@ -387,12 +409,13 @@
         load_available_user(1, slug);
     }
 
-    function load_available_user(page_new_req,slug) {       
+    function load_available_user(page,slug) {       
         var find = document.getElementById("user_available_search_" + slug).value;
         document.getElementById("user-ava-holder-"+slug).innerHTML = "";
+        pageUserAva = page;
 
         $.ajax({
-            url: "/api/v1/group/member/" + slug + "/" + getFindUserAva(find,slug) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
+            url: "/api/v1/group/member/" + slug + "/" + getFindUserAva(find,slug) + "/limit/10/order/first_name__DESC?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -405,9 +428,9 @@
             $('.auto-load').hide();
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            lastPageUserAva = response.data.last_page;
 
-            if(page_new_req != last){
+            if(page != lastPageUserAva){
                 $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
                 $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
@@ -421,6 +444,14 @@
                 return;
             } else {      
                 $("#err-ava-holder-"+slug).html("");
+
+                function getUserRole(role){
+                    if(role){
+                        return '<h6 class="text-secondary fw-bold" style="font-size:13px;">'+role+'</h6>';
+                    } else {
+                        return '<h6 class="text-danger" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> This user has no role</h6>';
+                    }
+                }
 
                 for(var i = 0; i < data.length; i++){
                     //Attribute
@@ -440,7 +471,7 @@
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
-                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
+                                    getUserRole(grole) + 
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
                                         '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_new_'+ username +'" onclick="addNewMember('+"'"+slug+"'"+', '+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
                                     '</div> ' +
@@ -451,6 +482,8 @@
                     $("#user-ava-holder-"+slug).prepend(elmt);
                 }   
             }
+            generatePageUserNav(slug);
+
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {

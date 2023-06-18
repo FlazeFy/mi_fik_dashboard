@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\ContentApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Task;
 use App\Models\History;
@@ -80,6 +81,7 @@ class CommandTask extends Controller
     }
 
     public function deleteTask(Request $request, $id){
+        DB::beginTransaction();
         try{
             $user_id = $request->user()->id;
 
@@ -99,16 +101,16 @@ class CommandTask extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $task = Task::where('id', $id)->update([
+                DB::table("tasks")->where('id', $id)->update([
                     'deleted_at' => date("Y-m-d H:i:s"),
                     'deleted_by' => $user_id,
                 ]);
                 
-                ArchiveRelation::where('content_id',$id)
+                DB::table("archives_relations")->where('content_id',$id)
                     ->where('created_by', $user_id)
                     ->delete();
 
-                History::create([
+                DB::table("histories")->insert([
                     'id' => Generator::getUUID(),
                     'history_type' => $data->history_type, 
                     'context_id' => $id, 
@@ -118,13 +120,15 @@ class CommandTask extends Controller
                     'created_by' => $user_id
                 ]);
 
+                DB::commit();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Task Deleted',
-                    'data' => $task
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
+            DB::rollback();
+
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -133,6 +137,7 @@ class CommandTask extends Controller
     }
 
     public function destroyTask(Request $request, $id){
+        DB::beginTransaction();
         try{
             $user_id = $request->user()->id;
 
@@ -152,13 +157,14 @@ class CommandTask extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $task = Task::destroy($id);
+                DB::table("tasks")
+                    ->where('id',$id)->delete();
 
-                ArchiveRelation::where('content_id',$id)
+                DB::table("archives_relations")->where('content_id',$id)
                     ->where('created_by', $user_id)
                     ->delete();
                 
-                History::create([
+                DB::table("histories")->insert([
                     'id' => Generator::getUUID(),
                     'history_type' => $data->history_type, 
                     'context_id' => null, 
@@ -168,13 +174,15 @@ class CommandTask extends Controller
                     'created_by' => $user_id
                 ]);  
 
+                DB::commit();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Task Permentaly Deleted',
-                    'data' => $task
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
+            DB::rollback();
+
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()

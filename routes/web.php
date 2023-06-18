@@ -87,6 +87,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
 
     Route::get('/edit/{slug_name}', [EditController::class, 'index']);
     Route::post('/edit/update/info/{slug_name}', [EditController::class, 'update_event_info']);
+    Route::post('/edit/update/date/{slug_name}', [EditController::class, 'update_event_date']);
     Route::post('/edit/update/draft/{slug_name}', [EditController::class, 'update_event_draft']);
     Route::post('/edit/update/attach/add/{slug_name}', [EditController::class, 'update_event_add_attach']);
     Route::post('/edit/update/attach/remove/{slug_name}', [EditController::class, 'update_event_remove_attach']);
@@ -112,9 +113,13 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/info', [InfoController::class, 'index']);
     Route::post('/info/update/type/{id}', [InfoController::class, 'update_type']);
     Route::post('/info/update/body/{id}', [InfoController::class, 'update_body']);
+    Route::post('/info/update/pagloc/{id}', [InfoController::class, 'update_pagloc']);
+    Route::post('/info/update/active/{id}/{active}', [InfoController::class, 'update_active']);
     Route::post('/info/delete/{id}', [InfoController::class, 'delete']);
+    Route::post('/info/create', [InfoController::class, 'create']);
 
     Route::get('/dictionary', [DictionaryController::class, 'index']);
+    Route::post('/dictionary/create', [DictionaryController::class, 'create']);
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
     Route::post('/dictionary/update/info/{id}', [DictionaryController::class, 'update_info']);
     Route::post('/dictionary/delete/{id}', [DictionaryController::class, 'delete']);
@@ -132,6 +137,8 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/request/manage_recover', [RequestController::class, 'add_recover']);
     Route::post('/request/reject_request/multi', [RequestController::class, 'reject_request_multi']);
     Route::post('/request/accept_request/multi', [RequestController::class, 'accept_request_multi']);
+    Route::post('/request/reject_join', [RequestController::class, 'reject_join']);
+    Route::post('/request/accept_join/{isrole}', [RequestController::class, 'accept_join']);
 
     Route::get('/all', [AllController::class, 'index']);
     Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
@@ -163,6 +170,7 @@ Route::prefix('/trash')->middleware(['auth_v2:sanctum'])->group(function () {
 Route::prefix('/about')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [AboutController::class, 'index']);
     Route::post('/edit/app', [AboutController::class, 'edit_about_app']);
+    Route::post('/edit/contact', [AboutController::class, 'edit_about_contact']);
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
@@ -183,6 +191,7 @@ Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/faq', [FaqController::class, 'index']);
     Route::post('/faq/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
     Route::post('/faq/answer', [FaqController::class, 'set_answer']);
+    Route::post('/faq/remove/{id}', [FaqController::class, 'delete']);
 });
 
 Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {

@@ -60,7 +60,7 @@ class QueryContent extends Controller
         try{
             $content = ContentHeader::getFullContentBySlug($slug);
 
-            if (count($content) == 0) {
+            if (!$content) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Content Not Found',
@@ -144,10 +144,12 @@ class QueryContent extends Controller
                 ->orderBy('contents_headers.content_date_start', $order)
                 ->where('is_draft', 0)
                 ->whereRaw('(DATEDIFF(content_date_end, now()) * -1) < 1')
-                ->whereNull('contents_headers.deleted_at')
-                ->where('content_title', 'LIKE', '%' . $search . '%');
+                ->whereNull('contents_headers.deleted_at');
 
             // Filtering
+            if($search != "" && $search != "%20"){
+                $content->where('content_title', 'LIKE', '%' . $search . '%');
+            }
             if($query !== null){
                 $content->whereRaw($query);
             }

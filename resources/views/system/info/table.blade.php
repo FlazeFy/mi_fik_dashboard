@@ -32,7 +32,7 @@
                     @php($bg = "waiting")
                 @endif
 
-                <tr class="tabular-item normal{{$bg}}">
+                <tr class="tabular-item normal {{$bg}}">
                     <td style="width: 140px;">
                         <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$in->id}}')" id="select-{{$in->id}}">
                             @foreach($dictionary as $dct)
@@ -59,12 +59,14 @@
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <p class="mb-0">Page : <a class="text-primary" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
-                        <p>Location : {{$in->info_location}}</p>
+                    <td style="width: 180px;">
+                        <div id="info_page_location_holder_{{$in->id}}">
+                            <p class="mb-0">Page : <a class="text-primary" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
+                            <p>Location : {{$in->info_location}}</p>
+                        </div>
                     </td>
                     <td>
-                        <div style="word-break: break-all; width: 400px;" id="info_body_holder_{{$in->id}}">
+                        <div style="word-break: break-all; width: 380px;" id="info_body_holder_{{$in->id}}">
                             <?= $in->info_body; ?>
                         </div>
                     </td>
@@ -108,17 +110,21 @@
                         @endif
                     </td>
                     <td>
-                        <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$in->info_body}}","{{$in->id}}")'><i class="fa-solid fa-edit"></i></button>
+                        <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$in->info_body}}","{{$in->id}}","{{$in->info_page}}","{{$in->info_location}}")'><i class="fa-solid fa-edit"></i></button>
                         @if($in->info_location != "delete_info")
-                            <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                            @include('system.info.delete')
+                        @endif
+                        
+                        @if($in->is_active == 1)
+                            <button class="btn btn-danger" style="padding-inline:10px;" data-bs-target="#activeModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-toggle-off"></i></button>
+                            @include('system.info.active',['status' => "deactivate"])
+                        @else 
+                            <button class="btn btn-success" data-bs-target="#activeModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-toggle-on"></i></button>
+                            @include('system.info.active',['status' => "activate"])
                         @endif
                     </td>
                 </tr>
-
-                @if($in->info_location != "delete_info")
-                    @include('system.info.delete')
-                @endif
-                
                 @php($i++)
             @endforeach
         </tbody>
@@ -163,9 +169,11 @@
 
     var id_body = " ";
     var toogle = 0;
+    var menus = [<?php foreach($menu as $mn){ echo "'".substr($mn->menu_url,1)."',"; } ?>'register','landing','event/edit','event/detail']; 
 
-    function toogleInfoDescEdit(info_body, id){
+    function toogleInfoDescEdit(info_body, id, page, loc){
         var holder_body = document.getElementById("info_body_holder_"+id);
+        var pagloc_body = document.getElementById("info_page_location_holder_"+id);
 
         if(toogle % 2 == 0){
             holder_body.innerHTML = " <div id='rich_box_" + id + "' style='height: 200px !important;'></div> " +
@@ -174,6 +182,29 @@
                 "<input name='info_body' id='info_body_" + id + "' hidden> " +
                 "<button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("+ '"' + id + '"' +")'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
             "</form> ";
+
+            pagloc_body.innerHTML = " " +
+                "<form class='d-inline' method='POST' action='/system/info/update/pagloc/" + id + "'> " +
+                    '@csrf ' +
+                    '<div class="form-floating mb-2"> ' +
+                        '<select class="form-select" id="info_type_' + id + '" style="font-size:14px;" title="Info Page" name="info_page" aria-label="Floating label select example" required></select> ' +
+                        '<label for="floatingSelect">Page</label> ' +
+                    '</div> ' +
+                    '<div class="form-floating"> ' +
+                        '<input type="text" class="form-control nameInput" id="info_location_' + id + '" value="' + loc + '" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required> ' +
+                        '<label for="titleInput_event">Info Location</label> ' +
+                        '<a id="info_location_msg_' + id + '" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                    '</div> ' +
+                    "<button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
+                "</form> ";
+                
+                menus.forEach(e => {
+                    if(e == page){
+                        $("#info_type_" + id).append('<option value="'+e+'" selected>'+e+'</option>');
+                    } else {
+                        $("#info_type_" + id).append('<option value="'+e+'">'+e+'</option>');
+                    }
+                });
             
             var quill<?= str_replace("-", "", $in->id) ?> = new Quill('#rich_box_' + id, {
                 theme: 'snow'
@@ -188,6 +219,8 @@
                 child.innerHTML = " ";
             }
         } else {
+            pagloc_body.innerHTML = '<p class="mb-0">Page : <a class="text-primary" href="{{url($in->info_page)}}" style="cursor:pointer;">' + page + '</a></p> ' +
+                '<p>Location : ' + loc + '</p>';
             holder_body.innerHTML = info_body;
         }
         toogle++;

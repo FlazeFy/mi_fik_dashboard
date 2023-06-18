@@ -232,6 +232,33 @@ class Queries extends Controller
         }
     }
 
+    public function getMyRole($username){
+        try{
+            $user = User::select('role')
+                ->where('username', $username)
+                ->first();
+
+            if ($user == null) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'User Not Found',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User Found',
+                    'data' => $user['role']
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function getMyRequest(Request $request){
         try{
             $user_id = $request->user()->id;
@@ -239,7 +266,7 @@ class Queries extends Controller
 
             $user = UserRequest::getRecentlyRequest($user_id);
 
-            if ($user->isEmpty()) {
+            if ($user == null) {
                 return response()->json([
                     'status' => 'failed',
                     'message' => 'Request Not Found',

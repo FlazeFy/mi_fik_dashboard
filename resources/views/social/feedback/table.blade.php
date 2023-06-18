@@ -1,5 +1,5 @@
 <div class="table-responsive position-relative">
-    @include('social.feedback.filtercategory')
+    @include('social.feedback.filterCategory')
     <table class="table tabular table-paginate " id="feedbackTable" cellspacing="0">
         <thead>
             <tr>

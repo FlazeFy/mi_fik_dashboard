@@ -66,6 +66,9 @@
     color: #F5F5F5;
     border-radius: 10px;
 }
+.btn-category-help.add:hover{
+    background: #FFF1DF !important;
+}
 
 .btn-submit-form:disabled, .btn-submit-form{
     color:#00c363;
@@ -361,10 +364,23 @@
     border-radius: 21px; 
     padding: 11px;
     position: absolute;
-    top: 47.5px;
-    right: -27.5px;
     cursor: pointer;
     color: white !important;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border: 3px solid white;
 }   
+.btn-delete-custom{
+    color:#D5534C;
+    border-radius: 8px;
+    border: solid 2px #D5534C;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    opacity: 1;
+}
+.btn-delete-custom:hover{
+    background:#D5534C;
+    color: white;
+}
+.btn-delete-custom:disabled{
+    opacity: 1;
+}

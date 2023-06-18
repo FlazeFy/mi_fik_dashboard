@@ -133,7 +133,7 @@
                     </td>
                     <td>
                         <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$dc->id}}")'><i class="fa-solid fa-edit"></i></button>
-                        <button class="btn btn-danger" data-bs-target="#deleteModal-{{$dc->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
+                        <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$dc->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                         @include('system.dictionary.delete')                            
                     </td>
                 </tr>

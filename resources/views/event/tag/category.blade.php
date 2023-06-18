@@ -16,7 +16,7 @@
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button"
         data-bs-toggle="popover" title="Info" data-bs-content="Tag is ... ...."><i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
-    <form class="p-2 mt-2" action="/event/tag/add_category" method="POST">
+    <form class="p-2 mt-2" action="/event/tag/add_category" method="POST" id="form-add-cat">
         @csrf
         <div class="form-floating mb-2">
             <input type="text" class="form-control nameInput" id="dct_name" name="dct_name" oninput="validateFormSecond(validation2)" maxlength="35" required>
@@ -31,3 +31,27 @@
         <span id="submit_holder_second"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
     </form>
 </div>
+
+<script>
+    window.addEventListener('beforeunload', function(event) {
+        if(!isFormSubmitted){
+            var is_editing = false;
+            const form = document.getElementById('form-add-cat');
+            const inputs = form.querySelectorAll('input');
+
+            for (let i = 0; i < inputs.length; i++) {
+                const input = inputs[i];
+                
+                if (input.value.trim() !== '' && input.name != "_token") {
+                    is_editing = true;
+                    break;
+                }
+            }
+
+            if(is_editing){
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        }
+    });
+</script>

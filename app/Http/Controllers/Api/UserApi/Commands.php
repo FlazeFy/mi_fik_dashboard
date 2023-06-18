@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\UserApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
 use App\Models\Admin;
@@ -84,6 +85,7 @@ class Commands extends Controller
 
     public function editUserImage(Request $request)
     {
+        DB::beginTransaction();
         try{
             $user_id = $request->user()->id;
             $validator = Validation::getValidateEditProfileImage($request, "user");
@@ -112,21 +114,24 @@ class Commands extends Controller
                         'result' => $errors,
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
+                    $check = DB::table("personal_access_tokens")
+                        ->where('tokenable_id', $user_id)
+                        ->first();
+
                     if($check->tokenable_type === "App\\Models\\User"){ // User
-                        $user = User::where('id', $user_id)->update([
+                        DB::table("users")->where('id', $user_id)->update([
                             'image_url' => $request->image_url,
                             'updated_at' => date("Y-m-d H:i"),
                             'updated_by' => $user_id,
                         ]);
                     } else {
-                        $user = Admin::where('id', $user_id)->update([
+                        DB::table("admins")->where('id', $user_id)->update([
                             'image_url' => $request->image_url,
                             'updated_at' => date("Y-m-d H:i"),
                         ]);
                     }
 
-                    History::create([
+                    DB::table("histories")->insert([
                         'id' => Generator::getUUID(),
                         'history_type' => $data->history_type,
                         'context_id' => null,
@@ -136,6 +141,7 @@ class Commands extends Controller
                         'created_by' => $user_id
                     ]);
 
+                    DB::commit();
                     return response()->json([
                         'status' => 'success',
                         'message' => 'User profile image updated',
@@ -143,6 +149,8 @@ class Commands extends Controller
                 }
             }
         } catch(\Exception $e) {
+            DB::rollback();
+
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -151,6 +159,8 @@ class Commands extends Controller
     }
 
     public function add_role(Request $request){
+        DB::beginTransaction();
+
         try {
             $user_id = $request->user()->id;
 
@@ -176,26 +186,27 @@ class Commands extends Controller
                     'result' => $errors
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $oldR = User::select('id','role')
+                $oldR = DB::table("users")->select('id','role')
                     ->where('username',$request->username)
                     ->first(); 
 
                 if($oldR->role == null){
                     $newR = $roles;
                 } else {
-                    $newR = array_merge($oldR->role, $roles);
+                    $newR = array_merge(json_decode($oldR->role), $roles);
                 }
                 
                 $newR = Converter::getTag($newR);
                 $newR = json_decode($newR, true);
 
-                $user = User::where('id', $oldR->id)->update([
-                    'role' => $newR,
-                    'updated_at' => date("Y-m-d H:i"),
-                    'updated_by' => $user_id,
+                DB::table("users")
+                    ->where('id', $oldR->id)->update([
+                        'role' => $newR,
+                        'updated_at' => date("Y-m-d H:i"),
+                        'updated_by' => $user_id,
                 ]);
 
-                History::create([
+                DB::table("histories")->insert([
                     'id' => Generator::getUUID(),
                     'history_type' => $hs->history_type,
                     'context_id' => null,
@@ -205,6 +216,7 @@ class Commands extends Controller
                     'created_by' => $user_id
                 ]);
 
+                DB::commit();
                 return response()->json([
                     'status' => 'success',
                     'message' => 'Role has been updated',
@@ -212,6 +224,97 @@ class Commands extends Controller
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
+            DB::rollback();
+
+            return response()->json([
+                'status' => 'error',
+                'result' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function remove_role(Request $request){
+        DB::beginTransaction();
+
+        try {
+            $user_id = $request->user()->id;
+
+            $roles = json_decode($request->user_role,true);
+            $list_roles = "";
+            foreach($roles as $rl){
+                $list_roles .= $rl['tag_name'].",";
+            }
+
+            $hs = new Request();
+            $obj = [
+                'history_type' => "user",
+                'history_body' => "remove ".$list_roles." to ".$request->username." role"
+            ];
+            $hs->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($hs);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $oldR = DB::table("users")->select('id','role')
+                    ->where('username',$request->username)
+                    ->first(); 
+
+                $uniqueKeys = [];
+                $merge = array_merge($roles, json_decode($oldR->role, true));
+
+                foreach ($merge as $mg) {
+                    $key = $mg['slug_name'];
+                    if (!in_array($key, $uniqueKeys)) {
+                        $unique[] = $mg;
+                        $uniqueKeys[] = $key;
+                    } else {
+                        $unique = array_filter($unique, 
+                        function($val) use ($key) {
+                            return $val['slug_name'] !== $key;
+                        });
+                    }
+                }
+
+                $roles = $unique;
+                if(empty($roles)){
+                    $roles = null;
+                } else {
+                    $roles = json_encode(array_values($roles));
+                }
+
+                DB::table("users")
+                    ->where('id', $oldR->id)->update([
+                        'role' => $roles,
+                        'updated_at' => date("Y-m-d H:i"),
+                        'updated_by' => $user_id,
+                ]);
+
+                DB::table("histories")->insert([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $hs->history_type,
+                    'context_id' => null,
+                    'history_body' => $hs->history_body,
+                    'history_send_to' => $oldR->id,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+
+                DB::commit();
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Role has been updated',
+                    'data' => $roles
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            DB::rollback();
+
             return response()->json([
                 'status' => 'error',
                 'result' => $e->getMessage()
@@ -220,6 +323,7 @@ class Commands extends Controller
     }
 
     public function request_role_api(Request $request) {
+        DB::beginTransaction();
         try {
             $user_id = $request->user()->id;
 
@@ -281,7 +385,7 @@ class Commands extends Controller
 
                 if($checkAdd !== null || $checkRemove !== null || json_last_error() === JSON_ERROR_NONE){
                     if(count($add) > 0 || (!is_array($request->user_role) && $request->req_type == "add")){
-                        UserRequest::create([
+                        DB::table("users_requests")->insert([
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkAdd,
                             'request_type' => "add",
@@ -297,7 +401,7 @@ class Commands extends Controller
                             'accepted_by' => null,
                         ]);
 
-                        History::create([
+                        DB::table("histories")->insert([
                             'id' => Generator::getUUID(),
                             'history_type' => $hsAdd->history_type,
                             'context_id' => null,
@@ -308,7 +412,7 @@ class Commands extends Controller
                         ]);
                     }
                     if(count($remove) > 0 || (!is_array($request->user_role) && $request->req_type == "remove")){
-                        UserRequest::create([
+                        DB::table("users_requests")->insert([
                             'id' => Generator::getUUID(),
                             'tag_slug_name' => $checkRemove,
                             'request_type' => "remove",
@@ -324,7 +428,7 @@ class Commands extends Controller
                             'accepted_by' => null,
                         ]);
 
-                        History::create([
+                        DB::table("histories")->insert([
                             'id' => Generator::getUUID(),
                             'history_type' => $hsRemove->history_type,
                             'context_id' => null,
@@ -335,6 +439,7 @@ class Commands extends Controller
                         ]);
                     }
 
+                    DB::commit();
                     return response()->json([
                         'status' => 'success',
                         'message' => 'Request has been sended',
@@ -347,6 +452,7 @@ class Commands extends Controller
                 }
             }
         } catch(\Exception $e) {
+            DB::rollback();
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage()
@@ -427,6 +533,7 @@ class Commands extends Controller
     }
 
     public function register(Request $request){
+        DB::beginTransaction();
         try {
             $validator = Validation::getValidateUserRegister($request);
 
@@ -438,14 +545,14 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $found = User::where('username', $request->username)
+                $found = DB::table("users")->where('username', $request->username)
                     ->orWhere('email', $request->email)
                     ->exists();
 
                 if(!$found){
                     $uuid = Generator::getUUID();
 
-                    $user = User::create([
+                    $user = DB::table("users")->insert([
                         'id' => $uuid, 
                         'firebase_fcm_token' => null, 
                         'username' => $request->username, 
@@ -482,14 +589,14 @@ class Commands extends Controller
                             'result' => $errors,
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     } else {
-                        History::create([
+                        DB::table("histories")->insert([
                             'id' => Generator::getUUID(),
                             'history_type' => $data->history_type, 
                             'context_id' => null, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
                             'created_at' => date("Y-m-d H:i:s"),
-                            'created_by' => $user->id,
+                            'created_by' => $uuid,
                         ]);
 
                         $obj = [
@@ -507,27 +614,28 @@ class Commands extends Controller
                                 'result' => $errors,
                             ], Response::HTTP_UNPROCESSABLE_ENTITY);
                         } else {
-                            $archive = Archive::create([
+                            $archive = DB::table("archives")->insert([
                                 'id' => Generator::getUUID(),
                                 'slug_name' => "my-archive-".$uuid,
                                 'archive_name' => "My Archive",
                                 'archive_desc' => "This is default archive",
-                                'created_by' => $user->id,
+                                'created_by' => $uuid,
                                 'created_at' => date('Y-m-d H:i:s'),
                                 'updated_by' => null,
                                 'updated_at' => null
                             ]);
 
-                            History::create([
+                            DB::table("histories")->insert([
                                 'id' => Generator::getUUID(),
                                 'history_type' => $data->history_type, 
                                 'context_id' => $archive->id, 
                                 'history_body' => $data->history_body, 
                                 'history_send_to' => null,
                                 'created_at' => date("Y-m-d H:i:s"),
-                                'created_by' => $user->id,
+                                'created_by' => $uuid,
                             ]);
 
+                            DB::commit();
                             return response()->json([
                                 'status' => 'success',
                                 'message' => 'User registration complete',
@@ -542,6 +650,7 @@ class Commands extends Controller
                 }
             }
         } catch(\Exception $e) {
+            DB::rollback();
             return response()->json([
                 'status' => 'error',
                 'result' => $e->getMessage()

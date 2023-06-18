@@ -49,7 +49,7 @@
         <input hidden type="text" name="image_url" id="profile_image_url" value="">
     </form>
     @if(session()->get("profile_pic") != null)
-        <a class="btn btn-reset-image" id="btn-reset-image" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
+        <a class="btn btn-reset-image" id="btn-reset-image" style="top: 47.5px; right: -27.5px;" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
     @endif
     <span class="status-holder">
         <span class="attach-upload-status success" id="header-progress"></span>

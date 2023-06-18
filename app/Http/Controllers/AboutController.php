@@ -87,26 +87,31 @@ class AboutController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 $help = Help::getAboutApp();
-                foreach($help as $hp){
-                    $id = $hp->id;
+
+                if($help != null){
+                    foreach($help as $hp){
+                        $id = $hp->id;
+                    }
+
+                    Help::where('id', $id)->update([
+                        'help_body' => $request->help_body,
+                        'updated_at' => date("Y-m-d H:i"),
+                    ]);
+    
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => strtolower($data->history_type), 
+                        'context_id' => null, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                    
+                    return redirect()->back()->with('success_message', 'About Apps updated'); 
+                } else {
+                    return redirect()->back()->with('failed_message', 'Failed to update About Apps, the item doesnt exist anymore'); 
                 }
-
-                Help::where('id', $id)->update([
-                    'help_body' => $request->help_body,
-                    'updated_at' => date("Y-m-d H:i"),
-                ]);
-
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => strtolower($data->history_type), 
-                    'context_id' => null, 
-                    'history_body' => $data->history_body, 
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
-                
-                return redirect()->back()->with('success_message', 'About Apps updated');  
             }
         }  
     }
@@ -209,6 +214,64 @@ class AboutController extends Controller
                 ]);
                 
                 return redirect()->back()->with('success_message', 'Success updated help body from '.$request->help_category);  
+            }
+        }  
+    }
+
+    public function edit_about_contact(Request $request)
+    {
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+        $validator = Validation::getValidateAboutContact($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "help",
+                'history_body' => "Has updated contacts"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $contact = Help::select('id','help_category')
+                    ->where('help_type','contact')
+                    ->get();
+
+                foreach($contact as $ct){
+                    $i = 0;
+                    foreach($request as $rq){
+                        if($ct->help_category == $request->keys()[$i]){
+                            $val = $request->keys()[$i];
+                            Help::where('id', $ct->id)->update([
+                                'help_body' => Generator::getContactTemplate($request->keys()[$i]).$request->$val,
+                                'updated_at' => date("Y-m-d H:i"),
+                                'updated_by' => $user_id,
+                            ]);
+                            break;
+                        }
+                        $i++;
+                    }
+                }
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success updated contacts');  
             }
         }  
     }

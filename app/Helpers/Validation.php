@@ -51,6 +51,27 @@ class Validation
         ]);
     }
 
+    public static function getValidateEventDraft($request){
+        return Validator::make($request->all(), [
+            'content_title' => 'required|min:6|max:75|string',
+            'content_desc' => 'nullable|string|max:10000',
+            'content_date_start' => 'nullable|date_format:Y-m-d',
+            'content_date_end' => 'nullable|date_format:Y-m-d',
+            'content_time_start' => ['nullable', new TwoTimeFormats],
+            'content_time_end' => ['nullable', new TwoTimeFormats],
+            'content_reminder' => 'required|string|max:75',
+        ]);
+    }
+
+    public static function getValidateEventDate($request){
+        return Validator::make($request->all(), [
+            'content_date_start' => 'required|date_format:Y-m-d',
+            'content_date_end' => 'required|date_format:Y-m-d',
+            'content_time_start' => ['required', new TwoTimeFormats],
+            'content_time_end' => ['required', new TwoTimeFormats],
+        ]);
+    }
+
     public static function getValidateEventInfo($request){
         return Validator::make($request->all(), [
             'content_title' => 'required|min:6|max:75|string',
@@ -147,6 +168,16 @@ class Validation
         ]);
     }
 
+    public static function getValidateAboutContact($request){
+        return Validator::make($request->all(), [
+            'instagram' => 'required|min:3|max:75|string',
+            'whatsapp' => 'required|min:8|max:14|string',
+            'twitter' => 'required|min:3|max:75|string',
+            'address' => 'required|min:3|max:255|string',
+            'email' => 'required|min:10|max:75|string',
+        ]);
+    }
+
     public static function getValidateHelp($request){
         return Validator::make($request->all(), [
             'help_type' => 'required|min:2|max:75|string',
@@ -168,6 +199,15 @@ class Validation
         ]);
     }
 
+    public static function getValidateInfoCreate($request){
+        return Validator::make($request->all(), [
+            'info_type' => ['required', new TypeInfo],
+            'info_page' => 'required|max:75|string',
+            'info_location' => 'required|max:75|string',
+            'info_body' => 'required|max:500|string',
+        ]);
+    }
+
     public static function getValidateDictionaryType($request){
         return Validator::make($request->all(), [
             'dct_type' => ['required', new TypeDictionary],
@@ -181,9 +221,24 @@ class Validation
         ]);
     }
 
+    public static function getValidateDictionary($request){
+        return Validator::make($request->all(), [
+            'dct_name' => 'required|min:2|max:75|string',
+            'dct_desc' => 'nullable|min:2|max:255|string',
+            'dct_type' => ['required', new TypeDictionary],
+        ]);
+    }
+
     public static function getValidateInfoBody($request){
         return Validator::make($request->all(), [
             'info_body' => 'nullable|min:2|max:500|string',
+        ]);
+    }
+
+    public static function getValidateInfoPageLoc($request){
+        return Validator::make($request->all(), [
+            'info_page' => 'required|max:75|string',
+            'info_location' => 'required|max:75|string',
         ]);
     }
 

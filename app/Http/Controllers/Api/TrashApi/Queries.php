@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Helpers\Query;
+use Carbon\Carbon;
 
 use App\Models\Task;
 use App\Models\ContentHeader;
@@ -26,12 +27,15 @@ class Queries extends Controller
             $select_group = Query::getSelectTemplate("group_dump");
             $select_info = Query::getSelectTemplate("info_dump");
             $select_fbc = Query::getSelectTemplate("feedback_dump");
+            $select_dct = Query::getSelectTemplate("dictionary_dump");
+            $select_qt = Query::getSelectTemplate("question_dump");
 
             $join_content = Query::getJoinTemplate("content_dump", "ch");
             $join_task = Query::getJoinTemplate("content_dump", "ts");
             $join_tag = Query::getJoinTemplate("content_dump", "tg");
             $join_group = Query::getJoinTemplate("content_dump", "ug");
-            $join_info = Query::getJoinTemplate("content_dump", "inf");
+            $join_info = Query::getJoinTemplate("tag", "inf");
+            $join_dct = Query::getJoinTemplate("tag", "dct");
 
             $where_from = "WHERE ";
             $search = trim($search);
@@ -51,6 +55,7 @@ class Queries extends Controller
                         JOIN contents_details cd ON ch.id = cd.content_id
                         ".$join_content."
                         WHERE ch.deleted_at IS NOT NULL
+                        AND ch.created_by = '".$user_id."'
                     UNION
                         SELECT 
                             ".$select_task." 
@@ -95,6 +100,16 @@ class Queries extends Controller
                             ".$select_fbc." 
                         FROM feedbacks fb
                         WHERE fb.deleted_at IS NOT NULL
+                    UNION 
+                        SELECT 
+                            ".$select_qt." 
+                        FROM questions qt
+                        WHERE qt.deleted_at IS NOT NULL
+                    UNION 
+                        SELECT 
+                            ".$select_dct." 
+                        FROM dictionaries dct
+                        WHERE dct.deleted_at IS NOT NULL
                     ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
                 "));      
             }    
@@ -122,8 +137,8 @@ class Queries extends Controller
                 $uu_deleted = $result->user_username_deleted; 
                 $date_start = $result->content_date_start; 
                 $date_end = $result->content_date_end; 
-                $created_at = $result->created_at; 
-                $deleted_at = $result->deleted_at; 
+                $created_at = Carbon::parse($result->created_at)->toIso8601String();
+                $deleted_at = Carbon::parse($result->deleted_at)->toIso8601String();
                 $from = $result->data_from; 
 
                 $clean[] = [
