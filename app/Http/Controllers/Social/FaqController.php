@@ -44,7 +44,7 @@ class FaqController extends Controller
                 ->with('info',$info)
                 ->with('greet',$greet);
         } else {
-            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+            return redirect("/")->with('failed_message','Session lost, please sign in again');
         }
     }
 

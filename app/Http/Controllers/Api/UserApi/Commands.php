@@ -355,10 +355,12 @@ class Commands extends Controller
             } else {
                 $add = [];
                 $remove = [];
+                $checkAdd = null;
+                $checkRemove = null;
 
                 if(is_array($request->user_role)){
                     $countAll = count($request->req_type);
-                    for($i = 0; $i < $countAll; $i++){
+                    for($i = 0; $i < $countAll; $i++){  
                         if($request->req_type[$i] == "add"){
                             array_push($add, $request->user_role[$i]);
                         } else if($request->req_type[$i] == "remove"){
@@ -375,11 +377,13 @@ class Commands extends Controller
                     if($request->req_type == "add"){
                         $checkAdd = $request->user_role;
                         $roleAdd = Converter::getTag(json_decode($checkAdd));
-                        $checkAdd = json_decode($roleAdd, true);
+                        //$checkAdd = json_decode($roleAdd, true);
+                        $checkAdd = $roleAdd;
                     } else if($request->req_type == "remove"){
                         $checkRemove = $request->user_role;
                         $roleRemove = Converter::getTag(json_decode($checkRemove));
-                        $checkRemove = json_decode($roleRemove, true);
+                        //$checkRemove = json_decode($checkRemove, true);
+                        $checkRemove = $roleRemove;
                     }
                 }
 
@@ -391,8 +395,6 @@ class Commands extends Controller
                             'request_type' => "add",
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
-                            'updated_at' => null,
-                            'updated_by' => null,
                             'is_rejected' => null,
                             'rejected_at' => null,
                             'rejected_by' => null,
@@ -418,8 +420,6 @@ class Commands extends Controller
                             'request_type' => "remove",
                             'created_at' => date("Y-m-d H:i:s"),
                             'created_by' => $user_id,
-                            'updated_at' => null,
-                            'updated_by' => null,
                             'is_rejected' => null,
                             'rejected_at' => null,
                             'rejected_by' => null,
