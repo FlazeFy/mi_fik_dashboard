@@ -34,6 +34,7 @@ class AboutController extends Controller
             if($role == 1){
                 $history_about = History::getHistoryByType("about");
                 $history_help = History::getHistoryByType("help");
+                $history_contact = History::getHistoryByType("contact");
             }
             
             //Set active nav
@@ -46,6 +47,7 @@ class AboutController extends Controller
                     ->with('about', $about)
                     ->with('h_help', $history_help)
                     ->with('h_about', $history_about)
+                    ->with('h_contact', $history_contact)
                     ->with('helplist', $helplist)
                     ->with('greet',$greet)
                     ->with('ctc',$ctc);      
@@ -230,7 +232,7 @@ class AboutController extends Controller
         } else {
             $data = new Request();
             $obj = [
-                'history_type' => "help",
+                'history_type' => "contact",
                 'history_body' => "Has updated contacts"
             ];
             $data->merge($obj);

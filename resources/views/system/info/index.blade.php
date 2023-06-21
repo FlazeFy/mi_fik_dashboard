@@ -36,7 +36,17 @@
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
                 $('#infoTable').DataTable({
-                    "ordering": false
+                    "ordering": false,
+                    columnDefs: [
+                        { targets: 0, searchable: false},
+                        { targets: 1, searchable: true},
+                        { targets: 2, searchable: false},
+                        { targets: 3, searchable: false},
+                        { targets: 4, searchable: false},
+                    ],
+                    language: {
+                        searchPlaceholder: "By Body or Page / Location",
+                    }
                 });
             });
         </script>

@@ -43,14 +43,16 @@
                                 <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
                             </span>
                             <span id="user-selected-holder"></span>
-                            @foreach($info as $in)
-                                @if($in->info_location == "add_group")
-                                    <div class="info-box {{$in->info_type}}">
-                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                        <?php echo $in->info_body; ?>
-                                    </div>
-                                @endif
-                            @endforeach
+                            @if($info)
+                                @foreach($info as $in)
+                                    @if($in->info_location == "add_group")
+                                        <div class="info-box {{$in->info_type}}">
+                                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                            <?php echo $in->info_body; ?>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <h6>All User</h6>

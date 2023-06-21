@@ -33,7 +33,7 @@
         display:none;
     }
     .btn-quick-action:hover .quick-action-text{
-        margin-top:-4vh;
+        margin-top:-10px;
     }
     .btn-quick-action:hover .quick-action-info{
         display:block;
@@ -71,7 +71,7 @@
     @endif
 
     <h5 class="quick-action-text">Add Event</h5>
-    <p class="quick-action-info">Event is a bla bla....</p>
+    <p class="quick-action-info">Event is an information about some activity that will be held in the future.</p>
 </button>
 
 @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))

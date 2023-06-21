@@ -9,16 +9,18 @@
         <h2 class="fw-bold mt-2 mb-4 text-primary text-center">Rate Us</h2>
         <form class="p-2 mt-2" action="/add_feedback" method="POST">
             @csrf
-            @foreach($info as $in)
-                @if($in->info_location == "add_feedback")
-                    <div class="form-floating">
-                        <div class="info-box {{$in->info_type}}">
-                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                            <?php echo $in->info_body; ?>
+            @if($info)
+                @foreach($info as $in)
+                    @if($in->info_location == "add_feedback")
+                        <div class="form-floating">
+                            <div class="info-box {{$in->info_type}}">
+                                <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                <?php echo $in->info_body; ?>
+                            </div>
                         </div>
-                    </div>
-                @endif
-            @endforeach
+                    @endif
+                @endforeach
+            @endif
             <div class="form-floating mb-2">
                 <select class="form-select" id="feedback_suggest" name="feedback_suggest" aria-label="Floating label select example" onchange="validateForm(validation)" required>
                     @php($i = 0)

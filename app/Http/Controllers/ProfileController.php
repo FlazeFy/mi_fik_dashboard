@@ -12,6 +12,7 @@ use App\Models\Menu;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Task;
+use App\Models\Info;
 use App\Models\UserRequest;
 use App\Models\Notification;
 use App\Models\ContentHeader;
@@ -34,6 +35,7 @@ class ProfileController extends Controller
         if($user_id != null){
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("profile");
 
             if($role == 0){
                 $user = User::find($user_id);
@@ -77,6 +79,7 @@ class ProfileController extends Controller
                 ->with('dictionary', $dictionary)
                 ->with('faq', $faq)
                 ->with('dct_tag', $dct_tag)
+                ->with('info', $info)
                 ->with('myreq', $myreq)
                 ->with('greet',$greet);
         } else {
