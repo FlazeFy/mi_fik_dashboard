@@ -29,16 +29,22 @@ class Info extends Model
         return $res;
     }
 
-    public static function getAllInfo(){ 
+    public static function getAllInfo($type){ 
         $join = Query::getJoinTemplate("tag", "inf");
         $select = Query::getSelectTemplate("info_manage");
+        $where = "";
+
+        if($type != "All"){
+            $type = explode("_",$type);
+            $where = "AND info_type = '".$type[1]."'";
+        } 
 
         $res = DB::select(DB::raw("
             SELECT 
                 ".$select." 
             FROM infos inf
             ".$join."
-            WHERE inf.deleted_at IS NULL
+            WHERE inf.deleted_at IS NULL ".$where."
             ORDER BY CASE 
                 WHEN inf.updated_at is not null then inf.updated_at 
                 ELSE inf.created_at 

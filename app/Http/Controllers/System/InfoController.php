@@ -32,9 +32,10 @@ class InfoController extends Controller
             $type = ["Info"];
 
             $greet = Generator::getGreeting(date('h'));
-            $info = Info::getAllInfo();
+            $info = Info::getAllInfo(session()->get('selected_filter_info_type'));
             $dictionary = Dictionary::getDictionaryByType($type);
             $menu = Menu::getMenu();
+            $dct = Dictionary::getDictionaryByType("Info");
 
             //Set active nav
             session()->put('active_nav', 'system');
@@ -43,6 +44,7 @@ class InfoController extends Controller
             return view ('system.info.index')
                 ->with('info', $info)
                 ->with('menu', $menu)
+                ->with('dct', $dct)
                 ->with('dictionary', $dictionary)
                 ->with('greet',$greet);
         } else {
@@ -317,5 +319,12 @@ class InfoController extends Controller
             return redirect()->back()->with('success_message', 'Success deleted a info');   
         }
         
+    }
+
+    public function filter_type(Request $request)
+    {
+        session()->put('selected_filter_info_type', $request->info_type);
+
+        return redirect()->back()->with('success_message', 'Info filtered');
     }
 }

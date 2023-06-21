@@ -57,6 +57,9 @@ class HomepageController extends Controller
             if(!session()->get('selected_filter_suggest')){
                 session()->put('selected_filter_suggest', "All");
             }
+            if(!session()->get('selected_filter_info_type')){
+                session()->put('selected_filter_info_type', "All");
+            }
             if(!session()->get('selected_view_mve_chart')){
                 session()->put('selected_view_mve_chart', "All");
             }
