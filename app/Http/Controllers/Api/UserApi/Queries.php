@@ -46,10 +46,28 @@ class Queries extends Controller
         }
     }
 
-    public function getUser($filter_name, $limit, $order)
+    public function getUser($filter_name, $limit, $order, $slug)
     {
         try{
             $select = Query::getSelectTemplate("user_detail");
+            $query = null;
+
+            if($slug != "all"){
+                $i = 1;
+                $query = "";
+                $filter_tag = explode(",", $slug);
+
+                foreach($filter_tag as $ft){
+                    $stmt = 'role like '."'".'%"slug_name":"'.$ft.'"%'."'";
+
+                    if($i != 1){
+                        $query = substr_replace($query, " ".$stmt." OR", 0, 0);
+                    } else {
+                        $query = substr_replace($query, " ".$stmt, 0, 0);
+                    }
+                    $i++;
+                }
+            } 
 
             if(strpos($filter_name, "_")){
                 $name = explode("_", $filter_name);
@@ -57,30 +75,31 @@ class Queries extends Controller
 
                 if($name[0] == "all" && $name[1] == "all"){
                     $user = User::selectRaw($select)
-                        ->orderBy($ord[0], $ord[1])
-                        ->paginate($limit);
+                        ->orderBy($ord[0], $ord[1]);
                 } else if($name[0] != "all" && $name[1] == "all"){
                     $user = User::selectRaw($select)
                         ->whereRaw("first_name LIKE '".$name[0]."%'")
-                        ->orderBy($ord[0], $ord[1])
-                        ->paginate($limit);
+                        ->orderBy($ord[0], $ord[1]);
                 } else if($name[0] == "all" && $name[1] != "all"){
                     $user = User::selectRaw($select)
                         ->whereRaw("last_name LIKE '".$name[1]."%'")
-                        ->orderBy($ord[0], $ord[1])
-                        ->paginate($limit);
+                        ->orderBy($ord[0], $ord[1]);
                 } else {
                     $user = User::selectRaw($select)
                         ->whereRaw("first_name LIKE '".$name[0]."%'")
                         ->whereRaw("last_name LIKE '".$name[1]."%'")
-                        ->orderBy($ord[0], $ord[1])
-                        ->paginate($limit);
+                        ->orderBy($ord[0], $ord[1]);
                 }
             } else {
                 $user = User::selectRaw($select)
-                    ->whereRaw("CONCAT(first_name, ' ', last_name) LIKE '%".trim($filter_name)."%'")
-                    ->paginate($limit);
+                    ->whereRaw("CONCAT(first_name, ' ', last_name) LIKE '%".trim($filter_name)."%'");
             }
+
+            if($query !== null){
+                $user->whereRaw($query);
+            }
+
+            $user = $user->paginate($limit);
 
             if ($user->isEmpty()) {
                 return response()->json([

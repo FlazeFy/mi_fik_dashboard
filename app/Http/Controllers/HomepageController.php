@@ -51,6 +51,9 @@ class HomepageController extends Controller
             if(!session()->get('selected_tag_calendar')){
                 session()->put('selected_tag_calendar', "All");
             }
+            if(!session()->get('selected_role_user')){
+                session()->put('selected_role_user', "All");
+            }
             if(!session()->get('selected_tag_category')){
                 session()->put('selected_tag_category', "All");
             }
@@ -99,6 +102,7 @@ class HomepageController extends Controller
             if(!session()->get('filtering_lname')){
                 session()->put('filtering_lname', "all");
             }
+
             if(!session()->get('about_menu')){
                 $about_menu = Generator::getListAboutSection();
                 session()->put('about_menu', $about_menu);

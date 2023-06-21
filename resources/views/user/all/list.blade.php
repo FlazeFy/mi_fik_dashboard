@@ -50,9 +50,31 @@
 
         var find = document.getElementById("title_search").value;
         document.getElementById("user-list-holder").innerHTML = "";
+
+        var tagFind = <?php
+            $tags = session()->get('selected_role_user');
+            
+            if($tags != "All"){
+                echo "'";
+                $count_tag = count($tags);
+                $i = 1;
+
+                foreach($tags as $tg){
+                    if($i != $count_tag){
+                        echo $tg.",";
+                    } else {
+                        echo $tg;
+                    }
+                    $i++;
+                }
+                echo "'";
+            } else {
+                echo "'all'";
+            }
+        ?>;
     
         $.ajax({
-            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/25/order/" + order + "?page=" + page,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/25/order/" + order + "/slug/" + tagFind + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -226,10 +248,10 @@
                                     '<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="manageuser-' + unamepreg + '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
                                         '<div class="modal-dialog modal-lg"> ' +
                                             '<div class="modal-content">  ' +
-                                                '<div class="modal-body pt-4" style="height:75vh;"> ' +
+                                                '<div class="modal-body pt-4 p-0" style=height:100%;""> ' +
                                                     '<button type="button" class="custom-close-modal" onclick="clean('+"'"+unamepreg+"'"+'); infinteLoadMoreUser('+"'"+pageUser+"'"+');" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
-                                                    '<h5>User Profile</h5> ' +
-                                                    '<div class=""> ' +
+                                                    '<div class="px-3 position-relative"> ' +
+                                                        '<h5>User Profile</h5> ' +
                                                         '<div class="row"> ' +
                                                             '<div class="col-3 p-3"> ' +
                                                                 '<img class="img img-fluid rounded-circle shadow" src="' + getUserImageGeneral(img, role) + '">' +
@@ -245,20 +267,20 @@
                                                             '</div> ' +
                                                         '</div> ' +
                                                         '<hr> ' +
-                                                        '<div class="scroll-role" style="max-height:37.5vh;"> ' +
+                                                        '<div class="scroll-role" > ' +
                                                             '<div class="position-relative"> ' +
                                                                 manageRole(unamepreg, username) +
                                                             '</div> ' +
                                                         '</div> ' +
-                                                        '<div class="config-btn-group">' +
-                                                            '<hr> ' +
-                                                            // '<a class="btn btn-detail-config success" title="Send" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '"><i class="fa-solid fa-bell"></i></a>' +
-                                                            '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
-                                                            '<span style="position:absolute; right:-10px; bottom:0;"> ' +
-                                                                '<a class="text-success" id="registered-msg_' + unamepreg + '"></a> ' + 
-                                                                '<span id="btn-submit-tag-holder_' + unamepreg +'"></span> ' +
-                                                            '</span> ' +
-                                                        '</div> ' +
+                                                    '</div> ' +
+                                                    '<div class="config-btn-group">' +
+                                                        '<hr> ' +
+                                                        // '<a class="btn btn-detail-config success" title="Send" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '"><i class="fa-solid fa-bell"></i></a>' +
+                                                        '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
+                                                        '<span style="position:absolute; right:10px; bottom:10px;"> ' +
+                                                            '<a class="text-success" id="registered-msg_' + unamepreg + '"></a> ' + 
+                                                            '<span id="btn-submit-tag-holder_' + unamepreg +'"></span> ' +
+                                                        '</span> ' +
                                                     '</div> ' +
                                                 '</div> ' +
                                                 '<span class="position-absolute text-danger" style="bottom:20px; left: 75px;" id="msg-error-all"></span> ' +

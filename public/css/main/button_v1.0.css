@@ -142,8 +142,10 @@
 }
 .config-btn-group{
     position: absolute;
-    bottom: 10px;
-    width: 95%;
+    bottom: 0;
+    width: 100%;
+    padding: 8px;
+    background: white !important;
 }
 
 .btn-link{

@@ -685,7 +685,7 @@
         //document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "/user/all?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

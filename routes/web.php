@@ -143,6 +143,7 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
 
     Route::get('/all', [AllController::class, 'index']);
     Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
+    Route::post('/all/set_filter_role/{all}', [AllController::class, 'set_filter_role']);
     Route::post('/all/ordered/{order}/{type}', [AllController::class, 'set_ordering_content']);
 
     Route::get('/group', [GroupingController::class, 'index']);
