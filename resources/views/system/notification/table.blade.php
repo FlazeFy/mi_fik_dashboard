@@ -159,7 +159,10 @@
                                 <button class="btn btn-icon-preview collapse-group-box-toogle" title="Hide member" data-bs-toggle="collapse" href="#collapseResume_{{$nt['id']}}">
                                     <i class="fa-solid fa-play"></i></button>
                                 <div class="collapse" id="collapseResume_{{$nt['id']}}">
-
+                                    <button class="btn btn-info mb-2" onclick="setType('All User'); transfer('<?= $nt['id']; ?>','<?= $nt['notif_type']; ?>','<?= $nt['notif_title']; ?>','<?= $nt['notif_body']; ?>');" data-bs-dismiss="modal" data-bs-target="#addModal" title="All User" data-bs-toggle="modal">All User</button>
+                                    <button class="btn btn-info mb-2" onclick="setType('Role'); transfer('<?= $nt['id']; ?>','<?= $nt['notif_type']; ?>','<?= $nt['notif_title']; ?>','<?= $nt['notif_body']; ?>');" data-bs-dismiss="modal" data-bs-target="#addModal" title="By Role" data-bs-toggle="modal">By Role</button>
+                                    <button class="btn btn-info mb-2" onclick="setType('Grouping'); transfer('<?= $nt['id']; ?>','<?= $nt['notif_type']; ?>','<?= $nt['notif_title']; ?>','<?= $nt['notif_body']; ?>');" data-bs-dismiss="modal" data-bs-target="#addModal" title="By Group" data-bs-toggle="modal">By Group</button>
+                                    <button class="btn btn-info mb-2" onclick="setType('Person'); transfer('<?= $nt['id']; ?>','<?= $nt['notif_type']; ?>','<?= $nt['notif_title']; ?>','<?= $nt['notif_body']; ?>');" data-bs-dismiss="modal" data-bs-target="#addModal" title="By Person" data-bs-toggle="modal">By Person</button>
                                 </div>
                             </div>
                             @php($j++)

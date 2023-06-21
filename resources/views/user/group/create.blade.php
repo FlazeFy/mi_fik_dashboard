@@ -141,7 +141,7 @@
         document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/" + getFindUser(find) + "/limit/100/order/first_name__DESC/user/all?page=" + page_new_req,
+            url: "/api/v1/user/" + getFindUser(find) + "/limit/100/order/first_name__DESC/slug/all?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

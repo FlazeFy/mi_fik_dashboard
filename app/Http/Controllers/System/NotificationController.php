@@ -94,10 +94,17 @@ class NotificationController extends Controller
 
         try{
             $data = new Request();
-            $obj = [
-                'history_type' => "notification",
-                'history_body' => "Has sended a new notification"
-            ];
+            if($request->has('id')){
+                $obj = [
+                    'history_type' => "notification",
+                    'history_body' => "Has sended a new notification"
+                ];
+            } else {
+                $obj = [
+                    'history_type' => "notification",
+                    'history_body' => "Has make draft of new notification"
+                ];
+            }
             $data->merge($obj);
 
             $validatorHistory = Validation::getValidateHistory($data);
@@ -364,23 +371,40 @@ class NotificationController extends Controller
                     'status' => $status
                 ]];
 
-                $ntf = DB::table("notifications")->insert([
-                    'id' => $uuid,
-                    'notif_type' => $request->notif_type, 
-                    'notif_title' => $request->notif_title, 
-                    'notif_body' => $request->notif_body, 
-                    'notif_send_to' => json_encode($obj_send_to), 
-                    'is_pending' => $is_pending, 
-                    'pending_until' => $pending_until,
-                    'created_at' => date("Y-m-d H:i"),
-                    'created_by' => $user_id,
-                    'sended_at' => $sended_at,
-                    'sended_by' => $sended_by,
-                    'updated_at' => null,
-                    'updated_by' => null,
-                    'deleted_at' => null,
-                    'deleted_by' => null
-                ]);
+                if($request->has('id') && $request->id != null){
+                    $sended_at = date("Y-m-d H:i");
+                    $sended_by = $user_id;
+
+                    DB::table("notifications")->where('id',$request->id)
+                        ->update([
+                            'notif_type' => $request->notif_type, 
+                            'notif_title' => $request->notif_title, 
+                            'notif_body' => $request->notif_body, 
+                            'notif_send_to' => json_encode($obj_send_to), 
+                            'is_pending' => 0, 
+                            'pending_until' => $pending_until,
+                            'sended_at' => $sended_at,
+                            'sended_by' => $sended_by,
+                    ]);
+                } else {
+                    DB::table("notifications")->insert([
+                        'id' => $uuid,
+                        'notif_type' => $request->notif_type, 
+                        'notif_title' => $request->notif_title, 
+                        'notif_body' => $request->notif_body, 
+                        'notif_send_to' => json_encode($obj_send_to), 
+                        'is_pending' => $is_pending, 
+                        'pending_until' => $pending_until,
+                        'created_at' => date("Y-m-d H:i"),
+                        'created_by' => $user_id,
+                        'sended_at' => $sended_at,
+                        'sended_by' => $sended_by,
+                        'updated_at' => null,
+                        'updated_by' => null,
+                        'deleted_at' => null,
+                        'deleted_by' => null
+                    ]);
+                }
 
                 DB::table("histories")->insert([
                     'id' => Generator::getUUID(),
@@ -393,7 +417,12 @@ class NotificationController extends Controller
                 ]);
 
                 DB::commit();
-                return redirect()->back()->with('success_message', "Notification has sended"); 
+
+                if($is_pending == 0 || $request->has('id')){
+                    return redirect()->back()->with('success_message', "Notification has sended"); 
+                } else {
+                    return redirect()->back()->with('success_message', "Notification has saved"); 
+                }
             }
         } catch(\Exception $e) {
             DB::rollback();

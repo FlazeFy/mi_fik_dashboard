@@ -252,11 +252,11 @@ class Commands extends Controller
             $list_action = json_decode($request->list_relation);
 
             if($type == "Event"){
-                $content = ContentHeader::select('id')
+                $content = DB::table("contents_headers")->select('id')
                     ->where('slug_name',$slug)
                     ->first();
             } else {
-                $content = Task::select('id')
+                $content = DB::table("tasks")->select('id')
                     ->where('slug_name',$slug)
                     ->where('created_by', $user_id)
                     ->first();

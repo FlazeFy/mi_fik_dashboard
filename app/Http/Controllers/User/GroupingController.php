@@ -139,7 +139,7 @@ class GroupingController extends Controller
                         DB::table("histories")->insert([
                             'id' => Generator::getUUID(),
                             'history_type' => $data->history_type, 
-                            'context_id' => $header->id, 
+                            'context_id' => $uuid, 
                             'history_body' => $data->history_body, 
                             'history_send_to' => null,
                             'created_at' => date("Y-m-d H:i:s"),

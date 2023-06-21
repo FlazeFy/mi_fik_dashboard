@@ -7,14 +7,24 @@ function validateForm(rules){
         input = document.getElementById(e.id);
         msg = document.getElementById(e.id+"_msg");
 
-        if(input.value.trim().length >= e.len){
-            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Reaching maximum character length";
-            res = false
-        } else if(input.value.trim().length == 0 && e.req === true){
-            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Field can't be empty";
-            res = false
-        } else {
-            msg.innerHTML = " "
+        if(e.id != "selected_item"){
+            if(input.value.trim().length >= e.len){
+                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Reaching maximum character length";
+                res = false
+            } else if(input.value.trim().length == 0 && e.req === true){
+                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Field can't be empty";
+                res = false
+            } else {
+                msg.innerHTML = " "
+            }
+        } else if(e.id == "selected_item" && e.len != null){
+            msg = document.getElementById(e.len+"_msg");
+            if(document.getElementById(e.len).hasChildNodes()){
+                msg.innerHTML = " ";
+            } else {
+                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> You have not select any item";
+                res = false
+            }
         }
     });
 
