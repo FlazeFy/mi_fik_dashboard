@@ -51,11 +51,17 @@ class HomepageController extends Controller
             if(!session()->get('selected_tag_calendar')){
                 session()->put('selected_tag_calendar', "All");
             }
+            if(!session()->get('selected_role_user')){
+                session()->put('selected_role_user', "All");
+            }
             if(!session()->get('selected_tag_category')){
                 session()->put('selected_tag_category', "All");
             }
             if(!session()->get('selected_filter_suggest')){
                 session()->put('selected_filter_suggest', "All");
+            }
+            if(!session()->get('selected_filter_info_type')){
+                session()->put('selected_filter_info_type', "All");
             }
             if(!session()->get('selected_view_mve_chart')){
                 session()->put('selected_view_mve_chart', "All");
@@ -96,6 +102,7 @@ class HomepageController extends Controller
             if(!session()->get('filtering_lname')){
                 session()->put('filtering_lname', "all");
             }
+
             if(!session()->get('about_menu')){
                 $about_menu = Generator::getListAboutSection();
                 session()->put('about_menu', $about_menu);
@@ -164,7 +171,7 @@ class HomepageController extends Controller
                 //->with('archive', $archive)
                 ->with('greet',$greet);
         } else {
-            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+            return redirect("/")->with('failed_message','Session lost, please sign in again');
         }
     }
 

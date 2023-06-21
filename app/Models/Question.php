@@ -18,6 +18,7 @@ class Question extends Model
         $res = Question::selectRaw('questions.id, question_type, question_body, question_answer, questions.created_at, questions.updated_at')
             ->join('users', 'users.id', '=', 'questions.created_by')
             ->where('created_by', $id)
+            ->whereNull('questions.deleted_at')
             ->orderBy('questions.created_at', 'DESC')
             ->orderBy('questions.updated_at', 'DESC')
             ->get();

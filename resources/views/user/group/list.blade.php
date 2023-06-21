@@ -114,14 +114,16 @@
                                     '<div class="modal-body text-center pt-4"> ' +
                                         '<button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
                                         '<p style="font-weight:500;">Are you sure want to delete "' + name + '" group</p> ' +
-                                        '@foreach($info as $in) ' +
-                                            '@if($in->info_location == "delete_group") ' +
-                                                '<div class="info-box {{$in->info_type}}"> ' +
-                                                    '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
-                                                    "{!! $in->info_body !!} " +
-                                                '</div> ' +
-                                            '@endif ' +
-                                        '@endforeach ' +
+                                        '@if($info) ' +
+                                            '@foreach($info as $in) ' +
+                                                '@if($in->info_location == "delete_group") ' +
+                                                    '<div class="info-box {{$in->info_type}}"> ' +
+                                                        '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
+                                                        "{!! $in->info_body !!} " +
+                                                    '</div> ' +
+                                                '@endif ' +
+                                            '@endforeach ' +
+                                        '@endif ' +
                                         '<form class="d-inline" action="/user/group/delete/'+id+'" method="POST"> ' +
                                             '@csrf ' +
                                             '<input hidden name="group_name" value="' + name + '"> ' +
@@ -157,14 +159,16 @@
                                                 '<a id="group_desc_msg" class="input-warning text-danger"></a> ' +
                                             '</div> ' +
                                             '<p>Last Updated : ' + getDateContext(updated) + '</p> '+
-                                            '@foreach($info as $in) ' +
-                                                '@if($in->info_location == "edit_group") ' +
-                                                    '<div class="info-box {{$in->info_type}}"> ' +
-                                                        '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
-                                                        "{!! $in->info_body !!} " +
-                                                    '</div> ' +
-                                                '@endif ' +
-                                            '@endforeach ' +
+                                            '@if($info) ' +
+                                                '@foreach($info as $in) ' +
+                                                    '@if($in->info_location == "edit_group") ' +
+                                                        '<div class="info-box {{$in->info_type}}"> ' +
+                                                            '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
+                                                            "{!! $in->info_body !!} " +
+                                                        '</div> ' +
+                                                    '@endif ' +
+                                                '@endforeach ' +
+                                            '@endif ' +
                                             '<input hidden name="old_group_name" value="' + name + '">' +
                                             '<button class="btn btn-submit-form" type="submit" id="btn-submit"><i class="fa-solid fa-paper-plane"></i> Submit</button> ' +
                                         '</form> ' +

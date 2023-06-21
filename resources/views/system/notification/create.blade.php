@@ -14,6 +14,9 @@
         padding:10px;
         background-size: contain;
     }
+    .btn-quick-action-notif.small{
+        height:70px;
+    }
     .btn-quick-action-notif:hover{
         /* background: #F78A00 !important; */
         background-image:linear-gradient(to bottom right,#F78A00 20%, 70%, #5b5b5b) !important;
@@ -24,6 +27,9 @@
         transition: 0.5s;
         margin-top:13vh;
     }
+    .small .quick-action-text-notif{
+        margin-top:10px;
+    }
     .quick-action-info-notif{
         font-size:14px;
         color:#FFFFFF;
@@ -32,6 +38,9 @@
     }
     .btn-quick-action-notif:hover .quick-action-text-notif{
         margin-top:-4vh;
+    }
+    .btn-quick-action-notif .small:hover{
+        margin-top:10px;
     }
     .btn-quick-action-notif:hover .quick-action-info-notif{
         display:block;
@@ -49,7 +58,8 @@
 <script>
     let validation = [
         { id: "notif_body", req: true, len: 255 },
-        { id: "notif_title", req: true, len: 35 }
+        { id: "notif_title", req: true, len: 35 },
+        { id: "selected_item", req: true, len: null }
     ];
 </script>
 
@@ -119,6 +129,17 @@
 </div>
 
 <script>
+    document.getElementById('form-add-notif').addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) { // 13 is the key code for Enter key
+            event.preventDefault();
+            if(event.target.id == "group_search"){
+                infinteLoadGroup(1);
+            } else if(event.target.id == "title_search"){
+                infinteLoadUser(1);
+            } 
+        }
+    });
+    
     var selectedUser = []; 
     var selectedGroup = []; 
     var selectedRole = [];
@@ -183,6 +204,7 @@
         if(type == "All User"){
             var elmt = " " +
                 '<div class="px-2"> ' +
+                    '<input name="id" id="notif_id" hidden> ' +
                     '<input name="send_to" value="all" hidden> ' +
                     '<div class="form-floating mb-2"> ' +
                         '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
@@ -215,13 +237,13 @@
                             '</div> ' +
                         '</div> ' +
                         '<div class="col-lg-6"> ' +
-                            '<div class="form-floating"> ' +
-                                '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
-                                    '<option value="now" selected>Now</option> ' +
-                                    '<option value="manual">Manual</option> ' +
-                                '</select> ' +
-                                '<label for="send_time">Send Time</label> ' +
-                            '</div> ' +
+                            // '<div class="form-floating"> ' +
+                            //     '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                            //         '<option value="now" selected>Now</option> ' +
+                            //         '<option value="manual">Manual</option> ' +
+                            //     '</select> ' +
+                            //     '<label for="send_time">Send Time</label> ' +
+                            // '</div> ' +
                         '</div> ' +
                         '<div id="datetime-picker-box"></div> ' +
                     '</div> ' +
@@ -229,9 +251,11 @@
                 '</div> ';
             document.getElementById("modal-dialog").setAttribute('class', 'modal-dialog');
         } else if(type == "Grouping"){
+            validation[2]['len'] = "slct-group-list-holder";
             var elmt = " " +
                 '<div class="row px-2"> ' +
                     '<input name="send_to" value="grouping" hidden> ' +
+                    '<input name="id" id="notif_id" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
                             '<input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35"> ' +
@@ -264,13 +288,13 @@
                                 '</div> ' +
                             '</div> ' +
                             '<div class="col-lg-6"> ' +
-                                '<div class="form-floating"> ' +
-                                    '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
-                                        '<option value="now" selected>Now</option> ' +
-                                        '<option value="manual">Manual</option> ' +
-                                    '</select> ' +
-                                    '<label for="send_time">Send Time</label> ' +
-                                '</div> ' +
+                                // '<div class="form-floating"> ' +
+                                //     '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                                //         '<option value="now" selected>Now</option> ' +
+                                //         '<option value="manual">Manual</option> ' +
+                                //     '</select> ' +
+                                //     '<label for="send_time">Send Time</label> ' +
+                                // '</div> ' +
                             '</div> ' +
                             '<div id="datetime-picker-box"></div> ' +
                         '</div> ' +
@@ -280,6 +304,7 @@
                             '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllGroup()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
                         '</span> ' +
                         '<div id="slct-group-list-holder"></div> ' +
+                        '<div id="slct-group-list-holder_msg" class="input-warning text-danger"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
@@ -291,7 +316,7 @@
                             '</div> ' +
                             '<div class="col-10 position-relative"> ' +
                                 '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
-                                '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="group_search" placeholder="Search by group name" onchange="infinteLoadGroup(1)" maxlength="75"> ' +
+                                '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="group_search" placeholder="Search by group name"  onchange="infinteLoadGroup(1)" maxlength="75"> ' +
                             '</div> ' +
                         '</div> ' +
                         '<span id="group-list-holder"></span> ' +
@@ -300,8 +325,10 @@
 
             document.getElementById("modal-dialog").setAttribute('class', 'modal-dialog modal-lg');
         } else if(type == "Role"){
+            validation[2]['len'] = "slct-role-list-holder";
             var elmt = " " +
                 '<div class="row px-2"> ' +
+                    '<input name="id" id="notif_id" hidden> ' +
                     '<input name="send_to" value="role" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
@@ -335,13 +362,13 @@
                                 '</div> ' +
                             '</div> ' +
                             '<div class="col-lg-6"> ' +
-                                '<div class="form-floating"> ' +
-                                    '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
-                                        '<option value="now" selected>Now</option> ' +
-                                        '<option value="manual">Manual</option> ' +
-                                    '</select> ' +
-                                    '<label for="send_time">Send Time</label> ' +
-                                '</div> ' +
+                                // '<div class="form-floating"> ' +
+                                //     '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                                //         '<option value="now" selected>Now</option> ' +
+                                //         '<option value="manual">Manual</option> ' +
+                                //     '</select> ' +
+                                //     '<label for="send_time">Send Time</label> ' +
+                                // '</div> ' +
                             '</div> ' +
                             '<div id="datetime-picker-box"></div> ' +
                         '</div> ' +
@@ -351,6 +378,7 @@
                             '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRole()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
                         '</span> ' +
                         '<div id="slct-role-list-holder"></div> ' +
+                        '<div id="slct-role-list-holder_msg" class="input-warning text-danger"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
@@ -411,8 +439,10 @@
                 '</div> ';
             document.getElementById("modal-dialog").setAttribute('class', 'modal-dialog');
         } else if(type == "Person"){
+            validation[2]['len'] = "slct-user-list-holder";
             var elmt = " " +
                 '<div class="row px-2"> ' +
+                    '<input name="id" id="notif_id" hidden> ' +
                     '<input name="send_to" value="person" hidden> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6"> ' +
                         '<div class="form-floating mb-2"> ' +
@@ -446,13 +476,13 @@
                                 '</div> ' +
                             '</div> ' +
                             '<div class="col-lg-6"> ' +
-                                '<div class="form-floating"> ' +
-                                    '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
-                                        '<option value="now" selected>Now</option> ' +
-                                        '<option value="manual">Manual</option> ' +
-                                    '</select> ' +
-                                    '<label for="send_time">Send Time</label> ' +
-                                '</div> ' +
+                                // '<div class="form-floating"> ' +
+                                //     '<select class="form-select" id="send_time" name="send_time" aria-label="Floating label select example" onchange="toogleTimePicker()" required> ' +
+                                //         '<option value="now" selected>Now</option> ' +
+                                //         '<option value="manual">Manual</option> ' +
+                                //     '</select> ' +
+                                //     '<label for="send_time">Send Time</label> ' +
+                                // '</div> ' +
                             '</div> ' +
                             '<div id="datetime-picker-box"></div> ' +
                         '</div> ' +
@@ -462,6 +492,7 @@
                             '<a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllUser()"><i class="fa-regular fa-trash-can"></i> Clear All</a> ' +
                         '</span> ' +
                         '<div id="slct-user-list-holder"></div> ' +
+                        '<div id="slct-user-list-holder_msg" class="input-warning text-danger"></div> ' +
                         '<span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span> ' +
                     '</div> ' +
                     '<div class="col-lg-6 col-md-6 col-sm-6 position-relative"> ' +
@@ -486,6 +517,14 @@
         }
 
         sec.innerHTML = elmt;
+    }
+
+    function transfer(id, type, title, body){
+        document.getElementById("notif_id").value = id;
+        document.getElementById("notif_type").value = type;
+        document.getElementById("notif_title").value = title;
+        document.getElementById("notif_body").value = body;
+        validateForm(validation);
     }
 
     function toogleTimePicker(){
@@ -667,6 +706,14 @@
         } 
     }
 
+    function getRole(role){
+        if(role){
+            return role;
+        } else {
+            return '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Has no general role </span>';
+        }
+    }
+
     function infinteLoadUser(page_new_req) {       
         function getFind(filter, find){
             let trim = find.trim();
@@ -685,7 +732,7 @@
         //document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "/slug/all?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -733,7 +780,7 @@
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
-                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
+                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + getRole(grole) + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
                                         '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelectedUser('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)"> ' +
                                     '</div> ' +
@@ -784,7 +831,6 @@
                 input_holder.value = JSON.stringify(selectedRole);
             }
         }
-        console.log(selectedRole)
         refreshListRole();
     }
 
@@ -877,6 +923,7 @@
                 '<a>' + e.full_name + '</a>';
             holder.innerHTML += elmt;
         });
+        validateForm(validation);
     }
 
     function refreshListRole(){
@@ -890,6 +937,7 @@
                 '<a>' + e.tag_name + '</a>';
             holder.innerHTML += elmt;
         });
+        validateForm(validation);
     }
 
     function refreshListGroup(){
@@ -903,5 +951,6 @@
                 '<a>' + e.groupName + '</a>';
             holder.innerHTML += elmt;
         });
+        validateForm(validation);
     }
 </script>

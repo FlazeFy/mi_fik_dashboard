@@ -37,14 +37,16 @@
                         </div>
                         <span id="msg-validation-title" class="float-start"><label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label></span><br>
                         
-                        @foreach($info as $in)
-                            @if($in->info_location == "delete_event")
-                                <div class="info-box {{$in->info_type}}">
-                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                    <?php echo $in->info_body; ?>
-                                </div>
-                            @endif
-                        @endforeach
+                        @if($info)
+                            @foreach($info as $in)
+                                @if($in->info_location == "delete_event")
+                                    <div class="info-box {{$in->info_type}}">
+                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                        <?php echo $in->info_body; ?>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endif
                         <span id="btn-delete-holder"><button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-trash"></i> Locked</button></span>
                     </form>
                 </div>

@@ -12,6 +12,7 @@ use App\Helpers\Converter;
 
 use App\Models\User;
 use App\Models\Menu;
+use App\Models\Tag;
 use App\Models\Dictionary;
 
 class AllController extends Controller
@@ -29,6 +30,7 @@ class AllController extends Controller
         if($user_id != null){
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
+            $tag = Tag::getFullTag("DESC", "DESC");
             $dct_tag = Dictionary::getDictionaryByType("Tag");
 
             //Set active nav
@@ -37,18 +39,14 @@ class AllController extends Controller
 
             return view('user.all.index')
                 ->with('menu', $menu)
+                ->with('tag', $tag)
                 ->with('dct_tag', $dct_tag)
                 ->with('greet',$greet);
         } else {
-            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+            return redirect("/")->with('failed_message','Session lost, please sign in again');
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function set_filter_name(Request $request, $all, $type)
     {
         if($all == 0){
@@ -83,5 +81,30 @@ class AllController extends Controller
         session()->put('ordering_user_list', $res);
 
         return redirect()->back()->with('success_message', 'Content ordered');
+    }
+
+    public function set_filter_role(Request $request, $all)
+    {
+        if($all == 0){
+            $slug = $request->slug_name;
+            if(is_array($slug)){
+                $tag_count = count($slug);
+                $role_holder = [];
+
+                for($i = 0; $i < $tag_count; $i++){
+                    if($request->has('slug_name.'.$i)){
+                        array_push($role_holder, $slug[$i]);
+                    } 
+                }
+            } else {
+                $role_holder = "All";
+            }
+        } else {
+            $role_holder = "All";
+        }
+
+        session()->put('selected_role_user', $role_holder);
+
+        return redirect()->back()->with('success_message', 'User filtered');
     }
 }

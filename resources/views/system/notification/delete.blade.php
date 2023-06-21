@@ -8,14 +8,16 @@
                 <form action="/system/notification/delete/{{$nt['id']}}" method="POST">
                     @csrf 
                     <h6 class="text-center">Are you sure want to delete this notification</h6>
-                    @foreach($info as $in)
-                        @if($in->info_location == "delete_notification")
-                            <div class="info-box {{$in->info_type}}">
-                                <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                <?php echo $in->info_body; ?>
-                            </div>
-                        @endif
-                    @endforeach
+                    @if($info)
+                        @foreach($info as $in)
+                            @if($in->info_location == "delete_notification")
+                                <div class="info-box {{$in->info_type}}">
+                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                    <?php echo $in->info_body; ?>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
                     <button type="submit" class="btn btn-danger float-end">Delete</button>
                 </form>
             </div>

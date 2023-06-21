@@ -9,8 +9,17 @@
 </style>
 
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold"><span class="text-primary fw-bold">{{count($location)}}</span> Event Location</h5>
-    <div id="map-discover"></div>
+    <h5 class="text-secondary fw-bold"><span class="text-primary fw-bold">
+        @if($location)
+            {{count($location)}}
+        @endif
+    </span> Event Location</h5>
+    @if($location)
+        <div id="map-discover"></div>
+    @else 
+        <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon" style="height:25vh;">
+        <h6 class="text-center text-secondary">You have no event to see with location</h6>
+    @endif
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
@@ -22,23 +31,24 @@
         //Map starter
         var markers = [
             <?php 
-                foreach($location as $loc){
-                    $full_coor = $loc->content_loc;
-                    $full_coor = json_decode($full_coor);
+                if($location){
+                    foreach($location as $loc){
+                        $full_coor = $loc->content_loc;
+                        $full_coor = json_decode($full_coor);
 
-                    foreach($full_coor as $fc){
-                        if($fc->type == "name"){
-                            $name = $fc->detail;
-                        }
-                        if($fc->type == "coordinate"){
-                            $coor = explode(", ", $fc->detail);
-                            echo "{
-                                coords:{lat:".$coor[0].",lng:".$coor[1]."},
-                                content:'<div><h6>".$loc->content_title."</h6><p>".$loc->content_desc."</p><b><i class=".'"'."fa-solid fa-house".'"'."></i> ".$name."</b><br><b><i class=".'"'."fa-regular fa-circle-dot".'"'."></i> ".$coor[0].", ".$coor[0]."</b><hr><a class=".'"'."btn btn-primary py-1 px-2".'"'." onclick=".'"'."location.href=".'`'."/event/detail/".$loc->slug_name.'`' .';"'.">See Detail</a></div>'
-                                },";
+                        foreach($full_coor as $fc){
+                            if($fc->type == "name"){
+                                $name = $fc->detail;
+                            }
+                            if($fc->type == "coordinate"){
+                                $coor = explode(", ", $fc->detail);
+                                echo "{
+                                    coords:{lat:".$coor[0].",lng:".$coor[1]."},
+                                    content:'<div><h6>".$loc->content_title."</h6><p>".$loc->content_desc."</p><b><i class=".'"'."fa-solid fa-house".'"'."></i> ".$name."</b><br><b><i class=".'"'."fa-regular fa-circle-dot".'"'."></i> ".$coor[0].", ".$coor[0]."</b><hr><a class=".'"'."btn btn-primary py-1 px-2".'"'." onclick=".'"'."location.href=".'`'."/event/detail/".$loc->slug_name.'`' .';"'.">See Detail</a></div>'
+                                    },";
+                            }
                         }
                     }
-                    
                 }
             ?>
         ];
@@ -49,10 +59,12 @@
         });
 
         <?php 
-            $total = count($location);
+            if($location){
+                $total = count($location);
 
-            for($i = 0; $i < $total; $i++){
-                echo "addMarker(markers[".$i."]);";
+                for($i = 0; $i < $total; $i++){
+                    echo "addMarker(markers[".$i."]);";
+                }
             }
         ?>
 

@@ -117,6 +117,7 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/info/update/active/{id}/{active}', [InfoController::class, 'update_active']);
     Route::post('/info/delete/{id}', [InfoController::class, 'delete']);
     Route::post('/info/create', [InfoController::class, 'create']);
+    Route::post('/info/filter_type', [InfoController::class, 'filter_type']);
 
     Route::get('/dictionary', [DictionaryController::class, 'index']);
     Route::post('/dictionary/create', [DictionaryController::class, 'create']);
@@ -142,6 +143,7 @@ Route::prefix('/user')->middleware(['auth_v2:sanctum'])->group(function () {
 
     Route::get('/all', [AllController::class, 'index']);
     Route::post('/all/set_filter_name/{all}/{type}', [AllController::class, 'set_filter_name']);
+    Route::post('/all/set_filter_role/{all}', [AllController::class, 'set_filter_role']);
     Route::post('/all/ordered/{order}/{type}', [AllController::class, 'set_ordering_content']);
 
     Route::get('/group', [GroupingController::class, 'index']);

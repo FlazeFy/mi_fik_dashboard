@@ -37,6 +37,7 @@ class UserFactory extends Factory
         
         return [
             'id' => Generator::getUUID(), 
+            'firebase_fcm_token' => null, 
             'username' => fake()->username(),
             'email' => fake()->unique()->safeEmail(), 
             'password' => fake()->password(), 

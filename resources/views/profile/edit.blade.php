@@ -12,9 +12,6 @@
 </script>
 
 <div class="position-relative">
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button"
-        data-bs-toggle="popover" title="Info" data-bs-content="Tag is ... ...."><i class="fa-solid fa-ellipsis-vertical more"></i>
-    </button>
     <form class="p-2 mt-2" action="/profile/edit/profile" method="POST">
         @csrf
         <div class="row mb-2">
@@ -67,7 +64,22 @@
             <label for="password">Password</label>
         </div>
         <a id="password_msg" class="text-danger my-2" style="font-size:13px;"></a><br>
-
+        @if($info)
+            @foreach($info as $in)
+                @php($ctx = null)
+                @if(session()->get("role_key") == 1)
+                    @php($ctx = "edit_profile_admin")
+                @else 
+                    @php($ctx = "edit_profile_user")
+                @endif
+                @if($in->info_location == $ctx)
+                    <div class="info-box {{$in->info_type}}">
+                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                        <?php echo $in->info_body; ?>
+                    </div>
+                @endif
+            @endforeach
+        @endif
         <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
     </form>
 </div>

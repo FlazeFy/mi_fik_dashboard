@@ -12,6 +12,7 @@ use App\Helpers\Validation;
 
 use App\Models\Archive;
 use App\Models\History;
+use App\Models\Task;
 use App\Models\ContentHeader;
 use App\Models\ArchiveRelation;
 
@@ -243,22 +244,30 @@ class Commands extends Controller
         }
     }
 
-    public function multiActionArchiveRelation(Request $request, $slug){
+    public function multiActionArchiveRelation(Request $request, $slug, $type){
         DB::beginTransaction();
         try{
             $user_id = $request->user()->id;
             $count_job = 0;
             $list_action = json_decode($request->list_relation);
-            $cheader = ContentHeader::select('id')
-                ->where('slug_name',$slug)
-                ->first();
+
+            if($type == "Event"){
+                $content = DB::table("contents_headers")->select('id')
+                    ->where('slug_name',$slug)
+                    ->first();
+            } else {
+                $content = DB::table("tasks")->select('id')
+                    ->where('slug_name',$slug)
+                    ->where('created_by', $user_id)
+                    ->first();
+            }
 
             if($list_action !== null || json_last_error() === JSON_ERROR_NONE){
                 foreach($list_action as $la){
                     $rel = DB::table("archives_relations")
                         ->select('archives_relations.id')
                         ->join('archives','archives.id','=','archives_relations.archive_id')
-                        ->where('content_id', $cheader->id)
+                        ->where('content_id', $content->id)
                         ->where('archives.slug_name', $la->slug_name)
                         ->where('archives_relations.created_by', $user_id)
                         ->first();
@@ -271,7 +280,7 @@ class Commands extends Controller
                         DB::table("archives_relations")->insert([
                             'id' => Generator::getUUID(),
                             'archive_id' => $arc->id,
-                            'content_id' => $cheader->id,
+                            'content_id' => $content->id,
                             'created_by' => $user_id,
                             'created_at' => date('Y-m-d H:i:s')
                         ]);

@@ -281,7 +281,7 @@ class Validation
 
     public static function getValidateQuestionFaq($request){
         return Validator::make($request->all(), [
-            'question_body' => 'required|min:2|max:255|string',
+            'question_body' => 'required|min:6|max:255|string',
             'question_type' => ['required', new TypeQuestion],
         ]);
     }

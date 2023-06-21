@@ -1,6 +1,6 @@
 <div class="position-relative ms-2">
     <button class="btn btn-primary px-3" type="button" id="section-date-picker" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false"><i class="fa-solid fa-font-case"></i> Filter Name
+        aria-expanded="false"><i class="fa-solid fa-filter"></i> Filter Name
     </button>
     <div class="dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-date-picker">
         <span class="dropdown-item py-2">

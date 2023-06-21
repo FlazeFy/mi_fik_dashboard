@@ -61,3 +61,13 @@ footer p{
     padding: 40px;
     border-radius: 40px 40px 0 0;
 }
+#fik-logo{
+    margin-top:35%;
+}
+@media (max-width: 768px) {
+    #fik-logo {
+        margin-top: 0;
+        width: 240px;
+        height: 70px;
+    }
+}

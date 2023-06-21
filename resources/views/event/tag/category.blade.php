@@ -14,7 +14,7 @@
 <div class="position-relative">
     <h5 class="text-secondary fw-bold">Create New Tag Category</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button"
-        data-bs-toggle="popover" title="Info" data-bs-content="Tag is ... ...."><i class="fa-solid fa-ellipsis-vertical more"></i>
+        data-bs-toggle="popover" title="Info" data-bs-content="This category will grouping the tag into more complex functionality."><i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <form class="p-2 mt-2" action="/event/tag/add_category" method="POST" id="form-add-cat">
         @csrf

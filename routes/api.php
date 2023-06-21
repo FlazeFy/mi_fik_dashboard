@@ -85,7 +85,7 @@ Route::prefix('/v1/task')->middleware(['auth:sanctum'])->group(function () {
 
 Route::prefix('/v1/tag')->group(function () {
     Route::get('/cat/{cat}/{limit}', [QueryTagApi::class, 'getAllTagByCat']);
-    Route::get('/{limit}', [QueryTagApi::class, 'getAllTag'])->middleware(['auth:sanctum']);
+    Route::get('/{find}/{limit}', [QueryTagApi::class, 'getAllTag']);
     Route::post('/create', [CommandTagApi::class, 'addTag'])->middleware(['auth:sanctum']);
     Route::put('/update/{id}', [CommandTagApi::class, 'updateTag'])->middleware(['auth:sanctum']);
     Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag'])->middleware(['auth:sanctum']);
@@ -117,18 +117,18 @@ Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/{slug}', [QueryArchiveApi::class, 'getArchive']);
+    Route::get('/{slug}/type/{type}', [QueryArchiveApi::class, 'getArchive']);
     Route::get('/by/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
     Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
-    Route::post('/multirel/{slug}', [CommandArchiveApi::class, 'multiActionArchiveRelation']);
+    Route::post('/multirel/{slug}/{type}', [CommandArchiveApi::class, 'multiActionArchiveRelation']);
     Route::put('/edit/{slug}', [CommandArchiveApi::class, 'editArchive']);
     Route::delete('/delete/{slug}', [CommandArchiveApi::class, 'deleteArchive']);
 });
 
 Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryUserApi::class, 'getMyProfile']);
-    Route::get('/{filter_name}/limit/{limit}/order/{order}', [QueryUserApi::class, 'getUser']);
+    Route::get('/{filter_name}/limit/{limit}/order/{order}/slug/{slug}', [QueryUserApi::class, 'getUser']);
     Route::get('/{username}', [QueryUserApi::class, 'getUserDetail']);
     Route::get('/{username}/role', [QueryUserApi::class, 'getMyRole']);
     Route::get('/request/new/{fullname}', [QueryUserApi::class, 'getNewUserRequest']);
