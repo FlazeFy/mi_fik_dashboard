@@ -25,14 +25,16 @@ class Kernel extends ConsoleKernel
 
         
         // In staging
-        $schedule->call([new HistorySchedule, 'clean'])->dailyAt('00:40');
-        $schedule->call([new ContentSchedule, 'clean'])->dailyAt('02:00');
-        $schedule->call([new TaskSchedule, 'clean'])->dailyAt('03:00');
+        // $schedule->call([new HistorySchedule, 'clean'])->dailyAt('00:40');
+        // $schedule->call([new ContentSchedule, 'reminder'])->everyMinute();
+        // $schedule->call([new ContentSchedule, 'clean'])->dailyAt('02:00');
+        // $schedule->call([new TaskSchedule, 'clean'])->dailyAt('03:00');
 
         // In development
-        $schedule->command(HistorySchedule::clean())->everyMinute(); // Check this shit
-        $schedule->command(ContentSchedule::clean())->everyMinute();
-        $schedule->command(TaskSchedule::clean())->everyMinute();
+        // $schedule->command(HistorySchedule::clean())->everyMinute(); // Check this shit
+        // $schedule->command(ContentSchedule::clean())->everyMinute();
+        $schedule->command(ContentSchedule::reminder())->everyMinute();
+        // $schedule->command(TaskSchedule::clean())->everyMinute();
     }
 
     /**

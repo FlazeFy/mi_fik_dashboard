@@ -138,7 +138,7 @@ class Query
                 null as admin_image_deleted, null as user_image_deleted,
                 null as admin_username_updated, null as user_username_updated, 
                 null as admin_username_deleted, null as user_username_deleted,
-                null as content_loc, SUBSTR(feedback_suggest,10) as content_tag, null as content_date_start, null as content_date_end, null as created_at,
+                null as content_loc, SUBSTR(feedback_suggest,10) as content_tag, null as content_date_start, null as content_date_end, fb.created_at as created_at,
                 6 as data_from, fb.deleted_at as deleted_at";
         } else if($type == "dictionary_dump"){
             $query = "dct.id, dct_name as content_title, dct_desc as content_desc, 

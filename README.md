@@ -24,6 +24,9 @@ ex : php artisan serve # port=9000
 or
 > php artisan db:seed
 
+# Run Scheduler
+> php artisan schedule:run
+
 # Make Controller
 > php artisan make:controller <NAMA-Controller>Controller --resource
 
