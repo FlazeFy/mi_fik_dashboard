@@ -14,6 +14,11 @@ use App\Models\Menu;
 use App\Models\Question;
 use App\Models\History;
 use App\Models\Info;
+use App\Models\User;
+
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FireNotif;
 
 class FaqController extends Controller
 {
@@ -50,46 +55,87 @@ class FaqController extends Controller
 
     public function set_answer(Request $request)
     {
-        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+        DB::beginTransaction();
 
-        $validator = Validation::getValidateAnswerFaq($request);
-        if ($validator->fails()) {
-            $errors = $validator->messages();
+        try{
+            $user_id = Generator::getUserIdV2(session()->get('role_key'));
+            $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+            $messaging = $factory->createMessaging(); 
 
-            return redirect()->back()->with('failed_message', $errors);
-        } else {
-            $data = new Request();
-            $obj = [
-                'history_type' => "faq",
-                'history_body' => "Has answered a faq question"
-            ];
-            $data->merge($obj);
-
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
+            $validator = Validation::getValidateAnswerFaq($request);
+            if ($validator->fails()) {
+                $errors = $validator->messages();
 
                 return redirect()->back()->with('failed_message', $errors);
             } else {
-                Question::where('id', $request->question_id)->update([
-                    'question_answer' => $request->question_answer,
-                    'updated_at' => date("Y-m-d H:i"),
-                    'updated_by' => $user_id,
-                ]);
+                $data = new Request();
+                $obj = [
+                    'history_type' => "faq",
+                    'history_body' => "Has answered a faq question"
+                ];
+                $data->merge($obj);
 
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
-                    'context_id' => $request->question_id, 
-                    'history_body' => $data->history_body, 
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
-                
-                return redirect()->back()->with('success_message', 'Success answered a faq question');  
-            }
-        }  
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    DB::table("questions")
+                        ->where('id', $request->question_id)->update([
+                            'question_answer' => $request->question_answer,
+                            'updated_at' => date("Y-m-d H:i"),
+                            'updated_by' => $user_id,
+                    ]);
+
+                    $user = DB::table("users")
+                        ->select("firebase_fcm_token")
+                        ->where('username',$request->question_owner)
+                        ->first();
+
+                    $firebase_token = $user->firebase_fcm_token;
+                    if($firebase_token){
+                        $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                        if($validateRegister['valid'] != null){
+                            $notif_body = $request->question_answer;
+                            $notif_title = "Hello ".$request->question_owner.", your question got an answer";
+                            $message = CloudMessage::withTarget('token', $firebase_token)
+                                ->withNotification(
+                                    FireNotif::create($notif_body)
+                                    ->withTitle($notif_title)
+                                    ->withBody($notif_body)
+                                )
+                                ->withData([
+                                    'by' => 'person'
+                                ]);
+                            $response = $messaging->send($message);
+                        } else {
+                            DB::table("users")->where('id', $request->question_owner)->update([
+                                "firebase_fcm_token" => null
+                            ]);
+                        }
+                    }
+
+                    DB::table("histories")->insert([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => $request->question_id, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+                    
+                    DB::commit();
+                    return redirect()->back()->with('success_message', 'Success answered a faq question');  
+                }
+            }  
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return redirect()->back()->with('failed_message', 'Create faq answer '.$e);
+        }
     }
 
     public function delete($id)
