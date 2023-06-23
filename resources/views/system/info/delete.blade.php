@@ -8,14 +8,16 @@
                 <form action="/system/info/delete/{{$in->id}}" method="POST">
                     @csrf 
                     <h6 class="text-center">Are you sure want to delete this info</h6>
-                    @foreach($info as $in)
-                        @if($in->info_location == "delete_info")
-                            <div class="info-box {{$in->info_type}}">
-                                <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                <?php echo $in->info_body; ?>
-                            </div>
-                        @endif
-                    @endforeach
+                    @if($info)
+                        @foreach($info as $in)
+                            @if($in->info_location == "delete_info")
+                                <div class="info-box {{$in->info_type}}">
+                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                    <?php echo $in->info_body; ?>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
                     <button type="submit" class="btn btn-danger float-end">Delete</button>
                 </form>
             </div>

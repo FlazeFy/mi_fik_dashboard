@@ -47,7 +47,7 @@ class RequestController extends Controller
                 ->with('dct_tag', $dct_tag)
                 ->with('greet',$greet);
         } else {
-            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+            return redirect("/")->with('failed_message','Session lost, please sign in again');
         }
     }
 

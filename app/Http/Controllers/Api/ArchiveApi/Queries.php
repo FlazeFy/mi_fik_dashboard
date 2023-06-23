@@ -19,20 +19,32 @@ use App\Models\Task;
 
 class Queries extends Controller
 {
-    public function getArchive(Request $request, $slug) 
+    public function getArchive(Request $request, $slug, $type) 
     {
         try{
             $user_id = $request->user()->id;
-            if($slug != "%20" && trim($slug) != "" && trim($slug) != null){
-                $select = " ,
-                CASE 
-                    WHEN EXISTS (
-                        SELECT 1 FROM archives_relations ars
-                        JOIN contents_headers chq ON chq.id = ars.content_id
-                        WHERE ars.archive_id = a.id AND chq.slug_name = '".$slug."'
-                    ) THEN 1 
-                    ELSE 0
-                END AS found ";
+            if($slug != "%20" && trim($slug) != "" && trim($slug) != null && $type != "%20"){
+                if($type == "Event"){
+                    $select = " ,
+                    CASE 
+                        WHEN EXISTS (
+                            SELECT 1 FROM archives_relations ars
+                            JOIN contents_headers chq ON chq.id = ars.content_id
+                            WHERE ars.archive_id = a.id AND chq.slug_name = '".$slug."'
+                        ) THEN 1 
+                        ELSE 0
+                    END AS found ";
+                } else {
+                    $select = " ,
+                    CASE 
+                        WHEN EXISTS (
+                            SELECT 1 FROM archives_relations ars
+                            JOIN tasks tsk ON tsk.id = ars.content_id
+                            WHERE ars.archive_id = a.id AND tsk.slug_name = '".$slug."'
+                        ) THEN 1 
+                        ELSE 0
+                    END AS found ";
+                }
             } else {
                 $select = " , 0 as found";
             }

@@ -12,6 +12,7 @@ use App\Models\Menu;
 use App\Models\Admin;
 use App\Models\User;
 use App\Models\Task;
+use App\Models\Info;
 use App\Models\UserRequest;
 use App\Models\Notification;
 use App\Models\ContentHeader;
@@ -34,6 +35,7 @@ class ProfileController extends Controller
         if($user_id != null){
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("profile");
 
             if($role == 0){
                 $user = User::find($user_id);
@@ -77,10 +79,11 @@ class ProfileController extends Controller
                 ->with('dictionary', $dictionary)
                 ->with('faq', $faq)
                 ->with('dct_tag', $dct_tag)
+                ->with('info', $info)
                 ->with('myreq', $myreq)
                 ->with('greet',$greet);
         } else {
-            return redirect("/")->with('failed_message','Session lost, try to sign in again');
+            return redirect("/")->with('failed_message','Session lost, please sign in again');
         }
     }
 
@@ -273,45 +276,20 @@ class ProfileController extends Controller
 
             return redirect()->back()->with('failed_message', $errors);
         } else {
-            $data = new Request();
-            $obj = [
-                'history_type' => "faq",
-                'history_body' => "Has created a new question"
-            ];
-            $data->merge($obj);
-
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
-
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                $content = Question::create([
-                    'id' => Generator::getUUID(),
-                    'question_type' => $request->question_type,
-                    'question_body' => $request->question_body,
-                    'question_answer' => null,
-                    'is_active' => 0,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id,
-                    'updated_at' => null,
-                    'updated_by' => null,
-                    'deleted_at' => null,
-                    'deleted_by' => null,
-                ]);
-
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type,
-                    'context_id' => null,
-                    'history_body' => $data->history_body,
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
-
-                return redirect()->back()->with('success_message', "Question has sended");
-            }
+            $content = Question::create([
+                'id' => Generator::getUUID(),
+                'question_type' => $request->question_type,
+                'question_body' => $request->question_body,
+                'question_answer' => null,
+                'is_active' => 0,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_by' => $user_id,
+                'updated_at' => null,
+                'updated_by' => null,
+                'deleted_at' => null,
+                'deleted_by' => null,
+            ]);
+            return redirect()->back()->with('success_message', "Question has sended");
         }
     }
 }

@@ -43,14 +43,16 @@
                                 <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
                             </span>
                             <span id="user-selected-holder"></span>
-                            @foreach($info as $in)
-                                @if($in->info_location == "add_group")
-                                    <div class="info-box {{$in->info_type}}">
-                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                        <?php echo $in->info_body; ?>
-                                    </div>
-                                @endif
-                            @endforeach
+                            @if($info)
+                                @foreach($info as $in)
+                                    @if($in->info_location == "add_group")
+                                        <div class="info-box {{$in->info_type}}">
+                                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                            <?php echo $in->info_body; ?>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <h6>All User</h6>
@@ -139,7 +141,7 @@
         document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/" + getFindUser(find) + "/limit/100/order/first_name__DESC?page=" + page_new_req,
+            url: "/api/v1/user/" + getFindUser(find) + "/limit/100/order/first_name__DESC/slug/all?page=" + page_new_req,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

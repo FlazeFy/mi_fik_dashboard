@@ -30,6 +30,7 @@ class QuestionFactory extends Factory
             'question_type' => Generator::getRandomDictionaryType("QST-001"), 
             'question_body' => fake()->paragraph(), 
             'question_answer' => $answer, 
+            'is_active' => $ran, 
             'created_at' => Generator::getRandomDate(0), 
             'created_by' => Generator::getRandomUser(0), 
             'updated_at' => Generator::getRandomDate($ran), 

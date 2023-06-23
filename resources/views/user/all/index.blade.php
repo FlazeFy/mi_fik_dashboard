@@ -57,6 +57,7 @@
                     @include('sidebar.navbar')
 
                     <div class="mt-4 btn-config-holder">
+                        @include('user.all.filtertag')
                         @include('user.all.filtername')
                         <div class="ms-3">
                             @include("user.searchbar")

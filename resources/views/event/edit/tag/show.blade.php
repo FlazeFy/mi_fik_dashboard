@@ -11,14 +11,16 @@
                         <div class="modal-body text-center pt-4">
                             <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                             <p style="font-weight:500;">Are you sure want to remove "<span class="text-primary">{{$tg['tag_name']}}</span>" tag?</p>
-                            @foreach($info as $in)
-                                @if($in->info_location == "delete_tag")
-                                    <div class="info-box {{$in->info_type}}">
-                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                        <?php echo $in->info_body; ?>
-                                    </div>
-                                @endif
-                            @endforeach
+                            @if($info)
+                                @foreach($info as $in)
+                                    @if($in->info_location == "delete_tag")
+                                        <div class="info-box {{$in->info_type}}">
+                                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                            <?php echo $in->info_body; ?>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
                             <form class="d-inline" action="/event/edit/update/tag/remove/{{$c->slug_name}}" method="POST">
                                 @csrf
                                 <input hidden name="content_title" value="{{$c->content_title}}">
@@ -38,14 +40,16 @@
                         <div class="modal-body text-center pt-4">
                             <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                             <p style="font-weight:500;">Sorry but you can't delete "<span class="text-primary">{{$tg['tag_name']}}</span>" tag. Because this is the last tag attached in this event</p>
-                            @foreach($info as $in)
-                                @if($in->info_location == "delete_tag_last")
-                                    <div class="info-box {{$in->info_type}}">
-                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                        <?php echo $in->info_body; ?>
-                                    </div>
-                                @endif
-                            @endforeach
+                            @if($info)
+                                @foreach($info as $in)
+                                    @if($in->info_location == "delete_tag_last")
+                                        <div class="info-box {{$in->info_type}}">
+                                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                            <?php echo $in->info_body; ?>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>

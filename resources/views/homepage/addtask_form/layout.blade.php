@@ -74,7 +74,7 @@
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("http://127.0.0.1:8000/assets/task.png"); background-color:#FB5E5B;'
     data-bs-target="#addTaskModal" data-bs-toggle="modal">
     <h5 class="quick-action-text">Add Task</h5>
-    <p class="quick-action-info">Task is a bla bla....</p>
+    <p class="quick-action-info">Different from events, the task is private and can only be seen by yourself.</p>
 </button>
 
 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

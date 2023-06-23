@@ -10,13 +10,17 @@ use App\Models\Tag;
 
 class Queries extends Controller
 {
-    public function getAllTag($limit){
+    public function getAllTag($find, $limit){
         try{
             $tag = Tag::select('tags.slug_name', 'tag_name', 'dictionaries.dct_name as tag_category')
                 ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
                 ->orderBy('tags.created_at', 'DESC')
-                ->orderBy('tags.id', 'DESC')
-                ->paginate($limit);
+                ->orderBy('tags.id', 'DESC');
+            if($find != "%20" && trim($find) != ""){
+                $tag->whereRaw("tag_name LIKE '%".$find."%'");
+            } 
+            
+            $tag = $tag->paginate($limit);
 
             if ($tag->isEmpty()) {
                 return response()->json([

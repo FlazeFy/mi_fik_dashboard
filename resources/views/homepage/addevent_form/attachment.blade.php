@@ -12,9 +12,11 @@
     var maxSizeVideo = 20; // Mb
     var maxSizeDoc = 15; // Mb
     var err_att = false;
+    var add_att_btn = document.getElementById('add_att_btn');
 
     function addAttachmentForm(){
-        var id = getAttCode()
+        var id = getAttCode();
+        var is_addable = true
         let obj = {
             "id": id,
             "attach_type":null, 
@@ -23,37 +25,47 @@
             "is_error":false
         };
 
-        attach_list.push(obj);
+        attach_list.forEach( e => {
+            if(e.attach_type == null && e.attach_name == null && e.is_error == false){
+                is_addable = false;
+            }
+        });
+        
+        if(is_addable || attach_list.length == 0){
+            attach_list.push(obj);
 
-        $("#attachment-holder").append(' ' +
-            '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:#808080;"> ' + 
-                '<div style="white-space:normal !important;"> ' +
-                    '<span class="d-inline-block me-1"> ' +
-                        '<h6 class="mt-1">Attachment Type : </h6> ' +
-                    '</span> ' +
-                    '<span class="d-inline-block"> ' +
-                        '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
-                            '<option selected>---</option> ' +
-                            <?php
-                                foreach($dictionary as $dct){
-                                    if($dct->type_name == "Attachment"){
-                                        echo "'<option value=".'"'.$dct->slug_name.'"'.">".$dct->dct_name."</option> ' +";
+            $("#attachment-holder").append(' ' +
+                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:#808080;"> ' + 
+                    '<div style="white-space:normal !important;"> ' +
+                        '<span class="d-inline-block me-1"> ' +
+                            '<h6 class="mt-1">Attachment Type : </h6> ' +
+                        '</span> ' +
+                        '<span class="d-inline-block"> ' +
+                            '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
+                                '<option selected>---</option> ' +
+                                <?php
+                                    foreach($dictionary as $dct){
+                                        if($dct->type_name == "Attachment"){
+                                            echo "'<option value=".'"'.$dct->slug_name.'"'.">".$dct->dct_name."</option> ' +";
+                                        }
                                     }
-                                }
-                            ?>
-                        '</select> ' +
-                    '</span> ' +
-                '</div> ' +
-                '<div id="attach-input-holder-'+id+'"></div> ' +
-                '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
-                    '<i class="fa-solid fa-trash-can"></i></a> ' +
-                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
-                    '<i class="fa-regular fa-eye-slash"></i></a> ' +
-                '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
-                '<a class="attach-upload-status failed" id="attach-failed-'+id+'"></a>' +
-                '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
-                '<span id="preview_holder_'+id+'"></span> ' +
-            '</div>');
+                                ?>
+                            '</select> ' +
+                        '</span> ' +
+                    '</div> ' +
+                    '<div id="attach-input-holder-'+id+'"></div> ' +
+                    '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
+                        '<i class="fa-solid fa-trash-can"></i></a> ' +
+                    '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
+                        '<i class="fa-regular fa-eye-slash"></i></a> ' +
+                    '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
+                    '<a class="attach-upload-status failed" id="attach-failed-'+id+'"></a>' +
+                    '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
+                    '<span id="preview_holder_'+id+'"></span> ' +
+                '</div>');
+        }
+        add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
+        add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
     }
 
     function setValue(id, all){
@@ -67,7 +79,6 @@
             //var att_url = document.getElementById('attach_url_'+id).value;
             var att_cont = document.getElementById('attachment_container_'+id);
             var submitHolder = $("#btn-submit-holder-event");
-            var add_att_btn = document.getElementById('add_att_btn');
             
             if(att_type != "attachment_url" && att_dsbld != true){
                 var att_file_src = document.getElementById('attach_url_'+id).files[0];
@@ -140,6 +151,7 @@
                                 "attach_url": att_url,
                                 "is_error":false
                             };
+                            validateFailedAtt();
                             console.log(attach_list);
                         });
                     });
@@ -164,8 +176,9 @@
                     att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
                     warningAttMsg = document.getElementById('attach-warning-'+id);
                     if(isValidURL(att_url)){
-                        warningAttMsg.style = "color: #09c568 !important;"
+                        warningAttMsg.style = "color: #09c568 !important;";
                         warningAttMsg.innerHTML = "URL is valid";
+                        validateFailedAtt();
 
                         attach_list[objIndex] = {
                             "id": id,
@@ -176,6 +189,7 @@
                         };
                         console.log(attach_list);
                     } else {
+                        warningAttMsg.style = "color: #f78a00 !important;";
                         warningAttMsg.innerHTML = "URL isn't not valid!";
                     }
                 } else {
