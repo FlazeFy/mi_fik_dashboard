@@ -13,11 +13,15 @@ use App\Models\Menu;
 use App\Models\History;
 use App\Models\SettingSystem;
 use App\Models\ContentHeader;
-use App\Models\ContentDetail;
 use App\Models\ContentViewer;
 use App\Models\ArchiveRelation;
+use App\Models\UserGroup;
 use App\Models\Task;
+use App\Models\Tag;
 use App\Models\Info;
+use App\Models\Feedback;
+use App\Models\Dictionary;
+use App\Models\Question;
 
 class TrashController extends Controller
 {
@@ -64,10 +68,32 @@ class TrashController extends Controller
 
         if($type == 1){
             $type = "event";
-            $id = Generator::getContentId($slug);
+            $res = ContentHeader::select("id")->where("slug_name",$slug)->first();
+            $res = $res->id;
         } else if($type == 2){
             $type = "task";
-            $id = Generator::getTaskId($slug);
+            $res = Task::select("id")->where("slug_name",$slug)->first();
+            $res = $res->id;
+        } else if($type == 3){
+            $type = "tag";
+            $res = Tag::select("id")->where("slug_name",$slug)->first();
+            $res = $res->id;
+        } else if($type == 4){
+            $type = "group";
+            $res = UserGroup::select("id")->where("slug_name",$slug)->first();
+            $res = $res->id;
+        } else if($type == 5){
+            $type = "info";
+            $res = $slug;
+        } else if($type == 6){
+            $type = "feedback";
+            $res = $slug;
+        } else if($type == 7){
+            $type = "dictionary";
+            $res = $slug;
+        } else if($type == 8){
+            $type = "question";
+            $res = $slug;
         }
 
         if($slug != null && $type != null){
@@ -85,12 +111,41 @@ class TrashController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 if($type == "event"){
-                    ContentHeader::where('id', $id)->update([
+                    ContentHeader::where('id', $res)->update([
                         'deleted_at' => null,
                         'deleted_by' => null
                     ]);
                 } else if($type == "task"){
-                    Task::where('id', $id)->update([
+                    Task::where('id', $res)->update([
+                        'deleted_at' => null,
+                        'deleted_by' => null
+                    ]);
+                } else if($type == "tag"){
+                    Tag::where('id', $res)->update([
+                        'deleted_at' => null,
+                        'deleted_by' => null
+                    ]);
+                } else if($type == "group"){
+                    UserGroup::where('id', $res)->update([
+                        'deleted_at' => null,
+                        'deleted_by' => null
+                    ]);
+                } else if($type == "info"){
+                    Info::where('id', $res)->update([
+                        'deleted_at' => null,
+                        'deleted_by' => null
+                    ]);
+                } else if($type == "feedback"){
+                    Feedback::where('id', $res)->update([
+                        'deleted_at' => null,
+                    ]);
+                } else if($type == "dictionary"){
+                    Dictionary::where('id', $res)->update([
+                        'deleted_at' => null,
+                        'deleted_by' => null
+                    ]);
+                } else if($type == "question"){
+                    Question::where('id', $res)->update([
                         'deleted_at' => null,
                         'deleted_by' => null
                     ]);
@@ -99,7 +154,7 @@ class TrashController extends Controller
                 History::create([
                     'id' => Generator::getUUID(),
                     'history_type' => $data->history_type, 
-                    'context_id' => $id, 
+                    'context_id' => $res, 
                     'history_body' => $data->history_body, 
                     'history_send_to' => null,
                     'created_at' => date("Y-m-d H:i:s"),
@@ -124,10 +179,10 @@ class TrashController extends Controller
                 $type = "event";
                 $id = Generator::getContentId($slug);
                 $owner = Generator::getContentOwner($slug);
-            // } else if($type == 2){
-            //     $type = "task";
-            //     $id = Generator::getTaskId($slug);
-            //     $owner = Generator::getTaskOwner($slug);
+            } else if($type == 2){
+                $type = "task";
+                $id = Generator::getTaskId($slug);
+                $owner = Generator::getTaskOwner($slug);
             } else if($type == 3){
                 $type = "tag";
                 $item = DB::table("tags")
@@ -190,10 +245,10 @@ class TrashController extends Controller
                         DB::table("archives_relations")->where('content_id', $id)->delete();
                         DB::table("histories")->where('context_id', $id)->where('history_type', 'event')->delete();
                         DB::table("contents_viewers")->where('content_id', $id)->where('type_viewer', 0)->delete();
-                    // } else if($type == "task"){
-                    //     DB::table("tasks")->where('id', $id)->delete();
-                    //     DB::table("archives_relations")->where('content_id', $id)->delete();
-                    //     DB::table("histories")->where('context_id', $id)->where('history_type', 'task')->delete();
+                    } else if($type == "task"){
+                        DB::table("tasks")->where('id', $id)->delete();
+                        DB::table("archives_relations")->where('content_id', $id)->delete();
+                        DB::table("histories")->where('context_id', $id)->where('history_type', 'task')->delete();
                     } else if($type == "tag"){
                         DB::table("tags")->where('id', $id)->delete();
                         DB::table("histories")->where('context_id', $id)->where('history_type', 'tag')->delete();

@@ -185,7 +185,16 @@
                     msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant register without a tag. And you must select one tag from 'General Role'";
                 } 
             }
+
+            var isFormSubmitted = false;
+            var forms = document.getElementsByTagName('form');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function() {
+                    isFormSubmitted = true;
+                });
+            }
         </script>
+
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>
 </html>

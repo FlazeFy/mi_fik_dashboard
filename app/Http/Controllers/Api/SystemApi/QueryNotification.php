@@ -50,6 +50,7 @@ class QueryNotification extends Controller
                 // })"send_to":"all"
                 ->whereRaw("notif_send_to LIKE '%".'"'."id".'"'.":".'"'.$user_id.'"'."%'
                     OR notif_send_to LIKE '%".'"'."send_to".'"'.":".'"'.'all"'."%'")
+                ->orderBy('notifications.created_at', 'DESC')
                 ->paginate(12);
 
             if ($notif->isEmpty()) {

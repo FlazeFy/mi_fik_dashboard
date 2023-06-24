@@ -79,7 +79,7 @@
                                     "<button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button> " +
                                     "<form class='d-inline' action='/trash/recover/" + slug_name + "/" + data_from + "' method='POST'> " +
                                         '@csrf ' +
-                                        "<p style='font-weight:500;'>Are you sure want to recover '<span class='text-primary'>" + content_title + "</span>' task?</p> " +                                                
+                                        "<p style='font-weight:500;'>Are you sure want to recover '<span class='text-primary'>" + content_title + "</span>' " + type + "?</p> " +                                                
                                             "<div class='info-box " + info_type + "'> " +
                                                 "<label><i class='fa-solid fa-circle-info'></i> " + info_type + "</label><br> " +
                                                 info_body + 
@@ -330,7 +330,7 @@
                                         "</div> " +
                                     "</button> " +
                                 "</div> " + 
-                                getRecoverModal(type, slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getRecoverModal(type, slug_name, data_from, info_type_recover_content, info_body_recover_content, getTrashModalCtx(content_title,content_desc)) + 
                                 getDestroyModal(type, slug_name, data_from, info_type_destroy_content, info_body_destroy_content, getTrashModalCtx(content_title,content_desc));
                                 $("#data-wrapper-"+type).append(elmt);
                         } else if(data_from == 8){ // Question
@@ -397,7 +397,7 @@
                                         "</div> " +
                                     "</button> " +
                                 "</div> " +
-                                getRecoverModal("Question", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getRecoverModal("Question", slug_name, data_from, info_type_recover_content, info_body_recover_content, getTrashModalCtx(content_title,content_desc)) + 
                                 getDestroyModal("Question", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, getTrashModalCtx(content_title,content_desc));
                                 
                             $("#data-wrapper-question").append(elmt);
@@ -460,7 +460,7 @@
                                         "</div> " +
                                     "</button> " +
                                 "</div> " +
-                                getRecoverModal("Feedback", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
+                                getRecoverModal("Feedback", slug_name, data_from, info_type_recover_content, info_body_recover_content, getTrashModalCtx(content_title,content_desc)) + 
                                 getDestroyModal("Feedback", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, getTrashModalCtx(content_title,content_desc));
 
                             $("#data-wrapper-feedback").append(elmt);

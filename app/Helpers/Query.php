@@ -35,6 +35,7 @@ class Query
                 content_loc,content_image,content_date_start,content_date_end,
                 content_tag,content_attach,ch.created_at,ch.updated_at,is_draft,
                 ac.username as admin_username_created, uc.username as user_username_created, 
+                ac.image_url as admin_image_created, uc.image_url as user_image_created, 
                 au.username as admin_username_updated, uu.username as user_username_updated, 
                 ad.username as admin_username_deleted, ud.username as user_username_deleted,
                 count(cv.id) as total_views";

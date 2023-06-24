@@ -8,7 +8,7 @@
 </div>
 
 <script type="text/javascript">
-    var search = " ";
+    var search = "";
     const search_storage = sessionStorage.getItem('search_trash')
 
     if (search_storage == null) {
@@ -21,7 +21,7 @@
         var input_search = document.getElementById('title_search').value
 
         if(input_search == null || input_search.trim() === ''){
-            sessionStorage.setItem('search_trash', ' ')
+            sessionStorage.setItem('search_trash', '')
         } else {
             sessionStorage.setItem('search_trash', input_search.trim())
         }
@@ -34,7 +34,7 @@
     }
 
     function resetTitleSearch(){
-        sessionStorage.setItem('search_trash', ' ')
+        sessionStorage.setItem('search_trash', '')
         location.reload()
     }
 </script>

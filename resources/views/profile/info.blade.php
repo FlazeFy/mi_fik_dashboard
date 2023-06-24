@@ -46,7 +46,25 @@
         @if(session()->get('role_key') == 0)
             <div class="sub-holder text-start position-relative">
                 <h5 class="text-secondary">My Roles</h5>
-                <a class="btn btn-link-danger position-absolute" style="right:0; top:-10px;" onclick="getRequestRemove()"><i class="fa-solid fa-trash-can"></i> Remove</a>
+                @if(!$myreq)
+                    <a class="btn btn-link-danger position-absolute" style="right:0; top:-10px;" onclick="getRequestRemove()"><i class="fa-solid fa-trash-can"></i> Remove</a>
+                @else 
+                    <a class="btn btn-link-danger position-absolute" style="right:0; top:-10px;" data-bs-toggle="popover" title="Info" 
+                        data-bs-content="You can't request to modify your tag, because you still have awaiting request
+                        <?php 
+                            $tag = $myreq[0]['tag_slug_name'];
+                            $count = count($tag);
+
+                            for($i = 0; $i < $count; $i++){
+                                if($i == $count - 1){
+                                    echo "#".$tag[$i]['tag_name'];
+                                } else {
+                                    echo "#".$tag[$i]['tag_name'].", ";
+                                }
+                            }
+                        ?>
+                        Awaiting request. Please wait some moment or try to contact the Admin"><i class="fa-solid fa-lock"></i> Locked</a>  
+                @endif
 
                 <div id="my_tag_list">
                     @php($tags = $user->role)
