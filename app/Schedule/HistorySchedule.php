@@ -31,12 +31,13 @@ class HistorySchedule
 
         // Fix the mail problem on staging first
         $admin = Admin::all();
-
+        $body = "the system just cleaned some data";
+        
         foreach($admin as $ad){
             $username = $ad->username;
             $email = $ad->email;
             
-            Mail::to($email)->send(new ScheduleEmail($context, $username));
+            Mail::to($email)->send(new ScheduleEmail($context, $username, $body));
         }
     }
 }

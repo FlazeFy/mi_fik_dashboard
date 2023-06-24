@@ -142,7 +142,7 @@ class Queries extends Controller
             $perPage = 10;
             $page = request()->input('page', 1);
             $paginator = new LengthAwarePaginator(
-                $collection->forPage($page, $perPage),
+                $collection->forPage($page, $perPage)->values(),
                 $collection->count(),
                 $perPage,
                 $page,

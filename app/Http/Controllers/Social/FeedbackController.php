@@ -52,35 +52,11 @@ class FeedbackController extends Controller
     {
         $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
-        $data = new Request();
-        $obj = [
-            'history_type' => "feedback",
-            'history_body' => "Has deleted a feedback"
-        ];
-        $data->merge($obj);
-
-        $validatorHistory = Validation::getValidateHistory($data);
-        if ($validatorHistory->fails()) {
-            $errors = $validatorHistory->messages();
-
-            return redirect()->back()->with('failed_message', $errors);
-        } else {
-            Feedback::where('id', $id)->update([
-                'deleted_at' => date("Y-m-d H:i"),
-            ]);
-
-            History::create([
-                'id' => Generator::getUUID(),
-                'history_type' => $data->history_type, 
-                'context_id' => null, 
-                'history_body' => $data->history_body, 
-                'history_send_to' => null,
-                'created_at' => date("Y-m-d H:i:s"),
-                'created_by' => $user_id
-            ]);
-            
-            return redirect()->back()->with('success_message', 'Success deleted a feedback');  
-        }
+        Feedback::where('id', $id)->update([
+            'deleted_at' => date("Y-m-d H:i"),
+        ]);
+        
+        return redirect()->back()->with('success_message', 'Success deleted a feedback');  
     }
 
     public function filter_suggest(Request $request)

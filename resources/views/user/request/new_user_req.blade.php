@@ -20,7 +20,7 @@
     </div>
 
     <div class="user-req-holder" id="data_wrapper_new_req">
-        <div class="auto-load text-center">
+        <div class="auto-load-new text-center">
             <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
         </div>
     </div>
@@ -72,11 +72,11 @@
             beforeSend: function (xhr) {
                 xhr.setRequestHeader("Accept", "application/json");
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
-                $('.auto-load').show();
+                $('.auto-load-new').show();
             }
         })
         .done(function (response) {
-            $('.auto-load').hide();
+            $('.auto-load-new').hide();
             var data =  response.data.data;
             var total = response.data.total;
             var last = response.data.last_page;
@@ -93,7 +93,7 @@
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Request found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest request :)</h5>");
+                $('.auto-load-new').html("<h5 class='text-primary'>Woah!, You have see all the newest request :)</h5>");
                 return;
             } else {
                 function getApprovedButton(acc){
@@ -144,13 +144,8 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load').hide();
-                $('#total_new_req').text("0");
-                $("#empty_item_holder_new_req").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No request found</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('#total_new_req').text("0");
+            failResponse(jqXHR, ajaxOptions, thrownError, "#data_wrapper_new_req", false, null, null);
         });
     }
 

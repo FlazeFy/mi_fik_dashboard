@@ -3,12 +3,13 @@
         <button class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="d-inline-block">
-        <input type="text" class="form-control rounded-pill" id="title_search" placeholder="Search by event title" onblur="checkTitleSearch()" maxlength="75">
+        <input type="text" class="form-control rounded-pill" id="title_search" placeholder="Search by event title" onkeydown="return submitOnEnter(event)"
+            onblur="checkTitleSearch()" maxlength="75">
     </div>
 </div>
 
 <script type="text/javascript">
-    var search = " ";
+    var search = "";
     const search_storage = sessionStorage.getItem('search_trash')
 
     if (search_storage == null) {
@@ -21,11 +22,11 @@
         var input_search = document.getElementById('title_search').value
 
         if(input_search == null || input_search.trim() === ''){
-            sessionStorage.setItem('search_trash', ' ')
+            sessionStorage.setItem('search_trash', '')
         } else {
             sessionStorage.setItem('search_trash', input_search.trim())
         }
-        if(input_search.trim() != search_storage.trim()){
+        if(search_storage == null || input_search.trim() != search_storage.trim()){
             location.reload()
         }
 
@@ -34,7 +35,16 @@
     }
 
     function resetTitleSearch(){
-        sessionStorage.setItem('search_trash', ' ')
+        sessionStorage.setItem('search_trash', '')
         location.reload()
+    }
+
+    function submitOnEnter(event) {
+        if (event.keyCode === 13) { 
+            event.preventDefault(); 
+            checkTitleSearch();
+            return false; 
+        }
+        return true; 
     }
 </script>

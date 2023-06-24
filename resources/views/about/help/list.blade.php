@@ -121,12 +121,8 @@
             
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load').hide();
-                $("#item_type_holder").html("<div class='err-msg-data d-block mx-auto' style='margin-top:-30% !important;'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('.auto-load').hide();
+            failResponse(jqXHR, ajaxOptions, thrownError, "#item_type_holder", false, null, null);
         });
     }
 

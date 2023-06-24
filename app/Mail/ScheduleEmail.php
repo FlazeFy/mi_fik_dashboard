@@ -20,10 +20,11 @@ class ScheduleEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($context, $admin)
+    public function __construct($context, $admin, $body)
     {
         $this->context = $context;
         $this->admin = $admin;
+        $this->body = $body;
     }
 
     /**
@@ -49,6 +50,7 @@ class ScheduleEmail extends Mailable
             ->with([
                 'context' => $this->context,
                 'admin' => $this->admin,
+                'body' => $this->body
             ]);
     }
 

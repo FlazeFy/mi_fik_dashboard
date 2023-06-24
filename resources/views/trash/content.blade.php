@@ -79,7 +79,7 @@
                                     "<button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button> " +
                                     "<form class='d-inline' action='/trash/recover/" + slug_name + "/" + data_from + "' method='POST'> " +
                                         '@csrf ' +
-                                        "<p style='font-weight:500;'>Are you sure want to recover '<span class='text-primary'>" + content_title + "</span>' task?</p> " +                                                
+                                        "<p style='font-weight:500;'>Are you sure want to recover '<span class='text-primary'>" + content_title + "</span>' " + type + "?</p> " +                                                
                                             "<div class='info-box " + info_type + "'> " +
                                                 "<label><i class='fa-solid fa-circle-info'></i> " + info_type + "</label><br> " +
                                                 info_body + 
@@ -100,17 +100,26 @@
                                     "<button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button> " +
                                     "<form class='d-inline' action='/trash/destroy/" + slug_name + "/" + data_from + "' method='POST'> " +
                                         '@csrf ' +
-                                        "<p style='font-weight:500;'>Are you sure want to destroy '<span class='text-primary'>" + content_title + "</span>' task?</p> " +                                                
+                                        "<input value='"+content_title+"' name='content_title' hidden> " +
+                                        "<p style='font-weight:500;'>Are you sure want to permanentaly delete '<span class='text-primary'>" + content_title + "</span>' " + type + "?</p> " +                                                
                                             "<div class='info-box " + info_type + "'> " +
                                                 "<label><i class='fa-solid fa-triangle-exclamation'></i> " + info_type + "</label><br> " +
                                                 info_body + 
                                             "</div> " +
-                                        "<button class='btn btn-danger' type='submit'>Destroy</button> " +
+                                        "<button class='btn btn-danger' type='submit'>Delete</button> " +
                                     "</form> " +
                                 "</div> " +
                             "</div> " +
                         "</div> " +
                     "</div>";
+                }
+
+                function getTrashModalCtx(title1, title2){
+                    if(data_from == 5 || data_from == 7 || data_from == 8 || data_from == 6){
+                        return title2;
+                    } else {
+                        return title1;
+                    }
                 }
 
                 for(var i = 0; i < data.length; i++){
@@ -251,12 +260,16 @@
                         } else if(data_from == 3 || data_from == 5 || data_from == 4 || data_from == 7){ // Tag, Info, Group
                             if(data_from == 3){
                                 var icon = 'fa-hashtag';
+                                var type = "tag";
                             } else if(data_from == 5) {
                                 var icon = 'fa-circle-info';
+                                var type = "info";
                             } else if(data_from == 4) {
                                 var icon = 'fa-users';
+                                var type = "group";
                             } else if(data_from == 7) {
                                 var icon = 'fa-book';
+                                var type = "dictionary";
                             }
 
                             var elmt = " " +
@@ -283,10 +296,10 @@
                                                 "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
                                                     "<i class='fa-solid fa-info'></i> " +
                                                 "</a> " +
-                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recover" + type + "-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-arrow-rotate-right'></i> " +
                                                 "</a> " +
-                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy" + type + "-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
                                                 "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
@@ -316,27 +329,13 @@
                                             "</div> " +
                                         "</div> " +
                                     "</button> " +
-                                "</div> ";
-
-                            if(data_from == 3){
-                                $("#data-wrapper-tag").append(elmt);
-                                getRecoverModal("Tag", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                                getDestroyModal("Tag", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                            } else if(data_from == 5) {
-                                $("#data-wrapper-info").append(elmt);
-                                getRecoverModal("Info", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                                getDestroyModal("Info", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                            } else if(data_from == 4) {
-                                $("#data-wrapper-group").append(elmt);
-                                getRecoverModal("Group", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                                getDestroyModal("Group", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                            } else if(data_from == 7) {
-                                $("#data-wrapper-dictionary").append(elmt);
-                                getRecoverModal("Dictionary", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                                getDestroyModal("Dictionary", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                            }
+                                "</div> " + 
+                                getRecoverModal(type, slug_name, data_from, info_type_recover_content, info_body_recover_content, getTrashModalCtx(content_title,content_desc)) + 
+                                getDestroyModal(type, slug_name, data_from, info_type_destroy_content, info_body_destroy_content, getTrashModalCtx(content_title,content_desc));
+                                $("#data-wrapper-"+type).append(elmt);
                         } else if(data_from == 8){ // Question
                             var icon = 'fa-circle-question';
+                            var type = "Question";
 
                             var elmt = " " +
                                 "<div class='pb-3 content-item'> " +
@@ -364,73 +363,10 @@
                                                 "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
                                                     "<i class='fa-solid fa-info'></i> " +
                                                 "</a> " +
-                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recover" + type + "-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-arrow-rotate-right'></i> " +
                                                 "</a> " +
-                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
-                                                    "<i class='fa-solid fa-fire-flame-curved'></i> " +
-                                                "</a> " +
-                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
-                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
-                                                "</div> " +
-                                            "</div> " +
-                                            "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
-                                                "<hr style='margin-bottom:10px; margin-top:10px;'> " +
-                                                "<div class=''> " +
-                                                    "<div class='d-inline-block'> " +
-                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
-                                                    "</div> " +
-                                                    "<div class='d-inline-block position-relative w-75'> " +
-                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
-                                                        "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
-                                                    "</div> " +
-                                                "</div> " +
-                                                "<div class=''> " +
-                                                    "<div class='d-inline-block'> " +
-                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
-                                                    "</div> " +
-                                                    "<div class='d-inline-block position-relative w-75'> " +
-                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
-                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
-                                                    "</div> " +
-                                                "</div> " +
-                                            "</div> " +
-                                        "</div> " +
-                                    "</button> " +
-                                "</div> ";
-
-                            
-                            $("#data-wrapper-question").append(elmt);
-                            getRecoverModal("Question", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                            getDestroyModal("Question", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
-                        } else if(data_from == 6){ // Feedback
-                            var elmt = " " +
-                                "<div class='pb-3 content-item'> " +
-                                    "<button class='card shadow task-box ultimate' onclick=''> " +
-                                        "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
-                                        "<div class='card-body p-2 w-100'> " +
-                                            "<div class='position-relative'> " +
-                                                "<div class='d-inline-block me-2'> " +
-                                                    '<i class="fa-solid fa-star fa-lg mt-3 text-primary"> <span style="font-size:16px;">' + ucFirst(content_title) + '</span></i>' +
-                                                "</div> " +
-                                                "<div class='d-inline-block position-absolute w-50' style='top:30px;'> " +
-                                                    "<h6 class='task-subtitle'>" + content_tag + "</h6> " +
-                                                "</div> " +
-                                            "</div> " +
-                                            "<p class='task-desc mb-1 mt-3'>" + content_desc + "</p> " +
-                                            "<div class='row d-inline-block px-2'> " +
-                                                getEventDate(content_date_start, content_date_end) +
-                                                getDaysRemaining(deleted_at, dtd_range) +
-                                            "</div> " +
-                                            "<hr style='margin-bottom:10px; margin-top:10px;'> " +
-                                            "<div class='position-relative'> " +
-                                                "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
-                                                    "<i class='fa-solid fa-info'></i> " +
-                                                "</a> " +
-                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recoverTask-" + slug_name + "'> " +
-                                                    "<i class='fa-solid fa-arrow-rotate-right'></i> " +
-                                                "</a> " +
-                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy" + type + "-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
                                                 "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
@@ -461,8 +397,71 @@
                                         "</div> " +
                                     "</button> " +
                                 "</div> " +
-                                getRecoverModal("Feedback", slug_name, data_from, info_type_recover_content, info_body_recover_content, content_title) + 
-                                getDestroyModal("Feedback", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, content_title);
+                                getRecoverModal("Question", slug_name, data_from, info_type_recover_content, info_body_recover_content, getTrashModalCtx(content_title,content_desc)) + 
+                                getDestroyModal("Question", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, getTrashModalCtx(content_title,content_desc));
+                                
+                            $("#data-wrapper-question").append(elmt);
+                        } else if(data_from == 6){ // Feedback
+                            var type = "Feedback";
+                            var elmt = " " +
+                                "<div class='pb-3 content-item'> " +
+                                    "<button class='card shadow task-box ultimate' onclick=''> " +
+                                        "<div class='task-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
+                                        "<div class='card-body p-2 w-100'> " +
+                                            "<div class='position-relative'> " +
+                                                "<div class='d-inline-block me-2'> " +
+                                                    '<i class="fa-solid fa-star fa-lg mt-3 text-primary"> <span style="font-size:16px;">' + ucFirst(content_title) + '</span></i>' +
+                                                "</div> " +
+                                                "<div class='d-inline-block position-absolute w-50' style='top:30px;'> " +
+                                                    "<h6 class='task-subtitle'>" + content_tag + "</h6> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<p class='task-desc mb-1 mt-3'>" + content_desc + "</p> " +
+                                            "<div class='row d-inline-block px-2'> " +
+                                                getEventDate(content_date_start, content_date_end) +
+                                                getDaysRemaining(deleted_at, dtd_range) +
+                                            "</div> " +
+                                            "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                            "<div class='position-relative'> " +
+                                                "<a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_"+ slug_name +"' role='button' aria-expanded='false' aria-controls='collapseInfo'> " +
+                                                    "<i class='fa-solid fa-info'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recover" + type + "-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-arrow-rotate-right'></i> " +
+                                                "</a> " +
+                                                "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy" + type + "-" + slug_name + "'> " +
+                                                    "<i class='fa-solid fa-fire-flame-curved'></i> " +
+                                                "</a> " +
+                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
+                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
+                                                "</div> " +
+                                            "</div> " +
+                                            "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
+                                                "<hr style='margin-bottom:10px; margin-top:10px;'> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                                "<div class=''> " +
+                                                    "<div class='d-inline-block'> " +
+                                                        "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
+                                                    "</div> " +
+                                                    "<div class='d-inline-block position-relative w-75'> " +
+                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
+                                                        "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
+                                                    "</div> " +
+                                                "</div> " +
+                                            "</div> " +
+                                        "</div> " +
+                                    "</button> " +
+                                "</div> " +
+                                getRecoverModal("Feedback", slug_name, data_from, info_type_recover_content, info_body_recover_content, getTrashModalCtx(content_title,content_desc)) + 
+                                getDestroyModal("Feedback", slug_name, data_from, info_type_destroy_content, info_body_destroy_content, getTrashModalCtx(content_title,content_desc));
 
                             $("#data-wrapper-feedback").append(elmt);
                         }
@@ -471,17 +470,17 @@
             var listCat = ["event","task","tag","info","group","dictionary","feedback","question","notification"];
             listCat.forEach(e=>{
                 if($("#data-wrapper-"+e).children().length === 0){
-                    $("#data-wrapper-"+e).html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
+                    if($("#title_search").value != ""){
+                        $("#data-wrapper-"+e).html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>Item not found</h6></div>");
+                    } else {
+                        $("#data-wrapper-"+e).html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
+                    }
                 }
             });
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load').hide();
-                $(".empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('.auto-load').hide();
+            failResponse(jqXHR, ajaxOptions, thrownError, ".empty_item_holder", false, null, null);
         });
     }
 </script>

@@ -1,5 +1,5 @@
 <div class="position-relative me-2">
-    <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown"
+    <button class="btn btn-primary px-3" type="button" style="z-index:100 !important;" id="section-select-tag" data-bs-toggle="dropdown"
         ><i class="fa-solid fa-hashtag"></i> 
         @php($tag_coll = session()->get('selected_tag_calendar'))
         @if($tag_coll != "All")
