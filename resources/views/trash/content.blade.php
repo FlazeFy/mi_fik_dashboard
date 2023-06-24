@@ -479,12 +479,8 @@
             });
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load').hide();
-                $(".empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/trash.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>This trash can is clean</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('.auto-load').hide();
+            failResponse(jqXHR, ajaxOptions, thrownError, ".empty_item_holder", false, null, null);
         });
     }
 </script>

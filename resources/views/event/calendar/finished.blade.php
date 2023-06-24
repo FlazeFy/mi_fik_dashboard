@@ -133,7 +133,7 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            failResponse(jqXHR, ajaxOptions, thrownError, "#data-wrapper", false, null, null);
         });
     }
 </script>

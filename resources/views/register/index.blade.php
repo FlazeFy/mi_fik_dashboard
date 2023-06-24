@@ -40,6 +40,7 @@
         <!-- JS Collection -->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -186,13 +187,10 @@
                 } 
             }
 
-            var isFormSubmitted = false;
-            var forms = document.getElementsByTagName('form');
-            for (var i = 0; i < forms.length; i++) {
-                forms[i].addEventListener('submit', function() {
-                    isFormSubmitted = true;
-                });
-            }
+            window.addEventListener('beforeunload', function(event) {
+                event.preventDefault();
+                event.returnValue = '';
+            });
         </script>
 
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>

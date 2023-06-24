@@ -134,7 +134,7 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            failResponse(jqXHR, ajaxOptions, thrownError, "#question_holder", false, null, null);
         });
     }
 

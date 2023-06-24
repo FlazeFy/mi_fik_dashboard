@@ -198,13 +198,9 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load-tag').hide();
-                $('#load_more').empty();
-                $("#data_wrapper_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('.auto-load-tag').hide();
+            $('#load_more').empty();
+            failResponse(jqXHR, ajaxOptions, thrownError, "#empty_item_holder_manage_tag", false, null, null);
         });
     }
 

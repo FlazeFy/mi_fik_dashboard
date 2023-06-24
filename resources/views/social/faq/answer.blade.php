@@ -99,7 +99,7 @@
                 }
             })
             .fail(function (jqXHR, ajaxOptions, thrownError) {
-                console.log('Server error occured');
+                failResponse(jqXHR, ajaxOptions, thrownError, "#answer_suggestion", false, null, null);
             });
         }
     }
