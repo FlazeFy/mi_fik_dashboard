@@ -266,9 +266,14 @@ class RequestController extends Controller
 
                                 if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
                                     $rolesOld = User::getUserRole($user_id, 0);
+                                    if($rolesOld[0]['role']){
+                                        $arr_role = $rolesOld[0]['role'];
+                                    } else {
+                                        $arr_role = [];
+                                    }
                                     
                                     //Bug if we use formal looping
-                                    $merge = array_merge($newRoles, $rolesOld[0]['role']);
+                                    $merge = array_merge($newRoles, $arr_role);
                                     $unique = array_map("unserialize", array_unique(array_map("serialize", $merge)));
                                     $newRoles = json_encode(array_values($unique));
 

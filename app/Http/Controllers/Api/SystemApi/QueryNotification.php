@@ -8,15 +8,17 @@ use Illuminate\Http\Response;
 use App\Helpers\Query;
 
 use App\Models\Notification;
+use App\Models\User;
+use App\Models\PersonalAccessTokens;
 
 class QueryNotification extends Controller
 {
     public function getAllNotification(){
         $notif = Notification::select('id', 'notif_type', 'notif_title', 'notif_body', 'notif_send_to', 'is_pending','created_at','updated_at')
             ->where('is_pending', 0)
-            ->where(function ($query) {
-                $query->where('notif_send_to','LIKE','%send_to":"all"%');
-            })
+            // ->where(function ($query) {
+            //     $query->where('notif_send_to','LIKE','%send_to":"all"%');
+            // })
             ->get();
 
         if ($notif->isEmpty()) {
@@ -40,17 +42,22 @@ class QueryNotification extends Controller
 
             $select = Query::getSelectTemplate("notif_my");
 
+            $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
             $notif = Notification::selectRaw($select)
-                //->leftJoin('users', 'users.id', '=', 'notifications.created_by')
                 ->leftJoin('admins', 'admins.id', '=', 'notifications.created_by')
-                ->where('is_pending', 0)
-                // ->where(function ($query) {
-                //     $query->where('notif_send_to','LIKE','%send_to":"'.$user_id.'"%') //Must use jsoncontains
-                //         ->orWhere('notif_send_to','LIKE','%send_to":"all"%');
-                // })"send_to":"all"
-                ->whereRaw("notif_send_to LIKE '%".'"'."id".'"'.":".'"'.$user_id.'"'."%'
-                    OR notif_send_to LIKE '%".'"'."send_to".'"'.":".'"'.'all"'."%'")
-                ->orderBy('notifications.created_at', 'DESC')
+                ->where('is_pending', 0);
+                
+            if($check->tokenable_type === "App\\Models\\User"){
+                $user = User::select("accepted_at")
+                    ->where("id",$user_id)
+                    ->first();
+
+                $notif = $notif->whereRaw("notifications.created_at > '".date("Y-m-d H:i:s", strtotime($user->accepted_at))."'")
+                    ->whereRaw("(notif_send_to LIKE '%".'"'."id".'"'.":".'"'.$user_id.'"'."%'
+                        OR notif_send_to LIKE '%".'"'."send_to".'"'.":".'"'.'all"'."%')");
+            }
+           
+            $notif = $notif->orderBy('notifications.created_at', 'DESC')
                 ->paginate(12);
 
             if ($notif->isEmpty()) {

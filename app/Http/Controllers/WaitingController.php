@@ -19,10 +19,29 @@ class WaitingController extends Controller
     {
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
+        $user = User::find($user_id);
+        $found = false;
+
+        if($user){
+            if($user->role){
+                foreach($user->role as $rl){
+                    if($rl['slug_name'] == "lecturer" || $rl['slug_name'] == "staff"){
+                        $found = true;
+                        break;
+                    }
+                }
+
+                if($found && $user->accepted_at){
+                    return redirect()->route('homepage')->with('granted_message','Your registration process is completed. Welcome to Mi-FIK');
+                }
+            }
+        } else {
+
+        }
 
         if(!$role){
             $myreq = UserRequest::getRecentlyRequest($user_id);
-            $user = User::find($user_id);
+            
             $ctc = Help::getAboutContact();
             $dct_tag = Dictionary::getDictionaryByType("Tag");
             $info = Info::getAvailableInfo("waiting");

@@ -42,42 +42,43 @@
     </head>
 
     <body>
+        @php($found = false)
+        @php($roles = $user->role)
+        @if($user->role)
+            @foreach($roles as $rl)
+                @if($rl['slug_name'] == "lecturer" || $rl['slug_name'] == "staff")
+                    @php($found = true)
+                    @break
+                @endif
+            @endforeach
+        @endif
+
         <div class="d-block mx-auto p-0 pt-5" style="max-width:1080px;">
             <div class="container mt-4 pt-3 text-center">
-                <img class="logo-big-res" src="{{asset('assets/usermanage.png')}}">
-                <p class="text-primary" style="font-size:26px;">Sorry {{session()->get('username_key')}}. But you don't have access to Mi-FIK</p>
-                <p style="font-size:18px;">You either not have this <span class="btn btn-tag" title="General Tag">Lecturer</span> or <span class="btn btn-tag" title="General Tag">Staff</span> as your <b>Role</b></p>
-                <div class="" id="start-section-manage">
-                    <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button> to send request to Admin.
-                </div>
+                @include('waiting.context')
             </div>
         </div>
 
         @if($myreq)
             <div class="d-block mx-auto p-0" style="max-width:1080px;">
                 <div class="container mt-4 pt-3 text-center">
-                    <h6 class="text-secondary text-center">Sorry your <a class="text-danger" title="Awaiting Request" data-bs-toggle="popover" title="Popover title" style="cursor: pointer;"
-                        data-bs-content="You have requested to {{$myreq[0]['request_type']}} 
-                            <?php 
-                                $tag = $myreq[0]['tag_slug_name'];
-                                $count = count($tag);
-
-                                for($i = 0; $i < $count; $i++){
-                                    if($i == $count - 1){
-                                        echo "#".$tag[$i]['tag_name'];
-                                    } else {
-                                        echo "#".$tag[$i]['tag_name'].", ";
-                                    }
-                                }
-                            ?>
-                        "> request</a> is still in process by our Admin. Please wait some moment or try to contact the 
-                        <a class="text-primary text-decoration-none" title="Send email" href="mailto:hello@mifik.id">Admin</a>
-                    </h6>
+                    @include('waiting.prevent')
                 </div>
             </div>
-        @else 
+        @elseif(!$found) 
             <div class="d-block mx-auto p-0" style="max-width:1080px;">
                 <div class="container mt-4 pt-3 text-center">
+                    <div class="" id="start-section-manage">
+                        <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button> to send request to Admin.
+                    </div>
+                    <div class="sub-holder text-center" id="body-req">
+                        <form action="/profile/request" method="POST" id="request_add_form">
+                            @csrf
+                            <h5 class="text-secondary">Requested Tag</h5>
+                            <div id="slct_holder"></div>
+                            <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</a></span>
+                        </form>
+                    </div>  
                     @include('waiting.tagpicker')
                 </div>
             </div>
@@ -92,6 +93,8 @@
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
             return new bootstrap.Popover(popoverTriggerEl)
         })
+        $("#body-req").css({"display":"none"});
+
 
         ScrollReveal().reveal('.logo-big-res', { delay: 500, distance: '80px', origin: 'top', easing: 'ease-in-out' });
     </script>

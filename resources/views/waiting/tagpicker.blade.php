@@ -71,6 +71,7 @@
 
     function stylingTagManage(){
         $("#tag-manage-control").css({"display":"block"});
+        $("#body-req").css({"display":"block"});
     }
 
     <?php 
