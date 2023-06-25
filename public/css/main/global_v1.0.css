@@ -161,6 +161,20 @@
     padding-left:6px;
     text-align:left;
 }
+.dropdown-menu.normal{
+    width: auto !important;
+    padding: 12px;
+}
+.dropdown-menu.normal .dropdown-item{
+    padding: 8px 10px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    border-radius: 6px;
+}
+.dropdown-menu.normal .dropdown-item:hover{
+    background: #e9ecef !important;
+}
+
 
 .item-stack-holder{
     width: 100px !important;

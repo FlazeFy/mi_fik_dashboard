@@ -11,7 +11,7 @@ class UserRequest extends Model
     use HasFactory;
     //use HasUuids;
     public $incrementing = false;
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $table = 'users_requests';
     protected $primaryKey = 'id';

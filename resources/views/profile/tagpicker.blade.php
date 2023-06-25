@@ -3,9 +3,30 @@
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOL">
-        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
+    <div class="dropdown-menu normal dropdown-menu-end shadow" aria-labelledby="section-more-MOL">
+        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
+    </div>
+
+    <div class="modal fade" id="helpRequestTag" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">  
+                <div class="modal-body p-4 pb-1">
+                    <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                    <h5 class="text-primary">Request Tag</h5><hr>
+                    @if($info)
+                        @foreach($info as $in)
+                            @if($in->info_location == "request_tag")
+                                <div class="info-box {{$in->info_type}}">
+                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                    <?php echo $in->info_body; ?>
+                                </div>
+                            @endif
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
     </div>
 
     @if(!$myreq)
@@ -16,24 +37,26 @@
             </h6>
         </div>
         @if(session()->get('role_key') != 1)
-            <div class="position-absolute" style="right:60px; top:20px;">
+            <div class="position-absolute" style="right:60px; top:20px;" id="cat-picker-holder">
                 <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" 
                     style="font-size:13px;"aria-label="Floating label select example" required>
                     @php($i = 0) 
                     @foreach($dct_tag as $dtag) 
-                        @if($i == 0) 
-                            <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                            <option value="all">All</option>
-                        @else 
-                            <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                        @if($dtag->slug_name != "general-role")
+                            @if($i == 0) 
+                                <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                                <option value="all">All</option>
+                            @else 
+                                <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                            @endif
+                            @php($i++)
                         @endif
-                        @php($i++) 
                     @endforeach
                 </select>
             </div> 
         @endif
 
-        <div class="user-req-holder" id="data_wrapper_manage_tag">
+        <div class="user-req-holder mt-4" id="data_wrapper_manage_tag">
             <!-- Loading -->
             <div id="start-load" class="d-none">
                 <div class="auto-load text-center">
@@ -73,6 +96,7 @@
     var start_section = document.getElementById("start-section-manage");
     var load_section = document.getElementById("start-load");
     $("#body-req").css({"display":"none"});
+    $("#cat-picker-holder").css({"display":"none"});
 
     function loadmore(route){
         page++;
@@ -92,6 +116,7 @@
         $("#body-title").css({"position":"absolute", "color": "white"});
         $("#body-eng").css({"display":"none"});
         $("#body-req").css({"display":"block"});
+        $("#cat-picker-holder").css({"display":"block"});
 
         $("#body-title").animate({
             "top": "40px",
@@ -127,7 +152,7 @@
         load_section.setAttribute('class', '');
         
         $.ajax({
-            url: "/api/v1/tag/cat/" + tag_cat + "/12?page=" + page,
+            url: "/api/v1/tag/cat/" + tag_cat + "/25?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -162,10 +187,13 @@
                         var slug_name = data[i].slug_name;
                         var tag_name = data[i].tag_name;
 
-                        var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                            'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
+                        if(slug_name != "lecturer" && slug_name != "staff" && slug_name != "student"){
+                            var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
+                                'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
+                        
 
-                        $("#data_wrapper_manage_tag").append(elmt);
+                            $("#data_wrapper_manage_tag").append(elmt);
+                        }
                     } 
                 } else {
                     for(var i = 0; i < data.length; i++){
@@ -173,20 +201,22 @@
                         var slug_name = data[i].slug_name;
                         var found = false;
                         
-                        myTag.forEach(e => {
-                            if(e['slug_name'] === slug_name){
-                                found = true;
+                        if(slug_name != "lecturer" && slug_name != "staff" && slug_name != "student"){
+                            myTag.forEach(e => {
+                                if(e['slug_name'] === slug_name){
+                                    found = true;
+                                }
+                            });
+
+                            if(!found){
+                                var tag_name = data[i].tag_name;
+
+                                var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
+                                'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
+
+                                $("#data_wrapper_manage_tag").append(elmt);
+                                start++;
                             }
-                        });
-
-                        if(!found){
-                            var tag_name = data[i].tag_name;
-
-                            var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                            'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
-
-                            $("#data_wrapper_manage_tag").append(elmt);
-                            start++;
                         }
                     } 
                 }

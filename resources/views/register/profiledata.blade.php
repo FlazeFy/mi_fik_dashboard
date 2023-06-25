@@ -157,7 +157,7 @@
                             <input id='file-input' type='file' accept="image/*" value="" onchange='setValueProfileImage()'/>
                         </div>
                         <input hidden type="text" name="image_url" id="profile_image_url" value="">
-                        <a class="btn btn-icon-reset-image shadow" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
+                        <span id="reset_image_holder"></span>
                         <span class="status-holder shadow">
                             <a class="attach-upload-status success" id="header-progress"></a>
                             <a class="attach-upload-status danger" id="header-failed"></a>
@@ -183,6 +183,11 @@
     var lname = document.getElementById("last_name");
     var pass = document.getElementById("password");
     var until = document.getElementById("valid_until");
+    var btn_reset_image = document.getElementById("reset_image_holder");
+    var img_url = document.getElementById("profile_image_url");
+    var img_src = document.getElementById('profile_image_info');
+    var img_file = document.getElementById('file-input');
+    var btn_add_image = document.getElementById('formFileImg');
     var unameLengMin = 6;
     var unameLengMax = 30;
     var emailLengMin = 10;
@@ -206,6 +211,30 @@
         }
     }
 
+    function clearImage() {
+        var storageRef = firebase.storage();
+        var url = img_url.value;
+        var desertRef = storageRef.refFromURL(url);
+
+        desertRef.delete().then(() => {
+            document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>';
+        }).catch((error) => {
+            document.getElementById("header-failed").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>'+error+'</h6></span>';
+        });
+
+        setTimeout(() => {
+            document.getElementById("header-progress").innerHTML = "";
+        }, 1500);
+        img_src.src = "http://127.0.0.1:8000/assets/default_lecturer.png";
+        btn_reset_image.innerHTML = "";
+        btn_add_image.innerHTML = "<label for='file-input'> " +
+            "<img class='btn change-image shadow position-relative p-1' title='Change Image' src='<?= asset("assets/change_image.png"); ?>'/> " +
+            "</label> " +
+            "<input id='file-input' type='file' accept='image/*' value='' onchange='setValueProfileImage()'/>";
+        img_url.value = "";
+        img_file.value = "";
+    }
+
     function resetUnameEmail(){
         uname.disabled = false;
         email.disabled = false;
@@ -215,7 +244,8 @@
     }
 
     function setValueProfileImage(){
-        var file_src = document.getElementById('file-input').files[0];
+        var img_file = document.getElementById('file-input');
+        var file_src = img_file.files[0];
         var maxSize = 4; // Mb
 
         if(file_src.size <= maxSize * 1024 * 1024){
@@ -234,12 +264,14 @@
             }, 
             function () {
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
-                    document.getElementById('profile_image_info').src = downloadUrl;
-                    document.getElementById('profile_image_url').value = downloadUrl;
+                    img_src.src = downloadUrl;
+                    img_url.value = downloadUrl;
                 });
                 setTimeout(() => {
                     document.getElementById("header-progress").innerHTML = "";
-                }, 2000);
+                }, 1500);
+                btn_reset_image.innerHTML = '<a class="btn btn-icon-reset-image shadow" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>';
+                btn_add_image.innerHTML = '';
             });
         } else {
             document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is " + maxSize + " mb </h6></span>";
@@ -325,6 +357,8 @@
                 lname.disabled = true;
                 pass.disabled = true;
                 until.disabled = true;
+                btn_reset_image.innerHTML = "";
+                btn_add_image.innerHTML = "";
                 document.getElementById("registered-msg").innerHTML = "Your account has been registered";
                 registered = true;
                 validate("profiledata");

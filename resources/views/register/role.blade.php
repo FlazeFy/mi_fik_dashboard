@@ -22,50 +22,52 @@
 <script type="text/javascript">
     var page = 1;
 
-    function loadTag() {        
-        $.ajax({
-            url: "/api/v1/dictionaries/type/TAG-001",
-            datatype: "json",
-            type: "get",
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                $('.auto-load').show();
-            }
-        })
-        .done(function (response) {
-            $('.auto-load').hide();
-            var data =  response.data;
-
-            for(var i = 0; i < data.length; i++){
-                //Attribute
-                var slug_name = data[i].slug_name;
-                var dct_name = data[i].dct_name;
-                var cls = "";
-
-                if(slug_name == "general-role"){
-                    cls = "important-category";
+    function loadTag() {  
+        if(document.getElementById("data-wrapper").hasChildNodes()){      
+            $.ajax({
+                url: "/api/v1/dictionaries/type/TAG-001",
+                datatype: "json",
+                type: "get",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Accept", "application/json");
+                    $('.auto-load').show();
                 }
+            })
+            .done(function (response) {
+                $('.auto-load').hide();
+                var data =  response.data;
 
-                var elmt = " " +
-                    "<div class='" + cls + "'> " +
-                        "<h6 class='mt-2 mb-0'>" + dct_name + "</h6> " +
-                        "<div class='' id='tag-cat-holder-" + slug_name + "'></div> " +
-                        "<div class='auto-load-" + slug_name + " text-center'> " +
-                            '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
-                        "</div> " +
-                        "<div id='empty_item_holder_" + slug_name + "'></div> " +
-                        "<span id='load_more_holder_" + slug_name + "' style='display: flex; justify-content:end;'></span> " +
-                    "</div>";
+                for(var i = 0; i < data.length; i++){
+                    //Attribute
+                    var slug_name = data[i].slug_name;
+                    var dct_name = data[i].dct_name;
+                    var cls = "";
 
-                loadTagByCat(slug_name);
+                    if(slug_name == "general-role"){
+                        cls = "important-category";
+                    }
 
-                $("#data-wrapper").append(elmt);   
-            }
-        })
-        .fail(function (jqXHR, ajaxOptions, thrownError) {
-            $('.auto-load').hide();
-            failResponse(jqXHR, ajaxOptions, thrownError, "#empty_item_holder", false, null, null);
-        });
+                    var elmt = " " +
+                        "<div class='" + cls + "'> " +
+                            "<h6 class='mt-2 mb-0'>" + dct_name + "</h6> " +
+                            "<div class='' id='tag-cat-holder-" + slug_name + "'></div> " +
+                            "<div class='auto-load-" + slug_name + " text-center'> " +
+                                '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                            "</div> " +
+                            "<div id='empty_item_holder_" + slug_name + "'></div> " +
+                            "<span id='load_more_holder_" + slug_name + "' style='display: flex; justify-content:end;'></span> " +
+                        "</div>";
+
+                    loadTagByCat(slug_name);
+
+                    $("#data-wrapper").append(elmt);   
+                }
+            })
+            .fail(function (jqXHR, ajaxOptions, thrownError) {
+                $('.auto-load').hide();
+                failResponse(jqXHR, ajaxOptions, thrownError, "#empty_item_holder", false, null, null);
+            });
+        } 
     }
 
     function loadTagByCat(cat) {        

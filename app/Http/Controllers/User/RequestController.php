@@ -471,10 +471,10 @@ class RequestController extends Controller
                         if($status){
                             DB::table("histories")->insert([
                                 'id' => Generator::getUUID(),
-                                'history_type' => strtolower($data->history_type), 
+                                'history_type' => $data->history_type, 
                                 'context_id' => null, 
                                 'history_body' => $data->history_body, 
-                                'history_send_to' => $user_id,
+                                'history_send_to' => $user_id->id,
                                 'created_at' => date("Y-m-d H:i:s"),
                                 'created_by' => $admin_id
                             ]); 
@@ -579,7 +579,7 @@ class RequestController extends Controller
                                 'history_type' => strtolower($data->history_type), 
                                 'context_id' => null, 
                                 'history_body' => $data->history_body, 
-                                'history_send_to' => $user_id,
+                                'history_send_to' => $user_id->id,
                                 'created_at' => date("Y-m-d H:i:s"),
                                 'created_by' => $admin_id
                             ]); 

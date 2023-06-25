@@ -17,7 +17,7 @@
                 <img src="{{asset('assets/Success.png')}}" alt='granted.png' style='width:30%;'><br>
                 <h7 class="m-2">{{ Session::get('granted_message') }}</h7>
 
-                <h7 class="m-2">New user and need some guidance? See our <a class="btn btn-submit-form" href="{{url('/about')}}"><i class="fa-solid fa-arrow-right"></i> Help Center</a></h7>
+                <h7 class="m-2">Are you a new user and need some guidance? See our <a class="btn btn-submit-form" href="{{url('/about')}}"><i class="fa-solid fa-arrow-right"></i> Help Center</a></h7>
             </div>
         </div>
     </div>
