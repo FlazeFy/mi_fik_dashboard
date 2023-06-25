@@ -551,6 +551,10 @@ class Commands extends Controller
 
                 if(!$found){
                     $uuid = Generator::getUUID();
+                    $imageUrl = null;
+                    if($request->has('image_url')){
+                        $imageUrl = $request->image_url;
+                    } 
 
                     $user = DB::table("users")->insert([
                         'id' => $uuid, 
@@ -561,7 +565,7 @@ class Commands extends Controller
                         'first_name' => $request->first_name, 
                         'last_name' => $request->last_name,  
                         'role' => null, 
-                        'image_url' => null, 
+                        'image_url' => $imageUrl, 
                         'valid_until' => $request->valid_until, 
                         'created_at' => date("Y-m-d H:i:s"), 
                         'updated_at' => null, 

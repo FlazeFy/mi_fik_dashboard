@@ -22,6 +22,7 @@
         <input hidden name="role" value="" id="role">
         <input hidden name="email" value="" id="email">
         <input hidden name="profile_pic" value="" id="profile_pic">
+        <input hidden name="is_waiting" value="" id="is_waiting">
         <div class="position-relative mt-2 mb-2">
             <a onclick="login()" class="btn btn-submit-form px-5 rounded-pill">Sign In</a>
             <a href="/register" class="btn btn-primary-outlined position-absolute px-5 rounded-pill" style="right:0; top:7.5px;">Register</a>
@@ -45,14 +46,20 @@
             success: function(response) {
                 //console.log(response.token);
                 var found = false;
+                var is_waiting =  false;
 
                 if(response.result.hasOwnProperty('role')){
                     let arr_role = response.result.role;
-                    arr_role.forEach(e => {
-                        if(e.slug_name === "lecturer" || e.slug_name === "staff"){
-                            found = true;
-                        }
-                    });
+                    if(arr_role != null){
+                        arr_role.forEach(e => {
+                            if(e.slug_name === "lecturer" || e.slug_name === "staff"){
+                                found = true;
+                            }
+                        });
+                    } else {
+                        found = true;
+                        is_waiting = true;
+                    }
                 } else {
                     found = true;
                 }
@@ -60,6 +67,7 @@
                 if(found){
                     $('#token').val(response.token);
                     $('#role').val(response.role);
+                    $('#is_waiting').val(is_waiting);
                     $('#email').val(response.result.email);
                     $('#profile_pic').val(response.result.image_url);
                     $('#form-login').submit();

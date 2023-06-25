@@ -39,6 +39,7 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>

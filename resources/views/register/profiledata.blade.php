@@ -149,14 +149,14 @@
             <div class="row">
                 <div class="col-lg-6 p-4">
                     <div class="content-image-holder">
-                        <img id="frame" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}">
+                        <img id="profile_image_info" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}" style="width:200px; height:200px;">
                         <div class='image-upload' id='formFileImg'>
                             <label for='file-input'>
                                 <img class='btn change-image shadow position-relative p-1' title='Change Image' src="{{asset('assets/change_image.png')}}"/>
                             </label>
-                            <input id='file-input' type='file' accept="image/*" value="" onchange='setValueContentImage()'/>
+                            <input id='file-input' type='file' accept="image/*" value="" onchange='setValueProfileImage()'/>
                         </div>
-                        <input hidden type="text" name="content_image" id="content_image_url" value="">
+                        <input hidden type="text" name="image_url" id="profile_image_url" value="">
                         <a class="btn btn-icon-reset-image shadow" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
                         <span class="status-holder shadow">
                             <a class="attach-upload-status success" id="header-progress"></a>
@@ -175,19 +175,34 @@
 </span>
 
 <script>
+    var unameMsg = document.getElementById("username_msg");
+    var emailMsg = document.getElementById("email_msg");
     var uname = document.getElementById("username");
     var email = document.getElementById("email");
     var fname = document.getElementById("first_name");
     var lname = document.getElementById("last_name");
     var pass = document.getElementById("password");
     var until = document.getElementById("valid_until");
+    var unameLengMin = 6;
+    var unameLengMax = 30;
+    var emailLengMin = 10;
+    var emailLengMax = 75;
     
     function routeCheck(){
-        unameVal = uname.value;
-        emailVal = email.value;
+        unameVal = uname.value.trim();
+        emailVal = email.value.trim();
+        uname.value = unameVal;
+        email.value = emailVal;
 
-        if(unameVal.length > 6 && emailVal.length > 10 && unameVal.length <= 30 && emailVal.length <= 75 ){
+        if(unameVal.length > unameLengMin && emailVal.length > emailLengMin && unameVal.length <= unameLengMax && emailVal.length <= emailLengMax ){
             check_user();
+        } else {
+            if(unameVal.length <= 6 || unameVal.length > 30){
+                unameMsg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username should be around " + unameLengMin + " until " + unameLengMax + " character";
+            }
+            if(emailVal.length <= 10 || emailVal.length > 75){
+                emailMsg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Email should be around " + emailLengMin + " until " + emailLengMax + " character";
+            }
         }
     }
 
@@ -197,6 +212,38 @@
         document.getElementById("prevent-data-section").setAttribute('class', '');
         document.getElementById("detail-data-section").setAttribute('class', 'd-none');
         document.getElementById("reset-uname-holder").setAttribute('class', 'd-none');
+    }
+
+    function setValueProfileImage(){
+        var file_src = document.getElementById('file-input').files[0];
+        var maxSize = 4; // Mb
+
+        if(file_src.size <= maxSize * 1024 * 1024){
+            var filePath = 'profile_image/' + getUUID();
+
+            var storageRef = firebase.storage().ref(filePath);
+            var uploadTask = storageRef.put(file_src);
+
+            uploadTask.on('state_changed',function (snapshot) {
+                var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
+            }, 
+            function (error) {
+                console.log(error.message);
+                document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is " + error.message + "</h6></span>";
+            }, 
+            function () {
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
+                    document.getElementById('profile_image_info').src = downloadUrl;
+                    document.getElementById('profile_image_url').value = downloadUrl;
+                });
+                setTimeout(() => {
+                    document.getElementById("header-progress").innerHTML = "";
+                }, 2000);
+            });
+        } else {
+            document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is " + maxSize + " mb </h6></span>";
+        }
     }
 
     function check_user(){
@@ -224,6 +271,7 @@
                 var emailMsg = null;
                 var allMsg = null;
                 var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
+                console.log(response.responseJSON);
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation
@@ -333,4 +381,21 @@
             }
         });
     }
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
+        authDomain: "mifik-83723.firebaseapp.com",
+        projectId: "mifik-83723",
+        storageBucket: "mifik-83723.appspot.com",
+        messagingSenderId: "38302719013",
+        appId: "1:38302719013:web:23e7dc410514ae43d573cc",
+        measurementId: "G-V13CR730JG"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
 </script>
