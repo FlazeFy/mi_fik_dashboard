@@ -38,7 +38,7 @@
         <div class="container">
             <img class="w-100" src="{{asset('assets/logo.png')}}" alt='logo'
                 style='display: block; margin-left: auto; margin-right: auto;'>
-            <h5 style="margin-bottom:10px;">Hello {{$admin}}, the system just cleaned some data</h5>
+            <h5 style="margin-bottom:10px;">Hello {{$admin}}, {{$body}}</h5>
             <h6 style="color:#F78A00;">Here's the detail</h6>
             <h6>Context : {{$context}}</h6>
 

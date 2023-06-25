@@ -123,7 +123,7 @@
 
                     var elmt = " " +
                     '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' + 
-                        "'" + id + "'" + ', ' + "'" + status + "'" + ',' + "'" + ucFirst(questionBody) + "'" + ')"> ' +
+                        "'" + id + "'" + ', ' + "'" + status + "'" + ',' + "'" + ucFirst(questionBody) + "'" + ',' + "'" + username + "'" + ')"> ' +
                         '<h6>' + ucFirst(questionType) + '</h6> ' +
                         ucFirst(questionBody) + 
                         '<p class="m-0 mt-2">' + getDateToContext(createdAt, "full") + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
@@ -134,24 +134,25 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            failResponse(jqXHR, ajaxOptions, thrownError, "#question_holder", false, null, null);
         });
     }
 
-    function loadDetailAnswer(answer, id, status, que){
+    function loadDetailAnswer(answer, id, status, que, username){
         if(status == "answered"){
             setSelectedBtnStyle("background: #00c363; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
             setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
-        loadAnswer(answer, id, status, que);
+        loadAnswer(answer, id, status, que, username);
     }
 
-    function loadAnswer(answer, id, status, que){
+    function loadAnswer(answer, id, status, que, username){
         document.getElementById("question_answer").value = answer;
         document.getElementById("question_id").value = id;
         document.getElementById("question_status").value = status;
+        document.getElementById("question_owner").value = username;
         document.getElementById("form-delete-faq").setAttribute("action","/social/faq/remove/"+id);
         document.getElementById("question-delete-verify").innerHTML = '"'+que+'"';
 

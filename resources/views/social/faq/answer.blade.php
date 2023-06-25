@@ -21,6 +21,7 @@
         <div class="form-floating">
             <input hidden value="" name="question_id" id="question_id">
             <input hidden value="" name="question_status" id="question_status">
+            <input hidden value="" name="question_owner" id="question_owner">
             <textarea class="form-control" style="height: 270px" id="question_answer" name="question_answer" oninput="infinteLoadSuggest()" maxlength="500"></textarea>
             <label for="question_answer">FAQ Answer</label>
             <a id="question_answer_msg" class="text-danger my-2" style="font-size:13px;"></a>
@@ -98,7 +99,7 @@
                 }
             })
             .fail(function (jqXHR, ajaxOptions, thrownError) {
-                console.log('Server error occured');
+                failResponse(jqXHR, ajaxOptions, thrownError, "#answer_suggestion", false, null, null);
             });
         }
     }

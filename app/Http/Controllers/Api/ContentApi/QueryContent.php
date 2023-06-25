@@ -148,16 +148,16 @@ class QueryContent extends Controller
 
             // Filtering
             if($search != "" && $search != "%20"){
-                $content->where('content_title', 'LIKE', '%' . $search . '%');
+                $content = $content->where('content_title', 'LIKE', '%' . $search . '%');
             }
             if($query !== null){
-                $content->whereRaw($query);
+                $content = $content->whereRaw($query);
             }
             if($filter_date !== null){
-                $content->whereRaw($filter_date);
+                $content = $content->whereRaw($filter_date);
             }
             if ($based_role !== null) {
-                $content->whereRaw($based_role);
+                $content = $content->whereRaw($based_role);
             }
             $content = $content->paginate($page);
 

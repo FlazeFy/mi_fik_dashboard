@@ -141,10 +141,14 @@
     });
     
     var selectedUser = []; 
+    var lastPageAllUser = 1;
     var selectedGroup = []; 
+    var lastPageAllGroup = 1;
     var selectedRole = [];
     var tag_cat = '<?= $dct_tag[0]["slug_name"]; ?>';
     var page_tag = 1;
+    var page_curr_user = 1;
+    var page_curr_group = 1;
 
     window.addEventListener('beforeunload', function(event) {
         if(!isFormSubmitted){
@@ -320,6 +324,8 @@
                             '</div> ' +
                         '</div> ' +
                         '<span id="group-list-holder"></span> ' +
+                        '<h6 class="mt-1">Page</h6> ' +
+                        '<div id="all-group-page" class="mt-2"></div> ' +
                     '</div> ' +
                 '</div> ';
 
@@ -510,6 +516,8 @@
                         '<div id="user-list-holder"></div> ' +
                         '<span id="empty_item_holder_user"></span> ' +
                         '<span id="load_more_holder_user" style="display: flex; justify-content:center;"></span> ' +
+                        '<h6 class="mt-1">Page</h6> ' +
+                        '<div id="all-user-page" class="mt-2"></div> ' +
                     '</div> ' +
                 '</div> ';
 
@@ -556,13 +564,14 @@
         }
     }
 
-    function infinteLoadGroup(page_group_list) {       
+    function infinteLoadGroup(page) {       
+        page_curr_group = page;
         var order = '<?= session()->get('ordering_group_list'); ?>';
         var find = document.getElementById("group_search").value;
         document.getElementById("group-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/group/limit/100/order/" + order + "/find/" + getFind(find) + "?page=" + page_group_list,
+            url: "/api/v1/group/limit/5/order/" + order + "/find/" + getFind(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -575,9 +584,9 @@
             $('.auto-load').hide();
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            lastPageAllGroup = response.data.last_page;
 
-            if(page_group_list != last){
+            if(page != lastPageAllGroup){
                 $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
                 $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
@@ -620,9 +629,13 @@
                     $("#group-list-holder").prepend(elmt);
                 }   
             }
+            generatePageAllGroup();
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            $('.auto-load').hide();
+            failResponse(jqXHR, ajaxOptions, thrownError, "#group-list-holder", false, null, null);
+            lastPageAllGroup = 1;
+            generatePageAllGroup();
         });
     }
 
@@ -684,13 +697,8 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load-tag').hide();
-                $('#load_more_holder_manage_tag').empty();
-                $("#empty_item_holder_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('.auto-load-tag').hide();
+            failResponse(jqXHR, ajaxOptions, thrownError, "#role-list-holder", false, null, null);
         });
     }
 
@@ -706,15 +714,8 @@
         } 
     }
 
-    function getRole(role){
-        if(role){
-            return role;
-        } else {
-            return '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Has no general role </span>';
-        }
-    }
-
-    function infinteLoadUser(page_new_req) {       
+    function infinteLoadUser(page) {    
+        page_curr_user = page;   
         function getFind(filter, find){
             let trim = find.trim();
             if(find == null || trim === ''){
@@ -732,7 +733,7 @@
         //document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/100/order/" + order + "/slug/all?page=" + page_new_req,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/15/order/" + order + "/slug/all?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -747,9 +748,9 @@
             
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            lastPageAllUser = response.data.last_page;
 
-            if(page_new_req != last){
+            if(page != lastPageAllUser){
                 $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
                 $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
@@ -792,15 +793,42 @@
                     $("#user-list-holder").prepend(elmt);
                 }   
             }
+            generatePageAllUser();
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
             if (jqXHR.status == 404) {
                 $('.auto-load').hide();
-                $("#empty_item_holder_user").html("<div class='err-msg-data d-block mx-auto' style='margin-top:-30% !important;'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
+                $("#user-list-holder").html("<div class='err-msg-data d-block mx-auto'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
             } else {
                 // handle other errors
             }
+            lastPageAllUser = 1;
+            generatePageAllUser();
         });
+    }
+
+    function generatePageAllUser(){
+        $("#all-user-page").empty();
+        for(var i = 1; i <= lastPageAllUser; i++){
+            if(i == page_curr_user){
+                var elmt = "<a class='page-holder active'>"+i+"</a>";
+            } else {
+                var elmt = "<a class='page-holder' onclick='infinteLoadUser("+'"'+i+'"'+")'>"+i+"</a>";
+            }
+            $("#all-user-page").append(elmt);
+        }
+    }
+
+    function generatePageAllGroup(){
+        $("#all-group-page").empty();
+        for(var i = 1; i <= lastPageAllGroup; i++){
+            if(i == page_curr_group){
+                var elmt = "<a class='page-holder active'>"+i+"</a>";
+            } else {
+                var elmt = "<a class='page-holder' onclick='infinteLoadGroup("+'"'+i+'"'+")'>"+i+"</a>";
+            }
+            $("#all-group-page").append(elmt);
+        }
     }
 
     function addSelectedRole(slug, tagname, checked){

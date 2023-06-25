@@ -35,6 +35,7 @@ class Query
                 content_loc,content_image,content_date_start,content_date_end,
                 content_tag,content_attach,ch.created_at,ch.updated_at,is_draft,
                 ac.username as admin_username_created, uc.username as user_username_created, 
+                ac.image_url as admin_image_created, uc.image_url as user_image_created, 
                 au.username as admin_username_updated, uu.username as user_username_updated, 
                 ad.username as admin_username_deleted, ud.username as user_username_deleted,
                 count(cv.id) as total_views";
@@ -138,7 +139,7 @@ class Query
                 null as admin_image_deleted, null as user_image_deleted,
                 null as admin_username_updated, null as user_username_updated, 
                 null as admin_username_deleted, null as user_username_deleted,
-                null as content_loc, SUBSTR(feedback_suggest,10) as content_tag, null as content_date_start, null as content_date_end, null as created_at,
+                null as content_loc, SUBSTR(feedback_suggest,10) as content_tag, null as content_date_start, null as content_date_end, fb.created_at as created_at,
                 6 as data_from, fb.deleted_at as deleted_at";
         } else if($type == "dictionary_dump"){
             $query = "dct.id, dct_name as content_title, dct_desc as content_desc, 

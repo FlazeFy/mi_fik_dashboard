@@ -103,13 +103,9 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError, response) {
-            if (jqXHR.status == 404) {
-                $('.auto-load-acc-role').hide();
-                $('#load_acc_with_role').empty();
-                $("#empty_item_holder_acc_with_role").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('.auto-load-acc-role').hide();
+            $('#load_acc_with_role').empty();
+            failResponse(jqXHR, ajaxOptions, thrownError, '#empty_item_holder_acc_with_role', false, null, null);
         });
     }
 

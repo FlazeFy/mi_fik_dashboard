@@ -63,7 +63,7 @@
                             elmt = result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
                         }
 
-                        return "<span class='text-success fw-bold'>Joined since " + elmt + "</span>"
+                        return "<span class='text-success fw-bold'>Joined since " + elmt + "</span>";
                     } else if(!acc && !datetime){
                         return "<span class='text-danger fw-bold'>Waiting for admin approved</span>";
                     } else if(!acc && datetime){
@@ -72,7 +72,7 @@
                 }
 
                 function getRoleArea(role){
-                    var elmnt = ""
+                    var elmnt = "";
 
                     if(role){
                         for(var i = 0; i < role.length; i++){
@@ -108,9 +108,9 @@
 
                 function getNewUser(status){
                     if(status == 0){
-                        return 1
+                        return 1;
                     } else {
-                        return 0
+                        return 0;
                     }
                 }
 
@@ -295,12 +295,7 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load').hide();
-                $("#empty_item_holder_user_detail").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata3.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>You have not select any user</h6></div>");
-            } else {
-                // handle other errors
-            }
+            failResponse(jqXHR, ajaxOptions, thrownError, "#data_wrapper_user_detail", false, "You haven't selected any user", "http://127.0.0.1:8000/assets/nodata3.png");
         });
     }
 
@@ -373,13 +368,8 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError, response) {
-            if (jqXHR.status == 404) {
-                $('.auto-load-tag').hide();
-                $('#load_more_holder_manage_tag').empty();
-                $("#empty_item_holder_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('#load_more_holder_manage_tag').empty();
+            failResponse(jqXHR, ajaxOptions, thrownError, "#data_wrapper_manage_tag", false, null, null);
         });
     }
 

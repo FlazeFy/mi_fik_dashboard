@@ -117,6 +117,8 @@ class ContentHeader extends Model
                 $desc = $result->content_desc; 
                 $au_created = $result->admin_username_created; 
                 $uu_created = $result->user_username_created; 
+                $ai_created = $result->admin_image_created; 
+                $ui_created = $result->user_image_created; 
                 $au_updated = $result->admin_username_updated; 
                 $uu_updated = $result->user_username_updated; 
                 $au_deleted = $result->admin_username_deleted; 
@@ -135,6 +137,8 @@ class ContentHeader extends Model
                     'content_desc' => $desc,
                     'admin_username_created' => $au_created,
                     'user_username_created' => $uu_created,
+                    'admin_image_created' => $ai_created,
+                    'user_image_created' => $ui_created,
                     'admin_username_updated' => $au_updated,
                     'user_username_updated' => $uu_updated,
                     'admin_username_deleted' => $au_deleted,

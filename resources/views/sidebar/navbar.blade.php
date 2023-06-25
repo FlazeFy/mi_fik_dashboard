@@ -239,12 +239,8 @@
             },
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('#notif_holder_detail').empty();
-                $("#notif_holder_detail").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
-            } else {
-                // handle other errors
-            }
+            $('#notif_holder_detail').empty();
+            failResponse(jqXHR, ajaxOptions, thrownError, "#notif_holder_detail", false, null, null);
         });;
     }
 
@@ -317,12 +313,7 @@
             },
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('#history_holder_detail').empty();
-                $("#history_holder_detail").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>" + jqXHR.responseJSON.message + "</h6></div>");
-            } else {
-                // handle other errors
-            }
+            failResponse(jqXHR, ajaxOptions, thrownError, "#history_holder_detail", false, null, null);
         });;
     }
 

@@ -25,7 +25,7 @@
                 
                 <form action="/user/group/add" method="POST" id="form-add-group">
                     @csrf 
-                    <div class="row mt-4">
+                    <div class="row mt-4 pb-2">
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-floating">
                                 <input type="text" class="form-control nameInput" id="group_name" name="group_name" maxlength="75" oninput="validateForm(validation)" required>
@@ -54,10 +54,14 @@
                                 @endforeach
                             @endif
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12 position-relative">
                             <h6>All User</h6>
                             @include("user.searchbar")
                             <span id="user-list-holder"></span>
+                            <span class="position-absolute">
+                                <h6 class="mt-1">Page</h6> 
+                                <div id="all-user-page" class="mt-2"></div> 
+                            </span>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <h6>User Detail</h6>
@@ -74,6 +78,7 @@
 
 <script>
     var page_new_req = 1;
+    var lastPageAllUser = 1;
     var selectedUser = []; 
     infinteLoadMoreUser(page_new_req);
 
@@ -136,12 +141,13 @@
         }
     }
 
-    function infinteLoadMoreUser(page_new_req) {       
+    function infinteLoadMoreUser(page) {       
+        page_new_req = page;
         var find = document.getElementById("title_search").value;
         document.getElementById("user-list-holder").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/" + getFindUser(find) + "/limit/100/order/first_name__DESC/slug/all?page=" + page_new_req,
+            url: "/api/v1/user/" + getFindUser(find) + "/limit/15/order/first_name__DESC/slug/all?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -154,9 +160,9 @@
             $('.auto-load').hide();
             var data =  response.data.data;
             var total = response.data.total;
-            var last = response.data.last_page;
+            lastPageAllUser = response.data.last_page;
 
-            if(page_new_req != last){
+            if(page != lastPageAllUser){
                 $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
                 $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
@@ -187,7 +193,7 @@
                                 '</div> ' +
                                 '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
                                     '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
-                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + grole + '</h6> ' +
+                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + getRole(grole) + '</h6> ' +
                                     '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
                                         '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
                                     '</div> ' +
@@ -198,10 +204,25 @@
                     $("#user-list-holder").prepend(elmt);
                 }   
             }
+            generatePageAllUser();
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log('Server error occured');
+            failResponse(jqXHR, ajaxOptions, thrownError, "#user-list-holder", false, null, null);
+            lastPageAllUser = 1;
+            generatePageAllUser();
         });
+    }
+
+    function generatePageAllUser(){
+        $("#all-user-page").empty();
+        for(var i = 1; i <= lastPageAllUser; i++){
+            if(i == page_new_req){
+                var elmt = "<a class='page-holder active'>"+i+"</a>";
+            } else {
+                var elmt = "<a class='page-holder' onclick='infinteLoadMoreUser("+'"'+i+'"'+")'>"+i+"</a>";
+            }
+            $("#all-user-page").append(elmt);
+        }
     }
 
     function addSelected(username, fullname, checked){
@@ -278,7 +299,7 @@
 
         var elmt_detail = " " +
             "<div class='m-2 p-3 text-center'> " +
-                '<img class="img img-fluid rounded-circle shadow" style="max-width:140px;" src="'+getUserImage(img, grole)+'"> ' +
+                '<img class="img img-fluid rounded-circle shadow" style="width:180px; height:180px;" src="'+getUserImage(img, grole)+'"> ' +
                 '<h5 class="mt-3">'+fname+'</h5>' +
                 '<h6 class="mt-1 text-secondary">@'+uname+', <span style="font-size:13px;">Joined since ' + getDateToContext(join, "full") + '</span></h6>' +
                 '<a class="mt-1 text-secondary link-external" title="Send email" href="mailto:' + email + '">'+email+'</a>' +

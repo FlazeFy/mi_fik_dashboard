@@ -31,12 +31,13 @@
                 <th scope="col">Manage</th>
             </tr>
         </thead>
-        <tbody class="user-holder tabular-body" id="group-list-holder">
+        <tbody class="user-holder tabular-body w-100" id="group-list-holder">
             <!-- Loading -->
             <div class="auto-load text-center">
-            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
-        <span id="load_more_holder" style="position:absolute; right:20px; top:20px;"></span>
-        </div>
+                <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+                <span id="load_more_holder" style="position:absolute; right:20px; top:20px;"></span>
+            </div>
+        </tbody>
     </table>
     <div id="empty_item_holder"></div>
 
@@ -231,9 +232,9 @@
                                                     '</div> ' +
                                                 '</div> ' +
                                                 '<span id="user-ava-holder-'+slug+'" class="groups-ava-holder"></span> ' +
+                                                '<span id="err-ava-holder-'+slug+'"></span> ' +
                                                 '<h6>Page</h6> ' +
                                                 '<div id="user-ava-page-'+slug+'" class="mt-2"></div> ' +
-                                                '<span id="err-ava-holder-'+slug+'"></span> ' +
                                             '</div> ' +
                                         '</div> ' +
                                     '</div> ' +
@@ -293,12 +294,7 @@
             generatePageNav(lastPageGroup);
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $('.auto-load').hide();
-                $("#empty_item_holder").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:280px;'><h6 class='text-secondary text-center'>Sorry but we not found specific group</h6></div>");
-            } else {
-                // handle other errors
-            }
+            failResponse(jqXHR, ajaxOptions, thrownError, "#group-list-holder", false, null, null);
         });
     }
 
@@ -389,12 +385,7 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $("#err-rel-holder-"+slug).html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
-            } else {
-                // handle other errors
-            }
-            console.log('Server error occured');
+            failResponse(jqXHR, ajaxOptions, thrownError, "#manage-rel-holder-"+slug, false, null, null);
         });
     }
 
@@ -490,12 +481,9 @@
 
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            if (jqXHR.status == 404) {
-                $("#err-ava-holder-"+slug).html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata.png')}}' class='img' style='width:250px;'><h6 class='text-secondary text-center'>No users found</h6></div>");
-            } else {
-                // handle other errors
-            }
-            console.log('Server error occured');
+            failResponse(jqXHR, ajaxOptions, thrownError, "#user-ava-holder-"+slug, false, null, null);
+            lastPageUserAva = 1;
+            generatePageUserNav(slug);
         });
     }
 

@@ -40,6 +40,7 @@
         <!-- JS Collection -->
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -185,7 +186,13 @@
                     msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant register without a tag. And you must select one tag from 'General Role'";
                 } 
             }
+
+            window.addEventListener('beforeunload', function(event) {
+                event.preventDefault();
+                event.returnValue = '';
+            });
         </script>
+
         <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>
 </html>

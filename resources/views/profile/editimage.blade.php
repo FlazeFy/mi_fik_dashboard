@@ -32,12 +32,12 @@
 <span class="position-relative">
     @if(session()->get('profile_pic') == null)
         @if(session()->get('role_key') == 0)
-            <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{ asset('/assets/default_lecturer.png')}}" id="profile_image_info">
+            <img class="img img-fluid rounded-circle shadow mx-4" style="width:200px; height:200px;" src="{{ asset('/assets/default_lecturer.png')}}" id="profile_image_info">
         @elseif(session()->get('role_key') == 1)
-            <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{ asset('/assets/default_admin.png')}}" id="profile_image_info">
+            <img class="img img-fluid rounded-circle shadow mx-4" style="width:200px; height:200px;" src="{{ asset('/assets/default_admin.png')}}" id="profile_image_info">
         @endif
     @else
-        <img class="img img-fluid rounded-circle shadow mx-4" style="max-width:40%;" src="{{session()->get('profile_pic')}}" alt="{{session()->get('profile_pic')}}" id="profile_image_info">
+        <img class="img img-fluid rounded-circle shadow mx-4" style="width:200px; height:200px;" src="{{session()->get('profile_pic')}}" alt="{{session()->get('profile_pic')}}" id="profile_image_info">
     @endif
     <div class='image-upload' id='formFileImg'>
         <label for='file-input'>
