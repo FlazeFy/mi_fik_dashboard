@@ -221,16 +221,10 @@
             var tags = "";
 
             for(var i = 0; i < slct_list.length; i++){
-                if(slct_list[i]['type'] == "add"){
-                    var color = "text-success";
-                } else if(slct_list[i]['type'] == "remove"){
-                    var color = "text-danger";
-                }
-
                 if(i != slct_list.length - 1){
-                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>, ';
+                    tags += '<span class="text-success fw-bold">#' + slct_list[i]['tag_name'] + '</span>, ';
                 } else {
-                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>';
+                    tags += '<span class="text-success fw-bold">#' + slct_list[i]['tag_name'] + '</span>';
                 }
             }
             

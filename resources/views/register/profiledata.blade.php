@@ -215,7 +215,6 @@
                 document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
             }, 
             function (error) {
-                console.log(error.message);
                 document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is " + error.message + "</h6></span>";
             }, 
             function () {
@@ -317,6 +316,8 @@
             data: $('#form-regis').serialize(),
             dataType: 'json',
             success: function(response) {
+                document.getElementById("username_role").value = uname.value;
+                document.getElementById("password_role").value = pass.value;
                 uname.disabled = true;
                 email.disabled = true;
                 fname.disabled = true;

@@ -74,8 +74,7 @@
                     <div class="col-lg-8 col-md-7 col-sm-12 p-5">
                         <div class="section-register">
                             <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
-                                
-                                @include('register.role')
+                                @include('register.welcoming')
                             </div>
                             <div class="collapse" id="terms" data-bs-parent="#accordionExample">
                                 @include('register.terms')
@@ -84,9 +83,10 @@
                                 @include('register.profiledata')
                             </div>
                             <div class="collapse" id="role" data-bs-parent="#accordionExample">
-                            @include('register.welcoming')
+                                @include('register.role')
                             </div>
                             <div class="collapse" id="ready" data-bs-parent="#accordionExample">
+                                @include('register.ready')
                             </div>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
             })
-            
+
             var nextStep = "welcoming";
             var slct_role = [];
             var registered = false;
@@ -122,6 +122,9 @@
             var btn_steps_profiledata = document.getElementById("btn-steps-profiledata");
             var btn_steps_terms = document.getElementById("btn-steps-terms");
             var btn_steps_role = document.getElementById("btn-steps-role");
+            var is_finished = false;
+            var is_requested = false;
+            var token = null;
 
             function routeStep(nav, now){
                 if(now == "welcoming"){
@@ -134,7 +137,9 @@
                     btn_steps_terms.style = "border-left: 6px solid #58C06E;";
                 } else if(now == "profiledata"){
                     now = "role";
-                    loadTag();
+                    if(is_requested == false){
+                        loadTag();
+                    }
                     btn_steps_profiledata.setAttribute('data-bs-target', '#profiledata');
                     btn_steps_profiledata.style = "border-left: 6px solid #58C06E;";
                 } else if(now == "role"){
@@ -172,12 +177,16 @@
 
                     if(slct_role.length > 0){
                         document.getElementById("slct-box").style= "display:normal;";
-                        if(valid == true){
+                        if(valid == true && is_requested == true){
                             msg_all_input.innerHTML = "";
                             btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                        } else if(valid == true && is_requested == false){
+                            msg_all_input.innerHTML = "";
+                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='modal' data-bs-target='#requestRoleAdd'><i class='fa-solid fa-paper-plane'></i> Send Request</button>";
                         } else {
                             btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
                         }
+                        getSubmitButton();
                     } else {
                         document.getElementById("slct-box").style= "display:none;";
                         btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
@@ -196,8 +205,10 @@
             }
 
             window.addEventListener('beforeunload', function(event) {
-                event.preventDefault();
-                event.returnValue = '';
+                if(is_finished == false){
+                    event.preventDefault();
+                    event.returnValue = '';
+                }
             });
         </script>
 
