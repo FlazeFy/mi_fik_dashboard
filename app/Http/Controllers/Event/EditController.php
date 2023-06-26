@@ -52,11 +52,22 @@ class EditController extends Controller
                 session()->put('active_nav', 'event');
                 $title = $content[0]->content_title;
 
+                if($role == 1){
+                    $mytag = null;
+                } else {
+                    $list = User::getUserRole($user_id,$role);
+    
+                    foreach($list as $l){
+                        $mytag = $l->role;
+                    }
+                }
+
                 return view ('event.edit.index')
                     ->with('tag', $tag)
                     ->with('content', $content)
                     ->with('title', $title)
                     ->with('menu', $menu)
+                    ->with('mytag', $mytag)
                     ->with('info', $info)
                     ->with('history', $history)
                     ->with('dct_tag', $dct_tag)

@@ -74,7 +74,8 @@
                     <div class="col-lg-8 col-md-7 col-sm-12 p-5">
                         <div class="section-register">
                             <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
-                                @include('register.welcoming')
+                                
+                                @include('register.role')
                             </div>
                             <div class="collapse" id="terms" data-bs-parent="#accordionExample">
                                 @include('register.terms')
@@ -83,7 +84,7 @@
                                 @include('register.profiledata')
                             </div>
                             <div class="collapse" id="role" data-bs-parent="#accordionExample">
-                                @include('register.role')
+                            @include('register.welcoming')
                             </div>
                             <div class="collapse" id="ready" data-bs-parent="#accordionExample">
                             </div>
@@ -100,6 +101,12 @@
         @include('popup.failed')
 
         <script>
+            //Popover
+            var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
+            
             var nextStep = "welcoming";
             var slct_role = [];
             var registered = false;
@@ -184,7 +191,7 @@
                 } else if(now == "profiledata"){
                     msg_all_input.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Some input may be empty or have reached maximum character";
                 } else if(now == "role"){
-                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant register without a tag. And you must select one tag from 'General Role'";
+                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant use Mi-FIK without a tag. And you must select one tag from 'General Role'";
                 } 
             }
 

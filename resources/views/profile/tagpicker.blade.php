@@ -8,26 +8,7 @@
         <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
     </div>
 
-    <div class="modal fade" id="helpRequestTag" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">  
-                <div class="modal-body p-4 pb-1">
-                    <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                    <h5 class="text-primary">Request Tag</h5><hr>
-                    @if($info)
-                        @foreach($info as $in)
-                            @if($in->info_location == "request_tag")
-                                <div class="info-box {{$in->info_type}}">
-                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                    <?php echo $in->info_body; ?>
-                                </div>
-                            @endif
-                        @endforeach
-                    @endif
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('popup.mini_help', ['id' => 'helpRequestTag', 'title'=> 'Request Tag', 'location'=>'request_tag'])
 
     @if(!$myreq)
         <div class="" id="start-section-manage">

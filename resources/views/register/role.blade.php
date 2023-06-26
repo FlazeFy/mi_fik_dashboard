@@ -1,16 +1,40 @@
+<style>
+    #data-wrapper{
+        margin: 0;
+        padding: 0;
+        display: flex;
+        max-height: 75vh;
+        flex-direction: column;
+        overflow-y: scroll;
+    }
+</style>
+
 <div>
     <h4 class="text-primary">Available Role</h4>
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:20px; top:20px;" type="button" id="section-more-MOL" data-bs-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false">
+        <i class="fa-solid fa-ellipsis-vertical more"></i>
+    </button>
+    <div class="dropdown-menu normal dropdown-menu-end shadow" aria-labelledby="section-more-MOL">
+        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
+    </div>
+
+    @include('popup.mini_help', ['id' => 'helpRequestTag', 'title'=> 'Request Tag', 'location'=>'request_tag'])
+
     <div class="selected-role" id="slct-box" style="display:none;">
         <h6 class='mt-2 mb-0'>Selected Role</h6> 
         <div id="slct_holder"></div>
     </div>
     <a id="selected_role_msg" class="text-danger my-2" style="font-size:13px;"></a>
     <hr>
-    <div class="" id="data-wrapper"></div>
-    <!-- Loading -->
-    <div class="auto-load text-center">
-        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+    <div class="" id="data-wrapper">
+        <!-- Loading -->
+        <div class="auto-load text-center">
+            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+        </div>
     </div>
+   
     <div id="empty_item_holder"></div>
     <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
 </div>
@@ -21,9 +45,16 @@
 
 <script type="text/javascript">
     var page = 1;
+    $("#data-wrapper").empty();
+    loadTag();
+
+    function abortTagPicker(){
+        slct_role = [];
+        $("#slct-box").empty();
+    }
 
     function loadTag() {  
-        if(document.getElementById("data-wrapper").hasChildNodes()){      
+        if(!document.getElementById("data-wrapper").hasChildNodes()){      
             $.ajax({
                 url: "/api/v1/dictionaries/type/TAG-001",
                 datatype: "json",
