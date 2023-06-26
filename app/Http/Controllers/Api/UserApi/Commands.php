@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Models\Admin;
@@ -551,17 +552,21 @@ class Commands extends Controller
 
                 if(!$found){
                     $uuid = Generator::getUUID();
+                    $imageUrl = null;
+                    if($request->has('image_url')){
+                        $imageUrl = $request->image_url;
+                    } 
 
                     $user = DB::table("users")->insert([
                         'id' => $uuid, 
                         'firebase_fcm_token' => null, 
                         'username' => $request->username, 
                         'email' => $request->email, 
-                        'password' => $request->password, 
+                        'password' => Hash::make($request->password), 
                         'first_name' => $request->first_name, 
                         'last_name' => $request->last_name,  
                         'role' => null, 
-                        'image_url' => null, 
+                        'image_url' => $imageUrl, 
                         'valid_until' => $request->valid_until, 
                         'created_at' => date("Y-m-d H:i:s"), 
                         'updated_at' => null, 

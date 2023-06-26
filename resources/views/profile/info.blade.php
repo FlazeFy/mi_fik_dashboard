@@ -139,13 +139,18 @@
             var slug = myTag[i]['slug_name'];
             var name = myTag[i]['tag_name'];
             var tag_div = document.getElementById("tag_collection_"+slug);
-            
-            $(tag_div).attr({
-                "class": "btn btn-danger mb-2 me-1",
-                "title": "Remove tag " + name,
-                "style": "cursor: pointer;",
-                "onclick": "addSelectedTag("+'"'+ slug +'"'+", "+'"'+name+'"'+", true, 'remove')"
-            });
+
+            if(slug != "staff" && slug != "lecturer" && slug != "student"){
+                
+                $(tag_div).attr({
+                    "class": "btn btn-danger mb-2 me-1",
+                    "title": "Remove tag " + name,
+                    "style": "cursor: pointer;",
+                    "onclick": "addSelectedTag("+'"'+ slug +'"'+", "+'"'+name+'"'+", true, 'remove')"
+                });
+            } else {
+                $(tag_div).hide();
+            }
         }
     }
 </script>

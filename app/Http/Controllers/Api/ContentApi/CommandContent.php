@@ -196,30 +196,34 @@ class CommandContent extends Controller
                     if($users){
                         $notif_body = "You has been created an event called '".$request->content_title."'";
                         $firebase_token = $users->firebase_fcm_token;
-                        $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+                        if($firebase_token){
+                            $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
 
-                        if($validateRegister['valid'] != null){
-                            $notif_title = "Hello ".$users->username.", you got an information";
-                            $message = CloudMessage::withTarget('token', $firebase_token)
-                                ->withNotification(
-                                    FireNotif::create($notif_body)
-                                    ->withTitle($notif_title)
-                                    ->withBody(strtoupper($data->history_type)." ".$notif_body)
-                                )
-                                ->withData([
-                                    'by' => 'person'
+                            if($validateRegister['valid'] != null){
+                                $notif_title = "Hello ".$users->username.", you got an information";
+                                $message = CloudMessage::withTarget('token', $firebase_token)
+                                    ->withNotification(
+                                        FireNotif::create($notif_body)
+                                        ->withTitle($notif_title)
+                                        ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                    )
+                                    ->withData([
+                                        'by' => 'person'
+                                    ]);
+                                $response = $messaging->send($message);
+                            } else {
+                                DB::table("users")->where('id', $user_id)->update([
+                                    "firebase_fcm_token" => null
                                 ]);
-                            $response = $messaging->send($message);
-                        } else {
-                            DB::table("users")->where('id', $user_id)->update([
-                                "firebase_fcm_token" => null
-                            ]);
+                            }
                         }
                     }
         
                     DB::commit();
 
-                    Mail::to($users->email)->send(new OrganizerEmail($header, $detail));
+                    if($users->email){
+                        Mail::to($users->email)->send(new OrganizerEmail($header, $detail));
+                    }
 
                     return response()->json([
                         'status' => 'success',

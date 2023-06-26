@@ -266,9 +266,14 @@ class RequestController extends Controller
 
                                 if($newRoles !== null || json_last_error() === JSON_ERROR_NONE){
                                     $rolesOld = User::getUserRole($user_id, 0);
+                                    if($rolesOld[0]['role']){
+                                        $arr_role = $rolesOld[0]['role'];
+                                    } else {
+                                        $arr_role = [];
+                                    }
                                     
                                     //Bug if we use formal looping
-                                    $merge = array_merge($newRoles, $rolesOld[0]['role']);
+                                    $merge = array_merge($newRoles, $arr_role);
                                     $unique = array_map("unserialize", array_unique(array_map("serialize", $merge)));
                                     $newRoles = json_encode(array_values($unique));
 
@@ -466,10 +471,10 @@ class RequestController extends Controller
                         if($status){
                             DB::table("histories")->insert([
                                 'id' => Generator::getUUID(),
-                                'history_type' => strtolower($data->history_type), 
+                                'history_type' => $data->history_type, 
                                 'context_id' => null, 
                                 'history_body' => $data->history_body, 
-                                'history_send_to' => $user_id,
+                                'history_send_to' => $user_id->id,
                                 'created_at' => date("Y-m-d H:i:s"),
                                 'created_by' => $admin_id
                             ]); 
@@ -574,7 +579,7 @@ class RequestController extends Controller
                                 'history_type' => strtolower($data->history_type), 
                                 'context_id' => null, 
                                 'history_body' => $data->history_body, 
-                                'history_send_to' => $user_id,
+                                'history_send_to' => $user_id->id,
                                 'created_at' => date("Y-m-d H:i:s"),
                                 'created_by' => $admin_id
                             ]); 

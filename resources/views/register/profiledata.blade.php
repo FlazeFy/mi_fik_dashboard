@@ -12,58 +12,7 @@
     var val2 = false;
 </script>
 
-<style>
-    .content-image-holder{
-        position: relative;
-        margin-top: 6px;
-        margin-bottom: 6px; 
-    }
-    .content-image-holder .content-image{
-        margin-inline: auto;
-        display: block;
-        border-radius: 100% !important;
-        background-position: center;
-        background-repeat:no-repeat;
-        position: relative;
-        background-size: cover;
-        height:200px;
-        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    }
-    .image-upload{
-        position: absolute;
-        bottom: 5px;
-        right: 30px;
-    }
-    .image-upload>input {
-        display: none;
-    }
-    .btn.change-image{
-        width:45px; 
-        height:45px; 
-        background:#F78A00;
-        border-radius: 100%;
-        display: block;
-        margin-inline: auto;
-    }
-    .content-image-holder .btn-icon-reset-image{
-        position: absolute; 
-        bottom: 10px; 
-        left: 30px;
-        width:45px; 
-        height:45px; 
-        padding-top: 8px;
-        border-radius: 100%;
-        background: #e74645 !important;
-        color:#ffffff !important;
-    }
-    .content-image-holder .status-holder{
-        position: absolute; 
-        bottom: 10px; 
-        left: 60px;
-    }
-</style>
-
-<div>
+<div class="pb-4">
     <h4 class="text-primary">Profile Data</h4>
     <form class="d-inline" id="form-check-user">
         <div class="row">
@@ -83,6 +32,7 @@
             </div>
         </div>
     </form>
+    <div id="success-check"></div>
     <form class="d-inline" id="form-regis">
         <input hidden name="username" id="username_final">
         <input hidden name="email" id="email_final">
@@ -146,23 +96,28 @@
             <a id="input_all_profiledata_msg" class="text-danger my-2" style="font-size:13px;"></a>
 
             <h4 class="text-primary">Profile Image</h4>
-            <div class="row">
-                <div class="col-lg-6 p-4">
-                    <div class="content-image-holder">
-                        <img id="frame" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}">
-                        <div class='image-upload' id='formFileImg'>
-                            <label for='file-input'>
-                                <img class='btn change-image shadow position-relative p-1' title='Change Image' src="{{asset('assets/change_image.png')}}"/>
-                            </label>
-                            <input id='file-input' type='file' accept="image/*" value="" onchange='setValueContentImage()'/>
+            <div class="row pb-5">
+                <div class="col-lg-6 p-4 position-relative">
+                    <div class="position-absolute">
+                        <div class="content-image-holder p-0 position-relative">
+                            <img id="profile_image_info" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}" style="width:200px; height:200px;">
+                            <div class='image-upload' id='formFileImg'>
+                                <label for='file-input'>
+                                    <img class='btn change-image shadow position-absolute p-1' title='Change Image' src="{{asset('assets/change_image.png')}}"/>
+                                </label>
+                                <input id='file-input' type='file' accept="image/*" value="" onchange='setValueProfileImage()'/>
+                            </div>
+                            <input hidden type="text" name="image_url" id="profile_image_url" value="">
+                            <span id="reset_image_holder"></span>
+                            <span class="status-holder shadow">
+                                <a class="attach-upload-status success" id="header-progress"></a>
+                                <a class="attach-upload-status danger" id="header-failed"></a>
+                                <a class="attach-upload-status warning" id="header-warning"></a>
+                            </span>
                         </div>
-                        <input hidden type="text" name="content_image" id="content_image_url" value="">
-                        <a class="btn btn-icon-reset-image shadow" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>
-                        <span class="status-holder shadow">
-                            <a class="attach-upload-status success" id="header-progress"></a>
-                            <a class="attach-upload-status danger" id="header-failed"></a>
-                            <a class="attach-upload-status warning" id="header-warning"></a>
-                        </span>
+                    </div>
+                    <div class="position-absolute">
+                        <div id="success-image-check" style="width:300px; height:300px;"></div>
                     </div>
                 </div>
             </div>
@@ -175,20 +130,65 @@
 </span>
 
 <script>
+    var unameMsg = document.getElementById("username_msg");
+    var emailMsg = document.getElementById("email_msg");
     var uname = document.getElementById("username");
     var email = document.getElementById("email");
     var fname = document.getElementById("first_name");
     var lname = document.getElementById("last_name");
     var pass = document.getElementById("password");
     var until = document.getElementById("valid_until");
+    var btn_reset_image = document.getElementById("reset_image_holder");
+    var img_url = document.getElementById("profile_image_url");
+    var img_src = document.getElementById('profile_image_info');
+    var img_file = document.getElementById('file-input');
+    var btn_add_image = document.getElementById('formFileImg');
+    var success_img_check = document.getElementById('success-image-check');
+    var unameLengMin = 6;
+    var unameLengMax = 30;
+    var emailLengMin = 10;
+    var emailLengMax = 75;
     
     function routeCheck(){
-        unameVal = uname.value;
-        emailVal = email.value;
+        unameVal = uname.value.trim();
+        emailVal = email.value.trim();
+        uname.value = unameVal;
+        email.value = emailVal;
 
-        if(unameVal.length > 6 && emailVal.length > 10 && unameVal.length <= 30 && emailVal.length <= 75 ){
+        if(unameVal.length > unameLengMin && emailVal.length > emailLengMin && unameVal.length <= unameLengMax && emailVal.length <= emailLengMax ){
             check_user();
+        } else {
+            if(unameVal.length <= 6 || unameVal.length > 30){
+                unameMsg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username should be around " + unameLengMin + " until " + unameLengMax + " character";
+            }
+            if(emailVal.length <= 10 || emailVal.length > 75){
+                emailMsg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Email should be around " + emailLengMin + " until " + emailLengMax + " character";
+            }
         }
+    }
+
+    function clearImage() {
+        var storageRef = firebase.storage();
+        var url = img_url.value;
+        var desertRef = storageRef.refFromURL(url);
+
+        desertRef.delete().then(() => {
+            document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>';
+        }).catch((error) => {
+            document.getElementById("header-failed").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>'+error+'</h6></span>';
+        });
+
+        setTimeout(() => {
+            document.getElementById("header-progress").innerHTML = "";
+        }, 1500);
+        img_src.src = "http://127.0.0.1:8000/assets/default_lecturer.png";
+        btn_reset_image.innerHTML = "";
+        btn_add_image.innerHTML = "<label for='file-input'> " +
+            "<img class='btn change-image shadow position-relative p-1' style='bottom:50px; right:-150px;' title='Change Image' src='<?= asset("assets/change_image.png"); ?>'/> " +
+            "</label> " +
+            "<input id='file-input' type='file' accept='image/*' value='' onchange='setValueProfileImage()'/>";
+        img_url.value = "";
+        img_file.value = "";
     }
 
     function resetUnameEmail(){
@@ -197,6 +197,44 @@
         document.getElementById("prevent-data-section").setAttribute('class', '');
         document.getElementById("detail-data-section").setAttribute('class', 'd-none');
         document.getElementById("reset-uname-holder").setAttribute('class', 'd-none');
+    }
+
+    function setValueProfileImage(){
+        var img_file = document.getElementById('file-input');
+        var file_src = img_file.files[0];
+        var maxSize = 4; // Mb
+
+        if(file_src.size <= maxSize * 1024 * 1024){
+            var filePath = 'profile_image/' + getUUID();
+
+            var storageRef = firebase.storage().ref(filePath);
+            var uploadTask = storageRef.put(file_src);
+
+            uploadTask.on('state_changed',function (snapshot) {
+                var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
+            }, 
+            function (error) {
+                document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is " + error.message + "</h6></span>";
+            }, 
+            function () {
+                uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
+                    img_src.src = downloadUrl;
+                    img_url.value = downloadUrl;
+                });
+                setTimeout(() => {
+                    document.getElementById("header-progress").innerHTML = "";
+                }, 1500);
+                setTimeout(() => {
+                    success_img_check.innerHTML = '<lottie-player src="https://assets7.lottiefiles.com/packages/lf20_lg6lh7fp.json" background="transparent" speed="0.5"  style="width: 230px; height:230px;" autoplay></lottie-player>';
+                }, 250);
+                success_img_check.innerHTML = "";
+                btn_reset_image.innerHTML = '<a class="btn btn-icon-reset-image shadow" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>';
+                btn_add_image.innerHTML = '';
+            });
+        } else {
+            document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is " + maxSize + " mb </h6></span>";
+        }
     }
 
     function check_user(){
@@ -210,9 +248,15 @@
             data: $('#form-check-user').serialize(),
             dataType: 'json',
             success: function(response) {
+                setTimeout(() => {
+                    document.getElementById("success-check").innerHTML = '<lottie-player class="d-block mx-auto" src="https://assets7.lottiefiles.com/packages/lf20_fbwbq3um.json"  background="transparent" speed="0.75" style="width: 420px; height: 420px;" autoplay></lottie-player>';
+                }, 500);
                 document.getElementById("prevent-data-section").setAttribute('class', 'd-none');
-                document.getElementById("reset-uname-holder").setAttribute('class', '');
-                document.getElementById("detail-data-section").setAttribute('class', '');
+                setTimeout(() => {
+                    document.getElementById("success-check").innerHTML = "";
+                    document.getElementById("reset-uname-holder").setAttribute('class', '');
+                    document.getElementById("detail-data-section").setAttribute('class', '');
+                }, 3000);
                 document.getElementById("username_final").value = uname.value;
                 document.getElementById("email_final").value = email.value;
                 uname.disabled = true;
@@ -224,6 +268,7 @@
                 var emailMsg = null;
                 var allMsg = null;
                 var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
+                console.log(response.responseJSON);
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation
@@ -271,12 +316,16 @@
             data: $('#form-regis').serialize(),
             dataType: 'json',
             success: function(response) {
+                document.getElementById("username_role").value = uname.value;
+                document.getElementById("password_role").value = pass.value;
                 uname.disabled = true;
                 email.disabled = true;
                 fname.disabled = true;
                 lname.disabled = true;
                 pass.disabled = true;
                 until.disabled = true;
+                btn_reset_image.innerHTML = "";
+                btn_add_image.innerHTML = "";
                 document.getElementById("registered-msg").innerHTML = "Your account has been registered";
                 registered = true;
                 validate("profiledata");
@@ -333,4 +382,21 @@
             }
         });
     }
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
+        authDomain: "mifik-83723.firebaseapp.com",
+        projectId: "mifik-83723",
+        storageBucket: "mifik-83723.appspot.com",
+        messagingSenderId: "38302719013",
+        appId: "1:38302719013:web:23e7dc410514ae43d573cc",
+        measurementId: "G-V13CR730JG"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
 </script>

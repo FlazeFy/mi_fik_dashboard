@@ -3,9 +3,9 @@ function failResponse(jqXHR, ajaxOptions, thrownError, holder, is_modal, add_tex
         if (jqXHR.status == 404 && add_text === null) {
             $('.auto-load').hide();
             $(holder).html("<div class='err-msg-data d-block mx-auto text-center'><img src='http://127.0.0.1:8000/assets/nodata.png' class='img' style='width:250px;'><h6 class='text-secondary text-center'>"+jqXHR.responseJSON.message+"</h6></div>");
-        } else if (jqXHR.status == 423) {
+        } else if (jqXHR.status == 429) {
             $('.auto-load').hide();
-            $(holder).html("<div class='err-msg-data d-block mx-auto text-center'><img src='http://127.0.0.1:8000/assets/429_error.png' class='img' style='width:250px;'><h6 class='text-secondary text-center'>Too many request. Please wait some moment</h6></div>");
+            $(holder).html("<div class='err-msg-data d-block mx-auto text-center'><img src='http://127.0.0.1:8000/assets/429_error.png' class='img' style='width:250px;'><h6 class='text-secondary text-center'>System is busy. Please wait some moment</h6></div>");
         } else if (jqXHR.status == 401 || jqXHR.status == 403) {
             $('.auto-load').hide();
             $(holder).html("<div class='err-msg-data d-block mx-auto text-center'><img src='http://127.0.0.1:8000/assets/403_error.png' class='img' style='width:250px;'><h6 class='text-secondary text-center'>Sorry. But you don't have access</h6></div>");

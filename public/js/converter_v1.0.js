@@ -112,3 +112,28 @@ function removeTags(str) {
         
     return str.replace( /(<([^>]+)>)/ig, '');
 }
+
+function getMinutesDifference(ds, de) {
+    const diffMs = de.getTime() - ds.getTime();
+    const minutes = Math.floor(diffMs / 1000 / 60);
+    return minutes;
+}
+
+function getUTCHourOffset() {
+    const offsetMi = new Date().getTimezoneOffset();
+    const offsetHr = -offsetMi / 60;
+    return offsetHr;
+}
+
+function subtractOffsetFromTime(timeStr) {
+    const times = timeStr.split(':');
+    const hr = parseInt(times[0]);
+    const mi = parseInt(times[1]);
+  
+    const utcOffset = getUTCHourOffset();
+    
+    const time = new Date();
+    time.setUTCHours(hr - utcOffset - utcOffset, mi);
+  
+    return time;
+}

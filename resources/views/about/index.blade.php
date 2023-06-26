@@ -65,7 +65,12 @@
                     @foreach($sort as $st)
                         <div class="content-section p-0 pt-3">
                             <header>
-                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                @if($st == "helps editor" && session()->get('role_key') == 0)
+                                    <h5 class="mx-3 text-secondary fw-bold">Help Center</h5><hr>
+                                @else
+                                    <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                @endif
+
                                 @include('components.controlsection', ['type' => "vertical"])
                             </header>
                             <div class="p-3">

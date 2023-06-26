@@ -11,7 +11,7 @@ class UserRequest extends Model
     use HasFactory;
     //use HasUuids;
     public $incrementing = false;
-    public $timestamps = false;
+    //public $timestamps = false;
 
     protected $table = 'users_requests';
     protected $primaryKey = 'id';
@@ -26,7 +26,6 @@ class UserRequest extends Model
             ->where('created_by', $id)
             ->where('is_accepted', 0)
             ->whereNull('is_rejected')
-            ->where('is_accepted',0)
             ->limit(1)
             ->get();
 
