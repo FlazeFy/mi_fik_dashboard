@@ -128,7 +128,7 @@ class EditController extends Controller
 
         if($id != null){
             $validator = Validation::getValidateEventDate($request);
-            if ($validator->fails()) {
+            if ($validator->fails() && $request->is_end_only == "false") {
                 $errors = $validator->messages();
 
                 return redirect()->back()->with('failed_message', $errors);
@@ -146,15 +146,23 @@ class EditController extends Controller
 
                     return redirect()->back()->with('failed_message', $errors);
                 } else {
-                    $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
                     $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
 
-                    ContentHeader::where('id', $id)->update([
-                        'content_date_start' => $fulldate_start,
-                        'content_date_end' => $fulldate_end,
-                        'updated_at' => date("Y-m-d H:i:s"),
-                        'updated_by' => $user_id
-                    ]);
+                    if($request->is_end_only == "true"){
+                        ContentHeader::where('id', $id)->update([
+                            'content_date_end' => $fulldate_end,
+                            'updated_at' => date("Y-m-d H:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+                    } else {
+                        $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+                        ContentHeader::where('id', $id)->update([
+                            'content_date_start' => $fulldate_start,
+                            'content_date_end' => $fulldate_end,
+                            'updated_at' => date("Y-m-d H:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+                    }
 
                     History::create([
                         'id' => Generator::getUUID(),

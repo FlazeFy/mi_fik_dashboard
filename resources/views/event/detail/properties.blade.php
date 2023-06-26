@@ -10,7 +10,7 @@
             <a class="btn event-tag-box mb-1">{{$tg['tag_name']}}</a>
         @endforeach
     @endif
-
+    <hr>
     <h6 class="mt-2">Date & Time</h6>
 
     <!--Get event date start-->
@@ -31,6 +31,16 @@
     <h6 class="text-secondary">Posted At : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @if($c->updated_at)
         <h6 class="text-secondary">Last Update : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
+    @endif
+    @if($info)
+        @foreach($info as $in)
+            @if($in->info_location == "show_date")
+                <div class="info-box {{$in->info_type}} mt-4">
+                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                    <?php echo $in->info_body; ?>
+                </div>
+            @endif
+        @endforeach
     @endif
 </div>
 

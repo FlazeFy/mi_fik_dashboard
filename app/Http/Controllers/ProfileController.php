@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Helpers\Generator;
 use App\Helpers\Validation;
@@ -123,14 +124,14 @@ class ProfileController extends Controller
                         'first_name' => $request->first_name,
                         'last_name' => $request->last_name,
                         'phone' => $request->phone,
-                        'password' => $request->password,
+                        'password' => Hash::make($request->password),
                         'updated_at' => date("Y-m-d H:i"),
                     ]);
                 } else {
                     User::where('id', $user_id)->update([
                         'first_name' => $request->first_name,
                         'last_name' => $request->last_name,
-                        'password' => $request->password,
+                        'password' => Hash::make($request->password),
                         'updated_at' => date("Y-m-d H:i"),
                         'updated_by' => $user_id,
                     ]);

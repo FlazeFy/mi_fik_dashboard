@@ -1,5 +1,5 @@
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold">Most Used Role</h5>
+    <h5 class="text-secondary fw-bold">Most Assigned Role</h5>
     @if(count($mostRole) != 0)
         <div id="MOR_pie_chart"></div>
     @else

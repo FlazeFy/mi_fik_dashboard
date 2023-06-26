@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Models\Admin;
@@ -561,7 +562,7 @@ class Commands extends Controller
                         'firebase_fcm_token' => null, 
                         'username' => $request->username, 
                         'email' => $request->email, 
-                        'password' => $request->password, 
+                        'password' => Hash::make($request->password), 
                         'first_name' => $request->first_name, 
                         'last_name' => $request->last_name,  
                         'role' => null, 
