@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('dictionaries_types', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('app_code', 16)->unique();
+            $table->string('app_code', 8)->unique();
             $table->string('type_name', 75);
 
             $table->dateTime('created_at', $precision = 0);

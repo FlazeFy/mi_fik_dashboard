@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('history_send_to', 36)->nullable();
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 36);
+
+            // $table->foreign('context_id')->references('id')->on('tasks')->onDelete('cascade');
+            // $table->foreign('history_send_to')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
