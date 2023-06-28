@@ -346,6 +346,9 @@
     background: #D5534C !important;
     color: #FFFFFF;
 }
+.btn-change-image:hover, .change-image:hover, .btn-reset-image:hover, .btn-icon-reset-image:hover{
+    transform: scale(1.075);
+}
 .btn-change-image{
     position: absolute;
     background: #009FF9;
@@ -358,6 +361,9 @@
     right: 20px;
     border: 3px solid white;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    -webkit-transition: all 0.6s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
 }
 .btn-reset-image{
     height:50px; 
@@ -370,6 +376,9 @@
     color: white !important;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border: 3px solid white;
+    -webkit-transition: all 0.6s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
 }   
 .btn-delete-custom{
     color:#D5534C;

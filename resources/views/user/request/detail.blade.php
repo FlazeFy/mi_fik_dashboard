@@ -114,8 +114,9 @@
                     }
                 }
 
-                function getAccUser(slug, fullname){    
-                    $("#acc-user-holder").html('<div class="modal fade" id="acc_user" tabindex="-1" aria-labelledby="accLabel" aria-hidden="true"> ' +
+                function getAccUser(slug, fullname){  
+                    isFormSubmitted = true;
+                    $("#acc-user-holder").html('<div class="modal fade" id="acc_user" tabindex="-1" aria-labelledby="accLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"> ' +
                         '<div class="modal-dialog"> ' +
                             '<div class="modal-content"> ' +
                             '<form action="/user/request/manage_acc" method="POST"> ' +
@@ -123,7 +124,7 @@
                                 '<input hidden name="username" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
                                     '<h5 class="modal-title" id="accLabel">Accept New User</h5> ' +
-                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
                                 '</div> ' +
                                 '<div class="modal-body"> ' +
                                     '<h6 class="fw-normal">Are you sure want to give access to <span class="text-primary fw-bold">' + fullname + '</span></h6> ' +
@@ -138,7 +139,8 @@
                 }
 
                 function getSuspendUser(slug, fullname){    
-                    $("#suspend-user-holder").html('<div class="modal fade" id="suspend_user" tabindex="-1" aria-labelledby="susLabel" aria-hidden="true"> ' +
+                    isFormSubmitted = true;
+                    $("#suspend-user-holder").html('<div class="modal fade" id="suspend_user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="susLabel" aria-hidden="true"> ' +
                         '<div class="modal-dialog"> ' +
                             '<div class="modal-content"> ' +
                             '<form action="/user/request/manage_suspend" method="POST"> ' +
@@ -146,7 +148,7 @@
                                 '<input hidden name="username" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
                                     '<h5 class="modal-title" id="susLabel">Suspend User</h5> ' +
-                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
                                 '</div> ' +
                                 '<div class="modal-body"> ' +
                                     '<h6 class="fw-normal">Are you sure want to suspend <span class="text-danger fw-bold">' + fullname + '</span> account</h6> ' +
@@ -161,7 +163,8 @@
                 }
 
                 function getRecoverUser(slug, fullname){    
-                    $("#recover-user-holder").html('<div class="modal fade" id="recover_user" tabindex="-1" aria-labelledby="recLabel" aria-hidden="true"> ' +
+                    isFormSubmitted = true;
+                    $("#recover-user-holder").html('<div class="modal fade" id="recover_user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="recLabel" aria-hidden="true"> ' +
                         '<div class="modal-dialog"> ' +
                             '<div class="modal-content"> ' +
                             '<form action="/user/request/manage_recover" method="POST"> ' +
@@ -169,7 +172,7 @@
                                 '<input hidden name="username" value="'+slug+'"> ' +
                                 '<div class="modal-header"> ' +
                                     '<h5 class="modal-title" id="recLabel">Recover User</h5> ' +
-                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
+                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
                                 '</div> ' +
                                 '<div class="modal-body"> ' +
                                     '<h6 class="fw-normal">Are you sure want to recover <span class="text-primary fw-bold">' + fullname + '</span> account</h6> ' +

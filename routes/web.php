@@ -13,6 +13,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\WaitingController;
 
 use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
@@ -50,6 +51,10 @@ Route::prefix('/register')->group(function () {
 ######################### Private Route #########################
 
 Route::post('/sign-out', [MultiController::class, 'sign_out'])->middleware(['auth_v2:sanctum']);
+
+Route::prefix('/waiting')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [WaitingController::class, 'index'])->name('waiting');
+});
 
 Route::prefix('/homepage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HomepageController::class, 'index'])->name('homepage');

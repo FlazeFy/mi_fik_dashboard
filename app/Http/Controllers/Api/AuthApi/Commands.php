@@ -35,7 +35,8 @@ class Commands extends Controller
                 $role = 0;
             }
 
-            if (!$user || ($request->password != $user->password)) {
+            if (!$user || !Hash::check($request->password, $user->password)) {
+            //if (!$user || ($request->password != $user->password)) {
                 return response()->json([
                     'status' => 'failed',
                     'result' => 'Wrong username or password',

@@ -1,83 +1,61 @@
-<div>  
+<div class="position-relative" id="tag-manage-control">
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:20px; top:20px;" type="button" id="section-more-MOL" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
-    <div class="dropdown-menu normal dropdown-menu-end shadow" aria-labelledby="section-more-MOL">
-        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOL">
+        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
     </div>
-
-    @include('popup.mini_help', ['id' => 'helpRequestTag', 'title'=> 'Request Tag', 'location'=>'request_tag'])
-
-    @if(!$myreq)
-        <div class="" id="start-section-manage">
-            <img class="img img-fluid d-block mx-auto" style="max-width: 70%;" src="{{ asset('/assets/picker.png')}}">
-            <h6 class="text-secondary text-center">In this section, you can request some tag you want to add to your role or maybe you want to remove the tag 
-                <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button>
-            </h6>
-        </div>
-        @if(session()->get('role_key') != 1)
-            <div class="position-absolute" style="right:60px; top:20px;" id="cat-picker-holder">
-                <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" 
-                    style="font-size:13px;"aria-label="Floating label select example" required>
-                    @php($i = 0) 
-                    @foreach($dct_tag as $dtag) 
-                        @if($dtag->slug_name != "general-role")
-                            @if($i == 0) 
-                                <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                <option value="all">All</option>
-                            @else 
-                                <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
-                            @endif
-                            @php($i++)
-                        @endif
-                    @endforeach
-                </select>
-            </div> 
-        @endif
-
-        <div class="user-req-holder mt-4" id="data_wrapper_manage_tag">
-            <!-- Loading -->
-            <div id="start-load" class="d-none">
-                <div class="auto-load text-center">
-                    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
-                </div>
+    <div class="position-absolute" style="right:60px; top:10px;">
+        <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" 
+            style="font-size:13px;"aria-label="Floating label select example" required>
+            @php($i = 0) 
+            @foreach($dct_tag as $dtag) 
+                @if($i == 0) 
+                    <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                    <option value="all">All</option>
+                @else 
+                    <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                @endif
+                @php($i++) 
+            @endforeach
+        </select>
+    </div> 
+    <hr>
+    <h5><span id="cat-selected-title">Organization</span>'s Tag</h5><br>
+    <div class="user-req-holder" id="data_wrapper_manage_tag">
+        <!-- Loading -->
+        <div id="start-load" class="d-none">
+            <div class="auto-load text-center">
+                <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
             </div>
         </div>
-        <div id="empty_item_holder"></div>
-        <span id="load_more" style="display: flex; justify-content:center;"></span>
-    @else 
-        <div class="" id="start-section-manage">
-            <img class="img img-fluid d-block mx-auto" style="max-width: 70%;" src="{{ asset('/assets/sorry.png')}}">
-            <h6 class="text-secondary text-center">You can't request to modify your tag, because you still have 
-                <a class="text-danger" title="Awaiting Request" data-bs-toggle="popover" title="Popover title" style="cursor: pointer;"
-                data-bs-content="You have requested to {{$myreq[0]['request_type']}} 
-                    <?php 
-                        $tag = $myreq[0]['tag_slug_name'];
-                        $count = count($tag);
-
-                        for($i = 0; $i < $count; $i++){
-                            if($i == $count - 1){
-                                echo "#".$tag[$i]['tag_name'];
-                            } else {
-                                echo "#".$tag[$i]['tag_name'].", ";
-                            }
-                        }
-                    ?>
-                ">Awaiting request</a>. Please wait some moment or try to contact the 
-                <a class="text-primary text-decoration-none" title="Send email" href="mailto:hello@mifik.id">Admin</a>
-            </h6>
-        </div>
-    @endif
+    </div>
+    <div id="empty_item_holder"></div>
+    <span id="load_more" style="display: flex; justify-content:center;"></span>
 </div>
+
 
 <script>
     var slct_list = [];
     var start_section = document.getElementById("start-section-manage");
     var load_section = document.getElementById("start-load");
-    $("#body-req").css({"display":"none"});
-    $("#cat-picker-holder").css({"display":"none"});
+    var myTag = [<?php
+        if(session()->get('role_key') == 0){
+            $tag = $user->role;
+            if($tag){
+                foreach($tag as $tg){
+                    echo "{".
+                            '"'."slug_name".'":"'.$tg['slug_name'].'",'.
+                            '"'."tag_name".'":"'.$tg['tag_name'].'"'
+                        ."},";
+                }
+            }
+        }
+    ?>];
+    
+    $("#tag-manage-control").css({"display":"none"});
 
     function loadmore(route){
         page++;
@@ -92,25 +70,8 @@
     });
 
     function stylingTagManage(){
-        $("#info-box-profile").css({"text-align":"left"});
-
-        $("#body-title").css({"position":"absolute", "color": "white"});
-        $("#body-eng").css({"display":"none"});
+        $("#tag-manage-control").css({"display":"block"});
         $("#body-req").css({"display":"block"});
-        $("#cat-picker-holder").css({"display":"block"});
-
-        $("#body-title").animate({
-            "top": "40px",
-            "left": "33%",
-        }, 400); 
-
-        $("#profile_image_info").animate({
-            "width": "80px",
-            "height": "80px",
-        }, 400); 
-
-        $("#btn-change-image").css({"top":"65px", "right": "40px", "height":"50px", "width":"50px", "padding": "7.5px"});
-        $("#btn-reset-image").css({"top":"57.5px", "right": "-10px", "height":"50px", "width":"50px", "padding": "11px"});
     }
 
     <?php 
@@ -124,6 +85,7 @@
         page = 1;
         tag_cat = tag;
         infinteLoadMore(page);
+        $("#cat-selected-title").html(ucFirst(tag));
         $("#data_wrapper_manage_tag").empty();
     }
 
@@ -133,7 +95,7 @@
         load_section.setAttribute('class', '');
         
         $.ajax({
-            url: "/api/v1/tag/cat/" + tag_cat + "/25?page=" + page,
+            url: "/api/v1/tag/cat/" + tag_cat + "/50?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -168,13 +130,10 @@
                         var slug_name = data[i].slug_name;
                         var tag_name = data[i].tag_name;
 
-                        if(slug_name != "lecturer" && slug_name != "staff" && slug_name != "student"){
-                            var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                                'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
-                        
+                        var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
+                            'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
 
-                            $("#data_wrapper_manage_tag").append(elmt);
-                        }
+                        $("#data_wrapper_manage_tag").append(elmt);
                     } 
                 } else {
                     for(var i = 0; i < data.length; i++){
@@ -182,27 +141,25 @@
                         var slug_name = data[i].slug_name;
                         var found = false;
                         
-                        if(slug_name != "lecturer" && slug_name != "staff" && slug_name != "student"){
-                            myTag.forEach(e => {
-                                if(e['slug_name'] === slug_name){
-                                    found = true;
-                                }
-                            });
-
-                            if(!found){
-                                var tag_name = data[i].tag_name;
-
-                                var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                                'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
-
-                                $("#data_wrapper_manage_tag").append(elmt);
-                                start++;
+                        myTag.forEach(e => {
+                            if(e['slug_name'] === slug_name){
+                                found = true;
                             }
+                        });
+
+                        if(!found){
+                            var tag_name = data[i].tag_name;
+
+                            var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
+                            'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
+
+                            $("#data_wrapper_manage_tag").append(elmt);
+                            start++;
                         }
                     } 
                 }
 
-                if(start == 0){
+                if(start == 0 && myTag.length > 0){
                     $('#load_more').empty();
                     $("#data_wrapper_manage_tag").html("<div class='err-msg-data'><img src='{{ asset('/assets/nodata2.png')}}' class='img' style='width:200px;'><h6 class='text-secondary text-center'>You have already pick all tag in this category</h6></div>");
                 }
@@ -264,16 +221,10 @@
             var tags = "";
 
             for(var i = 0; i < slct_list.length; i++){
-                if(slct_list[i]['type'] == "add"){
-                    var color = "text-success";
-                } else if(slct_list[i]['type'] == "remove"){
-                    var color = "text-danger";
-                }
-
                 if(i != slct_list.length - 1){
-                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>, ';
+                    tags += '<span class="text-success fw-bold">#' + slct_list[i]['tag_name'] + '</span>, ';
                 } else {
-                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>';
+                    tags += '<span class="text-success fw-bold">#' + slct_list[i]['tag_name'] + '</span>';
                 }
             }
             

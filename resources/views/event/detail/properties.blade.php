@@ -10,18 +10,15 @@
             <a class="btn event-tag-box mb-1">{{$tg['tag_name']}}</a>
         @endforeach
     @endif
-
+    <hr>
     <h6 class="mt-2">Date & Time</h6>
 
     <!--Get event date start-->
     @if($c->content_date_start && $c->content_date_end)
-        @if(date('y-m-d', strtotime($c->content_date_start)) == date('y-m-d', strtotime($c->content_date_end)))
-            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_start))}}</span> 
-                - <span class="hour-event">{{date("Y/m/d H:i",strtotime($c->content_date_end))}}</span></a>
-        @else
-            <a class="event-detail" title="Event Started Date"><i class="fa-regular fa-clock"></i> <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_start))}}</span> 
-                - <span class="date-event">{{date("Y/m/d H:i",strtotime($c->content_date_end))}}</span></a>
-        @endif
+        <a class="event-detail" title="Event date start"><i class="fa-regular fa-clock"></i> 
+            <span class="date-event">{{Carbon::parse($c->content_date_start)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+        <a class="event-detail" title="Event date end"> -
+            <span class="date-event">{{Carbon::parse($c->content_date_end)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
     @else
         <img src="{{asset('assets/nodate.png')}}" class="img nodata-icon" style="height:18vh;">
         <h6 class="text-center text-secondary">This Event doesn't have date</h6>
@@ -31,6 +28,16 @@
     <h6 class="text-secondary">Posted At : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @if($c->updated_at)
         <h6 class="text-secondary">Last Update : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
+    @endif
+    @if($info)
+        @foreach($info as $in)
+            @if($in->info_location == "show_date")
+                <div class="info-box {{$in->info_type}} mt-4">
+                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                    <?php echo $in->info_body; ?>
+                </div>
+            @endif
+        @endforeach
     @endif
 </div>
 

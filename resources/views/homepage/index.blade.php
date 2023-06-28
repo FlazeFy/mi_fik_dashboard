@@ -104,6 +104,8 @@
         @include('popup.failed')
         @if(session()->get('role_key') == 1)
             @include('components.recatch')
+        @else 
+            @include('popup.granted')
         @endif
 
         <!--Sidebar-->
