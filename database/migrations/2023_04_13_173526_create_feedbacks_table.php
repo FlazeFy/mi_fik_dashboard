@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('feedback_body', 255);
-            $table->integer('feedback_rate')->length(1)->unsigned();
-            $table->string('feedback_suggest', 35);
+            $table->integer('feedback_rate')->length(3)->unsigned();
+            $table->string('feedback_suggest', 35)->nullable();
 
             $table->dateTime('created_at', $precision = 0);
-            $table->dateTime('deleted_at', $precision = 0);
+            $table->dateTime('deleted_at', $precision = 0)->nullable();
         });
     }
 
