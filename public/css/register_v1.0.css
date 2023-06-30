@@ -1,13 +1,13 @@
 .btn-register-steps{
-    font-size: 20px;
+    font-size: var(--textJumbo);
     font-weight: 500;
-    padding: 18px 26px;
+    padding: calc(var(--spaceXMD) + 2px) calc(var(--spaceXLG) + 2px);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    border-left: 6px solid #F78A00;
+    border-left: 6px solid var(--primaryColor);
     width: 100%;
     text-align: start;
     border-radius: 0 18px 18px 0;
-    margin-bottom: 20px;
+    margin-bottom: var(--spaceLG);
     cursor: pointer !important;
     -webkit-transition: all 0.4s;
     -o-transition: all 0.4s;
@@ -15,39 +15,39 @@
 }
 .btn-register-steps h6.text-secondary{
     text-decoration: none;
-    font-size: 14px;
+    font-size: var(--textXMD);
     margin-top: 0;
 }
 .btn-register-steps:hover h6.text-secondary{
     color: white !important;
 }
 .section-register{
-    padding: 18px 26px;
+    padding: calc(var(--spaceXMD) + 2px) calc(var(--spaceXLG) + 2px);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 18px;
     min-height: 60vh;
-    margin-top: 10px;
+    margin-top: var(--spaceMD);
     position: relative;
 }
 
 .btn-close-register{
-    font-size: 16px;
+    font-size: var(--textLG);
     color: #DE3534 !important;
-    margin-bottom: 20px;
+    margin-bottom: var(--spaceLG);
 }
 
 .btn-register-steps:hover{
-    background:#F78A00;
+    background:var(--primaryColor);
     color: white;
 }
 
 .btn-next-steps{
     border: 2px solid #58C06E;
-    font-size: 16px;
+    font-size: var(--textLG);
     color: #58C06E;
     background: white;
     border-radius: 10px;
-    padding: 6px;
+    padding: var(--spaceXXSM);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 140px;
     position: absolute;
@@ -61,8 +61,8 @@
 
 .content-image-holder{
     position: relative;
-    margin-top: 6px;
-    margin-bottom: 6px; 
+    margin-top: var(--spaceXXSM);
+    margin-bottom: var(--spaceXXSM); 
     width:200px; 
     height:200px;
 }
@@ -89,7 +89,7 @@
     height:50px; 
     bottom: 35px;
     right: -200px;
-    background:#F78A00;
+    background:var(--primaryColor);
     border-radius: 100%;
     display: block;
     margin-inline: auto;
@@ -104,10 +104,10 @@
     left: 0;
     width:50px; 
     height:50px; 
-    padding-top: 12px;
+    padding-top: var(--spaceMD);
     border-radius: 100%;
     background: #e74645 !important;
-    color:#ffffff !important;
+    color:var(--whiteColor) !important;
     z-index: 100;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.5s;
@@ -125,17 +125,17 @@
 .selected-role{
     background: #FFDEB4;
     border-radius: 10px;
-    padding: 6px;
-    margin-bottom: 10px;
+    padding: var(--spaceXXSM);
+    margin-bottom: var(--spaceSM);
 }
 .important-category{
     background: #fcc4c4;
     border-radius: 10px;
-    padding: 6px;
-    padding-top: 3px;
+    padding: var(--spaceXXSM);
+    padding-top: var(--spaceMini);
 }
 .registered-msg{
-    color: #00c363;
+    color: var(--successBG);
     text-decoration: none;
     position: absolute;
     bottom: 30px;

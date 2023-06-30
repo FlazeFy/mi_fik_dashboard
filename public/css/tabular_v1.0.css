@@ -1,9 +1,6 @@
 .tabular {
     min-height: 45vh !important;
 }
-.tabular-body{
-
-}
 
 .tabular-item .properties{
     width: 180px;
@@ -12,10 +9,10 @@
     margin: 0;
 }
 .tabular-item .properties a {
-    font-size:13px;
+    font-size: var(--textMD);
 }
 .tabular-item .email:hover{
-    color: #F78A00;
+    color: var(--primaryColor);
 }
 
 .tabular-body .tabular-item.normal{
@@ -37,11 +34,14 @@
 .tabular-body .tabular-item.suspend:hover{
     background:  #f19399;
 }
+.tabular-item .tabular-role-holder{
+    font-size: var(--textMD);
+}
 
 .page-item.active .page-link{
-    background:#F78A00 !important;
+    background:var(--primaryColor) !important;
     border:none;
-    color:#FFFFFF;
+    color:var(--whiteColor);
 }
 .page-item .page-link{
     color:#414141;

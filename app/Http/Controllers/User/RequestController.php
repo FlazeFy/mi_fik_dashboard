@@ -18,6 +18,7 @@ use Kreait\Firebase\Messaging\Notification as FireNotif;
 use App\Models\User;
 use App\Models\UserRequest;
 use App\Models\Menu;
+use App\Models\Info;
 use App\Models\History;
 use App\Models\Dictionary;
 
@@ -36,6 +37,7 @@ class RequestController extends Controller
         if($user_id != null){
             $greet = Generator::getGreeting(date('h'));
             $dct_tag = Dictionary::getDictionaryByType("Tag");
+            $info = Info::getAvailableInfo("user/request");
             $menu = Menu::getMenu();
 
             //Set active nav
@@ -44,6 +46,7 @@ class RequestController extends Controller
 
             return view('user.request.index')
                 ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('dct_tag', $dct_tag)
                 ->with('greet',$greet);
         } else {

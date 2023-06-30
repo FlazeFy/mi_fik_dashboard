@@ -13,6 +13,7 @@ use App\Models\ContentHeader;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\Menu;
+use App\Models\Info;
 use App\Models\Feedback;
 
 class StatisticController extends Controller
@@ -35,6 +36,7 @@ class StatisticController extends Controller
             $mostLoc = ContentDetail::getMostUsedLoc();
             $mostRole = User::getMostUsedRole();
             $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("statistic");
             $greet = Generator::getGreeting(date('h'));
             $suggestion = Feedback::getAllFeedbackSuggestion();
 
@@ -55,6 +57,7 @@ class StatisticController extends Controller
                 ->with('mostViewed', $mostViewed)
                 ->with('setting', $setting)
                 ->with('menu', $menu)
+                ->with('info', $info)
                 ->with('suggestion', $suggestion)
                 ->with('createdEvent', $createdEvent)
                 ->with('greet',$greet);

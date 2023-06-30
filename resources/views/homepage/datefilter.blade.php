@@ -2,8 +2,8 @@
     <button class="btn btn-primary px-3" type="button" id="section-date-picker" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false"><i class="fa-solid fa-calendar"></i> Filter Date 
     </button>
-    <div class="dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-date-picker">
-        <span class="dropdown-item py-2">
+    <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-date-picker">
+        <span class="filter-section dropdown-item p-0">
             <div class="dropdown-header">
                 <h6 class="dropdown-title">Filter Date</h6>
             </div><hr>

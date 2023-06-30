@@ -32,6 +32,7 @@
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/global_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>

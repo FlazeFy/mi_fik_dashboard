@@ -26,23 +26,7 @@ class ContentDetail extends Model
         $select = Query::getSelectTemplate("content_location");
         $based_role = null;
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
-        $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
-
-        if($check->tokenable_type === "App\\Models\\User"){ // User
-            $user = User::where('id',$user_id)->first();
-
-            $roles = $user->role;
-            $arr_roles = "";
-            $total = count($roles);
-            for($i = 0; $i < $total; $i++){
-                $end = "";
-                if($i != $total - 1){
-                    $end = "|";
-                } 
-                $arr_roles .= $roles[$i]['slug_name'].$end;
-            }
-            $based_role = "JSON_EXTRACT(content_tag, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
-        } 
+        $based_role = Query::getAccessRole($user_id);
 
         $res = ContentDetail::selectRaw($select)
             ->leftjoin('contents_headers', 'contents_headers.id', '=', 'contents_details.content_id')
@@ -52,8 +36,8 @@ class ContentDetail extends Model
             ->whereNull('contents_headers.deleted_at')
             ->orderBy('content_date_start','DESC');
 
-        if($based_role !== null){
-            $res->whereRaw($based_role);
+        if ($based_role !== null && $based_role != "admin") {
+            $res = $res->whereRaw($based_role);
         }
                 
         return $res->get();

@@ -1,5 +1,7 @@
 <?php
 namespace App\Helpers;
+use App\Models\PersonalAccessTokens;
+use App\Models\User;
 
 class Query
 {
@@ -226,5 +228,30 @@ class Query
         }
         
         return $query;
+    }
+
+    public static function getAccessRole($user_id){
+        $based_role = null;
+        
+        $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
+        if($check->tokenable_type === "App\\Models\\User"){ // User
+            $user = User::where('id',$user_id)->first();
+
+            $roles = $user->role;
+            $arr_roles = "";
+            $total = count($roles);
+            for($i = 0; $i < $total; $i++){
+                $end = "";
+                if($i != $total - 1){
+                    $end = "|";
+                } 
+                $arr_roles .= $roles[$i]['slug_name'].$end;
+            }
+            $based_role = "JSON_EXTRACT(content_tag, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
+        } else {
+            $based_role = "admin";
+        }
+        
+        return $based_role;
     }
 }

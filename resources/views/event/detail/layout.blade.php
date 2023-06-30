@@ -157,18 +157,13 @@
             <div class="col-lg-8">
                 <!-- <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button> -->
-                    <h5>{{$c->content_title}}</h5>
-
-                <!--My Archive-->
-                <!-- include('event.detail.archive') -->
+                <h5>{{$c->content_title}}</h5><br>
 
                 <span><?php echo $c->content_desc; ?></span><br>
 
-                <!--Content attachment-->
                 <hr><h5>Attachment</h5>
                 @include('event.detail.attachment')
 
-                <!--Content location-->
                 <hr><h5>Location</h5>
                 @include('event.detail.maps')
             </div>

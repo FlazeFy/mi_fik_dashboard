@@ -1,9 +1,9 @@
 /*Richtext header*/
 .ql-toolbar.ql-snow{
-    border:1.7px solid #F78A00;
-    margin-top:10px;
+    border:1.7px solid var(--primaryColor);
+    margin-top:var(--spaceSM);
     border-radius:10px 10px 0 0;
-    background: #FFFFFF;
+    background: var(--whiteColor);
 }
 .ql-snow .ql-stroke {
     stroke:#414141;
@@ -12,24 +12,24 @@
     border-radius:6px;
     height:25px;
     width:25px;
-    padding-left:3px;
-    margin-right:10px;
+    padding-left:var(--spaceMini);
+    margin-right:var(--spaceSM);
     transition: all 0.4s;
 }
 .ql-snow.ql-toolbar button:hover .ql-stroke{
-    stroke:#F78A00;
+    stroke:var(--primaryColor);
 }
 button.ql-active{
-    background:#F78A00 !important;
+    background:var(--primaryColor) !important;
 }
 button.ql-active svg .ql-stroke{
-    stroke:#FFFFFF !important;
+    stroke:var(--whiteColor) !important;
 }
 
 /*Richtext body*/
 .ql-toolbar.ql-snow + .ql-container.ql-snow{
     height:30vh;
-    background: #FFFFFF;
+    background: var(--whiteColor);
 }
 .input-title{
     font-weight: 500;

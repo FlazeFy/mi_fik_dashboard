@@ -4,7 +4,7 @@
 }
 .user-req-holder{
     margin-top: 20px;
-    padding: 5px 16px 0 5px;
+    padding: var(--spaceXXSM) 16px 0 var(--spaceXXSM);
     display: flex;
     flex-direction: column;
     max-height: 90%;
@@ -14,21 +14,21 @@
     border-left: 3px solid #808080;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 5px;
+    padding: var(--spaceXXSM);
     width: 100%;
     border: none;
     text-align: start;
-    background: #FFFFFF;
-    margin-bottom: 15px;
+    background: var(--whiteColor);
+    margin-bottom: var(--spaceXMD);
 }
 .user-box-desc{
-    font-size: 12px;
-    font-weight: normal;
+    font-size: var(--textSM);
+    font-weight: 400;
     margin: 0;
 }
 .user-box-date{
-    font-size: 12px;
-    font-weight: normal;
+    font-size: var(--textSM);
+    font-weight: 400;
     color: #808080;
     margin: 0;
 }

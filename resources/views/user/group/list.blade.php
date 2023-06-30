@@ -26,7 +26,7 @@
             <tr>
                 <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
                 <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
-                <th scope="col">Total @include('user.group.sorting.total')</th>
+                <th scope="col">Total Member @include('user.group.sorting.total')</th>
                 <th scope="col">Properties @include('user.group.sorting.created')</th>
                 <th scope="col">Manage</th>
             </tr>
@@ -266,7 +266,7 @@
                                 '<h6>Updated At</h6> ' +
                                 '<a>' + getDateContext(updatedAt) + '</a> ' +
                             '</td> ' +
-                            '<td class="tabular-role-holder"> ' +
+                            '<td> ' +
                                 '<div class="position-relative"> ' +
                                     '<button class="btn btn-primary mb-2 me-1" type="button" data-bs-target="#edit-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
@@ -549,7 +549,7 @@
 
         var submit_holder = document.getElementById('submit-rel-remove-btn-holder-'+slug);
         if(selectedMemberRemove.length > 0){
-            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-danger" style="float:right; margin-top:-35px;"><i class="fa-solid fa-xmark"></i> Remove Selected</button>';
+            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-danger" onclick="isFormSubmitted = true;" style="float:right; margin-top:-35px;"><i class="fa-solid fa-xmark"></i> Remove Selected</button>';
         } else {
             submit_holder.innerHTML = '';
         }
@@ -569,7 +569,7 @@
 
         var submit_holder = document.getElementById('submit-rel-add-btn-holder-'+slug);
         if(selectedMember.length > 0){
-            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;"><i class="fa-solid fa-plus"></i> Assign All</button>';
+            submit_holder.innerHTML = '<button onclick="isFormSubmitted = true;" type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;"><i class="fa-solid fa-plus"></i> Assign All</button>';
         } else {
             submit_holder.innerHTML = '';
         }

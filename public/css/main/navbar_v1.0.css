@@ -2,18 +2,18 @@
     border-radius: 10px;
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
-    padding: 20px;
-    background-image: linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b);   
+    padding: var(--spaceLG);
+    background-image: linear-gradient(to right,var(--primaryColor) 20%, 65%, var(--darkColor));   
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;
     z-index: 999 !important;
-    margin-top: 50px;
+    margin-top: calc(var(--spaceJumbo) + 15px);
 }
 .navbar-title{
     position: absolute;
     top: 26px;
-    color: #FFFFFF;
+    color: var(--whiteColor);
     left: 70px;
 }
 /*Sidebar*/
@@ -21,7 +21,7 @@
     min-width: 300px;
     max-width: 300px;
     background: var(--background3);
-    color: #5B5B5B;
+    color: var(--darkColor);
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
     transition: all 0.3s;
@@ -45,19 +45,19 @@
     padding: 0;
 }
 #sidebar ul li {
-    font-size: 16px;
-    padding:4px;
-    font-weight:500;
-    margin-bottom:18px;
+    font-size: var(--textLG);
+    padding:var(--spaceMini);
+    font-weight:400;
+    margin-bottom:calc(var(--spaceXMD) + 2px);
 }
 #sidebar ul li > ul {
-    margin-left: 10px;
+    margin-left: var(--spaceSM);
 }
 #sidebar ul li > ul li {
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 #sidebar ul li a {
-    padding: 10px;
+    padding: var(--spaceSM);
     display: block;
     text-decoration:none;
     color: var(--text2);
@@ -71,7 +71,6 @@
 }
 .btn-accordion-custom{
     border: none;
-    /* padding: 0; */
     margin: 0;
     background: transparent;
     width: 100%;
@@ -84,29 +83,29 @@
 #sidebar ul li.active, #sidebar ul li:hover {
     width:95%;
     margin-left:-30px;
-    padding: 5px 30px;
+    padding: var(--spaceMini) var(--spaceJumbo);
     border-radius: 0px 10px 10px 0px;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.6s;
     transition: all 0.6s;
 }
 #sidebar ul li.active, #sidebar ul li.active .btn-accordion-custom {
-    background:#F78A00;
+    background:var(--primaryColor);
     color:#F5F5F5 !important;
 }
 #sidebar ul li:hover:not(.active), #sidebar ul li.sub.active {
-    color:#F78A00 !important;
-    background: #FFFFFF;
-    border-left:12px solid #F78A00;
+    color:var(--primaryColor) !important;
+    background: var(--whiteColor);
+    border-left:12px solid var(--primaryColor);
 }
 #sidebar ul li:hover:not(.active) .btn-accordion-custom {
-    color:#F78A00;
+    color:var(--primaryColor);
 }
 
 /*li icon*/
 #sidebar ul li.active i, #sidebar ul li:hover i{
-    margin-top:5px;
-    color:#F78A00 !important;
+    margin-top:var(--spaceXXSM);
+    color:var(--primaryColor) !important;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.6s;
     transition: all 0.6s;

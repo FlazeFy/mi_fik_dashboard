@@ -14,10 +14,10 @@
             {{count($location)}}
         @endif
     </span> Event Location</h5>
-    @if($location)
+    @if(count($location) != 0)
         <div id="map-discover"></div>
     @else 
-        <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon" style="height:25vh;">
+        <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon">
         <h6 class="text-center text-secondary">You have no event to see with location</h6>
     @endif
 </div>

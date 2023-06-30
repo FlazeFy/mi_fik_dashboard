@@ -52,7 +52,7 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="content-section">
+                    <div class="content-section" style="min-height:75vh !important;">
                         @include('event.location.discover')
                     </div>
                 </div>

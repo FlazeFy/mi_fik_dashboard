@@ -100,7 +100,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="content-section">
+                            <div class="content-section" style="min-height:75vh !important;">
                                 @include('event.tag.table')
                             </div>
                         @endif

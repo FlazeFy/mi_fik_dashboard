@@ -1,6 +1,6 @@
 .event-box{
     border-radius:14px;
-    height:240px;
+    height:250px;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
@@ -19,28 +19,28 @@
     right: 10px;
     color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .event-views{
     position: absolute;
     top: 7.5px;
     color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .event-status{
     position: absolute;
     top: 7.5px;
     left: 70px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .event-box:hover{
     transform: scale(1.035);
 }
 .event-box .event-title, .task-title{
-    font-weight:bold;
-    font-size:14px;
+    font-weight: 500;
+    font-size: var(--textXMD);
     color:#404040 !important;
     top: -40px;
     position: absolute;
@@ -52,64 +52,63 @@
     -webkit-box-orient: vertical;
 }
 .event-box .event-subtitle, .task-subtitle{
-    font-weight:500;
-    font-size:13px;
-    color:#5B5B5B !important;
+    font-weight: 500;
+    font-size: var(--textMD);
+    color:var(--darkColor) !important;
     top: -20px;
-
     position: absolute;
 }
 .event-box .event-desc{
-    font-weight:400;
-    font-size:12px;
+    font-weight: 400;
+    font-size: var(--textSM);
     color:#989898 !important;
     margin:0px;
     overflow: hidden; 
     text-overflow: ellipsis; 
     display: -webkit-box; 
-    -webkit-line-clamp: 2; 
-    line-clamp: 2; 
+    -webkit-line-clamp: 3; 
+    line-clamp: 3; 
     -webkit-box-orient: vertical;
 }
 .warning-draft{
-    padding: 8px 12px;
+    padding: var(--spaceXSM) 12px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: var(--textXLG);
     position: absolute;
     top: -20px;
     right: 20px;
     min-width: 45px;
     height: 45px;
-    border: 1.75px solid #FFFFFF;
+    border: 1.75px solid var(--whiteColor);
     border-radius: 100px;
-    background: #D5534C;
-    color:#FFFFFF !important;
+    background: var(--warningDarkBG);
+    color:var(--whiteColor) !important;
 }
 .total-my-event{
-    padding: 8px 12px;
+    padding: var(--spaceXSM) 12px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: var(--textXLG);
     position: absolute;
     top: -20px;
     right: 20px;
     min-width: 45px;
     height: 45px;
-    border: 1.75px solid #FFFFFF;
+    border: 1.75px solid var(--whiteColor);
     border-radius: 100px;
     background: #58C06E;
-    color:#FFFFFF !important;
+    color:var(--whiteColor) !important;
 }
 .btn-detail{
     text-decoration: none !important;
     border-radius: 6px;
-    font-size:12px;
-    font-weight:500;
-    padding: 5px;
-    color:#F78A00 !important;
+    font-size: var(--textSM);
+    font-weight: 500;
+    padding: var(--spaceXXSM);
+    color: var(--primaryColor) !important;
     cursor:pointer;
 }
 .user-image-content{
-    border:2px solid #F78A00;
+    border:2px solid var(--primaryColor);
     width:40px;
     height:40px;
     cursor:pointer; /*if we can view other user profile*/
@@ -145,6 +144,6 @@
     
 } */
 .ajax-load{
-    padding: 10px 0px;
+    padding: var(--spaceSM) 0px;
     width: 100%;
 }

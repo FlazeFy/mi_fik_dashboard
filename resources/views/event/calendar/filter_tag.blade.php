@@ -8,8 +8,8 @@
             All Tags
         @endif
     </button>
-    <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-select-tag">
-        <span class="dropdown-item">
+    <div class="filter-section dropdown-menu dropdown-menu-end shadow" style="width:480px;" onclick="event.stopPropagation()" aria-labelledby="section-select-tag">
+        <span class="filter-section dropdown-item p-0">
             <div class="dropdown-header">
                 <h6 class="dropdown-title">Filter Tag</h6>
                 <form action="/event/calendar/set_filter_tag/1" method="POST" class="position-absolute" style="right:15px; top:20px;">

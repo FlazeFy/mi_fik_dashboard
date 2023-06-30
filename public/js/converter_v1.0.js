@@ -51,6 +51,9 @@ function getEventDate(dateStart, dateEnd){
     if(dateStart && dateEnd){
         const ds = new Date(dateStart);
         const de = new Date(dateEnd);
+        const offsetHours = getUTCHourOffset();
+        ds.setUTCHours(ds.getUTCHours() + offsetHours);
+        de.setUTCHours(de.getUTCHours() + offsetHours);
 
         if(ds.getFullYear() !== de.getFullYear()){
             //Event year not same

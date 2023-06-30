@@ -10,7 +10,7 @@
                 <th scope="col">Full Name @include('user.all.sorting.fullname')</th>
                 <th scope="col">Properties @include('user.all.sorting.joined')</th>
                 <th scope="col" style="width:200px;">Role</th>
-                <th scope="col">Action</th>
+                <th scope="col">Detail</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body" id="user-list-holder">
@@ -117,10 +117,16 @@
                         var tags = "";
 
                         for(var i = 0; i < tag.length; i++){
-                            if(i != tag.length - 1){
-                                tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>, ';
+                            if(i <= 10){
+                                if(i != tag.length - 1){
+                                    tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>, ';
+                                } else {
+                                    tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>';
+                                }
                             } else {
-                                tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>';
+                                tags += '<span class="text-primary fw-bold">#...</span>';
+
+                                return tags
                             }
                         }
                         return tags
@@ -230,7 +236,7 @@
                     var elmt = " " +
                         '<tr class="tabular-item ' + getItemBg(accDate, accStatus) + '"> ' +
                             '<th scope="row"> <img class="img img-fluid user-image" style="margin-top:45%;" src="' + getUserImageGeneral(img, role) + '"> </th> ' +
-                            '<td>' + username + ' <input hidden id="user_tag_' + unamepreg + '" value=' + "'" + JSON.stringify(role) + "'" + '></td> ' +
+                            '<td>@' + username + ' <input hidden id="user_tag_' + unamepreg + '" value=' + "'" + JSON.stringify(role) + "'" + '></td> ' +
                             '<td class="email" title="Send Email" onclick="window.location = '+"'"+'mailto:'+email+"'"+'" href="mailto:' + email + '">' + email + '</td> ' +
                             '<td style="width: 180px;">' + fullname + '</td> ' +
                             '<td class="properties"> ' +
@@ -254,12 +260,12 @@
                                                         '<h5>User Profile</h5> ' +
                                                         '<div class="row"> ' +
                                                             '<div class="col-3 p-3"> ' +
-                                                                '<img class="img img-fluid rounded-circle shadow" src="' + getUserImageGeneral(img, role) + '">' +
+                                                                '<img class="img rounded-circle shadow" style="width:170px; height:170px;" src="' + getUserImageGeneral(img, role) + '">' +
                                                             '</div> ' +
                                                             '<div class="col-9 p-0 py-2 ps-2 position-relative"> ' +
                                                                 '<h5 class="text-secondary fw-normal">' + fullname + '</h5> ' +
                                                                 '<h6 class="user-box-desc">@' + username + " | " + email + '</h6> ' +
-                                                                '<h6 class="user-box-date" style="font-size:14px;">' + getJoinedAt(accDate, accStatus) + '</h6> ' +
+                                                                '<h6 class="user-box-date mb-1">' + getJoinedAt(accDate, accStatus) + '</h6> ' +
                                                                 '<div id="section-my-role-'+unamepreg+'"> ' +
                                                                     '<h6 class="text-secondary"> Role</h6> ' +
                                                                     '<div id="role-holder-'+unamepreg+'"></div> ' +
@@ -397,6 +403,7 @@
         .done(function (response) {
             $('.auto-load-tag').hide();
             var data =  response.data.data;
+            var available = 0;
             var total = response.data.total;
             var last = response.data.last_page;
 
@@ -431,12 +438,18 @@
                     }
 
                     if(found != true){
+                        available++;
                         var elmt = '<a class="btn btn-tag" id="tag_collection_picker_' + d_slug_name +'" title="Select this tag" ' + 
                             'onclick="addSelectedTag('+"'"+ d_slug_name +"'"+', '+"'"+ d_tag_name +"'"+', true, '+"'"+username+"'"+',false)">' + d_tag_name + '</a> ';
 
                         $("#data_wrapper_manage_tag_"+username).append(elmt);
                     }
                 }   
+
+                if(available == 0){
+                    var elmt = "<div class='err-msg-data d-block mx-auto text-center'><img src='http://127.0.0.1:8000/assets/nodata3.png' class='img' style='width:200px;'><h6 class='text-secondary text-center'>All role in this category have been assigned</h6></div>";
+                    $("#data_wrapper_manage_tag_"+username).append(elmt);
+                }
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError, response) {

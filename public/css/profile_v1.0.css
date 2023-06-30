@@ -23,15 +23,15 @@
 
 
 .sign-out-area{
-    background: #F85D59;
+    background: var(--warningBG);
     border-radius: 0 0  10px 10px;
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
     width: 100%;
     border: none;
     text-align: left;
 }
 .sign-out-area .dropdown-item{
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 .sign-out-area .dropdown-item .notification{
     position: absolute;
@@ -46,19 +46,19 @@
     position: absolute;
     right: 10px;
     top: 11px;
-    color: #F78A00;
-    font-size: 15px;
+    color: var(--primaryColor);
+    font-size: var(--textXMD);
     font-weight: 500;
 }
 .user-username{
-    font-size:18px;
-    font-weight:500;
+    font-size: var(--textLG);
+    font-weight: 500;
     margin:0px;
     color: #F5F5F5;
 }
 .user-role{
-    font-size:15px;
-    font-weight:400;
+    font-size: var(--textXMD);
+    font-weight: 400;
     margin:0px;
     color: #F5F5F5;
 }

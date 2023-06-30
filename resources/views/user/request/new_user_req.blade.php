@@ -13,11 +13,13 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-new-req">
-        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#newUserRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc_new">Accept Selected</span></a>
         <a class="dropdown-item" data-bs-toggle="modal" id="rej_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_rej_new">Reject Selected</span></a>
         <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_tag_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-hashtag text-success"></i> <span class="text-success" id="total_acc_new_tag">Accept Selected & With Tag</span></a>
     </div>
+
+    @include('popup.mini_help', ['id' => 'newUserRequest', 'title'=> 'New User Request', 'location'=>'new_role_request'])
 
     <div class="user-req-holder" id="data_wrapper_new_req">
         <div class="auto-load-new text-center">

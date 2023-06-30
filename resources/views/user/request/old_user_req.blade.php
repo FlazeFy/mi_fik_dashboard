@@ -13,10 +13,12 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-old-req">
-        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#roleRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href="" data-bs-toggle="modal" id="acc_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc">Accept Selected</span></a>
         <a class="dropdown-item" href="" data-bs-toggle="modal" id="rej_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_reject">Reject Selected</span></a>
     </div>
+
+    @include('popup.mini_help', ['id' => 'roleRequest', 'title'=> 'Role Request', 'location'=>'role_request'])
 
     <div class="user-req-holder" id="data_wrapper_old_req">
         <!-- Loading -->

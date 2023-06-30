@@ -40,7 +40,7 @@
                     columnDefs: [
                         { targets: 0, searchable: false},
                         { targets: 1, searchable: true},
-                        { targets: 2, searchable: false},
+                        { targets: 2, searchable: true},
                         { targets: 3, searchable: false},
                         { targets: 4, searchable: false},
                     ],

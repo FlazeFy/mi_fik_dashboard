@@ -1,27 +1,83 @@
-/* Variables */
+:root {   
+    /* Typography */
+    --textXJumbo : 24px;
+    --textJumbo : 20px;
+    --textXLG : 18px;
+    --textLG : 16px;
+    --textXMD : 14px;
+    --textMD : 13px;
+    --textSM : 12px;
+    --textXSM : 11px;
+
+    /* Rounded */
+    --roundedCircle : 100%;
+    --roundedJumbo : 30px;
+    --roundedXLG : 20px;
+    --roundedLG : 18px;
+    --roundedMD : 14px;
+    --roundedSM : 10px;
+    --roundedMini : 6px;
+
+    /* Spacing */
+    --spaceJumbo : 35px;
+    --spaceXLG : 24px;
+    --spaceLG : 20px;
+    --spaceXMD : 16px;
+    --spaceMD : 12px;
+    --spaceSM : 10px;
+    --spaceXSM : 8px;
+    --spaceXXSM : 6px;
+    --spaceMini : 4px;
+
+    /* Color Pallete */
+    --primaryLightBG : #FADFB9;
+    --successBG : #00C363;
+    --warningBG : #F85D59;
+    --warningDarkBG : #D5534C;
+    --infoBG : #009FF9;
+    --infoLightBG : #E7F4FE;
+    --hoverBG : #F2F2F2;
+
+    --primaryColor : #F78A00;
+    --darkColor : #5B5B5B;
+    --whiteColor : #FFFFFF;
+    --greyColor : #C3C3C3;
+}
+
+body{
+    font-family: 'Poppins', sans-serif !important;
+}
+.toast, .toast-body, .toast-header {
+    opacity: 1 !important;
+    background: white;
+}
 
 /* Background */
 .bg-primary{
-    background: #F78A00 !important;
+    background: var(--primaryColor) !important;
 }
 .bg-success{
-    background: #58C06E !important;
+    background: var(--successBG) !important;
 }
 .bg-danger{
-    background: #D5534C !important;
+    background: var(--warningBG) !important;
 }
 .shadow{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
 }
 
+/* Table */
+th{
+    font-weight: 500 !important;
+}
 
 /* Container */
 .content-section{
     border-radius: 10px;
-    background: #FFFFFF;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    padding: 25px;
+    background: var(--whiteColor);
+    margin-top: calc(var(--spaceJumbo) + 5px);
+    margin-bottom: calc(var(--spaceJumbo) + 5px);
+    padding: var(--spaceXLG);
     position: relative;
 }
 .content-section header{
@@ -29,11 +85,22 @@
 }
 .content-section-small{
     border-radius: 10px;
-    background: #FFFFFF;
-    margin-top: 40px;
-    margin-bottom: 40px;
-    padding: 15px;
+    background: var(--whiteColor);
+    margin-top: calc(var(--spaceJumbo) + 5px);
+    margin-bottom: calc(var(--spaceJumbo) + 5px);
+    padding: var(--spaceXMD);
     position: relative;
+}
+.error-page-info{
+    background: var(--primaryLightBG) !important;
+    text-align: center;
+    max-width: 1080px;
+    display: block;
+    margin-inline: auto;
+    width: 100%;
+    min-height: 80px;
+    padding: var(--spaceXMD);
+    border-radius: var(--roundedJumbo);
 }
 
 /* Layout */
@@ -44,23 +111,23 @@
     overflow:auto;
 }
 .content-title{
-    font-weight:500;
-    color:#414141;
+    font-weight: 500;
+    color:var(--darkColor);
 }
 .content-add, .content-more{
-    font-weight:500;
-    color:#F78A00;
+    font-weight: 500;
+    color:var(--primaryColor);
     background:none;
     border:none;
     text-decoration:none !important;
     cursor: pointer;
-    padding:6px 9px;
-    margin:0px;
+    padding:6px var(--spaceSM);
+    margin:0;
     border-radius:6px;
 }
 .content-add:hover, .content-more:hover{
     color:#F5F5F5;
-    background:#F78A00;
+    background:var(--primaryColor);
 }           
 .content-body{
     max-width:1080px;
@@ -116,18 +183,18 @@
 .page-holder{
     text-decoration: none;
     border-radius: 10px;
-    border: 1.5px solid #F78A00;
-    padding: 6px 12px;
-    margin-right: 6px;
-    margin-bottom: 6px;
+    border: 1.5px solid var(--primaryColor);
+    padding: var(--spaceXXSM) var(--spaceMD);
+    margin-right: var(--spaceXXSM);
+    margin-bottom: var(--spaceXXSM);
     font-weight: 500;
-    font-size: 16px;
-    color: #F78A00;
+    font-size: var(--textXLG);
+    color: var(--primaryColor);
     cursor: pointer;
     display: inline-block;
 }
 .page-holder:hover{
-    background: #F78A00;
+    background: var(--primaryColor);
     color: white;
 }
 .page-holder.active{
@@ -138,13 +205,13 @@
 
 /* Drop down */
 .dd-profil .dropdown-menu hr{
-    margin: 10px 0 10px 0;
+    margin: var(--spaceMD) 0 var(--spaceMD) 0;
     padding: 0;
 }
 .dd-profil .dropdown-item{
     color: #808080;
     font-weight: 500;
-    padding: 10px 10px 10px 20px;
+    padding: var(--spaceSM) var(--spaceSM) var(--spaceSM) 20px;
 }
 .dd-profil .dropdown-menu li{
     position: relative;
@@ -158,16 +225,16 @@
     min-width: 240px;
     height: 58px !important;
     border-radius: 30px;
-    padding-left:6px;
+    padding-left:var(--spaceXXSM);
     text-align:left;
 }
 .dropdown-menu.normal{
     width: auto !important;
-    padding: 12px;
+    padding: var(--spaceMD);
 }
 .dropdown-menu.normal .dropdown-item{
-    padding: 8px 10px;
-    margin-bottom: 4px;
+    padding: var(--spaceXSM) 10px;
+    margin-bottom: var(--spaceMini);
     cursor: pointer;
     border-radius: 6px;
 }
@@ -181,21 +248,21 @@
 }
 
 .user-username-mini, .properties-date {
-    color: #5B5B5B !important;
+    color: var(--darkColor) !important;
     font-size: 15px !important;
 }
 .user-username-mini:hover {
-    color:#F78A00 !important; 
+    color:var(--primaryColor) !important; 
     cursor: pointer;
 }
 
 /* Tip / Warning box */
 .info-box{
     border-radius: 10px;
-    color: #5B5B5B;
-    font-size: 14px;
-    padding: 14px;
-    margin: 10px 0 10px 0;
+    color: var(--darkColor);
+    font-size: var(--textXMD);
+    padding: calc(var(--spaceMD) + 2px);
+    margin: var(--spaceSM) 0 var(--spaceSM) 0;
     text-align: start;
 }
 .info-box.tips{
@@ -205,18 +272,18 @@
     background: #f7bdbd !important;
 }
 .info-box label{
-    font-size: 14px;
+    font-size: var(--textXMD);
     font-weight: 500;
-    margin-bottom: 6px;
+    margin-bottom: var(--spaceXXSM);
 }
 
 .link-external{
-    color:#F78A00 !important;
+    color:var(--primaryColor) !important;
     text-decoration: none;
     cursor: pointer;
 }
 .link-external-white{
-    color:#FFFFFF !important;
+    color:var(--whiteColor) !important;
     text-decoration: none !important;
     cursor: pointer;
 }
@@ -233,7 +300,7 @@
 thead.thead-sticky{
     position:sticky !important; 
     top:80px; 
-    background: #FFFFFF;
+    background: var(--whiteColor);
 }
 
 /* Check this */
@@ -245,11 +312,11 @@ thead.thead-sticky{
     left: 50%;
     top: 50%;
     font-weight: 400 !important;
-    font-size: 14px !important;
+    font-size: var(--textXMD) !important;
     z-index: 1000 !important;
     background: white;
     border-radius: 30px;
-    padding: 20px;
+    padding: var(--spaceLG);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 

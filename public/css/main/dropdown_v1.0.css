@@ -1,40 +1,50 @@
 .dropdown-menu{
     border: none;
-    margin: 10px 0 0 0 !important; 
+    margin: var(--spaceSM) 0 0 0 !important; 
     border-radius: 10px !important;
-    padding-bottom: 0px;
-    width: 480px !important;
+    padding: var(--spaceSM);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+}
+.filter-section.dropdown-menu{
+    width: 480px;
+    padding: var(--spaceXMD) 0 !important;
 }
 .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
     background: none !important;
 }
 .dropdown-item{
-    padding-bottom: 20px;
-    padding-left: 0;
-    padding-right: 0;
+    padding: var(--spaceSM) var(--spaceXMD);
+    cursor: pointer !important;
+    border-radius: var(--roundedSM);
+}
+.dropdown-menu a.dropdown-item:hover, .dropdown-menu button.dropdown-item:hover{
+    background: var(--hoverBG) !important;
+}
+.dropdown-menu .dropdown-item.danger:hover{
+    background: var(--warningBG) !important;
 }
 .dropdown-item hr{
     margin: 0;
 }
 .dropdown-menu .dropdown-header, .dropdown-menu .dropdown-footer{
-    padding: 15px !important;
+    padding: var(--spaceXMD) !important;
 }
 .dropdown-menu .dropdown-header .dropdown-title{
-    color: #343434;
-    font-weight: bold;
-    font-size: 18px;
+    color: var(--darkColor);
+    font-weight: 500;
+    font-size: var(--textXLG);
 }
 .dropdown-menu .dropdown-body{
-    padding: 15px !important;
+    padding: var(--spaceXMD) !important;
 }
 .dropdown-menu .properties-box,.dropdown-menu .properties-box:hover{
     border-radius: 0 0 10px 10px;
-    padding: 10px 15px !important;
+    padding: var(--spaceSM) var(--spaceXMD) !important;
     color: #FFFFFF;
-    background-image: linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b) !important;
+    background-image: linear-gradient(to right,var(--primaryColor) 20%, 65%, var(--darkColor)) !important;
 }
 .dropdown-menu .properties-box p{
     margin: 0;
     font-weight: 500;
-    font-size: 13px;
+    font-size: var(--textMD);
 }

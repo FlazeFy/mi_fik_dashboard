@@ -5,7 +5,7 @@
     transition: all 0.5s;
     cursor:pointer;
     width: 100%;
-    padding:0px;
+    padding:0;
     text-align:left;
     position: relative;
 }
@@ -13,9 +13,9 @@
     position: absolute;
     top: 7.5px;
     right: 10px;
-    color: #F78A00 !important;
+    color: var(--primaryColor) !important;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .task-views{
     position: absolute;
@@ -23,33 +23,33 @@
     left: 10px;
     color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .task-status{
     position: absolute;
     top: 7.5px;
     left: 70px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .task-box:hover{
     transform: scale(1.035);
 }
 .task-box .task-title{
-    font-weight:bold;
-    font-size:14px;
+    font-weight: 500;
+    font-size: var(--textXMD);
     color:#404040 !important;
     margin:0px;
 }
 .task-box .task-subtitle{
-    font-weight:500;
-    font-size:13px;
-    color:#5B5B5B !important;
+    font-weight: 500;
+    font-size: var(--textMD);
+    color:var(--darkColor) !important;
     margin:0px;
 }
 .task-box .task-desc{
-    font-weight:400;
-    font-size:12px;
+    font-weight: 400;
+    font-size: var(--textSM);
     color:#989898 !important;
     margin:0px;
     overflow: hidden; 
@@ -62,14 +62,14 @@
 .btn-detail{
     text-decoration: none !important;
     border-radius: 6px;
-    font-size:12px;
-    font-weight:500;
-    padding: 5px;
-    color:#F78A00 !important;
+    font-size: var(--textSM);
+    font-weight: 500;
+    padding: var(--spaceXXSM);
+    color: var(--primaryColor) !important;
     cursor:pointer;
 }
 .user-image-content{
-    border:2px solid #F78A00;
+    border:2px solid var(--primaryColor);
     width:40px;
     height:40px;
     cursor:pointer; /*if we can view other user profile*/
@@ -105,6 +105,6 @@
     
 } */
 .ajax-load{
-    padding: 10px 0px;
+    padding: var(--spaceSM) 0;
     width: 100%;
 }
