@@ -3,9 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Error 503</title>
-    <link rel="icon" type="image/png" href="{{asset('/assets/mifik_logo_launch.png')}}"/>
-
+    <title>Error 504</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/328b2b4f87.js" crossorigin="anonymous"></script>
 
@@ -16,11 +14,12 @@
 </head>
 <body style="background:#FFFFFF;">
     <div class="container mt-4 pt-3 text-center">
-        <img class="w-50 d-block mx-auto" src="{{asset('assets/503_error.png')}}">
+        <img class="w-50 d-block mx-auto" src="{{asset('assets/504_error.png')}}">
         <p class="display-5 text-danger">Oops! Something is wrong</p>
     </div>
     <div class="error-page-info">
-        <p><i class="fa-solid fa-circle-info"></i> The server is unable to handle the user's request at this time because it is temporarily unavailable</p>
+        <p><i class="fa-solid fa-circle-info"></i> The session or token used by the user has expired</p>
+        <a class="btn btn-primary" href="/">Try to Sign-In again</a>
     </div>
 </body>
 </html>

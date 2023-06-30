@@ -14,9 +14,9 @@
     position: relative;
 }
 .fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary{
-    padding: 6px 8px !important;
+    padding: 6px var(--spaceXSM) !important;
     border: 1.75px solid #FFDeB4 !important;
-    padding: 6px 8px !important;
+    padding: 6px var(--spaceXSM) !important;
     background: transparent;
     color: #FB8C00;
 }
@@ -55,9 +55,9 @@
     border-radius: 100%;
     width: 25px;
     height: 25px;
-    margin: 4px;
+    margin: var(--spaceMini);
     color: #F5F5F5 !important;
-    padding-top: 2px; 
+    padding-top: var(--spaceMini) / 2; 
 }
 a.fc-daygrid-day-number{
     font-size: var(--textXMD); 
@@ -89,7 +89,7 @@ a.fc-daygrid-day-number{
 }
 th.fc-col-header-cell.fc-day{
     background: #FFDEB4;
-    padding: 10px;
+    padding: var(--spaceSM);
     border: 1.25px solid #414141;
 }
 table.fc-scrollgrid.fc-scrollgrid-liquid{
@@ -121,13 +121,13 @@ td.fc-daygrid-day.fc-day{
 }
 
 .fc-daygrid-event.fc-daygrid-dot-event{
-    padding: 6px 0 8px 4px !important;
+    padding: 6px 0 var(--spaceXSM) 4px !important;
 }
 .fc-daygrid-event.fc-daygrid-block-event{
-    padding: 6px 0 8px 10px !important;
+    padding: 6px 0 var(--spaceXSM) 10px !important;
 }
 .fc-v-event .fc-event-title-container{
-    padding: 8px !important;
+    padding: var(--spaceXSM) !important;
 }
 
 .fc-daygrid-event:last-child, .fc-timegrid-event:last-child {
@@ -141,7 +141,7 @@ td.fc-daygrid-day.fc-day{
     border-radius: 50px;
     left: -7.5px;
     top: 30%;
-    background: #FFFFFF;
+    background: var(--whiteColor);
     border: 2.5px solid #42C9E7;
 }
 .fc-daygrid-event .fc-event-title, .fc-timegrid-event .fc-event-title{
@@ -173,7 +173,7 @@ td.fc-daygrid-day.fc-day{
     height: 25px !important;
     border-radius: 6px;
     color: #DE3534 !important; 
-    margin: 5px;
+    margin: var(--spaceXXSM);
 }
 .fc-popover-close.fc-icon.fc-icon-x:hover{
     background: #DE3534 !important; 
@@ -183,7 +183,7 @@ td.fc-daygrid-day.fc-day{
     color: #787878 !important; 
     float: right !important;
     top: -5px;
-    margin-right: 5px;
+    margin-right: var(--spaceXXSM);
     font-size: var(--textMD);
     font-weight: 400;
 }

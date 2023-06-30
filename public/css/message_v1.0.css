@@ -13,7 +13,7 @@
     border-radius: 1.15rem;
     line-height: 1.25;
     max-width: 75%;
-    padding: 12px;
+    padding: var(--spaceMD);
     position: relative;
     word-wrap: break-word;
 }  
@@ -21,7 +21,7 @@
     border-radius: 10px;
     background: #FFDeB4;
     width: 100px;
-    padding: 6px 3px;
+    padding: var(--spaceXXSM) var(--spaceMini);
     font-size: var(--textMD);
     text-align: center;
     display: block;
@@ -30,8 +30,8 @@
 }
 .box-replied{
     background: #f8e5cc;
-    padding:6px;
-    margin: 6px 0 6px 0;
+    padding:var(--spaceXXSM);
+    margin: var(--spaceXXSM) 0 var(--spaceXXSM) 0;
     width: 100% !important;
     border-radius: 0 10px 10px 0 !important;
     border-left: 4px solid var(--primaryColor);
@@ -47,7 +47,7 @@
 div.from-me {
     align-self: flex-end;
     background-color: var(--primaryColor);
-    color: #FFFFFF; 
+    color: var(--whiteColor); 
 }
 div.from-me::before {
     border-bottom-left-radius: 0.8rem 0.7rem;
@@ -69,7 +69,7 @@ a.from-them-clock{
 }
   
 div.from-me::after {
-    background-color: #FFFFFF;
+    background-color: var(--whiteColor);
     border-bottom-left-radius: 0.5rem;
     right: -40px;
     transform:translate(-30px, -2px);
@@ -101,7 +101,7 @@ div.from-them:before {
     transform: translate(0, -0.1rem);
 }
 div.from-them::after {
-    background-color: #FFFFFF;
+    background-color: var(--whiteColor);
     border-bottom-right-radius: 0.5rem;
     left: 20px;
     transform: translate(-30px, -2px);
@@ -135,11 +135,11 @@ div[class^="from-"].emoji::before {
     padding: 0;
 }
 .msg-box{
-    background: #FFFFFF;
+    background: var(--whiteColor);
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 70%;
-    padding: 6px;
+    padding: var(--spaceXXSM);
     position: absolute;
     right: 120px;
     bottom: 60px;

@@ -1,15 +1,15 @@
 .dropdown-menu{
     border: none;
-    margin: 10px 0 0 0 !important; 
+    margin: var(--spaceSM) 0 0 0 !important; 
     border-radius: 10px !important;
-    padding-bottom: 0px;
+    padding-bottom: 0;
     width: 480px !important;
 }
 .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
     background: none !important;
 }
 .dropdown-item{
-    padding-bottom: 20px;
+    padding-bottom: var(--spaceLG);
     padding-left: 0;
     padding-right: 0;
 }
@@ -17,7 +17,7 @@
     margin: 0;
 }
 .dropdown-menu .dropdown-header, .dropdown-menu .dropdown-footer{
-    padding: 15px !important;
+    padding: var(--spaceXMD) !important;
 }
 .dropdown-menu .dropdown-header .dropdown-title{
     color: var(--darkColor);
@@ -25,11 +25,11 @@
     font-size: var(--textXLG);
 }
 .dropdown-menu .dropdown-body{
-    padding: 15px !important;
+    padding: var(--spaceXMD) !important;
 }
 .dropdown-menu .properties-box,.dropdown-menu .properties-box:hover{
     border-radius: 0 0 10px 10px;
-    padding: 10px 15px !important;
+    padding: var(--spaceSM) var(--spaceXMD) !important;
     color: #FFFFFF;
     background-image: linear-gradient(to right,var(--primaryColor) 20%, 65%, var(--darkColor)) !important;
 }

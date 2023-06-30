@@ -1,6 +1,6 @@
 .event-box{
     border-radius:14px;
-    height:240px;
+    height:250px;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
@@ -56,7 +56,6 @@
     font-size: var(--textMD);
     color:var(--darkColor) !important;
     top: -20px;
-
     position: absolute;
 }
 .event-box .event-desc{
@@ -67,12 +66,12 @@
     overflow: hidden; 
     text-overflow: ellipsis; 
     display: -webkit-box; 
-    -webkit-line-clamp: 2; 
-    line-clamp: 2; 
+    -webkit-line-clamp: 3; 
+    line-clamp: 3; 
     -webkit-box-orient: vertical;
 }
 .warning-draft{
-    padding: 8px 12px;
+    padding: var(--spaceXSM) 12px;
     text-decoration: none;
     font-size: var(--textXLG);
     position: absolute;
@@ -80,13 +79,13 @@
     right: 20px;
     min-width: 45px;
     height: 45px;
-    border: 1.75px solid #FFFFFF;
+    border: 1.75px solid var(--whiteColor);
     border-radius: 100px;
     background: var(--warningDarkBG);
-    color:#FFFFFF !important;
+    color:var(--whiteColor) !important;
 }
 .total-my-event{
-    padding: 8px 12px;
+    padding: var(--spaceXSM) 12px;
     text-decoration: none;
     font-size: var(--textXLG);
     position: absolute;
@@ -94,17 +93,17 @@
     right: 20px;
     min-width: 45px;
     height: 45px;
-    border: 1.75px solid #FFFFFF;
+    border: 1.75px solid var(--whiteColor);
     border-radius: 100px;
     background: #58C06E;
-    color:#FFFFFF !important;
+    color:var(--whiteColor) !important;
 }
 .btn-detail{
     text-decoration: none !important;
     border-radius: 6px;
     font-size: var(--textSM);
     font-weight: 500;
-    padding: 5px;
+    padding: var(--spaceXXSM);
     color: var(--primaryColor) !important;
     cursor:pointer;
 }
@@ -145,6 +144,6 @@
     
 } */
 .ajax-load{
-    padding: 10px 0px;
+    padding: var(--spaceSM) 0px;
     width: 100%;
 }

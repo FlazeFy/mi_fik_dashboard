@@ -136,7 +136,7 @@
                                             "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
                                         "</div> " +
                                     "</div> " +
-                                    "<div style='height:45px;'> " +
+                                    "<div style='height:60px;'> " +
                                         "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
                                     "</div> " +
                                     "<div class='row d-inline-block px-2'> " +

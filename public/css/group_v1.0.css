@@ -1,6 +1,6 @@
 .group-box-notif{
-    padding: 8px;
-    margin-bottom: 8px;
+    padding: var(--spaceXSM);
+    margin-bottom: var(--spaceXSM);
     border-radius: 10px;
     background: #FFDEB4;
     position: relative;

@@ -1,5 +1,5 @@
 .calendar-section {
-    padding: 0 20px; 
+    padding: 0 var(--spaceLG); 
 }
 .calendar, .calendar_weekdays, .calendar_content {
     max-width: 585px; 
@@ -8,8 +8,8 @@
     /*float: left;*/
     margin: auto;
     min-width: 160px;
-    background: #FFFFFF;
-    padding: 10px;
+    background: var(--whiteColor);
+    padding: var(--spaceSM);
     -webkit-box-shadow: 0px 4px 26px -22px rgba(0, 0, 0, 0.14);
     -moz-box-shadow: 0px 4px 26px -22px rgba(0, 0, 0, 0.14);
     box-shadow: 0px 4px 26px -22px rgba(0, 0, 0, 0.14); 
@@ -37,7 +37,7 @@
     /*border: 1px dotted #999;*/
     width: 14.28571%;
     height: 45px;
-    padding-top: 10px;
+    padding-top: var(--spaceSM);
     overflow: hidden;
     text-align: center;
     background-color: transparent; 
@@ -66,7 +66,7 @@
 .calendar_content div.today {
     font-weight: bold;
     font-size: var(--textXMD);
-    color: #FFFFFF;
+    color: var(--whiteColor);
     background-color: var(--primaryColor);
 }
   
@@ -93,7 +93,7 @@
 }
   
 .calendar_header h2 {
-    margin-top: 15px;
+    margin-top: var(--spaceXMD);
     padding: 0;
     font-weight: 500;
     font-size: var(--textXLG);

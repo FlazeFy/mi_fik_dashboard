@@ -12,7 +12,7 @@
 }
 .btn-info{
     background: var( --infoBG) !important;
-    color:#FFFFFF !important;
+    color:var(--whiteColor) !important;
     border:none;
 }
 .btn-noline{
@@ -26,7 +26,7 @@
     z-index: 998 !important;
 }
 .btn-hide-bar{
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 .btn-config-holder{
     display:flex !important; 
@@ -37,11 +37,11 @@
     color:#343434;
     border: 1.5px solid #D9D9D9;
     font-size: var(--textMD);
-    margin-top: 6px;
+    margin-top: var(--spaceXXSM);
 }
 .btn-filter:hover{
     background:var(--successBG);
-    color: #FFFFFF;
+    color: var(--whiteColor);
     border: 1.5px solid var(--successBG);
 }
 .btn-filter.selected{
@@ -50,11 +50,11 @@
     border: 1.5px solid var(--successBG);
 }
 .btn-category-help{
-    margin: 0 0 10px 50px;
+    margin: 0 0 var(--spaceSM) calc(var(--spaceLG) + var(--spaceXMD));
     border-left: 3px solid var(--primaryColor);
     background: #FFF1DF;
     border-radius: 0;
-    padding: 8px 10px; 
+    padding: var(--spaceXSM) var(--spaceSM); 
     width: 85%;
     text-align: left;
     -webkit-transition: all 0.3s;
@@ -74,8 +74,8 @@
     color:var(--successBG);
     border-radius: 8px;
     border: solid 1.75px var(--successBG);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: var(--spaceSM);
+    margin-bottom: var(--spaceSM);
     opacity: 1;
 }
 .btn-submit-form{
@@ -89,7 +89,7 @@
     width: 48px;
     border-radius: 100%;
     font-size: var(--textJumbo);
-    background: #FFFFFF;
+    background: var(--whiteColor);
     position: absolute;
     bottom: 60px;
     right: 50px;
@@ -100,32 +100,32 @@
 }
 .btn-msg.text-success:hover{
     background: var(--successBG);
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 .btn-msg.text-danger:hover{
     background: var(--warningDarkBG);
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 
 .btn-tag{
-    background:#FFFFFF;
-    padding: 6px 8px;
+    background:var(--whiteColor);
+    padding: var(--spaceXXSM) var(--spaceXSM);
     border-radius:10px;
-    margin:4px;
+    margin:var(--spaceMini);
     color:#414141;
     font-weight: 400;
     border:1.5px solid var(--primaryColor);
 }
 .btn-tag:hover, .btn-tag-selected{
     background:var(--primaryColor);
-    padding: 6px 8px;
+    padding: var(--spaceXXSM) var(--spaceXSM);
     border-radius:10px;
-    margin:4px;
+    margin:var(--spaceMini);
     color:#F5F5F5 !important;
 }
 .btn-detail-config{
     color:#F5F5F5 !important;
-    margin-right:6px;
+    margin-right:var(--spaceXXSM);
 }
 .btn-detail-config.primary{
     background:var(--primaryColor);
@@ -144,13 +144,13 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding: 8px;
+    padding: var(--spaceXSM);
     background: white !important;
 }
 
 .btn-link{
     text-decoration:none;
-    padding:10px 16px;
+    padding:var(--spaceSM) var(--spaceXMD);
     border-radius:6px;
     color:var(--primaryColor);
     background:transparent;
@@ -159,7 +159,7 @@
 }
 .btn-link-danger{
     text-decoration:none;
-    padding:10px 16px;
+    padding:var(--spaceSM) var(--spaceXMD);
     border-radius:6px;
     color:var(--warningDarkBG) !important;
     background:transparent;
@@ -167,7 +167,7 @@
     font-size: var(--textLG);
 }
 .btn-link:hover{
-    color:#FFFFFF;
+    color:var(--whiteColor);
     background:var(--primaryColor);
 }
 
@@ -214,12 +214,12 @@
 .content-more-floating{
     font-weight: 500;
     color:var(--primaryColor);
-    background:#FFFFFF;
+    background:var(--whiteColor);
     border:1.5px solid var(--primaryColor);
     text-decoration:none !important;
     cursor: pointer;
-    padding:3px 9px;
-    margin:0px;
+    padding:var(--spaceMini) var(--spaceSM);
+    margin:0;
     border-radius:6px;
     font-size: var(--textMD);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -230,14 +230,14 @@
 }
 
 .tag-check{
-    background: #FFFFFF;
+    background: var(--whiteColor);
     border-radius: 20px;
     border: 1.5px solid #D9D9D9;
     overflow: hidden;
-    margin-top: 6px;
+    margin-top: var(--spaceXXSM);
     width: fit-content;
     block-size: fit-content;    
-    margin-right: 4px;
+    margin-right: var(--spaceMini);
     display: inline-block;
 }
 .tag-check:hover{
@@ -245,7 +245,7 @@
     background: var(--successBG) !important;
 }
 .tag-check:hover label span{
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 
 .tag-check input:checked{
@@ -259,14 +259,14 @@
   
 .tag-check label span {
     text-align: center;
-    padding: 4px 12px;
+    padding: var(--spaceMini) var(--spaceMD);
     display: block;
 }
   
 .tag-check label input {
     position: absolute;
     display: none !important;
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 .tag-check label input + span{
     color: #343434;
@@ -283,13 +283,13 @@
     text-align: center;
     padding: 0;
     display: inline-block;
-    margin-right: 14px;
+    margin-right: var(--spaceXMD)-2;
     width:150px;
     height:120px;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    background: #FFFFFF;
-    margin-bottom: 15px;
+    background: var(--whiteColor);
+    margin-bottom: var(--spaceXMD);
 }
 
 .user-check label {
@@ -297,7 +297,7 @@
     margin:0 !important;
 }
 .user-check .check-body{
-    padding: 10px;
+    padding: var(--spaceSM);
     margin: 0;
     width: 100% !important;
     border-radius: 10px;
@@ -309,7 +309,7 @@
     background: var(--warningDarkBG) !important;
 }
 .user-check:hover label span{
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
   
 .user-check label {
@@ -326,14 +326,14 @@
 .user-check label input {
     position: absolute;
     display: none !important;
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 .user-check label input + span{
     color: #343434;
 }  
 .user-check input:checked + .check-body {
     background: var(--warningDarkBG);
-    color: #FFFFFF;
+    color: var(--whiteColor);
 }
 
 .remove_suggest{
@@ -344,7 +344,7 @@
 }
 .remove_suggest:hover{
     background: var(--warningDarkBG) !important;
-    color: #FFFFFF;
+    color: var(--whiteColor);
 }
 .btn-change-image:hover, .change-image:hover, .btn-reset-image:hover, .btn-icon-reset-image:hover{
     transform: scale(1.075);
@@ -355,7 +355,7 @@
     height: 50px;
     width: 50px;
     cursor: pointer;
-    padding: 9px;
+    padding: var(--spaceSM);
     border-radius: 21px;
     top: 55px;
     right: 20px;
@@ -370,7 +370,7 @@
     width:50px; 
     background: var(--warningDarkBG);
     border-radius: 21px; 
-    padding: 11px;
+    padding: var(--spaceMD);
     position: absolute;
     cursor: pointer;
     color: white !important;
@@ -384,8 +384,8 @@
     color:var(--warningDarkBG);
     border-radius: 8px;
     border: solid 2px var(--warningDarkBG);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: var(--spaceSM);
+    margin-bottom: var(--spaceSM);
     opacity: 1;
 }
 .btn-delete-custom:hover{

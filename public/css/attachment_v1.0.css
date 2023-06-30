@@ -1,7 +1,7 @@
 .attachment-holder .attachment-item {
-    padding: 12px 20px 12px 12px !important;
-    margin-top: 15px !important;
-    margin-left:15px;
+    padding: var(--spaceMD) 20px var(--spaceMD) var(--spaceMD) !important;
+    margin-top: var(--spaceXMD) !important;
+    margin-left:var(--spaceXMD);
     position: relative;
     border-radius: 0 10px 10px 0;
     min-height: 80px;
@@ -11,10 +11,10 @@
     border-bottom: 1.75px solid #CED4DA;
 }
 .attachment-holder .attachment-item ul {
-    padding-left: 12px;
+    padding-left: var(--spaceMD);
 }
 .attachment-holder .attachment-item ul li {
-    padding-bottom: 10px;
+    padding-bottom: var(--spaceSM);
 }
 .attachment-holder .attachment-item:last-child {
     padding-bottom: 0;
@@ -27,23 +27,23 @@
     border-radius: 50px;
     left: -13px;
     top: 36%;
-    background: #FFFFFF;
+    background: var(--whiteColor);
     border: 3px solid var(--circle-attach-color-var);
 }
 .btn-icon-delete{
     color: var(--warningBG) !important;
-    padding: 4px 8px;
+    padding: var(--spaceMini) var(--spaceXSM);
 }
 .btn-icon-delete:hover{
     background: var(--warningBG) !important;
-    color:#FFFFFF !important;
+    color:var(--whiteColor) !important;
 }
 .btn-icon-preview{
     color: #808080 !important;
-    padding: 4px 8px;
+    padding: var(--spaceMini) var(--spaceXSM);
 }
 .form-select.attachment{
-    padding: 4px !important;
+    padding: var(--spaceMini) !important;
     font-size: var(--textMD);
     width: 100px;
 }

@@ -25,13 +25,13 @@
 .sign-out-area{
     background: var(--warningBG);
     border-radius: 0 0  10px 10px;
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
     width: 100%;
     border: none;
     text-align: left;
 }
 .sign-out-area .dropdown-item{
-    color: #FFFFFF !important;
+    color: var(--whiteColor) !important;
 }
 .sign-out-area .dropdown-item .notification{
     position: absolute;

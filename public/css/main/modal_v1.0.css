@@ -1,5 +1,5 @@
 .modal-content{
-    margin-top:7vh;
+    margin-top:var(--spaceXXSM);
 }
 .modal-body{
     position:relative;
@@ -8,11 +8,11 @@
 .custom-close-modal{
     position:absolute !important;
     top:-20px;
-    background:#FFFFFF;
+    background:var(--whiteColor);
     width:45px;
     right:10px;
     height:45px;
-    padding:6px;
+    padding:var(--spaceXXSM);
     color:var(--warningBG);
     border-radius:100%;
     border:none;
@@ -22,10 +22,10 @@
 .custom-submit-modal{
     position:absolute !important;
     bottom:-20px;
-    background:#FFFFFF;
+    background:var(--whiteColor);
     right:10px;
     height:45px;
-    padding:6px 12px;
+    padding:var(--spaceXXSM) var(--spaceMD);
     color:var(--successBG);
     border-radius:6px;
     border:none;

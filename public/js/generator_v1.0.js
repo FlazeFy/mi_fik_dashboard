@@ -21,8 +21,13 @@ function getTag(obj, padding, sz, margin){
 
 function getEventLoc(loc){
     if(loc){
+        if(loc[0].detail != null){
+            res = loc[0].detail;
+        } else {
+            res = loc[1].detail;
+        }
         return "<span class='loc-limiter px-0 m-0'> " +
-                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> "+loc[0].detail+"</a> " +
+                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> "+res+"</a> " +
             "</span>";
     } else {
         return "";
