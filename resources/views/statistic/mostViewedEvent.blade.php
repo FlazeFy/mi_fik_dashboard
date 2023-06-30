@@ -53,7 +53,7 @@
                 @endif
                 Separated</button>
         </form><hr>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#mvChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
     @if(count($mostViewed) != 0)
@@ -62,6 +62,8 @@
         <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
         <h6 class="text-center">No Data Available</h6>
     @endif
+
+    @include('popup.mini_help', ['id' => 'mvChart', 'title'=> 'Most Viewed Chart', 'location'=>'most_viewed_chart'])
 </div>
 
 <script type="text/javascript">

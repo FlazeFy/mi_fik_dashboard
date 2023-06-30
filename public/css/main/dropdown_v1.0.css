@@ -2,16 +2,26 @@
     border: none;
     margin: var(--spaceSM) 0 0 0 !important; 
     border-radius: 10px !important;
-    padding-bottom: 0;
-    width: 480px !important;
+    padding: var(--spaceSM);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
+}
+.filter-section.dropdown-menu{
+    width: 480px;
+    padding: var(--spaceXMD) 0 !important;
 }
 .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
     background: none !important;
 }
 .dropdown-item{
-    padding-bottom: var(--spaceLG);
-    padding-left: 0;
-    padding-right: 0;
+    padding: var(--spaceSM) var(--spaceXMD);
+    cursor: pointer !important;
+    border-radius: var(--roundedSM);
+}
+.dropdown-menu a.dropdown-item:hover, .dropdown-menu button.dropdown-item:hover{
+    background: var(--hoverBG) !important;
+}
+.dropdown-menu .dropdown-item.danger:hover{
+    background: var(--warningBG) !important;
 }
 .dropdown-item hr{
     margin: 0;

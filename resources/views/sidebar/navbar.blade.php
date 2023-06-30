@@ -47,7 +47,7 @@
                 </div>
             </div>    
         </div>
-        <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1" id="dd-menu-profile">
+        <ul class="dropdown-menu p-0 shadow" aria-labelledby="dropdownMenuButton1" id="dd-menu-profile">
             <li class="position-relative">
                 <a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i> Profile</a>
             </li>
@@ -59,7 +59,7 @@
                 <div class="item-notification" id="notif-holder"><img src="{{ asset('/assets/loading-notif.gif')}}" style='height:24px; margin-top:-5px;'></div>
             </li>
             <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
-                <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
+                <li><a class="dropdown-item danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
             </button>
         </ul>
     </div>
@@ -213,7 +213,7 @@
 
                         var elmt = " " +
                             "<div class='p-3 rounded shadow mb-3 text-start'> " +
-                                "<h6 class='fw-bolder'>" + notifTitle + "</h6> " +
+                                "<h6>" + notifTitle + "</h6> " +
                                 "<p class='mb-0'>" + notifBody + "</p> " +
                                 "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
                             "</div>";
@@ -305,7 +305,7 @@
 
                         var elmt = " " +
                             "<div class='p-3 rounded shadow mb-3 text-start'> " +
-                                "<h6 class='fw-bolder'>" + historyType + "</h6> " +
+                                "<h6>" + historyType + "</h6> " +
                                 "<p class='mb-0'>" + historyBody + "</p> " +
                                 "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
                             "</div>";

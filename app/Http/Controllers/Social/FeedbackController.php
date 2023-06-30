@@ -12,6 +12,7 @@ use App\Helpers\Validation;
 use App\Models\Menu;
 use App\Models\History;
 use App\Models\Feedback;
+use App\Models\Info;
 use App\Models\Dictionary;
 
 class FeedbackController extends Controller
@@ -29,6 +30,7 @@ class FeedbackController extends Controller
         if($user_id != null){
             $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
+            $info = Info::getAvailableInfo("statistic");
             $suggestion = Feedback::getAllFeedbackSuggestion();
             $feedback = Feedback::getAllFeedback(50, session()->get('selected_filter_suggest'));
             $dct = Dictionary::getDictionaryByType("Feedback");
@@ -40,6 +42,7 @@ class FeedbackController extends Controller
             return view ('social.feedback.index')
                 ->with('menu', $menu)
                 ->with('dct', $dct)
+                ->with('info', $info)
                 ->with('suggestion', $suggestion)
                 ->with('feedback', $feedback)
                 ->with('greet',$greet);

@@ -12,11 +12,11 @@
     /* Rounded */
     --roundedCircle : 100%;
     --roundedJumbo : 30px;
-    --roundedJumbo : 20px;
-    --roundedJumbo : 18px;
-    --roundedJumbo : 14px;
-    --roundedJumbo : 10px;
-    --roundedJumbo : 6px;
+    --roundedXLG : 20px;
+    --roundedLG : 18px;
+    --roundedMD : 14px;
+    --roundedSM : 10px;
+    --roundedMini : 6px;
 
     /* Spacing */
     --spaceJumbo : 35px;
@@ -36,10 +36,12 @@
     --warningDarkBG : #D5534C;
     --infoBG : #009FF9;
     --infoLightBG : #E7F4FE;
+    --hoverBG : #F2F2F2;
 
     --primaryColor : #F78A00;
     --darkColor : #5B5B5B;
     --whiteColor : #FFFFFF;
+    --greyColor : #C3C3C3;
 }
 
 body{
