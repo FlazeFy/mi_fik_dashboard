@@ -22,7 +22,7 @@
     background: #FFDeB4;
     width: 100px;
     padding: 6px 3px;
-    font-size: 13px;
+    font-size: var(--textMD);
     text-align: center;
     display: block;
     margin-inline: auto;
@@ -34,7 +34,7 @@
     margin: 6px 0 6px 0;
     width: 100% !important;
     border-radius: 0 10px 10px 0 !important;
-    border-left: 4px solid #F78A00;
+    border-left: 4px solid var(--primaryColor);
 }
 
 .imessage div::before,
@@ -46,25 +46,25 @@
 }  
 div.from-me {
     align-self: flex-end;
-    background-color: #F78A00;
+    background-color: var(--primaryColor);
     color: #FFFFFF; 
 }
 div.from-me::before {
     border-bottom-left-radius: 0.8rem 0.7rem;
-    border-right: 1rem solid #F78A00;
+    border-right: 1rem solid var(--primaryColor);
     right: -0.35rem;
     transform: translate(0, -0.1rem);
 }
 a.from-me-clock{
     text-decoration: none;
     color: #414141;
-    font-size: 14px;
+    font-size: var(--textXMD);
     text-align: end;
 }
 a.from-them-clock{
     text-decoration: none;
     color: #414141;
-    font-size: 14px;
+    font-size: var(--textXMD);
     text-align: start;
 }
   

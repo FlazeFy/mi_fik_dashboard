@@ -31,11 +31,11 @@
     border: 3px solid var(--circle-attach-color-var);
 }
 .btn-icon-delete{
-    color: #F85D59 !important;
+    color: var(--warningBG) !important;
     padding: 4px 8px;
 }
 .btn-icon-delete:hover{
-    background: #e74645 !important;
+    background: var(--warningBG) !important;
     color:#FFFFFF !important;
 }
 .btn-icon-preview{
@@ -44,13 +44,13 @@
 }
 .form-select.attachment{
     padding: 4px !important;
-    font-size: 13px;
+    font-size: var(--textMD);
     width: 100px;
 }
 .btn-add-att{
-    color:#F78A00 !important;
+    color:var(--primaryColor) !important;
     border-radius: 8px;
-    border: solid 2px #F78A00;
+    border: solid 2px var(--primaryColor);
     opacity: 1;
     cursor: pointer;
 }
@@ -59,22 +59,22 @@
 }
 .btn-add-att:hover{
     color:white !important;
-    background: #F78A00;
+    background: var(--primaryColor);
 }
 .attach-upload-status, #content_loc_msg{
     text-decoration: none;
     font-style: italic;
-    font-size: 13px;
+    font-size: var(--textMD);
     font-weight: 500;
 }
 .success{
-    color: #00c363 !important;
+    color: var(--successBG) !important;
 }
 .failed{
     color: #e74645 !important;
 }
 .warning{
-    color: #f78a00 !important;
+    color: var(--primaryColor) !important;
 }
 .document-grid{
     width: 100%; 

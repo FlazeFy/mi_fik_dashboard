@@ -8,6 +8,6 @@
 .collapse-group-box-toogle{
     top: 4px;
     right: 4px;
-    font-size: 14px;
+    font-size: var(--textXMD);
     position: absolute;
 }

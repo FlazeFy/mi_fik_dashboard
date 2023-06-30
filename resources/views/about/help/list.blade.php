@@ -11,7 +11,7 @@
         padding: 10px;
         height: 80px;
         cursor: pointer;
-        border: 1.5px solid #F78A00;
+        border: 1.5px solid var(--primaryColor);
         border-radius:10px;
         margin-bottom: 10px;
         text-decoration: none;

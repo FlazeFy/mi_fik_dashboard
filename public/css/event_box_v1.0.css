@@ -19,28 +19,28 @@
     right: 10px;
     color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .event-views{
     position: absolute;
     top: 7.5px;
     color: #F5F5F5 !important;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .event-status{
     position: absolute;
     top: 7.5px;
     left: 70px;
     font-weight: 500;
-    font-size: 14px;
+    font-size: var(--textXMD);
 }
 .event-box:hover{
     transform: scale(1.035);
 }
 .event-box .event-title, .task-title{
-    font-weight:bold;
-    font-size:14px;
+    font-weight: 500;
+    font-size: var(--textXMD);
     color:#404040 !important;
     top: -40px;
     position: absolute;
@@ -52,16 +52,16 @@
     -webkit-box-orient: vertical;
 }
 .event-box .event-subtitle, .task-subtitle{
-    font-weight:500;
-    font-size:13px;
-    color:#5B5B5B !important;
+    font-weight: 500;
+    font-size: var(--textMD);
+    color:var(--darkColor) !important;
     top: -20px;
 
     position: absolute;
 }
 .event-box .event-desc{
-    font-weight:400;
-    font-size:12px;
+    font-weight: 400;
+    font-size: var(--textSM);
     color:#989898 !important;
     margin:0px;
     overflow: hidden; 
@@ -74,7 +74,7 @@
 .warning-draft{
     padding: 8px 12px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: var(--textXLG);
     position: absolute;
     top: -20px;
     right: 20px;
@@ -82,13 +82,13 @@
     height: 45px;
     border: 1.75px solid #FFFFFF;
     border-radius: 100px;
-    background: #D5534C;
+    background: var(--warningDarkBG);
     color:#FFFFFF !important;
 }
 .total-my-event{
     padding: 8px 12px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: var(--textXLG);
     position: absolute;
     top: -20px;
     right: 20px;
@@ -102,14 +102,14 @@
 .btn-detail{
     text-decoration: none !important;
     border-radius: 6px;
-    font-size:12px;
-    font-weight:500;
+    font-size: var(--textSM);
+    font-weight: 500;
     padding: 5px;
-    color:#F78A00 !important;
+    color: var(--primaryColor) !important;
     cursor:pointer;
 }
 .user-image-content{
-    border:2px solid #F78A00;
+    border:2px solid var(--primaryColor);
     width:40px;
     height:40px;
     cursor:pointer; /*if we can view other user profile*/

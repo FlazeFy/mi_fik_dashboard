@@ -21,12 +21,12 @@
 .calendar_weekdays div {
     display: inline-block;
     vertical-align: top;
-    color: #F78A00;
+    color: var(--primaryColor);
     font-weight: 500; 
 }  
 .calendar_content, .calendar_weekdays, .calendar_header {
     position: relative; 
-    font-size: 14px;
+    font-size: var(--textXMD);
 } 
 .calendar_content:after, .calendar_weekdays:after, .calendar_header:after {
     content: ' ';
@@ -65,9 +65,9 @@
   
 .calendar_content div.today {
     font-weight: bold;
-    font-size: 14px;
+    font-size: var(--textXMD);
     color: #FFFFFF;
-    background-color: #F78A00; 
+    background-color: var(--primaryColor);
 }
   
 /* .calendar_content div.selected:first-child {
@@ -95,8 +95,8 @@
 .calendar_header h2 {
     margin-top: 15px;
     padding: 0;
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 500;
+    font-size: var(--textXLG);
     color: #000 !important;
     text-transform: uppercase; 
 }
@@ -127,7 +127,7 @@ button.switch-month.switch-right {
 }
   
 button.switch-month:hover {
-    color: #F78A00; 
+    color: var(--primaryColor);
 }
   
 button.switch-month:active {

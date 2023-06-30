@@ -11,7 +11,7 @@
     top: -10px;
 }
 .carousel-control-prev, .carousel-control-next{
-    color: #F78A00 !important;
+    color: var(--primaryColor) !important;
     height: 50px;
     width: 50px;
     border-radius: 12px;

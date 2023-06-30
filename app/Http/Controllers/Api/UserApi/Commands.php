@@ -54,7 +54,6 @@ class Commands extends Controller
                     $user = User::where('id', $user_id)->update([
                         'first_name' => $request->first_name,
                         'last_name' => $request->last_name,
-                        'password' => $request->password,
                         'updated_at' => date("Y-m-d H:i"),
                         'updated_by' => $user_id,
                     ]);

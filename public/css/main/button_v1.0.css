@@ -1,17 +1,17 @@
 .btn-submit{
-    background: #00c363;
+    background: var(--successBG);
     color: #F5F5F5 !important;
 }
 .btn-primary{
-    background: #F78A00 !important;
+    background: var(--primaryColor) !important;
     border:none;
 }
 .btn-success{
-    background: #00C363 !important;
+    background: var(--successBG) !important;
     border:none;
 }
 .btn-info{
-    background: #009FF9 !important;
+    background: var( --infoBG) !important;
     color:#FFFFFF !important;
     border:none;
 }
@@ -22,7 +22,7 @@
 }
 .btn-primary-v{
     background: #FFDEB4 !important;
-    color: #F78A00 !important;
+    color: var(--primaryColor) !important;
     z-index: 998 !important;
 }
 .btn-hide-bar{
@@ -36,22 +36,22 @@
 .btn-filter{
     color:#343434;
     border: 1.5px solid #D9D9D9;
-    font-size: 13px;
+    font-size: var(--textMD);
     margin-top: 6px;
 }
 .btn-filter:hover{
-    background:#00c363;
+    background:var(--successBG);
     color: #FFFFFF;
-    border: 1.5px solid #00c363;
+    border: 1.5px solid var(--successBG);
 }
 .btn-filter.selected{
-    color:#00c363;
+    color:var(--successBG);
     font-weight: 500;
-    border: 1.5px solid #00c363;
+    border: 1.5px solid var(--successBG);
 }
 .btn-category-help{
     margin: 0 0 10px 50px;
-    border-left: 3px solid #F78A00;
+    border-left: 3px solid var(--primaryColor);
     background: #FFF1DF;
     border-radius: 0;
     padding: 8px 10px; 
@@ -62,7 +62,7 @@
     transition: all 0.3s;
 }
 .btn-category-help:hover, .btn-category-help.active{
-    background: #F78A00;
+    background: var(--primaryColor);
     color: #F5F5F5;
     border-radius: 10px;
 }
@@ -71,9 +71,9 @@
 }
 
 .btn-submit-form:disabled, .btn-submit-form{
-    color:#00c363;
+    color:var(--successBG);
     border-radius: 8px;
-    border: solid 1.75px #00c363;
+    border: solid 1.75px var(--successBG);
     margin-top: 10px;
     margin-bottom: 10px;
     opacity: 1;
@@ -82,13 +82,13 @@
     cursor: pointer;
 }
 .btn-submit-form:hover{
-    background:#00c363;
+    background:var(--successBG);
     color: #F5F5F5;
 }
 .btn-msg{
     width: 48px;
     border-radius: 100%;
-    font-size: 22px;
+    font-size: var(--textJumbo);
     background: #FFFFFF;
     position: absolute;
     bottom: 60px;
@@ -99,11 +99,11 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .btn-msg.text-success:hover{
-    background: #00c363;
+    background: var(--successBG);
     color: #FFFFFF !important;
 }
 .btn-msg.text-danger:hover{
-    background: #D5534C;
+    background: var(--warningDarkBG);
     color: #FFFFFF !important;
 }
 
@@ -113,11 +113,11 @@
     border-radius:10px;
     margin:4px;
     color:#414141;
-    font-weight:400;
-    border:1.5px solid #F78A00;
+    font-weight: 400;
+    border:1.5px solid var(--primaryColor);
 }
 .btn-tag:hover, .btn-tag-selected{
-    background:#F78A00;
+    background:var(--primaryColor);
     padding: 6px 8px;
     border-radius:10px;
     margin:4px;
@@ -128,10 +128,10 @@
     margin-right:6px;
 }
 .btn-detail-config.primary{
-    background:#F78A00;
+    background:var(--primaryColor);
 }
 .btn-detail-config.danger, .hover-danger:hover{
-    background:#D5534C;
+    background:var(--warningDarkBG);
 }
 .btn-detail-config.success{
     background:#58C06E;
@@ -152,33 +152,33 @@
     text-decoration:none;
     padding:10px 16px;
     border-radius:6px;
-    color:#F78A00;
+    color:var(--primaryColor);
     background:transparent;
-    font-weight:500;
-    font-size:16px;
+    font-weight: 500;
+    font-size: var(--textLG);
 }
 .btn-link-danger{
     text-decoration:none;
     padding:10px 16px;
     border-radius:6px;
-    color:#D5534C !important;
+    color:var(--warningDarkBG) !important;
     background:transparent;
-    font-weight:500;
-    font-size:16px;
+    font-weight: 500;
+    font-size: var(--textLG);
 }
 .btn-link:hover{
     color:#FFFFFF;
-    background:#F78A00;
+    background:var(--primaryColor);
 }
 
 .btn-icon-rounded-danger{
-    color: #D5534C;
+    color: var(--warningDarkBG);
     border-radius: 100%;
     width: 40px;
     height: 40px;
 }
 .btn-icon-rounded-danger:hover{
-    background: #D5534C;
+    background: var(--warningDarkBG);
     color: #F5F5F5;
 }
 
@@ -194,39 +194,39 @@
 }
 
 .btn-icon-rounded-primary{
-    color: #F78A00;
+    color: var(--primaryColor);
     border-radius: 100%;
     width: 40px;
     height: 40px;
 }
 .btn-icon-rounded-primary:hover{
-    background: #F78A00;
+    background: var(--primaryColor);
     color: #F5F5F5;
 }
 .btn-danger-icon-outlined{
     border-radius: 100%;
 }
 .btn-danger-icon-outlined:hover{
-    background: #D5534C;
+    background: var(--warningDarkBG);
     color: #F5F5F5;
 }
 
 .content-more-floating{
-    font-weight:500;
-    color:#F78A00;
+    font-weight: 500;
+    color:var(--primaryColor);
     background:#FFFFFF;
-    border:1.5px solid #F78A00;
+    border:1.5px solid var(--primaryColor);
     text-decoration:none !important;
     cursor: pointer;
     padding:3px 9px;
     margin:0px;
     border-radius:6px;
-    font-size: 13px;
+    font-size: var(--textMD);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .content-more-floating:hover{
     color:#F5F5F5;
-    background:#F78A00;
+    background:var(--primaryColor);
 }
 
 .tag-check{
@@ -241,15 +241,15 @@
     display: inline-block;
 }
 .tag-check:hover{
-    border: 1.5px solid #00c363;
-    background: #00c363 !important;
+    border: 1.5px solid var(--successBG);
+    background: var(--successBG) !important;
 }
 .tag-check:hover label span{
     color: #FFFFFF !important;
 }
 
 .tag-check input:checked{
-    border: 1.5px solid #00c363 !important;
+    border: 1.5px solid var(--successBG) !important;
 }
   
 .tag-check label {
@@ -272,10 +272,10 @@
     color: #343434;
 }  
 .tag-check input:checked + span {
-    color: #00c363;
+    color: var(--successBG);
 }
 .Checked input:checked + span{
-    color: #00c363;
+    color: var(--successBG);
     background: transparent;
 }
 
@@ -305,8 +305,8 @@
 }
 
 .user-check:hover{
-    border: 1.5px solid #D5534C;
-    background: #D5534C!important;
+    border: 1.5px solid var(--warningDarkBG);
+    background: var(--warningDarkBG) !important;
 }
 .user-check:hover label span{
     color: #FFFFFF !important;
@@ -332,18 +332,18 @@
     color: #343434;
 }  
 .user-check input:checked + .check-body {
-    background: #D5534C;
+    background: var(--warningDarkBG);
     color: #FFFFFF;
 }
 
 .remove_suggest{
     padding-right: 0 !important;
     border-radius: 6px;
-    color: #D5534C;
+    color: var(--warningDarkBG);
     cursor: pointer;
 }
 .remove_suggest:hover{
-    background: #D5534C !important;
+    background: var(--warningDarkBG) !important;
     color: #FFFFFF;
 }
 .btn-change-image:hover, .change-image:hover, .btn-reset-image:hover, .btn-icon-reset-image:hover{
@@ -351,7 +351,7 @@
 }
 .btn-change-image{
     position: absolute;
-    background: #009FF9;
+    background: var( --infoBG);
     height: 50px;
     width: 50px;
     cursor: pointer;
@@ -368,7 +368,7 @@
 .btn-reset-image{
     height:50px; 
     width:50px; 
-    background: #D5534C;
+    background: var(--warningDarkBG);
     border-radius: 21px; 
     padding: 11px;
     position: absolute;
@@ -381,15 +381,15 @@
     transition: all 0.5s;
 }   
 .btn-delete-custom{
-    color:#D5534C;
+    color:var(--warningDarkBG);
     border-radius: 8px;
-    border: solid 2px #D5534C;
+    border: solid 2px var(--warningDarkBG);
     margin-top: 10px;
     margin-bottom: 10px;
     opacity: 1;
 }
 .btn-delete-custom:hover{
-    background:#D5534C;
+    background:var(--warningDarkBG);
     color: white;
 }
 .btn-delete-custom:disabled{

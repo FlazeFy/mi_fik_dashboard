@@ -39,7 +39,7 @@
 }
 .calendar-tag-holder .btn-primary{
     background: #FFDEB4 !important;
-    color: #F78A00 !important;
+    color: var(--primaryColor) !important;
     z-index: 998 !important;
 }
 
@@ -60,7 +60,7 @@
     padding-top: 2px; 
 }
 a.fc-daygrid-day-number{
-    font-size: 14px; 
+    font-size: var(--textXMD); 
 }
 .fc-event-time{
     display:none;
@@ -97,8 +97,8 @@ table.fc-scrollgrid.fc-scrollgrid-liquid{
     border-radius: 10px; /*Fix this shit*/
 }
 th.fc-col-header-cell.fc-day a{
-    font-weight: bold !important;
-    font-size: 18px;
+    font-weight: 500;
+    font-size: var(--textXLG);
     color: #000000;
 }
 td.fc-daygrid-day.fc-day{
@@ -145,8 +145,8 @@ td.fc-daygrid-day.fc-day{
     border: 2.5px solid #42C9E7;
 }
 .fc-daygrid-event .fc-event-title, .fc-timegrid-event .fc-event-title{
-    font-size: 11px;
-    font-weight: 500; /*Medium*/
+    font-size: var(--textXSM);
+    font-weight: 500;
 }
 
 /* Show More */
@@ -184,6 +184,6 @@ td.fc-daygrid-day.fc-day{
     float: right !important;
     top: -5px;
     margin-right: 5px;
-    font-size: 13px;
+    font-size: var(--textMD);
     font-weight: 400;
 }

@@ -20,9 +20,9 @@
     padding: 15px !important;
 }
 .dropdown-menu .dropdown-header .dropdown-title{
-    color: #343434;
-    font-weight: bold;
-    font-size: 18px;
+    color: var(--darkColor);
+    font-weight: 500;
+    font-size: var(--textXLG);
 }
 .dropdown-menu .dropdown-body{
     padding: 15px !important;
@@ -31,10 +31,10 @@
     border-radius: 0 0 10px 10px;
     padding: 10px 15px !important;
     color: #FFFFFF;
-    background-image: linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b) !important;
+    background-image: linear-gradient(to right,var(--primaryColor) 20%, 65%, var(--darkColor)) !important;
 }
 .dropdown-menu .properties-box p{
     margin: 0;
     font-weight: 500;
-    font-size: 13px;
+    font-size: var(--textMD);
 }

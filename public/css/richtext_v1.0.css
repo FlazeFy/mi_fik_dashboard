@@ -1,6 +1,6 @@
 /*Richtext header*/
 .ql-toolbar.ql-snow{
-    border:1.7px solid #F78A00;
+    border:1.7px solid var(--primaryColor);
     margin-top:10px;
     border-radius:10px 10px 0 0;
     background: #FFFFFF;
@@ -17,10 +17,10 @@
     transition: all 0.4s;
 }
 .ql-snow.ql-toolbar button:hover .ql-stroke{
-    stroke:#F78A00;
+    stroke:var(--primaryColor);
 }
 button.ql-active{
-    background:#F78A00 !important;
+    background:var(--primaryColor) !important;
 }
 button.ql-active svg .ql-stroke{
     stroke:#FFFFFF !important;

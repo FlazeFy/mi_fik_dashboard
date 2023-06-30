@@ -22,13 +22,13 @@
     margin-bottom: 15px;
 }
 .user-box-desc{
-    font-size: 12px;
-    font-weight: normal;
+    font-size: var(--textSM);
+    font-weight: 400;
     margin: 0;
 }
 .user-box-date{
-    font-size: 12px;
-    font-weight: normal;
+    font-size: var(--textSM);
+    font-weight: 400;
     color: #808080;
     margin: 0;
 }
