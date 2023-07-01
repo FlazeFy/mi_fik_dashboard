@@ -86,7 +86,7 @@
                 <div class="modal-body pt-4 position-relative">
                     <input hidden id="slug_name" name="slug_name">
                     <span class="text-success position-absolute" style="top:30px; right:30px;" id="draft-status"></span>
-                    <button type="button" class="custom-close-modal" onclick="clean()" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" class="custom-close-modal" onclick="clean(); <?php if($isMobile){ echo 'closeControlModal()'; } ?>" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                     <h5>Create Event</h5>
                     <div class="row my-2">
                         <div class="col-lg-8">
@@ -160,6 +160,11 @@
             event.preventDefault(); 
         }
     });
+
+    function closeControlModal(){
+        $('#browseDraftEventModal').modal({ backdrop: 'static' }).modal('hide');
+        $('#controlModal').modal('hide');
+    }
     
     window.addEventListener('beforeunload', function(event) {
         if(!isFormSubmitted){

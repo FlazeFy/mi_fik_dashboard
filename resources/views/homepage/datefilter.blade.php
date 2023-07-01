@@ -4,41 +4,63 @@
     </button>
     <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-date-picker">
         <span class="filter-section dropdown-item p-0">
-            <div class="dropdown-header">
+            <div class="dropdown-header position-relative">
                 <h6 class="dropdown-title">Filter Date</h6>
+                @if($isMobile)
+                    <form action="/homepage/date/reset" method="POST">
+                        @csrf
+                        <button class="btn btn-danger-icon-outlined mt-2 position-absolute" style="right:var(--spaceXMD); top:0;" title="Reset" type="submit"><i class="fa-solid fa-xmark"></i></button>
+                    </form>
+                @endif
             </div><hr>
             <div class="dropdown-body">
-                <form action="/homepage/date" method="POST" class="row">
+                <form action="/homepage/date" method="POST" class="@if($isMobile) px-3 @else row @endif">
                     @csrf
 
                     @if(session()->get('filtering_date') && session()->get('filtering_date') != "all")
                         @php($date_full = session()->get('filtering_date'))
                         @php($date = explode("_", $date_full))
                     @endif
-                    <div class="row my-2">
-                        <div class="col-5">
-                            <label class="form-label">From</label>
-                            <input type="date" class="form-control" name="date_start" id="date_filter_start" 
-                            value="<?php
-                                if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
-                                    echo $date[0]; 
-                                } 
-                            ?>" onchange="validateDateFilter()">
-                            <a id="date_filter_msg_start" class="input-warning text-danger"></a>
-                            <div class="mt-2" id="date-filter-submit-holder"></div>
-                        </div>
-                        <div class="col-5">
-                            <label class="form-label">Until</label>
-                            <input type="date" class="form-control" name="date_end" id="date_filter_end" 
-                            value="<?php 
-                                if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
-                                    echo $date[1];
-                                } 
-                            ?>" onchange="validateDateFilter()">
-                            <a id="date_filter_msg_end" class="input-warning text-danger"></a>
-                        </div>
-                </form>            
 
+                    @if(!$isMobile)
+                        <div class="row my-2">
+                            <div class="col-5">
+                    @endif
+
+                    <label class="form-label">From</label>
+                    <input type="date" class="form-control" name="date_start" id="date_filter_start" 
+                    value="<?php
+                        if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
+                            echo $date[0]; 
+                        } 
+                    ?>" onchange="validateDateFilter()">
+                    <a id="date_filter_msg_start" class="input-warning text-danger"></a>
+                   
+
+                    @if(!$isMobile)
+                            <div class="mt-2" id="date-filter-submit-holder"></div>
+                            </div>
+                        <div class="col-5">
+                    @endif
+
+                    <label class="form-label">Until</label>
+                    <input type="date" class="form-control" name="date_end" id="date_filter_end" 
+                    value="<?php 
+                        if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
+                            echo $date[1];
+                        } 
+                    ?>" onchange="validateDateFilter()">
+                    <a id="date_filter_msg_end" class="input-warning text-danger"></a>
+
+                    @if(!$isMobile)
+                        </div>
+                    @endif
+                    
+                    @if($isMobile)
+                        <div class="mt-3 text-center" id="date-filter-submit-holder"></div>
+                    @endif
+                </form>            
+                    @if(!$isMobile)
                         <div class="col-1">
                             <br>
                             <form action="/homepage/date/reset" method="POST">
@@ -47,6 +69,8 @@
                             </form>
                         </div>
                     </div>
+                    @endif
+
                     <a id="date_filter_msg_all" class="input-warning text-danger"></a>
             </div>
         </span>

@@ -55,8 +55,8 @@
     h6, span {
         font-size: var(--textXMD);
     }
-    .info-box {
-        font-size: var(--textMD);
+    .info-box, label {
+        font-size: var(--textMD) !important;
     }
 
     .event-status, .event-views, .event-created-at, .event-heading, .btn {
@@ -137,6 +137,36 @@
     .event-body .event-properties {
         position: absolute;
         bottom: 5px !important;
+    }
+
+    th, .table-responsive {
+        font-size: var(--textMD);
+    }
+    td, .dataTables_info {
+        font-size: var(--textSM);
+    }
+    table.table-paginate {
+        display: flex; 
+        flex-direction: column; 
+        max-width: 100vh; 
+        overflow-x: scroll;
+    }
+
+    .paginate_button {
+        font-size: var(--textMD);
+    }
+
+    .content-section header {
+        height: 70px !important;
+    }
+
+    .toast {
+        position: fixed;
+        top: 120px;
+        width: 90%;
+        margin-inline: var(--spaceLG);
+        left: 0;
+        z-index: 999 !important;
     }
 }
 

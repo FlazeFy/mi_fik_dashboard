@@ -3,3 +3,12 @@ function isMobile() {
     
     return key.test(navigator.userAgent);
 }
+
+function submitOnEnter(event) {
+    if (event.keyCode === 13) { 
+        event.preventDefault(); 
+        checkTitleSearch();
+        return false; 
+    }
+    return true; 
+}

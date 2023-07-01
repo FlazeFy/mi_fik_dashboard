@@ -20,8 +20,8 @@
                         <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
                     </div>
                     <div id="empty_myevent_holder"></div>
-                    <span id="load_more_myevent_holder" style="display: flex; justify-content:end;"></span>
                 </div>
+                <span id="load_more_myevent_holder"></span>
             </div>
         </div>
     </div>
@@ -101,24 +101,24 @@
 
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
-                            "<button class='card shadow event-box p-2' style='height:auto;' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
+                            "<button class='card shadow event-box p-2' style='@if(!$isMobile) height:auto; @else height:180px; @endif' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                 "<div class='text-primary' style='font-size:12px;'>" + getDateToContext(created_at, "full") + "</div> " +
                                 "<div class='event-views' style='color:#414141 !important; right:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
-                                "<div class='card-body py-2 px-0 w-100'> " +
-                                    "<div class=''> " +
-                                        "<div class='d-inline-block'> " +
-                                            "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image, admin_username, user_username) + "' alt='username-profile-pic.png'> " +
+                                "<div class='card-body event-body py-2 px-0 w-100'> " +
+                                    "<div class='event-heading'> " +
+                                        "<div class='d-inline-block position-relative'> " +
+                                            "<img class='img user-image-content' src='" + getUserImage(admin_image, user_image, admin_username, user_username) + "' alt='username-profile-pic.png'> " +
                                         "</div> " +
                                         "<div class='d-inline-block position-relative w-75'> " +
                                             "<h6 class='event-title'>" + content_title + "</h6> " +
                                             "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
                                         "</div> " +
                                     "</div> " +
-                                    "<div style='height:45px;'> " +
+                                    "<div style='height:60px;'> " +
                                         "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
                                     "</div> " +
-                                    "<div class='row d-inline-block px-2'> " +
+                                    "<div class='event-properties row d-inline-block px-2'> " +
                                         getEventLoc(content_loc) +
                                         getEventDate(content_date_start, content_date_end) +
                                         getEventTag(content_tag) +

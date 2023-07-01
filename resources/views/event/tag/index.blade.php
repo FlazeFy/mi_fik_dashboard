@@ -82,7 +82,7 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                    <div class="container-fluid bg-transparent @if(!$isMobile) my-3 @endif py-2 px-0">
                         @if(session()->get('role_key') == 1)
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-sm-12">
