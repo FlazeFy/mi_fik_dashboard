@@ -71,3 +71,10 @@
     margin-inline:auto;
     display: block;
 }
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .dropdown.dd-profil .dropdown-menu{
+        width: auto !important;
+    }
+}

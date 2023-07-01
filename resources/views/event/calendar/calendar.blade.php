@@ -4,7 +4,9 @@
     }
 </style>
 
-<div id="calendar"></div>
+<div class="calendar-holder">
+    <div id="calendar"></div>
+</div>
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {

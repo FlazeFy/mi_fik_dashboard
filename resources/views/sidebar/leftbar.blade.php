@@ -1,4 +1,7 @@
 <nav id="sidebar" class="p-4 pt-5 position-relative">
+    @if($isMobile)
+        <button class="btn btn-close-sidebar" id="close-sidebar"><i class="fa-solid fa-xmark"></i></button>
+    @endif
     <div class="row my-3">
         <div class="col-4">
             <img class="w-100" src="{{asset('assets/logo.png')}}" alt='logo'

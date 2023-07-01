@@ -35,6 +35,7 @@
         <link rel="stylesheet" href="{{ asset('/css/message_v1.0.css') }}"/>
 
         <!-- JS Collection -->
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
@@ -43,6 +44,12 @@
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -53,31 +60,40 @@
                     @include('sidebar.navbar')
 
                    
-                    <div class="row">
-                        <div class="col-lg-5 col-md-6 col-12">
-                            @include('profile.info')
+                    @if(!$isMobile)
+                        <div class="row">
+                            <div class="col-lg-5 col-md-6 col-sm-12">
+                    @endif
+                    @include('profile.info')
 
-                            @if(session()->get('role_key') == 0)
-                                <div class="content-section">
-                                    <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
-                                    @include('profile.tagpicker')
-                                </div>
-                            @endif
+                    @if(session()->get('role_key') == 0)
+                        <div class="content-section">
+                            <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
+                            @include('profile.tagpicker')
                         </div>
-                        <div class="col-lg-7 col-md-6 col-12">
-                            <div class="content-section">
-                                <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
-                                @include('profile.edit')
-                            </div>
+                    @endif
 
-                            @if(session()->get('role_key') == 0)
-                                <div class="content-section">
-                                    <h5 class="mx-3 text-secondary fw-bold">FAQ</h5>
-                                    @include('profile.faq')
-                                </div>
-                            @endif
+                    @if(!$isMobile)
                         </div>
+                        <div class="col-lg-7 col-md-6 col-sm-12">
+                    @endif
+
+                    <div class="content-section">
+                        <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
+                        @include('profile.edit')
                     </div>
+
+                    @if(session()->get('role_key') == 0)
+                        <div class="content-section">
+                            <h5 class="mx-3 text-secondary fw-bold">FAQ</h5>
+                            @include('profile.faq')
+                        </div>
+                    @endif
+
+                    @if(!$isMobile)
+                            </div>
+                        </div>
+                    @endif
                    
                 </div>
             </div>

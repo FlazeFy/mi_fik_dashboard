@@ -44,6 +44,137 @@
     --greyColor : #C3C3C3;
 }
 
+/* Mobile style */
+@media (max-width: 767px) {
+    .quick-action-text {
+        font-size: var(--textJumbo);
+    }
+    p, p span, h6 span, a.from-them-clock, .from-them, a.from-me-clock, .from-me {
+        font-size: var(--textSM) !important;
+    }
+    h6, span {
+        font-size: var(--textXMD);
+    }
+    .info-box, label {
+        font-size: var(--textMD) !important;
+    }
+
+    .event-status, .event-views, .event-created-at, .event-heading, .btn {
+        font-size: var(--textMD) !important;
+    }
+    input, footer p, .card-body {
+        font-size: var(--textXMD) !important;
+    }
+    h5{
+        font-size: var(--textLG);
+    }
+    .btn-accordion-custom{
+        font-size: var(--textLG) !important;
+    }
+    .quick-action-text {
+        font-size: var(--textXLG) !important;
+    }
+    .img.nodata-icon {
+        height: 160px !important;
+    }
+
+    .btn-config-holder{
+        display: inline-block !important;
+    }
+
+    .modal {
+        top: 5vh;
+        padding-inline: var(--spaceMD);
+    }
+    .warning-draft, .total-my-event {
+        top: 10px !important;
+        padding: var(--spaceSM) !important;
+        padding-inline: var(--spaceXMD) !important;
+        right: 7.5px !important;
+        font-size: var(--textXMD) !important;
+    }
+
+    .btn-mobile-control {
+        position: fixed;
+        background: var(--primaryColor);
+        z-index: 1000;
+        bottom: 2vh;
+        right: 2vh;
+        height: 55px;
+        width: 55px;
+        color: var(--whiteColor) !important;
+        font-size: var(--textLG);
+        border-radius: var(--roundedCircle);
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+    .custom-close-modal {
+        top: var(--spaceSM);
+        background: var(--warningBG);
+        color: var(--whiteColor);
+    }
+
+    .event-heading {
+        position: absolute;
+        top: 40px;
+        width: 100%;
+    }
+    .event-heading .user-image-content {
+        position: absolute;
+        top: -5px;
+        left: 5px;
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .event-heading .event-title, .event-heading .event-subtitle {
+        position: absolute;
+        top: 0;
+        left: 50px;
+    }
+    .event-body .event-desc {
+        position: absolute;
+        top: 50px;
+    }
+    .event-body .event-properties {
+        position: absolute;
+        bottom: 5px !important;
+    }
+
+    th, .table-responsive {
+        font-size: var(--textMD);
+    }
+    td, .dataTables_info {
+        font-size: var(--textSM);
+    }
+    table.table-paginate {
+        display: flex; 
+        flex-direction: column; 
+        max-width: 100vh; 
+        overflow-x: scroll;
+    }
+
+    .paginate_button {
+        font-size: var(--textMD);
+    }
+
+    .content-section header {
+        height: 70px !important;
+    }
+
+    .toast {
+        position: fixed;
+        top: 120px;
+        width: 90%;
+        margin-inline: var(--spaceLG);
+        left: 0;
+        z-index: 999 !important;
+    }
+}
+
+/* Tablet style */
+@media (min-width: 768px) and (max-width: 1023px) {
+    
+}
+
 body{
     font-family: 'Poppins', sans-serif !important;
 }
@@ -101,6 +232,9 @@ th{
     min-height: 80px;
     padding: var(--spaceXMD);
     border-radius: var(--roundedJumbo);
+}
+.card-body {
+    position: relative;
 }
 
 /* Layout */
@@ -210,7 +344,6 @@ th{
 }
 .dd-profil .dropdown-item{
     color: #808080;
-    font-weight: 500;
     padding: var(--spaceSM) var(--spaceSM) var(--spaceSM) 20px;
 }
 .dd-profil .dropdown-menu li{

@@ -35,12 +35,12 @@
 .calendar-tag-holder {
     position: absolute; 
     right: 20vh; 
-    z-index:999;
+    z-index:99;
 }
 .calendar-tag-holder .btn-primary{
     background: #FFDEB4 !important;
     color: var(--primaryColor) !important;
-    z-index: 998 !important;
+    z-index: 99 !important;
 }
 
 /* Day Grid */
@@ -97,7 +97,6 @@ table.fc-scrollgrid.fc-scrollgrid-liquid{
     border-radius: 10px; /*Fix this shit*/
 }
 th.fc-col-header-cell.fc-day a{
-    font-weight: 500;
     font-size: var(--textXLG);
     color: #000000;
 }
@@ -186,4 +185,34 @@ td.fc-daygrid-day.fc-day{
     margin-right: var(--spaceXXSM);
     font-size: var(--textMD);
     font-weight: 400;
+}
+
+/* Mobile style */
+@media (max-width: 767px) {
+    #calendar {
+        width: 1100px !important;
+    }
+    #calendar a{
+        font-size: var(--textXMD);
+    }
+    .calendar-holder {
+        display: flex; 
+        flex-direction: column; 
+        max-width: 100vh; 
+        overflow-x: scroll;
+    }
+    .fc-toolbar-title {
+        font-size: var(--textLG) !important;
+        position: absolute;
+        left: 30px !important;
+        top: -10px;
+        white-space: nowrap;
+    }
+    th.fc-col-header-cell.fc-day {
+        padding: var(--spaceMini);
+    }
+    .calendar-tag-holder {
+        top: var(--spaceJumbo);
+        left: var(--spaceMD);
+    }
 }

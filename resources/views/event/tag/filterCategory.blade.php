@@ -1,4 +1,4 @@
-<div class="position-absolute" style="top:25px; left:110px;">
+<div class="position-absolute" style="@if(!$isMobile) top:25px; @else top:20px; @endif  left:110px;">
     <div class="mb-2" style="font-size:15px;">
         <label for="tag_category" >Show Category</label>
         <form action="/event/tag/filter_category" method="POST">

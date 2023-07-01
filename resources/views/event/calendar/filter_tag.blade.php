@@ -1,6 +1,6 @@
-<div class="position-relative me-2">
-    <button class="btn btn-primary px-3" type="button" style="z-index:100 !important;" id="section-select-tag" data-bs-toggle="dropdown"
-        ><i class="fa-solid fa-hashtag"></i> 
+<div class="position-relative me-1">
+    <button class="btn btn-primary px-3 py-2" type="button" id="section-select-tag" data-bs-toggle="dropdown"
+        ><i class="fa-solid fa-hashtag"></i>
         @php($tag_coll = session()->get('selected_tag_calendar'))
         @if($tag_coll != "All")
             {{count($tag_coll)}} Selected Tags

@@ -33,12 +33,19 @@
 
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -48,26 +55,34 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
+                    @if(!$isMobile)
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
+                            @endif
                             <div class="content-section p-0 pt-3">
                                 <h5 class="mx-3">Chart Range</h5><hr>
                                 @include('setting.chart')
                             </div>
+                        @if(!$isMobile)
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
+                        @endif
                             <div class="content-section p-0 pt-3">
                                 <h5 class="mx-3">Task Scheduling Range</h5><hr>
                                 @include('setting.jobs')
                             </div>
+                        @if(!$isMobile)
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
+                        @endif
                             <div class="content-section p-0 pt-3">
                                 <h5 class="mx-3">LandingPage Range</h5><hr>
                                 @include('setting.landing')
                             </div>
+                        @if(!$isMobile)
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

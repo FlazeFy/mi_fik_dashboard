@@ -1,4 +1,4 @@
-<p class="my-1 text-secondary" style="font-size:14px;">Active filters : 
+<p class="my-1 text-secondary" style="@if(!$isMobile) font-size:14px; @endif">Active filters : 
     @php($tag_coll = session()->get('selected_tag_calendar'))
     @php($date = session()->get('filtering_date'))
     @php($order = session()->get('ordering_event'))

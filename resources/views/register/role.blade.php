@@ -293,7 +293,6 @@
                 }
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                console.log(response.body)
                 msg_all_role.innerHTML = msg_error;
                 validate("role");
             }

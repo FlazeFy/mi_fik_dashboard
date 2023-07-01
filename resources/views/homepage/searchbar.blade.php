@@ -1,4 +1,4 @@
-<div style="position:absolute; right:0;" class="row">
+<div style="@if(!$isMobile) position:absolute; right:0; @else margin-top:var(--spaceMD); @endif" class="row">
     <div class="col-2">
         <button class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -38,14 +38,5 @@
     function resetTitleSearch(){
         sessionStorage.setItem('search', '')
         location.reload()
-    }
-
-    function submitOnEnter(event) {
-        if (event.keyCode === 13) { 
-            event.preventDefault(); 
-            checkTitleSearch();
-            return false; 
-        }
-        return true; 
     }
 </script>

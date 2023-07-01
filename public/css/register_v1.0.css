@@ -25,7 +25,7 @@
     padding: calc(var(--spaceXMD) + 2px) calc(var(--spaceXLG) + 2px);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     border-radius: 18px;
-    min-height: 60vh;
+    min-height: 70vh;
     margin-top: var(--spaceMD);
     position: relative;
 }

@@ -1,0 +1,7 @@
+/* Mobile style */
+@media (max-width: 767px) {
+    .chart-mobile-holder {
+        max-width: auto !important;
+        overflow-x: auto !important;
+    }
+}
