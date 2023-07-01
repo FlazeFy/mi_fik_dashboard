@@ -50,7 +50,7 @@
             ?>
         ],
         chart: {
-        width: 360,
+        width: <?php if(!$isMobile){echo'360';} else {echo'300';} ?>,
         type: 'pie',
     },
     labels: [

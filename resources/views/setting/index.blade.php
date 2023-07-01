@@ -55,26 +55,34 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
+                    @if(!$isMobile)
                     <div class="row">
                         <div class="col-lg-4 col-md-6 col-sm-12">
+                            @endif
                             <div class="content-section p-0 pt-3">
                                 <h5 class="mx-3">Chart Range</h5><hr>
                                 @include('setting.chart')
                             </div>
+                        @if(!$isMobile)
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
+                        @endif
                             <div class="content-section p-0 pt-3">
                                 <h5 class="mx-3">Task Scheduling Range</h5><hr>
                                 @include('setting.jobs')
                             </div>
+                        @if(!$isMobile)
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
+                        @endif
                             <div class="content-section p-0 pt-3">
                                 <h5 class="mx-3">LandingPage Range</h5><hr>
                                 @include('setting.landing')
                             </div>
+                        @if(!$isMobile)
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
