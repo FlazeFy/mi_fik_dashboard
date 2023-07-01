@@ -127,12 +127,14 @@ function getUsername(username1, username2){
         } else {
             return "@"+username1;
         }
-    } else {
+    } else if (username2){
         if(username2 == myname){
             return "You";
         } else {
             return "@"+username2;
         }
+    } else {
+        return "<span class='text-danger'>Unknown User</span>"
     }
 }
 

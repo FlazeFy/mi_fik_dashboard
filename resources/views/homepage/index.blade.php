@@ -44,7 +44,7 @@
         <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
 
         <!-- JS Collection -->
-        <!-- <script src="{{ asset('/js/minicalendar_v1.0.js')}}"></script> -->
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
@@ -53,6 +53,12 @@
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())        
+
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -62,34 +68,71 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                    <div class="container-fluid bg-transparent @if(!$isMobile) my-3 @endif py-2 px-0">
                         <div class="position-relative">
-                            <div class="row mt-3"> 
-                                @if(session()->get("role_key") == 0)
-                                    <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
-                                        @include('homepage.addevent_form.layout')
+                            @if(!$isMobile)
+                                <div class="row mt-3"> 
+                                    @if(session()->get("role_key") == 0)
+                                        <div class="col-lg-6 col-md-6 col-sm-6 pb-2">
+                                            @include('homepage.addevent_form.layout')
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-6 pb-2">
+                                            @include('homepage.myevent.layout')
+                                        </div>
+                                    @else
+                                        <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
+                                            @include('homepage.addevent_form.layout')
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 col-sm-6 pb-2">
+                                            @include('homepage.addAnnouncement')
+                                        </div>
+                                        <div class="col-lg-4 col-md-6 col-sm-12 pb-2">
+                                            @include('homepage.myevent.layout')
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="mt-2 btn-config-holder">
+                                    @include('event.calendar.filter_tag')
+                                    @include('homepage.sorting')
+                                    @include('homepage.datefilter')
+                                    @include('homepage.searchbar')
+                                </div>
+                            @else 
+                                <button type="button" class="btn btn-mobile-control" data-bs-toggle="modal" data-bs-target="#controlModal">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <div class="modal fade" id="controlModal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content p-4"> 
+                                            @if(session()->get("role_key") == 0)
+                                                <div class="mb-3">
+                                                    @include('homepage.addevent_form.layout')
+                                                </div>
+                                                @include('homepage.myevent.layout')
+                                            @else
+                                                @include('homepage.addevent_form.layout')
+                                                @include('homepage.addAnnouncement')
+                                                @include('homepage.myevent.layout')
+                                            @endif
+                                        </div>
                                     </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-12 pb-2">
-                                        @include('homepage.myevent.layout')
+                                </div>
+                                <div class="mt-1 btn-config-holder">
+                                    <div class="d-inline-block w-100">
+                                        @include('homepage.searchbar')
                                     </div>
-                                @else
-                                    <div class="col-lg-4 col-md-6 col-sm-12 pb-2">
-                                        @include('homepage.addevent_form.layout')
+                                    <div class="d-inline-block mt-2">
+                                        @include('event.calendar.filter_tag')
                                     </div>
-                                    <div class="col-lg-4 col-md-6 col-sm-12 pb-2">
-                                        @include('homepage.addAnnouncement')
+                                    <div class="d-inline-block">
+                                        @include('homepage.sorting')
                                     </div>
-                                    <div class="col-lg-4 col-md-6 col-sm-12 pb-2">
-                                        @include('homepage.myevent.layout')
+                                    <div class="d-inline-block">
+                                        @include('homepage.datefilter')
                                     </div>
-                                @endif
-                            </div>
-                            <div class="mt-2 btn-config-holder">
-                                @include('event.calendar.filter_tag')
-                                @include('homepage.sorting')
-                                @include('homepage.datefilter')
-                                @include('homepage.searchbar')
-                            </div>
+                                </div>
+                            @endif
+                           
                             @include('components.activefilter')
                 
                             @include('homepage.event')

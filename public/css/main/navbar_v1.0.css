@@ -136,3 +136,26 @@
         display: none;
     }
 }
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .navbar-holder {
+        margin-top: var(--spaceSM) !important;
+    }
+    .navbar-image {
+        position: absolute;
+        right: 0;
+    }
+    .btn-close-sidebar{
+        width: 50px;
+        height: 50px;
+        font-size: var(--textLG) !important;
+        position: fixed;
+        right: var(--spaceXLG);
+        z-index: 1000 !important;
+        color: var(--whiteColor) !important;
+        border-radius: var(--roundedCircle);
+        background: var(--warningBG);
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+}

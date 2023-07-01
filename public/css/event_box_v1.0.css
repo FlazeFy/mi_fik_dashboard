@@ -140,9 +140,6 @@
         margin-left:35%;
     }
 }
-/* @media screen and (max-width: 768px) {
-    
-} */
 .ajax-load{
     padding: var(--spaceSM) 0px;
     width: 100%;

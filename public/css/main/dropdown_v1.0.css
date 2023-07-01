@@ -48,3 +48,11 @@
     font-weight: 500;
     font-size: var(--textMD);
 }
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .filter-section.dropdown-menu {
+        width: 90vw !important;
+        margin-inline: var(--spaceXMD) !important;
+    }
+}

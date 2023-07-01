@@ -1,6 +1,6 @@
-<div class="position-relative ms-2">
-    <button class="btn btn-primary px-3" type="button" id="section-date-picker" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false"><i class="fa-solid fa-calendar"></i> Filter Date 
+<div class="position-relative ms-1">
+    <button class="btn btn-primary px-3 py-2" type="button" id="section-date-picker" data-bs-toggle="dropdown" aria-haspopup="true"
+        aria-expanded="false"><i class="fa-solid fa-calendar"></i>@if(!$isMobile) Filter Date @endif 
     </button>
     <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-date-picker">
         <span class="filter-section dropdown-item p-0">
