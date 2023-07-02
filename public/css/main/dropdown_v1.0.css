@@ -55,4 +55,9 @@
         width: 90vw !important;
         margin-inline: var(--spaceXMD) !important;
     }
+    .dropdown-menu.dropdown-menu-end.mobile-control {
+        width: auto;
+        position: fixed !important;
+        inset: auto auto var(--spaceXMD) -10px !important;
+    }
 }

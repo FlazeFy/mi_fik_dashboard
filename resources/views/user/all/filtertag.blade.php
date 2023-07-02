@@ -1,4 +1,4 @@
-<div class="position-relative me-2">
+<div class="position-relative me-1">
     <button class="btn btn-primary px-3" type="button" id="section-select-tag" data-bs-toggle="dropdown"
         ><i class="fa-solid fa-hashtag"></i> 
         @php($tag_coll = session()->get('selected_role_user'))

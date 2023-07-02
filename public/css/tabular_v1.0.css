@@ -8,7 +8,7 @@
 .tabular-item .properties h6{
     margin: 0;
 }
-.tabular-item .properties a {
+.tabular-item .properties a, .tabular-item .properties a span{
     font-size: var(--textMD);
 }
 .tabular-item .email:hover{
@@ -46,3 +46,10 @@
 .page-item .page-link{
     color:#414141;
 }    
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .tabular-role-holder span, td.properties h6, td.properties a{
+        font-size: var(--textSM);
+    }
+}

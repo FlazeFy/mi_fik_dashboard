@@ -64,7 +64,7 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
                     
-                    <div class="mt-4 btn-config-holder">
+                    <div class="mt-4 btn-config-holder w-100">
                         @include('user.group.create')
                         <div class="ms-1">
                             @include('user.group.searchbar')

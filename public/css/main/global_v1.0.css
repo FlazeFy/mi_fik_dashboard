@@ -55,7 +55,7 @@
     h6, span {
         font-size: var(--textXMD);
     }
-    .info-box, label {
+    .info-box, label, .form-select {
         font-size: var(--textMD) !important;
     }
 
@@ -111,6 +111,7 @@
         top: var(--spaceSM);
         background: var(--warningBG);
         color: var(--whiteColor);
+        z-index: 999;
     }
 
     .event-heading {
@@ -167,6 +168,18 @@
         margin-inline: var(--spaceLG);
         left: 0;
         z-index: 999 !important;
+    }
+
+    .page-holder {
+        font-size: var(--textMD) !important;
+    }
+
+    .carousel-control-next {
+        color: var(--primaryColor) !important;
+        opacity: 1;
+        position: absolute;
+        top: calc(var(--spaceMD) + 2px);
+        right: calc(0px - var(--spaceSM));
     }
 }
 

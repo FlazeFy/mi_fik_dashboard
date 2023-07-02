@@ -18,17 +18,17 @@
     }
 </style>
 
+<h6 class="mt-1">Page</h6>
+<div id="group_navigate"></div>
 <div class="table-responsive">
-    <h6 class="mt-1">Page</h6>
-    <div id="group_navigate"></div>
     <table class="table tabular">
         <thead>
             <tr>
                 <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-                <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
+                <th scope="col" style="min-width:200px;">Description @include('user.group.sorting.groupdesc')</th>
                 <th scope="col">Total Member @include('user.group.sorting.total')</th>
-                <th scope="col">Properties @include('user.group.sorting.created')</th>
-                <th scope="col">Manage</th>
+                <th scope="col" style="min-width:140px;">Properties @include('user.group.sorting.created')</th>
+                <th scope="col" style="min-width:110px;">Manage</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body w-100" id="group-list-holder">

@@ -26,20 +26,31 @@
     font-weight: 400;
     margin: 0;
 }
-.user-box-date{
+.user-box-date {
     font-size: var(--textSM);
     font-weight: 400;
     color: #808080;
     margin: 0;
 }
-.detail-box{
+.detail-box {
     height: 70vh;
 }
-.scroll-role{
+.scroll-role {
     margin: 0;
     padding: 0;
     display: flex;
     max-height: 50vh;
     flex-direction: column;
     overflow-y: scroll;
+}
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .incoming-req-box {
+        height: auto;
+        padding-inline: var(--spaceXXSM);
+    }
+    ol li {
+        font-size: var(--textXMD);
+    }
 }

@@ -8,20 +8,32 @@
 
 <div class="incoming-req-box">
     <h5 class="text-secondary fw-bold"><span class="text-primary" id="total_new_req"></span> New User</h5>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:15px; top:0px;" type="button" id="section-more-new-req" data-bs-toggle="dropdown" aria-haspopup="true"
+    
+    @if(!$isMobile)
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0px;" type="button" id="section-more-new-req" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-new-req">
+    @else 
+    <button type="button" class="btn btn-mobile-control bg-info" id="section-more-new-req" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-gear"></i>
+    </button>
+    @endif
+
+    <div class="dropdown-menu dropdown-menu-end @if($isMobile) mobile-control @endif" aria-labelledby="section-more-new-req">
         <a class="dropdown-item" data-bs-target="#newUserRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc_new">Accept Selected</span></a>
         <a class="dropdown-item" data-bs-toggle="modal" id="rej_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_rej_new">Reject Selected</span></a>
         <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_tag_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-hashtag text-success"></i> <span class="text-success" id="total_acc_new_tag">Accept Selected & With Tag</span></a>
     </div>
 
+    @if($isMobile)
+        @include('user.request.control.searchbarnew')
+    @endif
+
     @include('popup.mini_help', ['id' => 'newUserRequest', 'title'=> 'New User Request', 'location'=>'new_role_request'])
 
-    <div class="user-req-holder" id="data_wrapper_new_req">
+    <div class="@if(!$isMobile) user-req-holder @else pt-2 @endif" id="data_wrapper_new_req">
         <div class="auto-load-new text-center">
             <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
         </div>

@@ -64,13 +64,27 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="mt-4 btn-config-holder">
-                        @include('user.all.filtertag')
-                        @include('user.all.filtername')
-                        <div class="ms-3">
-                            @include("user.searchbar")
+                    @if(!$isMobile)
+                        <div class="mt-4 btn-config-holder">
+                            @include('user.all.filtertag')
+                            @include('user.all.filtername')
+                            <div class="ms-3">
+                                @include("user.searchbar")
+                            </div>
                         </div>
-                    </div>
+                    @else 
+                        <div class="mt-4 btn-config-holder">
+                            <div class="d-inline-block w-100">
+                                @include("user.searchbar")
+                            </div>
+                            <div class="d-inline-block">
+                                @include('user.all.filtertag')
+                            </div>
+                            <div class="d-inline-block">
+                                @include('user.all.filtername')
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="content-section-small mt-3">
                         @include('user.all.list')
