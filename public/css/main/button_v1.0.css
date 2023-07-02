@@ -396,3 +396,10 @@
 .btn-delete-custom:disabled{
     opacity: 1;
 }
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .btn-danger, .btn-success, .btn-info {
+        font-size: var(--textXMD) !important;
+    }
+}

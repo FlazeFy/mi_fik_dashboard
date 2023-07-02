@@ -43,13 +43,12 @@ class ContentSchedule
             ArchiveRelation::where('content_id', $cts->id)->delete();
         }
 
-        if($contents > 0){
+        if(count($contents) > 0){
             $context = "Successfully removed ".count($contents)." content modules with ".$days." days as it days limiter";
         } else {
             $context = "No data removed from content modules with ".$days." days as it days limiter";
         }
 
-        // Fix the mail problem on staging first
         $admin = Admin::all();
         $body = "the system just cleaned some data";
 
@@ -67,12 +66,12 @@ class ContentSchedule
             $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
             $messaging = $factory->createMessaging();
 
-            $content = ContentHeader::select("content_title","content_tag","content_date_start","content_date_end","content_reminder")
+            $content = ContentHeader::select("contents_headers.id","content_title","content_tag","content_date_start","content_date_end","content_reminder")
                 ->join("contents_details","contents_headers.id","=","contents_details.content_id")
                 ->orderBy('contents_headers.content_date_start', "DESC")
                 ->where('is_draft', 0)
                 ->where('content_reminder','!=','reminder_none')
-                ->whereRaw('(DATEDIFF(content_date_end, now()) * -1) < 1')
+                ->whereRaw('(DATEDIFF(content_date_start, now()) * -1) < 3') // Give max range based on reminder opt
                 ->whereNull('contents_headers.deleted_at')
                 ->whereNotNull('content_tag')
                 ->get();
@@ -154,6 +153,10 @@ class ContentSchedule
                                                 ]);
                                             $response = $messaging->send($message);
                                             $userReminded++;
+
+                                            ContentHeader::where('id',$ct->id)->update([
+                                                "content_reminder" => "reminder_none"
+                                            ]);
                                         } else {
                                             User::where('id', $us->id)->update([
                                                 "firebase_fcm_token" => null
@@ -176,14 +179,13 @@ class ContentSchedule
 
             $total = $threeHr + $oneHr + $oneDay + $threeDay;
             if($total > 0){
-                $context = "Successfully reminded ".$total." event. About ".$userReminded." users has reminded";
+                $context = "Successfully reminded ".$total." event, about ".$userReminded." users has reminded, and finished checked ".count($content)." events";
             } else if($total == 0 && $content != null){
-                $context = "No event has reminded to user. Successfully checked ".$total." events";
+                $context = "No event has reminded to user. Successfully checked ".count($content)." events";
             } else {
                 $context = "No event has reminder active";
             }
     
-            // Fix the mail problem on staging first
             $admin = Admin::all();
             $body = "the system just checking some event";
             

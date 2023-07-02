@@ -3,20 +3,33 @@
         .ql-container.ql-snow{
             height: 50vh !important;
         }
+        .toogle-edit-about{
+            position: absolute;
+            margin-top: 15px;
+            margin-inline: 6px;
+            min-width: 50px;
+            padding: var(--spaceSM) var(--spaceLG); 
+            font-size: var(--textLG) !important;  
+        }
     </style>   
     @if(session()->get('toogle_edit_app') == "true")
         <div class="position-relative">
             <form class="d-inline position-absolute" style="right: 0; top:-15px;" method="POST" action="/about/toogle/app/false">
                 @csrf
-                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Cancel Edit</button>
+                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) Cancel Edit @endif</button>
             </form>
-            <form class="d-inline" method="POST" action="/about/edit/app">
+            <form class="d-inline @if($isMobile) px-2 @endif" method="POST" action="/about/edit/app">
                 @csrf
                 @foreach($about as $ab)
-                    <a class="fst-italic text-decoration-none text-primary" style="font-size:14px; position:absolute; margin-left: 20px; top:10px; width:340px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                    @if(!$isMobile)
+                        <a class="last-updated" style="top:20px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                    @else
+                        <a class="last-updated" style="top:0;"><span class="text-primary">Last Updated :</span></a>
+                        <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                    @endif
                 @endforeach
                 <input name="help_body" id="about_body" hidden>
-                <button class="btn btn-success rounded-pill mt-3 px-3 py-2 position-absolute" style="right:160px; top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+                <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:160px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) Save Changes @endif</button>
             </form><br><br>
             <div id="rich_box">
                 <?php
@@ -30,7 +43,7 @@
         <div class="px-4 position-relative">
             <form class="d-inline" method="POST" action="/about/toogle/app/true">
                 @csrf
-                <button class="btn btn-info rounded-pill mt-3 px-3 py-2 position-absolute" type="submit" style="right:10px; top:-20px;"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-20px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) Edit @endif</button>
             </form>
             <?php
                 foreach($about as $ab){ 

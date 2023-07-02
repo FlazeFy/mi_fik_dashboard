@@ -23,13 +23,12 @@ class HistorySchedule
         $schedule = History::whereDate('created_at', '<', Carbon::now()->subDays($days))
             ->delete();
 
-        if($schedule > 0){
+        if(count($schedule) > 0){
             $context = "Successfully removed ".$schedule." history with ".$days." days as it days limiter";
         } else {
             $context = "No data removed from history with ".$days." days as it days limiter";
         }
 
-        // Fix the mail problem on staging first
         $admin = Admin::all();
         $body = "the system just cleaned some data";
         

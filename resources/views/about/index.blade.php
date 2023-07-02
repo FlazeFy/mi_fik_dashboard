@@ -80,7 +80,7 @@
 
                                 @include('components.controlsection', ['type' => "vertical"])
                             </header>
-                            <div class="p-3">
+                            <div class="@if(!$isMobile) p-3 @else px-2 @endif">
                                 <div class="row">
                                     @if($st == "about us")
                                         @if(session()->get('role_key') == 1)

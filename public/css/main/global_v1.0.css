@@ -59,7 +59,7 @@
         font-size: var(--textMD) !important;
     }
 
-    .event-status, .event-views, .event-created-at, .event-heading, .btn {
+    .event-status, .event-views, .event-created-at, .event-heading, .last-updated {
         font-size: var(--textMD) !important;
     }
     input, footer p, .card-body {
@@ -386,6 +386,14 @@ th{
 }
 .dropdown-menu.normal .dropdown-item:hover{
     background: #e9ecef !important;
+}
+
+.last-updated {
+    font-size: var(--textMD);
+    color: var(--primaryColor);
+    font-style: italic !important;
+    text-decoration: none;
+    position: absolute;
 }
 
 
