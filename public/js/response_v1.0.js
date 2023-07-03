@@ -17,6 +17,6 @@ function failResponse(jqXHR, ajaxOptions, thrownError, holder, is_modal, add_tex
             $(holder).html("<div class='err-msg-data d-block mx-auto text-center'><img src='http://127.0.0.1:8000/assets/nodata3.png' class='img' style='width:250px;'><h6 class='text-secondary text-center'>Unknown error. Please contact Admin</h6></div>");
         }
     } else {
-        // Do something stupid
+        // Do something
     }
 }

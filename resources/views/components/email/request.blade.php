@@ -32,6 +32,16 @@
                 margin-top: 10px;
                 margin-bottom: 10px;
             }
+            .btn-tag{
+                background : #FB8C00;
+                color: #F5F5F5;
+                font-size: 15px;
+                padding: 8px;
+                margin-right: 5px;
+                margin-bottom: 4px;
+                border-radius: 10px;
+                text-decoration: none;
+            }
         </style>
     </head>
     <body class="bg">
@@ -54,9 +64,21 @@
                         <b style="{{$color}}">{{ucfirst($dt->request_type)}}</b>
                         @if($dt->tag_slug_name)
                             @php($tag = $dt->tag_slug_name)
-                            @foreach($tag as $tg)
-                                <a class="btn btn-tag">{{$tg['tag_name']}}</a>
-                            @endforeach
+                            @php($total = count($tag))
+                            @php($i = 0)
+
+                            @if($total > 1)
+                                @foreach($tag as $tg)
+                                    @if($i != $total - 1)
+                                        <b>#{{$tg['tag_name']}}, </b>
+                                    @else
+                                        and <b>#{{$tg['tag_name']}}</b>
+                                    @endif
+                                    @php($i++)
+                                @endforeach
+                            @else 
+                                <b>#{{$tag[0]['tag_name']}}</b>
+                            @endif
                         @endif
                     </li>
                 @endforeach

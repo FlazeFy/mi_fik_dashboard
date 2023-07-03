@@ -86,7 +86,7 @@ class ContentSchedule
             
             foreach($content as $ct){
                 // $now = date("Y-m-d H:i");
-                // $content_start = date("Y-m-d H:i", strtotime($ct->content_date_start)); // Check this shit
+                // $content_start = date("Y-m-d H:i", strtotime($ct->content_date_start)); // Check this
                 // $diff = $now->diff($content_start);
 
                 $now = new DateTime();

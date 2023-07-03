@@ -16,10 +16,6 @@ use App\Mail\RequestEmail;
 use App\Helpers\Generator;
 use Illuminate\Support\Facades\Mail;
 
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\Messaging\CloudMessage;
-use Kreait\Firebase\Messaging\Notification as FireNotif;
-
 class RequestSchedule
 {
     public static function remind_request()

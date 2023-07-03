@@ -283,7 +283,7 @@
                                             "<p class='task-desc mb-1 mt-3'>" + content_desc + "</p> " +
                                             "<div class='row d-inline-block px-2'> " +
                                                 getEventDate(content_date_start, content_date_end) +
-                                                getDaysRemaining(deleted_at, dtd_range) +
+                                                getDaysRemaining(deleted_at, dcd_range) +
                                             "</div> " +
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class='position-relative'> " +
@@ -347,7 +347,7 @@
                                             "<p class='task-desc mb-1'>" + content_tag + "</p> " +
                                             "<div class='row d-inline-block px-2'> " +
                                                 getEventDate(content_date_start, content_date_end) +
-                                                getDaysRemaining(deleted_at, dtd_range) +
+                                                getDaysRemaining(deleted_at, dcd_range) +
                                             "</div> " +
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class='position-relative'> " +
@@ -407,7 +407,7 @@
                                             "<p class='task-desc mb-1 mt-3'>" + content_desc + "</p> " +
                                             "<div class='row d-inline-block px-2'> " +
                                                 getEventDate(content_date_start, content_date_end) +
-                                                getDaysRemaining(deleted_at, dtd_range) +
+                                                getDaysRemaining(deleted_at, dcd_range) +
                                             "</div> " +
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
                                             "<div class='position-relative'> " +

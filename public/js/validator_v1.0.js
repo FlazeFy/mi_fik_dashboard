@@ -46,7 +46,7 @@ function validateForm(rules){
     }
 }
 
-// Check this shit
+// Check this 
 function validateFormSecond(rules){
     var input, msg;
     var res = true

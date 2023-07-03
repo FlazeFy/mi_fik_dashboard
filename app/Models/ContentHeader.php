@@ -28,8 +28,6 @@ class ContentHeader extends Model
         'content_loc' => 'array'
     ];
 
-    //Fix this stupid code LOL
-    //Should be use IN() instead of "WHERE & OR"
     public static function getAllContentFilter($selected, $role){
         if($role != 1){
             $user_id = Generator::getUserIdV2(0);

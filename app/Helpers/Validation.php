@@ -47,7 +47,7 @@ class Validation
             'content_time_start' => ['required', new TwoTimeFormats],
             'content_time_end' => ['required', new TwoTimeFormats],
             'content_reminder' => 'required|string|max:75',
-            //'content_image' => 'nullable|string|max:255' //Check this shit
+            //'content_image' => 'nullable|string|max:255' //Check this
         ]);
     }
 
