@@ -1,5 +1,7 @@
 <style>
-    
+    .form-select {
+        font-size: var(--textSM);
+    }
 </style>
 
 <div class="detail-box">

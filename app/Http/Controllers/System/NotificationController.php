@@ -134,7 +134,7 @@ class NotificationController extends Controller
 
                         foreach($users as $us){
                             $result = DB::table("users")
-                                ->selectRaw("id, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token")
+                                ->selectRaw("id, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name,firebase_fcm_token")
                                 ->where('username', $us->username)->first();
                             $list_user_holder[] = [
                                 "id" => $result->id,
@@ -182,7 +182,7 @@ class NotificationController extends Controller
 
                         foreach($groups as $gs){
                             $result = DB::table("users_groups")
-                                ->selectRaw("users_groups.id, user_id, username, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token")
+                                ->selectRaw("users_groups.id, user_id, username, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name,firebase_fcm_token")
                                 ->join("groups_relations","groups_relations.group_id","=","users_groups.id")
                                 ->join("users","users.id","=","groups_relations.user_id")
                                 ->where("slug_name", $gs->slug)
@@ -252,7 +252,7 @@ class NotificationController extends Controller
                         $list_user_holder = [];
                     
                         $result = DB::table("users")
-                            ->selectRaw("id, username, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token,role");
+                            ->selectRaw("id, username, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name,firebase_fcm_token,role");
 
                         $arr_roles = "";
                         $total = count($roles);
