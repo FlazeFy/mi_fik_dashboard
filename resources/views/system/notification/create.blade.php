@@ -570,8 +570,13 @@
         var find = document.getElementById("group_search").value;
         document.getElementById("group-list-holder").innerHTML = "";
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/group/limit/5/order/" + order + "/find/" + getFind(find) + "?page=" + page,
+            url: "/api/v1/group/limit/"+per_page+ "/order/" + order + "/find/" + getFind(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -615,10 +620,10 @@
                     var totalMember = data[i].total;
 
                     var elmt = " " +
-                        '<a class="btn user-box py-3" style="height:90px;" onclick=""> ' +
+                        '<a class="btn user-box py-3" style="height:110px;" onclick=""> ' +
                             '<div class="position-relative ps-2"> ' +
                                 '<h6 class="text-secondary fw-normal">' + groupName + '</h6> ' +
-                                '<h6 class="text-secondary fw-bold mb-0" style="font-size:13px;">' + groupDesc + '</h6> ' +
+                                '<h6 class="text-secondary mb-0 available-desc">' + groupDesc + '</h6> ' +
                                 getTotalMember(totalMember) + 
                                 '<div class="form-check position-absolute" style="right: 20px; top: 10px;"> ' +
                                     '<input class="form-check-input" name="user_username[]" value="' + slug + '" type="checkbox" style="width: 25px; height:25px;" id="check_group_'+ slug +'" onclick="addSelectedGroup('+"'"+slug+"'"+', '+"'"+groupName+"'"+', this.checked)"> ' +
@@ -642,8 +647,13 @@
     function infinteLoadRole(page_role_list) {       
         document.getElementById("role-list-holder").innerHTML = "";
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/tag/cat/" + tag_cat + "/12?page=" + page_tag,
+            url: "/api/v1/tag/cat/" + tag_cat + "/"+per_page+ "?page=" + page_tag,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -732,8 +742,13 @@
         var find = document.getElementById("title_search").value;
         //document.getElementById("user-list-holder").innerHTML = "";
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/15/order/" + order + "/slug/all?page=" + page,
+            url: "/api/v1/user/" + getFind(name_filter, find) + "/limit/"+per_page+ "/order/" + order + "/slug/all?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

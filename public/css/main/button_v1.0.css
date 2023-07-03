@@ -219,10 +219,12 @@
     border:1.5px solid var(--primaryColor);
     text-decoration:none !important;
     cursor: pointer;
-    padding:var(--spaceMini) var(--spaceSM);
-    margin:0;
+    padding:var(--spaceXSM) var(--spaceXMD);
+    margin: var(--spaceXMD) 0 var(--spaceXMD) 0;
     border-radius:6px;
     font-size: var(--textMD);
+    display: block;
+    margin-inline: auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .content-more-floating:hover{

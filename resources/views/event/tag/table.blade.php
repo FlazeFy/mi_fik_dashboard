@@ -11,11 +11,10 @@
     }
     .input-custom:hover, .input-custom:focus{
         background:#f0f0f0;
-    }
-    
-    /*Icon color must change on input focus*/
+    }    
 </style>
 
+<h5 class="section-title">All Tag</h5>
 <div class="@if(!$isMobile) table-responsive @endif ">
     @include('event.tag.filterCategory')
     <table class="table table-paginate" id="tagTable" cellspacing="0">

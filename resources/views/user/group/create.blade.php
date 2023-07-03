@@ -170,8 +170,13 @@
         var find = document.getElementById("title_search").value;
         document.getElementById("user-list-holder").innerHTML = "";
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/user/" + getFindUser(find) + "/limit/15/order/first_name__DESC/slug/all?page=" + page,
+            url: "/api/v1/user/" + getFindUser(find) + "/limit/"+per_page+ "/order/first_name__DESC/slug/all?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

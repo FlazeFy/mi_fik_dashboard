@@ -18,17 +18,16 @@
     }
 </style>
 
-<h6 class="mt-1">Page</h6>
-<div id="group_navigate"></div>
+<h5 class="section-title">All Group</h5>
 <div class="table-responsive">
     <table class="table tabular">
         <thead>
             <tr>
                 <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-                <th scope="col" style="min-width:200px;">Description @include('user.group.sorting.groupdesc')</th>
-                <th scope="col">Total Member @include('user.group.sorting.total')</th>
-                <th scope="col" style="min-width:140px;">Properties @include('user.group.sorting.created')</th>
-                <th scope="col" style="min-width:110px;">Manage</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Description @include('user.group.sorting.groupdesc')</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Total Member @include('user.group.sorting.total')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Properties @include('user.group.sorting.created')</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">Manage</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body w-100" id="group-list-holder">
@@ -40,8 +39,9 @@
         </tbody>
     </table>
     <div id="empty_item_holder"></div>
-
 </div>
+<h6 class="mt-1">Page</h6>
+<div id="group_navigate"></div>
 
 <script>
     var pageGroup = 1;
@@ -68,9 +68,14 @@
         var order = '<?= session()->get('ordering_group_list'); ?>';
         var find = document.getElementById("group_search").value;
         document.getElementById("group-list-holder").innerHTML = "";
+
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
     
         $.ajax({
-            url: "/api/v1/group/limit/25/order/" + order + "/find/" + getFind(find) + "?page=" + page,
+            url: "/api/v1/group/limit/"+per_page+ "/order/" + order + "/find/" + getFind(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -330,8 +335,13 @@
     function load_group_detail(slug) {        
         document.getElementById("manage-rel-holder-"+slug).innerHTML = "";
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/group/member/" + slug + "/20?page=1",
+            url: "/api/v1/group/member/" + slug + "/"+per_page+ "?page=1",
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -409,8 +419,13 @@
         document.getElementById("user-ava-holder-"+slug).innerHTML = "";
         pageUserAva = page;
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/group/member/" + slug + "/" + getFindUserAva(find,slug) + "/limit/10/order/first_name__DESC?page=" + page,
+            url: "/api/v1/group/member/" + slug + "/" + getFindUserAva(find,slug) + "/limit/"+per_page+ "/order/first_name__DESC?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

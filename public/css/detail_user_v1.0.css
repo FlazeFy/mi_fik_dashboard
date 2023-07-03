@@ -19,7 +19,7 @@
     border: none;
     text-align: start;
     background: var(--whiteColor);
-    margin-bottom: var(--spaceXMD);
+    margin-bottom: var(--spaceMD);
 }
 .user-box-desc{
     font-size: var(--textSM);
@@ -52,5 +52,8 @@
     }
     ol li {
         font-size: var(--textXMD);
+    }
+    .user-box.request { 
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1.5px 4px;
     }
 }

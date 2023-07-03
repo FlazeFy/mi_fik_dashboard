@@ -39,6 +39,7 @@
     var no_values = {};
 </script>
 
+<h5 class="section-title">All Notification</h5>
 <div class="table-responsive">
     <table class="table table-paginate" id="notifTable" cellspacing="0">
         <thead>

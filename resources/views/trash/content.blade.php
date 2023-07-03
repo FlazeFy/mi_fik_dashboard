@@ -180,9 +180,6 @@
                                             "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyEvent-" + slug_name + "'> " +
                                                 "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                             "</a> " +
-                                            "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
-                                                "<input class='form-check-input' style='width:30px; height:30px;' name='event_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
-                                            "</div> " +
                                         "</div> " +
                                         "<div class='collapse' id='collapseInfo_event_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
                                             "<hr style='margin-bottom:10px; margin-top:10px;'> " +
@@ -234,9 +231,6 @@
                                                 "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroyTask-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
-                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
-                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
-                                                "</div> " +
                                             "</div> " +
                                             "<div class='collapse' id='collapseInfo_task_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
                                                 "<hr style='margin-bottom:10px; margin-top:10px;'> " +
@@ -302,9 +296,6 @@
                                                 "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy" + type + "-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
-                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
-                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
-                                                "</div> " +
                                             "</div> " +
                                             "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
                                                 "<hr style='margin-bottom:10px; margin-top:10px;'> " +
@@ -369,9 +360,6 @@
                                                 "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy" + type + "-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
-                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
-                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
-                                                "</div> " +
                                             "</div> " +
                                             "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
                                                 "<hr style='margin-bottom:10px; margin-top:10px;'> " +
@@ -432,9 +420,6 @@
                                                 "<a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy" + type + "-" + slug_name + "'> " +
                                                     "<i class='fa-solid fa-fire-flame-curved'></i> " +
                                                 "</a> " +
-                                                "<div class='form-check position-absolute' style='top:0; right:5px;'> " +
-                                                    "<input class='form-check-input' style='width:30px; height:30px;' name='task_check[]' type='checkbox' value='' id='check_task_"+ slug_name +"'> " +
-                                                "</div> " +
                                             "</div> " +
                                             "<div class='collapse' id='collapseInfo_tag_"+ slug_name +"' data-bs-parent='#data-wrapper'> " +
                                                 "<hr style='margin-bottom:10px; margin-top:10px;'> " +

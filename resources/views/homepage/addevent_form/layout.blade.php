@@ -27,7 +27,7 @@
         margin-top:9vh;
     }
     .quick-action-info{
-        font-size:16px;
+        font-size: var(--textXMD);
         color:#FFFFFF;
         transition: 0.5s;
         display:none;

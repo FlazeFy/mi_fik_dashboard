@@ -5,7 +5,7 @@
 <div class="detail-box">
     <form action="/user/request/manage_role_acc" method="POST">
         @csrf
-        <h5 class="text-secondary fw-bold"><span class="text-primary" id="detail_body"></span> Detail</h5>
+        <h5 class="section-title"><span class="text-primary" id="detail_body"></span> Detail</h5>
         <div class="user-req-holder" id="data_wrapper_user_detail">
             <!-- Loading -->
             <div class="auto-load text-center">

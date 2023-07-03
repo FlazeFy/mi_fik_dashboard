@@ -70,7 +70,7 @@
                             @include('user.group.searchbar')
                         </div>
                     </div>
-                    <div class="content-section position-relative mt-3">
+                    <div class="content-section position-relative p-3 mt-3">
                         @include('user.group.list')
                     </div>
                 </div>

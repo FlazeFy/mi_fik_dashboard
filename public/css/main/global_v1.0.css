@@ -29,6 +29,13 @@
     --spaceXXSM : 6px;
     --spaceMini : 4px;
 
+    /* Table column min width */
+    --tcolMinSM : 60px;
+    --tcolMinMD : 120px;
+    --tcolMinLG : 140px;
+    --tcolMinJumbo : 180px;
+    --tcolMinHuge : 360px;
+
     /* Color Pallete */
     --primaryLightBG : #FADFB9;
     --successBG : #00C363;
@@ -46,10 +53,7 @@
 
 /* Mobile style */
 @media (max-width: 767px) {
-    .quick-action-text {
-        font-size: var(--textJumbo);
-    }
-    p, p span, h6 span, a.from-them-clock, .from-them, a.from-me-clock, .from-me {
+    p, p span, h6 span, a.from-them-clock, .from-them, a.from-me-clock, .from-me, .input-group-text {
         font-size: var(--textSM) !important;
     }
     h6, span {

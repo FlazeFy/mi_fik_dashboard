@@ -69,7 +69,8 @@
     padding: 0;
     margin: 0;
 }
-.btn-accordion-custom{
+
+:not(#sidebar ul li) > .btn-accordion-custom{
     border: none;
     margin: 0;
     background: transparent;

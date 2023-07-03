@@ -1,5 +1,4 @@
-<h6 class="mt-1">Page</h6>
-<div id="user_navigate"></div>
+<h5 class="section-title">All User</h5>
 <div class="table-responsive">
     <table class="table tabular">
         <thead>
@@ -22,8 +21,9 @@
         </div>
     </table>
     <div id="empty_item_holder"></div>
-
 </div>
+<h6 class="mt-1">Page</h6>
+<div id="user_navigate"></div>
 
 <script>
     var pageUser = 1;
@@ -399,13 +399,18 @@
     function infinteLoadMoreTag(page_tag, username) { 
         var role = document.getElementById("user_tag_" + username).value;
         var roles = null;
+        var per_page = 24;
 
         if(role != null){
             roles = JSON.parse(role);
         }
 
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/tag/cat/" + tag_cat + "/12"+ "?page=" + page_tag,
+            url: "/api/v1/tag/cat/" + tag_cat + "/"+per_page+ "?page=" + page_tag,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
