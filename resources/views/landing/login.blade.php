@@ -133,4 +133,13 @@
             }
         });
     }
+
+    function submitOnEnter(event) {
+        if (event.keyCode === 13) { 
+            event.preventDefault(); 
+            login();
+            return false; 
+        }
+        return true; 
+    }
 </script>

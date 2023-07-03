@@ -4,15 +4,6 @@ function isMobile() {
     return key.test(navigator.userAgent);
 }
 
-function submitOnEnter(event) {
-    if (event.keyCode === 13) { 
-        event.preventDefault(); 
-        checkTitleSearch();
-        return false; 
-    }
-    return true; 
-}
-
 function storeLocal(name,val) {
     if (Array.isArray(val)) {
         val = JSON.stringify(val)

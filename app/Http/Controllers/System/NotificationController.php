@@ -32,30 +32,34 @@ class NotificationController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            //Required config
-            $select_1 = "Notification";
+        if($role == 1){
+            if($user_id != null){
+                //Required config
+                $select_1 = "Notification";
 
-            $notification = Notification::getAllNotification();
-            $dictionary = Dictionary::getDictionaryByType($select_1);
-            $greet = Generator::getGreeting(date('h'));
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("system");
+                $notification = Notification::getAllNotification();
+                $dictionary = Dictionary::getDictionaryByType($select_1);
+                $greet = Generator::getGreeting(date('h'));
+                $dct_tag = Dictionary::getDictionaryByType("Tag");
+                $menu = Menu::getMenu();
+                $info = Info::getAvailableInfo("system");
 
-            //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'notification');
+                //Set active nav
+                session()->put('active_nav', 'system');
+                session()->put('active_subnav', 'notification');
 
-            return view ('system.notification.index')
-                ->with('notification', $notification)
-                ->with('dictionary', $dictionary)
-                ->with('info', $info)
-                ->with('dct_tag', $dct_tag)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
+                return view ('system.notification.index')
+                    ->with('notification', $notification)
+                    ->with('dictionary', $dictionary)
+                    ->with('info', $info)
+                    ->with('dct_tag', $dct_tag)
+                    ->with('menu', $menu)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

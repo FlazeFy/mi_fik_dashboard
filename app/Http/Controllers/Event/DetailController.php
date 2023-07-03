@@ -17,6 +17,7 @@ use App\Models\Tag;
 use App\Models\History;
 use App\Models\Menu;
 use App\Models\Info;
+use App\Models\User;
 
 class DetailController extends Controller
 {
@@ -31,28 +32,49 @@ class DetailController extends Controller
         $user_id = Generator::getUserIdV2($role);
 
         if($user_id != null){
-            $tag = Tag::getFullTag("DESC", "DESC");
+            $access = false;
             $content = ContentHeader::getFullContentBySlug($slug_name);
-            $archive = Archive::getMyArchive($user_id, "DESC");
-            $archive_relation = ArchiveRelation::getMyArchiveRelationBySlug($slug_name, $user_id);
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("event/detail");
 
             if($content){
-                //Set active nav
-                session()->put('active_nav', 'event');
-                $title = $content[0]->content_title;
-                
-                return view ('event.detail.index')
-                ->with('tag', $tag)
-                ->with('content', $content)
-                ->with('title', $title)
-                ->with('archive', $archive)
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('archive_relation', $archive_relation)
-                ->with('greet',$greet);
+                if($role == 0){
+                    $user = User::select("role")
+                        ->where("id",$user_id)
+                        ->first();
+
+                    foreach($content as $ct){
+                        foreach($ct->content_tag as $tags){
+                            foreach($user->role as $role){
+                                if($tags['slug_name'] == $role['slug_name']){
+                                    $access = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    $access = true;
+                }
+
+                if($access){
+                    $greet = Generator::getGreeting(date('h'));
+                    $menu = Menu::getMenu();
+                    $tag = Tag::getFullTag("DESC", "DESC");
+                    $info = Info::getAvailableInfo("event/detail");
+       
+                    //Set active nav
+                    session()->put('active_nav', 'event');
+                    $title = $content[0]->content_title;
+                    
+                    return view ('event.detail.index')
+                        ->with('tag', $tag)
+                        ->with('content', $content)
+                        ->with('title', $title)
+                        ->with('menu', $menu)
+                        ->with('info', $info)
+                        ->with('greet',$greet);
+                } else {
+                    return redirect("/403");
+                }
             } else {
                 return redirect("/404");
             }
