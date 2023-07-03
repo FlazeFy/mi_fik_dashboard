@@ -26,7 +26,7 @@
     <div class="position-relative">
         <form class="d-inline position-absolute" style="right: 0; top:-35px;" method="POST" action="/about/toogle/contact/false">
             @csrf
-            <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Cancel Edit</button>
+            <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) Cancel Edit @endif</button>
         </form>
         <form class="p-2 mt-2" action="/about/edit/contact" method="POST">
             @csrf
@@ -71,11 +71,11 @@
         </form>
     </div>
 @else 
-    <div class="position-relative">
+    <div class="position-relative px-2">
         @if(session()->get('role_key') == 1 && session()->get('toogle_edit_contact') == "false")
             <form class="d-inline" method="POST" action="/about/toogle/contact/true">
                 @csrf
-                <button class="btn btn-info rounded-pill mt-3 px-3 py-2 position-absolute" type="submit" style="right:10px; top:-25px;"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-25px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) Edit @endif</button>
             </form>
         @endif  
         <div class="row">

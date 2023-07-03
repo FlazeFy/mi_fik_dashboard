@@ -134,9 +134,14 @@
                 }
             }
         }
+
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
         
         $.ajax({
-            url: "/api/v1/tag/cat/" + cat + "/20?page="+page,
+            url: "/api/v1/tag/cat/" + cat + "/"+per_page+ "?page="+page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

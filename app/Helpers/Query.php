@@ -53,16 +53,16 @@ class Query
                 2 as data_from";
 
         } else if($type == "user_request_new"){
-            $query = "username, CONCAT(first_name,' ',last_name) as full_name, 
+            $query = "username, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name, 
                 role, created_at, accepted_at, is_accepted, image_url";
                 
         } else if($type == "user_request_old"){
 
-            $query = "users_requests.id, username, CONCAT(first_name,' ',last_name) as full_name, 
+            $query = "users_requests.id, username, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name, 
                 users.accepted_at, tag_slug_name, request_type, users_requests.created_at, created_by, image_url, role";
 
         } else if($type == "user_detail"){
-            $query = "username, email, password, CONCAT(first_name,' ',last_name) as full_name, role, image_url, 
+            $query = "username, email, password, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name, role, image_url, 
                 CASE 
                     WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' THEN 'Lecturer'
                     WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 'Staff' 
@@ -71,12 +71,12 @@ class Query
                 created_at, updated_at, updated_by, deleted_at, deleted_by, accepted_at, accepted_by, is_accepted";
         } else if($type == "access_info"){
             $query = "personal_access_tokens.id, SUBSTR(tokenable_type, 12) as type, token, last_used_at, expires_at, personal_access_tokens.created_at, personal_access_tokens.updated_at,
-                admins.username as admin_username, users.username as user_username, CONCAT(admins.first_name,' ',admins.last_name) as admin_fullname, 
-                CONCAT(users.first_name,' ',users.last_name) as user_fullname";
+                admins.username as admin_username, users.username as user_username, CONCAT(admins.first_name,' ',COALESCE(admins.last_name, '')) as admin_fullname, 
+                CONCAT(users.first_name,' ',COALESCE(users.last_name, '')) as user_fullname";
         } else if($type == "group_detail"){
             $query = "users_groups.id, slug_name, group_name, group_desc, count(groups_relations.id) as total, users_groups.created_at, users_groups.created_by, updated_at, updated_by";
         } else if($type == "group_relation"){
-            $query = "groups_relations.id, username, CONCAT(first_name,' ',last_name) as full_name, 
+            $query = "groups_relations.id, username, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name, 
                 CASE 
                     WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' THEN 'Lecturer'
                     WHEN role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 'Staff' 
@@ -88,7 +88,7 @@ class Query
                 COUNT(CASE WHEN users.role LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' OR users.role LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_lecturer,
                 COUNT(CASE WHEN users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."lecturer".'"'."%' AND users.role NOT LIKE '%".'"'."slug_name".'"'.":".'"'."staff".'"'."%' THEN 1 END) AS total_student";
         } else if($type == "notif_my"){
-            $query = "notifications.id, CONCAT(UPPER(SUBSTR(notif_type, 14)),' ',notif_body) as notif_body, notif_title, notifications.created_at, CONCAT(admins.first_name, ' ', admins.last_name) as admin_fullname";
+            $query = "notifications.id, CONCAT(UPPER(SUBSTR(notif_type, 14)),' ',notif_body) as notif_body, notif_title, notifications.created_at, CONCAT(admins.first_name, ' ', COALESCE(admins.last_name, '')) as admin_fullname";
         } else if($type == "event_dump"){
             $query = "ch.slug_name, content_title, content_desc, 
                 ac.username as admin_username_created, uc.username as user_username_created, 
@@ -216,7 +216,7 @@ class Query
         if($date_start == $date_end){
             $query = "
                 content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'
-            "; //Check this shit
+            ";
         } else {
             $query = "
                 ((content_date_start <= '".$date_start."' and content_date_end >= '".$date_start."')

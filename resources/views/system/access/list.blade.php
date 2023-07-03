@@ -1,11 +1,12 @@
+<h5 class="section-title">User Access History</h5>
 <div class="table-responsive">
     <table class="table tabular">
         <thead>
             <tr>
                 <th scope="col">Type</th>
-                <th scope="col">Username</th>
-                <th scope="col">Sign-In At</th>
-                <th scope="col">Properties</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">Username</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">Sign-In At</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Properties</th>
                 <th scope="col">Token</th>
             </tr>
         </thead>
@@ -15,23 +16,28 @@
                 <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
             </div>
         </tbody>
-        <span id="load_more_holder" style="display: flex; justify-content:end;"></span>
     </table>
+    <span id="load_more_holder" style="display: flex; justify-content:center;"></span>
     <div id="empty_item_holder"></div>
 </div>
 
 <script>
-    var page_new_req = 1;
-    infiniteLoadAccess(page_new_req);
+    var page = 1;
+    infiniteLoadAccess(page);
 
-    function loadmore(route){
-        page_new_req++;
-        infiniteLoadAccess(page_new_req);
+    function loadmore(){
+        page++;
+        infiniteLoadAccess(page);
     }
 
-    function infiniteLoadAccess(page_new_req) {  
+    function infiniteLoadAccess(page) {  
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/user/access/history/50?page=" + page_new_req,
+            url: "/api/v1/user/access/history/"+per_page+ "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -46,8 +52,8 @@
             var total = response.data.total;
             var last = response.data.last_page;
 
-            if(page_new_req != last){
-                $('#load_more_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            if(page != last){
+                $('#load_more_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>');
             } else {
                 $('#load_more_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
             }

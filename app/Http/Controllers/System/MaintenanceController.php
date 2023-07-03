@@ -24,19 +24,23 @@ class MaintenanceController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            
-            //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'maintenance');
+        if($role == 1){
+            if($user_id != null){
+                $greet = Generator::getGreeting(date('h'));
+                $menu = Menu::getMenu();
+                
+                //Set active nav
+                session()->put('active_nav', 'system');
+                session()->put('active_subnav', 'maintenance');
 
-            return view ('system.maintenance.index')
-                ->with('menu', $menu)
-                ->with('greet',$greet);
+                return view ('system.maintenance.index')
+                    ->with('menu', $menu)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

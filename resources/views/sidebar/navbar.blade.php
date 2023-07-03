@@ -70,9 +70,6 @@
             </li>
             <li>
                 <a class="dropdown-item" data-bs-toggle='modal' href="#notif-modal" onclick="toogleDetail()"><i class="fa-solid fa-bell me-2"></i> Notification</a>
-                @if(!$isMobile)
-                    <div class="item-notification" id="notif-holder"><img src="{{ asset('/assets/loading-notif.gif')}}" style='height:24px; margin-top:-5px;'></div>
-                @endif
             </li>
             <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
                 <li><a class="dropdown-item danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
@@ -127,7 +124,6 @@
     var pageHistory = 1;
     var pageNotif = 1;
 
-    //Get data ajax
     $(document).ready(function() {
         clear();
     });
@@ -152,7 +148,6 @@
     
     function clear() {
         setTimeout(function() {
-            update();
             clear();
             if(showDetail == true){
                 notifDetail();
@@ -164,43 +159,6 @@
 
         if(initial == 2000){
             initial = 10000
-        }
-    }
-    
-    function update() {
-        if(!isMobile()){
-            $.ajax({
-                url: '/api/v1/notification',
-                type: 'get',
-                dataType: 'json',
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Accept", "application/json");
-                    xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
-                },
-                success: function(response){
-                    var response = response.data;
-                    var len = 0;
-
-                    $('#notif-holder').empty(); 
-                    if(response != null){
-                        len = response.length;
-                    }
-                    
-                    if(len > 0){
-                        var elmt = 
-                            "<i class='fa-solid fa-bell me-2'></i>"+len ;
-                            
-                        $("#notif-holder").append(elmt);
-                    }else{
-                        var elmt = 
-                            "<span>" +
-                                " " + //Check this again
-                            "</span>";
-
-                        $("#notif-holder").append(elmt);
-                    }
-                }
-        });
         }
     }
 

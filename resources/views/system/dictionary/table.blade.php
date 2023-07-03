@@ -13,6 +13,7 @@
     use App\Helpers\Generator;
 ?>
 
+<h5 class="section-title">All Dictionary</h5>
 <div class="table-responsive">
     <table class="table table-paginate" id="dctTable" cellspacing="0">
         <thead>

@@ -40,5 +40,11 @@ class Converter
         }
     }
 
-
+    public static function getMsgTrashPerContext($total, $name){
+        if($total != 0){
+            return $total." ".$name.", ";
+        } else {
+            return "";
+        }
+    }
 }

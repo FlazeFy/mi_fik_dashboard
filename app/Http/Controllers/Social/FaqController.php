@@ -32,24 +32,28 @@ class FaqController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $history = History::getHistoryByType("faq");
-            $info = Info::getAvailableInfo("social/faq");
-            
-            //Set active nav
-            session()->put('active_nav', 'social');
-            session()->put('active_subnav', 'faq');
+        if($role == 1){
+            if($user_id != null){
+                $greet = Generator::getGreeting(date('h'));
+                $menu = Menu::getMenu();
+                $history = History::getHistoryByType("faq");
+                $info = Info::getAvailableInfo("social/faq");
+                
+                //Set active nav
+                session()->put('active_nav', 'social');
+                session()->put('active_subnav', 'faq');
 
 
-            return view ('social.faq.index')
-                ->with('menu', $menu)
-                ->with('history', $history)
-                ->with('info',$info)
-                ->with('greet',$greet);
+                return view ('social.faq.index')
+                    ->with('menu', $menu)
+                    ->with('history', $history)
+                    ->with('info',$info)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

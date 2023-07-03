@@ -13,6 +13,7 @@
     use App\Helpers\Generator;
 ?>
 
+<h5 class="section-title">All Info</h5>
 <div class="table-responsive">
     @include('system.info.filtertype')
     <table class="table tabular table-paginate" id="infoTable" cellspacing="0">

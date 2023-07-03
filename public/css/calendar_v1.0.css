@@ -94,7 +94,7 @@ th.fc-col-header-cell.fc-day{
 }
 table.fc-scrollgrid.fc-scrollgrid-liquid{
     border: 1.25px solid #414141 !important;
-    border-radius: 10px; /*Fix this shit*/
+    border-radius: 10px; /*Fix this*/
 }
 th.fc-col-header-cell.fc-day a{
     font-size: var(--textXLG);

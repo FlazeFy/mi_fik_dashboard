@@ -1,33 +1,40 @@
-<style>
-    #load_more_holder_old_req{
-        position: absolute;
-        bottom: -10px;
-        right: 15px;
-    }
-</style>
-
 <div class="incoming-req-box">
-    <h5 class="text-secondary fw-bold"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:15px; top:0px;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
+    <h5 class="section-title"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
+
+    @if(!$isMobile)
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0px;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
         onclick="cleanReq()" aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
-    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-old-req">
+    @else 
+    <button type="button" class="btn btn-mobile-control bg-info" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-gear"></i>
+    </button>
+    @endif
+
+    <div class="dropdown-menu dropdown-menu-end @if($isMobile) mobile-control @endif" aria-labelledby="section-more-old-req">
         <a class="dropdown-item" data-bs-target="#roleRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href="" data-bs-toggle="modal" id="acc_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc">Accept Selected</span></a>
         <a class="dropdown-item" href="" data-bs-toggle="modal" id="rej_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_reject">Reject Selected</span></a>
     </div>
 
+    @if($isMobile)
+        @include('user.request.control.searchbarold')
+    @endif
+
     @include('popup.mini_help', ['id' => 'roleRequest', 'title'=> 'Role Request', 'location'=>'role_request'])
 
-    <div class="user-req-holder" id="data_wrapper_old_req">
-        <!-- Loading -->
-        <div class="auto-load-old text-center">
-            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+    <div class="@if(!$isMobile) user-req-holder @else pt-2 @endif">
+        <div id="data_wrapper_old_req">
+            <!-- Loading -->
+            <div class="auto-load-old text-center">
+                <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+            </div>
         </div>
+        <span id="load_more_holder_old_req" style="display: flex; justify-content:center;"></span>
     </div>
+
     <div id="empty_item_holder_old_req"></div>
-    <span id="load_more_holder_old_req" style="display: flex; justify-content:center;"></span>
 </div>
 
 @include('user.request.old_manage.acc')
@@ -48,7 +55,7 @@
     //     } 
     // };
 
-    function loadmore(route){
+    function loadmore_old_req(){
         page_old_req++;
         infinteLoadMore_old_req(page_old_req);
     }
@@ -63,12 +70,12 @@
         }
     }
 
-    function infinteLoadMore_old_req(page_old_req) { 
+    function infinteLoadMore_old_req(page) { 
         var find = document.getElementById("fullname_search_old").value;
-        document.getElementById("data_wrapper_old_req").innerHTML = "";
+        //document.getElementById("data_wrapper_old_req").innerHTML = "";
 
         $.ajax({
-            url: "/api/v1/user/request/old/" + getFindOld(find) + "?page=" + page_old_req,
+            url: "/api/v1/user/request/old/" + getFindOld(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -83,10 +90,10 @@
             var total = response.data.total;
             var last = response.data.last_page;
 
-            if(page_old_req != last){
-                $('#load_more_holder_old_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+            if(page != last){
+                $('#load_more_holder_old_req').html('<button class="btn content-more-floating" onclick="loadmore_old_req()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more_holder_old_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+                $('#load_more_holder_old_req').html('<h6 class="content-last">No more item to show</h6>');
             }
 
             $('#total_old_req').text(total);
@@ -132,7 +139,7 @@
                     var type = data[i].request_type;
 
                     var elmt = " " +
-                        '<button class="btn user-box" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + ')"> ' +
+                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + ')"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 ps-1"> ' +
                                     '<img class="img img-fluid user-image" style="margin-top:45%;" src="' + getUserImageGeneral(img, role) + '">' +
@@ -152,7 +159,7 @@
                             '</div> ' +
                         '</button>';
 
-                    $("#data_wrapper_old_req").prepend(elmt);
+                    $("#data_wrapper_old_req").append(elmt);
                 }   
             }
         })

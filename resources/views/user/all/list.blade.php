@@ -1,6 +1,5 @@
+<h5 class="section-title">All User</h5>
 <div class="table-responsive">
-    <h6 class="mt-1">Page</h6>
-    <div id="user_navigate"></div>
     <table class="table tabular">
         <thead>
             <tr>
@@ -8,7 +7,7 @@
                 <th scope="col">Username @include('user.all.sorting.username')</th>
                 <th scope="col">Email @include('user.all.sorting.email')</th>
                 <th scope="col">Full Name @include('user.all.sorting.fullname')</th>
-                <th scope="col">Properties @include('user.all.sorting.joined')</th>
+                <th scope="col" style="min-width:140px;">Properties @include('user.all.sorting.joined')</th>
                 <th scope="col" style="width:200px;">Role</th>
                 <th scope="col">Detail</th>
             </tr>
@@ -22,8 +21,9 @@
         </div>
     </table>
     <div id="empty_item_holder"></div>
-
 </div>
+<h6 class="mt-1">Page</h6>
+<div id="user_navigate"></div>
 
 <script>
     var pageUser = 1;
@@ -113,11 +113,17 @@
                 }
 
                 function getRole(tag){
+                    if(isMobile()){
+                        var max = 4;
+                    } else {
+                        var max = 8;
+                    }
+
                     if(tag){
                         var tags = "";
 
                         for(var i = 0; i < tag.length; i++){
-                            if(i <= 10){
+                            if(i < max){
                                 if(i != tag.length - 1){
                                     tags += '<span class="text-primary fw-bold">#' + tag[i].tag_name + '</span>, ';
                                 } else {
@@ -181,12 +187,20 @@
                     }
                 }
 
+                function getImageStyleBasedDevice(){
+                    if(isMobile()){
+                        return 'width:60px; height:60px;';
+                    } else {
+                        return 'width:170px; height:170px;';
+                    }
+                }
+
                 function manageRole(username, real_username){
                    
                     var elmt = 
                         '<div id="section-role-picker-'+username+'"> ' +
                             '<h6 class="text-secondary mt-2 mb-4"> Manage Role</h6> ' +   
-                            '<div class="position-absolute" style="right:10px; top:10px;"> ' +
+                            '<div class="position-absolute" style="right:10px; top:0;"> ' +
                                 '<select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value, ' + "'" + username + "'" + ')" name="tag_category" aria-label="Floating label select example" required> ' +
                                     '@php($i = 0) ' +
                                     '@foreach($dct_tag as $dtag) ' +
@@ -254,13 +268,13 @@
                                     '<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="manageuser-' + unamepreg + '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
                                         '<div class="modal-dialog modal-lg"> ' +
                                             '<div class="modal-content">  ' +
-                                                '<div class="modal-body pt-4 p-0" style=height:100%;""> ' +
+                                                '<div class="modal-body pt-4 p-0" style=height:90vh;""> ' +
                                                     '<button type="button" class="custom-close-modal" onclick="clean('+"'"+unamepreg+"'"+'); infinteLoadMoreUser('+"'"+pageUser+"'"+');" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button> ' +
                                                     '<div class="px-3 position-relative"> ' +
                                                         '<h5>User Profile</h5> ' +
                                                         '<div class="row"> ' +
                                                             '<div class="col-3 p-3"> ' +
-                                                                '<img class="img rounded-circle shadow" style="width:170px; height:170px;" src="' + getUserImageGeneral(img, role) + '">' +
+                                                                '<img class="img rounded-circle shadow" style="' + getImageStyleBasedDevice() + '" src="' + getUserImageGeneral(img, role) + '">' +
                                                             '</div> ' +
                                                             '<div class="col-9 p-0 py-2 ps-2 position-relative"> ' +
                                                                 '<h5 class="text-secondary fw-normal">' + fullname + '</h5> ' +
@@ -280,7 +294,7 @@
                                                         '</div> ' +
                                                     '</div> ' +
                                                     '<div class="config-btn-group">' +
-                                                        '<hr> ' +
+                                                        '<hr class="my-2"> ' +
                                                         // '<a class="btn btn-detail-config success" title="Send" data-bs-toggle="collapse" data-bs-target="#collapse-' + unamepreg + '"><i class="fa-solid fa-bell"></i></a>' +
                                                         '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
                                                         '<span style="position:absolute; right:10px; bottom:10px;"> ' +
@@ -385,13 +399,18 @@
     function infinteLoadMoreTag(page_tag, username) { 
         var role = document.getElementById("user_tag_" + username).value;
         var roles = null;
+        var per_page = 24;
 
         if(role != null){
             roles = JSON.parse(role);
         }
 
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/tag/cat/" + tag_cat + "/12"+ "?page=" + page_tag,
+            url: "/api/v1/tag/cat/" + tag_cat + "/"+per_page+ "?page=" + page_tag,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

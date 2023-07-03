@@ -112,7 +112,7 @@
                         }
                     }, 
                     function (error) {
-                        document.getElementById('attach_url_'+id).value = null; // Check this shit
+                        document.getElementById('attach_url_'+id).value = null; // Check this
                         document.getElementById('attach-failed-'+id).innerHTML = "File upload is " + error.message;
                         var att_url = null;
                         if(error.message){

@@ -27,27 +27,31 @@ class FeedbackController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("statistic");
-            $suggestion = Feedback::getAllFeedbackSuggestion();
-            $feedback = Feedback::getAllFeedback(50, session()->get('selected_filter_suggest'));
-            $dct = Dictionary::getDictionaryByType("Feedback");
-            
-            //Set active nav
-            session()->put('active_nav', 'social');
-            session()->put('active_subnav', 'feedback');
+        if($role == 1){
+            if($user_id != null){
+                $greet = Generator::getGreeting(date('h'));
+                $menu = Menu::getMenu();
+                $info = Info::getAvailableInfo("statistic");
+                $suggestion = Feedback::getAllFeedbackSuggestion();
+                $feedback = Feedback::getAllFeedback(50, session()->get('selected_filter_suggest'));
+                $dct = Dictionary::getDictionaryByType("Feedback");
+                
+                //Set active nav
+                session()->put('active_nav', 'social');
+                session()->put('active_subnav', 'feedback');
 
-            return view ('social.feedback.index')
-                ->with('menu', $menu)
-                ->with('dct', $dct)
-                ->with('info', $info)
-                ->with('suggestion', $suggestion)
-                ->with('feedback', $feedback)
-                ->with('greet',$greet);
+                return view ('social.feedback.index')
+                    ->with('menu', $menu)
+                    ->with('dct', $dct)
+                    ->with('info', $info)
+                    ->with('suggestion', $suggestion)
+                    ->with('feedback', $feedback)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

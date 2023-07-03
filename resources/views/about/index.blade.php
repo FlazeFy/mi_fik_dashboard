@@ -80,30 +80,42 @@
 
                                 @include('components.controlsection', ['type' => "vertical"])
                             </header>
-                            <div class="p-3">
+                            <div class="@if(!$isMobile) p-3 @else px-2 @endif">
                                 <div class="row">
                                     @if($st == "about us")
                                         @if(session()->get('role_key') == 1)
-                                            <div class="col-lg-9 col-md-8 col-sm-12">
-                                                @include('about.app')
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-sm-12">
-                                                <h5 class="text-secondary fw-bold">History</h5>
-                                                @include('components.history', ['history' => $h_about])
-                                            </div>
+                                            @if(!$isMobile)
+                                                <div class="col-lg-9 col-md-8 col-sm-12">
+                                                    @include('about.app')
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-12">
+                                                    <h5 class="text-secondary fw-bold">History</h5>
+                                                    @include('components.history', ['history' => $h_about])
+                                                </div>
+                                            @else 
+                                                <div class="px-2">
+                                                    @include('about.app')
+                                                </div>
+                                            @endif
                                         @else
                                             @include('about.app')
                                         @endif
                                     @elseif($st == "helps editor")
                                         @if(session()->get('role_key') == 1)
-                                            <div class="col-lg-4 col-md-5 col-sm-12">
-                                                @include('about.help.list')
-                                                <h5 class="text-secondary fw-bold mt-2">History</h5>
-                                                @include('components.history', ['history' => $h_help, 'second'=> true])
-                                            </div>
-                                            <div class="col-lg-8 col-md-7 col-sm-12">
-                                                @include('about.help.context')
-                                            </div>
+                                            @if(!$isMobile)
+                                                <div class="col-lg-4 col-md-5 col-sm-12">
+                                                    @include('about.help.list')
+                                                    <h5 class="text-secondary fw-bold mt-2">History</h5>
+                                                    @include('components.history', ['history' => $h_help, 'second'=> true])
+                                                </div>
+                                                <div class="col-lg-8 col-md-7 col-sm-12">
+                                                    @include('about.help.context')
+                                                </div>
+                                            @else 
+                                                <div class="px-2">
+                                                    @include('about.help.listncontext')
+                                                </div>
+                                            @endif
                                         @else
                                             <div class="col-lg-4 col-md-5 col-sm-12">
                                                 @include('about.help.list')
@@ -118,13 +130,19 @@
                                         @endif
                                     @elseif($st == "contact us")
                                         @if(session()->get('role_key') == 1)
-                                            <div class="col-lg-9 col-md-8 col-sm-12">
-                                                @include('about.contact')
-                                            </div>
-                                            <div class="col-lg-3 col-md-4 col-sm-12">
-                                                <h5 class="text-secondary fw-bold">History</h5>
-                                                @include('components.history', ['history' => $h_contact, 'third'=> true])
-                                            </div>
+                                            @if(!$isMobile)
+                                                <div class="col-lg-9 col-md-8 col-sm-12">
+                                                    @include('about.contact')
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 col-sm-12">
+                                                    <h5 class="text-secondary fw-bold">History</h5>
+                                                    @include('components.history', ['history' => $h_contact, 'third'=> true])
+                                                </div>
+                                            @else 
+                                                <div class="px-2">
+                                                    @include('about.contact')
+                                                </div>
+                                            @endif
                                         @else
                                             @include('about.contact')
                                         @endif

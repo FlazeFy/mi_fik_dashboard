@@ -64,13 +64,13 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
                     
-                    <div class="mt-4 btn-config-holder">
+                    <div class="mt-4 btn-config-holder w-100">
                         @include('user.group.create')
                         <div class="ms-1">
                             @include('user.group.searchbar')
                         </div>
                     </div>
-                    <div class="content-section position-relative mt-3">
+                    <div class="content-section position-relative p-3 mt-3">
                         @include('user.group.list')
                     </div>
                 </div>

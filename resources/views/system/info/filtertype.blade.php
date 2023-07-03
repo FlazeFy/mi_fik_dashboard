@@ -1,4 +1,4 @@
-<div class="position-absolute" style="top:25px; left:110px;">
+<div class="position-absolute" style="top:55px; left:110px;">
     <div class="mb-2" style="font-size:15px;">
         <label for="tag_category" >Filter Type</label>
         <form action="/system/info/filter_type" method="POST">

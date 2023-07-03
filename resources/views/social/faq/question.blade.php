@@ -70,8 +70,13 @@
         $("#load_more_question").empty();
         $("#holder_question").empty();
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/faq/question/10?page=" + page,
+            url: "/api/v1/faq/question/"+per_page+ "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -87,9 +92,9 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_question').html('<button class="btn content-more-floating p-1 mt-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_question').html('<button class="btn content-more-floating" onclick="loadmore()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more_question').html('<h6 class="text-secondary" style="font-size:14px;">No more item to show</h6>');
+                $('#load_more_question').html('<h6 class="content-last">No more item to show</h6>');
             }
 
             $('#total').text(total);

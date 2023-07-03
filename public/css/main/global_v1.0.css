@@ -29,6 +29,13 @@
     --spaceXXSM : 6px;
     --spaceMini : 4px;
 
+    /* Table column min width */
+    --tcolMinSM : 60px;
+    --tcolMinMD : 120px;
+    --tcolMinLG : 140px;
+    --tcolMinJumbo : 180px;
+    --tcolMinHuge : 360px;
+
     /* Color Pallete */
     --primaryLightBG : #FADFB9;
     --successBG : #00C363;
@@ -46,20 +53,17 @@
 
 /* Mobile style */
 @media (max-width: 767px) {
-    .quick-action-text {
-        font-size: var(--textJumbo);
-    }
-    p, p span, h6 span, a.from-them-clock, .from-them, a.from-me-clock, .from-me {
+    p, p span, h6 span, a.from-them-clock, .from-them, a.from-me-clock, .from-me, .input-group-text {
         font-size: var(--textSM) !important;
     }
     h6, span {
         font-size: var(--textXMD);
     }
-    .info-box, label {
+    .info-box, label, .form-select {
         font-size: var(--textMD) !important;
     }
 
-    .event-status, .event-views, .event-created-at, .event-heading, .btn {
+    .event-status, .event-views, .event-created-at, .event-heading, .last-updated {
         font-size: var(--textMD) !important;
     }
     input, footer p, .card-body {
@@ -111,6 +115,7 @@
         top: var(--spaceSM);
         background: var(--warningBG);
         color: var(--whiteColor);
+        z-index: 999;
     }
 
     .event-heading {
@@ -167,6 +172,18 @@
         margin-inline: var(--spaceLG);
         left: 0;
         z-index: 999 !important;
+    }
+
+    .page-holder {
+        font-size: var(--textMD) !important;
+    }
+
+    .carousel-control-next {
+        color: var(--primaryColor) !important;
+        opacity: 1;
+        position: absolute;
+        top: calc(var(--spaceMD) + 2px);
+        right: calc(0px - var(--spaceSM));
     }
 }
 
@@ -375,6 +392,14 @@ th{
     background: #e9ecef !important;
 }
 
+.last-updated {
+    font-size: var(--textMD);
+    color: var(--primaryColor);
+    font-style: italic !important;
+    text-decoration: none;
+    position: absolute;
+}
+
 
 .item-stack-holder{
     width: 100px !important;
@@ -429,7 +454,7 @@ th{
     text-decoration: underline !important;
 }
 
-/* Check this shit */
+/* Check this */
 thead.thead-sticky{
     position:sticky !important; 
     top:80px; 

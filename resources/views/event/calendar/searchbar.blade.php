@@ -39,4 +39,13 @@
         sessionStorage.setItem('search_finished', '')
         location.reload()
     }
+    
+    function submitOnEnter(event) {
+        if (event.keyCode === 13) { 
+            event.preventDefault(); 
+            checkTitleSearch();
+            return false; 
+        }
+        return true; 
+    }
 </script>
