@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 use App\Models\Tag;
+use App\Models\ContentDetail;
+use App\Models\User;
 
 class Queries extends Controller
 {
@@ -33,6 +35,46 @@ class Queries extends Controller
                     'status' => 'success',
                     'message' => 'Tag Found',
                     'data' => $tag
+                ], Response::HTTP_OK);
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getTotalTagUsed($slug){
+        try{
+            $content = ContentDetail::selectRaw('1')
+                ->whereRaw('content_tag like '."'".'%"slug_name":"'.$slug.'"%'."'")
+                ->get();
+
+            $user = User::selectRaw('1')
+                ->whereRaw('role like '."'".'%"slug_name":"'.$slug.'"%'."'")
+                ->get();
+
+            $content = count($content);
+            $user = count($user);
+
+            if ($content == 0 && $user == 0) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => 'Tag has not used in any user or content',
+                    'data' => null
+                ], Response::HTTP_NOT_FOUND);
+            } else {
+                $obj = [
+                    "total_content" => $content,
+                    "total_user" => $user,
+                    "total" => $content + $user
+                ];
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Tag Found',
+                    'data' => $obj
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
