@@ -50,8 +50,8 @@
                     '<div id="attach-input-holder-'+id+'"></div> ' +
                     '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
                         '<i class="fa-solid fa-trash-can"></i></a> ' +
-                    '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
-                        '<i class="fa-regular fa-eye-slash"></i></a> ' +
+                    '<span id="preview_att_'+id+'"><a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
+                        '<i class="fa-regular fa-eye-slash"></i></a></span>' +
                     '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
                     '<a class="attach-upload-status failed" id="attach-failed-'+id+'"></a>' +
                     '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
@@ -110,11 +110,7 @@
                         }
                     }, 
                     function (error) {
-                        document.getElementById('attach_type_'+id).disabled = false;
-                        document.getElementById('attach_url_'+id).value = null;
-                        document.getElementById('attach_name_'+id).disabled = true;
-                        document.getElementById('attach-failed-'+id).innerHTML = "File upload is " + error.message;
-                        
+                        doErrorAttachment(id, error);
                         var att_url = null;
                         attach_list[objIndex]['is_add_more'] = false;
                         if(error.message){
