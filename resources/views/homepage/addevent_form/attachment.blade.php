@@ -16,7 +16,7 @@
 
     function addAttachmentForm(){
         var id = getAttCode();
-        var is_addable = true
+        var is_addable = true;
         let obj = {
             "id": id,
             "attach_type":null, 
@@ -74,7 +74,7 @@
         let att_type = document.getElementById('attach_type_'+id).value;
 
         if(all){
-            var att_name = document.getElementById('attach_name_'+id).value;
+            var att_name_val = document.getElementById('attach_name_'+id).value;
             var att_dsbld = document.getElementById('attach_url_'+id).disabled;
             //var att_url = document.getElementById('attach_url_'+id).value;
             var att_cont = document.getElementById('attachment_container_'+id);
@@ -101,13 +101,17 @@
                     //Do upload
                     uploadTask.on('state_changed',function (snapshot) {
                         var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                        document.getElementById('attach-failed-'+id).innerHTML = "";
                         document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done";
                         document.getElementById('attach_url_'+id).disabled = true;
+                        attach_list[objIndex]['is_error'] = false;
                         
                         if(progress == 100){
+                            document.getElementById('attach_name_'+id).disabled = false;
                             att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
                             submitHolder.html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Publish Event</button>');
                         } else {
+                            document.getElementById('attach_name_'+id).disabled = true;
                             submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
                         }
                     }, 
@@ -147,7 +151,7 @@
                             attach_list[objIndex] = {
                                 "id": id,
                                 "attach_type": att_type, 
-                                "attach_name": att_name, 
+                                "attach_name": att_name_val, 
                                 "attach_url": att_url,
                                 "is_error":false
                             };
@@ -175,6 +179,7 @@
                 if(att_url.length > 0){
                     att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
                     warningAttMsg = document.getElementById('attach-warning-'+id);
+
                     if(isValidURL(att_url)){
                         warningAttMsg.style = "color: #09c568 !important;";
                         warningAttMsg.innerHTML = "URL is valid";
@@ -183,11 +188,10 @@
                         attach_list[objIndex] = {
                             "id": id,
                             "attach_type": att_type, 
-                            "attach_name": att_name, 
+                            "attach_name": att_name_val, 
                             "attach_url": att_url,
                             "is_error":false
                         };
-                        console.log(attach_list);
                     } else {
                         warningAttMsg.style = "color: #f78a00 !important;";
                         warningAttMsg.innerHTML = "URL isn't not valid!";
@@ -197,43 +201,17 @@
                     att_cont.style = "border-left: 3.5px solid #808080 !important; --circle-attach-color-var:#808080 !important;";
                 }   
             } else {
-                attach_list[objIndex] = {
-                    "id": id,
-                    "attach_type": att_type, 
-                    "attach_url": attach_list[objIndex].attach_url,
-                    "attach_name": att_name, 
-                    "is_error":false
-                };
-                console.log(attach_list);
+                attach_list[objIndex]['id'] = id;
+                attach_list[objIndex]['attach_type'] = att_type;
+                attach_list[objIndex]['attach_name'] = att_name;
             }
-            
-            // att_url = att_url.replace(/\\/g, '');
-            // att_url = att_url.replace("C:fakepath", "");
         } else {
-            var att_name = null;
+            var att_name_val = null;
             var att_url = null;
         }
 
-        document.getElementById('content_attach').value = JSON.stringify(attach_list);
-    }
-
-    function isValidURL(urlString){
-        try { 
-            return Boolean(new URL(urlString)); 
-        }
-        catch(e){ 
-            return false; 
-        }
-    }
-
-    function getAttCode() {
-        let col = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            let index = Math.floor(Math.random() * col.length);
-            code += col[index];
-        }
-        return code;
+        var modifiedList = cleanAddMoreStatus(attach_list);
+        document.getElementById('content_attach').value = JSON.stringify(modifiedList);
     }
 
     function validateFailedAtt(){
@@ -255,60 +233,11 @@
 
     function deleteAttachmentForm(index){
         let att_type = document.getElementById('attach_type_'+index).value;
+        attach_list = removeAttachment(att_type, attach_list, index);
+        var modifiedList = cleanAddMoreStatus(attach_list);
 
-        attach_list = attach_list.filter(object => {
-            var filePath = null;
-            if(att_type != "attachment_url" && object.id == index){
-                filePath = object.attach_url;
-                if(filePath){
-                    var storageRef = firebase.storage();
-                    var desertRef = storageRef.refFromURL(filePath);
-                    var msg = ""
-
-                    desertRef.delete().then(() => {
-                        msg = "Attachment has been removed";
-                        //Return msg not finished. i dont know what to do next LOL
-                    }).catch((error) => {
-                        msg = "Failed to deleted the Attachment";
-                        //Return msg not finished. i dont know what to do next LOL
-                    });
-                }
-            } 
-
-            $("#attachment_container_"+index).remove();
-
-            return object.id !== index;
-        });
-
-        validateFailedAtt()
+        document.getElementById('content_attach').value = JSON.stringify(attach_list);
+        validateFailedAtt();
         lengValidatorEvent('75', 'title');
-    }
-
-    function getAttachmentInput(index, val){
-        $("#attach-input-holder-"+index).html("");
-        setValue(index);
-
-        //Allowed type
-        if(val == 'attachment_image'){
-            var allowed = 'accept="image/*"';
-        } else if(val == 'attachment_video'){
-            var allowed = 'accept="video/*"';
-        } else if(val == 'attachment_doc'){
-            var allowed = 'accept="application/pdf"'; //Check this again...
-        }
-
-        if(val == "attachment_url"){
-            $("#attach-input-holder-"+index).append(' ' +
-                '<h6 class="mt-1">Attachment URL</h6> ' +
-                '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)" required> ' +
-                '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
-        } else {
-            $("#attach-input-holder-"+index).append(' ' +
-                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+"'"+index+"'"+', true)"> ' +
-                '<input type="text" id="attach_url_holder_'+index+'" hidden required> ' +
-                '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
-        }
     }
 </script>

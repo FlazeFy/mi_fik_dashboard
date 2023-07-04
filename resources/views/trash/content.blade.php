@@ -158,11 +158,11 @@
                                                 "<img class='img img-fluid user-image-content' src='" + getUserImage(ai_created, ui_created,au_created, uu_created) + "' alt='username-profile-pic.png'> " +
                                             "</div> " +
                                             "<div class='d-inline-block position-relative w-75'> " +
-                                                "<h6 class='event-title'>" + content_title + "</h6> " +
+                                                "<h6 class='event-title'>" + ucEachWord(content_title) + "</h6> " +
                                                 "<h6 class='event-subtitle'>" + getUsername(au_created, uu_created) + "</h6> " +
                                             "</div> " +
                                         "</div> " +
-                                        "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
+                                        "<p class='event-desc my-1'>" + ucFirst(removeTags(content_desc)) + "</p> " +
                                         "<div class='row d-inline-block px-2'> " +
                                             getEventLoc(content_loc) +
                                             getEventDate(content_date_start, content_date_end) +

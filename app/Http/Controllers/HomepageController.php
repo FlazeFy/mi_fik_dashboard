@@ -220,11 +220,17 @@ class HomepageController extends Controller
                         $imageURL = null;
                     }
 
+                    if($request->content_desc != "undefined<p><br></p>"){
+                        $desc = $request->content_desc;
+                    } else {
+                        $desc = null;
+                    }
+
                     $header = [
                         'id' => $uuid,
                         'slug_name' => $slug,
                         'content_title' => $request->content_title,
-                        'content_desc' => $request->content_desc,
+                        'content_desc' => $desc,
                         'content_date_start' => $fulldate_start,
                         'content_date_end' => $fulldate_end,
                         'content_reminder' => $request->content_reminder,
@@ -302,9 +308,9 @@ class HomepageController extends Controller
 
                     DB::commit();
 
-                    if(session()->get('email_key')){
-                        Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
-                    }
+                    // if(session()->get('email_key')){
+                    //     Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
+                    // }
 
                     return redirect()->back()->with('success_message', 'Create content success');
                 }

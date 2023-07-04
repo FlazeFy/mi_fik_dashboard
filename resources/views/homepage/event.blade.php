@@ -132,12 +132,12 @@
                                             "<img class='img user-image-content' src='" + getUserImage(admin_image, user_image, admin_username, user_username) + "' alt='username-profile-pic.png'> " +
                                         "</div> " +
                                         "<div class='d-inline-block position-relative w-75'> " +
-                                            "<h6 class='event-title'>" + content_title + "</h6> " +
+                                            "<h6 class='event-title'>" + ucEachWord(content_title) + "</h6> " +
                                             "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
                                         "</div> " +
                                     "</div> " +
                                     "<div style='height:60px;'> " +
-                                        "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
+                                        "<p class='event-desc my-1'>" + ucFirst(removeTags(content_desc)) + "</p> " +
                                     "</div> " +
                                     "<div class='event-properties row d-inline-block px-2'> " +
                                         getEventLoc(content_loc) +

@@ -18,15 +18,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js'></script>  
 
-        <!-- Include stylesheet -->
+        <!-- Quills Richtext -->
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
         <!-- Jquery -->
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
-        <!--CSS Collection-->
+        <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
@@ -40,8 +38,12 @@
         <link rel="stylesheet" href="{{ asset('/css/richtext_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/attachment_v1.0.css') }}"/>
 
+        <!-- JS Collection -->
         <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/attachment_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
@@ -83,7 +85,6 @@
         <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 
         <script>
-            // Your web app's Firebase configuration
             const firebaseConfig = {
                 apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
                 authDomain: "mifik-83723.firebaseapp.com",
