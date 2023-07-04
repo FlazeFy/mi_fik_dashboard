@@ -32,12 +32,14 @@
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/global_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/statistic_v1.0.css') }}"/>
         
         <style>
             .dropdown-menu.dropdown-menu-end hr {
@@ -46,12 +48,19 @@
             }
         </style>
 
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>    
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -64,25 +73,38 @@
                     <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
                         @include('statistic.createdEvent')
                     </div>
-                    <div class="row p-0 m-0">
-                        <div class="col-lg-4 col-md-6 col-sm-12 ps-0 py-0 my-0">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                @include('statistic.mostLoc')
+
+                    @if(!$isMobile)
+                        <div class="row p-0 m-0">
+                            <div class="col-lg-4 col-md-6 col-sm-12 ps-0 py-0 my-0">
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    @include('statistic.mostLoc')
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-8 col-md-6 col-sm-12 pe-0 py-0 my-0">
-                            <div class="container-fluid bg-white rounded my-3 p-2">
-                                <div class="row p-0 m-0">
-                                    <div class="col-lg-6 col-md-12 col-sm-12">
-                                        @include('statistic.mostRole')
-                                    </div>
-                                    <div class="col-lg-6 col-md-12 col-sm-12">
-                                        @include('statistic.mostTag')
+                            <div class="col-lg-8 col-md-6 col-sm-12 pe-0 py-0 my-0">
+                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                    <div class="row p-0 m-0">
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            @include('statistic.mostRole')
+                                        </div>
+                                        <div class="col-lg-6 col-md-12 col-sm-12">
+                                            @include('statistic.mostTag')
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="container-fluid bg-white rounded my-3 p-2">
+                            @include('statistic.mostLoc')
+                        </div>
+                        <div class="container-fluid bg-white rounded my-3 p-2">
+                            @include('statistic.mostTag')
+                            <br>
+                            @include('statistic.mostRole')
+                        </div>
+                    @endif
+
                     <div class="container-fluid bg-white rounded mb-3 mt-2 p-2">
                        @include('statistic.mostViewedEvent')
                     </div>

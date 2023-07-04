@@ -29,7 +29,6 @@ class HistorySchedule
             $context = "No data removed from history with ".$days." days as it days limiter";
         }
 
-        // Fix the mail problem on staging first
         $admin = Admin::all();
         $body = "the system just cleaned some data";
         

@@ -28,27 +28,31 @@ class InfoController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $type = ["Info"];
+        if($role == 1){
+            if($user_id != null){
+                $type = ["Info"];
 
-            $greet = Generator::getGreeting(date('h'));
-            $info = Info::getAllInfo(session()->get('selected_filter_info_type'));
-            $dictionary = Dictionary::getDictionaryByType($type);
-            $menu = Menu::getMenu();
-            $dct = Dictionary::getDictionaryByType("Info");
+                $greet = Generator::getGreeting(date('h'));
+                $info = Info::getAllInfo(session()->get('selected_filter_info_type'));
+                $dictionary = Dictionary::getDictionaryByType($type);
+                $menu = Menu::getMenu();
+                $dct = Dictionary::getDictionaryByType("Info");
 
-            //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'info');
+                //Set active nav
+                session()->put('active_nav', 'system');
+                session()->put('active_subnav', 'info');
 
-            return view ('system.info.index')
-                ->with('info', $info)
-                ->with('menu', $menu)
-                ->with('dct', $dct)
-                ->with('dictionary', $dictionary)
-                ->with('greet',$greet);
+                return view ('system.info.index')
+                    ->with('info', $info)
+                    ->with('menu', $menu)
+                    ->with('dct', $dct)
+                    ->with('dictionary', $dictionary)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

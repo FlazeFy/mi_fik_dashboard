@@ -141,7 +141,7 @@ class Queries extends Controller
                     ->from('groups_relations')
                     ->join('users_groups', 'users_groups.id', '=', 'groups_relations.group_id')
                     ->where('users_groups.slug_name', $slug);
-                })->whereRaw("CONCAT(first_name, ' ', last_name) LIKE '%".trim($filter_name)."%'")
+                })->whereRaw("CONCAT(first_name, ' ', COALESCE(last_name, '')) LIKE '%".trim($filter_name)."%'")
                 ->orderBy($ord[0], $ord[1])
                 ->paginate($limit);
             }

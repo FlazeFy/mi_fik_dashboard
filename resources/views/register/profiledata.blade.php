@@ -33,6 +33,7 @@
         </div>
     </form>
     <div id="success-check"></div>
+
     <form class="d-inline" id="form-regis">
         <input hidden name="username" id="username_final">
         <input hidden name="email" id="email_final">
@@ -94,6 +95,7 @@
                 </div>
             </div>
             <a id="input_all_profiledata_msg" class="text-danger my-2" style="font-size:13px;"></a>
+            <a id="all_user_regis_msg" class="text-danger my-2" style="font-size:13px;"></a>
 
             <h4 class="text-primary">Profile Image</h4>
             <div class="row pb-5">
@@ -132,6 +134,7 @@
 <script>
     var unameMsg = document.getElementById("username_msg");
     var emailMsg = document.getElementById("email_msg");
+    var passMsg = document.getElementById("password_msg");
     var uname = document.getElementById("username");
     var email = document.getElementById("email");
     var fname = document.getElementById("first_name");
@@ -305,10 +308,12 @@
 
     function register(){
         $('#all_user_check_msg').html("");
+        $('#all_user_regis_msg').html("");
         $('#username_msg').html("");
         $('#email_msg').html("");
         $('#first_name_msg').html("");
         $('#last_name_msg').html("");
+        $('#password_msg').html("");
 
         $.ajax({
             url: '/api/v1/register',
@@ -336,7 +341,10 @@
                 var emailMsg = null;
                 var fnameMsg = null;
                 var lnameMsg = null;
+                var passMsg = null;
+                var allMsg = null;
                 var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
+                console.log(response.responseJSON)
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation
@@ -354,6 +362,9 @@
                         }
                         if(response.responseJSON.result.hasOwnProperty('last_name')){
                             lnameMsg = response.responseJSON.result.last_name[0];
+                        }
+                        if(response.responseJSON.result.hasOwnProperty('password')){
+                            passMsg = response.responseJSON.result.password[0];
                         }
                     }
                     
@@ -376,8 +387,11 @@
                 if(lnameMsg){
                     $('#last_name_msg').html(icon + lnameMsg);
                 }
+                if(passMsg){
+                    $('#password_msg').html(icon + passMsg);
+                }
                 if(allMsg){
-                    $('#all_user_check_msg').html(icon + allMsg);
+                    $('#all_user_regis_msg').html(icon + allMsg);
                 }
             }
         });

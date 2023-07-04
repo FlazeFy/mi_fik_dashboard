@@ -38,41 +38,57 @@ class EditController extends Controller
         $user_id = Generator::getUserIdV2($role);
 
         if($user_id != null){
-            $tag = Tag::getFullTag("DESC", "DESC");
+            $access = false;
             $content = ContentHeader::getFullContentBySlug($slug_name);
-            $greet = Generator::getGreeting(date('h'));
-            $dictionary = Dictionary::getDictionaryByType($type);
-            $history = History::getContentHistory($slug_name);
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("event/edit");
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
 
             if($content){
-                //Set active nav
-                session()->put('active_nav', 'event');
-                $title = $content[0]->content_title;
-
-                if($role == 1){
-                    $mytag = null;
-                } else {
-                    $list = User::getUserRole($user_id,$role);
-    
-                    foreach($list as $l){
-                        $mytag = $l->role;
+                if($role == 0){
+                    foreach($content as $ct){
+                        if($ct->user_username_created == $user_id){
+                            $access = true;
+                        }
                     }
+                } else {
+                    $access = true;
                 }
 
-                return view ('event.edit.index')
-                    ->with('tag', $tag)
-                    ->with('content', $content)
-                    ->with('title', $title)
-                    ->with('menu', $menu)
-                    ->with('mytag', $mytag)
-                    ->with('info', $info)
-                    ->with('history', $history)
-                    ->with('dct_tag', $dct_tag)
-                    ->with('dictionary', $dictionary)
-                    ->with('greet',$greet);
+                if($access){
+                    $tag = Tag::getFullTag("DESC", "DESC");
+                    $greet = Generator::getGreeting(date('h'));
+                    $dictionary = Dictionary::getDictionaryByType($type);
+                    $history = History::getContentHistory($slug_name);
+                    $menu = Menu::getMenu();
+                    $info = Info::getAvailableInfo("event/edit");
+                    $dct_tag = Dictionary::getDictionaryByType("Tag");
+
+                    //Set active nav
+                    session()->put('active_nav', 'event');
+                    $title = $content[0]->content_title;
+
+                    if($role == 1){
+                        $mytag = null;
+                    } else {
+                        $list = User::getUserRole($user_id,$role);
+        
+                        foreach($list as $l){
+                            $mytag = $l->role;
+                        }
+                    }
+
+                    return view ('event.edit.index')
+                        ->with('tag', $tag)
+                        ->with('content', $content)
+                        ->with('title', $title)
+                        ->with('menu', $menu)
+                        ->with('mytag', $mytag)
+                        ->with('info', $info)
+                        ->with('history', $history)
+                        ->with('dct_tag', $dct_tag)
+                        ->with('dictionary', $dictionary)
+                        ->with('greet',$greet);
+                } else {
+                    return redirect("/403");
+                }
             } else {
                 return redirect("/404");
             }

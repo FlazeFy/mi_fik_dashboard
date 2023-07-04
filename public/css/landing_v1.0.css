@@ -3,23 +3,23 @@
 }
 .form-floating .form-control.login{
     border: none;
-    border-bottom: 3px solid #212121;
+    border-bottom: 3px solid var(--darkColor);
     border-radius: 0;
 }
 .btn-primary-outlined{
-    border: 2px solid #F78A00;
-    color: #F78A00;
+    border: 2px solid var(--primaryColor);
+    color: var(--primaryColor);
     max-width: 400px;
 }
 .btn-primary-outlined:hover{
-    background: #F78A00;
+    background: var(--primaryColor);
     color: #F5F5F5;
 }
 .btn-forgot-password{
     color: #414141;
 }
 .btn-forgot-password:hover{
-    color: #D5534C !important;
+    color: var(--warningDarkBG) !important;
 }
 .btn-faq{
     text-decoration: none;
@@ -32,7 +32,7 @@
     min-height: 60px;
 }
 .btn-faq h6{
-    margin-right: 30px;
+    margin-right: var(--spaceXMD);
 }
 .btn-faq-icon{
     position: absolute;
@@ -45,7 +45,7 @@
 }
 .card-header.faq-header{
     border-radius: 10px;
-    background: #FFFFFF;
+    background: var(--whiteColor);
     box-shadow: rgba(0, 0, 0, 0.14) 0px 2.5px 6px;
 }
 footer  {
@@ -53,13 +53,13 @@ footer  {
     margin-top: 120px !important;
 }
 footer p{
-    font-size: 18px;
+    font-size: var(--textXLG);
 }
 .page-footer{
-    background-image: linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b);
+    background-image: linear-gradient(to right,var(--primaryColor) 20%, 65%, var(--darkColor));
     width:100%;
-    padding: 40px;
-    border-radius: 40px 40px 0 0;
+    padding: calc(var(--spaceJumbo) + 5px);
+    border-radius: var(--roundedJumbo) var(--roundedJumbo) 0 0;
 }
 #fik-logo{
     margin-top:35%;

@@ -92,24 +92,7 @@ class QueryContent extends Controller
             $query = null;
 
             $user_id = $request->user()->id;
-            $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
-            if($check->tokenable_type === "App\\Models\\User"){ // User
-                $user = User::where('id',$user_id)->first();
-
-                $roles = $user->role;
-                $arr_roles = "";
-                $total = count($roles);
-                for($i = 0; $i < $total; $i++){
-                    $end = "";
-                    if($i != $total - 1){
-                        $end = "|";
-                    } 
-                    $arr_roles .= $roles[$i]['slug_name'].$end;
-                }
-                $based_role = "JSON_EXTRACT(content_tag, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
-            } else {
-                $arr_roles = "admin";
-            }
+            $based_role = Query::getAccessRole($user_id);
 
             if($slug != "all"){
                 $i = 1;
@@ -156,7 +139,7 @@ class QueryContent extends Controller
             if($filter_date !== null){
                 $content = $content->whereRaw($filter_date);
             }
-            if ($based_role !== null) {
+            if ($based_role !== null && $based_role != "admin") {
                 $content = $content->whereRaw($based_role);
             }
             $content = $content->paginate($page);
@@ -170,7 +153,7 @@ class QueryContent extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'your_role' => str_replace("|",",",$arr_roles),
+                    'your_role' => str_replace("|",",",$based_role),
                     'message' => 'Content Header Found',
                     'data' => $content
                 ], Response::HTTP_OK);
@@ -183,13 +166,16 @@ class QueryContent extends Controller
         }
     }
 
-    public function getFinishedContent($order, $search)
+    public function getFinishedContent(Request $request, $order, $search)
     {
         $page = 12;
 
         try{
             $select = Query::getSelectTemplate("content_thumbnail");
             $search = trim($search);
+
+            $user_id = $request->user()->id;
+            $based_role = Query::getAccessRole($user_id);
 
             $content = ContentHeader::selectRaw($select.",(DATEDIFF(content_date_end, now()) * -1) as days_passed")
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
@@ -200,8 +186,13 @@ class QueryContent extends Controller
                 ->orderBy('days_passed', $order)
                 ->whereNull('contents_headers.deleted_at')
                 ->whereRaw('(DATEDIFF(content_date_end, now()) * -1) > 1')
-                ->where('content_title', 'LIKE', '%' . $search . '%')
-                ->paginate($page);
+                ->where('content_title', 'LIKE', '%' . $search . '%');
+
+            if ($based_role !== null && $based_role != "admin") {
+                $content = $content->whereRaw($based_role);
+            }
+
+            $content = $content->paginate($page);
 
             if ($content->isEmpty()) {
                 return response()->json([

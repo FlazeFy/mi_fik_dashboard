@@ -59,6 +59,7 @@
         <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
 
         <!-- JS Collection -->
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
@@ -66,6 +67,12 @@
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -75,7 +82,7 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent my-3 py-2 px-0">
+                    <div class="container-fluid bg-transparent @if(!$isMobile) my-3 @endif py-2 px-0">
                         @if(session()->get('role_key') == 1)
                             <div class="row">
                                 <div class="col-lg-5 col-md-5 col-sm-12">
@@ -100,7 +107,7 @@
                                 </div>
                             </div>
                         @else
-                            <div class="content-section">
+                            <div class="content-section" style="min-height:75vh !important;">
                                 @include('event.tag.table')
                             </div>
                         @endif

@@ -18,17 +18,16 @@
     }
 </style>
 
+<h5 class="section-title">All Group</h5>
 <div class="table-responsive">
-    <h6 class="mt-1">Page</h6>
-    <div id="group_navigate"></div>
     <table class="table tabular">
         <thead>
             <tr>
                 <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-                <th scope="col">Description @include('user.group.sorting.groupdesc')</th>
-                <th scope="col">Total @include('user.group.sorting.total')</th>
-                <th scope="col">Properties @include('user.group.sorting.created')</th>
-                <th scope="col">Manage</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Description @include('user.group.sorting.groupdesc')</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Total Member @include('user.group.sorting.total')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Properties @include('user.group.sorting.created')</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">Manage</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body w-100" id="group-list-holder">
@@ -40,8 +39,9 @@
         </tbody>
     </table>
     <div id="empty_item_holder"></div>
-
 </div>
+<h6 class="mt-1">Page</h6>
+<div id="group_navigate"></div>
 
 <script>
     var pageGroup = 1;
@@ -68,9 +68,14 @@
         var order = '<?= session()->get('ordering_group_list'); ?>';
         var find = document.getElementById("group_search").value;
         document.getElementById("group-list-holder").innerHTML = "";
+
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
     
         $.ajax({
-            url: "/api/v1/group/limit/25/order/" + order + "/find/" + getFind(find) + "?page=" + page,
+            url: "/api/v1/group/limit/"+per_page+ "/order/" + order + "/find/" + getFind(find) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -266,7 +271,7 @@
                                 '<h6>Updated At</h6> ' +
                                 '<a>' + getDateContext(updatedAt) + '</a> ' +
                             '</td> ' +
-                            '<td class="tabular-role-holder"> ' +
+                            '<td> ' +
                                 '<div class="position-relative"> ' +
                                     '<button class="btn btn-primary mb-2 me-1" type="button" data-bs-target="#edit-group-'+slug+'" data-bs-toggle="modal" aria-haspopup="true" ' +
                                         'aria-expanded="false"> ' +
@@ -330,8 +335,13 @@
     function load_group_detail(slug) {        
         document.getElementById("manage-rel-holder-"+slug).innerHTML = "";
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/group/member/" + slug + "/20?page=1",
+            url: "/api/v1/group/member/" + slug + "/"+per_page+ "?page=1",
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -409,8 +419,13 @@
         document.getElementById("user-ava-holder-"+slug).innerHTML = "";
         pageUserAva = page;
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/group/member/" + slug + "/" + getFindUserAva(find,slug) + "/limit/10/order/first_name__DESC?page=" + page,
+            url: "/api/v1/group/member/" + slug + "/" + getFindUserAva(find,slug) + "/limit/"+per_page+ "/order/first_name__DESC?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -549,7 +564,7 @@
 
         var submit_holder = document.getElementById('submit-rel-remove-btn-holder-'+slug);
         if(selectedMemberRemove.length > 0){
-            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-danger" style="float:right; margin-top:-35px;"><i class="fa-solid fa-xmark"></i> Remove Selected</button>';
+            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-danger" onclick="isFormSubmitted = true;" style="float:right; margin-top:-35px;"><i class="fa-solid fa-xmark"></i> Remove Selected</button>';
         } else {
             submit_holder.innerHTML = '';
         }
@@ -569,7 +584,7 @@
 
         var submit_holder = document.getElementById('submit-rel-add-btn-holder-'+slug);
         if(selectedMember.length > 0){
-            submit_holder.innerHTML = '<button type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;"><i class="fa-solid fa-plus"></i> Assign All</button>';
+            submit_holder.innerHTML = '<button onclick="isFormSubmitted = true;" type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;"><i class="fa-solid fa-plus"></i> Assign All</button>';
         } else {
             submit_holder.innerHTML = '';
         }

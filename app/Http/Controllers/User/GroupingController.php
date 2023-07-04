@@ -30,21 +30,25 @@ class GroupingController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
-            $info = Info::getAvailableInfo("user/group");
-            $menu = Menu::getMenu();
+        if($role == 1){
+            if($user_id != null){
+                $greet = Generator::getGreeting(date('h'));
+                $info = Info::getAvailableInfo("user/group");
+                $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'manageuser');
-            session()->put('active_subnav', 'grouping');
+                //Set active nav
+                session()->put('active_nav', 'manageuser');
+                session()->put('active_subnav', 'grouping');
 
-            return view('user.group.index')
-                ->with('menu', $menu)
-                ->with('info', $info)
-                ->with('greet',$greet);
+                return view('user.group.index')
+                    ->with('menu', $menu)
+                    ->with('info', $info)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

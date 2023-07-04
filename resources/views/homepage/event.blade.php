@@ -126,20 +126,20 @@
                                 "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
                                 "<div class='event-views' style='left:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
-                                "<div class='card-body p-2 w-100'> " +
-                                    "<div class=''> " +
-                                        "<div class='d-inline-block'> " +
-                                            "<img class='img img-fluid user-image-content' src='" + getUserImage(admin_image, user_image, admin_username, user_username) + "' alt='username-profile-pic.png'> " +
+                                "<div class='card-body event-body p-2 w-100'> " +
+                                    "<div class='event-heading'> " +
+                                        "<div class='d-inline-block position-relative'> " +
+                                            "<img class='img user-image-content' src='" + getUserImage(admin_image, user_image, admin_username, user_username) + "' alt='username-profile-pic.png'> " +
                                         "</div> " +
                                         "<div class='d-inline-block position-relative w-75'> " +
                                             "<h6 class='event-title'>" + content_title + "</h6> " +
                                             "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
                                         "</div> " +
                                     "</div> " +
-                                    "<div style='height:45px;'> " +
+                                    "<div style='height:60px;'> " +
                                         "<p class='event-desc my-1'>" + removeTags(content_desc) + "</p> " +
                                     "</div> " +
-                                    "<div class='row d-inline-block px-2'> " +
+                                    "<div class='event-properties row d-inline-block px-2'> " +
                                         getEventLoc(content_loc) +
                                         getEventDate(content_date_start, content_date_end) +
                                         getEventTag(content_tag) +

@@ -47,7 +47,7 @@ class Validation
             'content_time_start' => ['required', new TwoTimeFormats],
             'content_time_end' => ['required', new TwoTimeFormats],
             'content_reminder' => 'required|string|max:75',
-            //'content_image' => 'nullable|string|max:255' //Check this shit
+            //'content_image' => 'nullable|string|max:255' //Check this
         ]);
     }
 
@@ -302,11 +302,12 @@ class Validation
     public static function getValidateUserStarter($request){
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',
-            'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
-                if (!Str::endsWith($val, '@gmail.com')) {
-                    $err('The '.$attr.' must be a valid Gmail address');
-                }
-            }],
+            'email' => 'required|min:11|max:75|string|email'
+            // 'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
+            //     if (!Str::endsWith($val, '@gmail.com')) {
+            //         $err('The '.$attr.' must be a valid Gmail address');
+            //     }
+            // }],
         ]);
     }
 
@@ -317,11 +318,18 @@ class Validation
             'last_name' => 'nullable|min:2|max:35|string',
             'password' => 'required|min:6|max:50|string',
             'valid_until' => 'required|numeric', // Make this year for 6 year after & before
-            'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
-                if (!Str::endsWith($val, '@gmail.com')) {
-                    $err('The '.$attr.' must be a valid Gmail address');
-                }
-            }],
+            'email' => 'required|min:11|max:75|string|email'
+            // 'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
+            //     if (!Str::endsWith($val, '@gmail.com')) {
+            //         $err('The '.$attr.' must be a valid Gmail address');
+            //     }
+            // }],
         ]);
+    }
+
+    public static function hasNumber($val) {
+        $pattern = '/\d/';
+      
+        return preg_match($pattern, $val);
     }
 }

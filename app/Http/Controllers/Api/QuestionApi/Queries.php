@@ -107,7 +107,7 @@ class Queries extends Controller
                 ->join('admins', 'admins.id', '=', 'questions.updated_by')
                 ->where('question_answer', 'LIKE', '%'.$answer.'%')
                 ->whereNotNull('question_answer')
-                ->limit(10)
+                ->limit(12)
                 ->get();
 
             if ($que->isEmpty()) {

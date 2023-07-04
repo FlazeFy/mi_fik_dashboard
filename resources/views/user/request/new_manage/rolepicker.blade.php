@@ -57,9 +57,14 @@
         loadRolePicker(page_tag);
     }
 
-    function loadRolePicker(page_tag) {    
+    function loadRolePicker(page_tag) {
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/tag/cat/" + tag_cat + "/12?page=" + page_tag,
+            url: "/api/v1/tag/cat/" + tag_cat + "/"+per_page+ "?page=" + page_tag,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

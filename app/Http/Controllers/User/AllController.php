@@ -27,23 +27,27 @@ class AllController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
-            $menu = Menu::getMenu();
-            $tag = Tag::getFullTag("DESC", "DESC");
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
+        if($role == 1){
+            if($user_id != null){
+                $greet = Generator::getGreeting(date('h'));
+                $menu = Menu::getMenu();
+                $tag = Tag::getFullTag("DESC", "DESC");
+                $dct_tag = Dictionary::getDictionaryByType("Tag");
 
-            //Set active nav
-            session()->put('active_nav', 'manageuser');
-            session()->put('active_subnav', 'all user');
+                //Set active nav
+                session()->put('active_nav', 'manageuser');
+                session()->put('active_subnav', 'all user');
 
-            return view('user.all.index')
-                ->with('menu', $menu)
-                ->with('tag', $tag)
-                ->with('dct_tag', $dct_tag)
-                ->with('greet',$greet);
+                return view('user.all.index')
+                    ->with('menu', $menu)
+                    ->with('tag', $tag)
+                    ->with('dct_tag', $dct_tag)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

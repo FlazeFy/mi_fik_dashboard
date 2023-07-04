@@ -1,4 +1,4 @@
-<div style="position:absolute; right:0;" class="row">
+<div style="@if(!$isMobile) position:absolute; right:0; @else margin-top:var(--spaceMD); @endif" class="row">
     <div class="col-2">
         <button class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></button>
     </div>
@@ -11,35 +11,33 @@
 
 <script type="text/javascript">
     var search = "";
-    const search_storage = sessionStorage.getItem('search')
+    const search_storage = sessionStorage.getItem('search');
 
     if (search_storage == null) {
-        sessionStorage.setItem('search', search)
+        sessionStorage.setItem('search', search);
     } else {
-        document.getElementById('title_search').value = search_storage
+        document.getElementById('title_search').value = search_storage;
     }
 
     function checkTitleSearch() {
-        var input_search = document.getElementById('title_search').value
+        var input_search = document.getElementById('title_search').value;
 
         if(input_search == null || input_search.trim() === ''){
-            sessionStorage.setItem('search', '')
+            sessionStorage.setItem('search', '');
         } else {
-            sessionStorage.setItem('search', input_search.trim())
+            sessionStorage.setItem('search', input_search.trim());
         }
         if(search_storage == null || input_search.trim() != search_storage.trim()){
-            location.reload()
+            location.reload();
         }
 
-        search = input_search.trim()
-
+        search = input_search.trim();
     }
 
     function resetTitleSearch(){
-        sessionStorage.setItem('search', '')
-        location.reload()
+        sessionStorage.setItem('search', '');
+        location.reload();
     }
-
     function submitOnEnter(event) {
         if (event.keyCode === 13) { 
             event.preventDefault(); 

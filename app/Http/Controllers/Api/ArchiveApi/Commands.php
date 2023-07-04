@@ -291,7 +291,7 @@ class Commands extends Controller
                             ->delete();
                         $count_job++;
                     } else {
-                        // Check this shit
+                        // Check this
                     }
                 }
 

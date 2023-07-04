@@ -41,6 +41,7 @@
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
 
         <!-- JS Collection -->
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
@@ -48,6 +49,12 @@
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -57,13 +64,13 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
                     
-                    <div class="mt-4 btn-config-holder">
+                    <div class="mt-4 btn-config-holder w-100">
                         @include('user.group.create')
                         <div class="ms-1">
                             @include('user.group.searchbar')
                         </div>
                     </div>
-                    <div class="content-section position-relative mt-3">
+                    <div class="content-section position-relative p-3 mt-3">
                         @include('user.group.list')
                     </div>
                 </div>

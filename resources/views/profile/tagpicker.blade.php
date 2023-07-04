@@ -131,9 +131,14 @@
         stylingTagManage();  
         start_section.setAttribute('class', 'd-none');
         load_section.setAttribute('class', '');
+
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
         
         $.ajax({
-            url: "/api/v1/tag/cat/" + tag_cat + "/25?page=" + page,
+            url: "/api/v1/tag/cat/" + tag_cat + "/"+per_page+ "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

@@ -27,15 +27,23 @@
             </form>
         @endforeach
         <hr>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#ceChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
         <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
     @if(count($createdEvent) != 0)
-        <div id="CE_area_chart"></div>
+        @if(!$isMobile)
+            <div id="CE_area_chart"></div>
+        @else 
+            <div class="chart-mobile-holder">
+                <div id="CE_area_chart"></div>
+            </div>
+        @endif
     @else
         <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
         <h6 class="text-center">No Data Available</h6>
     @endif
+
+    @include('popup.mini_help', ['id' => 'ceChart', 'title'=> 'Created Event Chart', 'location'=>'created_event_chart'])
 </div>
 
 <script type="text/javascript">
@@ -72,6 +80,7 @@
     ],
         chart: {
         height: 260,
+        <?php if($isMobile){echo 'width: 480,';} ?>
         type: 'area'
     },
     dataLabels: {

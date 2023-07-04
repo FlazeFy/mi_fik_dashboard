@@ -25,8 +25,30 @@
     </div>
     <div class="dropdown dd-profil">
         <div class="btn btn-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            <div class="row p-0 m-0">
-                <div class="col-3 p-0">
+            @if(!$isMobile)
+                <div class="row p-0 m-0">
+                    <div class="col-3 p-0">
+                        @if(session()->get('profile_pic') == null)
+                            @if(session()->get('role_key') == 0)
+                                <img class="img img-fluid user-image" src="{{ asset('/assets/default_lecturer.png')}}" alt="{{ asset('/assets/default_lecturer.png')}}">
+                            @elseif(session()->get('role_key') == 1)
+                                <img class="img img-fluid user-image" src="{{ asset('/assets/default_admin.png')}}" alt="{{ asset('/assets/default_admin.png')}}">
+                            @endif
+                        @else
+                            <img class="img img-fluid user-image" src="{{session()->get('profile_pic')}}" alt="{{session()->get('profile_pic') == null}}">
+                        @endif
+                    </div>
+                    <div class="col-9 p-0 pt-1">
+                        <h5 class="user-username"><?php echo session()->get('username_key'); ?></h5>
+                        @if(session()->get("role_key") == 1)
+                            <h6 class="user-role">Admin</h6>
+                        @else 
+                            <h6 class="user-role">Lecturer</h6>
+                        @endif
+                    </div>
+                </div>    
+            @else 
+                <div class="navbar-image">
                     @if(session()->get('profile_pic') == null)
                         @if(session()->get('role_key') == 0)
                             <img class="img img-fluid user-image" src="{{ asset('/assets/default_lecturer.png')}}" alt="{{ asset('/assets/default_lecturer.png')}}">
@@ -36,18 +58,10 @@
                     @else
                         <img class="img img-fluid user-image" src="{{session()->get('profile_pic')}}" alt="{{session()->get('profile_pic') == null}}">
                     @endif
-                </div>
-                <div class="col-9 p-0 pt-1">
-                    <h5 class="user-username"><?php echo session()->get('username_key'); ?></h5>
-                    @if(session()->get("role_key") == 1)
-                        <h6 class="user-role">Admin</h6>
-                    @else 
-                        <h6 class="user-role">Lecturer</h6>
-                    @endif
-                </div>
-            </div>    
+                </div>    
+            @endif
         </div>
-        <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1" id="dd-menu-profile">
+        <ul class="dropdown-menu p-0 shadow" aria-labelledby="dropdownMenuButton1" id="dd-menu-profile">
             <li class="position-relative">
                 <a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i> Profile</a>
             </li>
@@ -56,10 +70,9 @@
             </li>
             <li>
                 <a class="dropdown-item" data-bs-toggle='modal' href="#notif-modal" onclick="toogleDetail()"><i class="fa-solid fa-bell me-2"></i> Notification</a>
-                <div class="item-notification" id="notif-holder"><img src="{{ asset('/assets/loading-notif.gif')}}" style='height:24px; margin-top:-5px;'></div>
             </li>
             <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
-                <li><a class="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
+                <li><a class="dropdown-item danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
             </button>
         </ul>
     </div>
@@ -111,7 +124,6 @@
     var pageHistory = 1;
     var pageNotif = 1;
 
-    //Get data ajax
     $(document).ready(function() {
         clear();
     });
@@ -136,7 +148,6 @@
     
     function clear() {
         setTimeout(function() {
-            update();
             clear();
             if(showDetail == true){
                 notifDetail();
@@ -149,41 +160,6 @@
         if(initial == 2000){
             initial = 10000
         }
-    }
-    
-    function update() {
-        $.ajax({
-            url: '/api/v1/notification',
-            type: 'get',
-            dataType: 'json',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
-            },
-            success: function(response){
-                var response = response.data;
-                var len = 0;
-
-                $('#notif-holder').empty(); 
-                if(response != null){
-                    len = response.length;
-                }
-                
-                if(len > 0){
-                    var elmt = 
-                        "<i class='fa-solid fa-bell me-2'></i>"+len ;
-                        
-                    $("#notif-holder").append(elmt);
-                }else{
-                    var elmt = 
-                        "<span>" +
-                            " " + //Check this again
-                        "</span>";
-
-                    $("#notif-holder").append(elmt);
-                }
-            }
-       });
     }
 
     function notifDetail() {
@@ -213,7 +189,7 @@
 
                         var elmt = " " +
                             "<div class='p-3 rounded shadow mb-3 text-start'> " +
-                                "<h6 class='fw-bolder'>" + notifTitle + "</h6> " +
+                                "<h6>" + notifTitle + "</h6> " +
                                 "<p class='mb-0'>" + notifBody + "</p> " +
                                 "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
                             "</div>";
@@ -305,7 +281,7 @@
 
                         var elmt = " " +
                             "<div class='p-3 rounded shadow mb-3 text-start'> " +
-                                "<h6 class='fw-bolder'>" + historyType + "</h6> " +
+                                "<h6>" + historyType + "</h6> " +
                                 "<p class='mb-0'>" + historyBody + "</p> " +
                                 "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
                             "</div>";

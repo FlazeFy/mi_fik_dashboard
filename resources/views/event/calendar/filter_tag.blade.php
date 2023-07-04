@@ -1,6 +1,6 @@
-<div class="position-relative me-2">
-    <button class="btn btn-primary px-3" type="button" style="z-index:100 !important;" id="section-select-tag" data-bs-toggle="dropdown"
-        ><i class="fa-solid fa-hashtag"></i> 
+<div class="position-relative me-1">
+    <button class="btn btn-primary px-3 py-2" type="button" id="section-select-tag" data-bs-toggle="dropdown"
+        ><i class="fa-solid fa-hashtag"></i>
         @php($tag_coll = session()->get('selected_tag_calendar'))
         @if($tag_coll != "All")
             {{count($tag_coll)}} Selected Tags
@@ -8,8 +8,8 @@
             All Tags
         @endif
     </button>
-    <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-select-tag">
-        <span class="dropdown-item">
+    <div class="filter-section dropdown-menu dropdown-menu-end shadow" style="width:480px;" onclick="event.stopPropagation()" aria-labelledby="section-select-tag">
+        <span class="filter-section dropdown-item p-0">
             <div class="dropdown-header">
                 <h6 class="dropdown-title">Filter Tag</h6>
                 <form action="/event/calendar/set_filter_tag/1" method="POST" class="position-absolute" style="right:15px; top:20px;">

@@ -18,6 +18,7 @@ use Kreait\Firebase\Messaging\Notification as FireNotif;
 use App\Models\User;
 use App\Models\UserRequest;
 use App\Models\Menu;
+use App\Models\Info;
 use App\Models\History;
 use App\Models\Dictionary;
 
@@ -33,21 +34,27 @@ class RequestController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
-            $menu = Menu::getMenu();
+        if($role == 1){
+            if($user_id != null){
+                $greet = Generator::getGreeting(date('h'));
+                $dct_tag = Dictionary::getDictionaryByType("Tag");
+                $info = Info::getAvailableInfo("user/request");
+                $menu = Menu::getMenu();
 
-            //Set active nav
-            session()->put('active_nav', 'manageuser');
-            session()->put('active_subnav', 'request');
+                //Set active nav
+                session()->put('active_nav', 'manageuser');
+                session()->put('active_subnav', 'request');
 
-            return view('user.request.index')
-                ->with('menu', $menu)
-                ->with('dct_tag', $dct_tag)
-                ->with('greet',$greet);
+                return view('user.request.index')
+                    ->with('menu', $menu)
+                    ->with('info', $info)
+                    ->with('dct_tag', $dct_tag)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 

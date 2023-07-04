@@ -19,8 +19,8 @@
     text-align: center;
     display: block;
     margin-inline: auto;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: calc(var(--spaceJumbo) + 15px);
+    margin-bottom: calc(var(--spaceJumbo) + 15px);
 }
 
 .logo-big-res{

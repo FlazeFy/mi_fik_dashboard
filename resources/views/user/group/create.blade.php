@@ -15,18 +15,41 @@
     }
 </style>
 
-<button class="btn btn-submit" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Group</button>
+@if(!$isMobile)
+    <button class="btn btn-submit" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Group</button>
+@else 
+    <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#addModal">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+@endif
+
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
+                @if($isMobile && $info)
+                <button type="button" class="custom-close-modal bg-info" data-bs-toggle="collapse" href="#collapseInfo" style="right:65px;" title="Info"><i class="fa-solid fa-info"></i></button>
+                @endif
                 <h5>Add Grouping</h5>
                 
                 <form action="/user/group/add" method="POST" id="form-add-group">
                     @csrf 
                     <div class="row mt-4 pb-2">
                         <div class="col-lg-4 col-md-6 col-sm-12">
+                            @if($isMobile && $info)
+                            <div class="collapse" id="collapseInfo">
+                                @foreach($info as $in)
+                                    @if($in->info_location == "add_group")
+                                        <div class="info-box {{$in->info_type}}">
+                                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                                            <?php echo $in->info_body; ?>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                            @endif
+
                             <div class="form-floating">
                                 <input type="text" class="form-control nameInput" id="group_name" name="group_name" maxlength="75" oninput="validateForm(validation)" required>
                                 <label for="titleInput_event">Group Name</label>
@@ -43,7 +66,8 @@
                                 <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
                             </span>
                             <span id="user-selected-holder"></span>
-                            @if($info)
+
+                            @if($info && !$isMobile)
                                 @foreach($info as $in)
                                     @if($in->info_location == "add_group")
                                         <div class="info-box {{$in->info_type}}">
@@ -146,8 +170,13 @@
         var find = document.getElementById("title_search").value;
         document.getElementById("user-list-holder").innerHTML = "";
 
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
+
         $.ajax({
-            url: "/api/v1/user/" + getFindUser(find) + "/limit/15/order/first_name__DESC/slug/all?page=" + page,
+            url: "/api/v1/user/" + getFindUser(find) + "/limit/"+per_page+ "/order/first_name__DESC/slug/all?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

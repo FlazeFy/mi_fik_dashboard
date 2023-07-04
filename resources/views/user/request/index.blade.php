@@ -30,6 +30,7 @@
         <!-- CSS Collection -->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/global_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/image_v1.0.css') }}"/>
@@ -40,6 +41,7 @@
         <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
         
         <!-- JS Collection -->
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
@@ -47,6 +49,12 @@
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -57,29 +65,49 @@
                     @include('sidebar.navbar')
 
                     <div class="container-fluid bg-transparent my-3 py-2 px-0">
-                        <div class="row">
-                            <div class="col-lg-8 col-md-7 col-sm-12">
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        @include('user.request.control.searchbarold')
-                                        <div class="content-section-small mt-2">    
-                                            @include('user.request.old_user_req')
+                        @if(!$isMobile)
+                            <div class="row">
+                                <div class="col-lg-8 col-md-7 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            @include('user.request.control.searchbarold')
+                                            <div class="content-section-small mt-2">    
+                                                @include('user.request.old_user_req')
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        @include('user.request.control.searchbarnew')
-                                        <div class="content-section-small mt-2">
-                                            @include('user.request.new_user_req')
+                                        <div class="col-lg-6">
+                                            @include('user.request.control.searchbarnew')
+                                            <div class="content-section-small mt-2">
+                                                @include('user.request.new_user_req')
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-4 col-md-5 col-sm-12">
-                                <div class="content-section-small mt-5">
-                                    @include('user.request.detail')
+                                <div class="col-lg-4 col-md-5 col-sm-12">
+                                    <div class="content-section-small mt-5">
+                                        @include('user.request.detail')
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="position-relative">
+                                <div class="carousel-control-holder">
+                                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                        <i class="fa-solid fa-angle-right fa-xl"></i><span class="visually-hidden">Next</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        @include('user.request.old_user_req')
+                                    </div>
+                                    <div class="carousel-item">
+                                        @include('user.request.new_user_req')
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

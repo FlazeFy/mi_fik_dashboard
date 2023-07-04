@@ -47,12 +47,19 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -68,18 +75,26 @@
                     @foreach($sort as $st)
                         <div class="content-section p-0 pt-3">
                             <header>
-                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5>
                                 @if($st == "finished")
                                     @include("event.calendar.searchbar")
                                     @include("event.calendar.sorting")
                                 @endif
                                 @include('components.controlsection', ['type' => "vertical"])
-                            </header>
-                            <div class="p-3">
-                                @if($st == "calendar")
+                                
+                                @if($isMobile && $st == "calendar")
                                     <div class="calendar-tag-holder">
                                         @include('event.calendar.filter_tag')
                                     </div>
+                                @endif
+                            </header><hr>
+                            <div class="@if(!$isMobile) p-3 @else px-3 pb-3 @endif">
+                                @if($st == "calendar")
+                                    @if(!$isMobile)
+                                        <div class="calendar-tag-holder">
+                                            @include('event.calendar.filter_tag')
+                                        </div>
+                                    @endif
                                     @include('event.calendar.calendar')
                                 @elseif($st == "finished")
                                     @include('event.calendar.finished')

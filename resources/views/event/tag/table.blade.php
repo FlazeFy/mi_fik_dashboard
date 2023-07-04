@@ -11,34 +11,33 @@
     }
     .input-custom:hover, .input-custom:focus{
         background:#f0f0f0;
-    }
-    
-    /*Icon color must change on input focus*/
+    }    
 </style>
 
-<div class="table-responsive">
+<h5 class="section-title">All Tag</h5>
+<div class="@if(!$isMobile) table-responsive @endif ">
     @include('event.tag.filterCategory')
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col">Tag Name</th>
-                <th scope="col">Category</th>
+                <th scope="col" style="min-width:120px;">Tag Name</th>
+                <th scope="col" style="min-width:120px;">Category</th>
                 @if(session()->get('role_key') == 1)
                     <th scope="col">Used</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Info</th>
                 @else 
-                    <th scope="col">Description</th>
+                    <th scope="col" style="min-width:240px;">Description</th>
                 @endif  
             </tr>
         </thead>
         <tbody class="tabular-body">
             @foreach($tag as $tg)
                 <tr class="tabular-item normal">
-                    <td>
+                    <td style="min-width:120px;">
                         <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
                     </td>
-                    <td>
+                    <td style="min-width:120px;">
                         @foreach($dct_tag as $dtag)
                             @if($dtag->slug_name == $tg->tag_category)
                                 {{$dtag->dct_name}}
@@ -117,7 +116,7 @@
                             </div>
                         </td>
                     @else
-                        <td> <div style="max-width:400px !important; word-break: break-all !important;">{{$tg->tag_desc}}</div></td>
+                        <td style="min-width:240px;"> <div style="max-width:400px !important; word-break: break-all !important;">{{$tg->tag_desc}}</div></td>
                     @endif
                 </tr>
 

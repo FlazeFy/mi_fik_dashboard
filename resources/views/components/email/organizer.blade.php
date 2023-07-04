@@ -53,6 +53,8 @@
             .btn-success{
                 background : #00C363;
                 color: #F5F5F5;
+                justify-content: center;
+                text-align: center; 
                 font-size: 16px;
                 padding: 10px;
                 border-radius: 10px;
@@ -92,7 +94,7 @@
                 @endforeach
             @endif
             
-            <a class="btn btn-success" title="Open detail in web" onclick="location.href'mifik.id/<?= $header['slug_name']; ?>'">See Detail</a>
+            <br><a class="btn btn-success" title="Open detail in web" onclick="location.href'mifik.id/<?= $header['slug_name']; ?>'">See Detail</a>
 
             <hr>
             <h6>Properties</h6>

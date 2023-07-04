@@ -134,9 +134,14 @@
                 }
             }
         }
+
+        var per_page = 24;
+        if(isMobile()){
+            per_page = 12;
+        } 
         
         $.ajax({
-            url: "/api/v1/tag/cat/" + cat + "/20?page="+page,
+            url: "/api/v1/tag/cat/" + cat + "/"+per_page+ "?page="+page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -293,7 +298,6 @@
                 }
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                console.log(response.body)
                 msg_all_role.innerHTML = msg_error;
                 validate("role");
             }

@@ -1,5 +1,5 @@
 .calendar-section {
-    padding: 0 20px; 
+    padding: 0 var(--spaceLG); 
 }
 .calendar, .calendar_weekdays, .calendar_content {
     max-width: 585px; 
@@ -8,8 +8,8 @@
     /*float: left;*/
     margin: auto;
     min-width: 160px;
-    background: #FFFFFF;
-    padding: 10px;
+    background: var(--whiteColor);
+    padding: var(--spaceSM);
     -webkit-box-shadow: 0px 4px 26px -22px rgba(0, 0, 0, 0.14);
     -moz-box-shadow: 0px 4px 26px -22px rgba(0, 0, 0, 0.14);
     box-shadow: 0px 4px 26px -22px rgba(0, 0, 0, 0.14); 
@@ -21,12 +21,12 @@
 .calendar_weekdays div {
     display: inline-block;
     vertical-align: top;
-    color: #F78A00;
+    color: var(--primaryColor);
     font-weight: 500; 
 }  
 .calendar_content, .calendar_weekdays, .calendar_header {
     position: relative; 
-    font-size: 14px;
+    font-size: var(--textXMD);
 } 
 .calendar_content:after, .calendar_weekdays:after, .calendar_header:after {
     content: ' ';
@@ -37,7 +37,7 @@
     /*border: 1px dotted #999;*/
     width: 14.28571%;
     height: 45px;
-    padding-top: 10px;
+    padding-top: var(--spaceSM);
     overflow: hidden;
     text-align: center;
     background-color: transparent; 
@@ -65,9 +65,9 @@
   
 .calendar_content div.today {
     font-weight: bold;
-    font-size: 14px;
-    color: #FFFFFF;
-    background-color: #F78A00; 
+    font-size: var(--textXMD);
+    color: var(--whiteColor);
+    background-color: var(--primaryColor);
 }
   
 /* .calendar_content div.selected:first-child {
@@ -93,10 +93,10 @@
 }
   
 .calendar_header h2 {
-    margin-top: 15px;
+    margin-top: var(--spaceXMD);
     padding: 0;
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 500;
+    font-size: var(--textXLG);
     color: #000 !important;
     text-transform: uppercase; 
 }
@@ -127,7 +127,7 @@ button.switch-month.switch-right {
 }
   
 button.switch-month:hover {
-    color: #F78A00; 
+    color: var(--primaryColor);
 }
   
 button.switch-month:active {

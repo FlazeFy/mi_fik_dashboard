@@ -12,7 +12,7 @@
 </script>
 
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold">Create New Tag Category</h5>
+    <h5 class="section-title">Create New Tag Category</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button"
         data-bs-toggle="popover" title="Info" data-bs-content="This category will grouping the tag into more complex functionality."><i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>

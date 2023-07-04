@@ -1,7 +1,7 @@
 .attachment-holder .attachment-item {
-    padding: 12px 20px 12px 12px !important;
-    margin-top: 15px !important;
-    margin-left:15px;
+    padding: var(--spaceMD) 20px var(--spaceMD) var(--spaceMD) !important;
+    margin-top: var(--spaceXMD) !important;
+    margin-left:var(--spaceXMD);
     position: relative;
     border-radius: 0 10px 10px 0;
     min-height: 80px;
@@ -11,10 +11,10 @@
     border-bottom: 1.75px solid #CED4DA;
 }
 .attachment-holder .attachment-item ul {
-    padding-left: 12px;
+    padding-left: var(--spaceMD);
 }
 .attachment-holder .attachment-item ul li {
-    padding-bottom: 10px;
+    padding-bottom: var(--spaceSM);
 }
 .attachment-holder .attachment-item:last-child {
     padding-bottom: 0;
@@ -27,30 +27,30 @@
     border-radius: 50px;
     left: -13px;
     top: 36%;
-    background: #FFFFFF;
+    background: var(--whiteColor);
     border: 3px solid var(--circle-attach-color-var);
 }
 .btn-icon-delete{
-    color: #F85D59 !important;
-    padding: 4px 8px;
+    color: var(--warningBG) !important;
+    padding: var(--spaceMini) var(--spaceXSM);
 }
 .btn-icon-delete:hover{
-    background: #e74645 !important;
-    color:#FFFFFF !important;
+    background: var(--warningBG) !important;
+    color:var(--whiteColor) !important;
 }
 .btn-icon-preview{
     color: #808080 !important;
-    padding: 4px 8px;
+    padding: var(--spaceMini) var(--spaceXSM);
 }
 .form-select.attachment{
-    padding: 4px !important;
-    font-size: 13px;
+    padding: var(--spaceMini) !important;
+    font-size: var(--textMD);
     width: 100px;
 }
 .btn-add-att{
-    color:#F78A00 !important;
+    color:var(--primaryColor) !important;
     border-radius: 8px;
-    border: solid 2px #F78A00;
+    border: solid 2px var(--primaryColor);
     opacity: 1;
     cursor: pointer;
 }
@@ -59,22 +59,22 @@
 }
 .btn-add-att:hover{
     color:white !important;
-    background: #F78A00;
+    background: var(--primaryColor);
 }
 .attach-upload-status, #content_loc_msg{
     text-decoration: none;
     font-style: italic;
-    font-size: 13px;
+    font-size: var(--textMD);
     font-weight: 500;
 }
 .success{
-    color: #00c363 !important;
+    color: var(--successBG) !important;
 }
 .failed{
     color: #e74645 !important;
 }
 .warning{
-    color: #f78a00 !important;
+    color: var(--primaryColor) !important;
 }
 .document-grid{
     width: 100%; 

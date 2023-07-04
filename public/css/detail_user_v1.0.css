@@ -4,7 +4,7 @@
 }
 .user-req-holder{
     margin-top: 20px;
-    padding: 5px 16px 0 5px;
+    padding: var(--spaceXXSM) 16px 0 var(--spaceXXSM);
     display: flex;
     flex-direction: column;
     max-height: 90%;
@@ -14,32 +14,46 @@
     border-left: 3px solid #808080;
     border-radius: 10px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    padding: 5px;
+    padding: var(--spaceXXSM);
     width: 100%;
     border: none;
     text-align: start;
-    background: #FFFFFF;
-    margin-bottom: 15px;
+    background: var(--whiteColor);
+    margin-bottom: var(--spaceMD);
 }
 .user-box-desc{
-    font-size: 12px;
-    font-weight: normal;
+    font-size: var(--textSM);
+    font-weight: 400;
     margin: 0;
 }
-.user-box-date{
-    font-size: 12px;
-    font-weight: normal;
+.user-box-date {
+    font-size: var(--textSM);
+    font-weight: 400;
     color: #808080;
     margin: 0;
 }
-.detail-box{
+.detail-box {
     height: 70vh;
 }
-.scroll-role{
+.scroll-role {
     margin: 0;
     padding: 0;
     display: flex;
     max-height: 50vh;
     flex-direction: column;
     overflow-y: scroll;
+}
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .incoming-req-box {
+        height: auto;
+        padding-inline: var(--spaceXXSM);
+    }
+    ol li {
+        font-size: var(--textXMD);
+    }
+    .user-box.request { 
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 1.5px 4px;
+    }
 }

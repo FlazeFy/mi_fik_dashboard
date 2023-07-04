@@ -4,7 +4,7 @@
     cursor:pointer;
 }
 .form-check-input:checked{
-    background-color:#F78A00 !important;
+    background-color:var(--primaryColor) !important;
     border:none;
 }
 
@@ -16,10 +16,10 @@
     border: 1.5px solid #343434;
 }
 .btn-outlined.selected{
-    color: #00c363 !important;
-    border: 1.5px solid #00c363;
+    color: var(--successBG) !important;
+    border: 1.5px solid var(--successBG);
 }
 
 .input-warning.text-danger{
-    font-size: 12px;
+    font-size: var(--textSM);
 }

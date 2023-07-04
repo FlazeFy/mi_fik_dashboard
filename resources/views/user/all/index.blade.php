@@ -41,6 +41,7 @@
         <link rel="stylesheet" href="{{ asset('/css/tabular_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/detail_user_v1.0.css') }}"/>
 
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
@@ -48,6 +49,12 @@
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="wrapper d-flex align-items-stretch">
             <!--Sidebar.-->
             @include('sidebar.leftbar')
@@ -57,13 +64,27 @@
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="mt-4 btn-config-holder">
-                        @include('user.all.filtertag')
-                        @include('user.all.filtername')
-                        <div class="ms-3">
-                            @include("user.searchbar")
+                    @if(!$isMobile)
+                        <div class="mt-4 btn-config-holder">
+                            @include('user.all.filtertag')
+                            @include('user.all.filtername')
+                            <div class="ms-3">
+                                @include("user.searchbar")
+                            </div>
                         </div>
-                    </div>
+                    @else 
+                        <div class="mt-4 btn-config-holder">
+                            <div class="d-inline-block w-100">
+                                @include("user.searchbar")
+                            </div>
+                            <div class="d-inline-block">
+                                @include('user.all.filtertag')
+                            </div>
+                            <div class="d-inline-block">
+                                @include('user.all.filtername')
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="content-section-small mt-3">
                         @include('user.all.list')

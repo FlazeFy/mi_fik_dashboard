@@ -35,12 +35,19 @@
         </script>
 
         <!-- JS Collection -->
+        <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
 
     <body>
+        <!-- PHP Helpers -->
+        <?php
+            use App\Helpers\Generator;
+        ?>  
+        @php($isMobile = Generator::isMobileDevice())   
+        
         <div class="d-block mx-auto p-0 pt-5" style="max-width:1360px;">
             <div class="row w-100">
                 <div class="col-lg-6 col-md-6 col-sm-12">

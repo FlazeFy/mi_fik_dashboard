@@ -32,30 +32,34 @@ class NotificationController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            //Required config
-            $select_1 = "Notification";
+        if($role == 1){
+            if($user_id != null){
+                //Required config
+                $select_1 = "Notification";
 
-            $notification = Notification::getAllNotification();
-            $dictionary = Dictionary::getDictionaryByType($select_1);
-            $greet = Generator::getGreeting(date('h'));
-            $dct_tag = Dictionary::getDictionaryByType("Tag");
-            $menu = Menu::getMenu();
-            $info = Info::getAvailableInfo("system");
+                $notification = Notification::getAllNotification();
+                $dictionary = Dictionary::getDictionaryByType($select_1);
+                $greet = Generator::getGreeting(date('h'));
+                $dct_tag = Dictionary::getDictionaryByType("Tag");
+                $menu = Menu::getMenu();
+                $info = Info::getAvailableInfo("system");
 
-            //Set active nav
-            session()->put('active_nav', 'system');
-            session()->put('active_subnav', 'notification');
+                //Set active nav
+                session()->put('active_nav', 'system');
+                session()->put('active_subnav', 'notification');
 
-            return view ('system.notification.index')
-                ->with('notification', $notification)
-                ->with('dictionary', $dictionary)
-                ->with('info', $info)
-                ->with('dct_tag', $dct_tag)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
+                return view ('system.notification.index')
+                    ->with('notification', $notification)
+                    ->with('dictionary', $dictionary)
+                    ->with('info', $info)
+                    ->with('dct_tag', $dct_tag)
+                    ->with('menu', $menu)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
+            }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 
@@ -134,7 +138,7 @@ class NotificationController extends Controller
 
                         foreach($users as $us){
                             $result = DB::table("users")
-                                ->selectRaw("id, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token")
+                                ->selectRaw("id, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name,firebase_fcm_token")
                                 ->where('username', $us->username)->first();
                             $list_user_holder[] = [
                                 "id" => $result->id,
@@ -182,7 +186,7 @@ class NotificationController extends Controller
 
                         foreach($groups as $gs){
                             $result = DB::table("users_groups")
-                                ->selectRaw("users_groups.id, user_id, username, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token")
+                                ->selectRaw("users_groups.id, user_id, username, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name,firebase_fcm_token")
                                 ->join("groups_relations","groups_relations.group_id","=","users_groups.id")
                                 ->join("users","users.id","=","groups_relations.user_id")
                                 ->where("slug_name", $gs->slug)
@@ -252,7 +256,7 @@ class NotificationController extends Controller
                         $list_user_holder = [];
                     
                         $result = DB::table("users")
-                            ->selectRaw("id, username, CONCAT(first_name,' ',last_name) as full_name,firebase_fcm_token,role");
+                            ->selectRaw("id, username, CONCAT(first_name,' ',COALESCE(last_name, '')) as full_name,firebase_fcm_token,role");
 
                         $arr_roles = "";
                         $total = count($roles);

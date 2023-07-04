@@ -43,7 +43,7 @@ class LandingController extends Controller
         //Password hash
         //........
 
-        $check = Admin::select('id','slug_name', 'username','image_url')
+        $check = Admin::select('username','image_url')
             ->where('username', $request->username)
             ->where('password', $request->password)
             ->limit(1)
@@ -52,7 +52,6 @@ class LandingController extends Controller
         if(count($check) > 0){
             foreach($check as $c){
                 $username = $c->username;
-                $slug = $c->slug_name;
                 $image = $c->image_url;
             }
 
@@ -63,7 +62,7 @@ class LandingController extends Controller
 
             return redirect()->route('homepage')->with('recatch_message', 'true');
         } else {
-            $check = User::select('id','slug_name', 'username','image_url')
+            $check = User::select('username','image_url')
                 ->where('username', $request->username)
                 ->where('password', $request->password)
                 ->whereRaw("role like '%lecturer%' or '%staff%'")
@@ -73,12 +72,10 @@ class LandingController extends Controller
             if(count($check) > 0){
                 foreach($check as $c){
                     $username = $c->username;
-                    $slug = $c->slug_name;
                     $image = $c->image_url;
                 }
     
                 $request->session()->put('username_key', $username);
-                $request->session()->put('slug_key', $slug);
                 $request->session()->put('profile_pic', $image);
                 $request->session()->put('role', 1);
     

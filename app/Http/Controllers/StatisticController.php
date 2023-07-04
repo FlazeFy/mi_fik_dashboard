@@ -13,6 +13,7 @@ use App\Models\ContentHeader;
 use App\Models\Setting;
 use App\Models\User;
 use App\Models\Menu;
+use App\Models\Info;
 use App\Models\Feedback;
 
 class StatisticController extends Controller
@@ -27,39 +28,45 @@ class StatisticController extends Controller
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
 
-        if($user_id != null){
-            $setting = Setting::getChartSetting($user_id);
+        if($role == 1){
+            if($user_id != null){
+                $setting = Setting::getChartSetting($user_id);
 
-            //Chart query
-            $mostTag = ContentDetail::getMostUsedTag();
-            $mostLoc = ContentDetail::getMostUsedLoc();
-            $mostRole = User::getMostUsedRole();
-            $menu = Menu::getMenu();
-            $greet = Generator::getGreeting(date('h'));
-            $suggestion = Feedback::getAllFeedbackSuggestion();
+                //Chart query
+                $mostTag = ContentDetail::getMostUsedTag();
+                $mostLoc = ContentDetail::getMostUsedLoc();
+                $mostRole = User::getMostUsedRole();
+                $menu = Menu::getMenu();
+                $info = Info::getAvailableInfo("statistic");
+                $greet = Generator::getGreeting(date('h'));
+                $suggestion = Feedback::getAllFeedbackSuggestion();
 
-            foreach($setting as $set){
-                $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
-                //$mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
-                $mostViewed = ContentDetail::getMostViewedEventSeparatedRole($set->MVE_range);
+                foreach($setting as $set){
+                    $createdEvent = ContentHeader::getTotalContentByMonth($set->CE_range);
+                    //$mostViewed = ContentDetail::getMostViewedEvent($set->MVE_range);
+                    $mostViewed = ContentDetail::getMostViewedEventSeparatedRole($set->MVE_range);
+                }
+                
+                //Set active nav
+                session()->put('active_nav', 'statistic');
+                session()->forget('active_subnav');
+
+                return view ('statistic.index')
+                    ->with('mostTag', $mostTag)
+                    ->with('mostLoc', $mostLoc)
+                    ->with('mostRole', $mostRole)
+                    ->with('mostViewed', $mostViewed)
+                    ->with('setting', $setting)
+                    ->with('menu', $menu)
+                    ->with('info', $info)
+                    ->with('suggestion', $suggestion)
+                    ->with('createdEvent', $createdEvent)
+                    ->with('greet',$greet);
+            } else {
+                return redirect("/")->with('failed_message','Session lost, please sign in again');
             }
-            
-            //Set active nav
-            session()->put('active_nav', 'statistic');
-            session()->forget('active_subnav');
-
-            return view ('statistic.index')
-                ->with('mostTag', $mostTag)
-                ->with('mostLoc', $mostLoc)
-                ->with('mostRole', $mostRole)
-                ->with('mostViewed', $mostViewed)
-                ->with('setting', $setting)
-                ->with('menu', $menu)
-                ->with('suggestion', $suggestion)
-                ->with('createdEvent', $createdEvent)
-                ->with('greet',$greet);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/403");
         }
     }
 
