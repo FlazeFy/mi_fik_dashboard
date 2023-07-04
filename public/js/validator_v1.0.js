@@ -122,3 +122,27 @@ function validateFull(rules, id){
         }
     }
 }
+
+function isValidURL(urlString){
+    try { 
+        return Boolean(new URL(urlString)); 
+    }
+    catch(e){ 
+        return false; 
+    }
+}
+
+function isAddMoreAttachment(list){
+    if(list.length != 0){
+        var check = true;
+        list.forEach(e => {
+            if(e.attach_url == null || e.attach_url.trim() == "" || e.is_add_more == false){
+                check = false;
+            } 
+        });
+
+        return check;
+    } else {
+        return true;
+    }
+}

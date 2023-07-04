@@ -23,7 +23,7 @@
                 <th scope="col" style="min-width:120px;">Tag Name</th>
                 <th scope="col" style="min-width:120px;">Category</th>
                 @if(session()->get('role_key') == 1)
-                    <th scope="col">Used</th>
+                    <th scope="col">Total</th>
                     <th scope="col">Delete</th>
                     <th scope="col">Info</th>
                 @else 
@@ -46,20 +46,10 @@
                         @endforeach
                     </td>
                     @if(session()->get('role_key') == 1)
-                        <td>
-                            @php($count = 0)
-
-                            @foreach($mostTag as $mt)
-                                @php($tagJson = json_decode($mt->content_tag))
-                                
-                                @foreach($tagJson as $tj)
-                                    @if($tj->tag_name == $tg->tag_name)
-                                        @php($count++)
-                                    @endif
-                                @endforeach   
-                            @endforeach
-
-                            {{$count}}
+                        <td>   
+                            @php($tag_code = str_replace("-", "", $tg->id))
+                            <button class="btn btn-info" data-bs-target="#infoTotalUsed-{{$tg->id}}" data-bs-toggle="modal" style="padding:8px 12px;" onclick="getTagTotal<?php echo $tag_code; ?>()"><i class="fa-solid fa-chart-pie"></i></button>
+                            @include('event.tag.infoTotalUsed')
                         </td>
                         <td>
                             @if($tg->slug_name != "lecturer" && $tg->slug_name != "staff" && $tg->slug_name != "student")
@@ -75,7 +65,7 @@
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis-vertical more"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}" style="width:250px !important;">
+                                <div class="dropdown-menu dropdown-menu-end shadow p-0" onclick="event.stopPropagation()" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}" style="width:250px !important;">
                                     <span class="dropdown-item p-3">
                                         <h6>Tag Description</h6>
                                         <form class="form-custom" method="POST" action="/event/tag/update/desc/{{$tg->id}}">

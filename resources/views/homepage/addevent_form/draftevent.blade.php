@@ -41,12 +41,12 @@
                                             @endif
                                         </div>
                                         <div class='d-inline-block position-relative w-75'>
-                                            <h6 class='event-title'>{{$md->content_title}}</h6>
+                                            <h6 class='event-title'>{{ucwords($md->content_title)}}</h6>
                                             <h6 class='event-subtitle'>{{$username}}</h6>
                                         </div>
                                     </div>
                                     <div style='height:60px;'>
-                                        <p class='event-desc my-1'>{{strip_tags($md->content_desc)}}</p>
+                                        <p class='event-desc my-1'>{{ucFirst(strip_tags($md->content_desc))}}</p>
                                     </div>
                                     <div class='event-properties row d-inline-block px-2'>
                                         @if($md->content_tag)

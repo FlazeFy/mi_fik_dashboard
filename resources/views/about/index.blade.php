@@ -21,7 +21,7 @@
         <!-- Include stylesheet -->
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
         
-        <!-- Main Quill library -->
+        <!-- Quills Richtext -->
         <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 
         <!-- Jquery -->

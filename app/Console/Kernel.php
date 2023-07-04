@@ -36,7 +36,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command(ContentSchedule::clean())->everyMinute();
 
         $schedule->command(RequestSchedule::remind_new_user())->everyTwoHours();
-        $schedule->command(RequestSchedule::remind_request())->everyMinute();
+        $schedule->command(RequestSchedule::remind_request())->everyFourHours();
 
         $schedule->command(ContentSchedule::clean())->dailyAt('01:00');
         $schedule->command(TrashSchedule::clean())->dailyAt('01:30');

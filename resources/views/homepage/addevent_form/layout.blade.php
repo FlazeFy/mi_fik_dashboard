@@ -142,7 +142,7 @@
                             <label class="input-title">Event Location</label><br>
                             @include('homepage.addevent_form.locationpicker')
 
-                            <label class="input-title mb-2">Attachment</label><br>
+                            <label class="input-title my-2">Attachment</label><br>
                             @include('homepage.addevent_form.attachment')
                         </div>
                     </div>

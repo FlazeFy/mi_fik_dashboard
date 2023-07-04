@@ -1,4 +1,4 @@
-<label>Set Date Start</label>
+<label class="input-title">Set Date Start</label>
 <div class="row mt-2">
     <div class="col-6">
         <input type="date" name="content_date_start" min="{{date('Y-m-d')}}" id="date_start_event" onchange="validateDateEvent()" class="form-control">
@@ -9,7 +9,7 @@
 </div>
 <a id="dateStart_event_msg" class="input-warning text-danger"></a>
 
-<label>Set Date End</label>
+<label class="input-title">Set Date End</label>
 <div class="row mt-2">
     <div class="col-6">
         <input type="date" name="content_date_end" min="{{date('Y-m-d')}}" id="date_end_event" onchange="validateDateEvent()" class="form-control">
@@ -56,6 +56,8 @@
                 if(val_ts.value === ''){
                     val_ts.value = getDateToContext(today, "24h");
                 }
+            } else {
+                val_ds.removeAttribute("min");
             }
 
             // Set minimal date 

@@ -136,10 +136,12 @@
         <div class="col-lg-8">
             @include('event.edit.titledescinput')<hr>
 
-            <h6 class="text-primary mt-3">Attachment</h6>
-            @include('event.edit.attachment.add')  
-            <br>
-            @include('event.edit.attachment.show')                
+            <div class="position-relative">
+                <h6 class="text-primary mt-3">Manage Attachment</h6>
+                @include('event.edit.attachment.add')  
+                <br>
+                @include('event.edit.attachment.show')   
+            </div>             
         </div>
         <div class="col-lg-4">
             <h6 class="text-primary mt-3">Tag</h6>

@@ -57,21 +57,3 @@
         @endif
     @endforeach
 @endif
-
-<script>
-    function deleteAttachmentForm(index, type){
-        let att_val = document.getElementById('attach_url_del_'+index).value;
-
-        if(type != "attachment_url" && att_val){
-            var storageRef = firebase.storage();
-            var desertRef = storageRef.refFromURL(att_val);
-            desertRef.delete().then(() => {
-                msg = "Attachment has been removed";
-                //Return msg not finished. i dont know what to do next LOL
-            }).catch((error) => {
-                msg = "Failed to deleted the Attachment";
-                //Return msg not finished. i dont know what to do next LOL
-            });
-        } 
-    }
-</script>

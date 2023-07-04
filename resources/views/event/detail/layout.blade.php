@@ -157,9 +157,14 @@
             <div class="col-lg-8">
                 <!-- <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button> -->
-                <h5>{{$c->content_title}}</h5><br>
+                <h4 class="text-primary">{{ucwords($c->content_title)}}</h4><br>
 
-                <span><?php echo $c->content_desc; ?></span><br>
+                @if($c->content_desc)
+                    <span><?php echo $c->content_desc; ?></span><br>
+                @else
+                    <img src="{{asset('assets/nodesc.png')}}" class="img nodata-icon" style="height:18vh;">
+                    <h6 class="text-center text-secondary">This Event doesn't have description</h6>
+                @endif
 
                 <hr><h5>Attachment</h5>
                 @include('event.detail.attachment')

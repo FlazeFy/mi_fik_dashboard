@@ -14,6 +14,10 @@
 .text-primary{
     color: var(--primaryColor) !important;
 }
+.text-info{
+    color: var(--infoBG) !important;
+    text-decoration: none;
+}
 
 .section-title {
     color: var(--darkColor);
