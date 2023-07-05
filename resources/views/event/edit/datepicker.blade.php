@@ -86,8 +86,9 @@
             editable_date_start = false;
             if(now > res_start){
                 ts_event.disabled = true;
+                is_end.value = "true";
             }
-            is_end.value = "true";
+            is_end.value = "false";
         } else {
             if(now > res_start){
                 editable_date_start = false;
@@ -112,6 +113,7 @@
     }
 
     function submitEdit(){
+        ds_event.disabled = false;
         var res_end = subtractOffsetFromTime(te_event.value);
         te_event.value = getDateToContext(res_end, "24h");
         if(is_end.value != "true"){

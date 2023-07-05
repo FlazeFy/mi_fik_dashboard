@@ -308,9 +308,9 @@ class HomepageController extends Controller
 
                     DB::commit();
 
-                    // if(session()->get('email_key')){
-                    //     Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
-                    // }
+                    if(session()->get('email_key')){
+                        Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
+                    }
 
                     return redirect()->back()->with('success_message', 'Create content success');
                 }

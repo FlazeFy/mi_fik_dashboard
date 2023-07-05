@@ -21,6 +21,19 @@
         </div>
     @endif
 
+    @if($c->content_loc && count($c->content_loc) != 2)
+        @if($info)
+            @foreach($info as $in)
+                @if($in->info_location == "invalid_location")
+                    <div class="info-box {{$in->info_type}}">
+                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                        <?php echo $in->info_body; ?>
+                    </div>
+                @endif
+            @endforeach
+        @endif
+    @endif
+
     <form action="/event/edit/update/loc/add/{{$c->slug_name}}" method="POST">
         @csrf
         <input hidden name="content_loc" id="content_loc">
@@ -39,7 +52,7 @@
     var coordinate_old;
     var loc_obj = [];
     <?php 
-        if($c->content_loc){
+        if($c->content_loc && count($c->content_loc) == 2){
             echo 'coordinate_old = "'.$c->content_loc[1]['detail'].'"';
         }
     ?>
@@ -47,7 +60,7 @@
     function initMap() {
         //Map starter
         <?php 
-            if($c->content_loc){
+            if($c->content_loc && count($c->content_loc) == 2){
                 $full_coor = $c->content_loc[1]['detail'];
                 $coor = explode(", ", $full_coor);
                 echo "let latitude= ".$coor[0].";";

@@ -497,4 +497,20 @@ class Generator
     
         return false;
     }
+
+    public static function getUserImage($img1, $img2, $user1){
+        if($img1 || $img2){
+            if($img1){
+                return $img1;
+            } else {
+                return $img2;
+            }
+        } else {
+            if($user1){
+                return 'http://127.0.0.1:8000/assets/default_admin.png';
+            } else {
+                return 'http://127.0.0.1:8000/assets/default_lecturer.png';
+            }
+        }
+    }
 }

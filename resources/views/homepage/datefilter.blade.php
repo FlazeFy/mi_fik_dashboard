@@ -74,54 +74,11 @@
                     <a id="date_filter_msg_all" class="input-warning text-danger"></a>
             </div>
         </span>
-
-        <!-- Mini calendar -->
-        <!-- <div class="calendar-section">
-            <div class="calendar calendar-first" id="calendar_first">
-                <div class="calendar_header">
-                <button class="switch-month switch-left">
-                    <i class="fa fa-chevron-left"></i>
-                </button>
-                <h2></h2>
-                <button class="switch-month switch-right">
-                    <i class="fa fa-chevron-right"></i>
-                </button>
-                </div>
-                <hr>
-                <div class="calendar_weekdays"></div>
-                <div class="calendar_content"></div>
-            </div>
-        </div> -->
     </div>
 </div>
 
 <script>
     var error = true;
-    var mini_calendar;
-
-    function transferMiniCalendar(start, end){
-        Date.prototype.addDays = function(days) {
-            var date = new Date(this.valueOf());
-            date.setDate(date.getDate() + days);
-            return date;
-        }
-
-        var dateArray = new Array();
-        var currentDate = start;
-        while (currentDate <= end) {
-            var fulldate = new Date(currentDate)
-            dateArray.push(fulldate.getDate());
-            currentDate = currentDate.addDays(1);
-        }
-
-        var dateArray = {"2023":{"2":dateArray}}
-        
-        console.log(dateArray);
-
-        // {"2023":{"2":[24,25,26,27,28,29,30]}}
-        //For now still days only
-        mini_calendar = dateArray;
-    }
 
     function validateDateFilter(){
         var today = new Date();
@@ -193,8 +150,6 @@
                 $("#date_filter_msg_end").text("");
                 finalValidate();
             }
-
-            transferMiniCalendar(ds, de);
         }
 
         if(!error){
@@ -202,7 +157,5 @@
         } else {
             $("#date-filter-submit-holder").html("");
         }
-                    //console.log(JSON.stringify(mini_calendar));
-
     }
 </script>

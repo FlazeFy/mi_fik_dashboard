@@ -111,10 +111,13 @@
     border:2px solid var(--primaryColor);
     width:40px;
     height:40px;
-    cursor:pointer; /*if we can view other user profile*/
-    border-radius:30px;
+    border-radius: var(--roundedCircle);
     margin-inline:auto;
     display: block;
+}
+.user-image-content.large{
+    width:70px;
+    height:70px;
 }
 .header-image{
     background-position: center;

@@ -1,4 +1,4 @@
-@if($c->content_loc)
+@if($c->content_loc && count($c->content_loc) == 2)
     <style>
         #map-event {
             height:420px;
@@ -65,7 +65,10 @@
         
         window.initMap = initMap;
     </script>
-@else 
+@elseif($c->content_loc && count($c->content_loc) != 2)
+    <img src="{{asset('assets/sorry.png')}}" class="img nodata-icon" style="height:18vh;">
+    <h6 class="text-center text-secondary">Something error with event location, please contact admin</h6>
+@else
     <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon" style="height:18vh;">
     <h6 class="text-center text-secondary">This Event doesn't have location</h6>
 @endif

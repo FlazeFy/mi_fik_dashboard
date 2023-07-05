@@ -155,9 +155,19 @@
         @endif
         <div class="row p-3">
             <div class="col-lg-8">
-                <!-- <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button> -->
-                <h4 class="text-primary">{{ucwords($c->content_title)}}</h4><br>
+                <!-- PHP Helpers -->
+                <?php
+                    use App\Helpers\Generator;
+                ?>  
+                @php($image_profile = Generator::getUserImage($c->admin_image_created, $c->user_image_created, $c->admin_username_created))
+                <div class="p-0 m-0" style="display: flex;">
+                    <div class="d-inline-block me-2">
+                        <img class="img rounded-circle" style="width:55px; height:55px; border:2px solid var(--primaryColor);" src="{{$image_profile}}" alt="username-profile-pic.png">
+                    </div>
+                    <div class="d-inline-block" style="width:auto;">
+                        <h4 class="text-primary">{{ucwords($c->content_title)}}</h4><br>
+                    </div>
+                </div>
 
                 @if($c->content_desc)
                     <span><?php echo $c->content_desc; ?></span><br>

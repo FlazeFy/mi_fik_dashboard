@@ -44,8 +44,9 @@ class EditController extends Controller
             if($content){
                 if($role == 0){
                     foreach($content as $ct){
-                        if($ct->user_username_created == $user_id){
+                        if($ct->user_username_created == session()->get('username_key')){
                             $access = true;
+                            break;
                         }
                     }
                 } else {
@@ -87,10 +88,10 @@ class EditController extends Controller
                         ->with('dictionary', $dictionary)
                         ->with('greet',$greet);
                 } else {
-                    return redirect("/403");
+                    return view("errors.403");
                 }
             } else {
-                return redirect("/404");
+                return view("errors.404");
             }
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');

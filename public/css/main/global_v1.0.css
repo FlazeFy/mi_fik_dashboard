@@ -428,6 +428,7 @@ th{
 }
 .info-box.warning{
     background: #f7bdbd !important;
+    color: var(--darkColor) !important;
 }
 .info-box label{
     font-size: var(--textXMD);
