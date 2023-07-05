@@ -64,7 +64,7 @@
             } else {
                 echo "#addEventModal";
             }
-        ?>" data-bs-toggle="modal" onclick="infinteLoadMoreTag(1)">
+        ?>" data-bs-toggle="modal" onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event'); infinteLoadMoreTag(1)">
 
     @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
         <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>

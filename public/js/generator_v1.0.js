@@ -181,3 +181,13 @@ function getEventStatus(start, end){
         return ""
     }
 }
+
+function setDatePickerMinNow(elmt){
+    const now = new Date();
+    document.getElementById(elmt).setAttribute("min",getDateToContext(now, "date"));
+}
+
+function setDatePickerMin(elmt, date){
+    const dt = new Date(date);
+    document.getElementById(elmt).setAttribute("min",getDateToContext(dt, "date"));
+}

@@ -100,7 +100,7 @@
             <h4 class="text-primary">Profile Image</h4>
             <div class="row pb-5">
                 <div class="col-lg-6 p-4 position-relative">
-                    <div class="position-absolute">
+                    <div class="">
                         <div class="content-image-holder p-0 position-relative">
                             <img id="profile_image_info" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}" style="width:200px; height:200px;">
                             <div class='image-upload' id='formFileImg'>
