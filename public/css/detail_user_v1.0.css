@@ -11,8 +11,8 @@
     overflow-y: scroll;
 }
 .user-box{
-    border-left: 3px solid #808080;
-    border-radius: 10px;
+    border-left: 3px solid var(--shadowColor);
+    border-radius: var(--roundedSM);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     padding: var(--spaceXXSM);
     width: 100%;
@@ -29,7 +29,7 @@
 .user-box-date {
     font-size: var(--textSM);
     font-weight: 400;
-    color: #808080;
+    color: var(--greyColor);
     margin: 0;
 }
 .detail-box {

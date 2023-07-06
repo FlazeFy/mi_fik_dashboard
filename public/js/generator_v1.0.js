@@ -29,8 +29,8 @@ function getTag(obj, padding, sz, margin){
     return res;
 }
 
-function getEventLoc(loc){
-    if(loc){
+function getLocationName(loc){
+    if(loc && loc.length == 2){
         if(loc[0].detail != null){
             res = loc[0].detail;
         } else {
@@ -38,6 +38,10 @@ function getEventLoc(loc){
         }
         return "<span class='loc-limiter px-0 m-0'> " +
                 "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> "+res+"</a> " +
+            "</span>";
+    } else if(loc && loc.length != 2){
+        return "<span class='loc-limiter px-0 m-0'> " +
+                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> Invalid</a> " +
             "</span>";
     } else {
         return "";
@@ -90,7 +94,7 @@ function getContentImage(img){
     }
 }
 
-function getUserImage(img1, img2, user1, user2){
+function getUserImage(img1, img2, user1){
     if(img1 || img2){
         if(img1){
             return img1;
@@ -176,4 +180,14 @@ function getEventStatus(start, end){
     } else {
         return ""
     }
+}
+
+function setDatePickerMinNow(elmt){
+    const now = new Date();
+    document.getElementById(elmt).setAttribute("min",getDateToContext(now, "date"));
+}
+
+function setDatePickerMin(elmt, date){
+    const dt = new Date(date);
+    document.getElementById(elmt).setAttribute("min",getDateToContext(dt, "date"));
 }

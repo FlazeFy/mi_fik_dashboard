@@ -103,7 +103,7 @@
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
                             "<button class='card shadow event-box p-2' style='@if(!$isMobile) height:auto; @else height:180px; @endif' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                                 "<div class='text-primary' style='font-size:12px;'>" + getDateToContext(created_at, "full") + "</div> " +
-                                "<div class='event-views' style='color:#414141 !important; right:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
+                                "<div class='event-views' style='color:var(--darkColor)!important; right:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
                                 getEventStatus(content_date_start, content_date_end) +
                                 "<div class='card-body event-body py-2 px-0 w-100'> " +
                                     "<div class='event-heading'> " +
@@ -119,7 +119,7 @@
                                         "<p class='event-desc my-1'>" + ucFirst(removeTags(content_desc)) + "</p> " +
                                     "</div> " +
                                     "<div class='event-properties row d-inline-block px-2'> " +
-                                        getEventLoc(content_loc) +
+                                        getLocationName(content_loc) +
                                         getEventDate(content_date_start, content_date_end) +
                                         getEventTag(content_tag) +
                                     "</div> " +

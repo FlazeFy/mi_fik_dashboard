@@ -15,7 +15,7 @@
         width:45px;
         height:45px;
         cursor:pointer; /*if we can view other user profile*/
-        border-radius:30px;
+        border-radius: var(--roundedJumbo);
         margin-inline:auto;
         display: block;
     }
@@ -34,7 +34,7 @@
     .check-title{
         font-size:15px;
         margin:0px;
-        color:#414141;
+        color:var(--darkColor);
     }
     .check-subtitle{
         font-size:11px;
@@ -48,11 +48,11 @@
     }
     #task-holder::-webkit-scrollbar-track, #notification-holder::-webkit-scrollbar-track{
         box-shadow: inset 0 0 3px grey; 
-        border-radius: 10px;
+        border-radius: var(--roundedSM);
     }
     #task-holder::-webkit-scrollbar-thumb, #notification-holder::-webkit-scrollbar-thumb {
         background: #ffab40;
-        border-radius: 10px;
+        border-radius: var(--roundedSM);
     }
     #task-holder::-webkit-scrollbar-thumb:hover, #notification-holder::-webkit-scrollbar-thumb:hover {
         background: #F78A00;

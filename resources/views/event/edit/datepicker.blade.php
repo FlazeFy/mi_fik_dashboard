@@ -12,7 +12,7 @@
         <label>Date Start</label>    
         <div class="row mt-2">
             <div class="col-6">
-                <input type="date" name="content_date_start" id="date_start_event" min="{{date('Y-m-d')}}" value="{{date('Y-m-d',strtotime($c->content_date_start))}}" onchange="validateDateEvent()" class="form-control">
+                <input type="date" name="content_date_start" id="date_start_event" value="{{date('Y-m-d',strtotime($c->content_date_start))}}" onchange="validateDateEvent()" class="form-control">
             </div>
             <div class="col-6">
                 <input type="time" name="content_time_start" id="time_start_event" value="{{date('H:i',strtotime($c->content_date_start))}}" onchange="validateDateEvent()" class="form-control mb-2">
@@ -23,7 +23,7 @@
         <label>Date End</label>
         <div class="row mt-2">
             <div class="col-6">
-                <input type="date" name="content_date_end" id="date_end_event" min="{{date('Y-m-d')}}" value="{{date('Y-m-d',strtotime($c->content_date_end))}}" onchange="validateDateEvent()" class="form-control">
+                <input type="date" name="content_date_end" id="date_end_event" value="{{date('Y-m-d',strtotime($c->content_date_end))}}" onchange="validateDateEvent()" class="form-control">
             </div>
             <div class="col-6">
                 <input type="time" name="content_time_end" id="time_end_event" value="{{date('H:i',strtotime($c->content_date_end))}}" onchange="validateDateEvent()" class="form-control mb-2">
@@ -32,6 +32,7 @@
         <a id="dateEnd_event_msg" class="input-warning text-danger"></a>
         <a id="dateStartEnd_msg" class="input-warning text-danger"></a>
         <a id="summary_msg" class="input-warning text-danger"></a>
+        <a id="invalid_period_msg" class="input-warning text-danger"></a>
         <div id="btn-submit-holder-date"></div>
     </form>
     @if($info)
@@ -75,6 +76,8 @@
         de_event.min = getDateToContext(now, "date");
         te_event.value = getDateToContext(res_end, "24h");
 
+        setDatePickerMin("date_end_event", ds_event.value);
+
         if(now < res_start){
             ds_event.min = getDateToContext(now, "date");
         } else {
@@ -86,8 +89,9 @@
             editable_date_start = false;
             if(now > res_start){
                 ts_event.disabled = true;
+                is_end.value = "true";
             }
-            is_end.value = "true";
+            is_end.value = "false";
         } else {
             if(now > res_start){
                 editable_date_start = false;
@@ -112,8 +116,21 @@
     }
 
     function submitEdit(){
+        if(getHourFromTime(ts_event.value) < getUTCHourOffset()){
+            const ds_date = new Date(ds_event.value);
+            ds_event.value = getDateToContext(ds_date.setDate(ds_date.getDate() - 1), "date"); 
+        }
+        
+        ds_event.disabled = false;
+
         var res_end = subtractOffsetFromTime(te_event.value);
+        if(getHourFromTime(te_event.value) < getUTCHourOffset()){
+            const de_date = new Date(de_event.value);
+            de_event.value = getDateToContext(de_date.setDate(de_date.getDate() - 1), "date"); 
+        }
+       
         te_event.value = getDateToContext(res_end, "24h");
+
         if(is_end.value != "true"){
             var res_start = subtractOffsetFromTime(ts_event.value);
             ts_event.value = getDateToContext(res_start, "24h");
@@ -130,17 +147,6 @@
         var ds = new Date(date_start_event+" "+time_start_event);
         var de = new Date(date_end_event+" "+time_end_event);
 
-        function finalValidate(){
-            //Event date start and date end validator if all date is filled
-            if(de < ds ){
-                $("#dateStartEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event's end time earlier than the start time"); //Check this poor grammar LOL
-                error = true;
-            } else {
-                $("#dateStartEnd_msg").text("");
-                error = false;
-            }
-        }
-
         var val_ds = document.getElementById("date_start_event");
         var val_ts = document.getElementById("time_start_event");
         var val_de = document.getElementById("date_end_event");
@@ -154,13 +160,10 @@
                 }
             }
 
-            // Set minimal date 
-            // val_de.removeAttribute("min");
-            // val_de.setAttribute("min",getDateToContext(val_ds.value, "date"));
-
             if(val_ds.value > val_de.value){
                 val_de.value = getDateToContext(val_ds.value, "date");
             }
+            setDatePickerMin("date_end_event", ds_event.value);
         } 
 
         //Check if empty.
@@ -196,13 +199,13 @@
 
             //Event date and today validator if only one datetime is filled
             if(ds < now && time_start_event){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
+                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>");
                 error = true;
             } else {
                 $("#dateStart_event_msg").text("");
             }
             if(de < now && time_end_event){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
+                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>");
                 error = true;
             } else {
                 $("#dateEnd_event_msg").text("");
@@ -217,21 +220,36 @@
             $("#time_end_event").css({"border":"1.5px solid #CCCCCC"});
             
             //Event date and today validator if only all datetime is filled
-            if(ds < now && editable_date_start == true){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
+            if(ds < now){
+                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>");
                 error = true;
             } else {
                 $("#dateStart_event_msg").text("");
-                finalValidate();
             }
             if(de < now){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>"); //Check this poor grammar LOL
+                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date <br>");
                 error = true;
             } else {
                 $("#dateEnd_event_msg").text("");
-                finalValidate();
+            }
+            if(getDateToContext(ds, "datetime") === getDateToContext(de, "datetime")){
+                $("#invalid_period_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event with same date start and end");
+                error = true;
+            } else {
+                $("#invalid_period_msg").text("");
+            }
+            if(de <= ds){
+                $("#dateStartEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event's end time earlier than the start time");
+                error = true;
+            } else {
+                $("#dateStartEnd_msg").text("");
+            }
+
+            if(de > ds && ds > now && de > now){
+                error = false;
             }
         }
+     
 
         if(!error){
             $("#btn-submit-holder-date").html('<a onclick="submitEdit()" class="btn btn-submit"><i class="fa-solid fa-paper-plane"></i> Submit</a>');

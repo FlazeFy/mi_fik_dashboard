@@ -28,7 +28,7 @@
             attach_list.push(obj);
 
             $("#attachment-holder").append(' ' +
-                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:#808080;"> ' + 
+                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:var(--shadowColor);"> ' + 
                     '<div style="white-space:normal !important;"> ' +
                         '<span class="d-inline-block me-1"> ' +
                             '<h6 class="mt-1">Attachment Type : </h6> ' +
@@ -148,6 +148,10 @@
                             attach_list[objIndex]['attach_name'] = att_name_val;
                             attach_list[objIndex]['attach_url'] = att_url;
                             validateFailedAtt();
+                            lengValidatorEvent('75', 'title');
+
+                            var modifiedList = cleanAddMoreStatus(attach_list);
+                            document.getElementById('content_attach').value = JSON.stringify(modifiedList);
                         });
                     });
                 } else {
@@ -187,7 +191,7 @@
                     validateFailedAtt();
                 } else {
                     warningAttMsg.innerHTML = "";
-                    att_cont.style = "border-left: 3.5px solid #808080 !important; --circle-attach-color-var:#808080 !important;";
+                    att_cont.style = "border-left: 3.5px solid var(--shadowColor) !important; --circle-attach-color-var:var(--shadowColor) !important;";
                 }   
             } else {
                 attach_list[objIndex]['id'] = id;

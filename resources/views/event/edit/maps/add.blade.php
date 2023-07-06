@@ -1,7 +1,7 @@
 <style>
     #map-event {
         height:420px;
-        border-radius: 10px;
+        border-radius: var(--roundedSM);
         margin-top: 6px;
         margin-bottom: 6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -19,6 +19,19 @@
             <input type="text" class="form-control" id="content_loc_name" placeholder="" value="" oninput="getContentLocation()">
             <label for="content_loc_name">Location Name</label>
         </div>
+    @endif
+
+    @if($c->content_loc && count($c->content_loc) != 2)
+        @if($info)
+            @foreach($info as $in)
+                @if($in->info_location == "invalid_location")
+                    <div class="info-box {{$in->info_type}}">
+                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
+                        <?php echo $in->info_body; ?>
+                    </div>
+                @endif
+            @endforeach
+        @endif
     @endif
 
     <form action="/event/edit/update/loc/add/{{$c->slug_name}}" method="POST">
@@ -39,7 +52,7 @@
     var coordinate_old;
     var loc_obj = [];
     <?php 
-        if($c->content_loc){
+        if($c->content_loc && count($c->content_loc) == 2){
             echo 'coordinate_old = "'.$c->content_loc[1]['detail'].'"';
         }
     ?>
@@ -47,7 +60,7 @@
     function initMap() {
         //Map starter
         <?php 
-            if($c->content_loc){
+            if($c->content_loc && count($c->content_loc) == 2){
                 $full_coor = $c->content_loc[1]['detail'];
                 $coor = explode(", ", $full_coor);
                 echo "let latitude= ".$coor[0].";";

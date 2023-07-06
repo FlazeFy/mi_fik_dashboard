@@ -9,6 +9,7 @@ use App\Schedule\UserSchedule;
 use App\Schedule\RequestSchedule;
 use App\Schedule\TrashSchedule;
 use App\Schedule\AccessSchedule;
+use App\Schedule\QuestionSchedule;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -26,29 +27,40 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {        
         // In staging
-        // $schedule->call([new HistorySchedule, 'clean'])->dailyAt('00:40');
-        // $schedule->call([new ContentSchedule, 'reminder'])->everyMinute();
-        // $schedule->call([new ContentSchedule, 'clean'])->dailyAt('02:00');
-        // $schedule->call([new TaskSchedule, 'clean'])->dailyAt('03:00');
-        //$schedule->call([new TaskSchedule, 'reminder'])->everyMinute();
+        $schedule->call([new RequestSchedule, 'remind_new_user'])->everyTwoHours();
+        $schedule->call([new RequestSchedule, 'remind_request'])->everyFourHours();
+        $schedule->call([new QuestionSchedule, 'remind_question'])->everyFourHours();
+
+        $schedule->call([new ContentSchedule, 'clean'])->dailyAt('01:00');
+        $schedule->call([new TrashSchedule, 'clean'])->dailyAt('01:30');
+        $schedule->call([new TaskSchedule, 'clean'])->dailyAt('02:30');
+        $schedule->call([new HistorySchedule, 'clean'])->dailyAt('03:00');
+
+        $schedule->call([new ContentSchedule, 'reminder'])->everyMinute();
+        $schedule->call([new TaskSchedule, 'reminder'])->everyMinute();
+        
+        $schedule->call([new AccessSchedule, 'clean'])->dailyAt('05:00');
+
+        $schedule->call([new UserSchedule, 'clean'])->yearlyOn(1, 2, '23:00');
 
         // In development
         // $schedule->command(ContentSchedule::clean())->everyMinute();
 
-        $schedule->command(RequestSchedule::remind_new_user())->everyTwoHours();
-        $schedule->command(RequestSchedule::remind_request())->everyFourHours();
+        // $schedule->command(RequestSchedule::remind_new_user())->everyTwoHours();
+        // $schedule->command(RequestSchedule::remind_request())->everyFourHours();
+        // $schedule->command(QuestionSchedule::remind_question())->everyFourHours();
 
-        $schedule->command(ContentSchedule::clean())->dailyAt('01:00');
-        $schedule->command(TrashSchedule::clean())->dailyAt('01:30');
-        $schedule->command(TaskSchedule::clean())->dailyAt('02:30');
-        $schedule->command(HistorySchedule::clean())->dailyAt('03:00');
+        // $schedule->command(ContentSchedule::clean())->dailyAt('01:00');
+        // $schedule->command(TrashSchedule::clean())->dailyAt('01:30');
+        // $schedule->command(TaskSchedule::clean())->dailyAt('02:30');
+        // $schedule->command(HistorySchedule::clean())->dailyAt('03:00');
 
-        $schedule->command(ContentSchedule::reminder())->hourlyAt(5);
-        $schedule->command(TaskSchedule::reminder())->hourlyAt(15);
+        // $schedule->command(ContentSchedule::reminder())->hourlyAt(5);
+        // $schedule->command(TaskSchedule::reminder())->hourlyAt(15);
         
-        $schedule->command(AccessSchedule::clean())->dailyAt('05:00');
+        // $schedule->command(AccessSchedule::clean())->dailyAt('05:00');
 
-        $schedule->command(UserSchedule::clean())->yearlyOn(1, 2, '23:00');;
+        // $schedule->command(UserSchedule::clean())->yearlyOn(1, 2, '23:00');
     }
 
     /**

@@ -1,17 +1,17 @@
 <style>
     .btn-quick-action{
-        border-radius:6px;
+        border-radius: var(--roundedMini);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        height:15vh;
-        border:none;
-        width:100%;
+        height: 15vh;
+        border: none;
+        width: 100%;
         background-position: center;
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
         position: relative;
         background-size: cover;
         transition: 0.5s;
-        text-align:left;
-        padding:10px;
+        text-align: left;
+        padding: 10px;
     }
     .btn-quick-action:hover{
         background: #F78A00 !important;
@@ -38,18 +38,18 @@
     .btn-tag{
         background:#FFFFFF;
         padding: 6px 8px;
-        border-radius:10px;
-        margin:4px;
-        color:#414141;
-        font-weight:400;
-        border:1.5px solid #F78A00;
+        border-radius: var(--roundedSM);
+        margin: 4px;
+        color:var(--darkColor);
+        font-weight: 400;
+        border: 1.5px solid #F78A00;
     }
     .btn-tag:hover, .btn-tag-selected{
         background:#F78A00;
         padding: 6px 8px;
-        border-radius:10px;
-        margin:4px;
-        color:#F5F5F5 !important;
+        border-radius: var(--roundedSM);
+        margin: 4px;
+        color:var(--whiteColor) !important;
     }
     .archive-holder{
         display: flex;

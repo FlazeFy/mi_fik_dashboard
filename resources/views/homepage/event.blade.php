@@ -140,7 +140,7 @@
                                         "<p class='event-desc my-1'>" + ucFirst(removeTags(content_desc)) + "</p> " +
                                     "</div> " +
                                     "<div class='event-properties row d-inline-block px-2'> " +
-                                        getEventLoc(content_loc) +
+                                        getLocationName(content_loc) +
                                         getEventDate(content_date_start, content_date_end) +
                                         getEventTag(content_tag) +
                                     "</div> " +

@@ -73,10 +73,10 @@ class DetailController extends Controller
                         ->with('info', $info)
                         ->with('greet',$greet);
                 } else {
-                    return redirect("/403");
+                    return view("errors.403");
                 }
             } else {
-                return redirect("/404");
+                return view("errors.404");
             }
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');

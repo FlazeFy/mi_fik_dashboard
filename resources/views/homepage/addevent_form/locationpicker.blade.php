@@ -1,7 +1,7 @@
 <style>
     #map {
         height:300px;
-        border-radius: 10px;
+        border-radius: var(--roundedSM);
         margin-top: 6px;
         margin-bottom: 6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

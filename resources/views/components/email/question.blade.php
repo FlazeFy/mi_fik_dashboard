@@ -42,6 +42,14 @@
             <h6 style="color:#F78A00;">Here's the detail</h6>
             <h6>Context : {{$context}}</h6>
 
+            @if($detail)
+                <ol>  
+                @foreach($detail as $dt)
+                    <li style="margin-bottom:4px;"><b>[{{ucfirst($dt->question_type)}}]</b> "{{$dt->question_body}}" from <span style="color:#F78A00;"><?= "@"; ?>{{$dt->username}}</span></li>
+                @endforeach
+                </ol>
+            @endif   
+
             <h6>Properties</h6>
             <h6>Created At : {{date("Y M d H:i:s")}}</h6>
         </div>

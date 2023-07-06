@@ -232,7 +232,7 @@
                                                         '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupFNameSearch(' + "'" + slug + "'" + ')"><i class="fa-solid fa-xmark"></i></a> ' +
                                                     '</div> ' +
                                                     '<div class="col-10 position-relative"> ' +
-                                                        '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                                        '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:var(--darkColor);"></i> ' +
                                                         '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="user_available_search_' + slug + '" placeholder="Search by fullname" onchange="load_available_user(1,'+ "'" + slug + "'" +')" maxlength="75"> ' +
                                                     '</div> ' +
                                                 '</div> ' +

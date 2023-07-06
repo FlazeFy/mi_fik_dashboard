@@ -1,58 +1,58 @@
 <style>
     .input-warning{
-        font-size:14px;
+        font-size: 14px;
     }
     .btn-quick-action{
-        border-radius:6px;
+        border-radius: var(--roundedMini);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        height:15vh;
-        border:none;
-        width:100%;
+        height: 15vh;
+        border: none;
+        width: 100%;
         background-position: center;
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
         position: relative;
         background-size: cover;
         transition: 0.5s;
-        text-align:left;
-        padding:10px;
+        text-align: left;
+        padding: 10px;
     }
     .btn-quick-action:hover{
         background: #F78A00 !important;
-        background-image:none !important;
+        background-image: none !important;
     }
     .quick-action-text{
-        font-size:24px;
+        font-size: 24px;
         color:#FFFFFF;
         transition: 0.5s;
-        margin-top:9vh;
+        margin-top: 9vh;
     }
     .quick-action-info{
         font-size: var(--textXMD);
         color:#FFFFFF;
         transition: 0.5s;
-        display:none;
+        display: none;
     }
     .btn-quick-action:hover .quick-action-text{
         margin-top:-10px;
     }
     .btn-quick-action:hover .quick-action-info{
-        display:block;
+        display: block;
     }
     .btn-tag{
         background:#FFFFFF;
         padding: 6px 8px;
-        border-radius:10px;
+        border-radius: var(--roundedSM);
         margin:4px;
-        color:#414141;
+        color:var(--darkColor);
         font-weight:400;
         border:1.5px solid #F78A00;
     }
     .btn-tag:hover, .btn-tag-selected{
         background:#F78A00;
         padding: 6px 8px;
-        border-radius:10px;
+        border-radius: var(--roundedSM);
         margin:4px;
-        color:#F5F5F5 !important;
+        color:var(--whiteColor) !important;
     }
 </style>
 
@@ -64,7 +64,7 @@
             } else {
                 echo "#addEventModal";
             }
-        ?>" data-bs-toggle="modal" onclick="infinteLoadMoreTag(1)">
+        ?>" data-bs-toggle="modal" onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event'); infinteLoadMoreTag(1)">
 
     @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
         <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>

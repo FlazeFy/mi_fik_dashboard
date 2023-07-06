@@ -18,8 +18,8 @@
     word-wrap: break-word;
 }  
 .date-chip{
-    border-radius: 10px;
-    background: #FFDeB4;
+    border-radius: var(--roundedSM);
+    background: var(--primaryLightBG);
     width: 100px;
     padding: var(--spaceXXSM) var(--spaceMini);
     font-size: var(--textMD);
@@ -33,7 +33,7 @@
     padding:var(--spaceXXSM);
     margin: var(--spaceXXSM) 0 var(--spaceXXSM) 0;
     width: 100% !important;
-    border-radius: 0 10px 10px 0 !important;
+    border-radius: 0 var(--roundedSM) var(--roundedSM) 0 !important;
     border-left: 4px solid var(--primaryColor);
 }
 
@@ -136,7 +136,7 @@ div[class^="from-"].emoji::before {
 }
 .msg-box{
     background: var(--whiteColor);
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: 70%;
     padding: var(--spaceXXSM);

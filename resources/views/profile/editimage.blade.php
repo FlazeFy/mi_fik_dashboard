@@ -11,7 +11,7 @@
         width:40px; 
         height:40px; 
         background:#F78A00;
-        border-radius: 100%;
+        border-radius: var(--roundedCircle);
         display: block;
         margin-inline: auto;
     }

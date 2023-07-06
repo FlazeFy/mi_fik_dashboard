@@ -94,7 +94,7 @@
             echo "'Others'";
         ?>
     ],
-    colors: ['#F9DB00','#009FF9','#FB8C00','#42C9E7'],
+    colors: ['#F9DB00','#009FF9','var(--primaryColor)','#42C9E7'],
     legend: {
         position: 'bottom'
     },

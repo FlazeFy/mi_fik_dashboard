@@ -4,7 +4,7 @@
         padding: 10px;
         cursor: pointer;
         border: 1.5px solid #F78A00;
-        border-radius:10px;
+        border-radius: var(--roundedSM);
         margin-bottom: 10px;
         text-decoration: none;
         position: relative;
@@ -31,11 +31,11 @@
         color: #00C363;
     }
     .question_holder .question_box p{
-        color: #414141;
+        color: var(--darkColor);
         font-size: 14px;
     }
     .question_holder .question_box:hover h6, .question_holder .question_box:hover p{
-        color: #F5F5F5;
+        color: var(--whiteColor);
     }
 </style>
 
@@ -145,9 +145,9 @@
 
     function loadDetailAnswer(answer, id, status, que, username){
         if(status == "answered"){
-            setSelectedBtnStyle("background: #00c363; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
+            setSelectedBtnStyle("background: #00c363; color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
-            setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "question_box", " ", 'question_'+ id);
+            setSelectedBtnStyle("background: #F78A00; color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
         loadAnswer(answer, id, status, que, username);

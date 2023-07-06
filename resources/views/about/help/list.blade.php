@@ -12,7 +12,7 @@
         height: 80px;
         cursor: pointer;
         border: 1.5px solid var(--primaryColor);
-        border-radius:10px;
+        border-radius: var(--roundedSM);
         margin-bottom: 10px;
         text-decoration: none;
     }
@@ -24,11 +24,11 @@
         font-size: 18px;
     }
     .list-help-holder .helps_type_box p{
-        color: #414141;
+        color: var(--darkColor);
         font-size: 14px;
     }
     .list-help-holder .helps_type_box:hover h6, .list-help-holder .helps_type_box:hover p{
-        color: #F5F5F5;
+        color: var(--whiteColor);
     }
 </style>
 
@@ -241,7 +241,7 @@
 
     function loadDetailDesc(cat, desc, user, updated, id){
         var cat2 = cat.split(" ").join("");
-        setSelectedBtnStyle("background: #F78A00; color: #F5F5F5; border-radius: 10px;", "btn-category-help", " ", cat2);
+        setSelectedBtnStyle("background: #F78A00; color: var(--whiteColor); border-radius: 10px;", "btn-category-help", " ", cat2);
         <?php
             if(session()->get('role_key') == 1 && session()->get('toogle_edit_help') == "true"){
                 echo "loadRichTextDesc(desc, user, updated, cat);";

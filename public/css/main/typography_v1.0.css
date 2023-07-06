@@ -54,7 +54,7 @@
     white-space: normal;
 }
 .status-info{
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     color: var(--whiteColor);
     padding: var(--spaceXXSM) var(--spaceSM);
     font-size: var(--textXMD);
