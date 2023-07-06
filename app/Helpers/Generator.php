@@ -149,13 +149,16 @@ class Generator
         $accessToken = PersonalAccessToken::findToken($token);
 
         if ($accessToken) {
-            Auth::login($accessToken->tokenable);
-            $user = Auth::user();
-            
-            $res = $user->id;
-            return $res;
+            if($accessToken->tokenable){
+                Auth::login($accessToken->tokenable);
+                $user = Auth::user();
+                
+                $res = $user->id;
+                return $res;
+            } else {
+                return redirect("/")->with('failed_message','This account is no longer exist');
+            }
         } else {
-            // do something LOL
             return null;
         }
     }

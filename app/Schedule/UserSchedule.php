@@ -21,9 +21,7 @@ use App\Mail\ScheduleEmail;
 use App\Helpers\Generator;
 use Illuminate\Support\Facades\Mail;
 
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\Messaging\CloudMessage;
-use Kreait\Firebase\Messaging\Notification as FireNotif;
+use App\Helpers\FirebaseTask;
 
 class UserSchedule
 {
@@ -34,6 +32,7 @@ class UserSchedule
             ->get();
 
         foreach($user as $us){
+            FirebaseTask::deleteUserImage($us->id);
             ContentHeader::where('created_by', $us->id)->delete();
             Task::where('created_by', $us->id)->delete();
             ContentViewer::where('created_by', $us->id)->delete();

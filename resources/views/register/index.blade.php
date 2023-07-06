@@ -129,6 +129,7 @@
             var btn_steps_profiledata = document.getElementById("btn-steps-profiledata");
             var btn_steps_terms = document.getElementById("btn-steps-terms");
             var btn_steps_role = document.getElementById("btn-steps-role");
+            var btn_steps_ready = document.getElementById("btn-steps-ready");
             var is_finished = false;
             var is_requested = false;
             var token = null;
@@ -152,7 +153,7 @@
                 } else if(now == "role"){
                     now = "ready";
                     btn_steps_role.setAttribute('data-bs-target', '#role');
-                    btn_steps_role.style = "border-left: 6px solid #58C06E;";
+                    btn_steps_ready.style = "border-left: 6px solid #58C06E;";
                 }
             }
 

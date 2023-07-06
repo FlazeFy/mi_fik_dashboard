@@ -49,7 +49,7 @@
     border-radius: 10px;
     padding: var(--spaceXXSM);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    width: 140px;
+    width: 160px;
     position: absolute;
     right: 20px;
     bottom: 20px;
@@ -135,7 +135,7 @@
     padding-top: var(--spaceMini);
 }
 .registered-msg{
-    color: var(--successBG);
+    color: var(--successBG) !important;
     text-decoration: none;
     position: absolute;
     bottom: 30px;

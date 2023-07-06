@@ -31,7 +31,7 @@ class TaskSchedule
             $days = $set->DTD_range;
         }
 
-        $contents = Task::whereDate('created_at', '<', Carbon::now()->subDays($days))
+        $contents = Task::whereDate('deleted_at', '<', Carbon::now()->subDays($days))
             ->get();
 
         foreach($contents as $cts){
