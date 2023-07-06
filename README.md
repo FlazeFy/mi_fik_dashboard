@@ -12,12 +12,18 @@ https://mifik.id/
 # Run Application
 > php artisan serve
 
+# Run Queue Job
+> php artisan queue:work
+
 # Run Application On Custom Pors
 > php artisan serve # port=****
 ex : php artisan serve # port=9000
 
 # Run Migrations
 > php artisan migrate
+
+# Run Migrations On Specific file
+> php artisan migrate --path=database/migrations/migration/file.php
 
 # Run Seeder
 > php artisan db:seed class=DatabaseSeeder 
@@ -105,4 +111,4 @@ Note :
 v1.<< 1 + 1 >>  If minor change
 
 ==================================================================
-Last Updated : 30 Jun 2023
+Last Updated : 06 Jul 2023

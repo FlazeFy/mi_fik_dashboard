@@ -148,6 +148,10 @@
                             attach_list[objIndex]['attach_name'] = att_name_val;
                             attach_list[objIndex]['attach_url'] = att_url;
                             validateFailedAtt();
+                            lengValidatorEvent('75', 'title');
+
+                            var modifiedList = cleanAddMoreStatus(attach_list);
+                            document.getElementById('content_attach').value = JSON.stringify(modifiedList);
                         });
                     });
                 } else {

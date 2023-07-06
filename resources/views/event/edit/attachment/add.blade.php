@@ -146,6 +146,9 @@
                             attach_list[objIndex]['attach_type'] = att_type;
                             attach_list[objIndex]['attach_name'] = att_name;
                             attach_list[objIndex]['attach_url'] = att_url;
+
+                            var modifiedList = cleanAddMoreStatus(attach_list);
+                            document.getElementById('content_attach').value = JSON.stringify(modifiedList);
                         });
                     });
                 } else {

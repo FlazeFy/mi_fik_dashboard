@@ -513,4 +513,14 @@ class Generator
             }
         }
     }
+
+    public static function generateUUIDStorageURL($root,$url){
+        $pattern = '/'.$root.'%2F([\w-]+)\?/';
+        preg_match($pattern, $url, $matches);
+        
+        if (isset($matches[1])) {
+            return $matches[1];
+        }
+        return null;
+    }
 }

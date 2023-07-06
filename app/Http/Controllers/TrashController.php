@@ -16,12 +16,16 @@ use App\Models\ContentHeader;
 use App\Models\ContentViewer;
 use App\Models\ArchiveRelation;
 use App\Models\UserGroup;
+use App\Models\FailedJob;
 use App\Models\Task;
 use App\Models\Tag;
 use App\Models\Info;
 use App\Models\Feedback;
 use App\Models\Dictionary;
 use App\Models\Question;
+
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\ServiceAccount;
 
 class TrashController extends Controller
 {
@@ -240,6 +244,60 @@ class TrashController extends Controller
                     return redirect()->back()->with('failed_message', $errors);
                 } else {
                     if($type == "event"){
+                        $attachment = DB::table("contents_details")->select("content_attach")->where('content_id', $id)->first();
+
+                        if($attachment){
+                            $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+                            $storage = $factory->createStorage();
+
+                            $att = json_decode($attachment->content_attach);
+                            foreach($att as $val){
+                                if($val->attach_type != "attachment_url"){
+                                    $failed = false;
+                                    $fileName = Generator::generateUUIDStorageURL($val->attach_type,$val->attach_url);
+
+                                    if($fileName){
+                                        $bucket = 'mifik-83723.appspot.com';
+                                        $fileUrl = $val->attach_type.'/'.$fileName;
+                                        $bucket = $storage->getBucket($bucket);
+                                        $object = $bucket->object($fileUrl);
+
+                                        if ($object->exists()){
+                                            $object->delete();
+                                        } else {
+                                            $failed = true;
+                                            $obj = [
+                                                'message' => 'failed to remove attachment file. file is not exist', 
+                                                'stack_trace' => $val->attach_type, 
+                                                'file' => $val->attach_url, 
+                                                'line' => null,
+                                            ];
+                                        }
+                                    } else {
+                                        $failed = true;
+                                        $obj = [
+                                            'message' => 'failed to remove attachment file. url is not valid', 
+                                            'stack_trace' => $val->attach_type, 
+                                            'file' => $val->attach_url, 
+                                            'line' => null,
+                                        ];
+                                    }
+
+                                    if($failed){
+                                        FailedJob::create([
+                                            'id' => Generator::getUUID(), 
+                                            'type' => "storage", 
+                                            'status' => "failed",  
+                                            'payload' => json_encode($obj),
+                                            'created_at' => date("Y-m-d H:i:s"), 
+                                            'faced_by' => $user_id, 
+                                            'fixed_at' => null
+                                        ]);
+                                    }
+                                } 
+                            }
+                        }
+
                         DB::table("contents_headers")->where('id', $id)->delete();
                         DB::table("contents_details")->where('content_id', $id)->delete();
                         DB::table("archives_relations")->where('content_id', $id)->delete();
@@ -280,7 +338,7 @@ class TrashController extends Controller
                     }
                     
                     DB::commit();
-                    return redirect()->back()->with('success_message', ucfirst($type)." successfully destroyed");    
+                    return redirect()->back()->with('success_message', ucfirst($fileName)." successfully destroyed");    
                 }
             } else {
                 return redirect()->back()->with('failed_message', ucfirst($type)." destroy is failed, the event doesn't exist anymore");

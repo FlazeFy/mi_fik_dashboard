@@ -14,7 +14,9 @@
             <a class="text-link" title="Open this link" href="{{$at['attach_url']}}" target="_blank">{{$at['attach_url']}}</a><br><br>
         @elseif($at['attach_type'] == "attachment_image")
             <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
-                <h6>{{$at['attach_name']}} : </h6>
+                @if($at['attach_name'])
+                    <h6>{{$at['attach_name']}} : </h6>
+                @endif
                 <img class="img img-fluid mx-auto image-att-zoomable mb-2" src="{{$at['attach_url']}}" title="Zoom Image" alt="{{$at['attach_url']}}" data-bs-toggle="modal" data-bs-target="#zoomable_image_{{$at['id']}}">
                 <div class="modal fade" id="zoomable_image_{{$at['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
@@ -22,7 +24,9 @@
                             <div class="modal-body text-center pt-4">
                                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                                 <img class="img img-fluid mx-auto w-100" src="{{$at['attach_url']}}" alt="{{$at['attach_url']}}">
-                                <h6 class="mt-2">{{$at['attach_name']}} : </h6>
+                                @if($at['attach_name'])
+                                    <h6 class="mt-2">{{$at['attach_name']}} : </h6>
+                                @endif
                             </div>
                         </div>
                     </div>
