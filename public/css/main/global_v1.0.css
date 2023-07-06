@@ -204,6 +204,9 @@ body{
     opacity: 1 !important;
     background: white;
 }
+.modal {
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
 
 /* Background */
 .bg-primary{

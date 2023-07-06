@@ -14,6 +14,7 @@ use App\Models\SettingSystem;
 use App\Models\Info;
 use App\Models\Feedback;
 use App\Models\Question;
+use App\Models\Notification;
 use App\Models\Dictionary;
 use App\Models\GroupRelation;
 
@@ -53,13 +54,17 @@ class TrashSchedule
         $dictionary = Dictionary::whereDate('deleted_at', '<', Carbon::now()->subDays($days))
             ->delete();
 
+        $notification = Notification::whereNotNull('sended_at')
+            ->whereDate('sended_at', '<', Carbon::now()->subDays($days))
+            ->delete();
+
         $totalgroup = count($group);
-        $total = $tag + $totalgroup + $info + $feedback + $question + $dictionary;
+        $total = $tag + $totalgroup + $info + $feedback + $question + $dictionary + $notification;
 
         if($total > 0){
             $context = "Successfully cleaned ".$total." data in trash modules with ".$days." days as it days limiter.".
                 " About ".Converter::getMsgTrashPerContext($tag, "tag")."".Converter::getMsgTrashPerContext($totalgroup, "group")."".Converter::getMsgTrashPerContext($info, "info").
-                "".Converter::getMsgTrashPerContext($feedback, "feedback")."".Converter::getMsgTrashPerContext($question, "question")."".Converter::getMsgTrashPerContext($dictionary, "dictionary");
+                "".Converter::getMsgTrashPerContext($feedback, "feedback")."".Converter::getMsgTrashPerContext($question, "question")."".Converter::getMsgTrashPerContext($dictionary, "dictionary")."".Converter::getMsgTrashPerContext($notification, "notification");
         } else {
             $context = "No data cleaned from trash modules with ".$days." days as it days limiter";
         }
