@@ -11,7 +11,7 @@ use App\Models\ContentHeader;
 use App\Models\ContentViewer;
 use App\Models\ArchiveRelation;
 use App\Models\Admin;
-use App\Models\Job;
+use App\Models\FailedJob;
 use App\Models\User;
 use App\Models\Task;
 use App\Models\Archive;

@@ -8,7 +8,7 @@ use DateTime;
 
 use App\Models\UserRequest;
 use App\Models\Admin;
-use App\Models\Job;
+use App\Models\FailedJob;
 use App\Models\User;
 
 use App\Mail\NewUserEmail;
@@ -50,7 +50,7 @@ class RequestSchedule
                 'file' => $e->getFile(), 
                 'line' => $e->getLine(), 
             ];
-            Job::create([
+            FailedJob::create([
                 'id' => Generator::getUUID(), 
                 'type' => "schedule", 
                 'status' => "failed",  
@@ -93,7 +93,7 @@ class RequestSchedule
                 'file' => $e->getFile(), 
                 'line' => $e->getLine(), 
             ];
-            Job::create([
+            FailedJob::create([
                 'id' => Generator::getUUID(), 
                 'type' => "schedule", 
                 'status' => "failed",  

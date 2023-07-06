@@ -9,7 +9,7 @@ use DateTime;
 use App\Models\Tag;
 use App\Models\UserGroup;
 use App\Models\Admin;
-use App\Models\Job;
+use App\Models\FailedJob;
 use App\Models\SettingSystem;
 use App\Models\Info;
 use App\Models\Feedback;

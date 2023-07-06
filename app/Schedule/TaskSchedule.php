@@ -11,7 +11,7 @@ use App\Models\Task;
 use App\Models\ArchiveRelation;
 use App\Models\Admin;
 use App\Models\User;
-use App\Models\Job;
+use App\Models\FailedJob;
 use App\Models\SettingSystem;
 
 use App\Mail\ScheduleEmail;
@@ -161,7 +161,7 @@ class TaskSchedule
                 'file' => $e->getFile(), 
                 'line' => $e->getLine(), 
             ];
-            Job::create([
+            FailedJob::create([
                 'id' => Generator::getUUID(), 
                 'type' => "schedule", 
                 'status' => "failed",  

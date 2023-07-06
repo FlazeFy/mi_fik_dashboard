@@ -27,8 +27,7 @@ use App\Models\Dictionary;
 use App\Models\User;
 use App\Models\UserRequest;
 
-use App\Mail\OrganizerEmail;
-use Illuminate\Support\Facades\Mail;
+use App\Jobs\ProcessMailer;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -309,7 +308,8 @@ class HomepageController extends Controller
                     DB::commit();
 
                     if(session()->get('email_key')){
-                        Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
+                        // Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
+                        dispatch(new ProcessMailer($header, $detail, session()->get('email_key')));
                     }
 
                     return redirect()->back()->with('success_message', 'Create content success');
