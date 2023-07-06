@@ -49,6 +49,7 @@
     --darkColor : #5B5B5B;
     --whiteColor : #FFFFFF;
     --greyColor : #C3C3C3;
+    --shadowColor : #808080;
 }
 
 /* Mobile style */
@@ -161,6 +162,10 @@
         font-size: var(--textMD);
     }
 
+
+    .content-section { 
+        padding: var(--spaceLG) var(--spaceMD) !important;
+    }
     .content-section header {
         height: 70px !important;
     }
@@ -221,7 +226,7 @@ th{
 
 /* Container */
 .content-section{
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     background: var(--whiteColor);
     margin-top: calc(var(--spaceJumbo) + 5px);
     margin-bottom: calc(var(--spaceJumbo) + 5px);
@@ -232,7 +237,7 @@ th{
     position: relative;
 }
 .content-section-small{
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     background: var(--whiteColor);
     margin-top: calc(var(--spaceJumbo) + 5px);
     margin-bottom: calc(var(--spaceJumbo) + 5px);
@@ -274,10 +279,10 @@ th{
     cursor: pointer;
     padding:6px var(--spaceSM);
     margin:0;
-    border-radius:6px;
+    border-radius: var(--roundedMini);
 }
 .content-add:hover, .content-more:hover{
-    color:#F5F5F5;
+    color:var(--whiteColor);
     background:var(--primaryColor);
 }           
 .content-body{
@@ -295,7 +300,7 @@ th{
     display: inline-block;
     position: relative;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: var(--roundedMD);
     background-color: #DDDBDD !important;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -333,7 +338,7 @@ th{
 
 .page-holder{
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     border: 1.5px solid var(--primaryColor);
     padding: var(--spaceXXSM) var(--spaceMD);
     margin-right: var(--spaceXXSM);
@@ -360,7 +365,7 @@ th{
     padding: 0;
 }
 .dd-profil .dropdown-item{
-    color: #808080;
+    color: var(--darkColor);
     padding: var(--spaceSM) var(--spaceSM) var(--spaceSM) 20px;
 }
 .dd-profil .dropdown-menu li{
@@ -374,7 +379,7 @@ th{
     border: none;
     min-width: 240px;
     height: 58px !important;
-    border-radius: 30px;
+    border-radius: var(--roundedJumbo);
     padding-left:var(--spaceXXSM);
     text-align:left;
 }
@@ -386,7 +391,7 @@ th{
     padding: var(--spaceXSM) 10px;
     margin-bottom: var(--spaceMini);
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: var(--roundedMini);
 }
 .dropdown-menu.normal .dropdown-item:hover{
     background: #e9ecef !important;
@@ -416,7 +421,7 @@ th{
 
 /* Tip / Warning box */
 .info-box{
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     color: var(--darkColor);
     font-size: var(--textXMD);
     padding: calc(var(--spaceMD) + 2px);
@@ -447,7 +452,7 @@ th{
     cursor: pointer;
 }
 .link-external-dark{
-    color:#414141 !important;
+    color:var(--darkColor)!important;
     text-decoration: none !important;
     cursor: pointer;
 }
@@ -474,7 +479,7 @@ thead.thead-sticky{
     font-size: var(--textXMD) !important;
     z-index: 1000 !important;
     background: white;
-    border-radius: 30px;
+    border-radius: var(--roundedJumbo);
     padding: var(--spaceLG);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }

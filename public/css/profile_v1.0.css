@@ -5,7 +5,7 @@
     top: 30px;
     left: auto !important;
     transform: none !important;
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     border: none;
     padding-bottom: 0;
 }
@@ -24,7 +24,7 @@
 
 .sign-out-area{
     background: var(--warningBG);
-    border-radius: 0 0  10px 10px;
+    border-radius: 0 0 var(--roundedSM) var(--roundedSM);
     color: var(--whiteColor) !important;
     width: 100%;
     border: none;
@@ -54,24 +54,50 @@
     font-size: var(--textLG);
     font-weight: 500;
     margin:0px;
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 .user-role{
     font-size: var(--textXMD);
     font-weight: 400;
     margin:0px;
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 .user-image{
-    border:2px solid #F5F5F5;
+    border:2px solid var(--whiteColor);
     width:45px;
     height:45px;
-    cursor:pointer; /*if we can view other user profile*/
-    border-radius:30px;
+    border-radius: var(--roundedJumbo);
     margin-inline:auto;
     display: block;
 }
-
+.info-box-profile{
+    background-image:linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b);
+    padding: 0;
+    margin-top: 40px;
+    padding-top: 25px;
+    border-radius: var(--roundedSM); 
+    text-align: center;
+    position: relative !important;
+}
+.info-box-profile .body-box{
+    background: #FFFFFF;
+    padding: 30px;
+    padding-bottom: 10px;
+    margin: 0;
+    width: 100%;
+    min-height: 30vh;
+    margin-top: 30px;
+    border-radius: calc(var(--roundedJumbo)+var(--roundedMini)) calc(var(--roundedJumbo)+var(--roundedMini)) var(--roundedSM) var(--roundedSM); 
+}
+.info-box-profile .body-box .sub-holder{
+    margin-bottom: 20px;
+}
+.sub-holder h6{
+    font-size:13px;
+}
+.sub-holder h4{
+    font-size:20px;
+}
 /* Mobile style */
 @media (max-width: 767px) {
     .dropdown.dd-profil .dropdown-menu{

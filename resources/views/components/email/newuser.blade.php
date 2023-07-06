@@ -10,7 +10,7 @@
             .container{
                 display: block !important;
                 margin-inline: auto !important;
-                border-radius: 20px;
+                border-radius: var(--roundedXLG);
                 width: 50vh;
                 min-width: 300px !important;
                 height: auto;
@@ -18,7 +18,7 @@
                 background: #FFFFFF;
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 text-align: left;
-                color: #414141;
+                color: var(--darkColor);
             }
             h5{
                 font-size:22px;

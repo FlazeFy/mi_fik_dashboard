@@ -14,7 +14,7 @@
     color: var(--primaryColor) !important;
     height: 50px;
     width: 50px;
-    border-radius: 12px;
+    border-radius: var(--roundedMD);
     margin: var(--spaceSM);
     padding: var(--spaceSM);
     opacity: 1;

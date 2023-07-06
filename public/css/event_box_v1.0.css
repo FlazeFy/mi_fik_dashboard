@@ -1,13 +1,13 @@
 .event-box{
-    border-radius:14px;
-    height:250px;
+    border-radius: var(--roundedMD);
+    height: 250px;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.5s;
     transition: all 0.5s;
-    cursor:pointer;
+    cursor: pointer;
     width: 100%;
-    padding:0px;
-    text-align:left;
+    padding: 0px;
+    text-align: left;
     position: relative;
 }
 .event-box.ultimate{
@@ -17,14 +17,14 @@
     position: absolute;
     top: 7.5px;
     right: 10px;
-    color: #F5F5F5 !important;
+    color: var(--whiteColor) !important;
     font-weight: 500;
     font-size: var(--textXMD);
 }
 .event-views{
     position: absolute;
     top: 7.5px;
-    color: #F5F5F5 !important;
+    color: var(--whiteColor) !important;
     font-weight: 500;
     font-size: var(--textXMD);
 }
@@ -100,7 +100,7 @@
 }
 .btn-detail{
     text-decoration: none !important;
-    border-radius: 6px;
+    border-radius: var(--roundedMini);
     font-size: var(--textSM);
     font-weight: 500;
     padding: var(--spaceXXSM);
@@ -121,13 +121,13 @@
 }
 .header-image{
     background-position: center;
-    background-repeat:no-repeat;
+    background-repeat: no-repeat;
     position: relative;
     background-size: cover;
-    background-color: black;
+    background-color: var(--greyColor);
     height:110px;
     width: 100%;
-    border-radius: 14px 14px 0px 0px !important;
+    border-radius: var(--roundedMD) var(--roundedMD) 0px 0px !important;
 }
 .loc-limiter{
     white-space: nowrap;

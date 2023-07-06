@@ -13,10 +13,10 @@
 }
 .btn-primary-outlined:hover{
     background: var(--primaryColor);
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 .btn-forgot-password{
-    color: #414141;
+    color: var(--darkColor);
 }
 .btn-forgot-password:hover{
     color: var(--warningDarkBG) !important;
@@ -44,7 +44,7 @@
     box-shadow: none !important;
 }
 .card-header.faq-header{
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     background: var(--whiteColor);
     box-shadow: rgba(0, 0, 0, 0.14) 0px 2.5px 6px;
 }

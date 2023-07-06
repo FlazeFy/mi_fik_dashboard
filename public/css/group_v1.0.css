@@ -1,8 +1,8 @@
 .group-box-notif{
     padding: var(--spaceXSM);
     margin-bottom: var(--spaceXSM);
-    border-radius: 10px;
-    background: #FFDEB4;
+    border-radius: var(--roundedSM);
+    background: var(--primaryLightBG);
     position: relative;
 }
 .collapse-group-box-toogle{

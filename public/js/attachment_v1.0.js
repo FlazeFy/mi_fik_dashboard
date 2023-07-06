@@ -1,6 +1,6 @@
 function getAttachmentInput(index, val){
     $("#attach-input-holder-"+index).html("");
-    document.getElementById("attachment_container_"+index).style = "border-left:3.5px solid #808080; --circle-attach-color-var:#808080 !important";
+    document.getElementById("attachment_container_"+index).style = "border-left:3.5px solid var(--greyColor); --circle-attach-color-var:var(--greyColor) !important";
     $("#attach-warning-"+index).empty();
 
     setValue(index);

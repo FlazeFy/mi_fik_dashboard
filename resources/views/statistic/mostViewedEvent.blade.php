@@ -1,8 +1,8 @@
 <style>
     <?php
         if(session()->get('selected_view_mve_chart') == "All"){
-            $color = ['#F9DB00','#009FF9','#FB8C00','#42C9E7', 
-                '#F9DB00','#009FF9','#FB8C00','#42C9E7','#F9DB00','#009FF9','#FB8C00','#42C9E7'];
+            $color = ['#F9DB00','#009FF9','var(--primaryColor)','#42C9E7', 
+                '#F9DB00','#009FF9','var(--primaryColor)','#42C9E7','#F9DB00','#009FF9','var(--primaryColor)','#42C9E7'];
 
             $i = 1;
 
@@ -117,7 +117,7 @@
         //....
     ],
     chart: {
-        height: 260,
+        height: 360,
         <?php if($isMobile){echo 'width: 480,';} ?>
         type: 'bar'
     },

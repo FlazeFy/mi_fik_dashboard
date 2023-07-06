@@ -1,6 +1,6 @@
 <style>
     .btn-quick-action-notif{
-        border-radius:6px;
+        border-radius: var(--roundedMini);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         height:20vh;
         border:none;
@@ -319,7 +319,7 @@
                                 '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupSearch()"><i class="fa-solid fa-xmark"></i></a> ' +
                             '</div> ' +
                             '<div class="col-10 position-relative"> ' +
-                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:var(--darkColor);"></i> ' +
                                 '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="group_search" placeholder="Search by group name"  onchange="infinteLoadGroup(1)" maxlength="75"> ' +
                             '</div> ' +
                         '</div> ' +
@@ -509,7 +509,7 @@
                                 '<a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></a> ' +
                             '</div> ' +
                             '<div class="col-10 position-relative"> ' +
-                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:#414141;"></i> ' +
+                                '<i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:var(--darkColor);"></i> ' +
                                 '<input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="Search by fullname" onchange="infinteLoadUser(1)" maxlength="75"> ' +
                             '</div> ' +
                         '</div> ' +
