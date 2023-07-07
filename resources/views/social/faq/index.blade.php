@@ -57,7 +57,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -67,38 +67,47 @@
                         @php($count = count($sort))
                         @foreach($sort as $st)
                             @php($style = "")
-                            @if($st == "answer")
-                                @php($style = "position: sticky; !important; position: -webkit-sticky; top:120px;")
-                                @php($style2 = "position: sticky; !important; position: -webkit-sticky; top:600px;")
-                            @endif
-                            <div class="col-lg-6 col-md-6 col-sm-12 " >
-                                <div class="content-section p-0 pt-3" style="{{$style}}">
-                                    <header>
-                                        <h5 class="mx-3 text-secondary fw-bold">
-                                            @if($st == "question")
-                                                <span id="total" class="text-primary"></span> 
-                                            @endif
-                                        {{ucwords($st)}}</h5><hr>
-                                        @include('components.infosection', ['type' => $st])
-                                        @include('components.controlsection', ['type' => "horizontal"])
-                                    </header>
-                                    <div class="p-3">
-                                        @if($st == "question")
-                                            @include('social.faq.question', ['question' => []])
-                                        @elseif($st == "answer")
-                                            @include('social.faq.answer', ['answer' => []])
-                                        @endif
-                                    </div>
-                                </div>
-
-                                @if($st == "question") <!--Must be with question container. but first, fix the sticky problem-->
-                                    <div class="content-section p-0 p-3" > <!--style="$style2"-->
-                                        <h5 class="text-secondary fw-bold">History</h5>
-                                        @include('components.history', ['history' => $history])
-                                    </div>
+                            @if(!$isMobile || ($isMobile && $st != "answer"))
+                                @if($st == "answer")
+                                    @php($style = "position: sticky; !important; position: -webkit-sticky; top:120px;")
+                                    @php($style2 = "position: sticky; !important; position: -webkit-sticky; top:600px;")
                                 @endif
-                            </div>
-                            @php($i++)
+                                <div class="col-lg-6 col-md-6 col-sm-12">
+                                    <div class="content-section p-0 pt-3" style="{{$style}}">
+                                        <header>
+                                            <h5 class="mx-3 text-secondary fw-bold">
+                                                @if($st == "question")
+                                                    <span id="total" class="text-primary"></span> 
+                                                @endif
+                                            {{ucwords($st)}}</h5><hr>
+                                            @include('components.infosection', ['type' => $st])
+                                            @if(!$isMobile)
+                                                @include('components.controlsection', ['type' => "horizontal"])
+                                            @else 
+                                                <div class="control-holder">
+                                                    <button class="btn btn-icon-rounded info" title="See history" data-bs-toggle="modal" data-bs-target="#seeHistory"><i class="fa-solid fa-clock-rotate-left"></i></button>
+                                                    @include('popup.mini_history', ['history' => $history, 'id'=> "seeHistory"])
+                                                </div>
+                                            @endif
+                                        </header>
+                                        <div class="p-3">
+                                            @if($st == "question")
+                                                @include('social.faq.question', ['question' => []])
+                                            @elseif($st == "answer")
+                                                @include('social.faq.answer', ['answer' => []])
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    @if($st == "question") <!--Must be with question container. but first, fix the sticky problem-->
+                                        <div class="content-section p-0 p-3" > <!--style="$style2"-->
+                                            <h5 class="text-secondary fw-bold">History</h5>
+                                            @include('components.history', ['history' => $history])
+                                        </div>
+                                    @endif
+                                </div>
+                                @php($i++)
+                            @endif
                         @endforeach
                     </div>
                 </div>

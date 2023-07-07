@@ -141,7 +141,8 @@
 /* Mobile style */
 @media (max-width: 767px) {
     .navbar-holder {
-        margin-top: var(--spaceSM) !important;
+        margin-top: 0 !important;
+        border-radius: 0;
     }
     .navbar-image {
         position: absolute;

@@ -44,12 +44,12 @@
     <table class="table table-paginate" id="notifTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col">Type</th>
-                <th scope="col">Content</th>
-                <th scope="col" style="max-width:300px;">Send To</th>
-                <th scope="col" style="width:120px;">Status</th>
-                <th scope="col" style="width:160px;">Manage By</th>
-                <th scope="col">Action</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Content</th>
+                <th scope="col" style="<?php if(!$isMobile){ echo'min-width:var(--tcolMinJumbo);'; } else { echo 'min-width:calc(var(--tcolMinSM) + var(--tcolMinMD));'; } ?>">Send To</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Status</th>
+                <th scope="col" style="min-width:calc(var(--tcolMinJumbo) - 30px);">Manage By</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -57,18 +57,18 @@
             @php($j = 0)
             @foreach($notification as $nt)
                 <tr>
-                    <td>
+                    <td style="min-width:var(--tcolMinSM);">
                         @php($split = explode("_",$nt['notif_type']))
                         @php($type = ucfirst($split[1]))
                         {{$type}}
                     </td>
-                    <td style="font-size:14px;">
+                    <td style="min-width:var(--tcolMinSM);">
                         <h6 class="mb-0">Title</h6>
                         {{$nt['notif_title']}}
                         <h6 class="mb-0 mt-2">Body</h6>
                         {{$nt['notif_body']}}
                     </td>
-                    <td>
+                    <td style="<?php if(!$isMobile){ echo'min-width:var(--tcolMinJumbo);'; } else { echo 'min-width:calc(var(--tcolMinSM) + var(--tcolMinMD));'; } ?>">
                         @php($ntJson = $nt['notif_send_to'])
 
                         @if($nt['is_pending'] == 0)
@@ -169,7 +169,7 @@
                             @php($j++)
                         @endif
                     </td>
-                    <td class="text-center">
+                    <td style="min-width:var(--tcolMinSM);" class="text-center">
                         @if($nt['is_pending'] && $nt['pending_until'])
                             <div class="status-info bg-danger" style="font-size:12px;">Pending until <br>
                                 {{date('Y-m-d H:i', strtotime($nt['pending_until']))}}</div>
@@ -179,7 +179,7 @@
                             <div class="status-info bg-success w-100">Announced</div>
                         @endif
                     </td>
-                    <td style="width: 220px;">
+                    <td style="min-width:calc(var(--tcolMinJumbo) - 30px);">
                         <h6>Created By</h6>
                         <div class="">
                             <div class="d-inline-block">
@@ -218,7 +218,7 @@
                             </div>   
                         @endif
                     </td>
-                    <td>
+                    <td style="min-width:var(--tcolMinXSM);">
                         @if(!$nt['notif_send_to'])
                             <button class="btn btn-warning mb-2 me-1" data-bs-target="#editModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
                         @endif

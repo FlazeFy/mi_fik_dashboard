@@ -24,10 +24,10 @@
         <thead>
             <tr>
                 <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Description @include('user.group.sorting.groupdesc')</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Total Member @include('user.group.sorting.total')</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Properties @include('user.group.sorting.created')</th>
-                <th scope="col" style="min-width:var(--tcolMinMD);">Manage</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Description @include('user.group.sorting.groupdesc')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Total Member @include('user.group.sorting.total')</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">Properties @include('user.group.sorting.created')</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Manage</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body w-100" id="group-list-holder">

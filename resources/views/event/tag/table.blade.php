@@ -20,12 +20,12 @@
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="min-width:120px;">Tag Name</th>
-                <th scope="col" style="min-width:120px;">Category</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Tag Name</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Category</th>
                 @if(session()->get('role_key') == 1)
-                    <th scope="col">Total</th>
-                    <th scope="col">Delete</th>
-                    <th scope="col">Info</th>
+                    <th scope="col" style="min-width:var(--tcolMinXSM);">Total</th>
+                    <th scope="col" style="min-width:var(--tcolMinXSM);">Delete</th>
+                    <th scope="col" style="min-width:var(--tcolMinXSM);">Info</th>
                 @else 
                     <th scope="col" style="min-width:240px;">Description</th>
                 @endif  
@@ -34,10 +34,10 @@
         <tbody class="tabular-body">
             @foreach($tag as $tg)
                 <tr class="tabular-item normal">
-                    <td style="min-width:120px;">
+                    <td style="min-width:var(--tcolMinSM);">
                         <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
                     </td>
-                    <td style="min-width:120px;">
+                    <td style="min-width:var(--tcolMinSM);">
                         @foreach($dct_tag as $dtag)
                             @if($dtag->slug_name == $tg->tag_category)
                                 {{$dtag->dct_name}}
@@ -46,12 +46,12 @@
                         @endforeach
                     </td>
                     @if(session()->get('role_key') == 1)
-                        <td>   
+                        <td style="min-width:var(--tcolMinXSM);">   
                             @php($tag_code = str_replace("-", "", $tg->id))
                             <button class="btn btn-info" data-bs-target="#infoTotalUsed-{{$tg->id}}" data-bs-toggle="modal" style="padding:8px 12px;" onclick="getTagTotal<?php echo $tag_code; ?>()"><i class="fa-solid fa-chart-pie"></i></button>
                             @include('event.tag.infoTotalUsed')
                         </td>
-                        <td>
+                        <td style="min-width:var(--tcolMinXSM);">
                             @if($tg->slug_name != "lecturer" && $tg->slug_name != "staff" && $tg->slug_name != "student")
                                 <button class="btn btn-danger" data-bs-target="#deleteModal-{{$tg->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                             @else 
@@ -59,7 +59,7 @@
                                 @include('event.tag.infoDefaultTag')
                             @endif
                         </td>
-                        <td>
+                        <td style="min-width:var(--tcolMinXSM);">
                             <div class="position-relative">
                                 <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
@@ -106,7 +106,7 @@
                             </div>
                         </td>
                     @else
-                        <td style="min-width:240px;"> <div style="max-width:400px !important; word-break: break-all !important;">{{$tg->tag_desc}}</div></td>
+                        <td style="min-width:var(--tcolMinSM);"> <div style="max-width:400px !important; word-break: break-all !important;">{{$tg->tag_desc}}</div></td>
                     @endif
                 </tr>
 

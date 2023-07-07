@@ -172,38 +172,34 @@
     background: var(--primaryColor);
 }
 
-.btn-icon-rounded-danger{
-    color: var(--warningDarkBG);
+.btn-icon-rounded {
     border-radius: var(--roundedCircle);
     width: 40px;
     height: 40px;
 }
-.btn-icon-rounded-danger:hover{
+.btn-icon-rounded.danger{
+    color: var(--warningDarkBG);
+    
+}
+.btn-icon-rounded.danger:hover{
     background: var(--warningDarkBG);
     color: var(--whiteColor);
 }
-
-.btn-icon-rounded-success{
-    color: var(--successBG);
-    border-radius: var(--roundedCircle);
-    width: 40px;
-    height: 40px;
+.btn-icon-rounded.info{
+    color: var(--infoBG);
 }
-.btn-icon-rounded-success:hover{
+.btn-icon-rounded.info:hover{
+    background: var(--infoBG);
+    color: var(--whiteColor);
+}
+.btn-icon-rounded.success{
+    color: var(--successBG);
+}
+.btn-icon-rounded.success:hover{
     background: var(--successBG);
     color: var(--whiteColor);
 }
 
-.btn-icon-rounded-primary{
-    color: var(--primaryColor);
-    border-radius: var(--roundedCircle);
-    width: 40px;
-    height: 40px;
-}
-.btn-icon-rounded-primary:hover{
-    background: var(--primaryColor);
-    color: var(--whiteColor);
-}
 .btn-danger-icon-outlined{
     border-radius: var(--roundedCircle);
 }

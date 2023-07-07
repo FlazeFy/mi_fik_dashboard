@@ -19,11 +19,11 @@
     <table class="table tabular table-paginate" id="infoTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col">Type</th>
-                <th scope="col">Page / Location</th>
-                <th scope="col">Body</th>
-                <th scope="col">Is Active</th>
-                <th scope="col">Properties</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Page / Location</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Body</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Is Active</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
             </tr>
         </thead>
         <tbody class="tabular-body">
@@ -36,7 +36,7 @@
                     @endif
 
                     <tr class="tabular-item normal {{$bg}}">
-                        <td style="width: 140px;">
+                        <td style="min-width:var(--tcolMinSM);">
                             <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$in->id}}')" id="select-{{$in->id}}">
                                 @foreach($dictionary as $dct)
                                     @if($in->info_type == strtolower($dct->dct_name))
@@ -62,14 +62,14 @@
                                 </div>
                             </div>
                         </td>
-                        <td style="width: 180px;">
+                        <td style="min-width:var(--tcolMinLG);">
                             <div id="info_page_location_holder_{{$in->id}}">
                                 <p class="mb-0">Page : <a class="text-link" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
                                 <p>Location : {{$in->info_location}}</p>
                             </div>
                         </td>
-                        <td>
-                            <div style="word-break: break-all; width: 380px;" id="info_body_holder_{{$in->id}}">
+                        <td style="min-width:var(--tcolMinJumbo);">
+                            <div style="word-break: break-all;" id="info_body_holder_{{$in->id}}">
                                 <?= $in->info_body; ?>
                             </div>
                             <script>
@@ -78,7 +78,7 @@
                                 });
                             </script>
                         </td>
-                        <td style="width: 220px;">
+                        <td style="min-width:var(--tcolMinJumbo);" class="properties">
                             <h6>Created By</h6>
                             <div class="">
                                 <div class="d-inline-block">
@@ -117,7 +117,7 @@
                                 </div>   
                             @endif
                         </td>
-                        <td>
+                        <td style="min-width:var(--tcolMinXSM);">
                             <button class="btn btn-warning mb-2" onclick="toogleInfoDescEdit('{{ addslashes($in->info_body) }}', '{{$in->id}}', '{{$in->info_page}}', '{{$in->info_location}}'); tidyUpRichText('info_body_holder_{{$in->id}}')"
                                 ><i class="fa-solid fa-edit"></i></button>
                             @if($in->info_location != "delete_info")

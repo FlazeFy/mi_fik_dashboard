@@ -62,3 +62,10 @@
     padding: var(--spaceXXSM) var(--spaceSM);
     font-size: var(--textXMD);
 }
+
+/* Mobile style */
+@media (max-width: 767px) {
+    .status-info {
+        font-size: var(--textMD);
+    }
+}

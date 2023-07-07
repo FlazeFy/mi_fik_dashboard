@@ -30,10 +30,11 @@
     --spaceMini : 4px;
 
     /* Table column min width */
-    --tcolMinSM : 60px;
-    --tcolMinMD : 120px;
-    --tcolMinLG : 140px;
-    --tcolMinJumbo : 180px;
+    --tcolMinXSM : 60px;
+    --tcolMinSM : 120px;
+    --tcolMinMD : 140px;
+    --tcolMinLG : 180px;
+    --tcolMinJumbo : 240px;
     --tcolMinHuge : 360px;
 
     /* Color Pallete */
@@ -64,7 +65,7 @@
     h6, span {
         font-size: var(--textXMD);
     }
-    .info-box, label, .form-select {
+    .info-box, label, .form-select, .user-username-mini, .properties-date {
         font-size: var(--textMD) !important;
     }
 
@@ -166,9 +167,10 @@
         font-size: var(--textMD);
     }
 
-
     .content-section { 
         padding: var(--spaceLG) var(--spaceMD) !important;
+        margin: var(--spaceMD) 0 !important;
+        border-radius: 0 !important;
     }
     .content-section header {
         height: 70px !important;
@@ -419,7 +421,7 @@ th{
 
 .user-username-mini, .properties-date {
     color: var(--darkColor) !important;
-    font-size: 15px !important;
+    font-size: 15px;
 }
 .user-username-mini:hover {
     color:var(--primaryColor) !important; 

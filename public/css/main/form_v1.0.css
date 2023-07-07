@@ -1,25 +1,29 @@
-.form-check-input{
+.form-check-input {
     height:23px;
     width:23px;
     cursor:pointer;
 }
-.form-check-input:checked{
+.form-check-input:checked {
     background-color:var(--primaryColor) !important;
     border:none;
 }
 
-.btn-outlined{
+.btn-outlined {
     background: transparent;
     border-radius: var(--roundedXLG);
     border:none;
     color: var(--darkColor);
     border: 1.5px solid var(--darkColor);
 }
-.btn-outlined.selected{
+.btn-outlined.selected {
     color: var(--successBG) !important;
     border: 1.5px solid var(--successBG);
 }
 
-.input-warning.text-danger{
+.input-warning.text-danger {
     font-size: var(--textSM);
+}
+.form-select.table-header {
+    font-size: var(--textMD); 
+    padding: var(--spaceMini) var(--spaceXSM);
 }
