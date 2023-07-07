@@ -51,9 +51,10 @@
 
         if(val_ds.value != null){
             if(getDateToContext(val_ds.value, "date") == getDateToContext(today, "date")){
-                val_ts.setAttribute("min",getDateToContext(today, "24h"));
+                var min_ts = subtractOffsetFromTime(getDateToContext(today, "date"));
+                val_ts.setAttribute("min",getDateToContext(min_ts, "24h"));
                 if(val_ts.value === ''){
-                    val_ts.value = getDateToContext(today, "24h");
+                    val_ts.value = getDateToContext(min_ts, "24h");
                 }
             } 
 

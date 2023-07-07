@@ -38,17 +38,6 @@
         color: #F78A00 !important;
         text-decoration:none;
     }
-    .text-link{
-        cursor: pointer;
-    }
-    .btn-copy-link{
-        color: var(--shadowColor);
-        cursor: pointer;
-        margin-right: 10px;
-    }
-    .btn-copy-link:hover{
-        color: #F78A00;
-    }
     .archive-holder{
         display: flex;
         flex-direction: column;

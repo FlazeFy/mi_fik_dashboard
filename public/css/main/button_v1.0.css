@@ -398,6 +398,14 @@
 .btn-delete-custom:disabled{
     opacity: 1;
 }
+.btn-copy-link{
+    color: var(--darkColor);
+    cursor: pointer;
+    margin-right: 10px;
+}
+.btn-copy-link:hover{
+    color: #F78A00;
+}
 
 /* Mobile style */
 @media (max-width: 767px) {

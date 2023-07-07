@@ -35,16 +35,7 @@
         <a id="invalid_period_msg" class="input-warning text-danger"></a>
         <div id="btn-submit-holder-date"></div>
     </form>
-    @if($info)
-        @foreach($info as $in)
-            @if($in->info_location == "edit_date")
-                <div class="info-box {{$in->info_type}}">
-                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                    <?php echo $in->info_body; ?>
-                </div>
-            @endif
-        @endforeach
-    @endif
+    @include('components.infobox', ['info' => $info, 'location'=> "edit_date"])
 </div>
 <div id="prevent-date-holder">
     <img src="{{asset('assets/pending.png')}}" class="img nodata-icon" style="height:18vh;">

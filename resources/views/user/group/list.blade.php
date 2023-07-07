@@ -123,7 +123,7 @@
                                         '@if($info) ' +
                                             '@foreach($info as $in) ' +
                                                 '@if($in->info_location == "delete_group") ' +
-                                                    '<div class="info-box {{$in->info_type}}"> ' +
+                                                    '<div class="info-box {{$in->info_type}}" id="infobox-delete-'+slug+'"> ' +
                                                         '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
                                                         "{!! $in->info_body !!} " +
                                                     '</div> ' +
@@ -168,7 +168,7 @@
                                             '@if($info) ' +
                                                 '@foreach($info as $in) ' +
                                                     '@if($in->info_location == "edit_group") ' +
-                                                        '<div class="info-box {{$in->info_type}}"> ' +
+                                                        '<div class="info-box {{$in->info_type}}" id="infobox-edit-'+slug+'"> ' +
                                                             '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
                                                             "{!! $in->info_body !!} " +
                                                         '</div> ' +
@@ -293,6 +293,8 @@
                         '</tr>';
 
                     $("#group-list-holder").prepend(elmt);
+                    tidyUpRichText("infobox-edit-"+slug);
+                    tidyUpRichText("infobox-delete-"+slug);
                 }   
             }
 

@@ -38,17 +38,6 @@
         color: #F78A00 !important;
         text-decoration:none;
     }
-    .text-link{
-        cursor: pointer;
-    }
-    .btn-copy-link{
-        color: var(--darkColor);
-        cursor: pointer;
-        margin-right: 10px;
-    }
-    .btn-copy-link:hover{
-        color: #F78A00;
-    }
     .archive-holder{
         display: flex;
         flex-direction: column;
@@ -170,7 +159,7 @@
                 </div>
 
                 @if($c->content_desc)
-                    <span><?php echo $c->content_desc; ?></span><br>
+                    <span id="desc-holder"><?php echo $c->content_desc; ?></span><br>
                 @else
                     <img src="{{asset('assets/nodesc.png')}}" class="img nodata-icon" style="height:18vh;">
                     <h6 class="text-center text-secondary">This Event doesn't have description</h6>

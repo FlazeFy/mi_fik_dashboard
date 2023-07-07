@@ -64,7 +64,7 @@
                         </td>
                         <td style="width: 180px;">
                             <div id="info_page_location_holder_{{$in->id}}">
-                                <p class="mb-0">Page : <a class="text-primary" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
+                                <p class="mb-0">Page : <a class="text-link" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
                                 <p>Location : {{$in->info_location}}</p>
                             </div>
                         </td>
@@ -72,6 +72,11 @@
                             <div style="word-break: break-all; width: 380px;" id="info_body_holder_{{$in->id}}">
                                 <?= $in->info_body; ?>
                             </div>
+                            <script>
+                                $(document).ready(function() {
+                                    tidyUpRichText("info_body_holder_{{$in->id}}");
+                                });
+                            </script>
                         </td>
                         <td style="width: 220px;">
                             <h6>Created By</h6>
@@ -113,7 +118,8 @@
                             @endif
                         </td>
                         <td>
-                            <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$in->info_body}}","{{$in->id}}","{{$in->info_page}}","{{$in->info_location}}")'><i class="fa-solid fa-edit"></i></button>
+                            <button class="btn btn-warning mb-2" onclick="toogleInfoDescEdit('{{ addslashes($in->info_body) }}', '{{$in->id}}', '{{$in->info_page}}', '{{$in->info_location}}'); tidyUpRichText('info_body_holder_{{$in->id}}')"
+                                ><i class="fa-solid fa-edit"></i></button>
                             @if($in->info_location != "delete_info")
                                 <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                                 @include('system.info.delete')

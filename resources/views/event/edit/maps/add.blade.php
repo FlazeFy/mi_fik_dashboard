@@ -22,16 +22,7 @@
     @endif
 
     @if($c->content_loc && count($c->content_loc) != 2)
-        @if($info)
-            @foreach($info as $in)
-                @if($in->info_location == "invalid_location")
-                    <div class="info-box {{$in->info_type}}">
-                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                        <?php echo $in->info_body; ?>
-                    </div>
-                @endif
-            @endforeach
-        @endif
+        @include('components.infobox', ['info' => $info, 'location'=> "invalid_location"])
     @endif
 
     <form action="/event/edit/update/loc/add/{{$c->slug_name}}" method="POST">

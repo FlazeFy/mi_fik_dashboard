@@ -11,11 +11,14 @@
 .text-secondary{
     color: var(--darkColor) !important;
 }
-.text-primary{
+.text-primary, .text-link{
     color: var(--primaryColor) !important;
 }
 .text-info{
     color: var(--infoBG) !important;
+    text-decoration: none;
+}
+.text-link {
     text-decoration: none;
 }
 

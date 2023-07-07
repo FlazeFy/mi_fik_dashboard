@@ -1,21 +1,40 @@
 @if($c->content_attach)
     @php($att = $c->content_attach)
-    <div class="row">
-    @foreach($att as $at)
-        <!-- Show attachment title or name  -->
-        @if($at['attach_name'] && $at['attach_name'] != "" && $at['attach_type'] != "attachment_image")
-            <h6>{{$at['attach_name']}} : </h6>
-        @endif
+    @php($image_collection = [])
+    @php($video_collection = [])
+    @php($doc_collection = [])
+    @php($link_collection = [])
 
-        <!-- Show file -->
+    @foreach($att as $at)
         @if($at['attach_type'] == "attachment_url")
-            <input id="copy_url_{{$at['id']}}" value="{{$at['attach_url']}}" hidden>
-            <a class="btn-copy-link" title="Copy this link" onclick="copylink(<?php echo $at['id']; ?>)"><i class="fa-solid fa-copy"></i></a>
-            <a class="text-link" title="Open this link" href="{{$at['attach_url']}}" target="_blank">{{$at['attach_url']}}</a><br><br>
+            @php(array_push($link_collection, $at))
         @elseif($at['attach_type'] == "attachment_image")
+            @php(array_push($image_collection, $at))
+        @elseif($at['attach_type'] == "attachment_video")
+            @php(array_push($video_collection, $at))
+        @elseif($at['attach_type'] == "attachment_doc")
+            @php(array_push($doc_collection, $at))
+        @endif
+    @endforeach
+
+    <div class="row">
+        @foreach($link_collection as $at)
+            <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
+                <h6>{{$at['attach_name']}}</h6>
+                <input id="copy_url_{{$at['id']}}" value="{{$at['attach_url']}}" hidden>
+                <a class="btn btn-copy-link" title="Copy this link" onclick="copylink(<?php echo $at['id']; ?>)">
+                    <i class="fa-solid fa-copy"></i>
+                    <a class="text-link" title="Open this link" href="{{$at['attach_url']}}" target="_blank">{{$at['attach_url']}}</a>
+                </a>
+            </div>
+        @endforeach
+    </div>
+
+    <div class="row">
+        @foreach($image_collection as $at)
             <div class="col-lg-6 col-md-6 col-sm-12 mb-2">
                 @if($at['attach_name'])
-                    <h6>{{$at['attach_name']}} : </h6>
+                    <h6>{{$at['attach_name']}}</h6>
                 @endif
                 <span id="attach_image_holder_{{$at['id']}}" class="d-block mx-auto">
                     <lottie-player id="lottie_animation_{{$at['id']}}" src="https://assets8.lottiefiles.com/packages/lf20_tsxbtrcu.json" background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay></lottie-player>
@@ -53,35 +72,41 @@
                     </div>
                 </div>
             </div>
-        @elseif($at['attach_type'] == "attachment_video")
-            <video controls class="rounded w-100 mx-auto mb-2" alt="{{$at['attach_url']}}">
-                <source src="{{$at['attach_url']}}">
-            </video>
-        @elseif($at['attach_type'] == "attachment_doc")
-            <span id="attach_doc_holder_{{$at['id']}}" class="d-block mx-auto">
-                <lottie-player id="lottie_animation_{{$at['id']}}" src="https://assets8.lottiefiles.com/packages/lf20_tsxbtrcu.json" background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay></lottie-player>
-                <embed class="document-grid mb-2 rounded" id="embed_holder_{{$at['id']}}" alt="{{$at['attach_url']}}" style="height: 250px;" src=""/>
-            </span>
-            <script>
-                var docHolder<?= $at['id'] ?> = document.getElementById("attach_doc_holder_{{$at['id']}}");
-                var docURL<?= $at['id'] ?> = "{{$at['attach_url']}}";
-                var doc<?= $at['id'] ?> = document.getElementById("embed_holder_{{$at['id']}}");
-
-                doc<?= $at['id'] ?>.onload = function() {
-                    var loading<?= $at['id'] ?> = document.getElementById("lottie_animation_{{$at['id']}}");
-                    loading<?= $at['id'] ?>.style.display = "none"; 
-                    docHolder<?= $at['id'] ?>.appendChild(image<?= $at['id'] ?>); 
-                };
-
-                doc<?= $at['id'] ?>.src = docURL<?= $at['id'] ?>;
-                doc<?= $at['id'] ?>.style = "height: 700px;";
-            </script>
-        @endif
-    @endforeach
+        @endforeach
     </div>
+
+    @foreach($video_collection as $at)
+        <h6>{{$at['attach_name']}}</h6>
+        <video controls class="rounded w-100 mx-auto mb-2" alt="{{$at['attach_url']}}">
+            <source src="{{$at['attach_url']}}">
+        </video>
+    @endforeach
+
+    @foreach($doc_collection as $at)
+        <h6>{{$at['attach_name']}}</h6>
+        <span id="attach_doc_holder_{{$at['id']}}" class="d-block mx-auto">
+            <lottie-player id="lottie_animation_{{$at['id']}}" src="https://assets8.lottiefiles.com/packages/lf20_tsxbtrcu.json" background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay></lottie-player>
+            <embed class="document-grid mb-2 rounded" id="embed_holder_{{$at['id']}}" alt="{{$at['attach_url']}}" style="height: 250px;" src=""/>
+        </span>
+        <script>
+            var docHolder<?= $at['id'] ?> = document.getElementById("attach_doc_holder_{{$at['id']}}");
+            var docURL<?= $at['id'] ?> = "{{$at['attach_url']}}";
+            var doc<?= $at['id'] ?> = document.getElementById("embed_holder_{{$at['id']}}");
+
+            doc<?= $at['id'] ?>.onload = function() {
+                var loading<?= $at['id'] ?> = document.getElementById("lottie_animation_{{$at['id']}}");
+                loading<?= $at['id'] ?>.style.display = "none"; 
+                docHolder<?= $at['id'] ?>.appendChild(image<?= $at['id'] ?>); 
+            };
+
+            doc<?= $at['id'] ?>.src = docURL<?= $at['id'] ?>;
+            doc<?= $at['id'] ?>.style = "height: 700px;";
+        </script>
+    @endforeach
 @else 
     <img src="{{asset('assets/attachment.png')}}" class="img nodata-icon" style="height:18vh;">
     <h6 class="text-center text-secondary">This Event doesn't have attachment</h6>
 @endif
+
 
 

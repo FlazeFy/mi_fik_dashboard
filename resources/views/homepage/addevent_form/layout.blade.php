@@ -126,14 +126,7 @@
                                     @include('homepage.addevent_form.datepicker')
                                 </div>
                             </div>
-                            @foreach($info as $in)
-                                @if($in->info_location == "add_event")
-                                    <div class="info-box {{$in->info_type}}">
-                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                        <?php echo $in->info_body; ?>
-                                    </div>
-                                @endif
-                            @endforeach
+                            @include('components.infobox',['info'=>$info, 'location'=> 'add_event'])
                         </div>
                         <div class="col-lg-4">
                             <label class="input-title">Event Image</label><br>

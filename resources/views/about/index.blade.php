@@ -161,6 +161,10 @@
         @include('popup.failed')
 
         <script>
+            $(document).ready(function() {
+                tidyUpRichText("about-app-holder");
+            });
+
             //Popover
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
