@@ -6,7 +6,7 @@
     transition: all 0.5s;
     cursor: pointer;
     width: 100%;
-    padding: 0px;
+    padding: 0;
     text-align: left;
     position: relative;
 }
@@ -41,7 +41,7 @@
 .event-box .event-title, .task-title{
     font-weight: 500;
     font-size: var(--textXMD);
-    color:#404040 !important;
+    color: var(--darkColor) !important;
     top: -40px;
     position: absolute;
     overflow: hidden; 
@@ -71,7 +71,7 @@
     -webkit-box-orient: vertical;
 }
 .warning-draft{
-    padding: var(--spaceXSM) 12px;
+    padding: var(--spaceXSM) var(--spaceMD);
     text-decoration: none;
     font-size: var(--textXLG);
     position: absolute;
@@ -85,7 +85,7 @@
     color:var(--whiteColor) !important;
 }
 .total-my-event{
-    padding: var(--spaceXSM) 12px;
+    padding: var(--spaceXSM) var(--spaceMD);
     text-decoration: none;
     font-size: var(--textXLG);
     position: absolute;
@@ -95,7 +95,7 @@
     height: 45px;
     border: 1.75px solid var(--whiteColor);
     border-radius: 100px;
-    background: #58C06E;
+    background: var(--successBG);
     color:var(--whiteColor) !important;
 }
 .btn-detail{
@@ -105,14 +105,14 @@
     font-weight: 500;
     padding: var(--spaceXXSM);
     color: var(--primaryColor) !important;
-    cursor:pointer;
+    cursor: pointer;
 }
 .user-image-content{
-    border:2px solid var(--primaryColor);
-    width:40px;
-    height:40px;
+    border: 2px solid var(--primaryColor);
+    width: 40px;
+    height: 40px;
     border-radius: var(--roundedCircle);
-    margin-inline:auto;
+    margin-inline: auto;
     display: block;
 }
 .user-image-content.large{
@@ -125,7 +125,7 @@
     position: relative;
     background-size: cover;
     background-color: var(--greyColor);
-    height:110px;
+    height: 110px;
     width: 100%;
     border-radius: var(--roundedMD) var(--roundedMD) 0px 0px !important;
 }
@@ -138,9 +138,9 @@
 
 @media screen and (max-width: 1000px) {
     .user-image-content{ /*Need to be fixed*/
-        position:absolute;
-        margin-top:-37.5px;
-        margin-left:35%;
+        position: absolute;
+        margin-top: -37.5px;
+        margin-left: 35%;
     }
 }
 .ajax-load{

@@ -1,16 +1,16 @@
 <style>
     .form-custom{
-        display:inline;
-        position:relative;
+        display: inline;
+        position: relative;
     }
     .form-custom i{
-        color:#9c9c9c;
+        color: #9c9c9c;
     }
     .input-custom{
-        padding:4px 4px 4px 25px;
+        padding: var(--spaceMini) var(--spaceMini) var(--spaceMini) 25px;
     }
     .input-custom:hover, .input-custom:focus{
-        background:#f0f0f0;
+        background: var(--hoverBG);
     }    
 </style>
 

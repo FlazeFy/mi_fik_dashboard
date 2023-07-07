@@ -38,7 +38,7 @@
 .task-box .task-title{
     font-weight: 500;
     font-size: var(--textXMD);
-    color:#404040 !important;
+    color: var(--darkColor) !important;
     margin:0px;
 }
 .task-box .task-subtitle{
@@ -81,7 +81,7 @@
     background-repeat:no-repeat;
     position: relative;
     background-size: cover;
-    background-color: black;
+    background-color: var(--darkColor);
     height:110px;
     width: 100%;
     border-radius: var(--roundedMD) var(--roundedMD) 0px 0px !important;

@@ -103,7 +103,7 @@
                         if(progress == 100){
                             attach_list[objIndex]['is_add_more'] = true;
                             document.getElementById('attach_name_'+id).disabled = false;
-                            att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
+                            att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;";
                         } else {
                             attach_list[objIndex]['is_add_more'] = false;
                             document.getElementById('attach_name_'+id).disabled = true;
@@ -115,7 +115,7 @@
                         attach_list[objIndex]['is_add_more'] = false;
                         var att_url = null;
                         if(error.message){
-                            att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
+                            att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
                             submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
                         }
                     }, 
@@ -164,7 +164,7 @@
                     document.getElementById('attach-failed-'+id).innerHTML = "Upload failed. Maximum file size is " + max + " mb";
                     var att_url = null;
                     if(error.message){
-                        att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
+                        att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
                         submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
                 }
@@ -180,12 +180,12 @@
                     attach_list[objIndex]['attach_url'] = att_url;
 
                     if(isValidURL(att_url)){
-                        att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
-                        warningAttMsg.style = "color: #09c568 !important;";
+                        att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;";
+                        warningAttMsg.style = "color: var(--successBG) !important;";
                         warningAttMsg.innerHTML = "URL is valid";
                     } else {
                         att_cont.style = "border-left: 3.5px solid var(--primaryColor) !important; --circle-attach-color-var:var(--primaryColor) !important;";
-                        warningAttMsg.style = "color: #f78a00 !important;";
+                        warningAttMsg.style = "color: var(--primaryColor) !important;";
                         warningAttMsg.innerHTML = "URL isn't not valid!";
                     }
                     validateFailedAtt();

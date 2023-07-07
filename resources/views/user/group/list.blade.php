@@ -125,7 +125,7 @@
                                                 '@if($in->info_location == "delete_group") ' +
                                                     '<div class="info-box {{$in->info_type}}" id="infobox-delete-'+slug+'"> ' +
                                                         '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
-                                                        "{!! $in->info_body !!} " +
+                                                        '<?php echo str_replace("'", '"', $in->info_body); ?>' +
                                                     '</div> ' +
                                                 '@endif ' +
                                             '@endforeach ' +

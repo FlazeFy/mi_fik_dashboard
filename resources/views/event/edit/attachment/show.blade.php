@@ -1,13 +1,13 @@
 <style>
     .attachment-item .attachment-edit-header{
-        white-space:nowrap !important; 
-        position:relative;
+        white-space: nowrap !important; 
+        position: relative;
         margin-bottom:10px;
     }
     .attachment-edit-header .end-section{
-        position:absolute; 
-        right:0; 
-        top:0;
+        position: absolute; 
+        right: 0; 
+        top: 0;
     }
     
 </style>

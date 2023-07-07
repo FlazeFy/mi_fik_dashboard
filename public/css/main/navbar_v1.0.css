@@ -1,4 +1,4 @@
-.navbar-holder{
+.navbar-holder {
     border-radius: var(--roundedSM);
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
@@ -8,7 +8,7 @@
     position: sticky;
     top: 0;
     z-index: 999 !important;
-    margin-top: calc(var(--spaceJumbo) + 15px);
+    margin-top: var(--spaceLG);
 }
 .navbar-title{
     position: absolute;

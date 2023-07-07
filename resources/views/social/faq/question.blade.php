@@ -3,7 +3,7 @@
         text-align: left;
         padding: 10px;
         cursor: pointer;
-        border: 1.5px solid #F78A00;
+        border: 1.5px solid var(--primaryColor);
         border-radius: var(--roundedSM);
         margin-bottom: 10px;
         text-decoration: none;
@@ -11,24 +11,24 @@
         width: 100%;
     }
     .question_holder .question_box.answered{
-        border: 1.5px solid #00C363;
+        border: 1.5px solid var(--successBG);
     }
     .question_holder .question_box:hover{
-        background: #F78A00;
-        color: #FFFFFF !important;
+        background: var(--primaryColor);
+        color: var(--whiteColor) !important;
     }
     .question_holder .question_box:hover p{
-        color: #FFFFFF;
+        color: var(--whiteColor);
     }
     .question_holder .question_box.answered:hover{
-        background: #00C363;
+        background: var(--successBG);
     }
     .question_holder .question_box h6{
-        color: #F78A00;
+        color: var(--primaryColor);
         font-size: 18px;
     }
     .question_holder .question_box.answered h6{
-        color: #00C363;
+        color: var(--successBG);
     }
     .question_holder .question_box p{
         color: var(--darkColor);
@@ -145,9 +145,9 @@
 
     function loadDetailAnswer(answer, id, status, que, username){
         if(status == "answered"){
-            setSelectedBtnStyle("background: #00c363; color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
+            setSelectedBtnStyle("background: var(--successBG); color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
-            setSelectedBtnStyle("background: #F78A00; color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
+            setSelectedBtnStyle("background: var(--primaryColor); color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         
         loadAnswer(answer, id, status, que, username);

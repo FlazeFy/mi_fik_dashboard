@@ -281,7 +281,7 @@
                         },
                         success: function(response) {
                             is_requested = true;
-                            btn_steps_role.style = "border-left: 6px solid #58C06E;";
+                            btn_steps_role.style = "border-left: 6px solid var(--successBG);";
                             $('#role-area-picker').html('<lottie-player class="d-block mx-auto" src="https://assets7.lottiefiles.com/packages/lf20_fbwbq3um.json"  background="transparent" speed="0.75" style="width: 400px; height: 400px;" autoplay></lottie-player> ' +
                                 '<h6 class="text-primary text-center" style="font-size:26px;">You have successfully request role</h6>');
                             btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";

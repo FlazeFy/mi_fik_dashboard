@@ -12,8 +12,8 @@
     background: transparent;
     border-radius: var(--roundedXLG);
     border:none;
-    color: #343434;
-    border: 1.5px solid #343434;
+    color: var(--darkColor);
+    border: 1.5px solid var(--darkColor);
 }
 .btn-outlined.selected{
     color: var(--successBG) !important;

@@ -36,7 +36,7 @@
                     type: 'pie',
                 },
                 labels: ["User","Content"],
-                colors: ['#F78A00','#009FF9'],
+                colors: ['var(--primaryColor)','#009FF9'],
                 legend: {
                     position: 'bottom'
                 },

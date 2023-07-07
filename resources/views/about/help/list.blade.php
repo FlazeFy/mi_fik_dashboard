@@ -17,10 +17,10 @@
         text-decoration: none;
     }
     .list-help-holder .helps_type_box:hover{
-        background: #F78A00;
+        background: var(--primaryColor);
     }
     .list-help-holder .helps_type_box h6{
-        color: #F78A00;
+        color: var(--primaryColor);
         font-size: 18px;
     }
     .list-help-holder .helps_type_box p{
@@ -241,7 +241,7 @@
 
     function loadDetailDesc(cat, desc, user, updated, id){
         var cat2 = cat.split(" ").join("");
-        setSelectedBtnStyle("background: #F78A00; color: var(--whiteColor); border-radius: 10px;", "btn-category-help", " ", cat2);
+        setSelectedBtnStyle("background: var(--primaryColor); color: var(--whiteColor); border-radius: 10px;", "btn-category-help", " ", cat2);
         <?php
             if(session()->get('role_key') == 1 && session()->get('toogle_edit_help') == "true"){
                 echo "loadRichTextDesc(desc, user, updated, cat);";

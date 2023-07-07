@@ -7,9 +7,9 @@
         color:#9c9c9c;  
     }
     .page-item.active .page-link{
-        background:#F78A00 !important;
+        background:var(--primaryColor) !important;
         border:none;
-        color:#FFFFFF;
+        color:var(--whiteColor);
     }
     .page-item .page-link{
         color:var(--darkColor);

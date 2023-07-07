@@ -22,14 +22,14 @@
     background: var(--primaryLightBG);
 }
 .tabular-body .tabular-item.suspend{
-    background:  #f5a2a8;
+    background: var(--importantItem);
 }
 
 .tabular-body .tabular-item.normal:hover{
-    background: #F4F4F4;
+    background: var(--hoverBG);
 }
 .tabular-body .tabular-item.waiting:hover{
-    background: #fbd29c;
+    background: var(--primaryLightBG);
 }
 .tabular-body .tabular-item.suspend:hover{
     background:  #f19399;
@@ -39,12 +39,12 @@
 }
 
 .page-item.active .page-link{
-    background:var(--primaryColor) !important;
-    border:none;
-    color:var(--whiteColor);
+    background: var(--primaryColor) !important;
+    border: none;
+    color: var(--whiteColor);
 }
 .page-item .page-link{
-    color:var(--darkColor);
+    color: var(--darkColor);
 }    
 
 /* Mobile style */

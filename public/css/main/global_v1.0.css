@@ -50,6 +50,10 @@
     --whiteColor : #FFFFFF;
     --greyColor : #C3C3C3;
     --shadowColor : #808080;
+
+    --calendarItem : #85DEF3;
+    --importantItem : #FCC4C4;
+    --semiPrimary : #FFF1DF;
 }
 
 /* Mobile style */
@@ -202,7 +206,7 @@ body{
 }
 .toast, .toast-body, .toast-header {
     opacity: 1 !important;
-    background: white;
+    background: var(--whiteColor);
 }
 .modal {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -264,24 +268,24 @@ th{
 
 /* Layout */
 #content{
-    background:#f0f0f0;
-    height:100vh;
+    background: var(--hoverBG);
+    height: 100vh;
     width: 100%;
-    overflow:auto;
+    overflow: auto;
 }
 .content-title{
     font-weight: 500;
-    color:var(--darkColor);
+    color: var(--darkColor);
 }
 .content-add, .content-more{
     font-weight: 500;
-    color:var(--primaryColor);
-    background:none;
-    border:none;
-    text-decoration:none !important;
+    color: var(--primaryColor);
+    background: none;
+    border: none;
+    text-decoration: none !important;
     cursor: pointer;
-    padding:6px var(--spaceSM);
-    margin:0;
+    padding: 6px var(--spaceSM);
+    margin: 0;
     border-radius: var(--roundedMini);
 }
 .content-add:hover, .content-more:hover{
@@ -354,12 +358,12 @@ th{
 }
 .page-holder:hover{
     background: var(--primaryColor);
-    color: white;
+    color: var(--whiteColor);
 }
 .page-holder.active{
-    background: #58C06E;
-    color: white;
-    border: 1.5px solid #58C06E;
+    background: var(--successBG);
+    color: var(--whiteColor);
+    border: 1.5px solid var(--successBG);
 }
 
 /* Drop down */
@@ -481,7 +485,7 @@ thead.thead-sticky{
     font-weight: 400 !important;
     font-size: var(--textXMD) !important;
     z-index: 1000 !important;
-    background: white;
+    background: var(--whiteColor);
     border-radius: var(--roundedJumbo);
     padding: var(--spaceLG);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -500,7 +504,7 @@ thead.thead-sticky{
 
 [role="progressbar"] {
     --percentage: var(--value);
-    --primary: #58C06E;
+    --primary: var(--successBG);
     --secondary: #cbecd2;
     --size: 120px;
     width: var(--size);

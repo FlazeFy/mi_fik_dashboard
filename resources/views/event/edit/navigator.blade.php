@@ -5,7 +5,7 @@
         margin-top: 25px;
     }
     .event-navigator .navigator-link {
-        color: #F78A00;
+        color: var(--primaryColor);
         text-decoration: none;
         cursor: pointer;
         font-weight: 500;

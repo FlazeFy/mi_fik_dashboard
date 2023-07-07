@@ -6,9 +6,6 @@
     border-radius: 0 var(--roundedSM) var(--roundedSM) 0;
     min-height: 80px;
     border-left: 3.5px solid var(--shadowColor);
-    border-top: 1.75px solid #CED4DA;
-    border-right: 1.75px solid #CED4DA;
-    border-bottom: 1.75px solid #CED4DA;
 }
 .attachment-holder .attachment-item ul {
     padding-left: var(--spaceMD);
@@ -36,7 +33,7 @@
 }
 .btn-icon-delete:hover{
     background: var(--warningBG) !important;
-    color:var(--whiteColor) !important;
+    color: var(--whiteColor) !important;
 }
 .btn-icon-preview{
     color: var(--shadowColor) !important;
@@ -48,7 +45,7 @@
     width: 100px;
 }
 .btn-add-att{
-    color:var(--primaryColor) !important;
+    color: var(--primaryColor) !important;
     border-radius: var(--roundedMini);
     border: solid 2px var(--primaryColor);
     opacity: 1;
@@ -58,7 +55,7 @@
     cursor: normal;
 }
 .btn-add-att:hover{
-    color:white !important;
+    color: var(--whiteColor) !important;
     background: var(--primaryColor);
 }
 .attach-upload-status, #content_loc_msg{
@@ -71,7 +68,7 @@
     color: var(--successBG) !important;
 }
 .failed{
-    color: #e74645 !important;
+    color: var(--warningBG) !important;
 }
 .warning{
     color: var(--primaryColor) !important;
