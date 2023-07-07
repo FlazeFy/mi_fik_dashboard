@@ -21,8 +21,10 @@ return new class extends Migration
             $table->dateTime('created_at', $precision = 0);
             $table->string('created_by', 36);
 
-            $table->foreign('archive_id')->references('id')->on('archives')->onDelete('cascade');
-            $table->foreign('content_id')->references('id')->on('contents_headers')->onDelete('cascade');
+            // $table->foreign('archive_id')->references('id')->on('archives')->onDelete('cascade');
+            // $table->foreign('content_id')->references('id')->on('contents_headers')->onDelete('cascade');
+            // $table->foreign('content_id')->references('id')->on('tasks')->onDelete('cascade');
+            // $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

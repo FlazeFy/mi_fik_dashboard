@@ -23,6 +23,8 @@ return new class extends Migration
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->string('updated_by', 36)->nullable();
             $table->string('created_by', 36);
+
+            $table->foreign('created_by')->references('id')->on('users');
         });
     }
 

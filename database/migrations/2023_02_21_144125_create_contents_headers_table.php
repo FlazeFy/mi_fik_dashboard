@@ -30,6 +30,15 @@ return new class extends Migration
             $table->string('updated_by', 36)->nullable();
             $table->dateTime('deleted_at', $precision = 0)->nullable();
             $table->string('deleted_by', 36)->nullable();
+
+            // $table->foreign('created_by')->on('id')->references('admins');//->onDelete('cascade');
+            // $table->foreign('created_by')->on('id')->references('users');//->onDelete('cascade');
+
+            // $table->foreign('updated_by')->on('id')->references('admins');//->onDelete('cascade');
+            // $table->foreign('updated_by')->on('id')->references('users');//->onDelete('cascade');
+
+            // $table->foreign('deleted_by')->on('id')->references('admins');//->onDelete('cascade');
+            // $table->foreign('deleted_by')->on('id')->references('users');//->onDelete('cascade');
         });
     }
 

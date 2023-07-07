@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('firebase_fcm_token', 255)->nullable();
             $table->string('username', 30);
             $table->string('email', 75)->unique();
             $table->string('password', 50);
-            $table->string('first_name', 36);
-            $table->string('last_name', 36)->nullable();
+            $table->string('first_name', 35);
+            $table->string('last_name', 35)->nullable();
             $table->longText('role')->nullable();
             $table->string('image_url', 255)->nullable();
             $table->year('valid_until')->nullable();

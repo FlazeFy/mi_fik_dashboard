@@ -24,6 +24,9 @@ return new class extends Migration
             $table->dateTime('updated_at', $precision = 0)->nullable();
             $table->string('created_by', 36);
             $table->string('updated_by', 36)->nullable();
+
+            $table->foreign('created_by')->references('id')->on('admins')->onDelete('cascade');
+            $table->foreign('updated_by')->references('id')->on('admins')->onDelete('cascade');
         });
     }
 

@@ -14,14 +14,15 @@ return new class extends Migration
     public function up()
     {
         Schema::create('errors', function (Blueprint $table) {
-            $table->id();
-            $table->string('message');
+            $table->bigInteger('id')->length(20)->primary();
+            $table->text('message');
             $table->text('stack_trace');
-            $table->string('file');
-            $table->integer('line');
+            $table->string('file', 25);
+            $table->integer('line')->length(11)->unsigned();
             $table->string('faced_by', 36)->nullable();
-            $table->dateTime('created_at', $precision = 0);
-            $table->dateTime('fixed_at', $precision = 0)->nullable();
+
+            $table->timestamp('created_at', $precision = 0);
+            $table->timestamp('fixed_at', $precision = 0)->nullable();
         });
     }
 
