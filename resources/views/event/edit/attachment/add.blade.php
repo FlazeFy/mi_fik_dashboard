@@ -1,11 +1,11 @@
 <form class="mb-3" action="/event/edit/update/attach/add/{{$c->slug_name}}" method="POST">
     @csrf
     <input hidden name="content_title" value="{{$c->content_title}}">
-    <a class="content-add mb-2" style="float:none;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
+    <a class="btn position-absolute text-info" style="top:-10px; right:0;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
     <div class="attachment-holder" id="attachment-holder">
     </div>
     <input hidden id="content_attach" name="content_attach">
-    <span id="btn-submit-holder-event"></span>
+    <span class="mt-4" id="btn-submit-holder-event"></span>
 </form> 
 
 <script>
@@ -16,46 +16,48 @@
     var maxSizeDoc = 15; // Mb
 
     function addAttachmentForm(){
-        var id = getAttCode()
+        if(isAddMoreAttachment(attach_list)){
+            var id = getAttCode();
 
-        let obj = {
-            "id": id,
-            "attach_type":null, 
-            "attach_name":null, 
-            "attach_url":null
-        };
+            let obj = {
+                "id": id,
+                "attach_type":null, 
+                "attach_name":null, 
+                "attach_url":null,
+                "is_add_more":false
+            };
+            attach_list.push(obj);
 
-        attach_list.push(obj);
-
-        $("#attachment-holder").append(' ' +
-            '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:#808080;"> ' + 
-                '<div style="white-space:normal !important;"> ' +
-                    '<span class="d-inline-block me-1"> ' +
-                        '<h6 class="mt-1">Attachment Type : </h6> ' +
-                    '</span> ' +
-                    '<span class="d-inline-block"> ' +
-                        '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
-                            '<option selected>---</option> ' +
-                            <?php
-                                foreach($dictionary as $dct){
-                                    if($dct->type_name == "Attachment"){
-                                        echo "'<option value=".'"'.$dct->slug_name.'"'.">".$dct->dct_name."</option> ' +";
+            $("#attachment-holder").append(' ' +
+                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:var(--shadowColor);"> ' + 
+                    '<div style="white-space:normal !important;"> ' +
+                        '<span class="d-inline-block me-1"> ' +
+                            '<h6 class="mt-1">Attachment Type : </h6> ' +
+                        '</span> ' +
+                        '<span class="d-inline-block"> ' +
+                            '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value)" aria-label="Default select example"> ' +
+                                '<option selected>---</option> ' +
+                                <?php
+                                    foreach($dictionary as $dct){
+                                        if($dct->type_name == "Attachment"){
+                                            echo "'<option value=".'"'.$dct->slug_name.'"'.">".$dct->dct_name."</option> ' +";
+                                        }
                                     }
-                                }
-                            ?>
-                        '</select> ' +
-                    '</span> ' +
-                '</div> ' +
-                '<div id="attach-input-holder-'+id+'"></div> ' +
-                '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
-                    '<i class="fa-solid fa-trash-can"></i></a> ' +
-                '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
-                    '<i class="fa-regular fa-eye-slash"></i></a> ' +
-                '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
-                '<a class="attach-upload-status danger" id="attach-failed-'+id+'"></a>' +
-                '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
-                '<span id="preview_holder_'+id+'"></span> ' +
-            '</div>');
+                                ?>
+                            '</select> ' +
+                        '</span> ' +
+                    '</div> ' +
+                    '<div id="attach-input-holder-'+id+'"></div> ' +
+                    '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
+                        '<i class="fa-solid fa-trash-can"></i></a> ' +
+                    '<span id="preview_att_'+id+'"><a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
+                        '<i class="fa-regular fa-eye-slash"></i></a></span>' +
+                    '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
+                    '<a class="attach-upload-status failed" id="attach-failed-'+id+'"></a>' +
+                    '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
+                    '<span id="preview_holder_'+id+'"></span> ' +
+                '</div>');
+        }
     }
 
     function setValue(id, all){
@@ -69,7 +71,7 @@
             //var att_url = document.getElementById('attach_url_'+id).value;
             var att_cont = document.getElementById('attachment_container_'+id);
             var submitHolder = $("#btn-submit-holder-event");
-            
+
             if(att_type != "attachment_url" && att_dsbld != true){
                 var att_file_src = document.getElementById('attach_url_'+id).files[0];
 
@@ -83,6 +85,7 @@
 
                 if(att_file_src.size <= max * 1024 * 1024){
                     var filePath = att_type + '/' + getUUID();
+                    document.getElementById('attach-failed-'+id).innerHTML = "";
 
                     //Set upload path
                     var storageRef = firebase.storage().ref(filePath);
@@ -93,19 +96,23 @@
                         var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
                         document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done";
                         document.getElementById('attach_url_'+id).disabled = true;
+                        document.getElementById('attach_type_'+id).disabled = true;
 
                         if(progress == 100){
+                            attach_list[objIndex]['is_add_more'] = true;
+                            document.getElementById('attach_name_'+id).disabled = false;
                             att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
                             submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
                         } else {
+                            attach_list[objIndex]['is_add_more'] = false;
+                            document.getElementById('attach_name_'+id).disabled = true;
                             submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
                         }
                     }, 
                     function (error) {
-                        console.log(error.message);
-                        document.getElementById('attach_url_'+id).value = null;
-                        document.getElementById('attach-failed-'+id).innerHTML = "File upload is " + error.message;
+                        doErrorAttachment(id, error);
                         var att_url = null;
+                        attach_list[objIndex]['is_add_more'] = false;
                         if(error.message){
                             att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
                             submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
@@ -135,15 +142,18 @@
                             document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
                             document.getElementById('attach_url_holder_'+id).value = downloadUrl;
 
-                            attach_list[objIndex] = {
-                                "id": id,
-                                "attach_type": att_type, 
-                                "attach_name": att_name, 
-                                "attach_url": att_url
-                            };
+                            attach_list[objIndex]['id'] = id;
+                            attach_list[objIndex]['attach_type'] = att_type;
+                            attach_list[objIndex]['attach_name'] = att_name;
+                            attach_list[objIndex]['attach_url'] = att_url;
+
+                            var modifiedList = cleanAddMoreStatus(attach_list);
+                            document.getElementById('content_attach').value = JSON.stringify(modifiedList);
                         });
                     });
                 } else {
+                    attach_list[objIndex]['is_add_more'] = false;
+                    document.getElementById('attach_name_'+id).disabled = true;
                     document.getElementById('attach-failed-'+id).innerHTML = "Upload failed. Maximum file size is " + max + " mb";
                     var att_url = null;
                     if(error.message){
@@ -152,120 +162,52 @@
                     }
                 }
             } else if(att_type == "attachment_url" && att_dsbld != true) {
+                attach_list[objIndex]['is_add_more'] = true;
                 var att_url = document.getElementById('attach_url_'+id).value.trim();
             
                 if(att_url.length > 0){
-                    att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
                     warningAttMsg = document.getElementById('attach-warning-'+id);
+                    attach_list[objIndex]['id'] = id;
+                    attach_list[objIndex]['attach_type'] = att_type;
+                    attach_list[objIndex]['attach_name'] = att_name;
+                    attach_list[objIndex]['attach_url'] = att_url
+                    
                     if(isValidURL(att_url)){
-                        warningAttMsg.style = "color: #09c568 !important;"
+                        att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
+                        warningAttMsg.style = "color: #09c568 !important;";
                         warningAttMsg.innerHTML = "URL is valid";
-                        submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
                     } else {
+                        att_cont.style = "border-left: 3.5px solid var(--primaryColor) !important; --circle-attach-color-var:var(--primaryColor) !important;";
                         warningAttMsg.innerHTML = "URL isn't not valid!";
-                        submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
+                    submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
                 } else {
                     warningAttMsg.innerHTML = "";
-                    att_cont.style = "border-left: 3.5px solid #808080 !important; --circle-attach-color-var:#808080 !important;";
+                    att_cont.style = "border-left: 3.5px solid var(--shadowColor) !important; --circle-attach-color-var:var(--shadowColor) !important;";
                 }   
             } else {
-                attach_list[objIndex] = {
-                    "id": id,
-                    "attach_type": att_type, 
-                    "attach_url": attach_list[objIndex].attach_url,
-                    "attach_name": att_name, 
-                };
-                console.log(attach_list);
+                attach_list[objIndex]['id'] = id;
+                attach_list[objIndex]['attach_type'] = att_type;
+                attach_list[objIndex]['attach_name'] = att_name;
             }
-            
-            // att_url = att_url.replace(/\\/g, '');
-            // att_url = att_url.replace("C:fakepath", "");
         } else {
             var att_name = null;
             var att_url = null;
         }
 
-        document.getElementById('content_attach').value = JSON.stringify(attach_list);
-    }
-
-    function isValidURL(urlString){
-        try { 
-            return Boolean(new URL(urlString)); 
-        }
-        catch(e){ 
-            return false; 
-        }
-    }
-
-    function getUUID() {
-        return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-        );
-    }
-
-    function getAttCode() {
-        let col = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            let index = Math.floor(Math.random() * col.length);
-            code += col[index];
-        }
-        return code;
+        var modifiedList = cleanAddMoreStatus(attach_list);
+        document.getElementById('content_attach').value = JSON.stringify(modifiedList);
     }
 
     function deleteAttachmentForm(index){
         let att_type = document.getElementById('attach_type_'+index).value;
+        attach_list = removeAttachment(att_type, attach_list, index);
 
-        attach_list = attach_list.filter(object => {
-            if(att_type != "attachment_url"){
-                var filePath = object.attach_url;
-                if(filePath){
-                    var storageRef = firebase.storage();
-                    var desertRef = storageRef.refFromURL(filePath);
-                    var msg = ""
-
-                    desertRef.delete().then(() => {
-                        msg = "Attachment has been removed";
-                        //Return msg not finished. i dont know what to do next LOL
-                    }).catch((error) => {
-                        msg = "Failed to deleted the Attachment";
-                        //Return msg not finished. i dont know what to do next LOL
-                    });
-                }
-            } 
-
-            $("#attachment_container_"+index).remove();
-
-            return object.id !== index;
-        });
-    }
-
-    function getAttachmentInput(index, val){
-        $("#attach-input-holder-"+index).html("");
-        setValue(index);
-
-        //Allowed type
-        if(val == 'attachment_image'){
-            var allowed = 'accept="image/*"'
-        } else if(val == 'attachment_video'){
-            var allowed = 'accept="video/*"'
-        } else if(val == 'attachment_doc'){
-            var allowed = 'accept="application/pdf"' //Check this again...
+        if(attach_list.length == 0){
+            $("#btn-submit-holder-event").empty();
         }
 
-        if(val == "attachment_url"){
-            $("#attach-input-holder-"+index).append(' ' +
-                '<h6 class="mt-1">Attachment URL</h6> ' +
-                '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)" required> ' +
-                '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
-        } else {
-            $("#attach-input-holder-"+index).append(' ' +
-                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+"'"+index+"'"+', true)"> ' +
-                '<input type="text" id="attach_url_holder_'+index+'" hidden required> ' +
-                '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
-        }
+        var modifiedList = cleanAddMoreStatus(attach_list);
+        document.getElementById('content_attach').value = JSON.stringify(modifiedList);
     }
 </script>

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Helpers\Validation;
 use App\Helpers\Generator;
+use App\Helpers\FirebaseTask;
 
 use App\Models\Setting;
 use App\Models\Menu;
@@ -16,6 +17,7 @@ use App\Models\ContentHeader;
 use App\Models\ContentViewer;
 use App\Models\ArchiveRelation;
 use App\Models\UserGroup;
+use App\Models\FailedJob;
 use App\Models\Task;
 use App\Models\Tag;
 use App\Models\Info;
@@ -240,6 +242,8 @@ class TrashController extends Controller
                     return redirect()->back()->with('failed_message', $errors);
                 } else {
                     if($type == "event"){
+                        FirebaseTask::deleteContentAttachment($id);
+
                         DB::table("contents_headers")->where('id', $id)->delete();
                         DB::table("contents_details")->where('content_id', $id)->delete();
                         DB::table("archives_relations")->where('content_id', $id)->delete();

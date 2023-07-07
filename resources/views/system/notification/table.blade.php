@@ -12,7 +12,7 @@
         color:#FFFFFF;
     }
     .page-item .page-link{
-        color:#414141;
+        color:var(--darkColor);
     }
     .notif-result{
         font-size: 12.5px;
@@ -20,7 +20,7 @@
         color: #5B5B5B;
     }
     .notif-result-box{
-        border-radius: 10px;
+        border-radius: var(--roundedSM);
         padding: 8px;
         position: relative;
         background: #C6EFF8;

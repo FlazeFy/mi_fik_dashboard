@@ -7,7 +7,8 @@
                 <p class="text-secondary">You still have some unfinished event, you can resume these event</p>
                 <div class="row p-0">
                     <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
-                        <button class="container shadow bg-primary w-100 h-100 border-0" style="border-radius:12px;" @if(!$isMobile) data-bs-dismiss="modal" @endif data-bs-target="#addEventModal" data-bs-toggle="modal">
+                        <button class="container shadow bg-primary w-100 h-100 border-0" style="border-radius:var(--roundedMD);" @if(!$isMobile) data-bs-dismiss="modal" @endif data-bs-target="#addEventModal" data-bs-toggle="modal"
+                            onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event')">
                             <h5 class="text-white"><i class="fa-solid fa-plus text-white"></i><br>
                                 Create a new one</h5>
                         </button>
@@ -41,12 +42,12 @@
                                             @endif
                                         </div>
                                         <div class='d-inline-block position-relative w-75'>
-                                            <h6 class='event-title'>{{$md->content_title}}</h6>
+                                            <h6 class='event-title'>{{ucwords($md->content_title)}}</h6>
                                             <h6 class='event-subtitle'>{{$username}}</h6>
                                         </div>
                                     </div>
                                     <div style='height:60px;'>
-                                        <p class='event-desc my-1'>{{strip_tags($md->content_desc)}}</p>
+                                        <p class='event-desc my-1'>{{ucFirst(strip_tags($md->content_desc))}}</p>
                                     </div>
                                     <div class='event-properties row d-inline-block px-2'>
                                         @if($md->content_tag)

@@ -48,7 +48,7 @@ class SettingController extends Controller
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }
         } else {
-            return redirect("/403");
+            return view("errors.403");
         }
     }
 

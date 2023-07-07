@@ -149,13 +149,16 @@ class Generator
         $accessToken = PersonalAccessToken::findToken($token);
 
         if ($accessToken) {
-            Auth::login($accessToken->tokenable);
-            $user = Auth::user();
-            
-            $res = $user->id;
-            return $res;
+            if($accessToken->tokenable){
+                Auth::login($accessToken->tokenable);
+                $user = Auth::user();
+                
+                $res = $user->id;
+                return $res;
+            } else {
+                return redirect("/")->with('failed_message','This account is no longer exist');
+            }
         } else {
-            // do something LOL
             return null;
         }
     }
@@ -496,5 +499,31 @@ class Generator
         }
     
         return false;
+    }
+
+    public static function getUserImage($img1, $img2, $user1){
+        if($img1 || $img2){
+            if($img1){
+                return $img1;
+            } else {
+                return $img2;
+            }
+        } else {
+            if($user1){
+                return 'http://127.0.0.1:8000/assets/default_admin.png';
+            } else {
+                return 'http://127.0.0.1:8000/assets/default_lecturer.png';
+            }
+        }
+    }
+
+    public static function generateUUIDStorageURL($root,$url){
+        $pattern = '/'.$root.'%2F([\w-]+)\?/';
+        preg_match($pattern, $url, $matches);
+        
+        if (isset($matches[1])) {
+            return $matches[1];
+        }
+        return null;
     }
 }

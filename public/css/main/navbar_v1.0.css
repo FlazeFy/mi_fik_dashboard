@@ -1,5 +1,5 @@
 .navbar-holder{
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     width: 100%;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
     padding: var(--spaceLG);
@@ -85,14 +85,14 @@
     width:95%;
     margin-left:-30px;
     padding: var(--spaceMini) var(--spaceJumbo);
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 0px var(--roundedSM) var(--roundedSM) 0px;
     -webkit-transition: all 0.6s;
     -o-transition: all 0.6s;
     transition: all 0.6s;
 }
 #sidebar ul li.active, #sidebar ul li.active .btn-accordion-custom {
     background:var(--primaryColor);
-    color:#F5F5F5 !important;
+    color:var(--whiteColor) !important;
 }
 #sidebar ul li:hover:not(.active), #sidebar ul li.sub.active {
     color:var(--primaryColor) !important;

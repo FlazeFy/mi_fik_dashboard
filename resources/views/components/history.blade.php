@@ -39,7 +39,7 @@
         @endforeach
     @else
         <div class="text-center" id="no_cat_selected" >
-            <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:75%; height:90%;">
+            <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:75%; height:90%; max-width:200px;">
             <h6 class='text-secondary text-center'>No History</h6>
         </div>
     @endif

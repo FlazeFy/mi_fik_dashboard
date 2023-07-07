@@ -8,18 +8,18 @@
         display: none;
     }
     .btn.change-image{
-        width:40px; 
-        height:40px; 
+        width: 40px; 
+        height: 40px; 
         background:#F78A00;
-        border-radius: 100%;
+        border-radius: var(--roundedCircle);
         position: absolute;
-        right:10px;
-        bottom:20px;
+        right: 10px;
+        bottom: 20px;
     }
     .btn-reset-image{
         position: absolute; 
-        right:100px;
-        bottom:-25px;
+        right: 100px;
+        bottom: -25px;
         background: #e74645 !important;
         color:#FFFFFF !important;
     }
@@ -27,7 +27,7 @@
         position: absolute; 
         bottom: 10px; 
         left: 60px;
-        top:20px !important;
+        top: 20px !important;
     }
 </style>
 

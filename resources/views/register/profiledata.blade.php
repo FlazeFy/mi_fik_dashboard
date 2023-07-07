@@ -99,8 +99,8 @@
 
             <h4 class="text-primary">Profile Image</h4>
             <div class="row pb-5">
-                <div class="col-lg-6 p-4 position-relative">
-                    <div class="position-absolute">
+                <div class="col-lg-6 p-4">
+                    <div class="position-relative">
                         <div class="content-image-holder p-0 position-relative">
                             <img id="profile_image_info" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}" style="width:200px; height:200px;">
                             <div class='image-upload' id='formFileImg'>
@@ -117,16 +117,16 @@
                                 <a class="attach-upload-status warning" id="header-warning"></a>
                             </span>
                         </div>
-                    </div>
-                    <div class="position-absolute">
-                        <div id="success-image-check" style="width:300px; height:300px;"></div>
+                        <div class="position-absolute" style="top:0; left:0;">
+                            <div id="success-image-check" style="height:300px;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </form>
 </div>
-<a class="registered-msg" id="registered-msg"></a>
+<a class="registered-msg" id="registered-msg" style="left:15px; bottom:15px;"></a>
 <span id="btn-next-role-holder">
     <button class="btn-next-steps locked" id="btn-next-profile-role" onclick="warn('profiledata')"><i class="fa-solid fa-lock"></i> Locked</button>
 </span>
@@ -331,7 +331,8 @@
                 until.disabled = true;
                 btn_reset_image.innerHTML = "";
                 btn_add_image.innerHTML = "";
-                document.getElementById("registered-msg").innerHTML = "Your account has been registered";
+                document.getElementById("reset-uname-holder").innerHTML = "";
+                document.getElementById("registered-msg").innerHTML = "<i class='fa-solid fa-check'></i> Your account has been registered";
                 registered = true;
                 validate("profiledata");
             },

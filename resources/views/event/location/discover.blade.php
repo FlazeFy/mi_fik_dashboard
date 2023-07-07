@@ -1,7 +1,7 @@
 <style>
     #map-discover {
         height:70vh;
-        border-radius: 10px;
+        border-radius: var(--roundedSM);
         margin-top: 6px;
         margin-bottom: 6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -42,10 +42,10 @@
                             }
                             if($fc->type == "coordinate"){
                                 $coor = explode(", ", $fc->detail);
-                                echo "{
-                                    coords:{lat:".$coor[0].",lng:".$coor[1]."},
-                                    content:'<div><h6>".$loc->content_title."</h6><p>".$loc->content_desc."</p><b><i class=".'"'."fa-solid fa-house".'"'."></i> ".$name."</b><br><b><i class=".'"'."fa-regular fa-circle-dot".'"'."></i> ".$coor[0].", ".$coor[0]."</b><hr><a class=".'"'."btn btn-primary py-1 px-2".'"'." onclick=".'"'."location.href=".'`'."/event/detail/".$loc->slug_name.'`' .';"'.">See Detail</a></div>'
-                                    },";
+                                echo '{
+                                    coords: {lat: '.$coor[0].', lng: '.$coor[1].'},
+                                    content: \'<div><h6>'.str_replace("'", "\'", $loc->content_title).'</h6><p>'.str_replace("'", "\'", $loc->content_desc).'</p><b><i class="fa-solid fa-house"></i> '.$name.'</b><br><b><i class="fa-regular fa-circle-dot"></i> '.$coor[0].', '.$coor[0].'</b><hr><a class="btn btn-primary py-1 px-2" onclick="location.href=`/event/detail/'.$loc->slug_name.'`;">See Detail</a></div>\'
+                                },';
                             }
                         }
                     }

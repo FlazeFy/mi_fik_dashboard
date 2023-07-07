@@ -15,33 +15,26 @@
     var add_att_btn = document.getElementById('add_att_btn');
 
     function addAttachmentForm(){
-        var id = getAttCode();
-        var is_addable = true
-        let obj = {
-            "id": id,
-            "attach_type":null, 
-            "attach_name":null, 
-            "attach_url":null,
-            "is_error":false
-        };
-
-        attach_list.forEach( e => {
-            if(e.attach_type == null && e.attach_name == null && e.is_error == false){
-                is_addable = false;
-            }
-        });
-        
-        if(is_addable || attach_list.length == 0){
+        if(isAddMoreAttachment(attach_list)){
+            var id = getAttCode();
+            var is_addable = true;
+            let obj = {
+                "id": id,
+                "attach_type":null, 
+                "attach_name":null, 
+                "attach_url":null,
+                "is_add_more":false
+            };
             attach_list.push(obj);
 
             $("#attachment-holder").append(' ' +
-                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:#808080;"> ' + 
+                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:var(--shadowColor);"> ' + 
                     '<div style="white-space:normal !important;"> ' +
                         '<span class="d-inline-block me-1"> ' +
                             '<h6 class="mt-1">Attachment Type : </h6> ' +
                         '</span> ' +
                         '<span class="d-inline-block"> ' +
-                            '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
+                            '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentGroupFun('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
                                 '<option selected>---</option> ' +
                                 <?php
                                     foreach($dictionary as $dct){
@@ -56,16 +49,17 @@
                     '<div id="attach-input-holder-'+id+'"></div> ' +
                     '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
                         '<i class="fa-solid fa-trash-can"></i></a> ' +
-                    '<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
-                        '<i class="fa-regular fa-eye-slash"></i></a> ' +
+                    '<span id="preview_att_'+id+'"><a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
+                        '<i class="fa-regular fa-eye-slash"></i></a></span>' +
                     '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
                     '<a class="attach-upload-status failed" id="attach-failed-'+id+'"></a>' +
                     '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
                     '<span id="preview_holder_'+id+'"></span> ' +
                 '</div>');
+            
+            add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
+            add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
         }
-        add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
-        add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
     }
 
     function setValue(id, all){
@@ -74,7 +68,7 @@
         let att_type = document.getElementById('attach_type_'+id).value;
 
         if(all){
-            var att_name = document.getElementById('attach_name_'+id).value;
+            var att_name_val = document.getElementById('attach_name_'+id).value;
             var att_dsbld = document.getElementById('attach_url_'+id).disabled;
             //var att_url = document.getElementById('attach_url_'+id).value;
             var att_cont = document.getElementById('attachment_container_'+id);
@@ -101,19 +95,24 @@
                     //Do upload
                     uploadTask.on('state_changed',function (snapshot) {
                         var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
+                        document.getElementById('attach-failed-'+id).innerHTML = "";
                         document.getElementById('attach-progress-'+id).innerHTML = "File upload is " + progress + "% done";
                         document.getElementById('attach_url_'+id).disabled = true;
+                        document.getElementById('attach_type_'+id).disabled = true;
                         
                         if(progress == 100){
+                            attach_list[objIndex]['is_add_more'] = true;
+                            document.getElementById('attach_name_'+id).disabled = false;
                             att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
-                            submitHolder.html('<button type="submit" onclick="getRichText()" class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Publish Event</button>');
                         } else {
+                            attach_list[objIndex]['is_add_more'] = false;
+                            document.getElementById('attach_name_'+id).disabled = true;
                             submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
                         }
                     }, 
                     function (error) {
-                        document.getElementById('attach_url_'+id).value = null; // Check this
-                        document.getElementById('attach-failed-'+id).innerHTML = "File upload is " + error.message;
+                        doErrorAttachment(id, error);
+                        attach_list[objIndex]['is_add_more'] = false;
                         var att_url = null;
                         if(error.message){
                             att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
@@ -144,20 +143,20 @@
                             document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
                             document.getElementById('attach_url_holder_'+id).value = downloadUrl;
 
-                            attach_list[objIndex] = {
-                                "id": id,
-                                "attach_type": att_type, 
-                                "attach_name": att_name, 
-                                "attach_url": att_url,
-                                "is_error":false
-                            };
+                            attach_list[objIndex]['id'] = id;
+                            attach_list[objIndex]['attach_type'] = att_type;
+                            attach_list[objIndex]['attach_name'] = att_name_val;
+                            attach_list[objIndex]['attach_url'] = att_url;
                             validateFailedAtt();
-                            console.log(attach_list);
+                            lengValidatorEvent('75', 'title');
+
+                            var modifiedList = cleanAddMoreStatus(attach_list);
+                            document.getElementById('content_attach').value = JSON.stringify(modifiedList);
                         });
                     });
                 } else {
                     err_att = true;
-                    attach_list[objIndex]['is_error'] = true;
+                    attach_list[objIndex]['is_add_more'] = true;
                     document.getElementById('attach_name_'+id).disabled = true;
                     add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
                     add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
@@ -170,76 +169,54 @@
                     }
                 }
             } else if(att_type == "attachment_url" && att_dsbld != true) {
+                attach_list[objIndex]['is_add_more'] = true;
                 var att_url = document.getElementById('attach_url_'+id).value.trim();
             
                 if(att_url.length > 0){
-                    att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
                     warningAttMsg = document.getElementById('attach-warning-'+id);
+                    attach_list[objIndex]['id'] = id;
+                    attach_list[objIndex]['attach_type'] = att_type;
+                    attach_list[objIndex]['attach_name'] = att_name_val;
+                    attach_list[objIndex]['attach_url'] = att_url;
+
                     if(isValidURL(att_url)){
+                        att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
                         warningAttMsg.style = "color: #09c568 !important;";
                         warningAttMsg.innerHTML = "URL is valid";
-                        validateFailedAtt();
-
-                        attach_list[objIndex] = {
-                            "id": id,
-                            "attach_type": att_type, 
-                            "attach_name": att_name, 
-                            "attach_url": att_url,
-                            "is_error":false
-                        };
-                        console.log(attach_list);
                     } else {
+                        att_cont.style = "border-left: 3.5px solid var(--primaryColor) !important; --circle-attach-color-var:var(--primaryColor) !important;";
                         warningAttMsg.style = "color: #f78a00 !important;";
                         warningAttMsg.innerHTML = "URL isn't not valid!";
                     }
+                    validateFailedAtt();
                 } else {
                     warningAttMsg.innerHTML = "";
-                    att_cont.style = "border-left: 3.5px solid #808080 !important; --circle-attach-color-var:#808080 !important;";
+                    att_cont.style = "border-left: 3.5px solid var(--shadowColor) !important; --circle-attach-color-var:var(--shadowColor) !important;";
                 }   
             } else {
-                attach_list[objIndex] = {
-                    "id": id,
-                    "attach_type": att_type, 
-                    "attach_url": attach_list[objIndex].attach_url,
-                    "attach_name": att_name, 
-                    "is_error":false
-                };
-                console.log(attach_list);
+                attach_list[objIndex]['id'] = id;
+                attach_list[objIndex]['attach_type'] = att_type;
+                attach_list[objIndex]['attach_name'] = att_name_val;
             }
-            
-            // att_url = att_url.replace(/\\/g, '');
-            // att_url = att_url.replace("C:fakepath", "");
         } else {
-            var att_name = null;
+            var att_name_val = null;
             var att_url = null;
         }
 
-        document.getElementById('content_attach').value = JSON.stringify(attach_list);
+        lengValidatorEvent('75', 'title');
+        var modifiedList = cleanAddMoreStatus(attach_list);
+        document.getElementById('content_attach').value = JSON.stringify(modifiedList);
     }
 
-    function isValidURL(urlString){
-        try { 
-            return Boolean(new URL(urlString)); 
-        }
-        catch(e){ 
-            return false; 
-        }
-    }
-
-    function getAttCode() {
-        let col = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            let index = Math.floor(Math.random() * col.length);
-            code += col[index];
-        }
-        return code;
+    function getAttachmentGroupFun(index, val){
+        getAttachmentInput(index, val);
+        validateFailedAtt();
     }
 
     function validateFailedAtt(){
         var found = false;
         attach_list.forEach(e => {
-            if(e.is_error == true){
+            if(e.is_add_more == false){
                 found = true;
             }
         });
@@ -255,60 +232,11 @@
 
     function deleteAttachmentForm(index){
         let att_type = document.getElementById('attach_type_'+index).value;
+        attach_list = removeAttachment(att_type, attach_list, index);
+        validateFailedAtt();
 
-        attach_list = attach_list.filter(object => {
-            var filePath = null;
-            if(att_type != "attachment_url" && object.id == index){
-                filePath = object.attach_url;
-                if(filePath){
-                    var storageRef = firebase.storage();
-                    var desertRef = storageRef.refFromURL(filePath);
-                    var msg = ""
-
-                    desertRef.delete().then(() => {
-                        msg = "Attachment has been removed";
-                        //Return msg not finished. i dont know what to do next LOL
-                    }).catch((error) => {
-                        msg = "Failed to deleted the Attachment";
-                        //Return msg not finished. i dont know what to do next LOL
-                    });
-                }
-            } 
-
-            $("#attachment_container_"+index).remove();
-
-            return object.id !== index;
-        });
-
-        validateFailedAtt()
+        var modifiedList = cleanAddMoreStatus(attach_list);
+        document.getElementById('content_attach').value = JSON.stringify(attach_list);
         lengValidatorEvent('75', 'title');
-    }
-
-    function getAttachmentInput(index, val){
-        $("#attach-input-holder-"+index).html("");
-        setValue(index);
-
-        //Allowed type
-        if(val == 'attachment_image'){
-            var allowed = 'accept="image/*"';
-        } else if(val == 'attachment_video'){
-            var allowed = 'accept="video/*"';
-        } else if(val == 'attachment_doc'){
-            var allowed = 'accept="application/pdf"'; //Check this again...
-        }
-
-        if(val == "attachment_url"){
-            $("#attach-input-holder-"+index).append(' ' +
-                '<h6 class="mt-1">Attachment URL</h6> ' +
-                '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)" required> ' +
-                '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
-        } else {
-            $("#attach-input-holder-"+index).append(' ' +
-                '<input type="file" id="attach_url_'+index+'" name="attach_input[]" class="form-control m-2" '+allowed+' onblur="setValue('+"'"+index+"'"+', true)"> ' +
-                '<input type="text" id="attach_url_holder_'+index+'" hidden required> ' +
-                '<h6 class="mt-1">Attachment Name</h6> ' +
-                '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
-        }
     }
 </script>

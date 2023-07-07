@@ -140,3 +140,8 @@ function subtractOffsetFromTime(timeStr) {
   
     return time;
 }
+
+function getHourFromTime(hr){
+    console.log(hr)
+    return parseInt(hr.split(":")[0]);
+}

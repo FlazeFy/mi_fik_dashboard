@@ -4,8 +4,8 @@
         padding: 4px;
     }
     .answer_suggestion a:hover{
-        background: #FFDeB4;  
-        border-radius: 6px;
+        background: var(--primaryLightBG);  
+        border-radius: var(--roundedMini);
     }
 </style>
 

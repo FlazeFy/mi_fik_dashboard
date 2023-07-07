@@ -12,12 +12,13 @@ use App\Models\ContentDetail;
 use App\Models\ContentViewer;
 use App\Models\ArchiveRelation;
 use App\Models\Admin;
-use App\Models\Job;
+use App\Models\FailedJob;
 use App\Models\User;
 use App\Models\SettingSystem;
 
 use App\Mail\ScheduleEmail;
 use App\Helpers\Generator;
+use App\Helpers\FirebaseTask;
 use Illuminate\Support\Facades\Mail;
 
 use Kreait\Firebase\Factory;
@@ -33,12 +34,15 @@ class ContentSchedule
             $days = $set->DCD_range;
         }
 
-        $contents = ContentHeader::whereDate('created_at', '<', Carbon::now()->subDays($days))
+        $contents = ContentHeader::whereDate('deleted_at', '<', Carbon::now()->subDays($days))
             ->get();
 
         foreach($contents as $cts){
+            FirebaseTask::deleteContentAttachment($cts->id);
+
             ContentHeader::where('id', $cts->id)->delete();
             ContentDetail::where('content_id', $cts->id)->delete();
+
             ContentViewer::where('content_id', $cts->id)->delete();
             ArchiveRelation::where('content_id', $cts->id)->delete();
         }
@@ -203,7 +207,7 @@ class ContentSchedule
                 'file' => $e->getFile(), 
                 'line' => $e->getLine(), 
             ];
-            Job::create([
+            FailedJob::create([
                 'id' => Generator::getUUID(), 
                 'type' => "schedule", 
                 'status' => "failed",  

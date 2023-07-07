@@ -10,7 +10,7 @@
             .container{
                 display: block !important;
                 margin-inline: auto !important;
-                border-radius: 20px;
+                border-radius: var(--roundedXLG);
                 width: 50vh;
                 min-width: 300px !important;
                 height: auto;
@@ -18,7 +18,7 @@
                 background: #FFFFFF;
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 text-align: left;
-                color: #414141;
+                color: var(--darkColor);
             }
             h5{
                 font-size:22px;
@@ -29,7 +29,7 @@
                 margin: 0;
             }
             i{
-                color: #FB8C00;
+                color: var(--primaryColor);
             }
             .btn-link{
                 border: none;
@@ -38,26 +38,26 @@
                 margin: 6px;
                 cursor: pointer;
                 font-size: 13px;
-                color: #FB8C00 !important; 
+                color: var(--primaryColor) !important; 
             }
             .btn-tag{
-                background : #FB8C00;
-                color: #F5F5F5;
+                background : var(--primaryColor);
+                color: var(--whiteColor);
                 font-size: 15px;
                 padding: 8px;
                 margin-right: 5px;
                 margin-bottom: 4px;
-                border-radius: 10px;
+                border-radius: var(--roundedSM);
                 text-decoration: none;
             }
             .btn-success{
                 background : #00C363;
-                color: #F5F5F5;
+                color: var(--whiteColor);
                 justify-content: center;
                 text-align: center; 
                 font-size: 16px;
                 padding: 10px;
-                border-radius: 10px;
+                border-radius: var(--roundedSM);
                 text-decoration: none;
                 margin-top:20px; 
                 margin-bottom:20px; 

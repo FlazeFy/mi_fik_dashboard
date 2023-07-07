@@ -1,6 +1,6 @@
 .btn-submit{
     background: var(--successBG);
-    color: #F5F5F5 !important;
+    color: var(--whiteColor) !important;
 }
 .btn-primary{
     background: var(--primaryColor) !important;
@@ -21,7 +21,7 @@
     color: #343434;
 }
 .btn-primary-v{
-    background: #FFDEB4 !important;
+    background: var(--primaryLightBG) !important;
     color: var(--primaryColor) !important;
     z-index: 998 !important;
 }
@@ -63,16 +63,16 @@
 }
 .btn-category-help:hover, .btn-category-help.active{
     background: var(--primaryColor);
-    color: #F5F5F5;
-    border-radius: 10px;
+    color: var(--whiteColor);
+    border-radius: var(--roundedSM);
 }
 .btn-category-help.add:hover{
     background: #FFF1DF !important;
 }
 
 .btn-submit-form:disabled, .btn-submit-form{
-    color:var(--successBG);
-    border-radius: 8px;
+    color: var(--successBG);
+    border-radius: var(--roundedMini);
     border: solid 1.75px var(--successBG);
     margin-top: var(--spaceSM);
     margin-bottom: var(--spaceSM);
@@ -83,12 +83,12 @@
 }
 .btn-submit-form:hover{
     background:var(--successBG);
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 .btn-msg{
     width: 50px;
     height: 50px;
-    border-radius: 100%;
+    border-radius: var(--roundedCircle);
     font-size: var(--textJumbo);
     background: var(--whiteColor);
     position: absolute;
@@ -109,30 +109,30 @@
 }
 
 .btn-tag{
-    background:var(--whiteColor);
+    background: var(--whiteColor);
     padding: var(--spaceXXSM) var(--spaceXSM);
-    border-radius:10px;
-    margin:var(--spaceMini);
-    color:#414141;
+    border-radius: var(--roundedSM);
+    margin: var(--spaceMini);
+    color:var(--darkColor);
     font-weight: 400;
-    border:1.5px solid var(--primaryColor);
+    border: 1.5px solid var(--primaryColor);
 }
 .btn-tag:hover, .btn-tag-selected{
-    background:var(--primaryColor);
+    background: var(--primaryColor);
     padding: var(--spaceXXSM) var(--spaceXSM);
-    border-radius:10px;
-    margin:var(--spaceMini);
-    color:#F5F5F5 !important;
+    border-radius: var(--roundedSM);
+    margin: var(--spaceMini);
+    color:var(--whiteColor) !important;
 }
 .btn-detail-config{
-    color:#F5F5F5 !important;
+    color:var(--whiteColor) !important;
     margin-right:var(--spaceXXSM);
 }
 .btn-detail-config.primary{
     background:var(--primaryColor);
 }
 .btn-detail-config.danger, .hover-danger:hover{
-    background:var(--warningDarkBG);
+    background: var(--warningDarkBG);
 }
 .btn-detail-config.success{
     background:#58C06E;
@@ -151,65 +151,65 @@
 
 .btn-link{
     text-decoration:none;
-    padding:var(--spaceSM) var(--spaceXMD);
-    border-radius:6px;
-    color:var(--primaryColor);
-    background:transparent;
+    padding: var(--spaceSM) var(--spaceXMD);
+    border-radius: var(--roundedMini);
+    color: var(--primaryColor);
+    background: transparent;
     font-weight: 500;
     font-size: var(--textLG);
 }
 .btn-link-danger{
-    text-decoration:none;
-    padding:var(--spaceSM) var(--spaceXMD);
-    border-radius:6px;
-    color:var(--warningDarkBG) !important;
-    background:transparent;
+    text-decoration: none;
+    padding: var(--spaceSM) var(--spaceXMD);
+    border-radius: var(--roundedMini);
+    color: var(--warningDarkBG) !important;
+    background: transparent;
     font-weight: 500;
     font-size: var(--textLG);
 }
 .btn-link:hover{
-    color:var(--whiteColor);
-    background:var(--primaryColor);
+    color: var(--whiteColor);
+    background: var(--primaryColor);
 }
 
 .btn-icon-rounded-danger{
     color: var(--warningDarkBG);
-    border-radius: 100%;
+    border-radius: var(--roundedCircle);
     width: 40px;
     height: 40px;
 }
 .btn-icon-rounded-danger:hover{
     background: var(--warningDarkBG);
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 
 .btn-icon-rounded-success{
     color: #58C06E;
-    border-radius: 100%;
+    border-radius: var(--roundedCircle);
     width: 40px;
     height: 40px;
 }
 .btn-icon-rounded-success:hover{
     background: #58C06E;
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 
 .btn-icon-rounded-primary{
     color: var(--primaryColor);
-    border-radius: 100%;
+    border-radius: var(--roundedCircle);
     width: 40px;
     height: 40px;
 }
 .btn-icon-rounded-primary:hover{
     background: var(--primaryColor);
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 .btn-danger-icon-outlined{
-    border-radius: 100%;
+    border-radius: var(--roundedCircle);
 }
 .btn-danger-icon-outlined:hover{
     background: var(--warningDarkBG);
-    color: #F5F5F5;
+    color: var(--whiteColor);
 }
 
 .content-more-floating{
@@ -221,20 +221,20 @@
     cursor: pointer;
     padding:var(--spaceXSM) var(--spaceXMD);
     margin: var(--spaceXMD) 0 var(--spaceXMD) 0;
-    border-radius:6px;
+    border-radius: var(--roundedMini);
     font-size: var(--textMD);
     display: block;
     margin-inline: auto;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 .content-more-floating:hover{
-    color:#F5F5F5;
+    color:var(--whiteColor);
     background:var(--primaryColor);
 }
 
 .tag-check{
     background: var(--whiteColor);
-    border-radius: 20px;
+    border-radius: var(--roundedXLG);
     border: 1.5px solid #D9D9D9;
     overflow: hidden;
     margin-top: var(--spaceXXSM);
@@ -289,7 +289,7 @@
     margin-right: var(--spaceXMD)-2;
     width:150px;
     height:120px;
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background: var(--whiteColor);
     margin-bottom: var(--spaceXMD);
@@ -303,7 +303,7 @@
     padding: var(--spaceSM);
     margin: 0;
     width: 100% !important;
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
     height: 100% !important;
 }
 
@@ -319,7 +319,7 @@
     cursor: pointer !important;
     width: 100%;
     height: 100%;
-    border-radius: 10px;
+    border-radius: var(--roundedSM);
 }
   
 .user-check label span {
@@ -341,7 +341,7 @@
 
 .remove_suggest{
     padding-right: 0 !important;
-    border-radius: 6px;
+    border-radius: var(--roundedMini);
     color: var(--warningDarkBG);
     cursor: pointer;
 }
@@ -359,7 +359,7 @@
     width: 50px;
     cursor: pointer;
     padding: var(--spaceSM);
-    border-radius: 21px;
+    border-radius: var(--roundedXLG);
     top: 55px;
     right: 20px;
     border: 3px solid white;
@@ -372,7 +372,7 @@
     height:50px; 
     width:50px; 
     background: var(--warningDarkBG);
-    border-radius: 21px; 
+    border-radius: var(--roundedXLG); 
     padding: var(--spaceMD);
     position: absolute;
     cursor: pointer;
@@ -385,7 +385,7 @@
 }   
 .btn-delete-custom{
     color:var(--warningDarkBG);
-    border-radius: 8px;
+    border-radius: var(--roundedMini);
     border: solid 2px var(--warningDarkBG);
     margin-top: var(--spaceSM);
     margin-bottom: var(--spaceSM);

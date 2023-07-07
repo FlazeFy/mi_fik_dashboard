@@ -1,7 +1,7 @@
 .dropdown-menu{
     border: none;
     margin: var(--spaceSM) 0 0 0 !important; 
-    border-radius: 10px !important;
+    border-radius: var(--roundedSM) !important;
     padding: var(--spaceSM);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px !important;
 }
@@ -38,7 +38,7 @@
     padding: var(--spaceXMD) !important;
 }
 .dropdown-menu .properties-box,.dropdown-menu .properties-box:hover{
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 var(--roundedSM) var(--roundedSM);
     padding: var(--spaceSM) var(--spaceXMD) !important;
     color: #FFFFFF;
     background-image: linear-gradient(to right,var(--primaryColor) 20%, 65%, var(--darkColor)) !important;

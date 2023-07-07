@@ -19,8 +19,7 @@ use App\Models\ContentViewer;
 use App\Models\Task;
 use App\Models\History;
 
-use App\Mail\OrganizerEmail;
-use Illuminate\Support\Facades\Mail;
+use App\Jobs\ProcessMailer;
 
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
@@ -222,7 +221,8 @@ class CommandContent extends Controller
                     DB::commit();
 
                     if($users->email){
-                        Mail::to($users->email)->send(new OrganizerEmail($header, $detail));
+                        //Mail::to($users->email)->send(new OrganizerEmail($header, $detail));
+                        dispatch(new ProcessMailer($header, $detail, $users->email));
                     }
 
                     return response()->json([

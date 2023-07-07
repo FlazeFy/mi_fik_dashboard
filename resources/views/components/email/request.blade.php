@@ -10,7 +10,7 @@
             .container{
                 display: block !important;
                 margin-inline: auto !important;
-                border-radius: 20px;
+                border-radius: var(--roundedXLG);
                 width: 50vh;
                 min-width: 300px !important;
                 height: auto;
@@ -18,7 +18,7 @@
                 background: #FFFFFF;
                 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
                 text-align: left;
-                color: #414141;
+                color: var(--darkColor);
             }
             h5{
                 font-size:22px;
@@ -33,13 +33,13 @@
                 margin-bottom: 10px;
             }
             .btn-tag{
-                background : #FB8C00;
-                color: #F5F5F5;
+                background : var(--primaryColor);
+                color: var(--whiteColor);
                 font-size: 15px;
                 padding: 8px;
                 margin-right: 5px;
                 margin-bottom: 4px;
-                border-radius: 10px;
+                border-radius: var(--roundedSM);
                 text-decoration: none;
             }
         </style>

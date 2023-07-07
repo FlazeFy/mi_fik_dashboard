@@ -11,14 +11,14 @@
         background-size: cover;
         background-color: black;
         width: 100%;
-        border-radius: 18px 18px 0 0;
+        border-radius: var(--roundedLG) var(--roundedLG) 0 0;
         transition: all .25s linear;
     }
     .content-detail-views{
         position: absolute;
         left: 10px;
         bottom: 10px;
-        color: #F5F5F5;
+        color: var(--whiteColor);
     }
     .event-header-size-toogle{
         color: #F78A00 !important;
@@ -30,8 +30,8 @@
         cursor: pointer;
     }
     .event-tag-box{
-        border-radius:6px;
-        color:#F5F5F5 !important;
+        border-radius: var(--roundedMini);
+        color:var(--whiteColor) !important;
         background: #F78A00;
     }
     .event-detail{
@@ -42,7 +42,7 @@
         cursor: pointer;
     }
     .btn-copy-link{
-        color: #808080;
+        color: var(--shadowColor);
         cursor: pointer;
         margin-right: 10px;
     }
@@ -71,7 +71,7 @@
     .dropdown-menu{
         border: none;
         margin: 10px 0 0 0 !important; 
-        border-radius: 15px !important;
+        border-radius: var(--roundedMD) !important;
         padding-bottom: 0px;
     }
     .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
@@ -83,7 +83,7 @@
     }
     .btn.archive-box .icon-holder{
         display: none;
-        color: #F5F5F5;
+        color: var(--whiteColor);
         position: absolute;
         top: 20px;
         left: -32.5px; 
@@ -96,12 +96,12 @@
         display: inline;
     }
     .btn.archive-box.active{
-        color: #F5F5F5;
+        color: var(--whiteColor);
         background: #F78A00;
         border: none !important;
     }
     .btn.archive-box.active h6{
-        color: #F5F5F5 !important;
+        color: var(--whiteColor) !important;
     }
     .btn.archive-box.active:hover{
         border-left: 50px solid #E74645 !important;
@@ -136,10 +136,12 @@
         <div class="col-lg-8">
             @include('event.edit.titledescinput')<hr>
 
-            <h6 class="text-primary mt-3">Attachment</h6>
-            @include('event.edit.attachment.add')  
-            <br>
-            @include('event.edit.attachment.show')                
+            <div class="position-relative">
+                <h6 class="text-primary mt-3">Manage Attachment</h6>
+                @include('event.edit.attachment.add')  
+                <br>
+                @include('event.edit.attachment.show')   
+            </div>             
         </div>
         <div class="col-lg-4">
             <h6 class="text-primary mt-3">Tag</h6>

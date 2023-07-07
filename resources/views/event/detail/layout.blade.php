@@ -1,24 +1,24 @@
 <style>
     .box-event-detail{
-        margin:20px 0 20px 0;
+        margin: 20px 0 20px 0;
         min-height: 80vh;
     }
     .event-detail-img-header{
-        height:30vh;
+        height: 30vh;
         background-position: center;
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
         position: relative;
         background-size: cover;
-        background-color: black;
+        background-color: var(--greyColor);
         width: 100%;
-        border-radius: 18px 18px 0 0;
+        border-radius: var(--roundedLG) var(--roundedLG) 0 0;
         transition: all .25s linear;
     }
     .content-detail-views{
         position: absolute;
         left: 10px;
         bottom: 10px;
-        color: #F5F5F5;
+        color: var(--whiteColor);
     }
     .event-header-size-toogle{
         color: #F78A00 !important;
@@ -30,8 +30,8 @@
         cursor: pointer;
     }
     .event-tag-box{
-        border-radius:6px;
-        color:#F5F5F5 !important;
+        border-radius: var(--roundedMini);
+        color:var(--whiteColor) !important;
         background: #F78A00;
     }
     .event-detail{
@@ -42,7 +42,7 @@
         cursor: pointer;
     }
     .btn-copy-link{
-        color: #808080;
+        color: var(--darkColor);
         cursor: pointer;
         margin-right: 10px;
     }
@@ -71,7 +71,7 @@
     .dropdown-menu{
         border: none;
         margin: 10px 0 0 0 !important; 
-        border-radius: 15px !important;
+        border-radius: var(--roundedMD) !important;
         padding-bottom: 0px;
     }
     .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
@@ -83,7 +83,7 @@
     }
     .btn.archive-box .icon-holder{
         display: none;
-        color: #F5F5F5;
+        color: var(--whiteColor);
         position: absolute;
         top: 20px;
         left: -32.5px; 
@@ -96,12 +96,12 @@
         display: inline;
     }
     .btn.archive-box.active{
-        color: #F5F5F5;
+        color: var(--whiteColor);
         background: #F78A00;
         border: none !important;
     }
     .btn.archive-box.active h6{
-        color: #F5F5F5 !important;
+        color: var(--whiteColor) !important;
     }
     .btn.archive-box.active:hover{
         border-left: 50px solid #E74645 !important;
@@ -130,7 +130,7 @@
     }
     .image-att-zoomable{
         cursor: pointer;
-        border-radius: 12px;
+        border-radius: var(--roundedMD);
     }
     .image-att-zoomable:hover{
         background: #212121;
@@ -155,11 +155,26 @@
         @endif
         <div class="row p-3">
             <div class="col-lg-8">
-                <!-- <button class="btn btn-primary px-3 float-end" type="button" id="section-select-archive" data-bs-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false"> <i class="fa-solid fa-list-check"></i></button> -->
-                <h5>{{$c->content_title}}</h5><br>
+                <!-- PHP Helpers -->
+                <?php
+                    use App\Helpers\Generator;
+                ?>  
+                @php($image_profile = Generator::getUserImage($c->admin_image_created, $c->user_image_created, $c->admin_username_created))
+                <div class="p-0 m-0" style="display: flex;">
+                    <div class="d-inline-block me-2">
+                        <img class="img rounded-circle" style="width:55px; height:55px; border:2px solid var(--primaryColor);" src="{{$image_profile}}" alt="username-profile-pic.png">
+                    </div>
+                    <div class="d-inline-block" style="width:auto;">
+                        <h4 class="text-primary">{{ucwords($c->content_title)}}</h4><br>
+                    </div>
+                </div>
 
-                <span><?php echo $c->content_desc; ?></span><br>
+                @if($c->content_desc)
+                    <span><?php echo $c->content_desc; ?></span><br>
+                @else
+                    <img src="{{asset('assets/nodesc.png')}}" class="img nodata-icon" style="height:18vh;">
+                    <h6 class="text-center text-secondary">This Event doesn't have description</h6>
+                @endif
 
                 <hr><h5>Attachment</h5>
                 @include('event.detail.attachment')

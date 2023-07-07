@@ -19,7 +19,7 @@
     background: transparent;
 }
 .tabular-body .tabular-item.waiting{
-    background: #FFDEB4;
+    background: var(--primaryLightBG);
 }
 .tabular-body .tabular-item.suspend{
     background:  #f5a2a8;
@@ -44,7 +44,7 @@
     color:var(--whiteColor);
 }
 .page-item .page-link{
-    color:#414141;
+    color:var(--darkColor);
 }    
 
 /* Mobile style */

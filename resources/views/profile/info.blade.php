@@ -1,34 +1,3 @@
-<style>
-    .info-box-profile{
-        background-image:linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b);
-        padding: 0;
-        margin-top: 40px;
-        padding-top: 25px;
-        border-radius: 10px; 
-        text-align: center;
-        position: relative !important;
-    }
-    .info-box-profile .body-box{
-        background: #FFFFFF;
-        padding: 30px;
-        padding-bottom: 10px;
-        margin: 0;
-        width: 100%;
-        min-height: 30vh;
-        margin-top: 30px;
-        border-radius: 36px 36px 10px 10px; 
-    }
-    .info-box-profile .body-box .sub-holder{
-        margin-bottom: 20px;
-    }
-    .sub-holder h6{
-        font-size:13px;
-    }
-    .sub-holder h4{
-        font-size:20px;
-    }
-</style>
-
 <div class="info-box-profile" id="info-box-profile">
     @include('profile.editimage')
 

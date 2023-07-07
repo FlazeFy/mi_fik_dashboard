@@ -10,7 +10,7 @@
 
 .btn-outlined{
     background: transparent;
-    border-radius: 20px;
+    border-radius: var(--roundedXLG);
     border:none;
     color: #343434;
     border: 1.5px solid #343434;

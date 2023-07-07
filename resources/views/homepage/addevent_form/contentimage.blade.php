@@ -7,12 +7,12 @@
     .content-image-holder .content-image{
         margin-inline: auto;
         display: block;
-        border-radius: 10px !important;
+        border-radius: var(--roundedSM) !important;
         background-position: center;
         background-repeat:no-repeat;
         position: relative;
         background-size: cover;
-        background-color: #414141;
+        background-color: var(--darkColor);
         height:200px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
@@ -28,7 +28,7 @@
         width:40px; 
         height:40px; 
         background:#F78A00;
-        border-radius: 100%;
+        border-radius: var(--roundedCircle);
         display: block;
         margin-inline: auto;
     }

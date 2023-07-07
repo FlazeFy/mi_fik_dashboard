@@ -70,6 +70,7 @@
             <div class="d-block mx-auto p-0" style="max-width:1080px;">
                 <div class="container mt-4 pt-3 text-center">
                     @include('waiting.prevent')
+                    <button class="btn btn-submit mt-2" onclick='is_finished = true; location.href="/"'><i class="fa-solid fa-arrow-left"></i> Back to login</button>
                 </div>
             </div>
         @elseif(!$found) 

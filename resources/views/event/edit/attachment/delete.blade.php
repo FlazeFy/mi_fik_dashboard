@@ -18,9 +18,27 @@
                     @csrf
                     <input hidden name="content_title" value="{{$c->content_title}}">
                     <input name="attachment_id" value="{{$at['id']}}" hidden>
-                    <button class="btn btn-danger float-end" type="submit" onclick="deleteAttachmentForm('<?= $at['id']; ?>','<?= $at['attach_type']; ?>')">Delete</button>
+                    <button class="btn btn-danger float-end" type="submit" onclick="deleteUploadedAttachmentForm('<?= $at['id']; ?>','<?= $at['attach_type']; ?>')">Delete</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    function deleteUploadedAttachmentForm(index, type){
+        let att_val = document.getElementById('attach_url_del_'+index).value;
+
+        if(type != "attachment_url" && att_val){
+            var storageRef = firebase.storage();
+            var desertRef = storageRef.refFromURL(att_val);
+            desertRef.delete().then(() => {
+                msg = "Attachment has been removed";
+                //Return msg not finished. i dont know what to do next LOL
+            }).catch((error) => {
+                msg = "Failed to deleted the Attachment";
+                //Return msg not finished. i dont know what to do next LOL
+            });
+        } 
+    }
+</script>
