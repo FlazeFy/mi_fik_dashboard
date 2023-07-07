@@ -36,6 +36,7 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/maps_v1.0.css') }}"/>
 
         <script src="{{ asset('/js/global_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
@@ -55,7 +56,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 

@@ -11,7 +11,7 @@
         color:grey;
     }
     .user-image{
-        border:2px solid #F78A00;
+        border:2px solid var(--primaryColor);
         width:45px;
         height:45px;
         cursor:pointer; /*if we can view other user profile*/
@@ -55,7 +55,7 @@
         border-radius: var(--roundedSM);
     }
     #task-holder::-webkit-scrollbar-thumb:hover, #notification-holder::-webkit-scrollbar-thumb:hover {
-        background: #F78A00;
+        background: var(--primaryColor);
     }
 </style>
 

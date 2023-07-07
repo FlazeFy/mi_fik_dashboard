@@ -19,7 +19,7 @@
     margin-top: 0;
 }
 .btn-register-steps:hover h6.text-secondary{
-    color: white !important;
+    color: var(--whiteColor) !important;
 }
 .section-register{
     padding: calc(var(--spaceXMD) + 2px) calc(var(--spaceXLG) + 2px);
@@ -32,20 +32,20 @@
 
 .btn-close-register{
     font-size: var(--textLG);
-    color: #DE3534 !important;
+    color: var(--warningBG) !important;
     margin-bottom: var(--spaceLG);
 }
 
 .btn-register-steps:hover{
     background:var(--primaryColor);
-    color: white;
+    color: var(--whiteColor);
 }
 
 .btn-next-steps{
-    border: 2px solid #58C06E;
+    border: 2px solid var(--successBG);
     font-size: var(--textLG);
-    color: #58C06E;
-    background: white;
+    color: var(--successBG);
+    background: var(--whiteColor);
     border-radius: var(--roundedSM);
     padding: var(--spaceXXSM);
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -55,16 +55,16 @@
     bottom: 20px;
 }
 .btn-next-steps:hover{
-    color: white;
-    background: #58C06E;
+    color: var(--whiteColor);
+    background: var(--successBG);
 }
 
 .content-image-holder{
     position: relative;
     margin-top: var(--spaceXXSM);
     margin-bottom: var(--spaceXXSM); 
-    width:200px; 
-    height:200px;
+    width: 200px; 
+    height: 200px;
 }
 .content-image-holder .content-image{
     margin-inline: auto;
@@ -129,7 +129,7 @@
     margin-bottom: var(--spaceSM);
 }
 .important-category{
-    background: #fcc4c4;
+    background: var(--importantItem);
     border-radius: var(--roundedSM);
     padding: var(--spaceXXSM);
     padding-top: var(--spaceMini);

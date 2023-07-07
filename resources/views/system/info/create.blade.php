@@ -4,7 +4,11 @@
     ];
 </script>
 
-<button class="btn btn-submit mt-4" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Info</button>
+@if(!$isMobile)
+    <button class="btn btn-submit mt-4" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Info</button>
+@else 
+    <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i></button>
+@endif
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">  
@@ -47,16 +51,7 @@
                     </div>
                     <div id="rich_box_create"></div>
                     <input name="info_body" id="info_body" hidden>
-                    @if($info)
-                        @foreach($info as $in)
-                            @if($in->info_location == "add_info")
-                                <div class="info-box {{$in->info_type}}">
-                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                    <?php echo $in->info_body; ?>
-                                </div>
-                            @endif
-                        @endforeach
-                    @endif
+                    @include('components.infobox',['info'=>$info, 'location'=> 'add_info'])           
                     <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
                 </form>
             </div>

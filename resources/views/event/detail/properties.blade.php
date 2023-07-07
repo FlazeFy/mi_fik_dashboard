@@ -29,16 +29,8 @@
     @if($c->updated_at)
         <h6 class="text-secondary">Last Update : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @endif
-    @if($info)
-        @foreach($info as $in)
-            @if($in->info_location == "show_date")
-                <div class="info-box {{$in->info_type}} mt-4">
-                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                    <?php echo $in->info_body; ?>
-                </div>
-            @endif
-        @endforeach
-    @endif
+    
+    @include('components.infobox', ['info' => $info, 'location'=> "show_date"])
 </div>
 
 <script>

@@ -51,9 +51,10 @@
 
         if(val_ds.value != null){
             if(getDateToContext(val_ds.value, "date") == getDateToContext(today, "date")){
-                val_ts.setAttribute("min",getDateToContext(today, "24h"));
+                var min_ts = subtractOffsetFromTime(getDateToContext(today, "date"));
+                val_ts.setAttribute("min",getDateToContext(min_ts, "24h"));
                 if(val_ts.value === ''){
-                    val_ts.value = getDateToContext(today, "24h");
+                    val_ts.value = getDateToContext(min_ts, "24h");
                 }
             } 
 
@@ -67,28 +68,28 @@
         if(!date_start_event || !date_end_event || !time_start_event || !time_end_event){
             //Highlight input if empty.
             if(!date_start_event){
-                $("#date_start_event").css({"border":"2px solid #F85D59"});
+                $("#date_start_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_start_event").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!date_end_event){
-                $("#date_end_event").css({"border":"2px solid #F85D59"});
+                $("#date_end_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_end_event").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!time_start_event){
-                $("#time_start_event").css({"border":"2px solid #F85D59"});
+                $("#time_start_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#time_start_event").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!time_end_event){
-                $("#time_end_event").css({"border":"2px solid #F85D59"});
+                $("#time_end_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#time_end_event").css({"border":"1.5px solid #CCCCCC"});

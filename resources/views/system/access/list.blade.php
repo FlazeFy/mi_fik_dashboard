@@ -4,9 +4,9 @@
         <thead>
             <tr>
                 <th scope="col">Type</th>
-                <th scope="col" style="min-width:var(--tcolMinMD);">Username</th>
-                <th scope="col" style="min-width:var(--tcolMinMD);">Sign-In At</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Properties</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Username</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Sign-In At</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">Properties</th>
                 <th scope="col">Token</th>
             </tr>
         </thead>

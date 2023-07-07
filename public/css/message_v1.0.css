@@ -37,8 +37,7 @@
     border-left: 4px solid var(--primaryColor);
 }
 
-.imessage div::before,
-.imessage div::after {
+.imessage div::before, .imessage div::after {
     bottom: -0.1rem;
     content: "";
     height: 1rem;
@@ -57,13 +56,13 @@ div.from-me::before {
 }
 a.from-me-clock{
     text-decoration: none;
-    color: #414141;
+    color: var(--darkColor);
     font-size: var(--textXMD);
     text-align: end;
 }
 a.from-them-clock{
     text-decoration: none;
-    color: #414141;
+    color: var(--darkColor);
     font-size: var(--textXMD);
     text-align: start;
 }
@@ -92,7 +91,7 @@ div.from-me ~ div.from-me:last-child {
 div.from-them {
     align-items: flex-start;
     background-color: #e5e5ea;
-    color: #414141;
+    color: var(--darkColor);
 }
 div.from-them:before {
     border-bottom-right-radius: 0.8rem 0.7rem;

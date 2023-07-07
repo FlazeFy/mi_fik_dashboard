@@ -29,7 +29,8 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#dctTable').DataTable({
+                var tableName = 'dctTable';
+                $('#'+tableName).DataTable({
                     "ordering": false,
                     columnDefs: [
                         { targets: 0, searchable: false},
@@ -42,6 +43,7 @@
                         searchPlaceholder: "By Slug or Info",
                     }
                 });
+                modifyTableControl(tableName, null);
             });
         </script>
 
@@ -60,6 +62,7 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/global_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
@@ -78,7 +81,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 

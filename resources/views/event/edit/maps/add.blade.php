@@ -22,16 +22,7 @@
     @endif
 
     @if($c->content_loc && count($c->content_loc) != 2)
-        @if($info)
-            @foreach($info as $in)
-                @if($in->info_location == "invalid_location")
-                    <div class="info-box {{$in->info_type}}">
-                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                        <?php echo $in->info_body; ?>
-                    </div>
-                @endif
-            @endforeach
-        @endif
+        @include('components.infobox', ['info' => $info, 'location'=> "invalid_location"])
     @endif
 
     <form action="/event/edit/update/loc/add/{{$c->slug_name}}" method="POST">
@@ -150,10 +141,10 @@
 
                 if(loc_name == '' || loc_name == null){
                     $("#content_loc_msg").text("Location is valid, but you can also provide the location name")
-                    $("#content_loc_msg").css({"color":"#F78A00"})
+                    $("#content_loc_msg").css({"color":"var(--primaryColor)"})
                 } else {
                     $("#content_loc_msg").text("Location is valid")
-                    $("#content_loc_msg").css({"color":"#09c568"})
+                    $("#content_loc_msg").css({"color":"var(--successBG)"})
                 }
                 document.getElementById('map-save-button-holder').innerHTML = '<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>'; 
             } else {
@@ -167,7 +158,7 @@
                 };
                 
                 $("#content_loc_msg").text("Location coordinate is same as before")
-                $("#content_loc_msg").css({"color":"#F78A00"})
+                $("#content_loc_msg").css({"color":"var(--primaryColor)"})
                 document.getElementById('map-save-button-holder').innerHTML = '<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>'; 
 
                 error = true
@@ -186,10 +177,10 @@
 
                 if(loc_name == '' || loc_name == null){
                     $("#content_loc_msg").text("Location is valid, but you can also provide the location name")
-                    $("#content_loc_msg").css({"color":"#F78A00"})
+                    $("#content_loc_msg").css({"color":"var(--primaryColor)"})
                 } else {
                     $("#content_loc_msg").text("Location is valid")
-                    $("#content_loc_msg").css({"color":"#09c568"})
+                    $("#content_loc_msg").css({"color":"var(--successBG)"})
                 }
 
                 document.getElementById('map-save-button-holder').innerHTML = '<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>'; 
@@ -200,7 +191,7 @@
                 };
                 
                 $("#content_loc_msg").text("Location is invalid, please provide the coordinate using maps")
-                $("#content_loc_msg").css({"color":"#E74645"})
+                $("#content_loc_msg").css({"color":"var(--warningBG)"})
 
                 error = true
             }   

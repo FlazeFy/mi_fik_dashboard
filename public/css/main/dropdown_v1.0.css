@@ -40,7 +40,7 @@
 .dropdown-menu .properties-box,.dropdown-menu .properties-box:hover{
     border-radius: 0 0 var(--roundedSM) var(--roundedSM);
     padding: var(--spaceSM) var(--spaceXMD) !important;
-    color: #FFFFFF;
+    color: var(--whiteColor);
     background-image: linear-gradient(to right,var(--primaryColor) 20%, 65%, var(--darkColor)) !important;
 }
 .dropdown-menu .properties-box p{

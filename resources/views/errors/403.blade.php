@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
     <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
 </head>
-<body style="background:#FFFFFF;">
+<body style="background:var(--whiteColor);">
     <div class="container mt-4 pt-3 text-center">
         <img class="w-50 d-block mx-auto" src="{{asset('assets/403_error.png')}}">
         <p class="display-5 text-danger">Oops! Something is wrong</p>

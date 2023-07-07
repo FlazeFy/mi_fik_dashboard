@@ -17,18 +17,18 @@
         padding: 10px;
     }
     .btn-quick-action:hover{
-        background: #F78A00 !important;
+        background: var(--primaryColor) !important;
         background-image: none !important;
     }
     .quick-action-text{
         font-size: 24px;
-        color:#FFFFFF;
+        color:var(--whiteColor);
         transition: 0.5s;
         margin-top: 9vh;
     }
     .quick-action-info{
         font-size: var(--textXMD);
-        color:#FFFFFF;
+        color:var(--whiteColor);
         transition: 0.5s;
         display: none;
     }
@@ -39,16 +39,16 @@
         display: block;
     }
     .btn-tag{
-        background:#FFFFFF;
+        background:var(--whiteColor);
         padding: 6px 8px;
         border-radius: var(--roundedSM);
         margin:4px;
         color:var(--darkColor);
         font-weight:400;
-        border:1.5px solid #F78A00;
+        border:1.5px solid var(--primaryColor);
     }
     .btn-tag:hover, .btn-tag-selected{
-        background:#F78A00;
+        background:var(--primaryColor);
         padding: 6px 8px;
         border-radius: var(--roundedSM);
         margin:4px;
@@ -126,14 +126,7 @@
                                     @include('homepage.addevent_form.datepicker')
                                 </div>
                             </div>
-                            @foreach($info as $in)
-                                @if($in->info_location == "add_event")
-                                    <div class="info-box {{$in->info_type}}">
-                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                        <?php echo $in->info_body; ?>
-                                    </div>
-                                @endif
-                            @endforeach
+                            @include('components.infobox',['info'=>$info, 'location'=> 'add_event'])
                         </div>
                         <div class="col-lg-4">
                             <label class="input-title">Event Image</label><br>

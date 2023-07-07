@@ -107,7 +107,7 @@
             } else {
                 function getApprovedButton(acc){
                     if(!acc){
-                        return '<a class="btn btn-icon-rounded-success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a>'
+                        return '<a class="btn btn-icon-rounded success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a>'
                     } else {
                         return ''
                     }

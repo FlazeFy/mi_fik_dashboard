@@ -43,6 +43,7 @@
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -138,22 +139,22 @@
                 if(now == "welcoming"){
                     now = "terms";
                     btn_steps_welcome.setAttribute('data-bs-target', '#welcoming');
-                    btn_steps_welcome.style = "border-left: 6px solid #58C06E;";
+                    btn_steps_welcome.style = "border-left: 6px solid var(--successBG);";
                 } else if(now == "terms"){
                     now = "profiledata";
                     btn_steps_terms.setAttribute('data-bs-target', '#terms');
-                    btn_steps_terms.style = "border-left: 6px solid #58C06E;";
+                    btn_steps_terms.style = "border-left: 6px solid var(--successBG);";
                 } else if(now == "profiledata"){
                     now = "role";
                     if(is_requested == false){
                         loadTag();
                     }
                     btn_steps_profiledata.setAttribute('data-bs-target', '#profiledata');
-                    btn_steps_profiledata.style = "border-left: 6px solid #58C06E;";
+                    btn_steps_profiledata.style = "border-left: 6px solid var(--successBG);";
                 } else if(now == "role"){
                     now = "ready";
                     btn_steps_role.setAttribute('data-bs-target', '#role');
-                    btn_steps_ready.style = "border-left: 6px solid #58C06E;";
+                    btn_steps_ready.style = "border-left: 6px solid var(--successBG);";
                 }
             }
 

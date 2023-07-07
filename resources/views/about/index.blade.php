@@ -62,7 +62,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -161,6 +161,10 @@
         @include('popup.failed')
 
         <script>
+            $(document).ready(function() {
+                tidyUpRichText("about-app-holder");
+            });
+
             //Popover
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

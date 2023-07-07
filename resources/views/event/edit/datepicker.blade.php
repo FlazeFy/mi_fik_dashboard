@@ -35,16 +35,7 @@
         <a id="invalid_period_msg" class="input-warning text-danger"></a>
         <div id="btn-submit-holder-date"></div>
     </form>
-    @if($info)
-        @foreach($info as $in)
-            @if($in->info_location == "edit_date")
-                <div class="info-box {{$in->info_type}}">
-                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                    <?php echo $in->info_body; ?>
-                </div>
-            @endif
-        @endforeach
-    @endif
+    @include('components.infobox', ['info' => $info, 'location'=> "edit_date"])
 </div>
 <div id="prevent-date-holder">
     <img src="{{asset('assets/pending.png')}}" class="img nodata-icon" style="height:18vh;">
@@ -170,28 +161,28 @@
         if(!date_start_event || !date_end_event || !time_start_event || !time_end_event){
             //Highlight input if empty.
             if(!date_start_event){
-                $("#date_start_event").css({"border":"2px solid #F85D59"});
+                $("#date_start_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_start_event").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!date_end_event){
-                $("#date_end_event").css({"border":"2px solid #F85D59"});
+                $("#date_end_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_end_event").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!time_start_event){
-                $("#time_start_event").css({"border":"2px solid #F85D59"});
+                $("#time_start_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#time_start_event").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!time_end_event){
-                $("#time_end_event").css({"border":"2px solid #F85D59"});
+                $("#time_end_event").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#time_end_event").css({"border":"1.5px solid #CCCCCC"});

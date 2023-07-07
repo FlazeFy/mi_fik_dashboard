@@ -58,7 +58,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -75,6 +75,12 @@
 
         <!--Modal-->
         @include('popup.success')
+
+        <script>
+            $(document).ready(function() {
+                tidyUpRichText("desc-holder");
+            });
+        </script>
 
         <!--Sidebar-->
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>

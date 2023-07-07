@@ -10,7 +10,7 @@
     .btn.change-image{
         width: 40px; 
         height: 40px; 
-        background:#F78A00;
+        background:var(--primaryColor);
         border-radius: var(--roundedCircle);
         position: absolute;
         right: 10px;
@@ -20,8 +20,8 @@
         position: absolute; 
         right: 100px;
         bottom: -25px;
-        background: #e74645 !important;
-        color:#FFFFFF !important;
+        background: var(--warningBG) !important;
+        color:var(--whiteColor) !important;
     }
     .status-holder{
         position: absolute; 

@@ -101,7 +101,7 @@
                         if(progress == 100){
                             attach_list[objIndex]['is_add_more'] = true;
                             document.getElementById('attach_name_'+id).disabled = false;
-                            att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
+                            att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;";
                             submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
                         } else {
                             attach_list[objIndex]['is_add_more'] = false;
@@ -114,7 +114,7 @@
                         var att_url = null;
                         attach_list[objIndex]['is_add_more'] = false;
                         if(error.message){
-                            att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
+                            att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
                             submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
                         }
                     }, 
@@ -157,7 +157,7 @@
                     document.getElementById('attach-failed-'+id).innerHTML = "Upload failed. Maximum file size is " + max + " mb";
                     var att_url = null;
                     if(error.message){
-                        att_cont.style = "border-left: 3.5px solid #E74645 !important; --circle-attach-color-var:#E74645 !important;";
+                        att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
                         submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
                     }
                 }
@@ -173,8 +173,8 @@
                     attach_list[objIndex]['attach_url'] = att_url
                     
                     if(isValidURL(att_url)){
-                        att_cont.style = "border-left: 3.5px solid #09c568 !important; --circle-attach-color-var:#09c568 !important;";
-                        warningAttMsg.style = "color: #09c568 !important;";
+                        att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;";
+                        warningAttMsg.style = "color: var(--successBG) !important;";
                         warningAttMsg.innerHTML = "URL is valid";
                     } else {
                         att_cont.style = "border-left: 3.5px solid var(--primaryColor) !important; --circle-attach-color-var:var(--primaryColor) !important;";

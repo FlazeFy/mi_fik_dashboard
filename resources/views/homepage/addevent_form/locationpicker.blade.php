@@ -77,10 +77,10 @@
 
             if(loc_name == '' || loc_name == null){
                 $("#content_loc_msg").text("Location is valid, but you can also provide the location name")
-                $("#content_loc_msg").css({"color":"#F78A00"})
+                $("#content_loc_msg").css({"color":"var(--primaryColor)"})
             } else {
                 $("#content_loc_msg").text("Location is valid")
-                $("#content_loc_msg").css({"color":"#09c568"})
+                $("#content_loc_msg").css({"color":"var(--successBG)"})
             }
         } else {
             loc_obj[0] = {
@@ -89,7 +89,7 @@
             };
             
             $("#content_loc_msg").text("Location is invalid, please provide the coordinate using maps")
-            $("#content_loc_msg").css({"color":"#E74645"})
+            $("#content_loc_msg").css({"color":"var(--warningBG)"})
 
             error = true
         }   

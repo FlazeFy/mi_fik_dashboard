@@ -14,18 +14,18 @@
         padding: 10px;
     }
     .btn-quick-action:hover{
-        background: #F78A00 !important;
+        background: var(--primaryColor) !important;
         background-image:none !important;
     }
     .quick-action-text{
         font-size:24px;
-        color:#FFFFFF;
+        color:var(--whiteColor);
         transition: 0.5s;
         margin-top:9vh;
     }
     .quick-action-info{
         font-size:16px;
-        color:#FFFFFF;
+        color:var(--whiteColor);
         transition: 0.5s;
         display:none;
     }
@@ -36,16 +36,16 @@
         display:block;
     }
     .btn-tag{
-        background:#FFFFFF;
+        background:var(--whiteColor);
         padding: 6px 8px;
         border-radius: var(--roundedSM);
         margin: 4px;
         color:var(--darkColor);
         font-weight: 400;
-        border: 1.5px solid #F78A00;
+        border: 1.5px solid var(--primaryColor);
     }
     .btn-tag:hover, .btn-tag-selected{
-        background:#F78A00;
+        background:var(--primaryColor);
         padding: 6px 8px;
         border-radius: var(--roundedSM);
         margin: 4px;

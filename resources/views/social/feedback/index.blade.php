@@ -44,9 +44,14 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#feedbackTable').DataTable({
+                var tableName = 'feedbackTable';
+                $('#'+tableName).DataTable({
                     searching: false,
                 });
+                let extra_control = [
+                    { id: "filter-suggest"}
+                ];
+                modifyTableControl(tableName, extra_control);
             });
         </script>
 
@@ -54,6 +59,7 @@
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -68,7 +74,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 

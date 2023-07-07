@@ -48,28 +48,28 @@
         if(!date_start || !date_end || !time_start || !time_end){
             //Highlight input if empty.
             if(!date_start){
-                $("#date_start_task").css({"border":"2px solid #F85D59"});
+                $("#date_start_task").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_start_task").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!date_end){
-                $("#date_end_task").css({"border":"2px solid #F85D59"});
+                $("#date_end_task").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_end_task").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!time_start){
-                $("#time_start_task").css({"border":"2px solid #F85D59"});
+                $("#time_start_task").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#time_start_task").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!time_end){
-                $("#time_end_task").css({"border":"2px solid #F85D59"});
+                $("#time_end_task").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#time_end_task").css({"border":"1.5px solid #CCCCCC"});

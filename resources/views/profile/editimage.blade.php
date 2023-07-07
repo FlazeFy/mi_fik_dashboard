@@ -10,7 +10,7 @@
     .btn.change-image{
         width:40px; 
         height:40px; 
-        background:#F78A00;
+        background:var(--primaryColor);
         border-radius: var(--roundedCircle);
         display: block;
         margin-inline: auto;
@@ -19,8 +19,8 @@
         position: absolute; 
         bottom: 10px; 
         left: 10px;
-        background: #e74645 !important;
-        color:#FFFFFF !important;
+        background: var(--warningBG) !important;
+        color:var(--whiteColor) !important;
     }
     .status-holder{
         position: absolute; 
@@ -30,7 +30,7 @@
     #profile_image_info{
         height: 200px;
         width: 200px;
-        border: 3px solid #FFFFFF;
+        border: 3px solid var(--whiteColor);
     }
 </style>
 

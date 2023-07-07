@@ -4,16 +4,7 @@
             <div class="modal-body text-center pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <p style="font-weight:500;">Are you sure want to delete this attachment?</p>
-                @if($info)
-                    @foreach($info as $in)
-                        @if($in->info_location == "delete_attachment")
-                            <div class="info-box {{$in->info_type}}">
-                                <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                <?php echo $in->info_body; ?>
-                            </div>
-                        @endif
-                    @endforeach
-                @endif
+                @include('components.infobox', ['info' => $info, 'location'=> "delete_attachment"])
                 <form class="d-inline" action="/event/edit/update/attach/remove/{{$c->slug_name}}" method="POST">
                     @csrf
                     <input hidden name="content_title" value="{{$c->content_title}}">

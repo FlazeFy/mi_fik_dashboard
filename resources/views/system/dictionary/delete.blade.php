@@ -8,16 +8,7 @@
                 <form action="/system/dictionary/delete/{{$dc->id}}" method="POST">
                     @csrf 
                     <h6 class="text-center">Are you sure want to delete this '{{$dc->dct_name}}' dictionary with type {{$dc->dct_type}}</h6>
-                    @if($info)
-                        @foreach($info as $in)
-                            @if($in->info_location == "delete_dictionary")
-                                <div class="info-box {{$in->info_type}}">
-                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                    <?php echo $in->info_body; ?>
-                                </div>
-                            @endif
-                        @endforeach
-                    @endif
+                    @include('components.infobox',['info'=>$info, 'location'=> 'delete_dictionary'])
                     <input hidden name="dct_name" value="{{$dc->dct_name}}">
                     <button type="submit" class="btn btn-danger float-end">Delete</button>
                 </form>

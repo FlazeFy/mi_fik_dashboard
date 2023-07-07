@@ -12,6 +12,7 @@
             font-size: var(--textLG) !important;  
         }
     </style>   
+
     @if(session()->get('toogle_edit_app') == "true")
         <div class="position-relative">
             <form class="d-inline position-absolute" style="right: 0; top:-15px;" method="POST" action="/about/toogle/app/false">
@@ -45,11 +46,13 @@
                 @csrf
                 <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-20px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) Edit @endif</button>
             </form>
-            <?php
-                foreach($about as $ab){ 
-                    echo $ab->help_body;
-                }
-            ?>
+            <span id="about-app-holder">
+                <?php
+                    foreach($about as $ab){ 
+                        echo $ab->help_body;
+                    }
+                ?>
+            </span>
         </div>
     @endif
 
@@ -78,7 +81,7 @@
         ?>
     </script>
 @else 
-    <div class="p-4">
+    <div class="p-4" id="about-app-holder">
         <?php
             foreach($about as $ab){ 
                 echo $ab->help_body;

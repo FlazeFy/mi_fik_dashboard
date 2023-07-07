@@ -1,0 +1,15 @@
+.gm-ui-hover-effect {
+    border: 1.75px solid var(--warningBG);
+    padding: 1.25px;
+    width: 25px !important;
+    height: 25px !important;
+    border-radius: var(--roundedMini) !important;
+    color: var(--warningBG) !important; 
+    margin: var(--spaceXXSM);
+    position: absolute;
+    left: 15px;
+}
+.gm-ui-hover-effect:hover{
+    background: var(--warningBG) !important; 
+    color: var(--whiteColor) !important; 
+}

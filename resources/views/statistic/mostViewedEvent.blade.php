@@ -117,7 +117,12 @@
         //....
     ],
     chart: {
-        height: 360,
+        height: <?php 
+            if(session()->get('selected_view_mve_chart') == "All"){
+                echo '360';
+            } else {
+                echo '480';
+            } ?>,
         <?php if($isMobile){echo 'width: 480,';} ?>
         type: 'bar'
     },
