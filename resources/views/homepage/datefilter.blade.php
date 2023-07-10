@@ -102,14 +102,14 @@
         if(!date_filter_start || !date_filter_end){
             //Highlight input if empty.
             if(!date_filter_start){
-                $("#date_filter_start").css({"border":"2px solid #F85D59"});
+                $("#date_filter_start").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_filter_start").css({"border":"1.5px solid #CCCCCC"});
             }
 
             if(!date_filter_end){
-                $("#date_filter_end").css({"border":"2px solid #F85D59"});
+                $("#date_filter_end").css({"border":"2px solid var(--warningBG)"});
                 error = true;
             } else {
                 $("#date_filter_end").css({"border":"1.5px solid #CCCCCC"});

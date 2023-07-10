@@ -29,7 +29,8 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#tagTable').DataTable({
+                var tableName = "tagTable";
+                $('#'+tableName).DataTable({
                     columnDefs: [
                         { targets: 0, orderable: true, searchable: true},
                         { targets: 1, orderable: true, searchable: false },
@@ -39,6 +40,10 @@
                         searchPlaceholder: "By Tag Name",
                     }
                 });
+                let extra_control = [
+                    { id: "filter-cat"}
+                ];
+                modifyTableControl(tableName, extra_control);
             });
         </script>
 
@@ -60,6 +65,7 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/global_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
@@ -78,7 +84,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 

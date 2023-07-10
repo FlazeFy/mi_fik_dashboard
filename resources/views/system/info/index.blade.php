@@ -35,7 +35,8 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
-                $('#infoTable').DataTable({
+                var tableName = "infoTable";
+                $('#'+tableName).DataTable({
                     "ordering": false,
                     columnDefs: [
                         { targets: 0, searchable: false},
@@ -48,6 +49,10 @@
                         searchPlaceholder: "By Body or Page / Location",
                     }
                 });
+                let extra_control = [
+                    { id: "filter-type"}
+                ];
+                modifyTableControl(tableName, extra_control);
             });
         </script>
 
@@ -85,7 +90,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 

@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
     <link rel="stylesheet" href="{{ asset('/css/main/typography_v1.0.css') }}"/>
 </head>
-<body style="background:#FFFFFF;">
+<body style="background:var(--whiteColor);">
     <div class="container mt-4 pt-3 text-center">
         <img class="w-50 d-block mx-auto" src="{{asset('assets/504_error.png')}}">
         <p class="display-5 text-danger">Oops! Something is wrong</p>
     </div>
-    <div class="error-page-info" style="background: #F85D59;">
+    <div class="error-page-info" style="background: var(--warningBG);">
         <p><i class="fa-solid fa-circle-info"></i> Page expired</p>
         <a class="btn btn-primary" href="/">Try to Sign-In again</a>
     </div>

@@ -8,17 +8,7 @@
                 <form action="/system/info/update/active/{{$in->id}}/{{$status}}" method="POST">
                     @csrf 
                     <h6 class="text-center">Are you sure want to {{$status}} this info</h6>
-                    @if($info)
-                        @foreach($info as $in)
-                            @if($in->info_location == "active_info")
-                                <div class="info-box {{$in->info_type}}">
-                                    <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                    <?php echo $in->info_body; ?>
-                                </div>
-                            @endif
-                        @endforeach
-                    @endif
-
+                    @include('components.infobox',['info'=>$info, 'location'=> 'active_info'])           
                     @if($status == "activate")
                         <button type="submit" class="btn btn-success float-end">Yes</button>
                     @else

@@ -18,18 +18,18 @@
     <table class="table table-paginate" id="dctTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col">Type</th>
-                <th scope="col">Slug</th>
-                <th scope="col">Info</th>
-                <th scope="col">Properties</th>
-                <th scope="col">Action</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Slug</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Info</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">Properties</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
             </tr>
         </thead>
         <tbody class="tabular-body">
             @php($i = 0)
             @foreach($dictionary as $dc)
                 <tr class="tabular-item normal">
-                    <td style="width: 140px;">
+                    <td style="min-width:var(--tcolMinSM);">
                         <select class="form-select" title="Change Type" onchange="validateChange(this.value, '{{$dc->id}}')" id="select-{{$dc->id}}">
                             @foreach($dictionaryType as $dct)
                                 @if($dc->dct_type == $dct->app_code)
@@ -55,8 +55,8 @@
                             </div>
                         </div>
                     </td>
-                    <td style="width: 120px;">{{$dc->slug_name}}</td>
-                    <td style="width: 280px;">
+                    <td style="min-width:var(--tcolMinSM);">{{$dc->slug_name}}</td>
+                    <td style="min-width:var(--tcolMinJumbo);">
                         <span id="dct-holder-show-{{$dc->id}}">
                             <h6 class="mb-0">Name</h6>
                             {{$dc->dct_name}}
@@ -93,7 +93,7 @@
                             </form>
                         </span>
                     </td>
-                    <td style="width: 240px;">
+                    <td style="min-width:var(--tcolMinJumbo);">
                         <h6>Created By</h6>
                         <div class="">
                             <div class="d-inline-block">
@@ -132,7 +132,7 @@
                             </div>   
                         @endif
                     </td>
-                    <td>
+                    <td style="min-width:var(--tcolMinXSM);">
                         <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$dc->id}}")'><i class="fa-solid fa-edit"></i></button>
                         <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$dc->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                         @include('system.dictionary.delete')                            

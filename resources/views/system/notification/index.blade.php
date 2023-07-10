@@ -29,6 +29,7 @@
 
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function () {
+                var tableName = "notifTable";
                 $('#notifTable').DataTable({
                     "ordering": false,
                     columnDefs: [
@@ -43,6 +44,7 @@
                         searchPlaceholder: "By Content",
                     }
                 });
+                modifyTableControl(tableName, null);
             });
         </script>
 
@@ -64,6 +66,7 @@
         <script src="{{ asset('/js/validator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
     </head>
 
@@ -79,11 +82,15 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <button class="btn btn-submit mt-4" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i> Add Notification</button>
+                    @if(!$isMobile)
+                        <button class="btn btn-submit mt-4" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i> Add Notification</button>
+                    @else 
+                        <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i></button>
+                    @endif
                     <div class="content-section mt-3">
                         @include('system.notification.create')
                         @include('system.notification.table')

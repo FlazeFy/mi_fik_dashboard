@@ -191,3 +191,25 @@ function setDatePickerMin(elmt, date){
     const dt = new Date(date);
     document.getElementById(elmt).setAttribute("min",getDateToContext(dt, "date"));
 }
+
+function modifyTableControl(id,ext){
+    var table = document.getElementById(id+"_wrapper");
+
+    if (table) {
+        var header = table.firstElementChild;
+        var col = header.children;
+
+        for (var i = 0; i < col.length; i++) {
+            var e = col[i];
+            e.style = 'width:auto; display:inline-block;';
+        }
+
+        if(ext !== null){
+            ext.forEach(el => {
+                var id_elmt = document.getElementById(el.id);
+                header.appendChild(id_elmt);
+                id_elmt.style = 'width:auto; display:inline-block;';
+            });
+        }
+    }
+}

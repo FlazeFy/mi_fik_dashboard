@@ -53,50 +53,50 @@
 .user-username{
     font-size: var(--textLG);
     font-weight: 500;
-    margin:0px;
+    margin: 0px;
     color: var(--whiteColor);
 }
 .user-role{
     font-size: var(--textXMD);
     font-weight: 400;
-    margin:0px;
+    margin: 0px;
     color: var(--whiteColor);
 }
 .user-image{
-    border:2px solid var(--whiteColor);
-    width:45px;
-    height:45px;
+    border: 2px solid var(--whiteColor);
+    width: 45px;
+    height: 45px;
     border-radius: var(--roundedJumbo);
     margin-inline:auto;
     display: block;
 }
 .info-box-profile{
-    background-image:linear-gradient(to right,#F78A00 20%, 65%, #5b5b5b);
+    background-image:linear-gradient(to right, var(--primaryColor) 20%, 65%, #5b5b5b);
     padding: 0;
-    margin-top: 40px;
-    padding-top: 25px;
-    border-radius: var(--roundedSM); 
+    margin-top: var(--spaceJumbo);
+    padding-top: var(--spaceXLG);
+    border-radius: var(--roundedLG); 
     text-align: center;
     position: relative !important;
 }
 .info-box-profile .body-box{
-    background: #FFFFFF;
-    padding: 30px;
+    background: var(--whiteColor);
+    padding: calc(var(--spaceJumbo) - var(--spaceMini));
     padding-bottom: 10px;
     margin: 0;
     width: 100%;
     min-height: 30vh;
-    margin-top: 30px;
+    margin-top: calc(var(--spaceJumbo) - var(--spaceMini));
     border-radius: calc(var(--roundedJumbo)+var(--roundedMini)) calc(var(--roundedJumbo)+var(--roundedMini)) var(--roundedSM) var(--roundedSM); 
 }
 .info-box-profile .body-box .sub-holder{
-    margin-bottom: 20px;
+    margin-bottom: var(--spaceLG);
 }
 .sub-holder h6{
-    font-size:13px;
+    font-size: var(--textMD);
 }
 .sub-holder h4{
-    font-size:20px;
+    font-size: var(--textJumbo);
 }
 /* Mobile style */
 @media (max-width: 767px) {

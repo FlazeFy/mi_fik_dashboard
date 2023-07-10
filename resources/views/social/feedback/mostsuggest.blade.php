@@ -41,7 +41,7 @@
           height: 350,
           type: 'treemap'
         },
-        colors: ['#F9DB00','#009FF9','var(--primaryColor)','#42C9E7','#CDD7B6','#C1F666','#D43F97','#1E5D8C','#421243','#7F94B0','#EF6537','#C0ADDB'],
+        colors: ['#F9DB00','#009FF9','var(--primaryColor)','var(--infoBG)','#CDD7B6','#C1F666','#D43F97','#1E5D8C','#421243','#7F94B0','#EF6537','#C0ADDB'],
         plotOptions: {
             treemap: {
                 distributed: true,

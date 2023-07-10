@@ -19,3 +19,23 @@ function ucFirst(val) {
 
     return res;
 }
+
+function tidyUpRichText(id){
+    var descHolder = document.getElementById(id);
+
+    if(descHolder){
+        var elmt_img = descHolder.querySelectorAll('img');
+        if (elmt_img) {
+            elmt_img.forEach(e => {
+                e.style = 'width:100%;';
+            });
+        }
+
+        var elmt_a = descHolder.querySelectorAll('a');
+        if (elmt_a) {
+            elmt_a.forEach(e => {
+                e.style = 'color:var(--primaryColor); text-decoration:none;';
+            });
+        }
+    }
+}

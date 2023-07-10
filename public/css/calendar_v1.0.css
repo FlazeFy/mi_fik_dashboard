@@ -85,7 +85,7 @@ a.fc-daygrid-day-number{
     z-index: 999 !important;
 }
 .fc-daygrid-event:hover, .fc-timegrid-event:hover{
-    background: #85def3 !important;
+    background: var(--calendarItem) !important;
 }
 th.fc-col-header-cell.fc-day{
     background: var(--primaryLightBG);
@@ -105,12 +105,12 @@ td.fc-daygrid-day.fc-day{
     height: 40px !important;
 }
 .fc-daygrid-event, .fc-timegrid-event{
-    background: #E4F5FF !important;
+    background: var(--infoLightBG) !important;
     white-space: normal !important;
     margin: 0 10px 10px 15px !important;
     font-weight: 500;
     border-radius: 0 var(--roundedMini) var(--roundedMini) 0;
-    border-left: 2.5px solid #42C9E7;
+    border-left: 2.5px solid var(--infoBG);
     position: relative;
     cursor: pointer;
     border-right: none !important;
@@ -141,7 +141,7 @@ td.fc-daygrid-day.fc-day{
     left: -7.5px;
     top: 30%;
     background: var(--whiteColor);
-    border: 2.5px solid #42C9E7;
+    border: 2.5px solid var(--infoBG);
 }
 .fc-daygrid-event .fc-event-title, .fc-timegrid-event .fc-event-title{
     font-size: var(--textXSM);
@@ -179,7 +179,7 @@ td.fc-daygrid-day.fc-day{
     color: var(--whiteColor) !important; 
 }
 .fc-daygrid-more-link.fc-more-link{
-    color: #787878 !important; 
+    color: var(--darkColor) !important; 
     float: right !important;
     top: -5px;
     margin-right: var(--spaceXXSM);

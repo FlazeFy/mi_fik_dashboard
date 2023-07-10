@@ -5,7 +5,7 @@
         margin-top: 25px;
     }
     .event-navigator .navigator-link {
-        color: #F78A00;
+        color: var(--primaryColor);
         text-decoration: none;
         cursor: pointer;
         font-weight: 500;
@@ -37,16 +37,7 @@
                         </div>
                         <span id="msg-validation-title" class="float-start"><label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label></span><br>
                         
-                        @if($info)
-                            @foreach($info as $in)
-                                @if($in->info_location == "delete_event")
-                                    <div class="info-box {{$in->info_type}}">
-                                        <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                        <?php echo $in->info_body; ?>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @endif
+                        @include('components.infobox', ['info' => $info, 'location'=> "delete_event"])
                         <span id="btn-delete-holder"><button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-trash"></i> Locked</button></span>
                     </form>
                 </div>

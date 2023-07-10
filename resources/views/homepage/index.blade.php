@@ -62,12 +62,12 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="p-4">
+            <div id="content" class="@if(!$isMobile) p-4 @endif">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
                     <div class="container-fluid bg-transparent @if(!$isMobile) my-3 @endif py-2 px-0">
-                        <div class="position-relative">
+                        <div class="position-relative @if($isMobile) px-2 @endif">
                             @if(!$isMobile)
                                 <div class="row mt-3"> 
                                     @if(session()->get("role_key") == 0)

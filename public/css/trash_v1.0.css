@@ -20,5 +20,5 @@
     opacity: 1;
 }
 .carousel-control-prev:hover, .carousel-control-next:hover{
-    background: #FADFB9;
+    background: var(--primaryLightBG);
 }

@@ -39,14 +39,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             @if($isMobile && $info)
                             <div class="collapse" id="collapseInfo">
-                                @foreach($info as $in)
-                                    @if($in->info_location == "add_group")
-                                        <div class="info-box {{$in->info_type}}">
-                                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                            <?php echo $in->info_body; ?>
-                                        </div>
-                                    @endif
-                                @endforeach
+                                @include('components.infobox',['info'=>$info, 'location'=> 'add_group'])           
                             </div>
                             @endif
 
@@ -68,14 +61,7 @@
                             <span id="user-selected-holder"></span>
 
                             @if($info && !$isMobile)
-                                @foreach($info as $in)
-                                    @if($in->info_location == "add_group")
-                                        <div class="info-box {{$in->info_type}}">
-                                            <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
-                                            <?php echo $in->info_body; ?>
-                                        </div>
-                                    @endif
-                                @endforeach
+                                @include('components.infobox',['info'=>$info, 'location'=> 'add_group'])           
                             @endif
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12 position-relative">

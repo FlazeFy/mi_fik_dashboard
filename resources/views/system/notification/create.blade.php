@@ -18,12 +18,12 @@
         height:70px;
     }
     .btn-quick-action-notif:hover{
-        /* background: #F78A00 !important; */
-        background-image:linear-gradient(to bottom right,#F78A00 20%, 70%, #5b5b5b) !important;
+        /* background: var(--primaryColor) !important; */
+        background-image:linear-gradient(to bottom right,var(--primaryColor) 20%, 70%, #5b5b5b) !important;
     }
     .quick-action-text-notif{
         font-size:24px;
-        color:#FFFFFF;
+        color:var(--whiteColor);
         transition: 0.5s;
         margin-top:13vh;
     }
@@ -32,7 +32,7 @@
     }
     .quick-action-info-notif{
         font-size:14px;
-        color:#FFFFFF;
+        color:var(--whiteColor);
         transition: 0.5s;
         display:none;
     }

@@ -153,7 +153,6 @@ class QueryContent extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'your_role' => str_replace("|",",",$based_role),
                     'message' => 'Content Header Found',
                     'data' => $content
                 ], Response::HTTP_OK);

@@ -21,7 +21,7 @@
         color: var(--whiteColor);
     }
     .event-header-size-toogle{
-        color: #F78A00 !important;
+        color: var(--primaryColor) !important;
         background: none;
         border: none;
         position: absolute;
@@ -32,22 +32,11 @@
     .event-tag-box{
         border-radius: var(--roundedMini);
         color:var(--whiteColor) !important;
-        background: #F78A00;
+        background: var(--primaryColor);
     }
     .event-detail{
-        color: #F78A00 !important;
+        color: var(--primaryColor) !important;
         text-decoration:none;
-    }
-    .text-link{
-        cursor: pointer;
-    }
-    .btn-copy-link{
-        color: var(--darkColor);
-        cursor: pointer;
-        margin-right: 10px;
-    }
-    .btn-copy-link:hover{
-        color: #F78A00;
     }
     .archive-holder{
         display: flex;
@@ -89,7 +78,7 @@
         left: -32.5px; 
     }
     .btn.archive-box:hover{
-        border-left: 50px solid #00C363;
+        border-left: 50px solid var(--successBG);
         transition: all .30s linear;
     }
     .btn.archive-box:hover .icon-holder{
@@ -97,30 +86,30 @@
     }
     .btn.archive-box.active{
         color: var(--whiteColor);
-        background: #F78A00;
+        background: var(--primaryColor);
         border: none !important;
     }
     .btn.archive-box.active h6{
         color: var(--whiteColor) !important;
     }
     .btn.archive-box.active:hover{
-        border-left: 50px solid #E74645 !important;
+        border-left: 50px solid var(--warningBG) !important;
         transition: all .30s linear;
     }
     .btn-add-archive{
         margin-top: 10px;
         font-size: 13px;
-        color: #212121;
+        color: var(--darkColor);
     }
     .btn-add-archive:hover{
-        color: #F78A00;
+        color: var(--primaryColor);
     }
   
     ::-webkit-scrollbar {
         width: 10px;
     }
     ::-webkit-scrollbar-track {
-        background: #f1f1f1; 
+        background: var(--hoverBG); 
     }
     ::-webkit-scrollbar-thumb {
         background: #888; 
@@ -133,7 +122,7 @@
         border-radius: var(--roundedMD);
     }
     .image-att-zoomable:hover{
-        background: #212121;
+        background: var(--darkColor);
         opacity: 0.7;
         -webkit-transition: all 0.2s;
         -o-transition: all 0.2s;
@@ -170,7 +159,7 @@
                 </div>
 
                 @if($c->content_desc)
-                    <span><?php echo $c->content_desc; ?></span><br>
+                    <span id="desc-holder"><?php echo $c->content_desc; ?></span><br>
                 @else
                     <img src="{{asset('assets/nodesc.png')}}" class="img nodata-icon" style="height:18vh;">
                     <h6 class="text-center text-secondary">This Event doesn't have description</h6>

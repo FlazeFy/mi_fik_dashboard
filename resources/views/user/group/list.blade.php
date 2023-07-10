@@ -24,10 +24,10 @@
         <thead>
             <tr>
                 <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Description @include('user.group.sorting.groupdesc')</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Total Member @include('user.group.sorting.total')</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Properties @include('user.group.sorting.created')</th>
-                <th scope="col" style="min-width:var(--tcolMinMD);">Manage</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Description @include('user.group.sorting.groupdesc')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">Total Member @include('user.group.sorting.total')</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">Properties @include('user.group.sorting.created')</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">Manage</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body w-100" id="group-list-holder">
@@ -123,9 +123,9 @@
                                         '@if($info) ' +
                                             '@foreach($info as $in) ' +
                                                 '@if($in->info_location == "delete_group") ' +
-                                                    '<div class="info-box {{$in->info_type}}"> ' +
+                                                    '<div class="info-box {{$in->info_type}}" id="infobox-delete-'+slug+'"> ' +
                                                         '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
-                                                        "{!! $in->info_body !!} " +
+                                                        '<?php echo str_replace("'", '"', $in->info_body); ?>' +
                                                     '</div> ' +
                                                 '@endif ' +
                                             '@endforeach ' +
@@ -168,7 +168,7 @@
                                             '@if($info) ' +
                                                 '@foreach($info as $in) ' +
                                                     '@if($in->info_location == "edit_group") ' +
-                                                        '<div class="info-box {{$in->info_type}}"> ' +
+                                                        '<div class="info-box {{$in->info_type}}" id="infobox-edit-'+slug+'"> ' +
                                                             '<label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br> ' +
                                                             "{!! $in->info_body !!} " +
                                                         '</div> ' +
@@ -293,6 +293,8 @@
                         '</tr>';
 
                     $("#group-list-holder").prepend(elmt);
+                    tidyUpRichText("infobox-edit-"+slug);
+                    tidyUpRichText("infobox-delete-"+slug);
                 }   
             }
 
