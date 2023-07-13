@@ -27,21 +27,21 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {        
         // In staging
-        $schedule->call([new RequestSchedule, 'remind_new_user'])->everyTwoHours();
+        $schedule->call([new RequestSchedule, 'remind_new_user'])->everyFourHours();
         $schedule->call([new RequestSchedule, 'remind_request'])->everyFourHours();
-        $schedule->call([new QuestionSchedule, 'remind_question'])->everyFourHours();
+        $schedule->call([new QuestionSchedule, 'remind_question'])->everySixHours();
 
-        $schedule->call([new ContentSchedule, 'clean'])->dailyAt('01:00');
-        $schedule->call([new TrashSchedule, 'clean'])->dailyAt('01:30');
+        $schedule->call([new ContentSchedule, 'clean'])->dailyAt('01:15');
+        $schedule->call([new TrashSchedule, 'clean'])->dailyAt('01:45');
         $schedule->call([new TaskSchedule, 'clean'])->dailyAt('02:30');
-        $schedule->call([new HistorySchedule, 'clean'])->dailyAt('03:00');
+        $schedule->call([new HistorySchedule, 'clean'])->dailyAt('03:30');
 
-        $schedule->call([new ContentSchedule, 'reminder'])->everyMinute();
-        $schedule->call([new TaskSchedule, 'reminder'])->everyMinute();
+        $schedule->call([new ContentSchedule, 'reminder'])->hourly();
+        $schedule->call([new TaskSchedule, 'reminder'])->hourly();
         
-        $schedule->call([new AccessSchedule, 'clean'])->dailyAt('05:00');
+        $schedule->call([new AccessSchedule, 'clean'])->dailyAt('05:15');
 
-        $schedule->call([new UserSchedule, 'clean'])->yearlyOn(1, 2, '23:00');
+        $schedule->call([new UserSchedule, 'clean'])->yearlyOn(1, 2, '23:15');
 
         // In development
         // $schedule->command(ContentSchedule::clean())->everyMinute();

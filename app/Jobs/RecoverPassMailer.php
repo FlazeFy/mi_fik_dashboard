@@ -8,30 +8,30 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Mail\OrganizerEmail;
+use App\Mail\RecoverPassEmail;
 use Illuminate\Support\Facades\Mail;
 
 use App\Helpers\Generator;
 use App\Models\FailedJob;
 
-class ProcessMailer implements ShouldQueue
+class RecoverPassMailer implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $header;
-    protected $detail;
+    protected $uname;
     protected $receiver;
+    protected $token;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($header, $detail, $receiver)
+    public function __construct($uname, $receiver, $token)
     {
-        $this->header = $header;
-        $this->detail = $detail;
+        $this->uname = $uname;
         $this->receiver = $receiver;
+        $this->token = $token;
     }
 
     /**
@@ -42,7 +42,7 @@ class ProcessMailer implements ShouldQueue
     public function handle()
     {
         try{
-            $email = new OrganizerEmail($this->header, $this->detail);
+            $email = new RecoverPassEmail($this->uname, $this->token);
             Mail::to($this->receiver)->send($email);
         } catch (\Exception $e) {
             // handle failed job

@@ -165,18 +165,12 @@ td.fc-daygrid-day.fc-day{
     z-index: 999;
     overflow-y: scroll;
 }
-.fc-popover-close.fc-icon.fc-icon-x{
-    border: 1.75px solid var(--warningBG);
-    padding: 1.25px;
-    width: 25px !important;
-    height: 25px !important;
-    border-radius: var(--roundedMini);
-    color: var(--warningBG) !important; 
-    margin: var(--spaceXXSM);
-}
-.fc-popover-close.fc-icon.fc-icon-x:hover{
-    background: var(--warningBG) !important; 
-    color: var(--whiteColor) !important; 
+.fc-popover-close.fc-icon.fc-icon-x {
+    width: 35px !important;
+    height: 35px !important;
+    padding: calc(var(--spaceMini) + 2px) !important;
+    box-shadow: none;
+    border: 1.5px solid var(--warningBG);
 }
 .fc-daygrid-more-link.fc-more-link{
     color: var(--darkColor) !important; 

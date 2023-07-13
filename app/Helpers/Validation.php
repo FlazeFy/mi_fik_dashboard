@@ -7,6 +7,7 @@ use App\Rules\TypeInfo;
 use App\Rules\TypeDictionary;
 use App\Rules\TypeSuggest;
 use App\Rules\TypeQuestion;
+use App\Rules\TypeValidateRecover;
 use Illuminate\Support\Str;
 
 class Validation
@@ -24,6 +25,14 @@ class Validation
     public static function getValidateLogin($request){
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',
+            'password' => 'required|min:6|string'
+        ]);
+    }
+
+    public static function getValidateNewPass($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:30|string',
+            'validation_token' => 'required|min:6|max:6|string',
             'password' => 'required|min:6|string'
         ]);
     }
@@ -308,6 +317,15 @@ class Validation
             //         $err('The '.$attr.' must be a valid Gmail address');
             //     }
             // }],
+        ]);
+    }
+
+    public static function getValidatePassRecover($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:30|string',
+            'email' => 'required|min:11|max:75|string|email',
+            'validation_token' => 'required|min:6|max:6',
+            'type' => ['required', new TypeValidateRecover],
         ]);
     }
 
