@@ -57,7 +57,7 @@
     height: 25px;
     margin: var(--spaceMini);
     color: var(--whiteColor) !important;
-    padding-top: var(--spaceMini) / 2; 
+    padding-top: 2px !important; 
 }
 a.fc-daygrid-day-number{
     font-size: var(--textXMD); 

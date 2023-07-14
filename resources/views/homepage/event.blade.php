@@ -72,7 +72,7 @@
         }
         
         $.ajax({
-            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "/find/" + getFind(search_storage) + "?page=" + page,
+            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "/"+getUTCHourOffset()+"/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
