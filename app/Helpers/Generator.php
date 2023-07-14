@@ -526,4 +526,29 @@ class Generator
         }
         return null;
     }
+
+    public static function getTokenResetPass(){
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $res = '';
+        
+        $charCount = strlen($characters);
+        for ($i = 0; $i < 6; $i++) {
+            $res .= $characters[rand(0, $charCount - 1)];
+        }
+        
+        return $res;
+    }
+    
+    public static function getDateDiffSec($date){
+        $ds = $date;
+        $de = date("Y-m-d H:i:s");
+
+        $dt1 = new DateTime($ds);
+        $dt2 = new DateTime($de);
+
+        $diff = $dt1->diff($dt2);
+        $res = $diff->days * 24 * 60 * 60 + $diff->h * 60 * 60 + $diff->i * 60 + $diff->s;
+
+        return $res;  
+    }
 }

@@ -64,6 +64,9 @@ Route::prefix('/v1/faq')->group(function() {
 
 Route::prefix('/v1/check')->group(function() {
     Route::post('/user', [CommandUserApi::class, 'check_user']);
+    Route::post('/pass/recover', [CommandUserApi::class, 'request_recover_pass']);
+    Route::post('/pass/validate', [CommandUserApi::class, 'validate_recover_pass']);
+    Route::put('/pass/edit', [CommandUserApi::class, 'recover_pass']);
 });
 
 ######################### Private Route #########################
@@ -102,7 +105,7 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryContentApi::class, 'getContentHeader']);
     Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
-    Route::get('/date/{date}', [QueryContentApi::class, 'getAllContentSchedule']);
+    Route::get('/date/{date}/{utc}', [QueryContentApi::class, 'getAllContentSchedule']);
     Route::put('/edit/image/{slug}', [CommandContentApi::class, 'editContentImage']);
     Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [CommandContentApi::class, 'destroyContent']);
@@ -113,7 +116,7 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
 });
 
 Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/slug/{slug}/order/{order}/date/{date}/find/{search}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/slug/{slug}/order/{order}/date/{date}/{utc}/find/{search}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
     Route::get('/order/{order}/find/{search}', [QueryContentApi::class, 'getFinishedContent']);
 });
 
