@@ -324,7 +324,7 @@ class Validation
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',
             'email' => 'required|min:11|max:75|string|email',
-            'validation_token' => 'required|min:6|max:6',
+            'validation_token' => 'nullable|min:6|max:6',
             'type' => ['required', new TypeValidateRecover],
         ]);
     }

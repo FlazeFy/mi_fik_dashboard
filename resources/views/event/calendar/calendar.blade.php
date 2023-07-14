@@ -11,6 +11,7 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
+    var offset = getUTCHourOffset();
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
         headerToolbar: {
@@ -34,8 +35,8 @@
                             {
                                 groupId: '".$i."',
                                 title: '".$ct->content_title."',
-                                start: '".$ct->content_date_start."',
-                                end: '".$ct->content_date_end."',
+                                start: getDateToContext('".$ct->content_date_start."','calendar'),
+                                end: getDateToContext('".$ct->content_date_end."','calendar'),
                                 extendedProps: {
                                     slug_name: '".$ct->slug_name."'
                                 }

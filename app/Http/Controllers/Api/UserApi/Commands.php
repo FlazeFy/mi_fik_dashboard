@@ -671,38 +671,50 @@ class Commands extends Controller
                         'result' => $errors,
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $password = Hash::make($request->password);
-                    DB::table("passwords_resets")->select("passwords_resets.id")
-                        ->join('users', 'users.id', '=', 'passwords_resets.created_by')
-                        ->where('username', $request->username)
-                        ->where('validation_token', $request->validation_token)
-                        ->whereNotNull('validated_at')
-                        ->update([
-                            "new_password" => $password
+                    $validPass = Validation::hasNumber($request->password);
+                    if($validPass) {
+                        $password = Hash::make($request->password);
+                        DB::table("passwords_resets")->select("passwords_resets.id")
+                            ->join('users', 'users.id', '=', 'passwords_resets.created_by')
+                            ->where('username', $request->username)
+                            ->where('validation_token', $request->validation_token)
+                            ->whereNotNull('validated_at')
+                            ->update([
+                                "new_password" => $password
+                            ]);
+                        
+                        DB::table("users")->where("username", $request->username)->update([
+                            "password" => $password,
+                            "updated_at" => date("Y-m-d H:i:s")
                         ]);
-                    
-                    DB::table("users")->where("username", $request->username)->update([
-                        "password" => $password,
-                        "updated_at" => date("Y-m-d H:i:s")
-                    ]);
 
-                    $user = DB::table("users")->select("id")->where("username", $request->username)->first();
+                        $user = DB::table("users")->select("id")->where("username", $request->username)->first();
 
-                    DB::table("histories")->insert([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $hs->history_type,
-                        'context_id' => null,
-                        'history_body' => $hs->history_body,
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user->id
-                    ]);
+                        DB::table("histories")->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $hs->history_type,
+                            'context_id' => null,
+                            'history_body' => $hs->history_body,
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user->id
+                        ]);
 
-                    DB::commit();
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Password has changed',
-                    ], Response::HTTP_OK);
+                        DB::commit();
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'Password has changed',
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'result' => [
+                                "password" => [
+                                    "Password must contain number"
+                                ]
+                            ],
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
                 }
             }
         } catch(\Exception $e) {

@@ -16,6 +16,7 @@ class Queries extends Controller
         try{
             $tag = Tag::select('tags.slug_name', 'tag_name', 'dictionaries.dct_name as tag_category')
                 ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
+                ->whereNull('tags.deleted_at')
                 ->orderBy('tags.created_at', 'DESC')
                 ->orderBy('tags.id', 'DESC');
             if($find != "%20" && trim($find) != ""){
@@ -93,12 +94,14 @@ class Queries extends Controller
                     ->orderBy('tags.created_at', 'DESC')
                     ->orderBy('tags.id', 'DESC')
                     ->where('tags.tag_category', $cat)
+                    ->whereNull('tags.deleted_at')
                     ->paginate($limit);
             } else {
                 $tag = Tag::select('tags.slug_name', 'tag_name', 'dictionaries.dct_name as tag_category')
                     ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
                     ->orderBy('tags.created_at', 'DESC')
                     ->orderBy('tags.id', 'DESC')
+                    ->whereNull('tags.deleted_at')
                     ->paginate($limit);
             }
 

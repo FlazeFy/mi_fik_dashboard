@@ -66,7 +66,7 @@ Route::prefix('/v1/check')->group(function() {
     Route::post('/user', [CommandUserApi::class, 'check_user']);
     Route::post('/pass/recover', [CommandUserApi::class, 'request_recover_pass']);
     Route::post('/pass/validate', [CommandUserApi::class, 'validate_recover_pass']);
-    Route::post('/pass/edit', [CommandUserApi::class, 'recover_pass']);
+    Route::put('/pass/edit', [CommandUserApi::class, 'recover_pass']);
 });
 
 ######################### Private Route #########################

@@ -41,6 +41,12 @@ function getDateToContext(datetime, type){
             return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
         } else if(type == "date"){
             return result.getFullYear() + "-" + ("0" + (result.getMonth() + 1)).slice(-2) + "-" + ("0" + result.getDate()).slice(-2);  
+        } else if(type == "calendar"){
+            const result = new Date(datetime);
+            const offsetHours = getUTCHourOffset();
+            result.setUTCHours(result.getUTCHours() + offsetHours);
+
+            return result.getFullYear() + "-" + ("0" + (result.getMonth() + 1)).slice(-2) + "-" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2) + ":00";  
         }
     } else {
         return "-";
