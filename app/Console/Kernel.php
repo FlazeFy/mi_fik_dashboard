@@ -10,6 +10,7 @@ use App\Schedule\RequestSchedule;
 use App\Schedule\TrashSchedule;
 use App\Schedule\AccessSchedule;
 use App\Schedule\QuestionSchedule;
+use App\Schedule\PasswordResetSchedule;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -38,6 +39,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->call([new ContentSchedule, 'reminder'])->hourly();
         $schedule->call([new TaskSchedule, 'reminder'])->hourly();
+
+        $schedule->call([new PasswordResetSchedule, 'clean'])->everyThirtyMinutes();
         
         $schedule->call([new AccessSchedule, 'clean'])->dailyAt('05:15');
 
@@ -57,6 +60,8 @@ class Kernel extends ConsoleKernel
 
         // $schedule->command(ContentSchedule::reminder())->hourlyAt(5);
         // $schedule->command(TaskSchedule::reminder())->hourlyAt(15);
+
+        // $schedule->command(PasswordResetSchedule::clean())->everyThirtyMinutes();
         
         // $schedule->command(AccessSchedule::clean())->dailyAt('05:00');
 
