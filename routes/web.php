@@ -13,6 +13,7 @@ use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\WaitingController;
 
 use App\Http\Controllers\Event\AllEventController;
@@ -46,6 +47,10 @@ Route::prefix('/')->group(function () {
 
 Route::prefix('/register')->group(function () {
     Route::get('/', [RegisterController::class, 'index'])->name('register');
+});
+
+Route::prefix('/forget')->group(function () {
+    Route::get('/', [ForgetController::class, 'index'])->name('forget');
 });
 
 ######################### Private Route #########################

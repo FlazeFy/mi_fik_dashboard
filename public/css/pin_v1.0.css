@@ -1,0 +1,30 @@
+#timer {
+    color: var(--primaryColor);
+    font-weight: bold;
+    font-size: var(--textLG); 
+    margin: var(--spaceXMD);
+}
+.pin-code{ 
+    padding: 0; 
+    margin: 0 auto; 
+    display: flex;
+    justify-content:center;
+} 
+.pin-code input { 
+    border-radius: var(--roundedXLG);
+    border: 1.5px solid var(--darkColor); 
+    text-align: center; 
+    width: 50px;
+    height: 50px;
+    font-size: calc(var(--textJumbo) + var(--textXMD)); 
+    background-color: var(--whiteColor);
+    margin-right: var(--spaceXXSM);
+} 
+.pin-code input:focus { 
+    border: 2px solid var(--primaryColor);
+    outline:none;
+} 
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
