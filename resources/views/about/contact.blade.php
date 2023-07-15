@@ -1,7 +1,7 @@
 <script>
     let vldtContact = [
         { id: "instagram", req: false, len: 255 },
-        { id: "twitter", req: false, len: 255 },
+        { id: "website", req: false, len: 255 },
         { id: "whatsapp", req: true, len: 50 },
         { id: "address", req: true, len: 255 },
         { id: "email", req: true, len: 75 },
@@ -13,8 +13,8 @@
         @php($ig = explode('/',$ct->help_body))
     @elseif($ct->help_category == "whatsapp")
         @php($wa = explode('/',$ct->help_body))
-    @elseif($ct->help_category == "twitter")
-        @php($twt = explode('/',$ct->help_body))
+    @elseif($ct->help_category == "website")
+        @php($web = $ct->help_body)
     @elseif($ct->help_category == "address")
         @php($adr = $ct->help_body)
     @elseif($ct->help_category == "email")
@@ -40,12 +40,11 @@
                 <a id="instagram_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
             <div class="mb-1">
-                <label for="basic-url" class="form-label">Twitter</label>
+                <label for="basic-url" class="form-label">Website</label>
                 <div class="input-group mb-3">
-                    <span class="input-group-text" id="basic-addon3">https://www.twitter.com/</span>
-                    <input type="text" class="form-control nameInput" id="twitter" name="twitter" value="{{$twt[3]}}" oninput="validateForm(vldtContact)" maxlength="255" aria-describedby="basic-addon3">
+                    <input type="text" class="form-control nameInput" id="website" name="website" value="{{$web}}" oninput="validateForm(vldtContact)" maxlength="255" aria-describedby="basic-addon3">
                 </div>
-                <a id="twitter_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                <a id="website_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
             <div class="mb-1">
                 <label for="basic-url" class="form-label">Whatsapp</label>
@@ -87,8 +86,8 @@
                 <p><i class="fa-brands fa-whatsapp fa-lg"></i>
                     <a class="link-external-dark" href="{{implode('/', $wa)}}">{{$wa[3]}}</a>
                 </p>
-                <p><i class="fa-brands fa-twitter fa-lg"></i>
-                    <a class="link-external-dark" href="{{implode('/', $twt)}}">{{$twt[3]}}</a>
+                <p><i class="fa-solid fa-globe fa-lg"></i>
+                    <a class="link-external-dark" href="{{$web}}">{{$web}}</a>
                 </p>
             </div>
 
