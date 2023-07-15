@@ -53,8 +53,8 @@
             data: $('#form-check-user').serialize(),
             dataType: 'json',
             success: function(response) {
+                document.getElementById("validate-recovery-btn").setAttribute('class', 'd-none');
                 setTimeout(() => {
-                    document.getElementById("validate-recovery-btn").setAttribute('class', 'd-none');
                     document.getElementById("success-check").innerHTML = '<lottie-player class="d-block mx-auto" src="https://assets7.lottiefiles.com/packages/lf20_fbwbq3um.json"  background="transparent" speed="0.75" style="width: 420px; height: 420px;" autoplay></lottie-player>';
                 }, 500);
                 document.getElementById("prevent-validation").setAttribute('class', 'd-none');
@@ -65,6 +65,8 @@
                 validate("recovery");
                 input_username.disabled = true;
                 input_email.disabled = true;
+                validate_username.value = input_username.value;
+                validate_email.value = input_email.value;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
                 var errorMessage = "Unknown error occurred";

@@ -30,6 +30,7 @@
         <link rel="stylesheet" href="{{ asset('/css/main/form_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/landing_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/register_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/pin_v1.0.css') }}"/>
 
         <!--Scroll reveal-->
         <script src="https://unpkg.com/scrollreveal"></script>
@@ -94,6 +95,9 @@
         @include('popup.success')
         @include('popup.failed')
 
+        <!-- JS Collection -->
+        <script src="{{ asset('/js/pin_v1.0.js')}}"></script>
+
         <script>
             //Popover
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
@@ -107,22 +111,42 @@
             var input_email_msg = document.getElementById("email_msg");
             var all_user_check_msg = document.getElementById("all_user_check_msg");
 
-            var btn_steps_recovery = document.getElementById("btn-next-validate-holder");
+            var is_start = false;
+            var is_finished = false;
+
+            var btn_steps_recovery = document.getElementById("btn-steps-recovery");
+            var btn_steps_validate = document.getElementById("btn-steps-validate");
+            var btn_steps_finish = document.getElementById("btn-steps-finish");
+
+            var btn_next_recovery = document.getElementById("btn-next-validate-holder");
+
+            window.addEventListener('beforeunload', function(event) {
+                if(is_finished == false){
+                    event.preventDefault();
+                    event.returnValue = '';
+                }
+            });
 
             function routeStep(nav, now){
                 if(now == "recovery"){
                     now = "validate";
-                    btn_steps_recovery.setAttribute('data-bs-target', '#welcoming');
+                    btn_steps_recovery.setAttribute('data-bs-target', '#recovery');
                     btn_steps_recovery.style = "border-left: 6px solid var(--successBG);";
-                } 
+                } else if(now == "validate"){
+                    now = "finish";
+                    btn_steps_validate.setAttribute('data-bs-target', '#validate');
+                    btn_steps_validate.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_finish.setAttribute('data-bs-target', '#finish');
+                    btn_steps_finish.style = "border-left: 6px solid var(--successBG);";
+                }
             }
 
             function validate(now){
                 if(now == "recovery"){
                     if(val1 == true){
-                        btn_steps_recovery.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#validate' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"recovery"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                        btn_next_recovery.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#validate' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"recovery"+'"'+"); startTimer(900);'><i class='fa-solid fa-arrow-right'></i> Next</button>";
                     } else {
-                        btn_steps_recovery.innerHTML = "<button class='btn-next-steps locked' id='btn-next-validate' onclick='warn("+'"'+"recovery"+'"'+")><i class='fa-solid fa-lock'></i> Next</button>";
+                        btn_next_recovery.innerHTML = "<button class='btn-next-steps locked' id='btn-next-validate' onclick='warn("+'"'+"recovery"+'"'+"); is_start = true;'><i class='fa-solid fa-lock'></i> Next</button>";
                     }   
                 } 
             }
