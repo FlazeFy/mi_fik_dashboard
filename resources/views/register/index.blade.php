@@ -115,6 +115,10 @@
                 return new bootstrap.Popover(popoverTriggerEl)
             })
 
+            $(document).ready(function() {
+                tidyUpRichText("about-app-holder");
+            });
+
             var nextStep = "welcoming";
             var slct_role = [];
             var registered = false;
