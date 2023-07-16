@@ -23,7 +23,7 @@
             <div class="col-lg-4 col-md-4 col-sm-12 mx-auto mt-3">
                 <h4 class="fw-bold">Follow us</h4><br>
                 <p class="text-white"><i class="fa-brands fa-instagram fa-lg"></i><a class="link-external-white" href="{{$ig}}"> Intagram</a></p>
-                <p class="text-white"><i class="fa-brands fa-facebook fa-lg"></i><a class="link-external-white" href="{{$wa}}"> Whatsapp</a></p>
+                <p class="text-white"><i class="fa-brands fa-whatsapp fa-lg"></i><a class="link-external-white" href="{{$wa}}"> Whatsapp</a></p>
                 <p class="text-white"><i class="fa-solid fa-globe fa-lg"></i><a class="link-external-white" href="{{$web}}"> Website</a></p>
             </div>
 

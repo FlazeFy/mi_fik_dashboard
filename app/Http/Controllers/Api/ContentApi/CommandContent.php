@@ -207,7 +207,8 @@ class CommandContent extends Controller
                                         ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                     )
                                     ->withData([
-                                        'by' => 'person'
+                                        'slug' => $slug,
+                                        'module' => 'event'
                                     ]);
                                 $response = $messaging->send($message);
                             } else {

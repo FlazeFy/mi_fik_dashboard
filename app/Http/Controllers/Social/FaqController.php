@@ -111,7 +111,8 @@ class FaqController extends Controller
                                     ->withBody($notif_body)
                                 )
                                 ->withData([
-                                    'by' => 'person'
+                                    'slug' => $request->question_id,
+                                    'module' => 'faq'
                                 ]);
                             $response = $messaging->send($message);
                         } else {

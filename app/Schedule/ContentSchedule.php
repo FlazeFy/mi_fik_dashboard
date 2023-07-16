@@ -70,7 +70,7 @@ class ContentSchedule
             $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
             $messaging = $factory->createMessaging();
 
-            $content = ContentHeader::select("contents_headers.id","content_title","content_tag","content_date_start","content_date_end","content_reminder")
+            $content = ContentHeader::select("contents_headers.id","slug_name","content_title","content_tag","content_date_start","content_date_end","content_reminder")
                 ->join("contents_details","contents_headers.id","=","contents_details.content_id")
                 ->orderBy('contents_headers.content_date_start', "DESC")
                 ->where('is_draft', 0)
@@ -153,7 +153,12 @@ class ContentSchedule
                                                     ->withBody($notif_body)
                                                 )
                                                 ->withData([
-                                                    'by' => 'person'
+                                                    'slug' => $ct->slug_name,
+                                                    'module' => 'reminder',
+                                                    'type' => 'event',
+                                                    'content_title' => $ct->content_title,
+                                                    'content_date_start' => $ct->content_date_start,
+                                                    'content' => null
                                                 ]);
                                             $response = $messaging->send($message);
                                             $userReminded++;
