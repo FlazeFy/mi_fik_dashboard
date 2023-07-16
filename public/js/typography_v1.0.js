@@ -39,3 +39,12 @@ function tidyUpRichText(id){
         }
     }
 }
+
+function splitOutRichTag(text){
+    var res = text.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','')
+        .replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">','')
+        .replace('<div class="ql-editor" data-gramm="false" contenteditable="true" data-dl-input-translation="true">','')
+        .replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true" data-dl-input-translation="true">','');
+    
+    return res;
+}

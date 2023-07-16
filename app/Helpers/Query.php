@@ -212,18 +212,21 @@ class Query
         }
     }
 
-    public static function getWhereDateTemplate($date_start, $date_end){
+    public static function getWhereDateTemplate($date_start, $date_end, $offset){
         if($date_start == $date_end){
             $query = "
-                content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'
+                DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."'
             ";
         } else {
             $query = "
-                ((content_date_start <= '".$date_start."' and content_date_end >= '".$date_start."')
+                ((DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."')
                 OR
-                (content_date_start <= '".$date_end."' and content_date_end >= '".$date_end."')
+                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_end."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_end."')
                 OR
-                (content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'))
+                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_end."'))
             ";
         }
         

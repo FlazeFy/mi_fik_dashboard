@@ -5,19 +5,25 @@
     position:relative;
 }
 
-.custom-close-modal{
+.custom-close-modal, .gm-ui-hover-effect, .fc-popover-close.fc-icon.fc-icon-x{
     position: absolute !important;
     top: -20px;
-    background: var(--whiteColor);
+    background: var(--whiteColor) !important;
     width: 45px;
-    right: 10px;
+    right: 10px !important;
     height: 45px;
     padding: var(--spaceXXSM);
-    color: var(--warningBG);
-    border-radius: var(--roundedCircle);
+    color: var(--warningBG) !important;
+    border-radius: var(--roundedCircle) !important;
     border: none;
+    opacity: 1;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     transition: all 0.4s;
+}
+.gm-ui-hover-effect {
+    width: 30px !important;
+    height: 30px !important;
+    top: 10px !important;
 }
 .custom-submit-modal{
     position: absolute !important;
@@ -33,9 +39,9 @@
     transition: all 0.4s;
 }
 
-.custom-close-modal:hover{
-    background:var(--warningBG);
-    color:var(--whiteColor);
+.custom-close-modal:hover, .gm-ui-hover-effect:hover, .fc-popover-close.fc-icon.fc-icon-x:hover{
+    background: var(--warningBG) !important;
+    color: var(--whiteColor) !important;
 }
 .custom-submit-modal:hover{
     background:var(--successBG);

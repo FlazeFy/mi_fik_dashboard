@@ -155,30 +155,36 @@ function getUsername(username1, username2){
 function getEventStatus(start, end){
     const c_start = new Date(start);
     const c_end = new Date(end);
-    const now = new Date(Date.now());
+    const offsetHours = getUTCHourOffset();
 
-    const msDiff_start = c_start.getTime() - now.getTime()
-    const msDiff_end = c_end.getTime() - now.getTime()
+    c_start.setUTCHours(c_start.getUTCHours() + offsetHours);
+    c_end.setUTCHours(c_end.getUTCHours() + offsetHours);
 
-    const hourDiff_start = Math.round(
-        msDiff_start / (24 * 60 * 60 * 60) //hr before start
-    )
-    const hourDiff_end = Math.round(
-        msDiff_end / (24 * 60 * 60 * 60) //30 minutes before end
-    )
+    const now = new Date();
 
-    if(c_start >= now && c_end >= now && hourDiff_start > 0 && hourDiff_start < 3){
+    const msDiff_start = c_start.getTime() - now.getTime();
+    const msDiff_end = c_end.getTime() - now.getTime();
+
+    const hourDiff_start = Math.round(msDiff_start / (1000 * 60));
+    const hourDiff_end = Math.round(msDiff_end / (1000 * 60));
+
+    if (c_start >= now && c_end >= now && hourDiff_start >= 0 && hourDiff_start <= 15) {
         return "<div class='event-status text-primary'><i class='fa-solid fa-circle fa-xs'></i> About to start</div>";
-    } else if(c_start <= now && c_end >= now){ 
-        if(hourDiff_end > 1){
-            return "<div class='event-status text-danger'><i class='fa-solid fa-circle fa-xs'></i> Live</div>";
+    } else if (c_start <= now && c_end >= now) {
+        if (hourDiff_end > 1 && hourDiff_start > -15) {
+            var ctx_live = " Just Started";
+        } else if (hourDiff_end > 15) {
+            var ctx_live = " Live";
         } else {
-            return "<div class='event-status text-danger'><i class='fa-solid fa-circle fa-xs'></i> About to end</div>"; 
+            var ctx_live = " About to end";
         }
-    } else if(c_end > now && hourDiff_start > 0 && hourDiff_start <= 12){
-        return "<div class='event-status text-success'><i class='fa-solid fa-circle fa-xs'></i> Just Ended</div>"; 
+        return "<div class='event-status text-danger'><i class='fa-solid fa-circle fa-xs'></i>"+ctx_live+"</div>";
+    } else if (c_start <= now && c_end <= now && hourDiff_end <= 0 && hourDiff_end >= -15) {
+        return "<div class='event-status text-success'><i class='fa-solid fa-circle fa-xs'></i> Just Ended</div>";
+    } else if (c_start <= now && c_end <= now && hourDiff_end <= -15){
+        return "<div class='event-status text-success'><i class='fa-solid fa-check'></i> Finished</div>";
     } else {
-        return ""
+        return "";
     }
 }
 

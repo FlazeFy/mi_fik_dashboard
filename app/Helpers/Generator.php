@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use Transliterator;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -17,13 +18,13 @@ use DateTime;
 
 class Generator
 {
-    // Get slug name from content title, username, etc.
-    // In : Leonardho R Sitanggang-01/02
-    // Out : leonardho_r_sitanggang_0102
     public static function getSlugName($val, $type){ 
+        $translator = Transliterator::create('Any-Latin; Latin-ASCII');
+        $val = $translator->transliterate($val);
         $replace = str_replace(" ","-", $val);
         $replace = str_replace("_","-", $replace);
         $replace = preg_replace('/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/', '', $replace);
+        
 
         if($type == "content"){
             $check = ContentHeader::select('slug_name')
@@ -70,7 +71,6 @@ class Generator
         return strtolower($replace);
     }
 
-    // Array to store month. First month is the current month.
     public static function getMonthList($max, $type){
         $date = new DateTime(date("Y/m/d")); 
 
@@ -97,7 +97,6 @@ class Generator
     }
 
     public static function getRandomReminder(){
-        //Get random reminder
         $collection = [
             'reminder_1_day_before',
             'reminder_3_day_before',
@@ -525,5 +524,30 @@ class Generator
             return $matches[1];
         }
         return null;
+    }
+
+    public static function getTokenResetPass(){
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $res = '';
+        
+        $charCount = strlen($characters);
+        for ($i = 0; $i < 6; $i++) {
+            $res .= $characters[rand(0, $charCount - 1)];
+        }
+        
+        return $res;
+    }
+    
+    public static function getDateDiffSec($date){
+        $ds = $date;
+        $de = date("Y-m-d H:i:s");
+
+        $dt1 = new DateTime($ds);
+        $dt2 = new DateTime($de);
+
+        $diff = $dt1->diff($dt2);
+        $res = $diff->days * 24 * 60 * 60 + $diff->h * 60 * 60 + $diff->i * 60 + $diff->s;
+
+        return $res;  
     }
 }

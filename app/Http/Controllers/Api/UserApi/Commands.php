@@ -14,6 +14,9 @@ use App\Models\PersonalAccessTokens;
 use App\Models\Archive;
 use App\Models\History;
 use App\Models\UserRequest;
+use App\Models\PasswordReset;
+
+use App\Jobs\RecoverPassMailer;
 
 use App\Helpers\Validation;
 use App\Helpers\Generator;
@@ -486,6 +489,232 @@ class Commands extends Controller
                         'status' => 'failed',
                         'result' => 'Validation failed, username or email already registered',
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'result' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function request_recover_pass(Request $request){
+        try {
+            $validator = Validation::getValidateUserStarter($request);
+
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => $errors,
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $user = User::select("id")->where('username', $request->username)
+                    ->where('email', $request->email)
+                    ->first();
+
+                if($user != null){
+                    $active = PasswordReset::whereNull('validated_at')
+                        ->where("created_by", $user->id)
+                        ->first();
+
+                    if($active == null){
+                        $token = Generator::getTokenResetPass();
+
+                        PasswordReset::create([
+                            'id' => Generator::getUUID(),
+                            'validation_token' => $token,
+                            'new_password' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user->id,
+                            'validated_at' => null
+                        ]);
+
+                        dispatch(new RecoverPassMailer($request->username, $request->email, $token));
+
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'We have send you password recovery token to your email. Please check it',
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'result' => 'Recovery failed. Your previous recover password has not finished yet',
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => 'Validation failed, username or email does not exist',
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'result' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function validate_recover_pass(Request $request){
+        DB::beginTransaction();
+        try {
+            $validator = Validation::getValidatePassRecover($request);
+
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => $errors,
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                if($request->type == "first"){
+                    $reset = DB::table("passwords_resets")->select("passwords_resets.id", "passwords_resets.created_at")
+                        ->join('users', 'users.id', '=', 'passwords_resets.created_by')
+                        ->where('username', $request->username)
+                        ->where('email', $request->email)
+                        ->where('validation_token', $request->validation_token)
+                        ->whereNull('validated_at')
+                        ->first();
+
+                    if($reset != null){
+                        $remaining = Generator::getDateDiffSec($reset->created_at);
+                        
+                        if($remaining < 920){
+                            DB::table("passwords_resets")->where("id", $reset->id)->update([
+                                "validated_at" => date("Y-m-d H:i:s")
+                            ]);
+
+                            DB::commit();
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => 'Token valid, now you can set up your new password',
+                            ], Response::HTTP_OK);
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => 'Times out',
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'result' => 'Token invalid, please try again',
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
+                } else {
+                    DB::table("passwords_resets")->join('users', 'users.id', '=', 'passwords_resets.created_by')
+                        ->where('username', $request->username)
+                        ->where('email', $request->email)
+                        ->whereNull('validated_at')
+                        ->delete();
+
+                    $token = Generator::getTokenResetPass();
+                    $user = DB::table("users")->select("id")->where("username", $request->username)->first();
+
+                    DB::table("passwords_resets")->insert([
+                        'id' => Generator::getUUID(),
+                        'validation_token' => $token,
+                        'new_password' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user->id,
+                        'validated_at' => null
+                    ]);
+
+                    dispatch(new RecoverPassMailer($request->username, $request->email, $token));
+
+                    DB::commit();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => 'Token regenerated',
+                    ], Response::HTTP_OK);
+                }
+            }
+        } catch(\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'result' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function recover_pass(Request $request){
+        DB::beginTransaction();
+        try {
+            $hs = new Request();
+            $obj = [
+                'history_type' => "user",
+                'history_body' => "has changed password"
+            ];
+            $hs->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($hs);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return response()->json([
+                    'status' => 'failed',
+                    'result' => $errors
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            } else {
+                $validator = Validation::getValidateNewPass($request);
+
+                if ($validator->fails()) {
+                    $errors = $validator->messages();
+
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => $errors,
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                } else {
+                    $validPass = Validation::hasNumber($request->password);
+                    if($validPass) {
+                        $password = Hash::make($request->password);
+                        DB::table("passwords_resets")->select("passwords_resets.id")
+                            ->join('users', 'users.id', '=', 'passwords_resets.created_by')
+                            ->where('username', $request->username)
+                            ->where('validation_token', $request->validation_token)
+                            ->whereNotNull('validated_at')
+                            ->update([
+                                "new_password" => $password
+                            ]);
+                        
+                        DB::table("users")->where("username", $request->username)->update([
+                            "password" => $password,
+                            "updated_at" => date("Y-m-d H:i:s")
+                        ]);
+
+                        $user = DB::table("users")->select("id")->where("username", $request->username)->first();
+
+                        DB::table("histories")->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $hs->history_type,
+                            'context_id' => null,
+                            'history_body' => $hs->history_body,
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user->id
+                        ]);
+
+                        DB::commit();
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => 'Password has changed',
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'result' => [
+                                "password" => [
+                                    "Password must contain number"
+                                ]
+                            ],
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
                 }
             }
         } catch(\Exception $e) {

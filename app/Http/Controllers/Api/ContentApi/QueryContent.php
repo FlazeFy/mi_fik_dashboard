@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api\ContentApi;
-
+use DateTime;
+use DateInterval;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -81,7 +82,7 @@ class QueryContent extends Controller
         }
     }
 
-    public function getContentBySlugLike(Request $request, $slug, $order, $date, $search)
+    public function getContentBySlugLike(Request $request, $slug, $order, $date, $utc, $search)
     {
         try{
             $page = 12;
@@ -114,7 +115,7 @@ class QueryContent extends Controller
                 $date = explode("_", $date);
                 $ds = $date[0];
                 $de = $date[1];
-                $filter_date = Query::getWhereDateTemplate($ds, $de);
+                $filter_date = Query::getWhereDateTemplate($ds, $de, $utc);
             } 
 
             // General Syntax
@@ -214,7 +215,7 @@ class QueryContent extends Controller
         }
     }
 
-    public function getAllContentSchedule(Request $request, $date){
+    public function getAllContentSchedule(Request $request, $date, $utc){
         try{
             $select_content = Query::getSelectTemplate("content_schedule");
             $select_task = Query::getSelectTemplate("task_schedule");
@@ -222,14 +223,18 @@ class QueryContent extends Controller
 
             $content = ContentHeader::selectRaw('content_reminder, '.$select_content.', contents_headers.created_at, contents_headers.updated_at')
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->whereRaw("date(`content_date_start`) = '".$date."'")
+                ->whereRaw("DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$utc." HOUR), '%Y-%m-%d') <= '".$date."'
+                    AND DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$utc." HOUR), '%Y-%m-%d') >= '".$date."'
+                ")
                 //->whereRaw("date(`content_date_start`) <= '".$date."' AND date(`content_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
             $schedule = Task::selectRaw('task_reminder as content_reminder, '.$select_task.', tasks.created_at, tasks.updated_at')
                 ->where('created_by', $user_id)
-                ->whereRaw("date(`task_date_start`) = '".$date."'")
+                ->whereRaw("DATE_FORMAT(DATE_ADD(task_date_start, INTERVAL ".$utc." HOUR), '%Y-%m-%d') <= '".$date."'
+                    AND DATE_FORMAT(DATE_ADD(task_date_end, INTERVAL ".$utc." HOUR), '%Y-%m-%d') >= '".$date."'
+                ")
                 //->whereRaw("date(`task_date_start`) <= '".$date."' AND date(`task_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('tasks.task_date_start', 'DESC')
@@ -248,8 +253,17 @@ class QueryContent extends Controller
                 $slug = $result->slug_name;
                 $title = $result->content_title;
                 $desc = $result->content_desc;
+
                 $date_start = $result->content_date_start;
+                $date = new DateTime($date_start);
+                $date->add(new DateInterval('PT' . $utc . 'H'));
+                $date_start = $date->format('Y-m-d H:i:s');
+
                 $date_end = $result->content_date_end;
+                $date = new DateTime($date_end);
+                $date->add(new DateInterval('PT' . $utc . 'H'));
+                $date_end = $date->format('Y-m-d H:i:s');
+
                 $from = $result->data_from;
                 $reminder = $result->content_reminder;
                 $createdAt = $result->created_at;
