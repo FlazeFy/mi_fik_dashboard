@@ -49,3 +49,11 @@ function splitOutRichTag(text){
         .replace('<deepl-inline-translate style="z-index: 1999999999;"></deepl-inline-translate>','');
     return res;
 }
+
+function validateTextNull(val, msg){
+    if(val != null && val.trim() != ""){
+        return val;
+    } else {
+        return msg;
+    }
+}

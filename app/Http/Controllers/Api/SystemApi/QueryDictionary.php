@@ -69,10 +69,24 @@ class QueryDictionary extends Controller
 
     public function getAllDictionaryByType($dct_type) {
         try{
-            $dictionary = Dictionary::select('slug_name', 'dct_name')
-                ->where('dct_type', $dct_type)
-                ->orderBy('created_at', 'DESC')
-                ->get();
+            $dictionary = Dictionary::selectRaw('dictionaries.slug_name,dct_name, count(1)')
+                ->where('dct_type', $dct_type);
+
+            if($dct_type == "TAG-001"){
+                $dictionary->join("tags","tags.tag_category","=","dictionaries.slug_name")
+                    ->groupBy('tags.tag_category')
+                    ->orderByRaw("
+                        CASE
+                            WHEN tag_category = 'general-role' THEN 1
+                            ELSE 2
+                        END ASC
+                    ")
+                    ->whereNull('tags.deleted_at');
+            } else {
+                $dictionary->orderBy('dictionaries.created_at', 'DESC');
+            }
+
+            $dictionary = $dictionary->get();
 
             if ($dictionary->count() > 0) {
                 return response()->json([

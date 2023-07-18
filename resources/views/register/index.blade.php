@@ -53,51 +53,35 @@
         ?>  
         @php($isMobile = Generator::isMobileDevice())   
         
-        <div class="d-block mx-auto p-0 pt-5" style="max-width:1360px;">
+        <div class="d-block mx-auto p-0 pt-5" style="max-width:1080px; width:100%;">
             <div class="accordion" id="accordionExample">
-                <div class="row w-100">
-                    <div class="col-lg-4 col-md-5 col-sm-12">
+                <div class="d-flex justify-content-between">
+                    <div>
                         <a class="btn btn-close-register" href="/"><i class="fa-solid fa-arrow-left"></i> Back to Sign In</a>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-welcome">
-                            Hello, welcome to Mi-FIK
-                            <h6 class="text-secondary">Before begin, let us to introduce ourself</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-terms">
-                            Our Terms & Condition
-                            <h6 class="text-secondary">Please read and accept our rules</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-profiledata">
-                            Let Us know you
-                            <h6 class="text-secondary">Please provide some of information about you</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-role">
-                            Choose your role
-                            <h6 class="text-secondary">As we tell you before. We need you to pick some role for our event's grouping</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-ready">
-                            I'm ready to join!
-                            <h6 class="text-secondary">Finally, you can finished your register steps. And waiting for admin approval</h6>
-                        </button>
                     </div>
-                    <div class="col-lg-8 col-md-7 col-sm-12 p-5">
-                        <div class="section-register">
-                            <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
-                                @include('register.welcoming')
-                            </div>
-                            <div class="collapse" id="terms" data-bs-parent="#accordionExample">
-                                @include('register.terms')
-                            </div>
-                            <div class="collapse" id="profiledata" data-bs-parent="#accordionExample">
-                                @include('register.profiledata')
-                            </div>
-                            <div class="collapse" id="role" data-bs-parent="#accordionExample">
-                                @include('register.role')
-                            </div>
-                            <div class="collapse" id="ready" data-bs-parent="#accordionExample">
-                                @include('register.ready')
-                            </div>
-                        </div>
+                    <div>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-welcome"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-terms"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-profiledata"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-role"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-ready"></button>
                     </div>
+                </div><hr>
+               
+                <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
+                @include('register.role')
+                </div>
+                <div class="collapse" id="terms" data-bs-parent="#accordionExample">
+                    @include('register.terms')
+                </div>
+                <div class="collapse" id="profiledata" data-bs-parent="#accordionExample">
+                    @include('register.profiledata')
+                </div>
+                <div class="collapse" id="role" data-bs-parent="#accordionExample">
+                    @include('register.role')
+                </div>
+                <div class="collapse" id="ready" data-bs-parent="#accordionExample">
+                    @include('register.ready')
                 </div>
             </div>
         </div>
@@ -113,6 +97,11 @@
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
+            })
+            //Tooltip
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
             })
 
             $(document).ready(function() {
@@ -143,22 +132,22 @@
                 if(now == "welcoming"){
                     now = "terms";
                     btn_steps_welcome.setAttribute('data-bs-target', '#welcoming');
-                    btn_steps_welcome.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_welcome.style = "background: var(--successBG);";
                 } else if(now == "terms"){
                     now = "profiledata";
                     btn_steps_terms.setAttribute('data-bs-target', '#terms');
-                    btn_steps_terms.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_terms.style = "background: var(--successBG);";
                 } else if(now == "profiledata"){
                     now = "role";
                     if(is_requested == false){
                         loadTag();
                     }
                     btn_steps_profiledata.setAttribute('data-bs-target', '#profiledata');
-                    btn_steps_profiledata.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_profiledata.style = "background: var(--successBG);";
                 } else if(now == "role"){
                     now = "ready";
                     btn_steps_role.setAttribute('data-bs-target', '#role');
-                    btn_steps_ready.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_ready.style = "background: var(--successBG);";
                 }
             }
 
@@ -189,7 +178,7 @@
                     });
 
                     if(slct_role.length > 0){
-                        document.getElementById("slct-box").style= "display:normal;";
+                        document.getElementById("no-tag-selected-msg").style= "display:normal;";
                         if(valid == true && is_requested == true){
                             msg_all_input.innerHTML = "";
                             btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
@@ -201,7 +190,7 @@
                         }
                         getSubmitButton();
                     } else {
-                        document.getElementById("slct-box").style= "display:none;";
+                        document.getElementById("no-tag-selected-msg").style= "display:none;";
                         btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
                     }                    
                 }
