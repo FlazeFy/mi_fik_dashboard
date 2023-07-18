@@ -23,11 +23,17 @@
                 @csrf
                 @foreach($about as $ab)
                     @if(!$isMobile)
-                        <a class="last-updated" style="top:20px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                        <a class="last-updated" style="top:20px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_{{$ab->id}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @else
                         <a class="last-updated" style="top:0;"><span class="text-primary">Last Updated :</span></a>
-                        <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                        <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_{{$ab->id}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @endif
+                    <script>
+                        const date_holder_<?= $ab->id; ?> = document.getElementById('date_holder_{{$ab->id}}');
+
+                        const date = new Date(date_holder_<?= $ab->id; ?>.textContent);
+                        date_holder_<?= $ab->id; ?>.textContent = getDateToContext(date, "datetime");
+                    </script>
                 @endforeach
                 <input name="help_body" id="about_body" hidden>
                 <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:160px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) Save Changes @endif</button>
@@ -60,13 +66,7 @@
         function getRichText(){
             var rawText = document.getElementById("rich_box").innerHTML;
             var desc = document.getElementById("about_body");
-
-            //Remove quills element from raw text
             var cleanText = splitOutRichTag(rawText);
-            //Check this clean text 2!!!
-            cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
-            
-            //Pass html quilss as input value
             var characterToDeleteAfter = "</div>";
             var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
             desc.value = modifiedString;
@@ -89,10 +89,3 @@
         ?>
     </div>
 @endif
-
-<script>
-    const date_holder_1 = document.getElementById('date_holder_1');
-
-    const date = new Date(date_holder_1.textContent);
-    date_holder_1.textContent = getDateToContext(date, "datetime");
-</script>

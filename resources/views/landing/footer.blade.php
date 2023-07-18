@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-lg-4 col-md-4 col-sm-12 mx-auto mt-3">
                 <h4 class="fw-bold">About us</h4><br>
-                <p class="text-white">Inventore molestiae possimus accusamus quam. Beatae rerum itaque et inventore. At eligendi ullam reprehenderit fuga modi dolor quod. Rem et dolores dolores voluptatibus accusantium blanditiis nihil.</p>
+                <p class="text-white">Welcome to the Faculty of Creative Industries Information Management Application (MI-FIK), an innovative solution to improve the efficiency and accessibility of information for the entire community at the Faculty of Creative Industries Telkom University.</p>
             </div>
 
             <div class="col-lg-4 col-md-4 col-sm-12 mx-auto mt-3">

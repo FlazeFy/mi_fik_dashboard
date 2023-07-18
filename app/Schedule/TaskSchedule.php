@@ -69,7 +69,7 @@ class TaskSchedule
                 ->join('users','users.id','=','tasks.created_by')
                 ->orderBy('tasks.task_date_start', "DESC")
                 ->where('task_reminder','!=','reminder_none')
-                ->whereRaw('(DATEDIFF(task_date_start, now()) * -1) < 3') // Give max range based on reminder opt
+                ->whereRaw("TIMESTAMPDIFF(HOUR,task_date_start, '".date("Y-m-d H:i:s")."') <= 36") // Give max range based on reminder opt
                 ->whereNull('tasks.deleted_at')
                 ->get();
 
@@ -83,20 +83,19 @@ class TaskSchedule
                 $content_start = new DateTime($ts->content_date_start);
                 $diff = $content_start->diff($now);
                 $hours = $diff->h;
-                $hours = $hours + ($diff -> days * 24) - 7;
                 $is_remind = false;
 
-                if($hours >= 1 && $hours < 73){
-                    if($ts->content_reminder == "reminder_3_hour_before" && $hours < 3){
+                if($hours >= 1 && $hours <= 73){
+                    if($ts->content_reminder == "reminder_1_hour_before" && $hours <= 2){
                         $is_remind = true;
                         $threeHr++;
-                    } else if($ts->content_reminder == "reminder_1_hour_before" && $hours < 2){
+                    } else if($ts->content_reminder == "reminder_3_hour_before" && $hours <= 4){
                         $is_remind = true;
                         $oneHr++;
-                    } else if($ts->content_reminder == "reminder_1_day_before" && $hours < 24){
+                    } else if($ts->content_reminder == "reminder_1_day_before" && $hours <= 25){
                         $is_remind = true;
                         $oneDay++;
-                    } else if($ts->content_reminder == "reminder_3_day_before" && $hours < 73){
+                    } else if($ts->content_reminder == "reminder_3_day_before" && $hours <= 73){
                         $is_remind = true;
                         $threeDay++;
                     }
@@ -175,8 +174,7 @@ class TaskSchedule
                 'status' => "failed",  
                 'payload' => json_encode($obj),
                 'created_at' => date("Y-m-d H:i:s"), 
-                'faced_by' => null, 
-                'fixed_at' => null
+                'faced_by' => null
             ]);
         }
     }
