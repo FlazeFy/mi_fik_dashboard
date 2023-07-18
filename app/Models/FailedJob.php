@@ -12,5 +12,5 @@ class FailedJob extends Model
 
     protected $table = 'failed_jobs';
     protected $primaryKey = 'id';
-    protected $fillable = ['id', 'type', 'status', 'payload', 'created_at', 'faced_by', 'fixed_at'];
+    protected $fillable = ['id', 'type', 'status', 'payload', 'created_at', 'faced_by'];
 }

@@ -153,60 +153,106 @@ class EditController extends Controller
     {
         $id = Generator::getContentId($slug);
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
+        DB::beginTransaction();
 
-        if($id != null){
-            $validator = Validation::getValidateEventDate($request);
-            if ($validator->fails() && $request->is_end_only == "false") {
-                $errors = $validator->messages();
-
-                return redirect()->back()->with('failed_message', $errors);
-            } else {
-                $data = new Request();
-                $obj = [
-                    'history_type' => "event",
-                    'history_body' => "Has updated this event date"
-                ];
-                $data->merge($obj);
-
-                $validatorHistory = Validation::getValidateHistory($data);
-                if ($validatorHistory->fails()) {
-                    $errors = $validatorHistory->messages();
+        try {
+            if($id != null){
+                $validator = Validation::getValidateEventDate($request);
+                if ($validator->fails() && $request->is_end_only == "false") {
+                    $errors = $validator->messages();
 
                     return redirect()->back()->with('failed_message', $errors);
                 } else {
-                    $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+                    $data = new Request();
+                    $obj = [
+                        'history_type' => "event",
+                        'history_body' => "Has updated this event date"
+                    ];
+                    $data->merge($obj);
 
-                    if($request->is_end_only == "true"){
-                        ContentHeader::where('id', $id)->update([
-                            'content_date_end' => $fulldate_end,
-                            'updated_at' => date("Y-m-d H:i:s"),
-                            'updated_by' => $user_id
-                        ]);
+                    $validatorHistory = Validation::getValidateHistory($data);
+                    if ($validatorHistory->fails()) {
+                        $errors = $validatorHistory->messages();
+
+                        return redirect()->back()->with('failed_message', $errors);
                     } else {
-                        $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
-                        ContentHeader::where('id', $id)->update([
-                            'content_date_start' => $fulldate_start,
-                            'content_date_end' => $fulldate_end,
-                            'updated_at' => date("Y-m-d H:i:s"),
-                            'updated_by' => $user_id
+                        $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
+                        $messaging = $factory->createMessaging();
+                        $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+
+                        if($request->is_end_only == "true"){
+                            DB::table("contents_headers")->where('id', $id)->update([
+                                'content_date_end' => $fulldate_end,
+                                'updated_at' => date("Y-m-d H:i:s"),
+                                'updated_by' => $user_id
+                            ]);
+                        } else {
+                            $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+                            DB::table("contents_headers")->where('id', $id)->update([
+                                'content_date_start' => $fulldate_start,
+                                'content_date_end' => $fulldate_end,
+                                'updated_at' => date("Y-m-d H:i:s"),
+                                'updated_by' => $user_id
+                            ]);
+                        }
+
+                        DB::table('histories')->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $id, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
                         ]);
+
+                        $content_owner = DB::table("contents_headers")
+                            ->selectRaw('users.id, username, firebase_fcm_token')
+                            ->join('users', 'users.id', '=', 'contents_headers.created_by')
+                            ->where('contents_headers.id', $id)
+                            ->first();
+
+                        $notif_body = "your event '".$request->content_title."' date has changed";
+
+                        if($content_owner){
+                            $firebase_token = $content_owner->firebase_fcm_token;
+
+                            if($firebase_token){
+                                $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $notif_title = "Hello ".$content_owner->username.", you got an information";
+                                    $message = CloudMessage::withTarget('token', $firebase_token)
+                                        ->withNotification(
+                                            FireNotif::create($notif_body)
+                                            ->withTitle($notif_title)
+                                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                        )
+                                        ->withData([
+                                            'slug' => $slug,
+                                            'module' => 'event'
+                                        ]);
+                                    $response = $messaging->send($message);
+                                } else {
+                                    DB::table("users")
+                                        ->where('id', $content_owner->id)->update([
+                                            "firebase_fcm_token" => null
+                                    ]);
+                                }
+                            }
+                        }
                     }
 
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => $id, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
+                    DB::commit();
+                    return redirect()->back()->with('success_message', "Event successfully updated");             
                 }
-
-                return redirect()->back()->with('success_message', "Event successfully updated");             
+            } else {
+                return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");   
             }
-        } else {
-            return redirect()->back()->with('failed_message', "Event update is failed, the event doesn't exist anymore");   
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
         }
     }
 
@@ -285,7 +331,8 @@ class EditController extends Controller
                                         ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                     )
                                     ->withData([
-                                        'by' => 'person'
+                                        'slug' => $slug,
+                                        'module' => 'event'
                                     ]);
                                 $response = $messaging->send($message);
                             } else {
@@ -392,7 +439,8 @@ class EditController extends Controller
                                                 ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                             )
                                             ->withData([
-                                                'by' => 'person'
+                                                'slug' => $slug,
+                                                'module' => 'event'
                                             ]);
                                         $response = $messaging->send($message);
                                     } else {
@@ -507,7 +555,8 @@ class EditController extends Controller
                                                 ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                             )
                                             ->withData([
-                                                'by' => 'person'
+                                                'slug' => $slug,
+                                                'module' => 'event'
                                             ]);
                                         $response = $messaging->send($message);
                                     } else {
@@ -622,7 +671,8 @@ class EditController extends Controller
                                                 ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                             )
                                             ->withData([
-                                                'by' => 'person'
+                                                'slug' => $slug,
+                                                'module' => 'event'
                                             ]);
                                         $response = $messaging->send($message);
                                     } else {
@@ -734,7 +784,8 @@ class EditController extends Controller
                                                 ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                             )
                                             ->withData([
-                                                'by' => 'person'
+                                                'slug' => $slug,
+                                                'module' => 'event'
                                             ]);
                                         $response = $messaging->send($message);
                                     } else {
@@ -837,7 +888,8 @@ class EditController extends Controller
                                             ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => $slug,
+                                            'module' => 'event'
                                         ]);
                                     $response = $messaging->send($message);
                                 } else {
@@ -934,7 +986,8 @@ class EditController extends Controller
                                         ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                     )
                                     ->withData([
-                                        'by' => 'person'
+                                        'slug' => $slug,
+                                        'module' => 'event'
                                     ]);
                                 $response = $messaging->send($message);
                             } else {

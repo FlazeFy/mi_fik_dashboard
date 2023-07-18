@@ -181,7 +181,7 @@ class Validation
         return Validator::make($request->all(), [
             'instagram' => 'required|min:3|max:75|string',
             'whatsapp' => 'required|min:8|max:14|string',
-            'twitter' => 'required|min:3|max:75|string',
+            'website' => 'required|min:3|max:75|string',
             'address' => 'required|min:3|max:255|string',
             'email' => 'required|min:10|max:75|string',
         ]);

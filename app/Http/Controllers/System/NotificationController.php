@@ -158,7 +158,8 @@ class NotificationController extends Controller
                                             ->withBody(strtoupper($type)." ".$request->notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => null,
+                                            'module' => 'announcement'
                                         ]);
 
                                     if($request->send_time != "now"){
@@ -214,7 +215,8 @@ class NotificationController extends Controller
                                                     ->withBody(strtoupper($type)." ".$request->notif_body)
                                                 )
                                                 ->withData([
-                                                    'by' => 'grouping'
+                                                    'slug' => null,
+                                                    'module' => 'announcement'
                                                 ]);
                                             
                                             if($request->send_time != "now"){
@@ -285,7 +287,8 @@ class NotificationController extends Controller
                                                 ->withBody(strtoupper($type)." ".$request->notif_body)
                                             )
                                             ->withData([
-                                                'by' => 'grouping'
+                                                'slug' => null,
+                                                'module' => 'announcement'
                                             ]);
                                         
                                         if($request->send_time != "now"){
@@ -335,7 +338,8 @@ class NotificationController extends Controller
                                             ->withBody(strtoupper($type)." ".$request->notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'all'
+                                            'slug' => null,
+                                            'module' => 'announcement'
                                         ]);
 
                                     if($request->send_time != "now"){

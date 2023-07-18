@@ -89,7 +89,7 @@ class Queries extends Controller
     public function getAllTagByCat($cat, $limit){
         try{
             if($cat != "all" && $cat != "All"){
-                $tag = Tag::select('tags.slug_name', 'tag_name', 'dictionaries.dct_name as tag_category')
+                $tag = Tag::select('tags.slug_name', 'tag_name', 'tag_desc', 'dictionaries.dct_name as tag_category')
                     ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
                     ->orderBy('tags.created_at', 'DESC')
                     ->orderBy('tags.id', 'DESC')
@@ -97,7 +97,7 @@ class Queries extends Controller
                     ->whereNull('tags.deleted_at')
                     ->paginate($limit);
             } else {
-                $tag = Tag::select('tags.slug_name', 'tag_name', 'dictionaries.dct_name as tag_category')
+                $tag = Tag::select('tags.slug_name', 'tag_name', 'tag_desc', 'dictionaries.dct_name as tag_category')
                     ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
                     ->orderBy('tags.created_at', 'DESC')
                     ->orderBy('tags.id', 'DESC')

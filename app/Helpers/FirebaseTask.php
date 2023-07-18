@@ -62,8 +62,7 @@ class FirebaseTask
                                 'status' => "failed",  
                                 'payload' => json_encode($obj),
                                 'created_at' => date("Y-m-d H:i:s"), 
-                                'faced_by' => $attachment->created_by, 
-                                'fixed_at' => null
+                                'faced_by' => $attachment->created_by
                             ]);
                         }
                     } 
@@ -120,8 +119,7 @@ class FirebaseTask
                         'status' => "failed",  
                         'payload' => json_encode($obj),
                         'created_at' => date("Y-m-d H:i:s"), 
-                        'faced_by' => $id, 
-                        'fixed_at' => null
+                        'faced_by' => $id
                     ]);
                 }
             }

@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('faced_by', 36)->nullable();
 
             $table->timestamp('created_at', $precision = 0);
-            $table->timestamp('fixed_at', $precision = 0)->nullable();
         });
     }
 

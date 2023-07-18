@@ -57,8 +57,7 @@ class Handler extends ExceptionHandler
             'file' => $exception->getFile(), 
             'line' => $exception->getLine(), 
             'faced_by' => null, 
-            'created_at' => date('Y-m-d H:i:s'), 
-            'fixed_at' => null
+            'created_at' => date('Y-m-d H:i:s')
         ]);
     }
 }

@@ -291,19 +291,19 @@ th{
     border-radius: var(--roundedMini);
 }
 .content-add:hover, .content-more:hover{
-    color:var(--whiteColor);
-    background:var(--primaryColor);
+    color: var(--whiteColor);
+    background: var(--primaryColor);
 }           
 .content-body{
-    max-width:1080px;
-    display:block;
-    margin-inline:auto;
+    max-width: 1080px;
+    display: block;
+    margin-inline: auto;
 }
 
 .control-holder{
     position: absolute;
     right: 10px;
-    top:-5px;
+    top: -5px;
 }
 .skeleton-box {
     display: inline-block;

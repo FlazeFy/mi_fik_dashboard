@@ -479,8 +479,8 @@ class Generator
             return "https://www.instagram.com/";
         } else if($cat == "whatsapp"){
             return "https://wa.me/";
-        } else if($cat == "twitter"){
-            return "https://www.twitter.com/";
+        } else if($cat == "website"){
+            return "";
         } else {
             return "";
         }
