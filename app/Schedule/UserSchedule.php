@@ -27,8 +27,8 @@ class UserSchedule
 {
     public static function clean()
     {
-        $user = User::where('valid_until', '<', date("Y"))
-            ->whereNotNull('valid_until')
+        $user = User::where('batch_year', '<', date('Y', strtotime('-6 years')))
+            ->whereNotNull('batch_year')
             ->get();
 
         foreach($user as $us){
@@ -47,7 +47,7 @@ class UserSchedule
         }
 
         if(count($user) > 0){
-            $context = "Successfully removed ".count($user)." user, who has passed the valid until year";
+            $context = "Successfully removed ".count($user)." user, who has passed the valid year";
         } else {
             $context = "No data removed from user modules";
         }

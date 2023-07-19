@@ -139,7 +139,7 @@
                     var type = data[i].request_type;
 
                     var elmt = " " +
-                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + ')"> ' +
+                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + '); slct_list = [];"> ' +
                             '<div class="row ps-2"> ' +
                                 '<div class="col-2 p-0 ps-1"> ' +
                                     '<img class="img img-fluid user-image" style="margin-top:45%;" src="' + getUserImageGeneral(img, role) + '">' +

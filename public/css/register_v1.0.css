@@ -116,7 +116,4 @@
 .registered-msg{
     color: var(--successBG) !important;
     text-decoration: none;
-    position: absolute;
-    bottom: 30px;
-    right: 180px;
 }

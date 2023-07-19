@@ -29,7 +29,6 @@ class FeedbackController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $menu = Menu::getMenu();
                 $info = Info::getAvailableInfo("statistic");
                 $suggestion = Feedback::getAllFeedbackSuggestion();
@@ -45,8 +44,7 @@ class FeedbackController extends Controller
                     ->with('dct', $dct)
                     ->with('info', $info)
                     ->with('suggestion', $suggestion)
-                    ->with('feedback', $feedback)
-                    ->with('greet',$greet);
+                    ->with('feedback', $feedback);
             } else {
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }

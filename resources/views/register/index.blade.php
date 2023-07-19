@@ -69,7 +69,7 @@
                 </div><hr>
                
                 <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
-                @include('register.role')
+                    @include('register.welcoming')
                 </div>
                 <div class="collapse" id="terms" data-bs-parent="#accordionExample">
                     @include('register.terms')
@@ -78,6 +78,35 @@
                     @include('register.profiledata')
                 </div>
                 <div class="collapse" id="role" data-bs-parent="#accordionExample">
+                    <script>
+                        let is_show_all_guidelines = true;
+                        let guidelines = [
+                            { 
+                                holder: "holder-steps-1", 
+                                target: "general-role-area", 
+                                title: "General Role", 
+                                body: "Please choose based on your academic situation right now. This role is required and you can choose one or maybe two", 
+                                image: null, 
+                                direction: "bottom"
+                            },
+                            { 
+                                holder: "holder-steps-2", 
+                                target: "selected-role-area", 
+                                title: "Selected Role", 
+                                body: "This section will show all the role you have picked. To remove the role you can click the selected role, or reset to remove all the selected", 
+                                image: 'assets/steps/steps_regis_role_1.gif', 
+                                direction: "right"
+                            },
+                            { 
+                                holder: "holder-steps-3", 
+                                target: "secondary-role-area", 
+                                title: "Secondary Role", 
+                                body: "This role is optional, but the event you will see in the future based on this role. But dont worry, you can change it in the future to", 
+                                image: null, 
+                                direction: "right"
+                            },
+                        ];
+                    </script>
                     @include('register.role')
                 </div>
                 <div class="collapse" id="ready" data-bs-parent="#accordionExample">
@@ -139,9 +168,9 @@
                     btn_steps_terms.style = "background: var(--successBG);";
                 } else if(now == "profiledata"){
                     now = "role";
-                    if(is_requested == false){
-                        loadTag();
-                    }
+                    // if(is_requested == false){
+                    //     loadTag();
+                    // }
                     btn_steps_profiledata.setAttribute('data-bs-target', '#profiledata');
                     btn_steps_profiledata.style = "background: var(--successBG);";
                 } else if(now == "role"){
@@ -178,7 +207,7 @@
                     });
 
                     if(slct_role.length > 0){
-                        document.getElementById("no-tag-selected-msg").style= "display:normal;";
+                        document.getElementById("no-tag-selected-msg").style= "display:none;";
                         if(valid == true && is_requested == true){
                             msg_all_input.innerHTML = "";
                             btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
@@ -190,7 +219,7 @@
                         }
                         getSubmitButton();
                     } else {
-                        document.getElementById("no-tag-selected-msg").style= "display:none;";
+                        document.getElementById("no-tag-selected-msg").style= "display:normal;";
                         btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
                     }                    
                 }

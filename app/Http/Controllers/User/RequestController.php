@@ -36,7 +36,6 @@ class RequestController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $dct_tag = Dictionary::getDictionaryByType("Tag");
                 $info = Info::getAvailableInfo("user/request");
                 $menu = Menu::getMenu();
@@ -48,8 +47,7 @@ class RequestController extends Controller
                 return view('user.request.index')
                     ->with('menu', $menu)
                     ->with('info', $info)
-                    ->with('dct_tag', $dct_tag)
-                    ->with('greet',$greet);
+                    ->with('dct_tag', $dct_tag);
             } else {
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }

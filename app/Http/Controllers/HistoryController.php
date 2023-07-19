@@ -20,7 +20,6 @@ class HistoryController extends Controller
         $user_id = Generator::getUserIdV2($role);
 
         if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
         
             //Set active nav
@@ -28,8 +27,7 @@ class HistoryController extends Controller
             session()->forget('active_subnav');
 
             return view ('history.index')
-                ->with('menu', $menu)
-                ->with('greet',$greet);
+                ->with('menu', $menu);
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');
         }

@@ -29,7 +29,6 @@ class AllController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $menu = Menu::getMenu();
                 $tag = Tag::getFullTag("DESC", "DESC");
                 $dct_tag = Dictionary::getDictionaryByType("Tag");
@@ -41,8 +40,7 @@ class AllController extends Controller
                 return view('user.all.index')
                     ->with('menu', $menu)
                     ->with('tag', $tag)
-                    ->with('dct_tag', $dct_tag)
-                    ->with('greet',$greet);
+                    ->with('dct_tag', $dct_tag);
             } else {
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }

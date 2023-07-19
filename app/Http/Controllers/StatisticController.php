@@ -38,7 +38,6 @@ class StatisticController extends Controller
                 $mostRole = User::getMostUsedRole();
                 $menu = Menu::getMenu();
                 $info = Info::getAvailableInfo("statistic");
-                $greet = Generator::getGreeting(date('h'));
                 $suggestion = Feedback::getAllFeedbackSuggestion();
 
                 foreach($setting as $set){
@@ -60,8 +59,7 @@ class StatisticController extends Controller
                     ->with('menu', $menu)
                     ->with('info', $info)
                     ->with('suggestion', $suggestion)
-                    ->with('createdEvent', $createdEvent)
-                    ->with('greet',$greet);
+                    ->with('createdEvent', $createdEvent);
             } else {
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }

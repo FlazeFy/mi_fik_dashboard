@@ -609,14 +609,16 @@
                         "tag_name": tag_name,
                     });
                     //Check this append input value again!
-                    $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'>"+tag_name+"</a></div>");
+                    $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' " + 
+                        "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
                 }
             } else {
                 slct_list.push({
                     "slug_name": slug_name,
                     "tag_name": tag_name,
                 });
-                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'>"+tag_name+"</a></div>");
+                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' " +
+                    "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
             }
             document.getElementById("msg-error-all").innerHTML = "";
 

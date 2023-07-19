@@ -468,15 +468,20 @@ th{
 .link-external:hover, .link-external-white:hover{
     text-decoration: underline !important;
 }
+.triangle-container {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid white;
+}
 
-/* Check this */
 thead.thead-sticky{
     position:sticky !important; 
     top:80px; 
     background: var(--whiteColor);
 }
 
-/* Check this */
 .box-loading {
     position: fixed;
     width: 160px;

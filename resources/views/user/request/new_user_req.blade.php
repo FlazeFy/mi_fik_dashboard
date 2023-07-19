@@ -132,7 +132,7 @@
                     var accepted_at = data[i].accepted_at;
 
                     var elmt = " " +
-                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'new'" + ', null)"> ' +
+                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'new'" + ', null); slct_list = [];"> ' +
                             '<div class="row ps-3"> ' +
                                 '<div class="col-2 p-0 ps-1"> ' +
                                     '<img class="img img-fluid user-image" style="margin-top:30%;" src="' + getUserImageGeneral(img, role) + '">' +

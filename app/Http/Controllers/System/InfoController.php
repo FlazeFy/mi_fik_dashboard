@@ -32,7 +32,6 @@ class InfoController extends Controller
             if($user_id != null){
                 $type = ["Info"];
 
-                $greet = Generator::getGreeting(date('h'));
                 $info = Info::getAllInfo(session()->get('selected_filter_info_type'));
                 $dictionary = Dictionary::getDictionaryByType($type);
                 $menu = Menu::getMenu();
@@ -46,8 +45,7 @@ class InfoController extends Controller
                     ->with('info', $info)
                     ->with('menu', $menu)
                     ->with('dct', $dct)
-                    ->with('dictionary', $dictionary)
-                    ->with('greet',$greet);
+                    ->with('dictionary', $dictionary);
             } else {
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }

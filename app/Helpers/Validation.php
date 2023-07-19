@@ -256,14 +256,12 @@ class Validation
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:6|max:50|string',
                 'phone' => 'required|min:9|max:14|string',
             ]);
         } else {
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:6|max:50|string',
             ]);
         }
     }
@@ -335,7 +333,7 @@ class Validation
             'first_name' => 'required|min:2|max:35|string',
             'last_name' => 'nullable|min:2|max:35|string',
             'password' => 'required|min:6|max:50|string',
-            'valid_until' => 'required|numeric', // Make this year for 6 year after & before
+            'batch_year' => 'nullable|numeric', // Make this year for 6 year after & before
             'email' => 'required|min:11|max:75|string|email'
             // 'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
             //     if (!Str::endsWith($val, '@gmail.com')) {

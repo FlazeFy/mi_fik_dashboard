@@ -265,20 +265,6 @@ class Generator
         return $res;
     }
 
-    public static function getGreeting($datetime){
-        $hour = date('H', $datetime);
-
-        if ($hour >= 3 && $hour <= 12) {
-            $greet = "Good Morning";
-        } else if ($hour > 12 && $hour <= 17) {
-            $greet = "Good Evening";
-        } else if (($hour > 17 && $hour <= 24) || ($hour >= 0 && $hour < 3)) {
-            $greet = "Good Night";
-        }
-
-        return $greet;
-    }
-
     public static function getUUID(){
         $result = '';
         $bytes = random_bytes(16);
@@ -527,7 +513,7 @@ class Generator
     }
 
     public static function getTokenResetPass(){
-        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $res = '';
         
         $charCount = strlen($characters);

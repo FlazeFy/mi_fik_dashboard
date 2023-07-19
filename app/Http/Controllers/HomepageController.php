@@ -122,8 +122,6 @@ class HomepageController extends Controller
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("homepage");
             $dictionary = Dictionary::getDictionaryByType($type);
-            //$archive = Archive::getMyArchive($user_id, "DESC");
-            $greet = Generator::getGreeting(date('h'));
 
             if(Session::has('recatch_message') && $role == 1){
                 $count = [
@@ -166,9 +164,7 @@ class HomepageController extends Controller
                 ->with('mydraft', $mydraft)
                 ->with('dct_tag', $dct_tag)
                 ->with('dictionary', $dictionary)
-                ->with('count', $count)
-                //->with('archive', $archive)
-                ->with('greet',$greet);
+                ->with('count', $count);
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');
         }

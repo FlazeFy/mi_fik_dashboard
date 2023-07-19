@@ -43,7 +43,6 @@ class TagController extends Controller
                 $mostTag = ContentDetail::getMostUsedTag();
                 $history = History::getHistoryByType("tag");
             }
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $dct_tag = Dictionary::getDictionaryByType("Tag");
             $info = Info::getAvailableInfo("event/tag");
@@ -60,15 +59,13 @@ class TagController extends Controller
                     ->with('menu', $menu)
                     ->with('setting', $setting)
                     ->with('history', $history)
-                    ->with('info', $info)
-                    ->with('greet',$greet);
+                    ->with('info', $info);
             } else {
                 return view ('event.tag.index')
                     ->with('tag', $tag)
                     ->with('dct_tag', $dct_tag)
                     ->with('menu', $menu)
-                    ->with('info', $info)
-                    ->with('greet',$greet);
+                    ->with('info', $info);
             }
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');
