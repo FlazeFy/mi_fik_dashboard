@@ -33,7 +33,6 @@ class CalendarController extends Controller
 
             $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'), $role);       
             $tag = Tag::getFullTag("DESC", "DESC");
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
 
             if($role == 1){
@@ -56,8 +55,7 @@ class CalendarController extends Controller
                 ->with('content', $content)
                 ->with('tag', $tag)
                 ->with('mytag', $mytag)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
+                ->with('menu', $menu);
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');
         }

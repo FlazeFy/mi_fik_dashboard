@@ -131,7 +131,7 @@
 .btn-detail-config.primary{
     background:var(--primaryColor);
 }
-.btn-detail-config.danger, .hover-danger:hover{
+.btn-detail-config.danger, .hover-danger:hover, .btn-tag-selected:hover{
     background: var(--warningDarkBG);
 }
 .btn-detail-config.success{

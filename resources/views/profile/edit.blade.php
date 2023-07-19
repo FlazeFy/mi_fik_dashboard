@@ -14,8 +14,20 @@
 <div class="position-relative">
     <form class="p-2 mt-2" action="/profile/edit/profile" method="POST">
         @csrf
+        <label class="text-secondary">Username</label>
+        <h6>{{$user->username}}</h6>
+        @if(session()->get("role_key") == 1)
+            <div class="form-floating mb-3">
+                <input type="phone" class="form-control nameInput" id="phone" name="phone" value="{{$user->phone}}" oninput="validateForm(validation)" maxlength="14" required>
+                <label for="phone">Phone</label>
+                <a id="phone_msg" class="text-danger my-2" style="font-size:13px;"></a>
+            </div>
+        @endif
+        <label class="text-secondary mt-2">Email</label>
+        <h6>{{$user->email}}</h6>
+        
         @if(!$isMobile)
-            <div class="row mb-2">
+            <div class="row mb-2 mt-4">
                 <div class="col">
         @endif
 
@@ -40,35 +52,6 @@
                 </div>
             </div>
         @endif
-        
-        <div class="row mb-2">
-            <div class="col-lg-8 col-md-7 col-sm-12">
-                <div class="form-floating mb-3">
-                    <input type="username" class="form-control nameInput" id="username" name="username" value="{{$user->username}}" disabled required>
-                    <label for="username">Username</label>
-                    <a id="username_msg" class="text-danger my-2" style="font-size:13px;"></a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-5 col-sm-12"> 
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control nameInput" id="batch_year" name="batch_year" value="{{$user->batch_year}}" disabled required>
-                    <label for="batch_year">Batch Year</label>
-                    <a id="batch_year_msg" class="text-danger my-2" style="font-size:13px;"></a>
-                </div>
-            </div>
-        </div>
-        @if(session()->get("role_key") == 1)
-            <div class="form-floating mb-3">
-                <input type="phone" class="form-control nameInput" id="phone" name="phone" value="{{$user->phone}}" oninput="validateForm(validation)" maxlength="14" required>
-                <label for="phone">Phone</label>
-                <a id="phone_msg" class="text-danger my-2" style="font-size:13px;"></a>
-            </div>
-        @endif
-        <div class="form-floating mb-3">
-            <input type="email" class="form-control nameInput" id="email" name="email" value="{{$user->email}}" disabled required>
-            <label for="email">Email</label>
-            <a id="email_msg" class="text-danger my-2" style="font-size:13px;"></a>
-        </div>
         <!-- <div class="input-group form-floating mb-2 rounded">
             <input type="password" class="form-control nameInput" id="password" name="password" oninput="validateForm(validation)" value="{{$user->password}}" maxlength="50" required>
             <a type="button" class="btn btn-info py-3 rounded" onclick="viewPassword()" id="btn-toogle-pwd"><i class="fa-sharp fa-solid fa-eye-slash"></i></a>
@@ -84,7 +67,7 @@
                     @php($ctx = "edit_profile_user")
                 @endif
                 @if($in->info_location == $ctx)
-                    <div class="info-box {{$in->info_type}}">
+                    <div class="info-box {{$in->info_type}} mt-4">
                         <label><i class="fa-solid fa-circle-info"></i> {{ucfirst($in->info_type)}}</label><br>
                         <?php echo $in->info_body; ?>
                     </div>

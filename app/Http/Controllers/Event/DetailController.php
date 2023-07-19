@@ -56,7 +56,6 @@ class DetailController extends Controller
                 }
 
                 if($access){
-                    $greet = Generator::getGreeting(date('h'));
                     $menu = Menu::getMenu();
                     $tag = Tag::getFullTag("DESC", "DESC");
                     $info = Info::getAvailableInfo("event/detail");
@@ -70,8 +69,7 @@ class DetailController extends Controller
                         ->with('content', $content)
                         ->with('title', $title)
                         ->with('menu', $menu)
-                        ->with('info', $info)
-                        ->with('greet',$greet);
+                        ->with('info', $info);
                 } else {
                     return view("errors.403");
                 }

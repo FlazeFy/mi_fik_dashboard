@@ -53,13 +53,13 @@
 .user-username{
     font-size: var(--textLG);
     font-weight: 500;
-    margin: 0px;
+    margin: 0;
     color: var(--whiteColor);
 }
 .user-role{
     font-size: var(--textXMD);
     font-weight: 400;
-    margin: 0px;
+    margin: 0;
     color: var(--whiteColor);
 }
 .user-image{

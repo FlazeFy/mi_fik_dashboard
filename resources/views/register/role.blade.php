@@ -62,6 +62,12 @@
 
 <script type="text/javascript">
     var page = 1;
+    var is_shown_guide = false;
+
+    const collapsibleElement = document.getElementById('role');
+    collapsibleElement.addEventListener('shown.bs.collapse', function () {
+        loadTag();
+    });
 
     function abortTagPicker(){
         slct_role = [];
@@ -73,6 +79,22 @@
     function loadTag() {  
         $("#data-wrapper").empty();
         if(!document.getElementById("data-wrapper").hasChildNodes()){   
+            function getSecondaryAreaGuide(idx){
+                if(idx == 1){
+                    return "<div id='holder-steps-3'></div>";
+                } else {
+                    return "";
+                }
+            }
+
+            function targetGuideSecondary(idx){
+                if(idx == 1){
+                    return "class='d-inline-block mx-auto mt-3 mb-2 mb-0' id='secondary-role-area'";
+                } else {
+                    return "class='mt-3 mb-2 mb-0'"; 
+                }
+            }
+
             function fetchData(data){
                 for(var i = 0; i < data.length; i++){
                     //Attribute
@@ -126,8 +148,8 @@
 
                     } else {
                         var elmt = " " +
-                            "<div> " +
-                                "<h6 class='mt-3 mb-2 mb-0'>" + dct_name + "</h6> " +
+                            "<div> " + getSecondaryAreaGuide(i) +
+                                "<h6 "+targetGuideSecondary(i)+">" + dct_name + "</h6> " +
                                 "<div class='' id='tag-cat-holder-" + slug_name + "'></div> " +
                                 "<div class='auto-load-" + slug_name + " text-center'> " +
                                     '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
@@ -140,10 +162,10 @@
                     loadTagByCat(slug_name);
 
                     $("#data-wrapper").append(elmt);  
-
-                    if(slug_name == "general-role"){
-                        setGuidelinesModal(guidelines, is_show_all_guidelines);
-                    }
+                }
+                if(is_shown_guide == false){
+                    setGuidelinesModal(guidelines, is_show_all_guidelines);
+                    is_shown_guide = true;
                 }
             }
 

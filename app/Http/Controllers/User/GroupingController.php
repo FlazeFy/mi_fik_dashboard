@@ -32,7 +32,6 @@ class GroupingController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $info = Info::getAvailableInfo("user/group");
                 $menu = Menu::getMenu();
 
@@ -42,8 +41,7 @@ class GroupingController extends Controller
 
                 return view('user.group.index')
                     ->with('menu', $menu)
-                    ->with('info', $info)
-                    ->with('greet',$greet);
+                    ->with('info', $info);
             } else {
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }

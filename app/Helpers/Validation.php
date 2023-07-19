@@ -256,14 +256,12 @@ class Validation
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:6|max:50|string',
                 'phone' => 'required|min:9|max:14|string',
             ]);
         } else {
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:6|max:50|string',
             ]);
         }
     }

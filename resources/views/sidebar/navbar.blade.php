@@ -21,7 +21,7 @@
         <span class="sr-only">Toggle Menu</span>
     </button>
     <div class="navbar-title">
-        <h5>{{$greet}}</h5>
+        <h5 id="greet"></h5>
     </div>
     <div class="dropdown dd-profil">
         <div class="btn btn-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,7 +43,7 @@
                         @if(session()->get("role_key") == 1)
                             <h6 class="user-role">Admin</h6>
                         @else 
-                            <h6 class="user-role">Lecturer</h6>
+                            <h6 class="user-role">Lecturer / Staff</h6>
                         @endif
                     </div>
                 </div>    
@@ -123,6 +123,23 @@
     var showHistory = false;
     var pageHistory = 1;
     var pageNotif = 1;
+
+    getGreeting();
+    function getGreeting() {
+        const date = new Date();
+        const hour = date.getHours();
+        let greet;
+
+        if (hour >= 3 && hour <= 12) {
+            greet = "Good Morning";
+        } else if (hour > 12 && hour <= 18) {
+            greet = "Good Afternoon";
+        } else if ((hour > 18 && hour <= 23) || (hour >= 0 && hour < 3)) {
+            greet = "Good Night";
+        }
+
+        document.getElementById("greet").innerHTML = greet;
+    }
 
     $(document).ready(function() {
         clear();

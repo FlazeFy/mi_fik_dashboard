@@ -229,17 +229,23 @@ function getDivPosition(id) {
             top: rect.top + rect.height * 0.75 + window.pageYOffset + "px",
             left: rect.left + window.pageXOffset + "px",
             right: rect.right + window.pageXOffset + "px",
-            bottom: rect.bottom + window.pageYOffset + "px",
+            bottom: rect.bottom + rect.height * 0.75 + window.pageYOffset + "px",
             width: rect.width + "px",
-            height: rect.height + "px"
+            height: rect.height + "px",
+            top_raw : rect.top + window.pageYOffset + "px",
         };
     }
     return null;
 }
 
-function getModalResponsive(id, target){
+function getModalResponsive(id, target, dir){
     const pos = getDivPosition(target);
-    document.getElementById(id).style = "position:fixed; left: "+ pos['left'] +"; top: "+ pos['top'] +"; width: "+ pos['width'] +";";
+
+    if(dir == "bottom"){
+        document.getElementById(id).style = "position:fixed; left: "+ pos['left'] +"; top: "+ pos['top'] +"; width: "+ pos['width'] +"; min-width:250px;";
+    } else if(dir == "right"){
+        document.getElementById(id).style = "position:fixed; left: "+ pos['right'] +"; top: "+ pos['top_raw'] +"; width: "+ pos['width'] +"; min-width:250px;";
+    } 
 }
 
 function navigateGuidelines(num){
@@ -259,6 +265,24 @@ function setGuidelinesModal(conf, is_show_all){
         if(is_show_all == true){
             var numPrev = num - 1;
             return "<div class='d-flex justify-content-between mt-1 mb-2'><h6 class='mt-2'>"+num+" / "+total+"</h6><a class='btn btn-success py-1' onclick='navigateGuidelines("+ numPrev +")'>Next</a></div>";
+        } else {
+            return "";
+        }
+    }
+
+    function getGuideLinesArrow(dir){
+        if(dir == "bottom"){
+            return "top:-20px; left:10px;";
+        } else if(dir == "right"){
+            return "top:20px; left:-30px; transform: rotate(270deg);";
+        }
+    }
+
+    function getGuideImage(img){
+        if(img != null){
+            return "<img class='w-100 mb-2 rounded' src='http://127.0.0.1:8000/"+img+"'>";
+        } else {
+            return "";
         }
     }
 
@@ -266,12 +290,13 @@ function setGuidelinesModal(conf, is_show_all){
         document.getElementById(e.holder).innerHTML = "<div class='modal fade' style='var(--darkColor)' data-bs-backdrop='static' data-bs-keyboard='false' id='modal-parent-"+i+"' tabindex='-1' > " +
                 "<div class='modal-dialog border-0' id='modal-content-"+i+"'> " +
                     "<div class='modal-content border-0'> " +
-                        "<div class='triangle-container position-absolute' style='top:-20px; left:10px;'></div> " +
+                        "<div class='triangle-container position-absolute' style='"+getGuideLinesArrow(e.direction)+"'></div> " +
                         "<div class='modal-header p-3 border-0'> " +
                             "<h6 class='modal-title' id='exampleModalLabel'>"+e.title+"</h6> " +
                             "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button> " +
                         "</div> " +
                         "<div class='modal-body p-3 py-1 text-start' style='font-size:var(--textXMD);'> " +
+                            getGuideImage(e.image) +
                             e.body +
                             getGuidelinesButton(i + 1, is_show_all) +
                         "</div> " +
@@ -279,7 +304,7 @@ function setGuidelinesModal(conf, is_show_all){
                 "</div> " +
             "</div> " ;
 
-        getModalResponsive("modal-content-"+i, e.target);   
+        getModalResponsive("modal-content-"+i, e.target, e.direction);   
         
         if(is_show_all == false){
             $("#modal-parent-"+i).modal('show'); 

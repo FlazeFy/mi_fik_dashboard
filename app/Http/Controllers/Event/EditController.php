@@ -55,7 +55,6 @@ class EditController extends Controller
 
                 if($access){
                     $tag = Tag::getFullTag("DESC", "DESC");
-                    $greet = Generator::getGreeting(date('h'));
                     $dictionary = Dictionary::getDictionaryByType($type);
                     $history = History::getContentHistory($slug_name);
                     $menu = Menu::getMenu();
@@ -85,8 +84,7 @@ class EditController extends Controller
                         ->with('info', $info)
                         ->with('history', $history)
                         ->with('dct_tag', $dct_tag)
-                        ->with('dictionary', $dictionary)
-                        ->with('greet',$greet);
+                        ->with('dictionary', $dictionary);
                 } else {
                     return view("errors.403");
                 }

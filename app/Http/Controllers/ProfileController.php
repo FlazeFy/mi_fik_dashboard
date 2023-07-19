@@ -34,7 +34,6 @@ class ProfileController extends Controller
         $user_id = Generator::getUserIdV2($role);
 
         if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("profile");
 
@@ -81,8 +80,7 @@ class ProfileController extends Controller
                 ->with('faq', $faq)
                 ->with('dct_tag', $dct_tag)
                 ->with('info', $info)
-                ->with('myreq', $myreq)
-                ->with('greet',$greet);
+                ->with('myreq', $myreq);
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');
         }
