@@ -69,7 +69,7 @@
                 </div><hr>
                
                 <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
-                @include('register.role')
+                    @include('register.welcoming')
                 </div>
                 <div class="collapse" id="terms" data-bs-parent="#accordionExample">
                     @include('register.terms')
@@ -78,6 +78,13 @@
                     @include('register.profiledata')
                 </div>
                 <div class="collapse" id="role" data-bs-parent="#accordionExample">
+                    <script>
+                        let is_show_all_guidelines = true;
+                        let guidelines = [
+                            { holder: "holder-steps-1", target: "general-role-area", title: "General Role", body: "Please choose based on your academic situation right now. This role is required and you can choose one or maybe two", image: null},
+                            { holder: "holder-steps-2", target: "selected-role-area", title: "Selected Role", body: "This section will show all the role you have picked. To remove the role you can click the selected role, or reset to remove all the selected", image: null},
+                        ];
+                    </script>
                     @include('register.role')
                 </div>
                 <div class="collapse" id="ready" data-bs-parent="#accordionExample">

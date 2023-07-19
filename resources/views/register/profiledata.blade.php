@@ -74,7 +74,7 @@
             <a id="input_all_profiledata_msg" class="text-danger my-2" style="font-size:13px;"></a>
             <a id="all_user_regis_msg" class="text-danger my-2" style="font-size:13px;"></a>
 
-            <h2 class="text-primary mt-2">Profile Image</h2><br>
+            <h2 class="text-primary mt-4">Profile Image</h2><br>
             <div class="position-relative d-flex justify-content-center">
                 <div class="content-image-holder p-0 position-relative">
                     <img id="profile_image_info" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}" style="width:200px; height:200px;">
@@ -92,14 +92,17 @@
                         <a class="attach-upload-status warning" id="header-warning"></a>
                     </span>
                 </div>
-                <div class="position-absolute" style="top:0; left:0;">
+                <div class="position-absolute" style="top:0;">
                     <div id="success-image-check" style="height:300px;"></div>
                 </div>
             </div>
+            <div class='info-box tips mx-0 my-2 pt-3 d-inline-flex'>
+                <label class="fw-normal"><i class='fa-solid fa-circle-info'></i> Image's size must below 4 mb and have JPEG, JPG, PNG, or GIF format</label>
+            </div>
         </div>
+        <a class="registered-msg" id="registered-msg"></a>
     </form>
 </div>
-<a class="registered-msg" id="registered-msg" style="left:15px; bottom:15px;"></a>
 <span id="btn-next-role-holder" class="d-flex justify-content-end">
     <button class="btn-next-steps locked" id="btn-next-profile-role" onclick="warn('profiledata')"><i class="fa-solid fa-lock"></i> Locked</button>
 </span>
@@ -113,7 +116,6 @@
     var fname = document.getElementById("first_name");
     var lname = document.getElementById("last_name");
     var pass = document.getElementById("password");
-    var until = document.getElementById("valid_until");
     var btn_reset_image = document.getElementById("reset_image_holder");
     var img_url = document.getElementById("profile_image_url");
     var img_src = document.getElementById('profile_image_info');
@@ -302,7 +304,6 @@
                 fname.disabled = true;
                 lname.disabled = true;
                 pass.disabled = true;
-                until.disabled = true;
                 btn_reset_image.innerHTML = "";
                 btn_add_image.innerHTML = "";
                 document.getElementById("reset-uname-holder").innerHTML = "";

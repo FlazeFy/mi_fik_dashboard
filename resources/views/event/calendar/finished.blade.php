@@ -80,6 +80,14 @@
                 $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
                 return;
             } else {
+                function getContentView(total_views, uname){
+                    if(uname == "You" || <?= session()->get("role_key") ?> == 1){
+                        return "<div class='event-views' style='left:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> ";
+                    } else {
+                        return "<div></div>";
+                    }
+                }
+
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
@@ -98,13 +106,16 @@
                     var total_views = data[i].total_views;
                     var created_at = data[i].created_at;
 
+                    var usernameText = getUsername(admin_username, user_username);
+
                     var elmt = " " +
                         "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
                             "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
                             '<div class="card-header header-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), ' + getContentImage(content_image) + ';"></div> ' +
-                                "<div class='event-created-at'>" + getDateToContext(created_at, "full") + "</div> " +
-                                "<div class='event-views' style='left:10px;'><i class='fa-solid fa-eye'></i> " + total_views + "</div> " +
-                                getEventStatus(content_date_start, content_date_end) +
+                                "<div class='d-flex justify-content-between position-absolute px-3 w-100' style='top:10px;'> " +
+                                    getContentView(total_views, usernameText) +
+                                    getEventStatus(content_date_start, content_date_end) +
+                                "</div> " +
                                 "<div class='card-body event-body p-2 w-100'> " +
                                     "<div class='event-heading'> " +
                                         "<div class='d-inline-block position-relative'> " +
@@ -112,7 +123,7 @@
                                         "</div> " +
                                         "<div class='d-inline-block position-relative w-75'> " +
                                             "<h6 class='event-title'>" + ucEachWord(content_title) + "</h6> " +
-                                            "<h6 class='event-subtitle'>" + getUsername(admin_username, user_username) + "</h6> " +
+                                            "<h6 class='event-subtitle'>" + usernameText + "</h6> " +
                                         "</div> " +
                                     "</div> " +
                                     "<div style='height:60px;'> " +

@@ -797,7 +797,7 @@ class Commands extends Controller
                             'last_name' => $request->last_name,  
                             'role' => null, 
                             'image_url' => $imageUrl, 
-                            'valid_until' => $request->valid_until, 
+                            'batch_year' => $request->batch_year, 
                             'created_at' => date("Y-m-d H:i:s"), 
                             'updated_at' => null, 
                             'updated_by' => null, 

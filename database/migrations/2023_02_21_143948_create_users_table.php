@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('last_name', 35)->nullable();
             $table->longText('role')->nullable();
             $table->string('image_url', 255)->nullable();
-            $table->year('valid_until')->nullable();
+            $table->year('batch_year')->nullable();
 
             $table->dateTime('created_at', $precision = 0);
             $table->dateTime('updated_at', $precision = 0)->nullable();

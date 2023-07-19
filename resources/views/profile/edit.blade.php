@@ -51,9 +51,9 @@
             </div>
             <div class="col-lg-4 col-md-5 col-sm-12"> 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control nameInput" id="valid_until" name="valid_until" value="{{$user->valid_until}}" disabled required>
-                    <label for="valid_until">Valid Until</label>
-                    <a id="valid_until_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                    <input type="text" class="form-control nameInput" id="batch_year" name="batch_year" value="{{$user->batch_year}}" disabled required>
+                    <label for="batch_year">Batch Year</label>
+                    <a id="batch_year_msg" class="text-danger my-2" style="font-size:13px;"></a>
                 </div>
             </div>
         </div>
