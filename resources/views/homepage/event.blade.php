@@ -1,4 +1,4 @@
-<div class="container mt-3 p-0">
+<div class="mt-3 p-0">
     <div class="event-holder row mt-3" >        
         <div class="row p-0 m-0" id="data-wrapper"></div>
         <div id="empty_item_holder"></div>

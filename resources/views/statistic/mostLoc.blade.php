@@ -1,6 +1,6 @@
 <div class="position-relative">
     <h5 class="text-secondary fw-bold">Most Used Location</h5>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-MOL" data-bs-toggle="dropdown" aria-haspopup="true"
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button" id="section-more-MOL" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
@@ -16,7 +16,6 @@
             @endforeach
         </span>
         <a class="dropdown-item" data-bs-target="#mlChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
     @if(count($mostLoc) != 0)
         <div id="MOL_pie_chart"></div>

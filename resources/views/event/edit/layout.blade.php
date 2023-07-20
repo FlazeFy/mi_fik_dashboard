@@ -38,25 +38,6 @@
         color: var(--primaryColor) !important;
         text-decoration:none;
     }
-    .archive-holder{
-        display: flex;
-        flex-direction: column;
-        height: 300px;
-        padding-inline: 10px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-    .archive-box{
-        padding: 10px;
-        margin-top: 14px;
-        width: 200px !important;
-    }
-    .archive-count{
-        font-size: 12px;
-        font-weight: 400;
-    }
     .dropdown-menu{
         border: none;
         margin: 10px 0 0 0 !important; 
@@ -65,44 +46,6 @@
     }
     .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
         background: none !important;
-    }
-
-    .btn.archive-box{
-        position: relative;
-    }
-    .btn.archive-box .icon-holder{
-        display: none;
-        color: var(--whiteColor);
-        position: absolute;
-        top: 20px;
-        left: -32.5px; 
-    }
-    .btn.archive-box:hover{
-        border-left: 50px solid var(--successBG);
-        transition: all .30s linear;
-    }
-    .btn.archive-box:hover .icon-holder{
-        display: inline;
-    }
-    .btn.archive-box.active{
-        color: var(--whiteColor);
-        background: var(--primaryColor);
-        border: none !important;
-    }
-    .btn.archive-box.active h6{
-        color: var(--whiteColor) !important;
-    }
-    .btn.archive-box.active:hover{
-        border-left: 50px solid var(--warningBG) !important;
-        transition: all .30s linear;
-    }
-    .btn-add-archive{
-        margin-top: 10px;
-        font-size: 13px;
-        color: var(--darkColor);
-    }
-    .btn-add-archive:hover{
-        color: var(--primaryColor);
     }
   
     ::-webkit-scrollbar {
@@ -133,7 +76,7 @@
             </div>             
         </div>
         <div class="col-lg-4">
-            <h6 class="text-primary mt-3">Tag</h6>
+            <h6 class="text-primary mt-3">Tags</h6>
                 @include('event.edit.tag.show')
                 @include('event.edit.tag.add')
             <hr>

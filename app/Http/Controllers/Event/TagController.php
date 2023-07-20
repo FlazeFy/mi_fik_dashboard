@@ -252,7 +252,7 @@ class TagController extends Controller
                 } else if($success > 0 && $failed > 0){
                     return redirect()->back()->with('success_message', $success." Tag has been created and ".$failed." Tag has failed to created");
                 } else {
-                    return redirect()->back()->with('failed_message', $failed." Tag has failed to created");
+                    return redirect()->back()->with('failed_message', $failed." Tag has failed to created, Please use unique name");
                 }
             } else {
                 $data = new Request();

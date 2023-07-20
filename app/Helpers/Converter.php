@@ -3,9 +3,6 @@ namespace App\Helpers;
 
 class Converter
 {
-    // Convert selected tag in JS format to json format.
-    // In : [\"{"slug_name":"if_lab", "tag_name":"IF-Lab"}"\]
-    // Out : [{"slug_name":"if_lab", "tag_name":"IF-Lab"}]
     public static function getTag($tag_raw){
         if($tag_raw != null){
             //Initial variable
@@ -28,10 +25,6 @@ class Converter
         return $tag;
     }
 
-    //Combine date and time
-    // In-1 : 2022-03-01  
-    // In-2 : 01:30  
-    // Out : 2022-03-01 01:30
     public static function getFullDate($date, $time){
         if($date && $time){
             return date("Y-m-d H:i", strtotime($date."".$time));

@@ -165,7 +165,7 @@
                 if(role == 1){
                     var elmt = " " +
                         '<div class="position-relative"> ' +
-                            '<button class="btn btn-icon-rounded success position-absolute" style="left:0px;" onclick="getInputHelpCat('+"'"+type+"'"+')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
+                            '<button class="btn btn-icon-rounded success position-absolute" style="left:0;" onclick="getInputHelpCat('+"'"+type+"'"+')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
                         '</div>';
                     $("#category_holder-"+type.replace(" ", "")).append(elmt);
                 }
@@ -185,16 +185,16 @@
                     if(i == data.length - 1 && role == 1){
                         var elmt = " " +
                         '<div class="position-relative"> ' +
-                            '<button class="btn btn-icon-rounded success position-absolute" style="left:0px;" onclick="getInputHelpCat(' + "'" + type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
+                            '<button class="btn btn-icon-rounded success position-absolute" style="left:0;" onclick="getInputHelpCat(' + "'" + type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
                             '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("")+id +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
-                                ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
+                                ', ' + "'" + tidyUpQuotes(help_body) + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
                                 ucEachWord(help_category) + 
                             '</button> ' +
                         '</div>';
                     } else {
                         var elmt = " " +
                         '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("")+id +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
-                            ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
+                            ', ' + "'" + tidyUpQuotes(help_body) + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
                             ucEachWord(help_category) + 
                         '</button>';
                     }

@@ -4,6 +4,7 @@
 
 <div class="p-0 m-0">
     <!--Get event tag-->
+    <h6 class="mt-2">Tags</h6>
     @if($c->content_tag)
         @php($tag = $c->content_tag)
         @foreach($tag as $tg)

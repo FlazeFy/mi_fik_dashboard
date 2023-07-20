@@ -59,6 +59,10 @@
 
 /* Mobile style */
 @media (max-width: 767px) {
+    #content {
+        padding: 0 !important;
+    }
+    
     p, p span, h6 span, a.from-them-clock, .from-them, a.from-me-clock, .from-me, .input-group-text {
         font-size: var(--textSM) !important;
     }
@@ -86,10 +90,6 @@
     }
     .img.nodata-icon {
         height: 160px !important;
-    }
-
-    .btn-config-holder{
-        display: inline-block !important;
     }
 
     .modal {
@@ -196,11 +196,64 @@
         top: calc(var(--spaceMD) + 2px);
         right: calc(0px - var(--spaceSM));
     }
+
+    .err-msg {
+        font-size: var(--textSM);
+    }
 }
 
 /* Tablet style */
 @media (min-width: 768px) and (max-width: 1023px) {
-    
+    #content {
+        padding: 0 !important;
+    }
+
+    .event-heading {
+        position: absolute;
+        top: 35px;
+        width: 100%;
+    }
+    .event-heading .user-image-content {
+        position: absolute;
+        top: -5px;
+        left: 5px;
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .event-heading .event-title, .event-heading .event-subtitle {
+        position: absolute;
+        top: 0;
+        left: 50px;
+    }
+    .event-body .event-desc {
+        position: absolute;
+        top: 50px;
+    }
+    .event-body .event-properties {
+        position: absolute;
+        bottom: 5px !important;
+    }
+    .modal-xl {
+        width: 100% !important;
+    }
+    .content-body {
+        padding-inline: var(--spaceMD);
+    }
+}
+
+/* Mobile & Tablet style */
+@media screen and (max-width: 1023px) {
+    .user-image-content{ 
+        position: absolute;
+        margin-top: -37.5px;
+        margin-left: 35%;
+    }
+    .home-content {
+        padding: var(--spaceMini) var(--spaceMD) !important;
+    }
+    .event-navigator {
+        padding-inline: var(--spaceMD);
+    }
 }
 
 body{
@@ -274,6 +327,7 @@ th{
     height: 100vh;
     width: 100%;
     overflow: auto;
+    padding: var(--spaceLG);
 }
 .content-title{
     font-weight: 500;
@@ -298,6 +352,13 @@ th{
     max-width: 1080px;
     display: block;
     margin-inline: auto;
+}
+.home-content {
+    padding: var(--spaceXSM) 0;
+}
+.err-msg {
+    color: var(--warningBG);
+    font-size: var(--textMD);
 }
 
 .control-holder{
@@ -366,6 +427,11 @@ th{
     background: var(--successBG);
     color: var(--whiteColor);
     border: 1.5px solid var(--successBG);
+}
+
+.image-msg-md {
+    width: 70%;
+    max-width: 220px;
 }
 
 /* Drop down */

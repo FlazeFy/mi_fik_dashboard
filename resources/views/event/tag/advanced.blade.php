@@ -6,7 +6,7 @@
 
 <div class="position-relative" style="min-height:25vh;">
     <h5 class="section-title">Create New Tag (Advanced)</span></h5>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-import-tag" data-bs-toggle="dropdown" aria-haspopup="true"
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button" id="section-more-import-tag" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
@@ -33,9 +33,9 @@
         <img class="img w-50 d-block mx-auto" src="{{asset('assets/import.png')}}">
         <label>Supported file type is <b>CSV</b></label>
         <input type="file" id="fileInput" accept=".csv" class="d-none" oninput="importTagFile()">
-        <p class="text-danger my-2" id="err-import-tag-msg"></p>
         <label for="fileInput" class="btn btn-success py-1 ms-1 rounded-pill"><i class="fa-solid fa-cloud"></i> Upload File</label>
     </div>
+    <p class="text-danger my-2" id="err-import-tag-msg"></p>
     <span id="success-check"></span>
 
     <div class="modal fade" id="addTagAdvanced" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -84,7 +84,7 @@
                 var success = 0;
                 var failed = 0;
 
-                if(rowData > 0 && rowData < 100){ // Check this
+                if(rowData.length > 0 && rowData.length < 100){
                     for (var row = 1; row < rowData.length; row++) {
                         rowColData = rowData[row].split(',');
 
@@ -97,8 +97,15 @@
                             var tag_col = rowColData[col].split(';');
                             var is_success = true;
                             var msg = "";
+                            var tag_name = "";
+                            var tag_desc = "";
 
-                            var tag_name = tag_col[0].trim();
+                            if(tag_col[0] != null){
+                                tag_name = tag_col[0].trim();
+                            } else {
+                                tag_name = tag_col[0];
+                            }
+
                             if(tag_name != "" && tag_name.length < validation[0]['len']){
                                 $("#imported-tag-holder").append(' ' +
                                     '<div class="col-lg-4">' +
@@ -117,7 +124,12 @@
                                 is_success = false;
                             }
                         
-                            var tag_desc = tag_col[1].trim();
+                            if(tag_col[1] != null){
+                                tag_desc = tag_col[1].trim();
+                            } else {
+                                ttag_desc = tag_col[1];
+                            }
+
                             if(tag_desc.length < validation[1]['len'] && is_success == true){
                                 $("#imported-tag-holder").append(' ' +
                                     '<div class="col-lg-4">' +
@@ -159,7 +171,7 @@
                                 $("#imported-tag-holder").append(' ' + 
                                     '<div class="col-12 py-3"> ' +
                                         '<h6 class="text-dark">Failed to import at line '+row+' </h6>' +
-                                        '<a class="text-danger"><i class="fa-solid fa-triangle-exclamation"></i> '+msg+'</a>' +
+                                        '<a class="text-danger err-msg"><i class="fa-solid fa-triangle-exclamation"></i> '+msg+'</a>' +
                                     '</div><hr>');
                                 failed++;
                             }

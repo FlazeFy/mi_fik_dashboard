@@ -23,16 +23,16 @@
                 @csrf
                 @foreach($about as $ab)
                     @if(!$isMobile)
-                        <a class="last-updated" style="top:20px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_{{$ab->id}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                        <a class="last-updated" style="top:20px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_{{str_replace('-','_', $ab->id)}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @else
                         <a class="last-updated" style="top:0;"><span class="text-primary">Last Updated :</span></a>
-                        <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_{{$ab->id}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                        <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_{{str_replace('-','_', $ab->id)}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @endif
                     <script>
-                        const date_holder_<?= $ab->id; ?> = document.getElementById('date_holder_{{$ab->id}}');
+                        const date_holder_<?= str_replace("-","_", $ab->id); ?> = document.getElementById("date_holder_{{str_replace('-','_', $ab->id)}}");
 
-                        const date = new Date(date_holder_<?= $ab->id; ?>.textContent);
-                        date_holder_<?= $ab->id; ?>.textContent = getDateToContext(date, "datetime");
+                        const date = new Date(date_holder_<?= str_replace("-","_", $ab->id); ?>.textContent);
+                        date_holder_<?= str_replace("-","_", $ab->id); ?>.textContent = getDateToContext(date, "datetime");
                     </script>
                 @endforeach
                 <input name="help_body" id="about_body" hidden>

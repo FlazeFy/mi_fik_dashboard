@@ -408,4 +408,8 @@
     .btn-danger, .btn-success, .btn-info {
         font-size: var(--textXMD) !important;
     }
+    .btn-msg {
+        bottom: 60px;
+        right: 30px;
+    }
 }
