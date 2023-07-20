@@ -18,7 +18,7 @@
             left: 'prev,next today',
             center: 'title',
             //right: 'dayGridMonth'
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            right: 'dayGridMonth,timeGridDay'
         },
         selectable: true,
         navLinks: true, 

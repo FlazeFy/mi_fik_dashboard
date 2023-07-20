@@ -25,7 +25,6 @@ class AboutController extends Controller
         $user_id = Generator::getUserIdV2($role);
 
         if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $about = Help::getAboutApp();
             $helplist = Help::getHelpListNType();
@@ -49,14 +48,12 @@ class AboutController extends Controller
                     ->with('h_about', $history_about)
                     ->with('h_contact', $history_contact)
                     ->with('helplist', $helplist)
-                    ->with('greet',$greet)
                     ->with('ctc',$ctc);      
             } else {
                 return view ('about.index')
                     ->with('menu', $menu)
                     ->with('about', $about)
                     ->with('helplist', $helplist)
-                    ->with('greet',$greet)
                     ->with('ctc',$ctc);   
             }   
         } else {

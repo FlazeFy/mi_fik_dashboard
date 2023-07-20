@@ -1,3 +1,10 @@
+<style>
+    .form-floating {
+        display: block;
+        margin-inline: auto;
+    }
+</style>
+
 <script>
     let validation = [
         { id: "username", req: true, len: 35 },
@@ -5,26 +12,23 @@
     ];
     var val1 = false; 
 </script>
-<div>
+
+<div class="text-center" style="min-height:50vh;">
     <h4 class="text-primary">Validate your account</h4>
     <form class="d-inline" id="form-check-user">
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="form-floating mb-1">
-                    <input type="text" class="form-control nameInput" id="username" name="username" onchange="validateForm(validation)" maxlength="35" required>
-                    <label for="username">Username</label>
-                    <a id="username_msg" class="text-danger my-2" style="font-size:13px;"></a>
-                </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-sm-12">
-                <div class="form-floating mb-1">
-                    <input type="email" class="form-control nameInput" id="email" name="email" onchange="validateForm(validation)" maxlength="75" required>
-                    <label for="email">Email</label>
-                    <a id="email_msg" class="text-danger my-2" style="font-size:13px;"></a>
-                </div>
-            </div>
+        <div class="form-floating mb-2">
+            <input type="text" class="form-control nameInput" id="username" name="username" onchange="validateForm(validation)" maxlength="35" required>
+            <label for="username">Username</label>
+            <a id="username_msg" class="text-danger my-2" style="font-size:13px;"></a>
+        </div>
+    
+        <div class="form-floating mb-2">
+            <input type="email" class="form-control nameInput" id="email" name="email" onchange="validateForm(validation)" maxlength="75" required>
+            <label for="email">Email</label>
+            <a id="email_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
     </form>
+
     <div id="all_user_check_msg" class="text-danger my-2" style="font-size:13px;"></div>
     <div id="success-check"></div>
     <div id="prevent-validation">
@@ -33,11 +37,11 @@
     </div>
     <div id="success-validate-section" class="d-none">
         <img class="img img-fluid d-block mx-auto mt-3" style="width: 240px;" src="{{'/assets/send_email.png'}}">
-        <h6 class="text-center">We've send you password recovery token to your email. Please check it and move to next step</h6>
+        <h6 class="text-center mb-3">We've send you password recovery token to your email. Please check it and move to next step</h6>
     </div>
-    <a class="btn btn-primary d-block mx-auto" onclick="check_user()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>
+    <a class="btn btn-primary d-block mx-auto mt-4" onclick="check_user()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>
 </div>
-<span id="btn-next-validate-holder">
+<span id="btn-next-validate-holder" class="d-flex justify-content-end mt-3">
     <button class="btn-next-steps locked" id="btn-next-validate" onclick="warn('recovery')"><i class="fa-solid fa-lock"></i> Locked</button>
 </span>
 

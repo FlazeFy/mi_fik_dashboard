@@ -54,37 +54,27 @@
         ?>  
         @php($isMobile = Generator::isMobileDevice())   
         
-        <div class="d-block mx-auto p-0 pt-5" style="max-width:1360px;">
+        <div class="d-block mx-auto @if(!$isMobile) p-0 pt-5 @else p-3 pt-3 @endif" style="max-width:1080px; width:100%;">
             <div class="accordion" id="accordionExample">
-                <div class="row w-100">
-                    <div class="col-lg-4 col-md-5 col-sm-12">
+                <div class="d-flex justify-content-between">
+                    <div>
                         <a class="btn btn-close-register" href="/"><i class="fa-solid fa-arrow-left"></i> Back to Sign In</a>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-recovery">
-                            Want to recover password?
-                            <h6 class="text-secondary">Before begin, let us validate your username and email</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-validate">
-                            Validate and Change 
-                            <h6 class="text-secondary">Submit password recovery token that has send to your email. And if succes, you can create new password</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-finish">
-                            Final
-                            <h6 class="text-secondary">Successfully, you can back to login and sign-in again using new password</h6>
-                        </button>
                     </div>
-                    <div class="col-lg-8 col-md-7 col-sm-12 p-5">
-                        <div class="section-register">
-                            <div class="collapse show" id="recovery" data-bs-parent="#accordionExample">
-                                @include('forget.recovery')
-                            </div>
-                            <div class="collapse" id="validate" data-bs-parent="#accordionExample">
-                                @include('forget.validate')
-                            </div>
-                            <div class="collapse" id="finish" data-bs-parent="#accordionExample">
-                                @include('forget.finish')
-                            </div>
-                        </div>
+                    <div>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-recovery"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-validate"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-finish"></button>
                     </div>
+                </div><hr>
+
+                <div class="collapse show" id="recovery" data-bs-parent="#accordionExample">
+                    @include('forget.recovery')
+                </div>
+                <div class="collapse" id="validate" data-bs-parent="#accordionExample">
+                    @include('forget.validate')
+                </div>
+                <div class="collapse" id="finish" data-bs-parent="#accordionExample">
+                    @include('forget.finish')
                 </div>
             </div>
         </div>
@@ -131,13 +121,13 @@
                 if(now == "recovery"){
                     now = "validate";
                     btn_steps_recovery.setAttribute('data-bs-target', '#recovery');
-                    btn_steps_recovery.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_recovery.style = "background: var(--successBG);";
                 } else if(now == "validate"){
                     now = "finish";
                     btn_steps_validate.setAttribute('data-bs-target', '#validate');
-                    btn_steps_validate.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_validate.style = "background: var(--successBG);";
                     btn_steps_finish.setAttribute('data-bs-target', '#finish');
-                    btn_steps_finish.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_finish.style = "background: var(--successBG);";
                 }
             }
 

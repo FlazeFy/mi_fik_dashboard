@@ -291,19 +291,19 @@ th{
     border-radius: var(--roundedMini);
 }
 .content-add:hover, .content-more:hover{
-    color:var(--whiteColor);
-    background:var(--primaryColor);
+    color: var(--whiteColor);
+    background: var(--primaryColor);
 }           
 .content-body{
-    max-width:1080px;
-    display:block;
-    margin-inline:auto;
+    max-width: 1080px;
+    display: block;
+    margin-inline: auto;
 }
 
 .control-holder{
     position: absolute;
     right: 10px;
-    top:-5px;
+    top: -5px;
 }
 .skeleton-box {
     display: inline-block;
@@ -468,15 +468,20 @@ th{
 .link-external:hover, .link-external-white:hover{
     text-decoration: underline !important;
 }
+.triangle-container {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid white;
+}
 
-/* Check this */
 thead.thead-sticky{
     position:sticky !important; 
     top:80px; 
     background: var(--whiteColor);
 }
 
-/* Check this */
 .box-loading {
     position: fixed;
     width: 160px;

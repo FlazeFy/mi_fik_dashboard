@@ -33,6 +33,78 @@
 
     infinteLoadMoreUser(pageUser);
 
+    function getAccUser(slug, username, fullname){  
+        isFormSubmitted = true;
+        $("#acc-user-holder-"+slug).html('<div class="modal fade" id="acc_user_'+slug+'" tabindex="-1" aria-labelledby="accLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"> ' +
+            '<div class="modal-dialog"> ' +
+                '<div class="modal-content"> ' +
+                '<form action="/user/request/manage_acc" method="POST"> ' +
+                    '@csrf ' +
+                    '<input hidden name="username" value="'+username+'"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="accLabel">Accept New User</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to give access to <span class="text-primary fw-bold">' + fullname + '</span></h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-success">Accept</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</form> ' +
+            '</div> ' +
+        '</div>');
+    }
+
+    function getSuspendUser(slug, username, fullname){    
+        isFormSubmitted = true;
+        $("#suspend-user-holder-"+slug).html('<div class="modal fade" id="suspend_user_'+slug+'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="susLabel" aria-hidden="true"> ' +
+            '<div class="modal-dialog"> ' +
+                '<div class="modal-content"> ' +
+                '<form action="/user/request/manage_suspend" method="POST"> ' +
+                    '@csrf ' +
+                    '<input hidden name="username" value="'+username+'"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="susLabel">Suspend User</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to suspend <span class="text-danger fw-bold">' + fullname + '</span> account</h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-danger">Suspend</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</form> ' +
+            '</div> ' +
+        '</div>');
+    }
+
+    function getRecoverUser(slug, username, fullname){    
+        isFormSubmitted = true;
+        $("#recover-user-holder-"+slug).html('<div class="modal fade" id="recover_user_'+slug+'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="recLabel" aria-hidden="true"> ' +
+            '<div class="modal-dialog"> ' +
+                '<div class="modal-content"> ' +
+                '<form action="/user/request/manage_recover" method="POST"> ' +
+                    '@csrf ' +
+                    '<input hidden name="username" value="'+username+'"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="recLabel">Recover User</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to recover <span class="text-primary fw-bold">' + fullname + '</span> account</h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-submit">Recover</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</form> ' +
+            '</div> ' +
+        '</div>');
+    }
+
     function infinteLoadMoreUser(page) {  
         pageUser = page;
         function getFind(filter, find){
@@ -236,6 +308,7 @@
 
                 for(var i = 0; i < data.length; i++){
                     //Attribute
+                    var id = data[i].id;
                     var username = data[i].username;
                     var fullname = data[i].full_name;
                     var createdAt = data[i].created_at;
@@ -263,7 +336,7 @@
                                 getRole(role) +
                             '</td> ' +
                             '<td>'  +
-                                '<button class="btn btn-info" onclick="infinteLoadMoreTag(1, ' + "'" + unamepreg + "'" + '); loadUserRole(' + "'" + unamepreg + "'" + ', ' + "'" + username + "'" + ');" data-bs-toggle="modal" data-bs-target="#manageuser-' + unamepreg + '"><i class="fa-solid fa-gear"></i></button> ' +
+                                '<button class="btn btn-info mb-1 w-100" onclick="infinteLoadMoreTag(1, ' + "'" + unamepreg + "'" + '); loadUserRole(' + "'" + unamepreg + "'" + ', ' + "'" + username + "'" + ');" data-bs-toggle="modal" data-bs-target="#manageuser-' + unamepreg + '"><i class="fa-solid fa-gear"></i></button> ' +
                                 '<div class="position-relative"> ' +
                                     '<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="manageuser-' + unamepreg + '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"> ' +
                                         '<div class="modal-dialog modal-lg"> ' +
@@ -318,10 +391,22 @@
                                         '</div> ' +
                                     '</div> ' +
                                 '</div> ' +
+                                '<span id="acc-user-holder-'+unamepreg+'"></span> ' +
+                                '<span id="suspend-user-holder-'+unamepreg+'"></span> ' +
+                                '<span id="recover-user-holder-'+unamepreg+'"></span> ' +
+                                getLifeButton(accStatus, accDate, "new", id, unamepreg, fullname, 'w-100') +
                             '</td> ' +
                         '</tr> ';
 
                     $("#user-list-holder").prepend(elmt);
+
+                    if(!accStatus && !accDate){
+                        getAccUser(unamepreg, username, fullname);
+                    } else if(accStatus && accDate){ 
+                        getSuspendUser(unamepreg, username, fullname);
+                    } else if(!accStatus && accDate){ 
+                        getRecoverUser(unamepreg, username, fullname);
+                    }
                 }   
             }
 
@@ -524,14 +609,16 @@
                         "tag_name": tag_name,
                     });
                     //Check this append input value again!
-                    $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'>"+tag_name+"</a></div>");
+                    $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' " + 
+                        "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
                 }
             } else {
                 slct_list.push({
                     "slug_name": slug_name,
                     "tag_name": tag_name,
                 });
-                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'>"+tag_name+"</a></div>");
+                $("#slct_holder_"+username).append("<div class='d-inline' id='tagger_"+slug_name+"'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' " +
+                    "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+username+'"'+", "+is_added+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
             }
             document.getElementById("msg-error-all").innerHTML = "";
 

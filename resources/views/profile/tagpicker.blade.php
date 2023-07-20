@@ -250,7 +250,8 @@
                     "type": type
                 });
                 //Check this append input value again!
-                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'> " + 
+                    "<a class='btn btn-tag-selected "+bg+"' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
             }
         } else {
             slct_list.push({
@@ -258,7 +259,8 @@
                 "tag_name": tag_name,
                 "type": type
             });
-            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'>"+tag_name+"</a></div>");
+            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'> " + 
+                "<a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
         }
 
         getButtonSubmitTag();

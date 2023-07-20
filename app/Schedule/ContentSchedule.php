@@ -70,12 +70,12 @@ class ContentSchedule
             $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
             $messaging = $factory->createMessaging();
 
-            $content = ContentHeader::select("contents_headers.id","content_title","content_tag","content_date_start","content_date_end","content_reminder")
+            $content = ContentHeader::select("contents_headers.id","slug_name","content_title","content_tag","content_date_start","content_date_end","content_reminder")
                 ->join("contents_details","contents_headers.id","=","contents_details.content_id")
                 ->orderBy('contents_headers.content_date_start', "DESC")
                 ->where('is_draft', 0)
                 ->where('content_reminder','!=','reminder_none')
-                ->whereRaw('(DATEDIFF(content_date_start, now()) * -1) < 3') // Give max range based on reminder opt
+                ->whereRaw("TIMESTAMPDIFF(HOUR,content_date_start, '".date("Y-m-d H:i:s")."') <= 36") // Give max range based on reminder opt
                 ->whereNull('contents_headers.deleted_at')
                 ->whereNotNull('content_tag')
                 ->get();
@@ -97,20 +97,19 @@ class ContentSchedule
                 $content_start = new DateTime($ct->content_date_start);
                 $diff = $content_start->diff($now);
                 $hours = $diff->h;
-                $hours = $hours + ($diff -> days * 24) - 7;
                 $is_remind = false;
 
-                if($hours >= 1 && $hours < 73){
-                    if($ct->content_reminder == "reminder_3_hour_before" && $hours < 3){
+                if($hours >= 1 && $hours <= 73){
+                    if($ct->content_reminder == "reminder_1_hour_before" && $hours <= 2){
                         $is_remind = true;
                         $threeHr++;
-                    } else if($ct->content_reminder == "reminder_1_hour_before" && $hours < 2){
+                    } else if($ct->content_reminder == "reminder_3_hour_before" && $hours <= 4){
                         $is_remind = true;
                         $oneHr++;
-                    } else if($ct->content_reminder == "reminder_1_day_before" && $hours < 24){
+                    } else if($ct->content_reminder == "reminder_1_day_before" && $hours <= 25){
                         $is_remind = true;
                         $oneDay++;
-                    } else if($ct->content_reminder == "reminder_3_day_before" && $hours < 73){
+                    } else if($ct->content_reminder == "reminder_3_day_before" && $hours <= 73){
                         $is_remind = true;
                         $threeDay++;
                     }
@@ -153,7 +152,12 @@ class ContentSchedule
                                                     ->withBody($notif_body)
                                                 )
                                                 ->withData([
-                                                    'by' => 'person'
+                                                    'slug' => $ct->slug_name,
+                                                    'module' => 'reminder',
+                                                    'type' => 'event',
+                                                    'content_title' => $ct->content_title,
+                                                    'content_date_start' => $ct->content_date_start,
+                                                    'content' => null
                                                 ]);
                                             $response = $messaging->send($message);
                                             $userReminded++;

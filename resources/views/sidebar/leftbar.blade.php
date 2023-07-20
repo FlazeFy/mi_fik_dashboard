@@ -8,10 +8,9 @@
                 style='display: block; margin-left: auto; margin-right: auto;'>
         </div>
         <div class="col-8 pt-2">
-            <h1>Mi-FIK</h1>
+            <h1>MI-FIK</h1>
         </div>
     </div>
-    <!--Main Navbar.-->
     <div class="accordion" id="accordionExample">
         <ul class="list-unstyled components my-5">
             @php($group = false)
@@ -77,8 +76,5 @@
                 @php($i++)
             @endforeach
         </ul>
-        <!-- <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button> -->
-        <!-- <button class="btn btn-transparent text-danger fw-bolder position-absolute" style='bottom:20px; right:10px;' title="Sign Out"
-            data-bs-toggle="modal" data-bs-target="#sign-out-modal"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button> -->
     </div>
 </nav>

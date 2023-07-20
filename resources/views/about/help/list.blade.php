@@ -186,14 +186,14 @@
                         var elmt = " " +
                         '<div class="position-relative"> ' +
                             '<button class="btn btn-icon-rounded success position-absolute" style="left:0px;" onclick="getInputHelpCat(' + "'" + type + "'" +')" title="Add new category"><i class="fa-solid fa-plus"></i></button> ' +
-                            '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("") +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
+                            '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("")+id +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
                                 ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
                                 ucEachWord(help_category) + 
                             '</button> ' +
                         '</div>';
                     } else {
                         var elmt = " " +
-                        '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("") +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
+                        '<button class="btn btn-category-help" id="'+ help_category.split(" ").join("")+id +'" onclick="loadDetailDesc(' + "'" + help_category + "'" + 
                             ', ' + "'" + help_body + "'" + ', ' + "'" + username + "'" + ', ' + "'" + updated_at + "'" + ', ' + "'" + id + "'" + ')"> ' +
                             ucEachWord(help_category) + 
                         '</button>';
@@ -240,7 +240,7 @@
     });
 
     function loadDetailDesc(cat, desc, user, updated, id){
-        var cat2 = cat.split(" ").join("");
+        var cat2 = cat.split(" ").join("")+id;
         setSelectedBtnStyle("background: var(--primaryColor); color: var(--whiteColor); border-radius: 10px;", "btn-category-help", " ", cat2);
         <?php
             if(session()->get('role_key') == 1 && session()->get('toogle_edit_help') == "true"){

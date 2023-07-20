@@ -22,18 +22,16 @@
     font-size: var(--textXMD);
 }
 .event-views{
-    position: absolute;
-    top: 7.5px;
     color: var(--whiteColor) !important;
     font-weight: 500;
     font-size: var(--textXMD);
 }
 .event-status{
-    position: absolute;
-    top: 7.5px;
-    left: 70px;
     font-weight: 500;
     font-size: var(--textXMD);
+    color: var(--hoverBG);
+    padding: calc(var(--spaceMini) * 0.75) var(--spaceXSM);
+    border-radius: var(--roundedSM);
 }
 .event-box:hover{
     transform: scale(1.035);

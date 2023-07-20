@@ -110,9 +110,7 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
     Route::delete('/destroy/{id}', [CommandContentApi::class, 'destroyContent']);
     Route::post('/create', [CommandContentApi::class, 'addContent']);
-    Route::post('/draft', [CommandContentApi::class, 'addDraft']);
     Route::post('/open/{slug_name}', [CommandContentApi::class, 'addView']);
-    // Route::post('/open/{slug_name}/role/{user_role}', [ContentApi::class, 'addView']);
 });
 
 Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {

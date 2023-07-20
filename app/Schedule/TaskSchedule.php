@@ -16,6 +16,7 @@ use App\Models\SettingSystem;
 
 use App\Mail\ScheduleEmail;
 use App\Helpers\Generator;
+use App\Helpers\Query;
 use Illuminate\Support\Facades\Mail;
 
 use Kreait\Firebase\Factory;
@@ -61,12 +62,14 @@ class TaskSchedule
         try{
             $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
             $messaging = $factory->createMessaging();
+            $select_task = Query::getSelectTemplate("task_schedule");
 
-            $content = Task::select("tasks.id","task_title","task_date_start","task_date_end","task_reminder","tasks.created_by as user_id","users.username as created_by","firebase_fcm_token")
+            $content = Task::selectRaw('task_reminder as content_reminder, '.$select_task.', tasks.created_at, tasks.updated_at, firebase_fcm_token, tasks.created_by as user_id, users.username as created_by')
+            // $content = Task::select("tasks.id","task_title","slug_name","task_date_start","task_date_end","task_reminder","tasks.created_by as user_id","users.username as created_by","firebase_fcm_token")
                 ->join('users','users.id','=','tasks.created_by')
                 ->orderBy('tasks.task_date_start', "DESC")
                 ->where('task_reminder','!=','reminder_none')
-                ->whereRaw('(DATEDIFF(task_date_start, now()) * -1) < 3') // Give max range based on reminder opt
+                ->whereRaw("TIMESTAMPDIFF(HOUR,task_date_start, '".date("Y-m-d H:i:s")."') <= 36") // Give max range based on reminder opt
                 ->whereNull('tasks.deleted_at')
                 ->get();
 
@@ -77,23 +80,22 @@ class TaskSchedule
             
             foreach($content as $ts){
                 $now = new DateTime();
-                $content_start = new DateTime($ts->task_date_start);
+                $content_start = new DateTime($ts->content_date_start);
                 $diff = $content_start->diff($now);
                 $hours = $diff->h;
-                $hours = $hours + ($diff -> days * 24) - 7;
                 $is_remind = false;
 
-                if($hours >= 1 && $hours < 73){
-                    if($ts->task_reminder == "reminder_3_hour_before" && $hours < 3){
+                if($hours >= 1 && $hours <= 73){
+                    if($ts->content_reminder == "reminder_1_hour_before" && $hours <= 2){
                         $is_remind = true;
                         $threeHr++;
-                    } else if($ts->task_reminder == "reminder_1_hour_before" && $hours < 2){
+                    } else if($ts->content_reminder == "reminder_3_hour_before" && $hours <= 4){
                         $is_remind = true;
                         $oneHr++;
-                    } else if($ts->task_reminder == "reminder_1_day_before" && $hours < 24){
+                    } else if($ts->content_reminder == "reminder_1_day_before" && $hours <= 25){
                         $is_remind = true;
                         $oneDay++;
-                    } else if($ts->task_reminder == "reminder_3_day_before" && $hours < 73){
+                    } else if($ts->content_reminder == "reminder_3_day_before" && $hours <= 73){
                         $is_remind = true;
                         $threeDay++;
                     }
@@ -105,11 +107,11 @@ class TaskSchedule
 
                     if($validateRegister['valid'] != null){
                         if($hours < 24){
-                            $notif_body = "The '".$ts->task_title."' is about to start in ".$hours." hours";
+                            $notif_body = "The '".$ts->content_title."' is about to start in ".$hours." hours";
                         } else {
                             $days = intval($hours / 24);
                             $remainHr = 24 - $hours;
-                            $notif_body = "The '".$ts->task_title."' is about to start in ".$days." days and ".$remainHr." hours";
+                            $notif_body = "The '".$ts->content_title."' is about to start in ".$days." days and ".$remainHr." hours";
                         }
 
                         $notif_title = "Hello ".$ts->created_by.", you got an information";
@@ -120,7 +122,12 @@ class TaskSchedule
                                 ->withBody($notif_body)
                             )
                             ->withData([
-                                'by' => 'person'
+                                'slug' => $ts->slug_name,
+                                'module' => 'reminder',
+                                'type' => 'task',
+                                'content_title' => $ts->content_title,
+                                'content_date_start' => $ts->content_date_start,
+                                'content' => $content
                             ]);
                         $response = $messaging->send($message);
 
@@ -167,8 +174,7 @@ class TaskSchedule
                 'status' => "failed",  
                 'payload' => json_encode($obj),
                 'created_at' => date("Y-m-d H:i:s"), 
-                'faced_by' => null, 
-                'fixed_at' => null
+                'faced_by' => null
             ]);
         }
     }

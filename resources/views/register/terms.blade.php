@@ -1,15 +1,5 @@
-<style>
-    #terms-holder{
-        margin: 0;
-        padding: 0;
-        display: flex;
-        max-height: 75vh;
-        flex-direction: column;
-        overflow-y: scroll;
-    }
-</style>
-<div id="terms-holder">
-    <h4 class="text-primary">Terms & Condition</h4>
+<div>
+    <h2 class="text-primary text-center">Terms & Condition</h2><br>
     
     <p>Welcome to the Faculty of Creative Industries Information Management Application (MI-FIK). Before using this application, please read and understand carefully the following terms and conditions of use:</p>
     <b>Legal Compliance:</b>
@@ -50,6 +40,6 @@
         <a id="check_terms_msg" class="text-danger my-2" style="font-size:13px;"></a>
     </div>
 </div>
-<span id="btn-next-profile-data-holder">
+<span id="btn-next-profile-data-holder" class="d-flex justify-content-end">
     <button class="btn-next-steps locked" id="btn-next-profile-data" onclick="warn('terms')"><i class="fa-solid fa-lock"></i> Locked</button>
 </span>

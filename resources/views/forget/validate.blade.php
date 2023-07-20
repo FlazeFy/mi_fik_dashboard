@@ -13,11 +13,11 @@
     var val1 = false; 
 </script>
 
-<div class="text-center justify-center">
-    <h4 class="text-primary text-start mb-4">Set your new password</h4><br>
+<div class="text-center justify-center" style="min-height:50vh;">
+    <h4 class="text-primary text-center mb-4">Set your new password</h4><br>
 
     <div id="token-validation-holder">
-        <label for="pin-code">Token</label>
+        <label for="pin-code" style="font-size:var(--textXMD);">Token</label>
         <div class="pin-code mt-3" id="pin-holder">
             <input type="text" maxlength="1" oninput="validatePin()" autofocus>
             <input type="text" maxlength="1" oninput="validatePin()">
@@ -54,7 +54,7 @@
     <input hidden name="validation_token" id="validate_token" value="AAA123">
     <input hidden name="type" id="validate_type">
 </form>
-<span id="btn-next-finish-holder">
+<span id="btn-next-finish-holder" class="d-flex justify-content-end mt-3">
     <button class="btn-next-steps locked" id="btn-next-finish" onclick="warn('validate')"><i class="fa-solid fa-lock"></i> Next</button>
 </span>
 

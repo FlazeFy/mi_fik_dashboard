@@ -1,37 +1,49 @@
 <style>
-    #data-wrapper{
-        margin: 0;
-        padding: 0;
-        display: flex;
-        max-height: 75vh;
-        flex-direction: column;
-        overflow-y: scroll;
+    button.btn-tag {
+        position: relative;
+        display: inline-block;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        transition: all 0.4s;
+    }
+
+    button[title].btn-tag:hover::after {
+        content: attr(title);
+        position: absolute;
+        white-space: nowrap;
+        left: 0;
+        color: var(--darkColor);
+        bottom: -55px;
+        z-index: 100;
+        font-size: var(--textMD);
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        text-align: start;
+        padding: var(--spaceSM);
+        width: 300px;
+        border: 1px solid var(--hoverBG);
+        background: var(--whiteColor) !important;
+        border-radius: var(--roundedSM);
+        word-wrap: break-word !important;
+        white-space:normal !important;
+    }
+
+    .btn-tag-selected:hover {
+        background: var(--warningBG);
+    }
+
+    .modal.fade.show.modal-static{
+        overflow-y:auto !important;
     }
 </style>
 
-<div class="mb-5 pb-2" id="role-area-picker">
-    <h4 class="text-primary">Available Role</h4>
+<div class="mb-5 pb-2 d-block mx-auto text-center" id="role-area-picker">
+    <h2 class="text-primary text-center">Available Role</h2><br>
+    
     <form class="d-inline" id="form-login-role">
         <input hidden name="username" id="username_role">
         <input hidden name="password" id="password_role">
     </form>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:20px; top:20px;" type="button" id="section-more-MOL" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false">
-        <i class="fa-solid fa-ellipsis-vertical more"></i>
-    </button>
-    <div class="dropdown-menu normal dropdown-menu-end shadow" aria-labelledby="section-more-MOL">
-        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
-    </div>
-
-    @include('popup.mini_help', ['id' => 'helpRequestTag', 'title'=> 'Request Tag', 'location'=>'request_tag'])
-
-    <div class="selected-role" id="slct-box" style="display:none;">
-        <h6 class='mt-2 mb-0'>Selected Role</h6> 
-        <div id="slct_holder"></div>
-    </div>
-    <a id="selected_role_msg" class="text-danger my-2" style="font-size:13px;"></a>
-    <hr>
+    
     <div class="" id="data-wrapper">
         <!-- Loading -->
         <div class="auto-load text-center">
@@ -44,18 +56,22 @@
     <div id="modal-submit-tag"></div>
 </div>
 
-<span id="btn-next-ready-holder">
+<span id="btn-next-ready-holder" class="d-flex justify-content-end">
     <button class="btn-next-steps locked" id="btn-next-ready" onclick="warn('role')"><i class="fa-solid fa-lock"></i> Locked</button>
 </span>
 
 <script type="text/javascript">
     var page = 1;
-    //loadTag();
+    var is_shown_guide = false;
+
+    const collapsibleElement = document.getElementById('role');
+    collapsibleElement.addEventListener('shown.bs.collapse', function () {
+        loadTag();
+    });
 
     function abortTagPicker(){
         slct_role = [];
         $("#slct_holder").empty();
-        $("#slct-box").css("display","none");
         loadTag();
         validate("role");
     }
@@ -63,31 +79,93 @@
     function loadTag() {  
         $("#data-wrapper").empty();
         if(!document.getElementById("data-wrapper").hasChildNodes()){   
+            function getSecondaryAreaGuide(idx){
+                if(idx == 1){
+                    return "<div id='holder-steps-3'></div>";
+                } else {
+                    return "";
+                }
+            }
+
+            function targetGuideSecondary(idx){
+                if(idx == 1){
+                    return "class='d-inline-block mx-auto mt-3 mb-2 mb-0' id='secondary-role-area'";
+                } else {
+                    return "class='mt-3 mb-2 mb-0'"; 
+                }
+            }
+
             function fetchData(data){
                 for(var i = 0; i < data.length; i++){
                     //Attribute
                     var slug_name = data[i].slug_name;
                     var dct_name = data[i].dct_name;
-                    var cls = "";
 
                     if(slug_name == "general-role"){
-                        cls = "important-category";
-                    }
+                        var elmt = " " +
+                            "<div class='row'> " +
+                                "<div class='col-3'> " +
+                                    "<div class='important-category h-100 position-relative' id='general-role-area'> " +
+                                        "<h6 class='mt-3 mb-2 mb-0'>" + dct_name + "</h6> " +
+                                        "<div class='' id='tag-cat-holder-" + slug_name + "'></div> " +
+                                        "<div class='auto-load-" + slug_name + " text-center'> " +
+                                            '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                                        "</div> " +
+                                        "<div id='empty_item_holder_" + slug_name + "'></div> " +
+                                        "<span id='load_more_holder_" + slug_name + "' style='display: flex; justify-content:end;'></span> " +
+                                        "<div id='holder-steps-1'></div> " +
+                                    "</div> " +    
+                                "</div> " +    
+                                "<div class='col-5'> " +
+                                    "<div class='selected-role h-100 position-relative' id='selected-role-area'> " +
+                                        "<div class='mt-3 mb-2 mb-0 d-flex justify-content-between px-2'> " +
+                                            "<div></div> " +
+                                            "<div> " +
+                                                "<h6 class=''>Selected Role</h6> " +
+                                            "</div> " +
+                                            "<div class='position-relative'> " +
+                                                "<a class='btn btn-danger py-1 position-absolute' style='right:0; top:-8px; width:90px;' onclick='abortTagPicker()'><i class='fa-solid fa-rotate-right'></i> Abort</a> " +
+                                            "</div> " +
+                                        "</div> " +
+                                        "<div id='slct_holder'><span id='no-tag-selected-msg'><img src='<?= asset('/assets/tag.png'); ?>' alt='<?= asset('/assets/tag.png'); ?>' width='180' class='img-fluid d-block mx-auto'><h6>You have not selected any tag yet</h6></span></div> " +
+                                        '<a id="selected_role_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
+                                        "<div id='holder-steps-2'></div> " +
+                                    "</div> " +    
+                                "</div> " +    
+                                "<div class='col-4'> " +
+                                    "<div class='info-box tips m-0 pt-4'> " +
+                                        "@if($info) " +
+                                            "@foreach($info as $in) " +
+                                                "@if($in->info_location == 'request_tag') " +
+                                                    "<label><i class='fa-solid fa-circle-info'></i> {{ucfirst($in->info_type)}}</label><br> " +
+                                                    "<?php echo $in->info_body; ?> " +
+                                                "@endif " +
+                                            "@endforeach " +
+                                        "@endif " +
+                                    "</div> " +    
+                                "</div> " +    
+                            "</div><hr>";
 
-                    var elmt = " " +
-                        "<div class='" + cls + "'> " +
-                            "<h6 class='mt-2 mb-0'>" + dct_name + "</h6> " +
-                            "<div class='' id='tag-cat-holder-" + slug_name + "'></div> " +
-                            "<div class='auto-load-" + slug_name + " text-center'> " +
-                                '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
-                            "</div> " +
-                            "<div id='empty_item_holder_" + slug_name + "'></div> " +
-                            "<span id='load_more_holder_" + slug_name + "' style='display: flex; justify-content:end;'></span> " +
-                        "</div>";
+                    } else {
+                        var elmt = " " +
+                            "<div> " + getSecondaryAreaGuide(i) +
+                                "<h6 "+targetGuideSecondary(i)+">" + dct_name + "</h6> " +
+                                "<div class='' id='tag-cat-holder-" + slug_name + "'></div> " +
+                                "<div class='auto-load-" + slug_name + " text-center'> " +
+                                    '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
+                                "</div> " +
+                                "<div id='empty_item_holder_" + slug_name + "'></div> " +
+                                "<span id='load_more_holder_" + slug_name + "' style='display: flex; justify-content:end;'></span> " +
+                            "</div>";
+                    }
 
                     loadTagByCat(slug_name);
 
-                    $("#data-wrapper").append(elmt);   
+                    $("#data-wrapper").append(elmt);  
+                }
+                if(is_shown_guide == false){
+                    setGuidelinesModal(guidelines, is_show_all_guidelines);
+                    is_shown_guide = true;
                 }
             }
 
@@ -125,10 +203,11 @@
                 //Attribute
                 var slug_name = data[i].slug_name;
                 var tag_name = data[i].tag_name;
+                var tag_desc = data[i].tag_desc;
 
                 if(slug_name != "student"){
                     var elmt = " " +
-                        '<button class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this role" onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+cat+"'"+')">' + tag_name + '</button>';
+                        '<button class="btn btn-tag" id="tag_collection_' + slug_name +'" title="'+validateTextNull(tag_desc, "-No description provided-")+'" onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+cat+"'"+')">' + tag_name + '</button>';
 
                     $("#tag-cat-holder-" + cat).append(elmt); 
                 }
@@ -210,7 +289,7 @@
                 });
                 //Check this append input value again!
                 $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' " +
-                    " onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+cat+'"'+")'>"+tag_name+"</a></div>");
+                    " onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+cat+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
             }
         } else {
             slct_role.push({
@@ -218,7 +297,7 @@
                 "tag_name" : tag_name
             });
             $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' " +
-                " onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+cat+'"'+")'>"+tag_name+"</a></div>");
+                " onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+cat+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
         }
         validate("role");
     }
@@ -281,7 +360,7 @@
                         },
                         success: function(response) {
                             is_requested = true;
-                            btn_steps_role.style = "border-left: 6px solid var(--successBG);";
+                            btn_steps_role.style = "background: var(--successBG);";
                             $('#role-area-picker').html('<lottie-player class="d-block mx-auto" src="https://assets7.lottiefiles.com/packages/lf20_fbwbq3um.json"  background="transparent" speed="0.75" style="width: 400px; height: 400px;" autoplay></lottie-player> ' +
                                 '<h6 class="text-primary text-center" style="font-size:26px;">You have successfully request role</h6>');
                             btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";

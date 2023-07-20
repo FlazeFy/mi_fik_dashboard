@@ -9,7 +9,7 @@ class Query
         if($type == "content_thumbnail"){
             $query = "slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,
-                content_date_end,content_tag,contents_headers.created_at,
+                content_date_end,content_tag,
                 admins.username as admin_username_created, users.username as user_username_created, 
                 admins.image_url as admin_image_created, users.image_url as user_image_created, 
                 count(contents_viewers.id) as total_views";

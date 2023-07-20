@@ -17,16 +17,83 @@
         </div>
         <div id="empty_item_holder_user_detail"></div>
     </form>
-
-    <span id="acc-user-holder"></span>
-    <span id="suspend-user-holder"></span>
-    <span id="recover-user-holder"></span>
-
 </div>
 
 <script>
     var page_tag = 1;
     load_user_detail("");
+
+    function getAccUser(slug, username, fullname){  
+        isFormSubmitted = true;
+        $("#acc-user-holder-"+slug).html('<div class="modal fade" id="acc_user_'+slug+'" tabindex="-1" aria-labelledby="accLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"> ' +
+            '<div class="modal-dialog"> ' +
+                '<div class="modal-content"> ' +
+                '<form action="/user/request/manage_acc" method="POST"> ' +
+                    '@csrf ' +
+                    '<input hidden name="username" value="'+username+'"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="accLabel">Accept New User</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to give access to <span class="text-primary fw-bold">' + fullname + '</span></h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-success">Accept</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</form> ' +
+            '</div> ' +
+        '</div>');
+    }
+
+    function getSuspendUser(slug, username, fullname){    
+        isFormSubmitted = true;
+        $("#suspend-user-holder-"+slug).html('<div class="modal fade" id="suspend_user_'+slug+'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="susLabel" aria-hidden="true"> ' +
+            '<div class="modal-dialog"> ' +
+                '<div class="modal-content"> ' +
+                '<form action="/user/request/manage_suspend" method="POST"> ' +
+                    '@csrf ' +
+                    '<input hidden name="username" value="'+username+'"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="susLabel">Suspend User</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to suspend <span class="text-danger fw-bold">' + fullname + '</span> account</h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-danger">Suspend</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</form> ' +
+            '</div> ' +
+        '</div>');
+    }
+
+    function getRecoverUser(slug, username, fullname){    
+        isFormSubmitted = true;
+        $("#recover-user-holder-"+slug).html('<div class="modal fade" id="recover_user_'+slug+'" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="recLabel" aria-hidden="true"> ' +
+            '<div class="modal-dialog"> ' +
+                '<div class="modal-content"> ' +
+                '<form action="/user/request/manage_recover" method="POST"> ' +
+                    '@csrf ' +
+                    '<input hidden name="username" value="'+username+'"> ' +
+                    '<div class="modal-header"> ' +
+                        '<h5 class="modal-title" id="recLabel">Recover User</h5> ' +
+                        '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
+                    '</div> ' +
+                    '<div class="modal-body"> ' +
+                        '<h6 class="fw-normal">Are you sure want to recover <span class="text-primary fw-bold">' + fullname + '</span> account</h6> ' +
+                    '</div> ' +
+                    '<div class="modal-footer"> ' +
+                        '<button type="submit" class="btn btn-submit">Recover</button> ' +
+                    '</div> ' +
+                    '</div> ' +
+                '</form> ' +
+            '</div> ' +
+        '</div>');
+    }
 
     function load_user_detail(username_search, type, id) {      
         $("#empty_item_holder_user_detail").html("");
@@ -88,104 +155,12 @@
                     }
                 }
 
-                function getLifeButton(acc, acc_date, type, id, username, fullname){
-                    if(type == "new"){
-                        if(!acc && !acc_date){
-                            return '<a class="btn btn-detail-config success" title="Approve Account" data-bs-toggle="modal" href="#acc_user"><i class="fa-solid fa-check"></i></a>';
-                        } else if(!acc && acc_date){
-                            return '<a class="btn btn-detail-config success" title="Recover Account" data-bs-toggle="modal" href="#recover_user"><i class="fa-solid fa-rotate-right"></i></a>';
-                        } else if(acc && acc_date){
-                            return '<a class="btn btn-detail-config danger" title="Suspend Account" data-bs-toggle="modal" href="#suspend_user"><i class="fa-solid fa-power-off"></i></a>';
-                        }
-                    } else if(type == "old"){
-                        var req_type = document.getElementById("type_holder_" + username + id).value;
-                        
-                        if(req_type == "add"){
-                            return '<a class="btn btn-detail-config success" onclick="cleanReq(); addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+req_type+"'"+', '+"'"+fullname+"'"+', true)" title="Accept Request" data-bs-toggle="modal" data-bs-target="#accOldReqModal"><i class="fa-solid fa-check"></i></a>';
-                        } else if(req_type == "remove"){
-                            return '<a class="btn btn-detail-config danger" onclick="cleanReq(); addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+req_type+"'"+', '+"'"+fullname+"'"+', true)" title="Reject Request" data-bs-toggle="modal" data-bs-target="#rejOldReqModal"><i class="fa-solid fa-xmark"></i></a>';
-                        }
-                    }
-                }
-
                 function getNewUser(status){
                     if(status == 0){
                         return 1;
                     } else {
                         return 0;
                     }
-                }
-
-                function getAccUser(slug, fullname){  
-                    isFormSubmitted = true;
-                    $("#acc-user-holder").html('<div class="modal fade" id="acc_user" tabindex="-1" aria-labelledby="accLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true"> ' +
-                        '<div class="modal-dialog"> ' +
-                            '<div class="modal-content"> ' +
-                            '<form action="/user/request/manage_acc" method="POST"> ' +
-                                '@csrf ' +
-                                '<input hidden name="username" value="'+slug+'"> ' +
-                                '<div class="modal-header"> ' +
-                                    '<h5 class="modal-title" id="accLabel">Accept New User</h5> ' +
-                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
-                                '</div> ' +
-                                '<div class="modal-body"> ' +
-                                    '<h6 class="fw-normal">Are you sure want to give access to <span class="text-primary fw-bold">' + fullname + '</span></h6> ' +
-                                '</div> ' +
-                                '<div class="modal-footer"> ' +
-                                    '<button type="submit" class="btn btn-success">Accept</button> ' +
-                                '</div> ' +
-                                '</div> ' +
-                            '</form> ' +
-                        '</div> ' +
-                    '</div>');
-                }
-
-                function getSuspendUser(slug, fullname){    
-                    isFormSubmitted = true;
-                    $("#suspend-user-holder").html('<div class="modal fade" id="suspend_user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="susLabel" aria-hidden="true"> ' +
-                        '<div class="modal-dialog"> ' +
-                            '<div class="modal-content"> ' +
-                            '<form action="/user/request/manage_suspend" method="POST"> ' +
-                                '@csrf ' +
-                                '<input hidden name="username" value="'+slug+'"> ' +
-                                '<div class="modal-header"> ' +
-                                    '<h5 class="modal-title" id="susLabel">Suspend User</h5> ' +
-                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
-                                '</div> ' +
-                                '<div class="modal-body"> ' +
-                                    '<h6 class="fw-normal">Are you sure want to suspend <span class="text-danger fw-bold">' + fullname + '</span> account</h6> ' +
-                                '</div> ' +
-                                '<div class="modal-footer"> ' +
-                                    '<button type="submit" class="btn btn-danger">Suspend</button> ' +
-                                '</div> ' +
-                                '</div> ' +
-                            '</form> ' +
-                        '</div> ' +
-                    '</div>');
-                }
-
-                function getRecoverUser(slug, fullname){    
-                    isFormSubmitted = true;
-                    $("#recover-user-holder").html('<div class="modal fade" id="recover_user" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="recLabel" aria-hidden="true"> ' +
-                        '<div class="modal-dialog"> ' +
-                            '<div class="modal-content"> ' +
-                            '<form action="/user/request/manage_recover" method="POST"> ' +
-                                '@csrf ' +
-                                '<input hidden name="username" value="'+slug+'"> ' +
-                                '<div class="modal-header"> ' +
-                                    '<h5 class="modal-title" id="recLabel">Recover User</h5> ' +
-                                    '<a type="button" class="btn-close" data-bs-dismiss="modal" onclick="isFormSubmitted = false;" aria-label="Close"></a> ' +
-                                '</div> ' +
-                                '<div class="modal-body"> ' +
-                                    '<h6 class="fw-normal">Are you sure want to recover <span class="text-primary fw-bold">' + fullname + '</span> account</h6> ' +
-                                '</div> ' +
-                                '<div class="modal-footer"> ' +
-                                    '<button type="submit" class="btn btn-submit">Recover</button> ' +
-                                '</div> ' +
-                                '</div> ' +
-                            '</form> ' +
-                        '</div> ' +
-                    '</div>');
                 }
 
                 function manageRole(type, username, id){
@@ -254,6 +229,7 @@
                     var created_at = data[i].created_at;
                     var accepted_at = data[i].accepted_at;
                     var is_accepted = data[i].is_accepted;
+                    var unamepreg = username.replace(/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/, "");
 
                     var elmt = " " +
                         '<input hidden name="username" value="' + username + '"> ' +
@@ -282,20 +258,23 @@
                                 '<hr> ' +
                                 '<a class="btn btn-detail-config primary" title="Manage role" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></a>' +
                                 '<a class="btn btn-detail-config primary" title="Send email" href="mailto:' + email + '"><i class="fa-solid fa-envelope"></i></a>' +
-                                getLifeButton(is_accepted, accepted_at, type, id, username, full_name) +
+                                getLifeButton(is_accepted, accepted_at, type, id, username, full_name, null) +
                                 '<span id="btn-submit-tag-holder"></span> ' +
                             '</div> ' +
+                            '<span id="acc-user-holder-'+unamepreg+'"></span> ' +
+                            '<span id="suspend-user-holder-'+unamepreg+'"></span> ' +
+                            '<span id="recover-user-holder-'+unamepreg+'"></span> ' +
                         '</div>';
 
-                        if(!is_accepted && !accepted_at){
-                            getAccUser(username, full_name);
-                        } else if(is_accepted && accepted_at){ 
-                            getSuspendUser(username, full_name);
-                        } else if(!is_accepted && accepted_at){ 
-                            getRecoverUser(username, full_name);
-                        }
-
                     $("#data_wrapper_user_detail").append(elmt);
+
+                    if(!is_accepted && !accepted_at){
+                        getAccUser(unamepreg, username, full_name);
+                    } else if(is_accepted && accepted_at){ 
+                        getSuspendUser(unamepreg, username, full_name);
+                    } else if(!is_accepted && accepted_at){ 
+                        getRecoverUser(unamepreg, username, full_name);
+                    }
                 }   
             }
         })
@@ -398,11 +377,13 @@
             if(found == false){
                 slct_list.push(slug_name);
                 //Check this append input value again!
-                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' " + 
+                    "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
             }
         } else {
             slct_list.push(slug_name);
-            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' " + 
+                "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
         }
 
         getButtonSubmitTag()

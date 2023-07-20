@@ -55,8 +55,7 @@ class QuestionSchedule
                 'status' => "failed",  
                 'payload' => json_encode($obj),
                 'created_at' => date("Y-m-d H:i:s"), 
-                'faced_by' => null, 
-                'fixed_at' => null
+                'faced_by' => null
             ]);
         }
     }

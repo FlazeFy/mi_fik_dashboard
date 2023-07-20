@@ -38,7 +38,6 @@ class TrashController extends Controller
         $user_id = Generator::getUserIdV2($role);
 
         if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
             $settingJobs = SettingSystem::getJobsSetting();
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("trash");
@@ -50,8 +49,7 @@ class TrashController extends Controller
             return view ('trash.index')
                 ->with('menu', $menu)
                 ->with('info', $info)
-                ->with('settingJobs', $settingJobs)
-                ->with('greet',$greet);
+                ->with('settingJobs', $settingJobs);
         } else {
             return redirect("/")->with('failed_message','Session lost, please sign in again');
         }

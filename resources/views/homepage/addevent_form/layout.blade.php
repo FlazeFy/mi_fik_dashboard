@@ -140,7 +140,6 @@
                         </div>
                     </div>
                     <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span><br>
-                    <span id="btn-draft-holder-event"><a class="custom-submit-modal text-decoration-none pt-2" id="draft-btn-event" onclick="savedraft()" style="right:120px;"><i class="fa-solid fa-pause"></i> Save as Draft</a></span>
                 </div>
             </form>
         </div>
@@ -180,50 +179,6 @@
             }
         }
     });
-
-    function savedraft(){
-        $.ajax({
-            url: '/api/v1/content/draft',
-            type: 'POST',
-            data: $('#form-add-event').serialize(),
-            dataType: 'json',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader("Accept", "application/json");
-                xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
-            },
-            success: function(response) {
-                document.getElementById("draft-status").innerHTML = '<i class="fa-solid fa-circle-check"></i> Saved to draft';
-                document.getElementById("slug_name").value = response.data.header.slug_name;
-                document.getElementById("btn-draft-holder-event").innerHTML = '<a class="custom-submit-modal text-decoration-none pt-2" disabled style="right:120px;"><i class="fa-solid fa-arrows-rotate"></i> Event is drafted</a>';
-                $("#draft-btn-event").css("right", "170px");
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                console.log(response)
-                var errorMessage = "Unknown error occurred";
-                var usernameMsg = null;
-                var passMsg = null;
-                var allMsg = null;
-                var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
-
-                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
-                    //Error validation
-                    if(typeof response.responseJSON.result === "string"){
-                        allMsg = response.responseJSON.result;
-                    } else {
-                        if(response.responseJSON.result.hasOwnProperty('content_title')){
-                            $("#title_msg_event").html(icon + " " +response.responseJSON.result.content_title[0]);
-                        }
-                        
-                    }
-                    
-                } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
-                    allMsg = response.responseJSON.errors.result[0]
-                } else {
-                    allMsg = errorMessage
-                }
-            }
-        });
-    }
 </script>
 
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>

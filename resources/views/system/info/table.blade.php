@@ -242,13 +242,7 @@
         var rawText = document.getElementById("rich_box_"+ id).innerHTML;
         var input_body = document.getElementById("info_body_"+id);
         var form = document.getElementById("form-edit-desc_" + id);
-
-        //Remove quills element from raw text
         var cleanText = splitOutRichTag(rawText);
-        //Check this clean text 2!!!
-        cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
-        
-        //Pass html quilss as input value
         var characterToDeleteAfter = "</div>";
         var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
         input_body.value = modifiedString;

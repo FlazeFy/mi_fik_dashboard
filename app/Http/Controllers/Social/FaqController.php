@@ -34,7 +34,6 @@ class FaqController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $menu = Menu::getMenu();
                 $history = History::getHistoryByType("faq");
                 $info = Info::getAvailableInfo("social/faq");
@@ -47,8 +46,7 @@ class FaqController extends Controller
                 return view ('social.faq.index')
                     ->with('menu', $menu)
                     ->with('history', $history)
-                    ->with('info',$info)
-                    ->with('greet',$greet);
+                    ->with('info',$info);
             } else {
                 return redirect("/")->with('failed_message','Session lost, please sign in again');
             }
@@ -111,7 +109,8 @@ class FaqController extends Controller
                                     ->withBody($notif_body)
                                 )
                                 ->withData([
-                                    'by' => 'person'
+                                    'slug' => $request->question_id,
+                                    'module' => 'faq'
                                 ]);
                             $response = $messaging->send($message);
                         } else {
