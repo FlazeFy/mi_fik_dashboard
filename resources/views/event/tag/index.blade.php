@@ -96,6 +96,9 @@
                                         @include('event.tag.add')
                                     </div>
                                     <div class="content-section">
+                                        @include('event.tag.advanced')
+                                    </div>
+                                    <div class="content-section">
                                         @include('event.tag.category')
                                     </div>
                                     <div class="content-section">
@@ -142,5 +145,6 @@
             }
         </script>
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>
 </html>
