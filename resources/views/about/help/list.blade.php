@@ -219,7 +219,6 @@
 
     function getInputHelpCat(type){
         $(".d-inline.form-add-cat").remove();
-        console.log(type)
         var elmt = " " +
             '<form class="d-inline form-add-cat" method="POST" action="/about/help/add/cat"> ' +
                 '@csrf ' +

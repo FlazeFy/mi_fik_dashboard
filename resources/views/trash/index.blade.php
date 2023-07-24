@@ -38,7 +38,6 @@
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/global_v1.0.js')}}"></script>
-        <script src="{{ asset('/js/isotope_v1.0.js')}}"></script>
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>

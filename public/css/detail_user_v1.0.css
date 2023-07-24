@@ -1,6 +1,6 @@
 .incoming-req-box{
     position: relative;
-    height: 70vh;
+    height: 75vh;
 }
 .user-req-holder{
     margin-top: 20px;
@@ -33,7 +33,7 @@
     margin: 0;
 }
 .detail-box {
-    height: 70vh;
+    height: 75vh;
 }
 .scroll-role {
     margin: 0;
