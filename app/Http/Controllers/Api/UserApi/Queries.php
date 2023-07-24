@@ -132,6 +132,7 @@ class Queries extends Controller
                 ->where('is_rejected', null)
                 ->whereRaw("CONCAT(first_name,' ',COALESCE(last_name, '')) LIKE '%".$fullname."%'")
                 ->where('users_requests.is_accepted', 0)
+                ->where('users.is_accepted', 1)
                 ->orderBy('created_at', 'ASC')
                 ->paginate(12);
 

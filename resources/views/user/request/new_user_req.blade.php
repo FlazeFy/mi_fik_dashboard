@@ -47,14 +47,6 @@
     var selectedNewUser = []; 
     infinteLoadMore_new_req(page_new_req);
 
-    //Fix the sidebar & content page_new_req FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page_new_req++;
-    //         infinteLoadMore(page_new_req);
-    //     } 
-    // };
-
     function loadmore_new_req(){
         page_new_req++;
         infinteLoadMore_new_req(page_new_req);

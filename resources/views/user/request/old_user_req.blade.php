@@ -47,14 +47,6 @@
 
     infinteLoadMore_old_req(page_old_req);
 
-    //Fix the sidebar & content page_old_req FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page_old_req++;
-    //         infinteLoadMore(page_old_req);
-    //     } 
-    // };
-
     function loadmore_old_req(){
         page_old_req++;
         infinteLoadMore_old_req(page_old_req);
