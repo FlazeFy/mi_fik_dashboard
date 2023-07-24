@@ -61,7 +61,7 @@
                         </td>
                         <td style="min-width:var(--tcolMinXSM);">
                             <div class="position-relative">
-                                <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
+                                <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis-vertical more"></i>
                                 </button>

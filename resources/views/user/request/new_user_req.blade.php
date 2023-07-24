@@ -2,7 +2,7 @@
     <h5 class="section-title"><span class="text-primary" id="total_new_req"></span> New User</h5>
     
     @if(!$isMobile)
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0px;" type="button" id="section-more-new-req" data-bs-toggle="dropdown" aria-haspopup="true"
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0;" type="button" id="section-more-new-req" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
@@ -46,14 +46,6 @@
     var page_new_req = 1;
     var selectedNewUser = []; 
     infinteLoadMore_new_req(page_new_req);
-
-    //Fix the sidebar & content page_new_req FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page_new_req++;
-    //         infinteLoadMore(page_new_req);
-    //     } 
-    // };
 
     function loadmore_new_req(){
         page_new_req++;

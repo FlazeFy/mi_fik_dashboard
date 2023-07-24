@@ -69,11 +69,10 @@ class QueryDictionary extends Controller
 
     public function getAllDictionaryByType($dct_type) {
         try{
-            $dictionary = Dictionary::selectRaw('dictionaries.slug_name,dct_name, count(1)')
-                ->where('dct_type', $dct_type);
-
             if($dct_type == "TAG-001"){
-                $dictionary->join("tags","tags.tag_category","=","dictionaries.slug_name")
+                $dictionary = Dictionary::selectRaw('dictionaries.slug_name,dct_name, count(1) as total')
+                    ->join("tags","tags.tag_category","=","dictionaries.slug_name")
+                    ->where('dct_type', $dct_type)
                     ->groupBy('tags.tag_category')
                     ->orderByRaw("
                         CASE
@@ -83,7 +82,9 @@ class QueryDictionary extends Controller
                     ")
                     ->whereNull('tags.deleted_at');
             } else {
-                $dictionary->orderBy('dictionaries.created_at', 'DESC');
+                $dictionary = Dictionary::selectRaw('dictionaries.slug_name,dct_name')
+                    ->where('dct_type', $dct_type)
+                    ->orderBy('dictionaries.created_at', 'DESC');
             }
 
             $dictionary = $dictionary->get();

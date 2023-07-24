@@ -64,7 +64,7 @@
             } else {
                 echo "#addEventModal";
             }
-        ?>" data-bs-toggle="modal" onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event'); infinteLoadMoreTag(1)">
+        ?>" data-bs-toggle="modal" onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event'); infinteLoadMoreTag(1); loadReminder(null, null);">
 
     @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
         <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>
@@ -85,7 +85,6 @@
                 @csrf 
                 <div class="modal-body pt-4 position-relative">
                     <input hidden id="slug_name" name="slug_name">
-                    <span class="text-success position-absolute" style="top:30px; right:30px;" id="draft-status"></span>
                     <button type="button" class="custom-close-modal" onclick="clean(); <?php if($isMobile){ echo 'closeControlModal()'; } ?>" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                     <h5>Create Event</h5>
                     <div class="row my-2">
@@ -96,22 +95,8 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-floating">
-                                        <select class="form-select" id="floatingSelect" name="content_reminder" aria-label="Floating label select example">
-                                            @php($i = 0)
-
-                                            @foreach($dictionary as $dct)
-                                                @if($dct->type_name == "Reminder")
-                                                    @if($i == 0)
-                                                        <option value="{{$dct->slug_name}}" selected>{{$dct->dct_name}}</option>
-                                                    @else
-                                                        <option value="{{$dct->slug_name}}">{{$dct->dct_name}}</option>
-                                                    @endif
-
-                                                    @php($i++)
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        <label for="floatingSelect">Reminder</label>
+                                        <select class="form-select" id="selectReminder" name="content_reminder" aria-label="Floating label select example"></select>
+                                        <label for="selectReminder">Reminder</label>
                                     </div>
                                 </div>
                             </div>
@@ -152,6 +137,47 @@
             event.preventDefault(); 
         }
     });
+
+    const reminderOpt = [<?php 
+        foreach($dictionary as $dct) {
+            if($dct->type_name == "Reminder") {
+                echo "{slug_name: '".$dct->slug_name."', dct_name: '".$dct->dct_name."'},";
+            }
+        }
+    ?>];
+    var selectedReminder = "reminder_none";
+
+    function loadReminder(ds, now){
+        var ctx = "";
+        $("#selectReminder").empty();
+        if(ds != null && now != null){
+            const nowDate = new Date(now.setHours(now.getHours() + 1));
+            const startDate = new Date(ds);
+
+            const remain = getMinutesDifference(nowDate, startDate);
+            console.log(nowDate, startDate);
+            console.log("test"+remain);
+            $("#selectReminder").append(`<option value="reminder_none" selected>None</option>`);
+            if(remain > 0){
+                $("#selectReminder").append(`<option value="reminder_1_hour_before">1 hour before</option>`);
+            } 
+            if(remain > 180){ 
+                $("#selectReminder").append(`<option value="reminder_3_hour_before">3 hour before</option>`);
+            } 
+            if(remain > 1440){
+                $("#selectReminder").append(`<option value="reminder_1_day_before">1 day before</option>`);
+            } 
+            if(remain > 4320){
+                $("#selectReminder").append(`<option value="reminder_3_day_before">3 day before</option>`);
+            }   
+        } else {
+            reminderOpt.forEach(e => {
+                selectedReminder == e.slug_name ? ctx = "selected" : ctx = "";
+
+                $("#selectReminder").append(`<option value="${e.slug_name}" ${ctx}>${e.dct_name}</option>`);
+            });
+        }
+    }
 
     function closeControlModal(){
         $('#browseDraftEventModal').modal({ backdrop: 'static' }).modal('hide');

@@ -139,6 +139,7 @@
                 $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event with same date start and end");
                 error = true;
             } else {
+                loadReminder(ds, today);
                 $("#dateStart_event_msg").text("");
                 finalValidate();
             }

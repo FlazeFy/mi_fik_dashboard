@@ -171,20 +171,89 @@ class TagController extends Controller
 
     public function add_tag(Request $request)
     {
-        //Validate name avaiability
-        $check = Tag::where('tag_name', $request->tag_name)->get();
+        
+            if(is_countable($request->tag_name)){
+                $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+                $tag_count = count($request->tag_name);
+                $success = 0;
+                $failed = 0;
+            
+                for($i = 0; $i < $tag_count; $i++){
+                    $tag_name = $request->tag_name[$i];
+                   
+                    $data = new Request();
+                    $obj = [
+                        'history_type' => "tag",
+                        'history_body' => "Has created a tag called '".$tag_name."'"
+                    ];
+                    $data->merge($obj);
+    
+                    $validatorHistory = Validation::getValidateHistory($data);
+                    if ($validatorHistory->fails()) {
+                        $errors = $validatorHistory->messages();
+    
+                        return redirect()->back()->with('failed_message', $errors);
+                    } else {
+                        //Validate name avaiability
+                        $tag_desc = $request->tag_desc[$i];
+                        $tag_cat = $request->tag_category[$i];
+                        $check = Tag::where('tag_name', $tag_name)->first();
 
-        if(count($check) == 0 && strtolower(str_replace(" ","", $request->tag_name)) != "all" && strtolower(str_replace(" ","", $request->tag_name)) != "lecturer" 
-            && strtolower(str_replace(" ","", $request->tag_name)) != "student" && strtolower(str_replace(" ","", $request->tag_name)) != "staff"){
-            $slug = Generator::getSlugName($request->tag_name, "tag");
+                        if($check == null && strtolower(str_replace(" ","", $tag_name)) != "all" && strtolower(str_replace(" ","", $tag_name)) != "lecturer" 
+                            && strtolower(str_replace(" ","", $tag_name)) != "student" && strtolower(str_replace(" ","", $tag_name)) != "staff"){
+                            $slug = Generator::getSlugName($tag_name, "tag");
 
-            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+                            $tag_data = new Request();
+                            $obj_tag = [
+                                'tag_name' => $tag_name,
+                                'tag_desc' => $tag_desc,
+                                'tag_category' => $tag_cat,
+                            ];
+                            $tag_data->merge($obj_tag);
 
-            $validator = Validation::getValidateTag($request, "all");
-            if ($validator->fails()) {
-                $errors = $validator->messages();
+                            $validator = Validation::getValidateTag($tag_data, "all");
+                            if ($validator->fails()) {
+                                $failed++;
+                            } else {
+                                $header = Tag::create([
+                                    'id' => Generator::getUUID(),
+                                    'slug_name' => $slug,
+                                    'tag_name' => $tag_name,
+                                    'tag_desc' => $tag_desc,
+                                    'tag_category' => $tag_cat,
+                                    'created_at' => date("Y-m-d H:i:s"),
+                                    'created_by' => $user_id,
+                                    'updated_at' => null,
+                                    'deleted_at' => null,
+                                    'updated_by' => null,
+                                    'deleted_by' => null
+                                ]);
 
-                return redirect()->back()->with('failed_message', $errors);
+                                History::create([
+                                    'id' => Generator::getUUID(),
+                                    'history_type' => $data->history_type, 
+                                    'context_id' => $header->id, 
+                                    'history_body' => $data->history_body, 
+                                    'history_send_to' => null,
+                                    'created_at' => date("Y-m-d H:i:s"),
+                                    'created_by' => $user_id
+                                ]);
+
+                                $success++;
+                            }
+                        } else {
+                            $failed++;
+                        }
+                    }
+                }
+
+                if($success > 0 && $failed == 0){
+                    return redirect()->back()->with('success_message', $success." Tag has been created");
+                } else if($success > 0 && $failed > 0){
+                    return redirect()->back()->with('success_message', $success." Tag has been created and ".$failed." Tag has failed to created");
+                } else {
+                    return redirect()->back()->with('failed_message', $failed." Tag has failed to created, Please use unique name");
+                }
             } else {
                 $data = new Request();
                 $obj = [
@@ -199,35 +268,53 @@ class TagController extends Controller
 
                     return redirect()->back()->with('failed_message', $errors);
                 } else {
-                    $header = Tag::create([
-                        'id' => Generator::getUUID(),
-                        'slug_name' => $slug,
-                        'tag_name' => $request->tag_name,
-                        'tag_desc' => $request->tag_desc,
-                        'tag_category' => $request->tag_category,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id,
-                        'updated_at' => null,
-                        'deleted_at' => null,
-                        'updated_by' => null,
-                        'deleted_by' => null
-                    ]);
+                    //Validate name avaiability
+                    $check = Tag::where('tag_name', $request->tag_name)->first();
 
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => $header->id, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
-                    return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
+                    if($check == null && strtolower(str_replace(" ","", $request->tag_name)) != "all" && strtolower(str_replace(" ","", $request->tag_name)) != "lecturer" 
+                        && strtolower(str_replace(" ","", $request->tag_name)) != "student" && strtolower(str_replace(" ","", $request->tag_name)) != "staff"){
+                        $slug = Generator::getSlugName($request->tag_name, "tag");
+
+                        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+                        $validator = Validation::getValidateTag($request, "all");
+                        if ($validator->fails()) {
+                            $errors = $validator->messages();
+
+                            return redirect()->back()->with('failed_message', $errors);
+                        } else {
+                            $header = Tag::create([
+                                'id' => Generator::getUUID(),
+                                'slug_name' => $slug,
+                                'tag_name' => $request->tag_name,
+                                'tag_desc' => $request->tag_desc,
+                                'tag_category' => $request->tag_category,
+                                'created_at' => date("Y-m-d H:i:s"),
+                                'created_by' => $user_id,
+                                'updated_at' => null,
+                                'deleted_at' => null,
+                                'updated_by' => null,
+                                'deleted_by' => null
+                            ]);
+        
+                            History::create([
+                                'id' => Generator::getUUID(),
+                                'history_type' => $data->history_type, 
+                                'context_id' => $header->id, 
+                                'history_body' => $data->history_body, 
+                                'history_send_to' => null,
+                                'created_at' => date("Y-m-d H:i:s"),
+                                'created_by' => $user_id
+                            ]);
+
+                            return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
+                        } 
+                    } else {
+                        return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
+                    }
                 }
-            }
-        } else {
-            return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
-        }
+            }            
+    
     }
 
     public function add_tag_category(Request $request)

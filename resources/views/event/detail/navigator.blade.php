@@ -11,18 +11,20 @@
         font-weight: 500;
         font-size:18px !important;
     }
-    .event-navigator .navigator-right {
-        position: absolute;
-    }
 </style>
 
 @if(session()->get('role_key') == 1 || $c->user_username_created == session()->get('username_key'))
-    <div class="event-navigator">
-        <span><a class="navigator-link" onclick="location.href='/homepage'">Event</a> > Detail > {{$c->content_title}}</span>
-        <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i> Delete</a>
-        <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+    <div class="event-navigator d-flex justify-content-between">
+        <div>
+            <span><a class="navigator-link" onclick="location.href='/homepage'">Event</a> > Detail > {{$c->content_title}}</span>
+        </div>
+        @if(!$isMobile)
+            <div style="white-space:nowrap;">
+                <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i> Delete</a>
+                <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+            </div>
+        @endif
     </div>
-
     <div class="modal fade" id="deleteEvent-{{$c->slug_name}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">   

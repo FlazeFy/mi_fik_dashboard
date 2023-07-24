@@ -119,6 +119,8 @@
                 function getJoinedAt(datetime, acc){
                     if(datetime && acc){
                         const result = new Date(datetime);
+                        const offsetHours = getUTCHourOffset();
+                        result.setUTCHours(result.getUTCHours() + offsetHours);
                         const now = new Date(Date.now());
                         const yesterday = new Date();
                         var elmt = ""

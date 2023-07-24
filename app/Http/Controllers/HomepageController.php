@@ -75,7 +75,7 @@ class HomepageController extends Controller
                 session()->put('toogle_edit_contact', 'false');
             }
             if(!session()->get('ordering_event')){
-                session()->put('ordering_event', "DESC");
+                session()->put('ordering_event', "ASC");
             }
             if(!session()->get('ordering_finished')){
                 session()->put('ordering_finished', "ASC");

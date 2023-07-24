@@ -17,7 +17,7 @@
     position: relative;
     word-wrap: break-word;
 }  
-.date-chip{
+.date-chip {
     border-radius: var(--roundedSM);
     background: var(--primaryLightBG);
     width: 100px;
@@ -25,7 +25,7 @@
     font-size: var(--textMD);
     text-align: center;
     display: block;
-    margin-inline: auto;
+    margin-inline: auto !important;
     margin-bottom: 10px;
 }
 .box-replied{
@@ -151,11 +151,16 @@ div[class^="from-"].emoji::before {
     .imessage {
         font-size: 1.05rem;
         margin: 0 auto 1rem;
-        max-width: 600px;
         padding: 0.25rem 0.875rem;
     }
-
     .imessage div {
         margin: 0.5rem 0;
+    }
+}
+
+/* Tablet & Mobile style */
+@media (min-width: 0) and (max-width: 1023px) {
+    .date-chip {
+        font-size: var(--textSM);
     }
 }

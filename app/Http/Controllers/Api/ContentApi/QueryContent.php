@@ -296,7 +296,7 @@ class QueryContent extends Controller
             $perPage = 12;
             $page = request()->input('page', 1);
             $paginator = new LengthAwarePaginator(
-                $collection->forPage($page, $perPage),
+                $collection->forPage($page, $perPage)->values(),
                 $collection->count(),
                 $perPage,
                 $page,

@@ -12,7 +12,7 @@
 
     @if(!$myreq)
         <div class="" id="start-section-manage">
-            <img class="img img-fluid d-block mx-auto" style="max-width: 70%;" src="{{ asset('/assets/picker.png')}}">
+            <img class="img img-fluid d-block mx-auto image-msg-md" src="{{ asset('/assets/picker.png')}}">
             <h6 class="text-secondary text-center">In this section, you can request some tag you want to add to your role or maybe you want to remove the tag 
                 <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button>
             </h6>
@@ -49,7 +49,7 @@
         <span id="load_more" style="display: flex; justify-content:center;"></span>
     @else 
         <div class="" id="start-section-manage">
-            <img class="img img-fluid d-block mx-auto" style="max-width: 70%;" src="{{ asset('/assets/sorry.png')}}">
+            <img class="img img-fluid d-block mx-auto image-msg-md" src="{{ asset('/assets/sorry.png')}}">
             <h6 class="text-secondary text-center">You can't request to modify your tag, because you still have 
                 <a class="text-danger" title="Awaiting Request" data-bs-toggle="popover" title="Popover title" style="cursor: pointer;"
                 data-bs-content="You have requested to {{$myreq[0]['request_type']}} 
@@ -74,6 +74,7 @@
 
 <script>
     var slct_list = [];
+    var page = 0;
     var start_section = document.getElementById("start-section-manage");
     var load_section = document.getElementById("start-load");
     $("#body-req").css({"display":"none"});
