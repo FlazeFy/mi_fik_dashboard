@@ -88,6 +88,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/tag/add_category', [TagController::class, 'add_tag_category']);
     Route::post('/tag/update/{type}/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
+    Route::post('/tag/delete/cat/{id}', [TagController::class, 'delete_cat_tag']);
 
     Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
     Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);

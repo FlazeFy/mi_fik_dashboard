@@ -40,4 +40,11 @@ class Converter
             return "";
         }
     }
+
+    public static function getCleanQuotes($val){
+        $val = str_replace('"', " ",$val);
+        $val = str_replace("'", " ",$val);
+
+        return trim($val);
+    }
 }

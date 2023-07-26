@@ -377,6 +377,78 @@ class TagController extends Controller
         }
     }
 
+    public function delete_cat_tag(Request $request, $id)
+    {
+        DB::beginTransaction();
+
+        try{
+            $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+            $validator = Validation::getValidateTag($request, "dct");
+            if ($validator->fails()) {
+                $errors = $validator->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                $data = new Request();
+                $obj = [
+                    'history_type' => "tag",
+                    'history_body' => "Has deleted '".$request->dct_name."' tag category"
+                ];
+                $data->merge($obj);
+
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
+
+                    return redirect()->back()->with('failed_message', $errors);
+                } else {
+                    $tags = DB::table("tags")->select("tag_name","tags.id")
+                        ->join("dictionaries","dictionaries.slug_name","=","tags.tag_category")
+                        ->where("dictionaries.id",$id)
+                        ->get();
+                    
+                    foreach($tags as $tag){
+                        DB::table("tags")->where("id",$tag->id)->update([
+                            'tag_category' => $request->new_tag_category,
+                            'updated_at' => date("Y-m-d H:i:s"),
+                            'updated_by' => $user_id
+                        ]);
+
+                        DB::table("histories")->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $tag->id, 
+                            'history_body' => "Has updated '".$tag->tag_name."' tag",
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
+                        ]);
+                    }
+
+                    DB::table("dictionaries")->where("id",$id)->delete();
+
+                    DB::table("histories")->insert([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => null, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+
+                    DB::commit();
+                    return redirect()->back()->with('success_message', "'".$request->dct_name."' Tag Category has been deleted");
+                }
+            }
+        } catch(\Exception $e) {
+            DB::rollback();
+
+            return redirect()->back()->with('failed_message', 'Delete tag failed');
+        }
+    }
+
     public function filter_category(Request $request)
     {
         session()->put('selected_tag_category', $request->tag_category);

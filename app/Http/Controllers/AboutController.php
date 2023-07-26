@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Helpers\Generator;
 use App\Helpers\Validation;
+use App\Helpers\Converter;
 
 use App\Models\Menu;
 use App\Models\Help;
@@ -197,16 +198,16 @@ class AboutController extends Controller
                 return redirect()->back()->with('failed_message', $errors);
             } else {
                 Help::where('id', $id)->update([
-                    'help_body' => $request->help_body,
+                    'help_body' => Converter::getCleanQuotes($request->help_body),
                     'updated_at' => date("Y-m-d H:i"),
                     'updated_by' => $user_id,
                 ]);
 
                 History::create([
                     'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
+                    'history_type' => Converter::getCleanQuotes($data->history_type), 
                     'context_id' => null, 
-                    'history_body' => $data->history_body, 
+                    'history_body' => Converter::getCleanQuotes($data->history_body), 
                     'history_send_to' => null,
                     'created_at' => date("Y-m-d H:i:s"),
                     'created_by' => $user_id
@@ -298,7 +299,7 @@ class AboutController extends Controller
 
                 return redirect()->back()->with('failed_message', $errors);
             } else {
-                $type = trim(strtolower($request->help_type));
+                $type = Converter::getCleanQuotes(trim(strtolower($request->help_type)));
 
                 $checkEmptyType = Help::getAboutHelpCategory($type);
 
@@ -312,7 +313,7 @@ class AboutController extends Controller
                     Help::create([
                         'id' => Generator::getUUID(),
                         'help_type' => $type,
-                        'help_category' => $request->help_category,
+                        'help_category' => Converter::getCleanQuotes($request->help_category),
                         'help_body' => null,
                         'created_at' => date("Y-m-d H:i"),
                         'created_by' => $user_id,

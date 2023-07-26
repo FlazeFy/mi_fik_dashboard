@@ -220,6 +220,7 @@ class QueryContent extends Controller
             $select_content = Query::getSelectTemplate("content_schedule");
             $select_task = Query::getSelectTemplate("task_schedule");
             $user_id = $request->user()->id;
+            $based_role = Query::getAccessRole($user_id);
 
             $content = ContentHeader::selectRaw('content_reminder, '.$select_content.', contents_headers.created_at, contents_headers.updated_at')
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
@@ -240,6 +241,10 @@ class QueryContent extends Controller
                 ->orderBy('tasks.task_date_start', 'DESC')
                 ->union($content)
                 ->get();
+
+            if ($based_role !== null && $based_role != "admin") {
+                $content = $content->whereRaw($based_role);
+            }
 
             $clean = [];
             $total_content = 0;

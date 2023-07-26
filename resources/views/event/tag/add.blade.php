@@ -28,12 +28,14 @@
             <select class="form-select" id="tag_category" name="tag_category" aria-label="Floating label select example" onchange="validateForm(validation)" required>
                 @php($i = 0)
                 @foreach($dct_tag as $dtag)
-                    @if($i == 0)
-                        <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                    @else 
-                        <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                    @if($dtag->slug_name != "general-role")
+                        @if($i == 0)
+                            <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                        @else 
+                            <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                        @endif
+                        @php($i++)
                     @endif
-                    @php($i++)
                 @endforeach
             </select>
             <label for="tag_category">Category</label>

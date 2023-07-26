@@ -85,7 +85,7 @@
                     var helpCat = data[i].help_category;
 
                     var elmt = " " +
-                        '<div class="helps_type_box" data-bs-toggle="collapse" data-bs-target="#collapse_category_'+id+'" onclick="infinteLoadCategory('+"'"+id+"'"+','+"'"+helpType+"'"+')"> ' +
+                        '<div class="helps_type_box" data-bs-toggle="collapse" data-bs-target="#collapse_category_'+id+'" onclick="infinteLoadCategory('+"'"+id+"'"+','+"'"+helpType.replace(" ", "")+"'"+')"> ' +
                             '<h6>' + ucFirst(helpType) + '</h6> ' +
                             '<p>' + getTotal(total, helpCat) + ' Category</p> ' +
                         '</div> ' +
@@ -101,7 +101,7 @@
                         '</div>';
                 } else {
                     var elmt = " " +
-                        '<div class="helps_type_box" style="height:60px;" data-bs-toggle="collapse" data-bs-target="#collapse_category_'+i+'" onclick="infinteLoadCategory('+"'"+id+"'"+','+"'"+helpType+"'"+')"> ' +
+                        '<div class="helps_type_box" style="height:60px;" data-bs-toggle="collapse" data-bs-target="#collapse_category_'+i+'" onclick="infinteLoadCategory('+"'"+id+"'"+','+"'"+helpType.replace(" ", "")+"'"+')"> ' +
                             '<h6 class="mt-2">' + ucFirst(helpType) + '</h6> ' +
                         '</div> ' +
                         
@@ -137,7 +137,7 @@
         $("#category_holder-"+type.replace(" ", "")).empty();
 
         $.ajax({
-            url: "/api/v1/help/" + type + "?page=" + page,
+            url: "/api/v1/help/" + type.trim() + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
