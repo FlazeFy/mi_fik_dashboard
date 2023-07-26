@@ -7,11 +7,16 @@
         @csrf
         <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Cancel Edit</button>
     </form>
-    <form class="d-inline" id="form-edit-desc" method="POST" action="">
+    <form class="d-none" id="form-edit-desc" method="POST" action="">
         @csrf
         <input name="help_body" id="about_body_help" hidden>
         <input name="help_category" id="about_category" hidden>
         <button class="btn btn-success rounded-pill mt-3 px-3 py-2" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+    </form>
+    <form class="d-none" id="form-delete-cat" method="POST" action="">
+        @csrf
+        <input name="help_category" id="about_category" hidden>
+        <button class="btn btn-danger rounded-pill mt-3 px-3 py-2" onclick="deleteCategory(id_body)"><i class="fa-solid fa-trash"></i> Delete Category</button>
     </form>
 @else
     <div class="px-2 position-relative">
@@ -30,6 +35,7 @@
 <script>
     var desc = document.getElementById("about_body_help");
     var form = document.getElementById('form-edit-desc');
+    var form_del = document.getElementById('form-delete-cat');
     var input_cat = document.getElementById("about_category");
     var id_body = " ";
 
@@ -37,8 +43,11 @@
         if(user != "null"){
             document.getElementById("desc_updated").innerHTML = user + " at " + getDateToContext(updated, "full");
         } else {
-            document.getElementById("desc_updated").innerHTML = "-"
+            document.getElementById("desc_updated").innerHTML = "-";
         }
+
+        form_del.setAttribute("class","d-inline");
+        form.setAttribute("class","d-inline");
 
         var parent = document.getElementById("rich_box_desc");
         var child = parent.getElementsByClassName("ql-editor")[0];
@@ -60,6 +69,14 @@
         form.addEventListener('submit', function(event) {
             event.preventDefault(); 
             form.action = '/about/help/edit/body/' + id;
+            form.submit();
+        });
+    }
+
+    function deleteCategory(id){
+        form_del.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            form.action = '/about/help/delete/cat/' + id;
             form.submit();
         });
     }

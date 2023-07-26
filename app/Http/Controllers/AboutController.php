@@ -305,7 +305,7 @@ class AboutController extends Controller
 
                 if($checkEmptyType != null){
                     Help::where('id', $checkEmptyType)->update([
-                        'help_category' => $request->help_category,
+                        'help_category' => Converter::getCleanQuotes($request->help_category),
                         'created_at' => date("Y-m-d H:i"),
                         'created_by' => $user_id,
                     ]);
@@ -335,6 +335,46 @@ class AboutController extends Controller
                 ]);
                 
                 return redirect()->back()->with('success_message', 'Success added a new help category called '.$request->help_category);  
+            }
+        }  
+    }
+
+    public function delete_help_cat(Request $request, $id)
+    {
+        $user_id = Generator::getUserIdV2(session()->get('role_key')); 
+
+        $validator = Validation::getValidateBodyTypeEdit($request);
+        if ($validator->fails()) {
+            $errors = $validator->messages();
+
+            return redirect()->back()->with('failed_message', $errors);
+        } else {
+            $data = new Request();
+            $obj = [
+                'history_type' => "help",
+                'history_body' => "Has deleted a help category called '".$request->help_category."'"
+            ];
+            $data->merge($obj);
+
+            $validatorHistory = Validation::getValidateHistory($data);
+            if ($validatorHistory->fails()) {
+                $errors = $validatorHistory->messages();
+
+                return redirect()->back()->with('failed_message', $errors);
+            } else {
+                Help::destroy($id);
+
+                History::create([
+                    'id' => Generator::getUUID(),
+                    'history_type' => $data->history_type, 
+                    'context_id' => null, 
+                    'history_body' => $data->history_body, 
+                    'history_send_to' => null,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'created_by' => $user_id
+                ]);
+                
+                return redirect()->back()->with('success_message', 'Success deleted a help category called '.$request->help_category);  
             }
         }  
     }

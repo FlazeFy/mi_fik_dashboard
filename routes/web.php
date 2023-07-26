@@ -186,6 +186,7 @@ Route::prefix('/about')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/edit/contact', [AboutController::class, 'edit_about_contact']);
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
+    Route::post('/help/delete/cat/{id}', [AboutController::class, 'delete_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
     Route::post('/toogle/{ctx}/{switch}', [AboutController::class, 'toogle_edit_app']);
