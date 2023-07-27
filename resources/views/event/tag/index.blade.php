@@ -84,7 +84,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -94,6 +94,9 @@
                                 <div class="col-lg-5 col-md-5 col-sm-12">
                                     <div class="content-section">
                                         @include('event.tag.add')
+                                    </div>
+                                    <div class="content-section">
+                                        @include('event.tag.advanced')
                                     </div>
                                     <div class="content-section">
                                         @include('event.tag.category')
@@ -142,5 +145,6 @@
             }
         </script>
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>
 </html>

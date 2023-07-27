@@ -2,21 +2,43 @@
     let validation2 = [
         { id: "question_body", req: true, len: 255 }
     ];
+    var dateBefore = "";
+    var offsetHours = getUTCHourOffset();
+    var now = new Date();
+    var yesterday = now.setDate(now.getDate() - 1);
 </script>
 
 <div class="imessage" id="imessage">
     @if(count($faq) > 0)
-        @php($datebefore = "")
 
         @foreach($faq as $fq)
-            @php($check = date('Y-m-d', strtotime($fq['created_at'])))
-            @if($datebefore != $check)
-                @php($datebefore = $check)
-                <div class="date-chip">
-                    {{date('Y-m-d', strtotime($datebefore))}}
-                </div>
-            @endif
+            
+            <span id="{{$fq['id']}}-date-chip-holder"></span>
+            <script>
+                var check = '<?= date('Y-m-d H:i:s', strtotime($fq['created_at'])); ?>';
+                check = new Date(check);
+                check.setUTCHours(check.getUTCHours() + offsetHours);
+                check = getDateToContext(check, "date");
 
+                if(dateBefore != check){
+                    dateBefore = getDateToContext(check, "date");
+                    if(getDateToContext(yesterday, "date") == check){
+                        $("#{{$fq['id']}}-date-chip-holder").append(`
+                            <div class="date-chip">Yesterday</div>
+                        `);
+                    } else if(getDateToContext(new Date(), "date") == check){
+                        $("#{{$fq['id']}}-date-chip-holder").append(`
+                            <div class="date-chip">Today</div>
+                        `);
+                    } else {
+                        $("#{{$fq['id']}}-date-chip-holder").append(`
+                            <div class="date-chip">
+                                ${getDateToContext(check, "date")}
+                            </div>
+                        `);
+                    }                    
+                }
+            </script>
         
             <div class="from-{{$fq['question_from']}}">
                 @if($fq['question_from'] == "them")

@@ -16,16 +16,17 @@
         @csrf
         <label class="text-secondary">Username</label>
         <h6>{{$user->username}}</h6>
+        <label class="text-secondary mt-2">Email</label>
+        <h6>{{$user->email}}</h6>
+        
         @if(session()->get("role_key") == 1)
-            <div class="form-floating mb-3">
+            <div class="form-floating mb-2 mt-3">
                 <input type="phone" class="form-control nameInput" id="phone" name="phone" value="{{$user->phone}}" oninput="validateForm(validation)" maxlength="14" required>
                 <label for="phone">Phone</label>
                 <a id="phone_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
         @endif
-        <label class="text-secondary mt-2">Email</label>
-        <h6>{{$user->email}}</h6>
-        
+
         @if(!$isMobile)
             <div class="row mb-2 mt-4">
                 <div class="col">

@@ -178,22 +178,20 @@ class Query
                 au.username as admin_username_updated, au.image_url as admin_image_updated,
                 asd.username as admin_username_sended, asd.image_url as admin_image_sended";
         }
-        // Make user's new request dump query
-        // Make user's old request dump query
 
         return $query;
     }
 
     public static function getJoinTemplate($type, $initial){
         if($type == "content_dump"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN users uc ON ".$initial.".created_by = uc.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN users uu ON ".$initial.".updated_by = uu.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id";    
         } else if($type == "content_detail"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN users uc ON ".$initial.".created_by = uc.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN users uu ON ".$initial.".updated_by = uu.id
@@ -201,15 +199,16 @@ class Query
                 LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id
                 LEFT JOIN contents_viewers cv ON cv.content_id = ch.id";    
         } else if($type == "tag"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id";
         } else if($type == "notif"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN admins asd ON ".$initial.".sended_by = asd.id";
         }
+        return $query;
     }
 
     public static function getWhereDateTemplate($date_start, $date_end, $offset){

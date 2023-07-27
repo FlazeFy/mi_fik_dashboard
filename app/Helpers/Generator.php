@@ -75,7 +75,6 @@ class Generator
         $date = new DateTime(date("Y/m/d")); 
 
         if($type == "number"){
-            // Out : ['01', '02', '03']
             $arr = [$date->format('m')];
 
             for ($i = 1; $i < $max; $i++) {
@@ -84,7 +83,6 @@ class Generator
             }
             
         } else if($type == "name"){
-            // Out : ['Jan', 'Feb', 'Mar']
             $arr = ["'".substr($date->format('F'), 0, 3)."', ", ];
 
             for ($i = 1; $i < $max; $i++) {
@@ -442,7 +440,6 @@ class Generator
     }
 
     public static function getMyImage($id, $role){
-        //This query must directly return at least 10 most used tag
         if($role == 0){
             $res = User::select('image_url')
                 ->where('id', $id)

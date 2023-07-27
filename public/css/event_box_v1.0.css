@@ -60,7 +60,7 @@
     font-weight: 400;
     font-size: var(--textSM);
     color:#989898 !important;
-    margin:0px;
+    margin:0;
     overflow: hidden; 
     text-overflow: ellipsis; 
     display: -webkit-box; 
@@ -114,8 +114,8 @@
     display: block;
 }
 .user-image-content.large{
-    width:70px;
-    height:70px;
+    width: 70px;
+    height: 70px;
 }
 .header-image{
     background-position: center;
@@ -132,14 +132,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 70%;
-}
-
-@media screen and (max-width: 1000px) {
-    .user-image-content{ /*Need to be fixed*/
-        position: absolute;
-        margin-top: -37.5px;
-        margin-left: 35%;
-    }
 }
 .ajax-load{
     padding: var(--spaceSM) 0px;

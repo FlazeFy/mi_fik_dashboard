@@ -1,3 +1,11 @@
+@if(session()->get('role_key') == 0)
+    <style>
+        .info-box.profile .body-box {
+            min-height: 30vh;
+        }
+    </style>
+@endif
+
 <div class="info-box-profile" id="info-box-profile">
     @include('profile.editimage')
 
@@ -13,8 +21,8 @@
         </div>
 
         @if(session()->get('role_key') == 0)
-            <div class="sub-holder text-start position-relative">
-                <h5 class="text-secondary">My Roles</h5>
+            <div class="sub-holder text-start position-relative mt-2">
+                <h5 class="text-secondary">My Roles</h5><br>
                 @if(!$myreq)
                     <a class="btn btn-link-danger position-absolute" style="right:0; top:-10px;" onclick="getRequestRemove()"><i class="fa-solid fa-trash-can"></i> Remove</a>
                 @else 

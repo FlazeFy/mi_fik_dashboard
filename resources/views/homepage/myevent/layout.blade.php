@@ -21,7 +21,7 @@
                     </div>
                     <div id="empty_myevent_holder"></div>
                 </div>
-                <span id="load_more_myevent_holder"></span>
+                <span id="load_more_myevent_holder" class="text-center d-block mx-auto"></span>
             </div>
         </div>
     </div>
@@ -67,9 +67,9 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_myevent_holder').html('<button class="btn content-more-floating my-3 p-2 d-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_myevent_holder').html('<button class="btn content-more-floating my-3 p-2 d-inline-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
             } else {
-                $('#load_more_myevent_holder').html('<h6 class="btn content-more-floating my-3 p-2 d-block mx-auto">No more item to show</h6>');
+                $('#load_more_myevent_holder').html('<h6 class="btn content-more-floating my-3 p-2 d-inline-block mx-auto">No more item to show</h6>');
             }
 
             $("#total_my_event").html('<a class="total-my-event" title="You have some draft event"><i class="fa-regular fa-calendar"></i> ' + total + ' </a>');

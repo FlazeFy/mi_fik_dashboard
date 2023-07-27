@@ -62,11 +62,11 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-transparent @if(!$isMobile) my-3 @endif py-2 px-0">
+                    <div class="bg-transparent @if(!$isMobile) my-3 @endif home-content">
                         <div class="position-relative @if($isMobile) px-2 @endif">
                             @if(!$isMobile)
                                 <div class="row mt-3"> 
@@ -115,7 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-1 btn-config-holder">
+                                <div class="mt-1 btn-config-holder" style="display:inline-block !important;">
                                     <div class="d-inline-block w-100">
                                         @include('homepage.searchbar')
                                     </div>

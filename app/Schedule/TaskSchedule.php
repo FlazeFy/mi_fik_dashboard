@@ -87,15 +87,19 @@ class TaskSchedule
 
                 if($hours >= 1 && $hours <= 73){
                     if($ts->content_reminder == "reminder_1_hour_before" && $hours <= 2){
+                        $context_start = "1 hour";
                         $is_remind = true;
                         $threeHr++;
                     } else if($ts->content_reminder == "reminder_3_hour_before" && $hours <= 4){
+                        $context_start = "3 hour";
                         $is_remind = true;
                         $oneHr++;
                     } else if($ts->content_reminder == "reminder_1_day_before" && $hours <= 25){
+                        $context_start = "1 day";
                         $is_remind = true;
                         $oneDay++;
                     } else if($ts->content_reminder == "reminder_3_day_before" && $hours <= 73){
+                        $context_start = "3 day";
                         $is_remind = true;
                         $threeDay++;
                     }
@@ -106,13 +110,14 @@ class TaskSchedule
                     $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
 
                     if($validateRegister['valid'] != null){
-                        if($hours < 24){
-                            $notif_body = "The '".$ts->content_title."' is about to start in ".$hours." hours";
-                        } else {
-                            $days = intval($hours / 24);
-                            $remainHr = 24 - $hours;
-                            $notif_body = "The '".$ts->content_title."' is about to start in ".$days." days and ".$remainHr." hours";
-                        }
+                        // if($hours < 24){
+                        //     $notif_body = "The '".$ts->content_title."' is about to start in ".$hours." hours";
+                        // } else {
+                        //     $days = intval($hours / 24);
+                        //     $remainHr = 24 - $hours;
+                        //     $notif_body = "The '".$ts->content_title."' is about to start in ".$days." days and ".$remainHr." hours";
+                        // }
+                        $notif_body = "The '".$ts->content_title."' is about to start in ".$context_start;
 
                         $notif_title = "Hello ".$ts->created_by.", you got an information";
                         $message = CloudMessage::withTarget('token', $firebase_token)

@@ -2,7 +2,7 @@
     <h5 class="section-title"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
 
     @if(!$isMobile)
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0px;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
         onclick="cleanReq()" aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
@@ -46,14 +46,6 @@
     var selectedOldUser = []; 
 
     infinteLoadMore_old_req(page_old_req);
-
-    //Fix the sidebar & content page_old_req FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page_old_req++;
-    //         infinteLoadMore(page_old_req);
-    //     } 
-    // };
 
     function loadmore_old_req(){
         page_old_req++;
