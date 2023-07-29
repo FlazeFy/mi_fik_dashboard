@@ -12,7 +12,12 @@
         <div class="form-floating mb-3">
             <input type="number" class="form-control" name="DHD_range" min="7" max="100" value="{{$stj->DHD_range}}" required>
             <label for="floatingInput">Deleted History Range (Days)</label>
-        </div><br><br><br>
+        </div>
+        <div class="info-box tips m-0">
+            <label><i class="fa-solid fa-circle-info"></i> Tips</label>
+            <p>This will affect whole system</p>
+        </div>
+        <br>
         <button class="btn btn-submit w-100 py-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
     </form>
 @endforeach

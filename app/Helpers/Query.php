@@ -214,18 +214,18 @@ class Query
     public static function getWhereDateTemplate($date_start, $date_end, $offset){
         if($date_start == $date_end){
             $query = "
-                DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."'
+                DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_start."'
             ";
         } else {
             $query = "
-                ((DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."' 
-                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."')
+                ((DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_start."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') >= '".$date_start."')
                 OR
-                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_end."' 
-                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_end."')
+                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_end."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') >= '".$date_end."')
                 OR
-                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_start."' 
-                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') = '".$date_end."'))
+                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') >= '".$date_start."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_end."'))
             ";
         }
         

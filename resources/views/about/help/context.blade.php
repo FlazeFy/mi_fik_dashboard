@@ -5,7 +5,7 @@
 
     <form class="d-inline" method="POST" action="/about/toogle/help/false">
         @csrf
-        <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Cancel Edit</button>
+        <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Close</button>
     </form>
     <form class="d-none" id="form-edit-desc" method="POST" action="">
         @csrf

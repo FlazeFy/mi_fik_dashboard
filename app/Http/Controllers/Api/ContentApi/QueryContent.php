@@ -231,6 +231,10 @@ class QueryContent extends Controller
                 ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
+            if ($based_role !== null && $based_role != "admin") {
+                $content = $content->whereRaw($based_role);
+            }
+
             $schedule = Task::selectRaw('task_reminder as content_reminder, '.$select_task.', tasks.created_at, tasks.updated_at')
                 ->where('created_by', $user_id)
                 ->whereRaw("DATE_FORMAT(DATE_ADD(task_date_start, INTERVAL ".$utc." HOUR), '%Y-%m-%d') <= '".$date."'
@@ -241,10 +245,6 @@ class QueryContent extends Controller
                 ->orderBy('tasks.task_date_start', 'DESC')
                 ->union($content)
                 ->get();
-
-            if ($based_role !== null && $based_role != "admin") {
-                $content = $content->whereRaw($based_role);
-            }
 
             $clean = [];
             $total_content = 0;

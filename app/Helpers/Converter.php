@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use Transliterator;
 
 class Converter
 {
@@ -46,5 +47,14 @@ class Converter
         $val = str_replace("'", "",$val);
 
         return trim($val);
+    }
+
+    public static function getCleanUsername($val){
+        $translator = Transliterator::create('Any-Latin; Latin-ASCII');
+        $val = $translator->transliterate($val);
+        $replace = str_replace(" ","", $val);
+        $replace = preg_replace('/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/', '', $replace);
+
+        return $replace;
     }
 }

@@ -17,7 +17,7 @@
         <div class="position-relative">
             <form class="d-inline position-absolute" style="right: 0; top:-15px;" method="POST" action="/about/toogle/app/false">
                 @csrf
-                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) Cancel Edit @endif</button>
+                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) Close @endif</button>
             </form>
             <form class="d-inline @if($isMobile) px-2 @endif" method="POST" action="/about/edit/app">
                 @csrf
@@ -36,7 +36,7 @@
                     </script>
                 @endforeach
                 <input name="help_body" id="about_body" hidden>
-                <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:160px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) Save Changes @endif</button>
+                <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:110px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) Save Changes @endif</button>
             </form><br><br>
             <div id="rich_box">
                 <?php
@@ -51,7 +51,7 @@
             <form class="d-inline" method="POST" action="/about/toogle/app/true">
                 @csrf
                 <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-20px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) Edit @endif</button>
-            </form>
+            </form><br><br>
             <span id="about-app-holder">
                 <?php
                     foreach($about as $ab){ 

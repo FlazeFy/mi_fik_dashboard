@@ -266,6 +266,9 @@ body{
 .modal {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+b {
+    font-weight: 600 !important;
+}
 
 /* Background */
 .bg-primary{

@@ -30,7 +30,7 @@
                 <button class="btn btn-info navigator-right rounded-pill px-4 py-2" title="Set draft" type="submit"><i class="fa-solid fa-eye-slash"></i> Set as draft</button>
             @endif
         </form>
-        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Cancel edit" ><i class="fa-solid fa-xmark fa-lg"></i> Cancel</a>
+        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Close" ><i class="fa-solid fa-xmark fa-lg"></i> Close</a>
     @endif
     </div>
 </div>
