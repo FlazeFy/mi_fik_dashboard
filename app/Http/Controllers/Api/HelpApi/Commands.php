@@ -8,6 +8,7 @@ use Illuminate\Http\Response;
 
 use App\Helpers\Validation;
 use App\Helpers\Generator;
+use App\Helpers\Converter;
 
 use App\Models\Help;
 use App\Models\History;
@@ -44,7 +45,7 @@ class Commands extends Controller
                         'result' => $errors
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $type = trim(strtolower($request->help_type));
+                    $type = Converter::getCleanQuotes(trim(strtolower($request->help_type)));
                     $checkType = Help::getAboutHelpType($type);
 
                     if($checkType == false){
@@ -79,7 +80,7 @@ class Commands extends Controller
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'result' => 'Failed to created new help category. The help type is already exist',
+                            'result' => 'The help type is already exist',
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }    
                 }

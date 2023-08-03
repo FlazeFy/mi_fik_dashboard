@@ -475,7 +475,8 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $found = User::where('username', $request->username)
+                $username = Converter::getCleanUsername($request->username);
+                $found = User::where('username', $username)
                     ->orWhere('email', $request->email)
                     ->exists();
 
@@ -511,7 +512,8 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $user = User::select("id")->where('username', $request->username)
+                $username = Converter::getCleanUsername($request->username);
+                $user = User::select("id")->where('username', $username)
                     ->where('email', $request->email)
                     ->first();
 
@@ -532,7 +534,7 @@ class Commands extends Controller
                             'validated_at' => null
                         ]);
 
-                        dispatch(new RecoverPassMailer($request->username, $request->email, $token));
+                        dispatch(new RecoverPassMailer($username, $request->email, $token));
 
                         return response()->json([
                             'status' => 'success',
@@ -775,8 +777,9 @@ class Commands extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $validPass = Validation::hasNumber($request->password);
+                $username = Converter::getCleanUsername($request->username);
                 if($validPass) {
-                    $found = DB::table("users")->where('username', $request->username)
+                    $found = DB::table("users")->where('username', $username)
                         ->orWhere('email', $request->email)
                         ->exists();
 
@@ -790,7 +793,7 @@ class Commands extends Controller
                         $user = DB::table("users")->insert([
                             'id' => $uuid, 
                             'firebase_fcm_token' => null, 
-                            'username' => $request->username, 
+                            'username' => $username, 
                             'email' => $request->email, 
                             'password' => Hash::make($request->password), 
                             'first_name' => $request->first_name, 

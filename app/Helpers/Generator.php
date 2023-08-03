@@ -533,4 +533,32 @@ class Generator
 
         return $res;  
     }
+
+    public static function getMessageTemplate($type, $ctx, $obj){
+        if($obj != null){
+            $obj = "called ".$obj;
+        } else {
+            $obj = "";
+        }
+
+        if($type == "lost_session"){
+            $res = "Session lost, please sign in again";
+        } else if($type == "business_create"){
+            $res = "New ".$ctx." ".$obj." has been created";
+        } else if($type == "business_update"){
+            $res = $ctx." ".$obj." has been updated";
+        } else if($type == "business_delete"){
+            $res = $ctx." ".$obj." has been deleted";
+        } else if($type == "business_read"){
+            $res = $ctx." ".$obj; // Not used yet
+        } else if($type == "failed_exist"){
+            $res = "The ".$ctx." ".$obj." is already exist";
+        } else if($type == "custom"){
+            $res = $ctx;
+        } else {
+            $res = "Failed to get respond message";
+        }
+
+        return ucfirst(trim($res));
+    }
 }

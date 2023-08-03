@@ -153,10 +153,8 @@
         if(ds != null && now != null){
             const nowDate = new Date(now.setHours(now.getHours() + 1));
             const startDate = new Date(ds);
-
             const remain = getMinutesDifference(nowDate, startDate);
-            console.log(nowDate, startDate);
-            console.log("test"+remain);
+            
             $("#selectReminder").append(`<option value="reminder_none" selected>None</option>`);
             if(remain > 0){
                 $("#selectReminder").append(`<option value="reminder_1_hour_before">1 hour before</option>`);

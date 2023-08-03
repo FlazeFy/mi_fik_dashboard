@@ -5,7 +5,6 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
         <a class="dropdown-item" data-bs-target="#msChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
     </div>
 
     @if(count($suggestion) > 0)

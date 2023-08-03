@@ -27,7 +27,6 @@
                 @else 
                     @php($menu_group = str_replace(' ', '', $mn->menu_group))
 
-                    <!-- Fix this -->
                     @if($menu_group == "event")
                         <?php $icon = '<i class="fa-regular fa-calendar me-3"></i>'; ?>
                     @elseif($menu_group == "system")
@@ -40,7 +39,7 @@
                     
                     @if(!$group)
                         <li class="accordion-header <?php if(session()->get('active_nav') == $menu_group){ echo " active"; }?>">
-                            <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clps{{$menu_group}}"><?= $icon; ?> {{ucfirst($mn->menu_group)}}</button>
+                            <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clps{{$menu_group}}"><?= $icon; ?> {{ucwords($mn->menu_group)}}</button>
                         </li>
                         @php($group = true)
                     @endif
@@ -62,7 +61,7 @@
                         @php($active = "")
                     @endif
                     <li class="sub {{$active}}">
-                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> {{ucfirst($mn->menu_name)}}</a>
+                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> {{ucwords($mn->menu_name)}}</a>
                     </li>
                    
                     @if($i <= $total)

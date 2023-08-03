@@ -51,7 +51,7 @@ class TrashController extends Controller
                 ->with('info', $info)
                 ->with('settingJobs', $settingJobs);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 
@@ -59,7 +59,7 @@ class TrashController extends Controller
     {
         session()->put('ordering_trash', $order);
 
-        return redirect()->back()->with('success_message', 'Content ordered');
+        return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",'content ordered',null));
     }
 
     public function recover_content($slug, $type)
@@ -161,10 +161,10 @@ class TrashController extends Controller
                     'created_by' => $user_id
                 ]);
                 
-                return redirect()->back()->with('success_message', ucfirst($type)." successfully recover");    
+                return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",ucfirst($type)." recover",null));    
             }
         } else {
-            return redirect()->back()->with('failed_message', ucfirst($type)." recover is failed, the event doesn't exist anymore");
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",ucfirst($type)." doesn't exist anymore",null));
         }
     }
 
@@ -282,15 +282,15 @@ class TrashController extends Controller
                     }
                     
                     DB::commit();
-                    return redirect()->back()->with('success_message', ucfirst($type)." successfully destroyed");    
+                    return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",ucfirst($type)." destroyed",null));    
                 }
             } else {
-                return redirect()->back()->with('failed_message', ucfirst($type)." destroy is failed, the event doesn't exist anymore");
+                return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",ucfirst($type)." doesn't exist anymore",null));
             }
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Destroy is failed '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 }

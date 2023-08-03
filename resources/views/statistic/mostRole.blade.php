@@ -12,10 +12,9 @@
     var options = {
         series: [
             <?php 
-                //Initial variable
                 $val = [];
                 foreach($setting as $set){
-                    $max = $set->MOT_range; //Max role to show.
+                    $max = $set->MOT_range;
                 }
                 $otherTotal = 0;
                 
@@ -23,20 +22,16 @@
                     $role = count($mr->role);
                     
                     for($i = 0; $i < $role; $i++){
-                        //Insert role name to new array
                         array_push($val, $mr->role[$i]['tag_name']);
                     }   
                 }
 
-                //Count duplicate value w/ DESC sorting
                 $result = array_count_values($val);
                 rsort($result);
 
-                //Separate top used and the others
                 $main = array_slice($result, 0, $max);
                 $others = array_slice($result, $max, count($result));
 
-                //The top used & the others frequency
                 foreach($main as $m){
                     echo $m.",";
                 }

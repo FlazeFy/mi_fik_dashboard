@@ -51,7 +51,7 @@
                                 <button class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:0" title="Set draft" type="submit"><i class="fa-solid fa-eye-slash"></i> Draft</button>
                             @endif
                         </form>
-                        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" style="right:170px" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Cancel edit" ><i class="fa-solid fa-xmark fa-lg"></i></a>
+                        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" style="right:170px" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Close" ><i class="fa-solid fa-xmark fa-lg"></i></a>
                     </div>
                 @endif
             <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
@@ -75,7 +75,7 @@
                                 <button class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:0" title="Set draft" type="submit"><i class="fa-solid fa-eye-slash"></i> Set as draft</button>
                             @endif
                         </form>
-                        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" style="right:170px" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Cancel edit" ><i class="fa-solid fa-xmark fa-lg"></i></a>
+                        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" style="right:170px" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Close" ><i class="fa-solid fa-xmark fa-lg"></i></a>
                     </div>
                 @endif
             </div>

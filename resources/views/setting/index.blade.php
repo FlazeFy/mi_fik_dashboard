@@ -57,7 +57,7 @@
 
                     @if(!$isMobile)
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:450px;">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:480px;">
                             @endif
                             <div class="content-section h-100 p-0 pt-3">
                                 <h5 class="mx-3">Chart Range</h5><hr>
@@ -67,7 +67,7 @@
                             </div>
                         @if(!$isMobile)
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:450px;">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:480px;">
                         @endif
                             <div class="content-section h-100 p-0 pt-3">
                                 <h5 class="mx-3">Task Scheduling Range</h5><hr>
@@ -77,7 +77,7 @@
                             </div>
                         @if(!$isMobile)
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:450px;">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:480px;">
                         @endif
                             <div class="content-section h-100 p-0 pt-3">
                                 <h5 class="mx-3">LandingPage Range</h5><hr>

@@ -43,7 +43,7 @@ class SettingController extends Controller
                     ->with('settingLanding', $settingLanding)
                     ->with('menu', $menu);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");
@@ -54,7 +54,6 @@ class SettingController extends Controller
     {
         $user_id = Generator::getUserIdV2(session()->get('role_key')); 
 
-        //Helpers
         $validator = Validation::getValidateSetting($request);
         if ($validator->fails()) {
             $errors = $validator->messages();
@@ -69,10 +68,8 @@ class SettingController extends Controller
                 'updated_at' => date("Y-m-d H:i"),
             ]);
 
-            return redirect()->back()->with('success_message', 'Setting updated');
+            return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'setting',null));
         }   
-
-        return redirect()->back()->with('success_message', 'Setting updated');
     }
 
     public function update_jobs(Request $request, $id)
@@ -115,7 +112,7 @@ class SettingController extends Controller
                     'created_by' => $user_id
                 ]);
                 
-                return redirect()->back()->with('success_message', 'Setting updated');  
+                return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'setting',null));  
             }
         }        
     }
@@ -159,7 +156,7 @@ class SettingController extends Controller
                     'created_by' => $user_id
                 ]);
                 
-                return redirect()->back()->with('success_message', 'Setting updated');  
+                return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'setting',null));  
             }
         }        
     }

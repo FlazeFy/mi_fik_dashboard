@@ -9,16 +9,8 @@
 </style>
 
 <div class="my-3">
-    <form action="/event/edit/update/loc/add/{{$c->slug_name}}" method="POST">
-        @csrf
-        <input hidden name="content_loc" id="content_loc">
-        <input hidden name="content_title" value="{{$c->content_title}}">
-        <span id="content_loc_msg"></span>
-        <div id="map-event"></div>
-        <div id="map-save-button-holder"></div>
-    </form>
     @if($c->content_loc && $c->content_loc[0]['detail'])
-        <div class="form-floating my-2">
+        <div class="form-floating mb-2">
             <input type="text" class="form-control" id="content_loc_name" placeholder="{{$c->content_loc[0]['detail']}}" value="{{$c->content_loc[0]['detail']}}" oninput="getContentLocation()">
             <label for="content_loc_name">Location Name</label>
         </div>
@@ -32,6 +24,15 @@
     @if($c->content_loc && count($c->content_loc) != 2)
         @include('components.infobox', ['info' => $info, 'location'=> "invalid_location"])
     @endif
+
+    <form action="/event/edit/update/loc/add/{{$c->slug_name}}" method="POST">
+        @csrf
+        <input hidden name="content_loc" id="content_loc">
+        <input hidden name="content_title" value="{{$c->content_title}}">
+        <span id="content_loc_msg"></span>
+        <div id="map-event"></div>
+        <div id="map-save-button-holder"></div>
+    </form>
 </div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXu2ivsJ8Hj6Qg1punir1LR2kY9Q_MSq8&callback=initMap&v=weekly" defer></script>
@@ -48,6 +49,7 @@
     ?>
 
     function initMap() {
+        //Map starter
         <?php 
             if($c->content_loc && count($c->content_loc) == 2){
                 $full_coor = $c->content_loc[1]['detail'];
@@ -56,15 +58,15 @@
                 echo "let longitude= ".$coor[1].";";
                 echo "let markers= [{
                     coords:{lat:".$coor[0].",lng:".$coor[1]."},
-                    content:`<div><h4>".str_replace("'", "\'", $c->content_title)."</h4><p>".str_replace("'", "\'", $c->content_desc)."</p></div>`
-                    }];";
+                    content:'<div><h4>".$c->content_title."</h4><p>".$c->content_desc."</p></div>'
+                    },];";
 
-                echo 'map = new google.maps.Map(document.getElementById(`map-event`), {
+                echo 'map = new google.maps.Map(document.getElementById("map-event"), {
                     center: { lat: latitude, lng: longitude},
                     zoom: 15,
                 });';
             } else {
-                echo 'map = new google.maps.Map(document.getElementById(`map-event`), {
+                echo 'map = new google.maps.Map(document.getElementById("map-event"), {
                     center: { lat: -6.969350413790824, lng: 107.62818479205987 },
                     zoom: 15,
                 });';
@@ -84,7 +86,7 @@
                     position:props.coords,
                     map:map,
                     icon: {
-                        url: `https://maps.google.com/mapfiles/ms/icons/orange-dot.png`,
+                        url: 'https://maps.google.com/mapfiles/ms/icons/orange-dot.png',
                         scaledSize: new google.maps.Size(40, 40),
                     }
                 });
@@ -96,7 +98,7 @@
                     var infoWindow = new google.maps.InfoWindow({
                     content:props.content
                 });
-                marker.addListener(`click`, function(){
+                marker.addListener('click', function(){
                     infoWindow.open(map, marker);
                 });
                 }
@@ -113,15 +115,17 @@
     }
 
     function addContentCoor(coor){
-        coor = coor.toJSON();
-        coordinate_new = coor[`lat`]+`, `+coor[`lng`];
-        getContentLocation();
+        coor = coor.toJSON()
+        coordinate_new = coor['lat']+", "+coor['lng']
+        getContentLocation()
     }
 
     function getContentLocation(){
-        var loc_name = $(`#content_loc_name`).val();
+        var loc_name = $("#content_loc_name").val();
 
-        loc_name == '' ? loc_name = null : null;
+        if(loc_name == ''){
+            loc_name = null
+        }
 
         if(coordinate_old){
             if(coordinate_new){
@@ -136,13 +140,13 @@
                 };
 
                 if(loc_name == '' || loc_name == null){
-                    $("#content_loc_msg").text("Location is valid, but you can also provide the location name");
-                    $("#content_loc_msg").css({"color":"var(--primaryColor)"});
+                    $("#content_loc_msg").text("Location is valid, but you can also provide the location name")
+                    $("#content_loc_msg").css({"color":"var(--primaryColor)"})
                 } else {
-                    $("#content_loc_msg").text("Location is valid");
-                    $("#content_loc_msg").css({"color":"var(--successBG)"});
+                    $("#content_loc_msg").text("Location is valid")
+                    $("#content_loc_msg").css({"color":"var(--successBG)"})
                 }
-                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>`; 
+                document.getElementById('map-save-button-holder').innerHTML = '<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>'; 
             } else {
                 loc_obj[1] = {
                     "type": "coordinate", 
@@ -153,9 +157,9 @@
                     "detail": loc_name, 
                 };
                 
-                $("#content_loc_msg").text("Location coordinate is same as before");
-                $("#content_loc_msg").css({"color":"var(--primaryColor)"});
-                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>`; 
+                $("#content_loc_msg").text("Location coordinate is same as before")
+                $("#content_loc_msg").css({"color":"var(--primaryColor)"})
+                document.getElementById('map-save-button-holder').innerHTML = '<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>'; 
 
                 error = true
             }   
@@ -172,28 +176,31 @@
                 };
 
                 if(loc_name == '' || loc_name == null){
-                    $("#content_loc_msg").text("Location is valid, but you can also provide the location name");
-                    $("#content_loc_msg").css({"color":"var(--primaryColor)"});
+                    $("#content_loc_msg").text("Location is valid, but you can also provide the location name")
+                    $("#content_loc_msg").css({"color":"var(--primaryColor)"})
                 } else {
-                    $("#content_loc_msg").text("Location is valid");
-                    $("#content_loc_msg").css({"color":"var(--successBG)"});
+                    $("#content_loc_msg").text("Location is valid")
+                    $("#content_loc_msg").css({"color":"var(--successBG)"})
                 }
 
-                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>`; 
+                document.getElementById('map-save-button-holder').innerHTML = '<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>'; 
             } else {
                 loc_obj[0] = {
                     "type": "name", 
                     "detail": loc_name, 
                 };
                 
-                $("#content_loc_msg").text("Location is invalid, please provide the coordinate using maps");
-                $("#content_loc_msg").css({"color":"var(--warningBG)"});
+                $("#content_loc_msg").text("Location is invalid, please provide the coordinate using maps")
+                $("#content_loc_msg").css({"color":"var(--warningBG)"})
 
-                error = true;
+                error = true
             }   
         }
 
-        loc_obj ? (document.getElementById(`content_loc`).value = JSON.stringify(loc_obj)) : null;
+        if(loc_obj){
+            document.getElementById('content_loc').value = JSON.stringify(loc_obj);
+            console.log(loc_obj)
+        }
     }
     
     window.initMap = initMap;

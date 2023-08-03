@@ -42,7 +42,7 @@ class AllController extends Controller
                     ->with('tag', $tag)
                     ->with('dct_tag', $dct_tag);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");

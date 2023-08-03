@@ -1,7 +1,3 @@
-<style>
-
-</style>
-
 <div style="position:absolute; right: 60px; top:-5px;">
     @if(session()->get('ordering_finished') == "ASC")
         <form class="d-inline" action="/event/calendar/ordered/DESC" title="Sort content by ascending" method="POST">
@@ -15,7 +11,3 @@
         </form>
     @endif
 </div>
-
-<script>
-
-</script>

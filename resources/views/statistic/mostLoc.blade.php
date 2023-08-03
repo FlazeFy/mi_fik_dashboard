@@ -6,7 +6,6 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOL">
         <span class="dropdown-item">
-            <!--Chart Setting-->
             @foreach($setting as $set)
                 <form action="/statistic/update_mol/{{$set->id}}" method="POST">
                     @csrf
@@ -31,14 +30,12 @@
     var options = {
         series: [
             <?php 
-                //Initial variable
                 $val = [];
 
                 foreach($mostLoc as $mt){
                     $loc = json_decode($mt->content_loc);
                     
                     foreach($loc as $lc){
-                        //Insert loc name to new array
                         if($lc->type == "name" && $lc->detail != null){
                             array_push($val, $lc->detail);
                         }
@@ -46,19 +43,16 @@
                 }
 
                 foreach($setting as $set){
-                    $max = $set->MOL_range; //Max loc to show.
+                    $max = $set->MOL_range;
                 }
                 $otherTotal = 0;
 
-                //Count duplicate value w/ DESC sorting
                 $result = array_count_values($val);
                 rsort($result);
 
-                //Separate top used and the others
                 $main = array_slice($result, 0, $max);
                 $others = array_slice($result, $max, count($result));
 
-                //The top used & the others frequency
                 foreach($main as $m){
                     echo $m.",";
                 }
@@ -77,34 +71,29 @@
     },
     labels: [
         <?php 
-            //Initial variable
             $val = [];
 
             foreach($mostLoc as $mt){
                 $loc = json_decode($mt->content_loc);
                 
                 foreach($loc as $lc){
-                    //Insert loc name to new array
                     if($lc->type == "name" && $lc->detail != null){
                         array_push($val, $lc->detail);
                     }
                 }   
             }
 
-            //Check if chart range is greater than location total
             foreach($setting as $set){
                 if(count($val) > $set->MOL_range){
-                    $max = $set->MOL_range; //Max loc to show.
+                    $max = $set->MOL_range; 
                 } else {
                     $max = null;
                 }
             }
 
-            //Count duplicate value w/ DESC keys sorting
             $result = array_count_values($val);
             arsort($result);
 
-            //Get array keys
             $new_arr = array_keys($result);
             if($max != null){
                 for($i = 0; $i < $max; $i++){
@@ -125,9 +114,6 @@
     responsive: [{
         // breakpoint: 480,
         options: {
-            // chart: {
-            //     width: 160
-            // },
             legend: {
                 position: 'bottom'
             }

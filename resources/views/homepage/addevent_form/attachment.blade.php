@@ -161,7 +161,7 @@
                     add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
                     add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
 
-                    document.getElementById('attach-failed-'+id).innerHTML = "Upload failed. Maximum file size is " + max + " mb";
+                    document.getElementById('attach-failed-'+id).innerHTML = "Maximum file size is " + max + " mb";
                     var att_url = null;
                     if(error.message){
                         att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";

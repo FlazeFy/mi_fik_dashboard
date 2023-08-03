@@ -1,7 +1,8 @@
 <div class="position-relative me-1">
     <button class="btn btn-primary px-3 py-2" type="button" id="section-select-tag" data-bs-toggle="dropdown"
         ><i class="fa-solid fa-hashtag"></i>
-        @php($tag_coll = session()->get('selected_tag_calendar'))
+        @php($tag_coll = session()->get('selected_tag_'.$from))
+
         @if($tag_coll != "All")
             {{count($tag_coll)}} Selected Tags
         @else
@@ -12,13 +13,13 @@
         <span class="filter-section dropdown-item p-0">
             <div class="dropdown-header">
                 <h6 class="dropdown-title">Filter Tag</h6>
-                <form action="/event/calendar/set_filter_tag/1" method="POST" class="position-absolute" style="right:15px; top:20px;">
+                <form action="/event/calendar/set_filter_tag/1/{{$from}}" method="POST" class="position-absolute" style="right:15px; top:20px;">
                     @csrf
                     <button class="btn btn-noline text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> Clear All</button>
                 </form>
             </div><hr>
             <div class="dropdown-body">
-                <form action="/event/calendar/set_filter_tag/0" method="POST" style="white-space:normal;">
+                <form action="/event/calendar/set_filter_tag/0/{{$from}}" method="POST" style="white-space:normal;">
                     @csrf
                     @if(session()->get('role_key') == 1)
                         @php($colltag = $tag)
@@ -32,8 +33,8 @@
                         @php($check = "")
 
                         <!-- Check if tag is selected -->
-                        @if(is_array(session()->get('selected_tag_calendar')))
-                            @foreach(session()->get('selected_tag_calendar') as $slct)
+                        @if(is_array($tag_coll))
+                            @foreach($tag_coll as $slct)
                                 @if(is_array($colltag))
                                     @if($slct == $tg['slug_name'])
                                         @php($found = true)
