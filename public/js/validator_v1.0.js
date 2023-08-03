@@ -9,10 +9,10 @@ function validateForm(rules){
 
         if(e.id != "selected_item"){
             if(input.value.trim().length >= e.len){
-                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Reaching maximum character length";
+                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length";
                 res = false
             } else if(input.value.trim().length == 0 && e.req === true){
-                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Field can't be empty";
+                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Field can't be empty";
                 res = false
             } else {
                 msg.innerHTML = " "
@@ -57,10 +57,10 @@ function validateFormSecond(rules){
         msg = document.getElementById(e.id+"_msg");
 
         if(input.value.trim().length >= e.len){
-            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Reaching maximum character length";
+            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length";
             res = false
         } else if(input.value.trim().length == 0 && e.req === true){
-            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Field can't be empty";
+            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Field can't be empty";
             res = false
         } else {
             msg.innerHTML = " "
@@ -95,10 +95,10 @@ function validateFull(rules, id){
         msg = document.getElementById(e.id+"_msg");
 
         if(input.value.trim().length >= e.len){
-            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Reaching maximum character length";
+            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length";
             res = false
         } else if(input.value.trim().length == 0 && e.req === true){
-            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Field can't be empty";
+            msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Field can't be empty";
             res = false
         } else {
             msg.innerHTML = " "

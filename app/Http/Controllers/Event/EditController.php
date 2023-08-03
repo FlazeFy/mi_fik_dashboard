@@ -92,7 +92,7 @@ class EditController extends Controller
                 return view("errors.404");
             }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
                 
     }

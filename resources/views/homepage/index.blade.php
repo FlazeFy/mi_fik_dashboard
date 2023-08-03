@@ -90,7 +90,7 @@
                                     @endif
                                 </div>
                                 <div class="mt-2 btn-config-holder">
-                                    @include('event.calendar.filter_tag')
+                                    @include('event.calendar.filter_tag', ['from' => 'home'])
                                     @include('homepage.sorting')
                                     @include('homepage.datefilter')
                                     @include('homepage.searchbar')
@@ -120,7 +120,7 @@
                                         @include('homepage.searchbar')
                                     </div>
                                     <div class="d-inline-block mt-2">
-                                        @include('event.calendar.filter_tag')
+                                        @include('event.calendar.filter_tag', ['from' => 'home'])
                                     </div>
                                     <div class="d-inline-block">
                                         @include('homepage.sorting')

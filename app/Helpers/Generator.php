@@ -533,4 +533,28 @@ class Generator
 
         return $res;  
     }
+
+    public static function getMessageTemplate($type, $ctx, $obj){
+        if($obj != null){
+            $obj = "called ".$obj;
+        } else {
+            $obj = "";
+        }
+
+        if($type == "lost_session"){
+            $res = "Session lost, please sign in again";
+        } else if($type == "business_create"){
+            $res = "Created new ".$ctx." ".$obj;
+        } else if($type == "business_update"){
+            $res = "Updated ".$ctx." ".$obj;
+        } else if($type == "business_delete"){
+            $res = "Deleted ".$ctx." ".$obj;
+        } else if($type == "business_read"){
+            $res = "Get ".$ctx." ".$obj;
+        } else {
+            $res = $ctx;
+        }
+
+        return ucfirst(trim($res));
+    }
 }

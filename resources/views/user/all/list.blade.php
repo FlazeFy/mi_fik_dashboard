@@ -242,30 +242,17 @@
 
                     if(role){
                         for(var i = 0; i < role.length; i++){
-                            elmnt += "<a class='btn btn-tag'>"+role[i]['tag_name']+"</a>"
+                            elmnt += `<a class='btn btn-tag'>${role[i]['tag_name']}</a>`;
                         }
                         return elmnt
 
                     } else {
-                        return "<h6 class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> This user has no role</h6>" ;
+                        return `<h6 class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> This user has no role</h6>`;
                     }
                 }
 
-                function getNewUser(status){
-                    if(status == 0){
-                        return 1
-                    } else {
-                        return 0
-                    }
-                }
+                const getImageStyleBasedDevice = () => isMobile() ? 'width:60px; height:60px;' : 'width:170px; height:170px;';
 
-                function getImageStyleBasedDevice(){
-                    if(isMobile()){
-                        return 'width:60px; height:60px;';
-                    } else {
-                        return 'width:170px; height:170px;';
-                    }
-                }
 
                 function manageRole(username, real_username){
                    
@@ -458,9 +445,9 @@
         $("#user_navigate").empty();
         for(var i = 1; i <= lastPageUser; i++){
             if(i == pageUser){
-                var elmt = "<a class='page-holder active'>"+i+"</a>";
+                var elmt = `<a class='page-holder active'>${i}</a>`;
             } else {
-                var elmt = "<a class='page-holder' onclick='infinteLoadMoreUser("+'"'+i+'"'+")'>"+i+"</a>";
+                var elmt = `<a class='page-holder' onclick='infinteLoadMoreUser("${i}")'>${i}</a>`;
             }
             $("#user_navigate").append(elmt);
         }

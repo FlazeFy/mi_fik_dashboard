@@ -58,7 +58,7 @@ class AboutController extends Controller
                     ->with('ctc',$ctc);   
             }   
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 

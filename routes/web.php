@@ -108,7 +108,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/edit/update/loc/remove/{slug_name}', [EditController::class, 'update_event_remove_loc']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
-    Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
+    Route::post('/calendar/set_filter_tag/{all}/{from}', [CalendarController::class, 'set_filter_tag']);
     Route::post('/calendar/ordered/{order}', [CalendarController::class, 'set_ordering_content']);
     Route::post('/calendar/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 

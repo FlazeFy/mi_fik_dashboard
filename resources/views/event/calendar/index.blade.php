@@ -84,7 +84,7 @@
                                 
                                 @if($isMobile && $st == "calendar")
                                     <div class="calendar-tag-holder">
-                                        @include('event.calendar.filter_tag')
+                                        @include('event.calendar.filter_tag', ['from' => 'calendar'])
                                     </div>
                                 @endif
                             </header><hr>
@@ -92,7 +92,7 @@
                                 @if($st == "calendar")
                                     @if(!$isMobile)
                                         <div class="calendar-tag-holder">
-                                            @include('event.calendar.filter_tag')
+                                            @include('event.calendar.filter_tag', ['from' => 'calendar'])
                                         </div>
                                     @endif
                                     @include('event.calendar.calendar')

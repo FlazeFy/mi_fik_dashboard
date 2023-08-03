@@ -17,7 +17,7 @@
         
         if(type == "title"){
             if($("#titleInput_event").val().length >= len){
-                $("#title_msg_event").html("<i class='fa-solid fa-triangle-exclamation'></i> You reaches the maximum character");
+                $("#title_msg_event").html("<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length");
                 check_title = true;
             } else {
                 $("#title_msg_event").text("");

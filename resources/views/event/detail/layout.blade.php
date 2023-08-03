@@ -147,20 +147,11 @@
     var i = 0;
     var j = 0;
 
-    function copylink(id) {
-        var copyText = document.getElementById("copy_url_"+id);
-
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-
-        navigator.clipboard.writeText(copyText.value);
-    }
-
     function resize(img){
         if(img){
-            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('" + img + "');";
+            var img_url = `background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('${img}');`;
         } else {
-            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');";
+            var img_url = `background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');`;
         }
 
         if(i % 2 == 0){

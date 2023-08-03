@@ -154,7 +154,7 @@
                 } else {
                     attach_list[objIndex]['is_add_more'] = false;
                     document.getElementById('attach_name_'+id).disabled = true;
-                    document.getElementById('attach-failed-'+id).innerHTML = "Upload failed. Maximum file size is " + max + " mb";
+                    document.getElementById('attach-failed-'+id).innerHTML = "Maximum file size is " + max + " mb";
                     var att_url = null;
                     if(error.message){
                         att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";

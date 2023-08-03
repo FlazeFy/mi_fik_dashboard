@@ -68,7 +68,7 @@ class TagController extends Controller
                     ->with('info', $info);
             }
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 
@@ -310,7 +310,7 @@ class TagController extends Controller
                             return redirect()->back()->with('success_message', "'".$request->tag_name."' Tag has been created");
                         } 
                     } else {
-                        return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
+                        return redirect()->back()->with('failed_message', 'Please use unique name');
                     }
                 }
             }            
@@ -373,7 +373,7 @@ class TagController extends Controller
                 }
             }
         } else {
-            return redirect()->back()->with('failed_message', 'Create tag failed. Please use unique name');
+            return redirect()->back()->with('failed_message', 'Please use unique name');
         }
     }
 

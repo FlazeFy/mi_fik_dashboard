@@ -315,3 +315,12 @@ function setGuidelinesModal(conf, is_show_all){
         i++;
     });
 }
+
+function copylink(id) {
+    var copyText = document.getElementById("copy_url_"+id);
+
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); // For mobile devices
+
+    navigator.clipboard.writeText(copyText.value);
+}

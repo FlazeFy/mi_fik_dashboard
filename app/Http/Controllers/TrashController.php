@@ -51,7 +51,7 @@ class TrashController extends Controller
                 ->with('info', $info)
                 ->with('settingJobs', $settingJobs);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 

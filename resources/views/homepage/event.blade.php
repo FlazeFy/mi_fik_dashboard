@@ -39,7 +39,7 @@
 
     function infinteLoadMore(page) {
         var tag = <?php
-            $tags = session()->get('selected_tag_calendar');
+            $tags = session()->get('selected_tag_home');
             
             if($tags != "All"){
                 echo "'";

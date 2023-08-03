@@ -50,6 +50,9 @@ class HomepageController extends Controller
             if(!session()->get('selected_tag_calendar')){
                 session()->put('selected_tag_calendar', "All");
             }
+            if(!session()->get('selected_tag_home')){
+                session()->put('selected_tag_home', "All");
+            }
             if(!session()->get('selected_role_user')){
                 session()->put('selected_role_user', "All");
             }
@@ -166,7 +169,7 @@ class HomepageController extends Controller
                 ->with('dictionary', $dictionary)
                 ->with('count', $count);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 
