@@ -80,7 +80,7 @@ class Commands extends Controller
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'result' => 'Failed to created new help category. The help type is already exist',
+                            'result' => 'The help type is already exist',
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }    
                 }

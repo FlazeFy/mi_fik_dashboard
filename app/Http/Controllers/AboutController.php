@@ -76,7 +76,7 @@ class AboutController extends Controller
             $data = new Request();
             $obj = [
                 'history_type' => "about",
-                'history_body' => "Has edited about app"
+                'history_body' => "has edited about app"
             ];
             $data->merge($obj);
 
@@ -108,9 +108,9 @@ class AboutController extends Controller
                         'created_by' => $user_id
                     ]);
                     
-                    return redirect()->back()->with('success_message', 'About Apps updated'); 
+                    return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update", "About us", null)); 
                 } else {
-                    return redirect()->back()->with('failed_message', 'Failed to update About Apps, the item doesnt exist anymore'); 
+                    return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'The item does not exist anymore',null)); 
                 }
             }
         }  
@@ -166,9 +166,9 @@ class AboutController extends Controller
                         'created_by' => $user_id
                     ]);
                     
-                    return redirect()->back()->with('success_message', 'Success created new help category');  
+                    return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_create",'help category',$type));  
                 } else {
-                    return redirect()->back()->with('failed_message', 'Failed to created new help category. The help type is already exist');  
+                    return redirect()->back()->with('failed_message', Generator::getMessageTemplate("failed_exist",'help category',$type));  
                 }    
             }
         }  
@@ -213,7 +213,7 @@ class AboutController extends Controller
                     'created_by' => $user_id
                 ]);
                 
-                return redirect()->back()->with('success_message', 'Success updated help body from '.$request->help_category);  
+                return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'help body',null));  
             }
         }  
     }
@@ -231,7 +231,7 @@ class AboutController extends Controller
             $data = new Request();
             $obj = [
                 'history_type' => "contact",
-                'history_body' => "Has updated contacts"
+                'history_body' => "Has updated contact"
             ];
             $data->merge($obj);
 
@@ -271,7 +271,7 @@ class AboutController extends Controller
                     'created_by' => $user_id
                 ]);
                 
-                return redirect()->back()->with('success_message', 'Success updated contacts');  
+                return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'contact',null));  
             }
         }  
     }
@@ -302,10 +302,11 @@ class AboutController extends Controller
                 $type = Converter::getCleanQuotes(trim(strtolower($request->help_type)));
 
                 $checkEmptyType = Help::getAboutHelpCategory($type);
+                $category = Converter::getCleanQuotes($request->help_category);
 
                 if($checkEmptyType != null){
                     Help::where('id', $checkEmptyType)->update([
-                        'help_category' => Converter::getCleanQuotes($request->help_category),
+                        'help_category' => $category,
                         'created_at' => date("Y-m-d H:i"),
                         'created_by' => $user_id,
                     ]);
@@ -313,7 +314,7 @@ class AboutController extends Controller
                     Help::create([
                         'id' => Generator::getUUID(),
                         'help_type' => $type,
-                        'help_category' => Converter::getCleanQuotes($request->help_category),
+                        'help_category' => $category,
                         'help_body' => null,
                         'created_at' => date("Y-m-d H:i"),
                         'created_by' => $user_id,
@@ -334,7 +335,7 @@ class AboutController extends Controller
                     'created_by' => $user_id
                 ]);
                 
-                return redirect()->back()->with('success_message', 'Success added a new help category called '.$request->help_category);  
+                return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_create",'help category',$category));  
             }
         }  
     }
@@ -374,7 +375,7 @@ class AboutController extends Controller
                     'created_by' => $user_id
                 ]);
                 
-                return redirect()->back()->with('success_message', 'Success deleted a help category called '.$request->help_category);  
+                return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_delete",'help category',$request->help_category));  
             }
         }  
     }
@@ -384,9 +385,9 @@ class AboutController extends Controller
         session()->put('toogle_edit_'.$ctx, $switch);
 
         if($switch == "true"){
-            return redirect()->back()->with('success_message', "You're in edit mode");
+            return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom","You're in edit mode",null));
         } else {
-            return redirect()->back()->with('success_message', "You're in view mode");
+            return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom","You're in view mode",null));
         }
     }
 }

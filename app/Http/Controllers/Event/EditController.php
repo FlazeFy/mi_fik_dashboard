@@ -250,7 +250,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 
@@ -351,7 +351,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 
@@ -465,7 +465,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 
@@ -581,7 +581,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 
@@ -697,7 +697,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 
@@ -810,7 +810,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 
@@ -911,7 +911,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 
@@ -1006,7 +1006,7 @@ class EditController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Event update is failed, '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin'));
         }
     }
 }

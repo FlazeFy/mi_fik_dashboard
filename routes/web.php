@@ -9,7 +9,6 @@ use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TrashController;
 use App\Http\Controllers\AboutController;
-use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -65,7 +64,6 @@ Route::prefix('/homepage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
     Route::post('/add_event', [HomepageController::class, 'add_event']);
-    Route::post('/add_task', [HomepageController::class, 'add_task']);
     Route::post('/ordered/{order}', [HomepageController::class, 'set_ordering_content']);
     Route::post('/date', [HomepageController::class, 'set_filter_date']);
     Route::post('/date/reset', [HomepageController::class, 'reset_filter_date']);
@@ -90,7 +88,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
     Route::post('/tag/delete/cat/{id}', [TagController::class, 'delete_cat_tag']);
 
-    Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
+    Route::get('/detail/{slug_name}', [DetailController::class, 'index'])->name('detail');
     Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
     Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
     Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
@@ -190,10 +188,6 @@ Route::prefix('/about')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
     Route::post('/toogle/{ctx}/{switch}', [AboutController::class, 'toogle_edit_app']);
-});
-
-Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
-    Route::get('/', [HistoryController::class, 'index']);
 });
 
 Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {

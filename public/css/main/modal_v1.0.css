@@ -1,7 +1,8 @@
-.modal-content{
-    margin-top:var(--spaceXXSM);
+.modal-content {
+    margin-top: var(--spaceXXSM);
+    border-radius: var(--roundedLG);
 }
-.modal-body{
+.modal-body {
     position:relative;
 }
 
@@ -25,7 +26,7 @@
     height: 30px !important;
     top: 10px !important;
 }
-.custom-submit-modal{
+.custom-submit-modal {
     position: absolute !important;
     bottom: -20px;
     background:var(--whiteColor);
@@ -39,16 +40,16 @@
     transition: all 0.4s;
 }
 
-.custom-close-modal:hover, .gm-ui-hover-effect:hover, .fc-popover-close.fc-icon.fc-icon-x:hover{
+.custom-close-modal:hover, .gm-ui-hover-effect:hover, .fc-popover-close.fc-icon.fc-icon-x:hover {
     background: var(--warningBG) !important;
     color: var(--whiteColor) !important;
 }
-.custom-submit-modal:hover{
+.custom-submit-modal:hover {
     background:var(--successBG);
     color:var(--whiteColor);
 }
 
-.popover-header{
+.popover-header {
     background:var( --infoBG);
     color:var(--whiteColor);
     border: none;

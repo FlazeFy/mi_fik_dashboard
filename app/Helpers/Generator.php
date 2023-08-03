@@ -544,15 +544,19 @@ class Generator
         if($type == "lost_session"){
             $res = "Session lost, please sign in again";
         } else if($type == "business_create"){
-            $res = "Created new ".$ctx." ".$obj;
+            $res = "New ".$ctx." ".$obj." has been created";
         } else if($type == "business_update"){
-            $res = "Updated ".$ctx." ".$obj;
+            $res = $ctx." ".$obj." has been updated";
         } else if($type == "business_delete"){
-            $res = "Deleted ".$ctx." ".$obj;
+            $res = $ctx." ".$obj." has been deleted";
         } else if($type == "business_read"){
-            $res = "Get ".$ctx." ".$obj;
-        } else {
+            $res = $ctx." ".$obj; // Not used yet
+        } else if($type == "failed_exist"){
+            $res = "The ".$ctx." ".$obj." is already exist";
+        } else if($type == "custom"){
             $res = $ctx;
+        } else {
+            $res = "Failed to get respond message";
         }
 
         return ucfirst(trim($res));

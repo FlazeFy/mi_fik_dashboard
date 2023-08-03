@@ -10,16 +10,16 @@
 </style>
 
 @if(Session::has('success_message'))
-    <div class="position-fixed bottom-0 end-0 p-4" style="z-index: 11">
-    <div id="success_toast" class="toast hide shadow rounded-top" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-            <img class="mx-2" src="{{asset('assets/Success.png')}}" alt='success.png' style='width:22px;'>
-            <h6 class="me-auto mt-1 ">Success</h6>
-            <small>Recently</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body rounded-bottom">
-            {{ Session::get('success_message') }}
+    <div class="modal fade" id="success_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('assets/Success.png')}}" alt='success.png' style='width:30%;'><br>
+                <h5 class="modal-title mt-4" id="exampleModalLabel">Successful</h5>
+                <h7 class="m-2 text-secondary">{{ Session::get('success_message') }}</h7>
+                <hr>
+                <button class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">Continue</button>
+            </div>
         </div>
     </div>
     </div>
@@ -28,6 +28,6 @@
 <script>
     //Modal setting.
     $(window).on('load', function() {
-        $('#success_toast').toast('show');
+        $('#success_modal').modal('show');
     });
 </script>

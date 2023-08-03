@@ -39,7 +39,7 @@ class FirebaseTask
                             } else {
                                 $failed = true;
                                 $obj = [
-                                    'message' => 'failed to remove attachment file. file is not exist', 
+                                    'message' => 'File is not exist anymore', 
                                     'stack_trace' => $val->attach_type, 
                                     'file' => $val->attach_url, 
                                     'line' => null,
@@ -48,7 +48,7 @@ class FirebaseTask
                         } else {
                             $failed = true;
                             $obj = [
-                                'message' => 'failed to remove attachment file. url is not valid', 
+                                'message' => 'URL is not valid', 
                                 'stack_trace' => $val->attach_type, 
                                 'file' => $val->attach_url, 
                                 'line' => null,
@@ -96,7 +96,7 @@ class FirebaseTask
                     } else {
                         $failed = true;
                         $obj = [
-                            'message' => 'failed to remove profile image file. file is not exist', 
+                            'message' => 'File is not exist', 
                             'stack_trace' => $type, 
                             'file' => $user->image_url, 
                             'line' => null,
@@ -105,7 +105,7 @@ class FirebaseTask
                 } else {
                     $failed = true;
                     $obj = [
-                        'message' => 'failed to remove profile image file. url is not valid', 
+                        'message' => 'URL is not valid', 
                         'stack_trace' => $type, 
                         'file' => $user->image_url, 
                         'line' => null,
