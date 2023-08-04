@@ -24,13 +24,13 @@ class QueryNotification extends Controller
         if ($notif->isEmpty()) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Notification Not Found',
+                'message' => Generator::getMessageTemplate("business_read_failed", 'notification', null),
                 'data' => null
             ], Response::HTTP_NOT_FOUND);
         } else {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Notification Found',
+                'message' => Generator::getMessageTemplate("business_read_success", 'notification', null),
                 'data' => $notif
             ], Response::HTTP_OK);
         }
@@ -63,13 +63,13 @@ class QueryNotification extends Controller
             if ($notif->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Notification Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'notification', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Notification Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'notification', null),
                     'data' => $notif
                 ], Response::HTTP_OK);
             }

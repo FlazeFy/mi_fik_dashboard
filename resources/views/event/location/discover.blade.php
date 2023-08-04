@@ -6,6 +6,13 @@
         margin-bottom: 6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
+
+    /* Mobile style */
+    @media (max-width: 767px) {
+        #map-discover {
+            height:80vh;
+        }
+    }
 </style>
 
 <div class="position-relative">

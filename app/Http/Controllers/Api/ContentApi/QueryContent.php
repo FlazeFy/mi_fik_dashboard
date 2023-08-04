@@ -38,13 +38,13 @@ class QueryContent extends Controller
             if ($content->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Header Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
@@ -64,13 +64,13 @@ class QueryContent extends Controller
             if (!$content) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Header Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
@@ -148,13 +148,13 @@ class QueryContent extends Controller
             if ($content->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Header Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
@@ -197,13 +197,13 @@ class QueryContent extends Controller
             if ($content->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Header Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
@@ -312,7 +312,7 @@ class QueryContent extends Controller
             if ($clean->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'content', null),
                     'total' => [[
                         'content' => $total_content,
                         'task' => $total_task,
@@ -322,7 +322,7 @@ class QueryContent extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'content', null),
                     'total' => [[
                         'content' => $total_content,
                         'task' => $total_task,
@@ -345,13 +345,13 @@ class QueryContent extends Controller
             if(count($res) > 0){
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Statistic found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'stats', null),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Statistic not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'stats', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -387,13 +387,13 @@ class QueryContent extends Controller
             if($content->count() > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }

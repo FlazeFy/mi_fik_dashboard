@@ -28,13 +28,13 @@ class Queries extends Controller
             if ($tag->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Tag Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'tag', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Tag Found',
+                    'message' => Generator::getMessageTemplate("business_read", 'tag', null),
                     'data' => $tag
                 ], Response::HTTP_OK);
             }
@@ -62,7 +62,7 @@ class Queries extends Controller
             if ($content == 0 && $user == 0) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Tag has not used in any user or content',
+                    'message' => Generator::getMessageTemplate("custom", 'tag has not used in any user or content', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
@@ -74,7 +74,7 @@ class Queries extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Tag Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'tag', null),
                     'data' => $obj
                 ], Response::HTTP_OK);
             }
@@ -108,13 +108,13 @@ class Queries extends Controller
             if ($tag->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Tag Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'tag', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Tag Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'tag', null),
                     'data' => $tag
                 ], Response::HTTP_OK);
             }

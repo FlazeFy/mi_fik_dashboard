@@ -23,13 +23,13 @@ class QueryTask extends Controller
             if ($archive->count() > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Task Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'task', null),
                     'data' => $archive
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Task Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'task', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }

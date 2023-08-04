@@ -23,13 +23,13 @@ class Queries extends Controller
             if ($help->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Help category not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'help category', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Help category found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'help category', null),
                     'data' => $help
                 ], Response::HTTP_OK);
             }
@@ -62,13 +62,13 @@ class Queries extends Controller
             if (count($help)==0) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Help type not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'help type', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Help type found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'help type', null),
                     'data' => $help
                 ], Response::HTTP_OK);
             }

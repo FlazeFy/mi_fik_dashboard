@@ -24,7 +24,7 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Add type failed',
+                    'message' => Generator::getMessageTemplate("business_create_failed", 'help type', null),
                     'result' => $errors
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
@@ -41,7 +41,7 @@ class Commands extends Controller
 
                     return response()->json([
                         'status' => 'failed',
-                        'message' => 'Add type failed',
+                        'message' => Generator::getMessageTemplate("business_create_failed", 'help type', null),
                         'result' => $errors
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
@@ -74,13 +74,13 @@ class Commands extends Controller
                         
                         return response()->json([
                             'status' => 'success',
-                            'message' => 'Success created new help category',
+                            'message' => Generator::getMessageTemplate("business_create", 'help category', $type),
                             'data' => $help
                         ], Response::HTTP_OK);
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'result' => 'The help type is already exist',
+                            'result' => Generator::getMessageTemplate("failed_exist", 'help type', $type),
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }    
                 }

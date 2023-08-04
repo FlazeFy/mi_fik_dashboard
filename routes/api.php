@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Api\TagApi\Commands as CommandTagApi;
 use App\Http\Controllers\Api\TagApi\Queries as QueryTagApi;
 use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
@@ -11,7 +13,6 @@ use App\Http\Controllers\Api\UserApi\Queries as QueryUserApi;
 use App\Http\Controllers\Api\UserApi\Commands as CommandUserApi;
 use App\Http\Controllers\Api\HelpApi\Queries as QueryHelpApi;
 use App\Http\Controllers\Api\HelpApi\Commands as CommandHelpApi;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\GroupApi\Queries as QueryGroupApi;
 use App\Http\Controllers\Api\ArchiveApi\Commands as CommandArchiveApi;
 use App\Http\Controllers\Api\ArchiveApi\Queries as QueryArchiveApi;

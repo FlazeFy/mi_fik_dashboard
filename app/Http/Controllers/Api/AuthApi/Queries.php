@@ -14,7 +14,7 @@ class Queries extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logout success'
+            'message' => Generator::getMessageTemplate("custom", 'logout success', null)
         ], Response::HTTP_OK);
     }
 }

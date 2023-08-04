@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-//use App\Http\Controllers\Mifik\HomepageController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
@@ -15,7 +14,6 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\WaitingController;
 
-use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 use App\Http\Controllers\Event\CalendarController;
@@ -24,7 +22,6 @@ use App\Http\Controllers\Event\EditController;
 
 use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
-use App\Http\Controllers\System\MaintenanceController;
 use App\Http\Controllers\System\DictionaryController;
 use App\Http\Controllers\System\AccessController;
 
@@ -133,8 +130,6 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
     Route::post('/dictionary/update/info/{id}', [DictionaryController::class, 'update_info']);
     Route::post('/dictionary/delete/{id}', [DictionaryController::class, 'delete']);
-
-    Route::get('/maintenance', [MaintenanceController::class, 'index']);
 
     Route::get('/access', [AccessController::class, 'index']);
 });

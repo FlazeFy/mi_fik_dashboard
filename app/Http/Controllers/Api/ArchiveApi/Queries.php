@@ -66,13 +66,13 @@ class Queries extends Controller
             if (count($archive) > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Archive Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'archive', null),
                     'data' => $archive
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Archive Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'archive', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -185,7 +185,7 @@ class Queries extends Controller
             if ($clean->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'content', null),
                     'total' => [[
                         'content' => $total_content,
                         'task' => $total_task,
@@ -195,7 +195,7 @@ class Queries extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'content', null),
                     'total' => [[
                         'content' => $total_content,
                         'task' => $total_task,

@@ -37,7 +37,7 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Feedback Created',
+                    'message' => Generator::getMessageTemplate("custom", 'feedback sended', null),
                     'data' => $feedback
                 ], Response::HTTP_OK);
             }

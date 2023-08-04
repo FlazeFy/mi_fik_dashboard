@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\User;
 use App\Models\UserRequest;
 use App\Helpers\Query;
+use App\Helpers\Generator;
 
 class Queries extends Controller
 {
@@ -28,13 +29,13 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User request Found',
+                    'message' => Generator::getMessageTemplate("business_read", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -104,13 +105,13 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User '.count($user).' Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'User '.count($user).' Found', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -139,13 +140,13 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User request Found',
+                    'message' => Generator::getMessageTemplate("business_read", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -174,13 +175,13 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User request Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -204,13 +205,13 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -234,13 +235,13 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -261,13 +262,13 @@ class Queries extends Controller
             if ($user == null) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user', null),
                     'data' => $user['role']
                 ], Response::HTTP_OK);
             }
@@ -289,13 +290,13 @@ class Queries extends Controller
             if ($user == null) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Request Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }

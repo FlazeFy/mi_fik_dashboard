@@ -27,13 +27,13 @@ class QueryAccess extends Controller
             if ($res->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user', null),
                     'data' => $res
                 ], Response::HTTP_OK);
             }

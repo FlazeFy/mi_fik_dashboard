@@ -25,13 +25,13 @@ class Queries extends Controller
             if ($question->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Question not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'question', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Question found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'question', null),
                     'data' => $question
                 ], Response::HTTP_OK);
             }
@@ -54,13 +54,13 @@ class Queries extends Controller
             if ($question->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Question not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'question', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Question found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'question', null),
                     'data' => $question
                 ], Response::HTTP_OK);
             }
@@ -83,13 +83,13 @@ class Queries extends Controller
             if ($answer->isEmpty()) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Answer not found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'answer', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Answer found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'answer', null),
                     'data' => $answer
                 ], Response::HTTP_OK);
             }
@@ -113,13 +113,13 @@ class Queries extends Controller
             if ($que->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Answer not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'answer', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Answer found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'answer', null),
                     'data' => $que
                 ], Response::HTTP_OK);
             }
@@ -153,13 +153,13 @@ class Queries extends Controller
             if($clean->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Question not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'question', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Question found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'question', null),
                     'data' => $clean
                 ], Response::HTTP_OK);
             }

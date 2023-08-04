@@ -61,13 +61,13 @@ class QueryHistory extends Controller
             if(count($clean) == 0) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'History Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'history', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'History Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'history', null),
                     'data' => $clean
                 ], Response::HTTP_OK);
             }

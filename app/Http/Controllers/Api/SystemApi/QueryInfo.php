@@ -24,13 +24,13 @@ class QueryInfo extends Controller
             if ($res->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Info Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'info', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Info Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'info', null),
                     'data' => $res
                 ], Response::HTTP_OK);
             }
@@ -56,13 +56,13 @@ class QueryInfo extends Controller
             if (is_null($info)) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Info Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'info', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Info Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'info', null),
                     'data' => $info
                 ], Response::HTTP_OK);
             }
