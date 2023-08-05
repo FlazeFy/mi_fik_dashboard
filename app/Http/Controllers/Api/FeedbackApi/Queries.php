@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\FeedbackApi;
 
+use App\Helpers\Generator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

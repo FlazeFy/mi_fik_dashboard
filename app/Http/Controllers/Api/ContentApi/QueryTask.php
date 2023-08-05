@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\ContentApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-
+use App\Helpers\Generator;
 use App\Models\Task;
 
 class QueryTask extends Controller

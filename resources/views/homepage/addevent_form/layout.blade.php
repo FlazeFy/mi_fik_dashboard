@@ -70,7 +70,7 @@
         <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>
     @endif
 
-    <h5 class="quick-action-text">Add Event</h5>
+    <h5 class="quick-action-text"><i class="fa-solid fa-plus"></i> Add Event</h5>
     <p class="quick-action-info">Event is an information about some activity that will be held in the future.</p>
 </button>
 
@@ -89,39 +89,27 @@
                     <h5>Create Event</h5>
                     <div class="row my-2">
                         <div class="col-lg-8">
-                            <div class="row">
-                                <div class="col-lg-8 pb-2">
-                                    @include('homepage.addevent_form.titleinput')
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-floating">
-                                        <select class="form-select" id="selectReminder" name="content_reminder" aria-label="Floating label select example"></select>
-                                        <label for="selectReminder">Reminder</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--Event desc w/ richtext editor-->
+                            @include('homepage.addevent_form.titleinput')
+            
                             @include('homepage.addevent_form.descinput')
 
-                            <div class="row mt-2">
-                                <div class="col-lg-7">
-                                    @include('homepage.addevent_form.tagpicker')
-                                </div>
-                                <div class="col-lg-5">
-                                    @include('homepage.addevent_form.datepicker')
-                                </div>
-                            </div>
+                            <br><label class="input-title">Event Location</label><br>
+                            @include('homepage.addevent_form.locationpicker')
+
+                            <label class="input-title my-2">Attachment</label><br>
+                            @include('homepage.addevent_form.attachment')
+
                             @include('components.infobox',['info'=>$info, 'location'=> 'add_event'])
                         </div>
                         <div class="col-lg-4">
                             <label class="input-title">Event Image</label><br>
                             @include('homepage.addevent_form.contentimage')
 
-                            <label class="input-title">Event Location</label><br>
-                            @include('homepage.addevent_form.locationpicker')
+                            @include('homepage.addevent_form.datepicker')
+                            <label class="input-title">Set Event Reminder</label>
+                            <select class="form-select" id="selectReminder" name="content_reminder" aria-label="Floating label select example"></select>
 
-                            <label class="input-title my-2">Attachment</label><br>
-                            @include('homepage.addevent_form.attachment')
+                            <br>@include('homepage.addevent_form.tagpicker')
                         </div>
                     </div>
                     <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span><br>

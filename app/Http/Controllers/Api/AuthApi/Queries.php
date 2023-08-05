@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\AuthApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Helpers\Generator;
 use Illuminate\Support\Facades\Hash;
 
 class Queries extends Controller

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\TagApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Helpers\Generator;
 
 use App\Models\Tag;
 use App\Models\ContentDetail;

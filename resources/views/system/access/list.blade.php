@@ -62,7 +62,7 @@
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
                 return;
             } else {
                 function getRole(tag){

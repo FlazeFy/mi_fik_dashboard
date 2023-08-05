@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\HelpApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Helpers\Generator;
 use App\Models\PersonalAccessTokens;
 
 use App\Models\Help;

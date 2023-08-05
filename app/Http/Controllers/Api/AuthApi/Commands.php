@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\AuthApi;
 
 use App\Models\User;
 use App\Models\Admin;
+use App\Helpers\Generator;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;

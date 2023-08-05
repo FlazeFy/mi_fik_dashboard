@@ -78,7 +78,7 @@
                 $('#empty_myevent_holder').html("<img src="+'"'+"{{asset('assets/nodata2.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>My event is empty</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-my-event').html("<h5 class='text-secondary'>Woah!, You have see all the event :)</h5>");
+                $('.auto-load-my-event').html("<h5 class='text-secondary'>Woah!, You have see all the event</h5>");
                 return;
             } else {
                 function getContentView(total_views, uname){

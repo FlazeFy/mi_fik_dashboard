@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Helpers\Query;
+use App\Helpers\Generator;
 use Carbon\Carbon;
 
 use App\Models\Task;

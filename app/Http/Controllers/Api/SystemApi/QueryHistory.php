@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\History;
+use App\Helpers\Generator;
 
 class QueryHistory extends Controller
 {

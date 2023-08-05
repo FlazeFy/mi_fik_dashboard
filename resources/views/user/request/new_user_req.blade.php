@@ -94,7 +94,7 @@
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Request found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-new').html("<h5 class='text-primary'>Woah!, You have see all the newest request :)</h5>");
+                $('.auto-load-new').html("<h5 class='text-primary'>Woah!, You have see all the newest request</h5>");
                 return;
             } else {
                 function getApprovedButton(acc){
