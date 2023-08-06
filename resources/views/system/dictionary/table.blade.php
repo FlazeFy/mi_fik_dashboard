@@ -101,7 +101,7 @@
                                     alt="{{Generator::getProfileImageContent($dc->admin_username_created, null, $dc->admin_image_created, null)}}">
                             </div>
                             <div class="d-inline-block position-relative w-75">
-                                <h5 class="user-username-mini" title="View Profile">{{$dc->admin_username_created}}</h5>
+                                <h5 class="user-username-mini">{{"@"}}{{$dc->admin_username_created}}</h5>
                                 <h6 class="properties-date date_holder_1">{{Carbon::parse($dc->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                             </div>
                         </div>    
@@ -113,7 +113,7 @@
                                         alt="{{Generator::getProfileImageContent($dc->admin_username_updated, null, $dc->admin_image_updated, null)}}">
                                 </div>
                                 <div class="d-inline-block position-relative w-75">
-                                    <h5 class="user-username-mini" title="View Profile">{{$dc->admin_username_updated}}</h5>
+                                    <h5 class="user-username-mini">{{"@"}}{{$dc->admin_username_updated}}</h5>
                                     <h6 class="properties-date date_holder_2">{{Carbon::parse($dc->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>   

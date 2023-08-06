@@ -6,7 +6,7 @@
                 <th scope="col">Feedback</th>
                 <th scope="col">Rating</th>
                 <th scope="col">Suggestion</th>
-                <th scope="col">Created At</th>
+                <th scope="col">Created at</th>
                 <th scope="col">Delete</th>
             </tr>
         </thead>

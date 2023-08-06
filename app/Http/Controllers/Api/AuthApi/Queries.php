@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\AuthApi;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
+use App\Helpers\Generator;
 use Illuminate\Support\Facades\Hash;
 
 class Queries extends Controller
@@ -14,7 +15,7 @@ class Queries extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => 'Logout success'
+            'message' => Generator::getMessageTemplate("custom", 'logout success', null)
         ], Response::HTTP_OK);
     }
 }

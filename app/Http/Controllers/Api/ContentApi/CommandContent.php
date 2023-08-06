@@ -39,13 +39,13 @@ class CommandContent extends Controller
             if($content != 0){
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content deleted',
+                    'message' => Generator::getMessageTemplate("business_delete", 'content', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'content', null),
                     'data' => null
                 ], Response::HTTP_OK);
             }
@@ -66,7 +66,7 @@ class CommandContent extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Content permanentaly deleted',
+                'message' => Generator::getMessageTemplate("custom", 'content permanentaly deleted', null),
                 'data' => $content
             ], Response::HTTP_OK);
         } catch(\Exception $e) {
@@ -97,7 +97,7 @@ class CommandContent extends Controller
 
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Add content failed',
+                    'message' => Generator::getMessageTemplate("business_create_failed", 'event', null),
                     'result' => $errors
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
@@ -113,7 +113,7 @@ class CommandContent extends Controller
 
                     return response()->json([
                         'status' => 'failed',
-                        'message' => 'Add content failed',
+                        'message' => Generator::getMessageTemplate("business_create_failed", 'event', null),
                         'result' => $errors
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
@@ -228,7 +228,7 @@ class CommandContent extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Content created',
+                        'message' => Generator::getMessageTemplate("business_create", 'event', null),
                         'data' => $full_result
                     ], Response::HTTP_OK);
                 }
@@ -245,8 +245,7 @@ class CommandContent extends Controller
 
     public function addView($slug_name, Request $request){
         try{
-            $content_id = Generator::getContentId($slug_name); //Fix this
-            // $user_id = Generator::getUserId($user_slug, $user_role);
+            $content_id = Generator::getContentId($slug_name);
             $user_id = $request->user()->id;
             $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
 
@@ -258,7 +257,7 @@ class CommandContent extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Content views updated',
+                        'message' => Generator::getMessageTemplate("business_update", 'content view', null),
                     ], Response::HTTP_OK);
                 } else {
                     $res = ContentViewer::create([
@@ -271,14 +270,14 @@ class CommandContent extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Content views created',
+                        'message' => Generator::getMessageTemplate("business_create", 'content view', null),
                         'data' => $res
                     ], Response::HTTP_OK);
                 }
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User or content not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'content or user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -298,13 +297,13 @@ class CommandContent extends Controller
             if(count($res) > 0){
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Statistic found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'stats', null),
                     'data' => $res
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Statistic not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'stats', null),
                     'data' => null
                 ], Response::HTTP_OK);
             }
@@ -332,7 +331,7 @@ class CommandContent extends Controller
 
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Edit event image failed',
+                    'message' => Generator::getMessageTemplate("business_update_failed", 'event image', null),
                     'result' => $errors
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
@@ -360,7 +359,7 @@ class CommandContent extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content image updated',
+                    'message' => Generator::getMessageTemplate("business_update", 'event image', null),
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {

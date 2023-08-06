@@ -22,7 +22,11 @@ function getTag(obj, padding, sz, margin){
 
     if(obj != null && obj.length > 0){
         obj.forEach(e => {
-            res += " " + "<a class='btn btn-primary " + padding + " " + margin + " ' style='font-size:" + sz + "'>" + e.tag_name + "</a>";
+            res += `
+                <a class='btn btn-primary ${padding} ${margin}' style='font-size:${sz}'>
+                    ${e.tag_name}
+                </a>
+            `;
         });
     } 
 
@@ -31,18 +35,19 @@ function getTag(obj, padding, sz, margin){
 
 function getLocationName(loc){
     if(loc && loc.length == 2){
-        if(loc[0].detail != null){
-            res = loc[0].detail;
-        } else {
-            res = loc[1].detail;
-        }
-        return "<span class='loc-limiter px-0 m-0'> " +
-                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> "+res+"</a> " +
-            "</span>";
+        loc[0].detail != null ? res = loc[0].detail : res = loc[1].detail;
+
+        return `
+            <span class='loc-limiter px-0 m-0'> 
+                <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> ${res}</a>
+            </span>
+        `;
     } else if(loc && loc.length != 2){
-        return "<span class='loc-limiter px-0 m-0'> " +
-                "<a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> Invalid</a> " +
-            "</span>";
+        return `
+            <span class='loc-limiter px-0 m-0'> 
+                <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> Invalid</a> 
+            </span>
+        `;
     } else {
         return "";
     }
@@ -60,7 +65,7 @@ function getEventTag(tag){
             }
         }
 
-        return '<a class="btn-detail" title="'+ str +'"><i class="fa-solid fa-hashtag"></i>'+ tag.length +'</a>';
+        return `<a class="btn-detail" title="${str}"><i class="fa-solid fa-hashtag"></i>${tag.length}</a>`;
     } else {
         return "";
     }
@@ -148,7 +153,7 @@ function getUsername(username1, username2){
             return "@"+username2;
         }
     } else {
-        return "<span class='text-danger'>Unknown User</span>"
+        return "<span class='text-danger'>Unknown User</span>";
     }
 }
 
@@ -169,7 +174,7 @@ function getEventStatus(start, end){
     const hourDiff_end = Math.round(msDiff_end / (1000 * 60));
 
     if (c_start >= now && c_end >= now && hourDiff_start >= 0 && hourDiff_start <= 15) {
-        return "<div class='event-status bg-primary'><i class='fa-solid fa-circle fa-2xs'></i> About to start</div>";
+        return `<div class='event-status bg-primary'><i class='fa-solid fa-circle fa-2xs'></i> About to start</div>`;
     } else if (c_start <= now && c_end >= now) {
         if (hourDiff_end > 1 && hourDiff_start > -15) {
             var ctx_live = " Just Started";
@@ -178,11 +183,11 @@ function getEventStatus(start, end){
         } else {
             var ctx_live = " About to end";
         }
-        return "<div class='event-status bg-danger'><i class='fa-solid fa-circle fa-2xs'></i>"+ctx_live+"</div>";
+        return `<div class='event-status bg-danger'><i class='fa-solid fa-circle fa-2xs'></i>${ctx_live}</div>`;
     } else if (c_start <= now && c_end <= now && hourDiff_end <= 0 && hourDiff_end >= -15) {
-        return "<div class='event-status bg-success'><i class='fa-solid fa-circle fa-2xs'></i> Just Ended</div>";
+        return `<div class='event-status bg-success'><i class='fa-solid fa-circle fa-2xs'></i> Just Ended</div>`;
     } else if (c_start <= now && c_end <= now && hourDiff_end <= -15){
-        return "<div class='event-status bg-success'><i class='fa-solid fa-check'></i> Finished</div>";
+        return `<div class='event-status bg-success'><i class='fa-solid fa-check'></i> Finished</div>`;
     } else {
         return "";
     }
@@ -242,9 +247,9 @@ function getModalResponsive(id, target, dir){
     const pos = getDivPosition(target);
 
     if(dir == "bottom"){
-        document.getElementById(id).style = "position:fixed; left: "+ pos['left'] +"; top: "+ pos['top'] +"; width: "+ pos['width'] +"; min-width:250px;";
+        document.getElementById(id).style = `position:fixed; left: ${pos['left']}; top: ${pos['top']}; width: ${pos['width']}; min-width:250px;`;
     } else if(dir == "right"){
-        document.getElementById(id).style = "position:fixed; left: "+ pos['right'] +"; top: "+ pos['top_raw'] +"; width: "+ pos['width'] +"; min-width:250px;";
+        document.getElementById(id).style = `position:fixed; left: ${pos['right']}; top: ${pos['top_raw']}; width: ${pos['width']}; min-width:250px;`;
     } 
 }
 
@@ -264,7 +269,7 @@ function setGuidelinesModal(conf, is_show_all){
     function getGuidelinesButton(num, is_show_all){
         if(is_show_all == true){
             var numPrev = num - 1;
-            return "<div class='d-flex justify-content-between mt-1 mb-2'><h6 class='mt-2'>"+num+" / "+total+"</h6><a class='btn btn-success py-1' onclick='navigateGuidelines("+ numPrev +")'>Next</a></div>";
+            return `<div class='d-flex justify-content-between mt-1 mb-2'><h6 class='mt-2'>${num} / ${total}</h6><a class='btn btn-success py-1' onclick='navigateGuidelines("${numPrev}")'>Next</a></div>`;
         } else {
             return "";
         }
@@ -280,29 +285,31 @@ function setGuidelinesModal(conf, is_show_all){
 
     function getGuideImage(img){
         if(img != null){
-            return "<img class='w-100 mb-2 rounded' src='http://127.0.0.1:8000/"+img+"'>";
+            return `<img class='w-100 mb-2 rounded' src='http://127.0.0.1:8000/${img}'>`;
         } else {
             return "";
         }
     }
 
     conf.forEach(e => {
-        document.getElementById(e.holder).innerHTML = "<div class='modal fade' style='var(--darkColor)' data-bs-backdrop='static' data-bs-keyboard='false' id='modal-parent-"+i+"' tabindex='-1' > " +
-                "<div class='modal-dialog border-0' id='modal-content-"+i+"'> " +
-                    "<div class='modal-content border-0'> " +
-                        "<div class='triangle-container position-absolute' style='"+getGuideLinesArrow(e.direction)+"'></div> " +
-                        "<div class='modal-header p-3 border-0'> " +
-                            "<h6 class='modal-title' id='exampleModalLabel'>"+e.title+"</h6> " +
-                            "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button> " +
-                        "</div> " +
-                        "<div class='modal-body p-3 py-1 text-start' style='font-size:var(--textXMD);'> " +
-                            getGuideImage(e.image) +
-                            e.body +
-                            getGuidelinesButton(i + 1, is_show_all) +
-                        "</div> " +
-                    "</div> " +
-                "</div> " +
-            "</div> " ;
+        document.getElementById(e.holder).innerHTML = `
+            <div class='modal fade' style='var(--darkColor)' data-bs-backdrop='static' data-bs-keyboard='false' id='modal-parent-${i}' tabindex='-1'>
+                <div class='modal-dialog border-0' id='modal-content-${i}'>
+                    <div class='modal-content border-0'>
+                        <div class='triangle-container position-absolute' style='${getGuideLinesArrow(e.direction)}'></div>
+                        <div class='modal-header p-3 border-0'>
+                            <h6 class='modal-title' id='exampleModalLabel'>${e.title}</h6>
+                            <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                        </div>
+                        <div class='modal-body p-3 py-1 text-start' style='font-size:var(--textXMD);'>
+                            ${getGuideImage(e.image)}
+                            ${e.body}
+                            ${getGuidelinesButton(i + 1, is_show_all)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
 
         getModalResponsive("modal-content-"+i, e.target, e.direction);   
         

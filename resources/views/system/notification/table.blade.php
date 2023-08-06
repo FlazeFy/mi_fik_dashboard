@@ -180,39 +180,39 @@
                         @endif
                     </td>
                     <td style="min-width:calc(var(--tcolMinJumbo) - 30px);">
-                        <h6>Created By</h6>
+                        <h6>Created by</h6>
                         <div class="">
                             <div class="d-inline-block">
                                 <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($nt['admin_username_created'], null, $nt['admin_image_created'], null)}}" 
                                     alt="{{Generator::getProfileImageContent($nt['admin_username_created'], null, $nt['admin_image_created'], null)}}">
                             </div>
                             <div class="d-inline-block position-relative w-75">
-                                <h5 class="user-username-mini" title="View Profile">{{$nt['admin_username_created']}}</h5>
+                                <h5 class="user-username-mini">{{"@"}}{{$nt['admin_username_created']}}</h5>
                                 <h6 class="properties-date date_holder_1">{{Carbon::parse($nt['created_at'])->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                             </div>
                         </div>    
                         @if($nt['updated_at'])
-                            <h6>Resume At</h6>
+                            <h6>Resume at</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($nt['admin_username_updated'], null, $nt['admin_image_updated'], null)}}" 
                                         alt="{{Generator::getProfileImageContent($nt['admin_username_updated'], null, $nt['admin_image_updated'], null)}}">
                                 </div>
                                 <div class="d-inline-block position-relative w-75">
-                                    <h5 class="user-username-mini" title="View Profile">{{$nt['admin_username_updated']}}</h5>
+                                    <h5 class="user-username-mini">{{"@"}}{{$nt['admin_username_updated']}}</h5>
                                     <h6 class="properties-date date_holder_2">{{Carbon::parse($nt['updated_at'])->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>   
                         @endif
                         @if($nt['deleted_at'])
-                            <h6>Deleted By</h6>
+                            <h6>Deleted by</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($nt['admin_username_deleted'], null, $nt['admin_image_deleted'], null)}}" 
                                         alt="{{Generator::getProfileImageContent($nt['admin_username_deleted'], null, $nt['admin_image_deleted'], null)}}">
                                 </div>
                                 <div class="d-inline-block position-relative w-75">
-                                    <h5 class="user-username-mini" title="View Profile">{{$nt['admin_username_deleted']}}</h5>
+                                    <h5 class="user-username-mini">{{"@"}}{{$nt['admin_username_deleted']}}</h5>
                                     <h6 class="properties-date date_holder_3">{{Carbon::parse($nt['deleted_at'])->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>   

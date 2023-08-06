@@ -98,7 +98,7 @@
 
             <hr>
             <h6>Properties</h6>
-            <h6>Created At : {{date("Y M d H:i:s", strtotime($header["created_at"]))}}</h6>
+            <h6>Created at : {{date("Y M d H:i:s", strtotime($header["created_at"]))}}</h6>
         </div>
     </body>
 </html>

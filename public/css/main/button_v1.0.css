@@ -71,9 +71,10 @@
 }
 
 .btn-submit-form:disabled, .btn-submit-form{
-    color: var(--successBG);
+    color: var(--whiteColor);
     border-radius: var(--roundedMini);
     border: solid 1.75px var(--successBG);
+    background: var(--successBG);
     margin-top: var(--spaceSM);
     margin-bottom: var(--spaceSM);
     opacity: 1;
@@ -82,7 +83,7 @@
     cursor: pointer;
 }
 .btn-submit-form:hover{
-    background:var(--successBG);
+    background:var(--successDarkBG);
     color: var(--whiteColor);
 }
 .btn-msg{

@@ -46,7 +46,7 @@
         var body = document.getElementById("feedback_body").value;
         if(body.length > 1 && body.length <= 255){
             var rate = document.getElementById("feedback_rate").value;
-            document.getElementById("feedback_rate_show").innerHTML = "&nbsp with "+rate+" stars";
+            document.getElementById("feedback_rate_show").innerHTML = `&nbsp with ${rate} stars`;
         }
     }
 </script>

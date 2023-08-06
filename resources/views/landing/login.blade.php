@@ -99,7 +99,7 @@
                 var usernameMsg = null;
                 var passMsg = null;
                 var allMsg = null;
-                var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
+                var icon = `<i class='fa-solid fa-triangle-exclamation'></i> `;
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation

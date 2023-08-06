@@ -98,7 +98,7 @@
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
                 return;
             } else {
                 function getContentView(total_views, uname){
@@ -128,35 +128,36 @@
 
                     var usernameText = getUsername(admin_username, user_username);
 
-                    var elmt = " " +
-                        "<div class='col-lg-4 col-md-6 col-sm-12 pb-3'> " +
-                            "<button class='card shadow event-box' onclick='location.href="+'"'+"/event/detail/" + slug_name + '"' +";"+"'> " +
-                                '<div class="card-header header-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), ' + getContentImage(content_image) + ';"></div> ' +
-                                "<div class='d-flex justify-content-between position-absolute px-3 w-100' style='top:10px;'> " +
-                                    getContentView(total_views, usernameText) +
-                                    getEventStatus(content_date_start, content_date_end) +
-                                "</div> " +
-                                "<div class='card-body event-body p-2 w-100'> " +
-                                    "<div class='event-heading'> " +
-                                        "<div class='d-inline-block position-relative'> " +
-                                            "<img class='img user-image-content' src='" + getUserImage(admin_image, user_image, admin_username, user_username) + "' alt='username-profile-pic.png'> " +
-                                        "</div> " +
-                                        "<div class='d-inline-block position-relative w-75'> " +
-                                            "<h6 class='event-title'>" + ucEachWord(content_title) + "</h6> " +
-                                            "<h6 class='event-subtitle'>" + usernameText + "</h6> " +
-                                        "</div> " +
-                                    "</div> " +
-                                    "<div style='height:60px;'> " +
-                                        "<p class='event-desc my-1'>" + ucFirst(removeTags(content_desc)) + "</p> " +
-                                    "</div> " +
-                                    "<div class='event-properties row d-inline-block px-2'> " +
-                                        getLocationName(content_loc) +
-                                        getEventDate(content_date_start, content_date_end) +
-                                        getEventTag(content_tag) +
-                                    "</div> " +
-                                "</div> " +
-                            "</button> " +
-                        "</div>";
+                    const elmt = `
+                        <div class="col-lg-4 col-md-6 col-sm-12 pb-3">
+                            <button class="card shadow event-box" onclick="location.href='/event/detail/${slug_name}'">
+                                <div class="card-header header-image" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), ${getContentImage(content_image)};"></div>
+                                <div class="d-flex justify-content-between position-absolute px-3 w-100" style="top:10px;">
+                                    ${getContentView(total_views, usernameText)}
+                                    ${getEventStatus(content_date_start, content_date_end)}
+                                </div>
+                                <div class="card-body event-body p-2 w-100">
+                                    <div class="event-heading">
+                                        <div class="d-inline-block position-relative">
+                                            <img class="img user-image-content" src="${getUserImage(admin_image, user_image, admin_username, user_username)}" alt="username-profile-pic.png">
+                                        </div>
+                                        <div class="d-inline-block position-relative w-75">
+                                            <h6 class="event-title">${ucEachWord(content_title)}</h6>
+                                            <h6 class="event-subtitle">${usernameText}</h6>
+                                        </div>
+                                    </div>
+                                    <div style="height:60px;">
+                                        <p class="event-desc my-1">${ucFirst(removeTags(content_desc))}</p>
+                                    </div>
+                                    <div class="event-properties row d-inline-block px-2">
+                                        ${getLocationName(content_loc)}
+                                        ${getEventDate(content_date_start, content_date_end)}
+                                        ${getEventTag(content_tag)}
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    `;
 
                     $("#data-wrapper").append(elmt);
                 }   

@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Helpers\Query;
+use App\Helpers\Generator;
 use Carbon\Carbon;
 
 use App\Models\Task;
@@ -181,13 +182,13 @@ class Queries extends Controller
             if (count($clean) == 0) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Item Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", "item", null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Item Found',
+                    'message' => Generator::getMessageTemplate("business_read", "item", null),
                     'data' => $clean
                 ], Response::HTTP_OK);
             }

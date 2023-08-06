@@ -67,7 +67,7 @@ class CommandTask extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Task Updated',
+                        'message' => Generator::getMessageTemplate("business_update", 'task', $request->task_title),
                         'data' => $task
                     ], Response::HTTP_OK);
                 }
@@ -123,7 +123,7 @@ class CommandTask extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Task Deleted',
+                    'message' => Generator::getMessageTemplate("business_delete", 'task', $request->task_title),
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
@@ -177,7 +177,7 @@ class CommandTask extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Task Permentaly Deleted',
+                    'message' => Generator::getMessageTemplate("custom", 'task permanently delete', null),
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
@@ -250,7 +250,7 @@ class CommandTask extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Task created',
+                        'message' => Generator::getMessageTemplate("business_create", 'task', $request->task_title),
                         'data' => $task
                     ], Response::HTTP_OK);
                 }
