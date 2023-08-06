@@ -79,39 +79,39 @@
                             </script>
                         </td>
                         <td style="min-width:var(--tcolMinJumbo);" class="properties">
-                            <h6>Created By</h6>
+                            <h6>Created by</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_created, null, $in->admin_image_created, null)}}" 
                                         alt="{{Generator::getProfileImageContent($in->admin_username_created, null, $in->admin_image_created, null)}}">
                                 </div>
                                 <div class="d-inline-block position-relative w-75">
-                                    <h5 class="user-username-mini">{{$in->admin_username_created}}</h5>
+                                    <h5 class="user-username-mini">{{"@"}}{{$in->admin_username_created}}</h5>
                                     <h6 class="properties-date date_holder_1">{{Carbon::parse($in->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>    
                             @if($in->updated_at)
-                                <h6>Updated By</h6>
+                                <h6>Updated by</h6>
                                 <div class="">
                                     <div class="d-inline-block">
                                         <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_updated, null, $in->admin_image_updated, null)}}" 
                                             alt="{{Generator::getProfileImageContent($in->admin_username_updated, null, $in->admin_image_updated, null)}}">
                                     </div>
                                     <div class="d-inline-block position-relative w-75">
-                                        <h5 class="user-username-mini">{{$in->admin_username_updated}}</h5>
+                                        <h5 class="user-username-mini">{{"@"}}{{$in->admin_username_updated}}</h5>
                                         <h6 class="properties-date date_holder_2">{{Carbon::parse($in->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                     </div>
                                 </div>   
                             @endif
                             @if($in->deleted_at)
-                                <h6>Deleted By</h6>
+                                <h6>Deleted by</h6>
                                 <div class="">
                                     <div class="d-inline-block">
                                         <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_deleted, null, $in->admin_image_deleted, null)}}" 
                                             alt="{{Generator::getProfileImageContent($in->admin_username_deleted, null, $in->admin_image_deleted, null)}}">
                                     </div>
                                     <div class="d-inline-block position-relative w-75">
-                                        <h5 class="user-username-mini">{{$in->admin_username_deleted}}</h5>
+                                        <h5 class="user-username-mini">{{"@"}}{{$in->admin_username_deleted}}</h5>
                                         <h6 class="properties-date date_holder_3">{{Carbon::parse($in->deleted_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                     </div>
                                 </div>   
@@ -188,35 +188,40 @@
         var pagloc_body = document.getElementById("info_page_location_holder_"+id);
 
         if(toogle % 2 == 0){
-            holder_body.innerHTML = " <div id='rich_box_" + id + "' style='height: 200px !important;'></div> " +
-            "<form class='d-inline' id='form-edit-desc_" + id + "' method='POST' action=''> " +
-                '@csrf ' +
-                "<input name='info_body' id='info_body_" + id + "' hidden> " +
-                "<button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("+ '"' + id + '"' +")'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
-            "</form> ";
+            holder_body.innerHTML = `
+                <div id='rich_box_${id}' style='height: 200px !important;'></div>
+                <form class='d-inline' id='form-edit-desc_${id}' method='POST' action=''>
+                    @csrf
+                    <input name='info_body' id='info_body_${id}' hidden>
+                    <button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("${id}")'>
+                        <i class='fa-solid fa-floppy-disk'></i> Save Changes
+                    </button>
+                </form>
+            `;
 
-            pagloc_body.innerHTML = " " +
-                "<form class='d-inline' method='POST' action='/system/info/update/pagloc/" + id + "'> " +
-                    '@csrf ' +
-                    '<div class="form-floating mb-2"> ' +
-                        '<select class="form-select" id="info_type_' + id + '" style="font-size:14px;" title="Info Page" name="info_page" aria-label="Floating label select example" required></select> ' +
-                        '<label for="floatingSelect">Page</label> ' +
-                    '</div> ' +
-                    '<div class="form-floating"> ' +
-                        '<input type="text" class="form-control nameInput" id="info_location_' + id + '" value="' + loc + '" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required> ' +
-                        '<label for="titleInput_event">Info Location</label> ' +
-                        '<a id="info_location_msg_' + id + '" class="text-danger my-2" style="font-size:13px;"></a> ' +
-                    '</div> ' +
-                    "<button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
-                "</form> ";
-                
-                menus.forEach(e => {
-                    if(e == page){
-                        $("#info_type_" + id).append('<option value="'+e+'" selected>'+e+'</option>');
-                    } else {
-                        $("#info_type_" + id).append('<option value="'+e+'">'+e+'</option>');
-                    }
-                });
+            pagloc_body.innerHTML = `
+                <form class='d-inline' method='POST' action='/system/info/update/pagloc/${id}'>
+                    @csrf
+                    <div class="form-floating mb-2">
+                        <select class="form-select" id="info_type_${id}" style="font-size:14px;" title="Info Page" name="info_page" aria-label="Floating label select example" required></select>
+                        <label for="floatingSelect">Page</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control nameInput" id="info_location_${id}" value="${loc}" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required>
+                        <label for="titleInput_event">Info Location</label>
+                        <a id="info_location_msg_${id}" class="text-danger my-2" style="font-size:13px;"></a>
+                    </div>
+                    <button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
+                </form>
+            `;
+            
+            menus.forEach(e => {
+                if(e == page){
+                    $("#info_type_" + id).append(`<option value="${e}" selected>${e}</option>`);
+                } else {
+                    $("#info_type_" + id).append(`<option value="${e}">${e}</option>`);
+                }
+            });
             
             var quill<?php if($info){str_replace("-", "", $in->id);} ?> = new Quill('#rich_box_' + id, {
                 theme: 'snow'
@@ -225,14 +230,12 @@
             var info_input = document.getElementById("info_body_" + id);
             var parent = document.getElementById("rich_box_" + id);
             var child = parent.getElementsByClassName("ql-editor")[0];
-            if(info_body != null || info_body != "null"){
-                child.innerHTML = info_body;
-            } else {
-                child.innerHTML = " ";
-            }
+            info_body !== null && info_body !== "null" ? (child.innerHTML = info_body) : (child.innerHTML = " ");
         } else {
-            pagloc_body.innerHTML = '<p class="mb-0">Page : <a class="text-primary" href="<?php if($info){ url($in->info_page); } ?> " style="cursor:pointer;">' + page + '</a></p> ' +
-                '<p>Location : ' + loc + '</p>';
+            pagloc_body.innerHTML = `
+                <p class="mb-0">Page : <a class="text-primary" href="<?php if($info){ url($in->info_page); } ?> " style="cursor:pointer;">${page}</a></p>
+                '<p>Location : ${loc}</p>
+            `;
             holder_body.innerHTML = info_body;
         }
         toogle++;

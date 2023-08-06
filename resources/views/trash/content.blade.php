@@ -304,7 +304,7 @@
                                                         "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
                                                     "</div> " +
                                                     "<div class='d-inline-block position-relative w-75'> " +
-                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-title'>Created by ~ Created at</h6> " +
                                                         "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
                                                     "</div> " +
                                                 "</div> " +
@@ -368,7 +368,7 @@
                                                         "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
                                                     "</div> " +
                                                     "<div class='d-inline-block position-relative w-75'> " +
-                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-title'>Created by ~ Created at</h6> " +
                                                         "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
                                                     "</div> " +
                                                 "</div> " +
@@ -377,7 +377,7 @@
                                                         "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
                                                     "</div> " +
                                                     "<div class='d-inline-block position-relative w-75'> " +
-                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
+                                                        "<h6 class='task-title'>Deleted by ~ Deleted at</h6> " +
                                                         "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
                                                     "</div> " +
                                                 "</div> " +
@@ -428,7 +428,7 @@
                                                         "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>) + "'> " +
                                                     "</div> " +
                                                     "<div class='d-inline-block position-relative w-75'> " +
-                                                        "<h6 class='task-title'>Created By ~ Created At</h6> " +
+                                                        "<h6 class='task-title'>Created by ~ Created at</h6> " +
                                                         "<h6 class='task-subtitle'>" + getUsername(au_created, uu_created) + " ~ " + getDateToContext(created_at, "full") + "</h6> " +
                                                     "</div> " +
                                                 "</div> " +
@@ -437,7 +437,7 @@
                                                         "<img class='img img-fluid user-image-content' src='" + getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>) + "'> " +
                                                     "</div> " +
                                                     "<div class='d-inline-block position-relative w-75'> " +
-                                                        "<h6 class='task-title'>Deleted By ~ Deleted At</h6> " +
+                                                        "<h6 class='task-title'>Deleted by ~ Deleted at</h6> " +
                                                         "<h6 class='task-subtitle'>" + getUsername(au_deleted, uu_deleted) + " ~ " + getDateToContext(deleted_at, "full") + "</h6> " +
                                                     "</div> " +
                                                 "</div> " +

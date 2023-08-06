@@ -8,7 +8,7 @@
                 <div class="row p-0">
                     <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
                         <button class="container shadow bg-primary w-100 h-100 border-0" style="border-radius:var(--roundedMD);" @if(!$isMobile) data-bs-dismiss="modal" @endif data-bs-target="#addEventModal" data-bs-toggle="modal"
-                            onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event') loadReminder(null,null);">
+                            onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event'); loadReminder(null,null);">
                             <h5 class="text-white"><i class="fa-solid fa-plus text-white"></i><br>
                                 Create a new one</h5>
                         </button>

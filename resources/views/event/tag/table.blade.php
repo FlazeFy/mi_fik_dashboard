@@ -95,9 +95,9 @@
                                     </span>
                                     <span class="dropdown-item properties-box">
                                         <h6 class="">Properties</h6>
-                                        <p>Created At : <span class="date_holder_1">{{($tg->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
+                                        <p>Created at : <span class="date_holder_1">{{($tg->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @if($tg->updated_at)
-                                            <p>Updated At : <span class="date_holder_2">{{($tg->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
+                                            <p>Updated at : <span class="date_holder_2">{{($tg->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @else
                                             <p>-</p>
                                         @endif

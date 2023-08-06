@@ -90,12 +90,6 @@
             var total = response.data.total;
             lastPageGroup = response.data.last_page;
 
-            // if(page != last){
-            //     $('#load_more_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
-            // } else {
-            //     $('#load_more_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
-            // }
-
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;

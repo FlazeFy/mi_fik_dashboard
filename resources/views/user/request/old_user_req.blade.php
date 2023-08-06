@@ -110,9 +110,9 @@
 
                     for(var i = 0; i < tag.length; i++){
                         if(i != tag.length - 1){
-                            tags += '<span class="text-' + color + ' fw-bold">#' + tag[i].tag_name + '</span>, ';
+                            tags += `<span class="text-${color} fw-bold">#${tag[i].tag_name}</span>, `;
                         } else {
-                            tags += '<span class="text-' + color + ' fw-bold">#' + tag[i].tag_name + '</span>';
+                            tags += `<span class="text-${color} fw-bold">#${tag[i].tag_name}</span>`;
                         }
                     }
 
@@ -120,7 +120,6 @@
                 }
 
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var id = data[i].id;
                     var username = data[i].username;
                     var img = data[i].image_url;
@@ -130,26 +129,27 @@
                     var tag = data[i].tag_slug_name;
                     var type = data[i].request_type;
 
-                    var elmt = " " +
-                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + '); slct_list = [];"> ' +
-                            '<div class="row ps-2"> ' +
-                                '<div class="col-2 p-0 ps-1"> ' +
-                                    '<img class="img img-fluid user-image" style="margin-top:45%;" src="' + getUserImageGeneral(img, role) + '">' +
-                                '</div> ' +
-                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
-                                    '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
-                                    '<div style="width: 80%;"> ' +
-                                        '<h6 class="user-box-desc">' + getContext(type, tag) + '</h6> ' +
-                                        '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
-                                    '</div> ' +
-                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input hidden id="tag_holder_' + username + id + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
-                                        '<input hidden id="type_holder_' + username + id + '" value=' + "'" + type + "'" + '>' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
-                                    '</div> ' +
-                                '</div> ' +
-                            '</div> ' +
-                        '</button>';
+                    const elmt = `
+                        <button class="btn user-box request" onclick="loadDetailGroup('${username}', 'old', '${id}'); slct_list = [];"> 
+                            <div class="row ps-2"> 
+                                <div class="col-2 p-0 ps-1"> 
+                                    <img class="img img-fluid user-image" style="margin-top:45%;" src="${getUserImageGeneral(img, role)}">
+                                </div> 
+                                <div class="col-10 p-0 py-2 ps-2 position-relative"> 
+                                    <h6 class="text-secondary fw-normal">${full_name}</h6>
+                                    <div style="width: 80%;">
+                                        <h6 class="user-box-desc">${getContext(type, tag)}</h6>
+                                        <h6 class="user-box-date">${getDateToContext(created_at, "full")}</h6>
+                                    </div>
+                                    <div class="form-check position-absolute" style="right: 20px; top: 20px;"> 
+                                        <input hidden id="tag_holder_${username + id}" value="${JSON.stringify(tag)}">
+                                        <input hidden id="type_holder_${username + id}" value="${type}">
+                                        <input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelected('${id}','${username}','${type}', '${full_name}', this.checked)"> 
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    `;
 
                     $("#data_wrapper_old_req").append(elmt);
                 }   

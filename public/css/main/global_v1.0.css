@@ -40,6 +40,7 @@
     /* Color Pallete */
     --primaryLightBG : #FADFB9;
     --successBG : #00C363;
+    --successDarkBG : #00b35a;
     --warningBG : #F85D59;
     --warningDarkBG : #D5534C;
     --infoBG : #009FF9;
@@ -491,10 +492,6 @@ th{
 .user-username-mini, .properties-date {
     color: var(--darkColor) !important;
     font-size: 15px;
-}
-.user-username-mini:hover {
-    color:var(--primaryColor) !important; 
-    cursor: pointer;
 }
 
 /* Tip / Warning box */

@@ -9,12 +9,12 @@
 .custom-close-modal, .gm-ui-hover-effect, .fc-popover-close.fc-icon.fc-icon-x{
     position: absolute !important;
     top: -20px;
-    background: var(--whiteColor) !important;
+    background: var(--warningBG);
     width: 45px;
     right: 10px !important;
     height: 45px;
     padding: var(--spaceXXSM);
-    color: var(--warningBG) !important;
+    color: var(--whiteColor) !important;
     border-radius: var(--roundedCircle) !important;
     border: none;
     opacity: 1;
@@ -29,11 +29,11 @@
 .custom-submit-modal {
     position: absolute !important;
     bottom: -20px;
-    background:var(--whiteColor);
+    background:var(--successBG);
     right: 10px;
-    height: 45px;
-    padding: var(--spaceXXSM) var(--spaceMD);
-    color: var(--successBG);
+    height: 50px;
+    padding: var(--spaceXSM) var(--spaceLG);
+    color: var(--whiteColor);
     border-radius: var(--roundedMini);
     border: none;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -41,11 +41,11 @@
 }
 
 .custom-close-modal:hover, .gm-ui-hover-effect:hover, .fc-popover-close.fc-icon.fc-icon-x:hover {
-    background: var(--warningBG) !important;
+    background: var(--warningDarkBG) !important;
     color: var(--whiteColor) !important;
 }
 .custom-submit-modal:hover {
-    background:var(--successBG);
+    background:var(--successDarkBG);
     color:var(--whiteColor);
 }
 

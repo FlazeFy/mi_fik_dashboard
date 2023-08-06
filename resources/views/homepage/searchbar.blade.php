@@ -13,20 +13,12 @@
     var search = "";
     const search_storage = sessionStorage.getItem('search');
 
-    if (search_storage == null) {
-        sessionStorage.setItem('search', search);
-    } else {
-        document.getElementById('title_search').value = search_storage;
-    }
+    search_storage == null ? sessionStorage.setItem('search', search) : document.getElementById('title_search').value = search_storage;
 
     function checkTitleSearch() {
         var input_search = document.getElementById('title_search').value;
 
-        if(input_search == null || input_search.trim() === ''){
-            sessionStorage.setItem('search', '');
-        } else {
-            sessionStorage.setItem('search', input_search.trim());
-        }
+        input_search == null || input_search.trim() === '' ? sessionStorage.setItem('search', '') : sessionStorage.setItem('search', input_search.trim());
         if(search_storage == null || input_search.trim() != search_storage.trim()){
             location.reload();
         }

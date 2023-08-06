@@ -40,7 +40,7 @@
         function finalValidate(){
             //Event date start and date end validator if all date is filled
             if(de <= ds ){
-                $("#dateStartEnd_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event's end time earlier than the start time");
+                $("#dateStartEnd_msg").html(`<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event's end time earlier than the start time`);
                 error = true;
             } else {
                 $("#dateStartEnd_msg").text("");
@@ -97,13 +97,13 @@
 
             //Event date and today validator if only one datetime is filled
             if(ds < today && time_start_event){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date");
+                $("#dateStart_event_msg").html(`<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date`);
                 error = true;
             } else {
                 $("#dateStart_event_msg").text("");
             }
             if(de < today && time_end_event){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date");
+                $("#dateEnd_event_msg").html(`<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date`);
                 error = true;
             } else {
                 $("#dateEnd_event_msg").text("");
@@ -119,7 +119,7 @@
             
             //Event date and today validator if only all datetime is filled
             if(ds < today){
-                $("#dateStart_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date");
+                $("#dateStart_event_msg").html(`<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date`);
                 error = true;
                 finalValidate();
             } else {
@@ -127,7 +127,7 @@
                 finalValidate();
             }
             if(de < today){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date");
+                $("#dateEnd_event_msg").html(`<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date`);
                 error = true;
                 finalValidate();
             } else {
@@ -136,7 +136,7 @@
             }
 
             if(getDateToContext(ds, "datetime") === getDateToContext(de, "datetime")){
-                $("#dateEnd_event_msg").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event with same date start and end");
+                $("#dateEnd_event_msg").html(`<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event with same date start and end`);
                 error = true;
             } else {
                 loadReminder(ds, today);

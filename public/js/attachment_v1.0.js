@@ -19,24 +19,29 @@ function getAttachmentInput(index, val){
         var allowed = 'accept="application/pdf"'; //Check this again...
     }
 
-    if(val == "attachment_url"){
-        $("#preview_att_"+index).empty();
-        $("#attach-input-holder-"+index).append(' ' +
-            '<h6 class="mt-1">Attachment URL</h6> ' +
-            '<input type="text" id="attach_url_'+index+'" name="attach_url" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)" required> ' +
-            '<h6 class="mt-1">Attachment Name</h6> ' +
-            '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
+    if (val === "attachment_url") {
+        $("#preview_att_" + index).empty();
+        $("#attach-input-holder-" + index).append(`
+            <h6 class="mt-1">Attachment URL</h6>
+            <input type="text" id="attach_url_${index}" name="attach_url" class="form-control m-2" onblur="setValue('${index}', true)" required>
+            <h6 class="mt-1">Attachment Name</h6>
+            <input type="text" id="attach_name_${index}" name="attach_name" class="form-control m-2" onblur="setValue('${index}', true)">
+        `);
     } else {
-        if(!$("#preview_att_"+index).has("*").length) {
-            $("#preview_att_"+index).html('<a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+index+'"> ' +
-                '<i class="fa-regular fa-eye-slash"></i></a>');
-        } 
-
-        $("#attach-input-holder-"+index).append(' ' +
-            '<input type="file" id="attach_url_'+index+'" name="attach_input" class="form-control m-2" '+allowed+' onblur="setValue('+"'"+index+"'"+', true)"> ' +
-            '<input type="text" id="attach_url_holder_'+index+'" hidden required> ' +
-            '<h6 class="mt-1">Attachment Name</h6> ' +
-            '<input type="text" id="attach_name_'+index+'" name="attach_name" class="form-control m-2" onblur="setValue('+"'"+index+"'"+', true)">');
+        if (!$("#preview_att_" + index).has("*").length) {
+            $("#preview_att_" + index).html(`
+                <a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-${index}">
+                <i class="fa-regular fa-eye-slash"></i>
+                </a>
+            `);
+        }
+    
+        $("#attach-input-holder-" + index).append(`
+            <input type="file" id="attach_url_${index}" name="attach_input" class="form-control m-2" ${allowed} onblur="setValue('${index}', true)">
+            <input type="text" id="attach_url_holder_${index}" hidden required>
+            <h6 class="mt-1">Attachment Name</h6>
+            <input type="text" id="attach_name_${index}" name="attach_name" class="form-control m-2" onblur="setValue('${index}', true)">
+        `);
     }
 }
 

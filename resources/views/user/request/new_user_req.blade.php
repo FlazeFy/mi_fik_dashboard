@@ -123,22 +123,23 @@
                     var is_accepted = data[i].is_accepted;
                     var accepted_at = data[i].accepted_at;
 
-                    var elmt = " " +
-                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'new'" + ', null); slct_list = [];"> ' +
-                            '<div class="row ps-3"> ' +
-                                '<div class="col-2 p-0 ps-1"> ' +
-                                    '<img class="img img-fluid user-image" style="margin-top:30%;" src="' + getUserImageGeneral(img, role) + '">' +
-                                '</div> ' +
-                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
-                                    '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
-                                    '<h6 class="user-box-desc">' + getContext(is_accepted) + '</h6> ' +
-                                    '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
-                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelectedNew('+"'"+username+"'"+', '+"'"+full_name+"'"+', this.checked)""> ' +
-                                    '</div> ' +
-                                '</div> ' +
-                            '</div> ' +
-                        '</button>';
+                    const elmt = `
+                        <button class="btn user-box request" onclick="loadDetailGroup('${username}', 'new', null); slct_list = [];"> 
+                            <div class="row ps-3">
+                                <div class="col-2 p-0 ps-1">
+                                    <img class="img img-fluid user-image" style="margin-top:30%;" src="${getUserImageGeneral(img, role)}">
+                                </div> 
+                                <div class="col-10 p-0 py-2 ps-2 position-relative">
+                                    <h6 class="text-secondary fw-normal">${full_name}</h6>
+                                    <h6 class="user-box-desc">${getContext(is_accepted)}</h6>
+                                    <h6 class="user-box-date">${getDateToContext(created_at, "full")}</h6>
+                                    <div class="form-check position-absolute" style="right: 20px; top: 20px;">
+                                        <input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelectedNew('${username}', '${full_name}', this.checked)""> 
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    `;
 
                     $("#data_wrapper_new_req").append(elmt);
                 }   

@@ -86,7 +86,7 @@
             @endif   
 
             <h6>Properties</h6>
-            <h6>Created At : {{date("Y M d H:i:s")}}</h6>
+            <h6>Created at : {{date("Y M d H:i:s")}}</h6>
         </div>
     </body>
 </html>

@@ -111,12 +111,12 @@
     var btn_holder = document.getElementById("toogle-msg-btn");
     var msg_holder = document.getElementById("msg-box");
     function openForm(){
-        btn_holder.innerHTML = '<button class="btn btn-msg text-danger" onclick="closeForm()" title="Cancel"><i class="fa-solid fa-xmark"></i></button>';
+        btn_holder.innerHTML = `<button class="btn btn-msg text-danger" onclick="closeForm()" title="Cancel"><i class="fa-solid fa-xmark"></i></button>`;
         msg_holder.classList.remove("d-none");
     }
 
     function closeForm(){
-        btn_holder.innerHTML = '<button class="btn btn-msg text-success" onclick="openForm()" title="Make a new question"><i class="fa-solid fa-paper-plane"></i></button>';
+        btn_holder.innerHTML = `<button class="btn btn-msg text-success" onclick="openForm()" title="Make a new question"><i class="fa-solid fa-paper-plane"></i></button>`;
         msg_holder.classList.add("d-none");
     }
 
