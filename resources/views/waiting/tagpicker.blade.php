@@ -4,8 +4,8 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOL">
-        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
+        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> {{ __('messages.abort') }}</a>
     </div>
     <div class="position-absolute" style="right:60px; top:10px;">
         <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" 

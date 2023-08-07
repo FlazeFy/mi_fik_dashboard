@@ -177,15 +177,6 @@
         height: 70px !important;
     }
 
-    .toast {
-        position: fixed;
-        top: 120px;
-        width: 90%;
-        margin-inline: var(--spaceLG);
-        left: 0;
-        z-index: 999 !important;
-    }
-
     .page-holder {
         font-size: var(--textMD) !important;
     }
@@ -263,6 +254,9 @@ body{
 .toast, .toast-body, .toast-header {
     opacity: 1 !important;
     background: var(--whiteColor);
+}
+.toast {
+    border-left: 6px solid var(--successBG) !important;
 }
 .modal {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

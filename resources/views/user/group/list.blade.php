@@ -189,8 +189,6 @@
                                         <h5>Manage Group Relation</h5>
                                         <div class="row mt-4">
                                             <div class="col-lg-8 col-md-7 col-sm-12">
-                                                <h6>Engagement</h6>
-
                                                 <form action="/user/group/member/remove/${id}" method="POST">
                                                     @csrf
                                                     <span class="position-relative">

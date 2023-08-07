@@ -66,7 +66,7 @@ class AllController extends Controller
             session()->put('filtering_lname', "all");
         }
 
-        return redirect()->back()->with('success_message', 'Content filtered');
+        return redirect()->back()->with('success_mini_message', 'Content filtered');
     }
 
     public function set_ordering_content($order, $type)
@@ -82,7 +82,7 @@ class AllController extends Controller
         }
         session()->put('ordering_user_list', $res);
 
-        return redirect()->back()->with('success_message', 'Content ordered');
+        return redirect()->back()->with('success_mini_message', 'Content ordered');
     }
 
     public function set_filter_role(Request $request, $all)
@@ -107,6 +107,6 @@ class AllController extends Controller
 
         session()->put('selected_role_user', $role_holder);
 
-        return redirect()->back()->with('success_message', 'User filtered');
+        return redirect()->back()->with('success_mini_message', 'User filtered');
     }
 }

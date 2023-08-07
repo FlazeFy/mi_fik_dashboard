@@ -93,16 +93,16 @@
             
                             @include('homepage.addevent_form.descinput')
 
-                            <br><label class="input-title">Event Location</label><br>
+                            <br><label class="input-title">{{ __('messages.event_loc') }}</label><br>
                             @include('homepage.addevent_form.locationpicker')
 
-                            <label class="input-title my-2">Attachment</label><br>
+                            <label class="input-title my-2">{{ __('messages.att') }}</label><br>
                             @include('homepage.addevent_form.attachment')
 
                             @include('components.infobox',['info'=>$info, 'location'=> 'add_event'])
                         </div>
                         <div class="col-lg-4">
-                            <label class="input-title">Event Image</label><br>
+                            <label class="input-title">{{ __('messages.event_image') }}</label><br>
                             @include('homepage.addevent_form.contentimage')
 
                             @include('homepage.addevent_form.datepicker')

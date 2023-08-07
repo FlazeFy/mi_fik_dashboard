@@ -53,8 +53,8 @@
     @else 
         <div class="text-center p-2">
             <img src="{{ asset('/assets/nodata3.png')}}" alt="{{ asset('/assets/nodata.png')}}" width="200" class="img-fluid d-block mx-auto mt-3">
-            <h3 class="text-primary mt-3">You have no question yet</h3>
-            <p class="text-secondary">You can ask about our app, and our admin will be respond your question. Your question may be public to other user, but it will anonym</p>
+            <h3 class="text-primary mt-3">{{ __('messages.no_faq') }}</h3>
+            <p class="text-secondary">{{ __('messages.no_faq_desc') }}</p>
         </div>
     @endif
 
@@ -65,7 +65,7 @@
     <div class="msg-box d-none" id="msg-box">
         <form class="p-2 mt-2" action="/profile/faq" method="POST">
             @csrf
-            <h5 class="text-secondary">Ask a Question</h5>
+            <h5 class="text-secondary">{{ __('messages.ask_question') }}</h5>
             <div class="form-floating my-2">
                 <select class="form-select" id="floatingSelect" name="question_type" aria-label="Floating label select example">
                     @php($i = 0)
@@ -79,11 +79,11 @@
                         @php($i++)
                     @endforeach
                 </select>
-                <label for="floatingSelect">Question Type</label>
+                <label for="floatingSelect">{{ __('messages.question_type') }}</label>
             </div>
             <div class="form-floating">
                 <textarea class="form-control" style="height: 100px" id="question_body" name="question_body" oninput="validateFormSecond(validation2)" maxlength="255"></textarea>
-                <label for="question_body">Question Body</label>
+                <label for="question_body">{{ __('messages.question_body') }}</label>
                 <a id="question_body_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
             <span id="submit_holder_second"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>

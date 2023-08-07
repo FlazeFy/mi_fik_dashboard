@@ -27,7 +27,7 @@
             </form>
         @endforeach
         <hr>
-        <a class="dropdown-item" data-bs-target="#ceChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#ceChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
     </div>
     @if(count($createdEvent) != 0)
         @if(!$isMobile)

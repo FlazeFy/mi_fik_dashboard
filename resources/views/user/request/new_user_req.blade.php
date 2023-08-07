@@ -13,7 +13,7 @@
     @endif
 
     <div class="dropdown-menu dropdown-menu-end @if($isMobile) mobile-control @endif" aria-labelledby="section-more-new-req">
-        <a class="dropdown-item" data-bs-target="#newUserRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#newUserRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
         <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc_new">Accept Selected</span></a>
         <a class="dropdown-item" data-bs-toggle="modal" id="rej_all_new_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_rej_new">Reject Selected</span></a>
         <a class="dropdown-item" data-bs-toggle="modal" id="acc_all_new_tag_btn" data-bs-target="#preventModalNew"><i class="fa-solid fa-hashtag text-success"></i> <span class="text-success" id="total_acc_new_tag">Accept Selected & With Tag</span></a>

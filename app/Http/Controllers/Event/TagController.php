@@ -453,6 +453,6 @@ class TagController extends Controller
     {
         session()->put('selected_tag_category', $request->tag_category);
 
-        return redirect()->back()->with('success_message', 'Tag filtered');
+        return redirect()->back()->with('success_mini_message', 'Tag filtered');
     }
 }

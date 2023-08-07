@@ -22,7 +22,7 @@
         @if(session()->get("role_key") == 1)
             <div class="form-floating mb-2 mt-3">
                 <input type="phone" class="form-control nameInput" id="phone" name="phone" value="{{$user->phone}}" oninput="validateForm(validation)" maxlength="14" required>
-                <label for="phone">Phone</label>
+                <label for="phone">{{ __('messages.phone') }}</label>
                 <a id="phone_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
         @endif
@@ -34,7 +34,7 @@
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control nameInput" id="first_name" name="first_name" oninput="validateForm(validation)" maxlength="35" value="{{$user->first_name}}" required>
-            <label for="first_name">First Name</label>
+            <label for="first_name">{{ __('messages.fname') }}</label>
             <a id="first_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
 
@@ -45,7 +45,7 @@
 
         <div class="form-floating mb-2">
             <input type="text" class="form-control nameInput" id="last_name" name="last_name" oninput="validateForm(validation)" maxlength="35" value="{{$user->last_name}}">
-            <label for="last_name">Last Name</label>
+            <label for="last_name">{{ __('messages.lname') }}</label>
             <a id="last_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
 

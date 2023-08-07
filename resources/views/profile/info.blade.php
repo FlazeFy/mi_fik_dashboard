@@ -53,7 +53,7 @@
         @endif
 
         <div class="sub-holder text-start" id="body-eng">
-            <h5 class="text-secondary">Engagement</h5>
+            <h5 class="text-secondary">{{ __('messages.engagement') }}</h5>
             <div class="text-center mt-4">
                 <div class="d-inline-block mx-2">
                     <h4 class="text-center">{{$totalEvent}}</h4>

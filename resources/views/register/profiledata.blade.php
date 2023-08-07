@@ -20,7 +20,7 @@
 </script>
 
 <div class="pb-4 text-center d-block mx-auto" style="min-height:60vh;">
-    <h2 class="text-primary text-center">Profile Data</h2><br>
+    <h2 class="text-primary text-center">{{ __('messages.pdata') }}</h2><br>
 
     <form id="form-check-user">
         <div class="form-floating mb-2">
@@ -61,20 +61,20 @@
         
             <div class="form-floating mb-2">
                 <input type="text" class="form-control nameInput" id="first_name" name="first_name" oninput="validateFormSecond(validation2)" maxlength="75" required>
-                <label for="first_name">First Name</label>
+                <label for="first_name">{{ __('messages.fname') }}</label>
                 <a id="first_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
 
             <div class="form-floating mb-2">
                 <input type="text" class="form-control nameInput" id="last_name" name="last_name" oninput="validateFormSecond(validation2)" maxlength="75" required>
-                <label for="last_name">Last Name</label>
+                <label for="last_name">{{ __('messages.lname') }}</label>
                 <a id="last_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
                
             <a id="input_all_profiledata_msg" class="text-danger my-2" style="font-size:13px;"></a>
             <a id="all_user_regis_msg" class="text-danger my-2" style="font-size:13px;"></a>
 
-            <h2 class="text-primary mt-4">Profile Image</h2><br>
+            <h2 class="text-primary mt-4">{{ __('messages.pimage') }}</h2><br>
             <div class="position-relative d-flex justify-content-center">
                 <div class="content-image-holder p-0 position-relative">
                     <img id="profile_image_info" class="content-image img img-fluid" src="{{ asset('/assets/default_lecturer.png')}}" style="width:200px; height:200px;">
@@ -97,7 +97,7 @@
                 </div>
             </div>
             <div class='info-box tips mx-0 my-2 pt-3 d-inline-flex'>
-                <label class="fw-normal"><i class='fa-solid fa-circle-info'></i> Image's size must below 4 mb and have JPEG, JPG, PNG, or GIF format</label>
+                <label class="fw-normal"><i class='fa-solid fa-circle-info'></i> {{ __('messages.pimage_rules') }}</label>
             </div>
         </div>
         <a class="registered-msg" id="registered-msg"></a>

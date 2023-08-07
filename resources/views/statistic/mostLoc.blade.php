@@ -14,7 +14,7 @@
                 </form>
             @endforeach
         </span>
-        <a class="dropdown-item" data-bs-target="#mlChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#mlChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
     </div>
     @if(count($mostLoc) != 0)
         <div id="MOL_pie_chart"></div>

@@ -1,6 +1,6 @@
 <div class="form-floating">
     <input type="text" class="form-control nameInput" id="titleInput_event" name="content_title" oninput="lengValidatorEvent('75', 'title')" maxlength="75"  required>
-    <label for="titleInput_event">Event Title</label>
+    <label for="titleInput_event">{{ __('messages.title') }}</label>
 </div>
 <a id="title_msg_event" class="input-warning text-danger"></a>
 

@@ -11,7 +11,7 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-import-tag">
-        <a class="dropdown-item" data-bs-target="#helpImport" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#helpImport" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
         <a class="dropdown-item" onclick="getTemplate()"><i class="fa-solid fa-print"></i> Get Template</a>
     </div>
     <div class="modal fade" id="helpImport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

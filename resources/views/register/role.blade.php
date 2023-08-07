@@ -37,7 +37,7 @@
 </style>
 
 <div class="mb-5 pb-2 d-block mx-auto text-center" id="role-area-picker">
-    <h2 class="text-primary text-center">Available Role</h2><br>
+    <h2 class="text-primary text-center">{{ __('messages.ava_role') }}</h2><br>
     
     <form class="d-inline" id="form-login-role">
         <input hidden name="username" id="username_role">
@@ -124,7 +124,7 @@
                                                 "<h6 class=''>{{ __('messages.slct_role') }}</h6> " +
                                             "</div> " +
                                             "<div class='position-relative'> " +
-                                                "<a class='btn btn-danger py-1 position-absolute' style='right:0; top:-8px; width:90px;' onclick='abortTagPicker()'><i class='fa-solid fa-rotate-right'></i> Abort</a> " +
+                                                "<a class='btn btn-danger py-1 position-absolute' style='right:0; top:-8px; width:90px;' onclick='abortTagPicker()'><i class='fa-solid fa-rotate-right'></i> {{ __('messages.abort') }}</a> " +
                                             "</div> " +
                                         "</div> " +
                                         "<div id='slct_holder'><span id='no-tag-selected-msg'><img src='<?= asset('/assets/tag.png'); ?>' alt='<?= asset('/assets/tag.png'); ?>' width='180' class='img-fluid d-block mx-auto'><h6>You have not selected any tag yet</h6></span></div> " +

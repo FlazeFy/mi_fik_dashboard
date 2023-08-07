@@ -93,7 +93,7 @@
                     <input hidden name="lang" value="en">
                     <button class="dropdown-item position-relative" type="submit">
                         <div class="d-inline-block position-relative">
-                            <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8001/assets/en_lang.png'> 
+                            <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8000/assets/en_lang.png'> 
                         </div>
                         <div class="d-inline-block position-absolute" style="top:15px; margin-left:10px;">
                             English
@@ -107,7 +107,7 @@
                     <input hidden name="lang" value="id">
                     <button class="dropdown-item position-relative" type="submit">
                         <div class="d-inline-block position-relative">
-                            <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8001/assets/id_lang.png'> 
+                            <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8000/assets/id_lang.png'> 
                         </div>
                         <div class="d-inline-block position-absolute" style="top:15px; margin-left:10px;">
                             Bahasa Indonesia

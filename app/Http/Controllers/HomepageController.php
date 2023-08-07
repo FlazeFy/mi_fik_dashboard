@@ -348,20 +348,20 @@ class HomepageController extends Controller
     {
         session()->put('ordering_event', $order);
 
-        return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",'event ordered',null));
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom",'event ordered',null));
     }
 
     public function set_filter_date(Request $request)
     {
         session()->put('filtering_date', $request->date_start."_".$request->date_end);
 
-        return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",'event filtered',null));
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom",'event filtered',null));
     }
 
     public function reset_filter_date()
     {
         session()->put('filtering_date', 'all');
 
-        return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",'event filtered',null));
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom",'event filtered',null));
     }
 }

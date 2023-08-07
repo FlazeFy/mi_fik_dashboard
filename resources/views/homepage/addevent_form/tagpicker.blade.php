@@ -1,6 +1,6 @@
 
 <div class="position-relative">
-    <label class="input-title" style="margin-top:4px;">Event Tag</label>
+    <label class="input-title" style="margin-top:4px;">{{ __('messages.event_tag') }}</label>
     @if(session()->get('role_key') != 1)
         <div id="tag_holder"></div>
     @else 
@@ -11,7 +11,7 @@
                 @foreach($dct_tag as $dtag) 
                     @if($i == 0) 
                         <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                        <option value="all">All</option>
+                        <option value="all">{{ __('messages.all') }}</option>
                     @else 
                         <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                     @endif
