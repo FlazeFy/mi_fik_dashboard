@@ -202,14 +202,14 @@
                                     tags += `<span class="text-primary fw-bold">#${tag[i].tag_name}</span>`;
                                 }
                             } else {
-                                tags += '<span class="text-primary fw-bold">#...</span>';
+                                tags += `<span class="text-primary fw-bold">#...</span>`;
 
-                                return tags
+                                return tags;
                             }
                         }
-                        return tags
+                        return tags;
                     } else {
-                        return '<span class="status-info bg-danger">No Role</span>';
+                        return `<div class="status-info text-center bg-danger mt-1">No Role</div>`;
                     }
                 }
 
@@ -244,7 +244,7 @@
                         for(var i = 0; i < role.length; i++){
                             elmnt += `<a class='btn btn-tag'>${role[i]['tag_name']}</a>`;
                         }
-                        return elmnt
+                        return elmnt;
 
                     } else {
                         return `<h6 class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> This user has no role</h6>`;
@@ -281,7 +281,7 @@
                             <div id="empty_item_holder_manage_tag_${username}"></div>
                             <span id="load_more_holder_manage_tag_${username}" style="display: flex; justify-content:center;"></span>
                         </div>
-                        <h6 class="text-secondary mt-3"> Selected Role</h6>
+                        <h6 class="text-secondary mt-3"> {{ __('messages.slct_role') }}</h6>
                         <form id="add_role_form_${username}">
                             @csrf
                             <input hidden name="username" value="${real_username}">
@@ -295,7 +295,6 @@
                 $("#empty_item_holder").empty();
 
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var id = data[i].id;
                     var username = data[i].username;
                     var fullname = data[i].full_name;
@@ -535,7 +534,6 @@
                             </a>
                         `;
 
-
                         $("#data_wrapper_manage_tag_"+username).append(elmt);
                     }
                 }   
@@ -682,13 +680,13 @@
 
     function getButtonSubmitTag(username,is_added){
         if(is_added){
-            var ctx = "<i class='fa-solid fa-trash'></i> Remove";
+            var ctx = `<i class='fa-solid fa-trash'></i> {{ __('messages.clear') }}`;
             var bg = "danger";
-            var fun = 'onclick="remove_role(' + "'" + username + "'" + ')"';
+            var fun = `onclick="remove_role('${username}')"`;
         } else {
             var ctx = "<i class='fa-solid fa-plus'></i> Assign";
             var bg = "success";
-            var fun = 'onclick="add_role(' + "'" + username + "'" + ')"';
+            var fun = `onclick="add_role('${username}')"`;
         }
 
         if(slct_list.length > 0){
@@ -696,9 +694,9 @@
 
             for(var i = 0; i < slct_list.length; i++){
                 if(i != slct_list.length - 1){
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>, ';
+                    tags += `<span class="text-primary fw-bold">#${slct_list[i]}</span>, `;
                 } else {
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>';
+                    tags += `<span class="text-primary fw-bold">#${slct_list[i]}</span>`;
                 }
             }
             

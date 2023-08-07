@@ -29,15 +29,13 @@
     @endif
 </div>
 
-<label class="input-title">Selected Tag</label>
+<label class="input-title">{{ __('messages.slct_tag') }}</label>
 <div id="slct_holder"></div>
 
 <script type="text/javascript">
-    //Initial variable.
-    var tag_list = []; //Store all tag from db to js arr.
-    var slct_list = []; //Store all tag's id.
+    var tag_list = []; 
+    var slct_list = []; 
 
-    //Tag collection
     tag_list = [
         <?php 
             if(session()->get('role_key') != 1){
@@ -99,28 +97,29 @@
                 var last = response.data.last_page;
 
                 if(page_tag != last){
-                    $('#load_more_holder_manage_tag').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>');
+                    $('#load_more_holder_manage_tag').html(`<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>`);
                 } else {
-                    $('#load_more_holder_manage_tag').html('<h6 class="content-last">No more tag to show</h6>');
+                    $('#load_more_holder_manage_tag').html(`<h6 class="content-last">No more tag to show</h6>`);
                 }
 
                 if (total == 0) {
-                    $('#empty_item_holder_manage_tag').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                    $('#empty_item_holder_manage_tag').html(`<img src="{{asset('assets/nodata.png')}}" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>`);
                     return;
                 } else if (data.length == 0) {
-                    $('.auto-load-tag').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
+                    $('.auto-load-tag').html(`<h5 class='text-secondary'>Woah!, You have see all the tags</h5>`);
                     return;
                 } else {
                     $("#empty_item_holder_manage_tag").empty();
                     
                     for(var i = 0; i < data.length; i++){
-
-                        //Attribute
                         var slug_name = data[i].slug_name;
                         var tag_name = data[i].tag_name;
 
-                        var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                            'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'slct'+"'"+')">' + tag_name + '</a> ';
+                        const elmt = `
+                            <a class="btn btn-tag" id="tag_collection_${slug_name}" title="Select this tag"
+                                onclick="addSelectedTag('${slug_name}', '${tag_name}', true, 'slct')">
+                                ${tag_name}
+                            </a>`;
 
                         $("#tag_holder").append(elmt);
                     }   

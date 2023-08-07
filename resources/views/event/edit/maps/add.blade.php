@@ -20,12 +20,12 @@
     @if($c->content_loc && $c->content_loc[0]['detail'])
         <div class="form-floating my-2">
             <input type="text" class="form-control" id="content_loc_name" placeholder="{{$c->content_loc[0]['detail']}}" value="{{$c->content_loc[0]['detail']}}" oninput="getContentLocation()">
-            <label for="content_loc_name">Location Name</label>
+            <label for="content_loc_name">{{ __('messages.loc_name') }}</label>
         </div>
     @else
         <div class="form-floating mb-2">
             <input type="text" class="form-control" id="content_loc_name" placeholder="" value="" oninput="getContentLocation()">
-            <label for="content_loc_name">Location Name</label>
+            <label for="content_loc_name">{{ __('messages.loc_name') }}</label>
         </div>
     @endif
 

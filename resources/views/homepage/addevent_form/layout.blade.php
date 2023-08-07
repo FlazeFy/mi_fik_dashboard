@@ -70,8 +70,8 @@
         <a class="warning-draft" title="You have some draft event"><i class="fa-solid fa-triangle-exclamation"></i> {{count($mydraft)}}</a>
     @endif
 
-    <h5 class="quick-action-text"><i class="fa-solid fa-plus"></i> Add Event</h5>
-    <p class="quick-action-info">Event is an information about some activity that will be held in the future.</p>
+    <h5 class="quick-action-text"><i class="fa-solid fa-plus"></i> {{ __('messages.add_event') }}</h5>
+    <p class="quick-action-info">{{ __('messages.add_event_desc') }}</p>
 </button>
 
 @if(count($mydraft) > 1 || (count($mydraft) == 1 && $mydraft[0]['slug_name'] != null))
@@ -86,7 +86,7 @@
                 <div class="modal-body pt-4 position-relative">
                     <input hidden id="slug_name" name="slug_name">
                     <button type="button" class="custom-close-modal" onclick="clean(); <?php if($isMobile){ echo 'closeControlModal()'; } ?>" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                    <h5>Create Event</h5>
+                    <h5>{{ __('messages.add_event') }}</h5>
                     <div class="row my-2">
                         <div class="col-lg-8">
                             @include('homepage.addevent_form.titleinput')
@@ -106,13 +106,13 @@
                             @include('homepage.addevent_form.contentimage')
 
                             @include('homepage.addevent_form.datepicker')
-                            <label class="input-title">Set Event Reminder</label>
+                            <label class="input-title">{{ __('messages.set_reminder') }}</label>
                             <select class="form-select" id="selectReminder" name="content_reminder" aria-label="Floating label select example"></select>
 
                             <br>@include('homepage.addevent_form.tagpicker')
                         </div>
                     </div>
-                    <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button></span><br>
+                    <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span><br>
                 </div>
             </form>
         </div>

@@ -169,7 +169,7 @@
                                                 @endforeach
                                             @endif
                                             <input hidden name="old_group_name" value="${name}">
-                                            <button class="btn btn-submit-form" type="submit" id="btn-submit"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                                            <button class="btn btn-submit-form" type="submit" id="btn-submit"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.submit') }}</button>
                                         </form>
                                     </div>
                                 </div>
@@ -195,7 +195,7 @@
                                                     @csrf
                                                     <span class="position-relative">
                                                         <h6 class="mt-2">Available Member</h6>
-                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRemoveMember('${slug}')"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRemoveMember('${slug}')"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                                                         <span id="submit-rel-remove-btn-holder-${slug}"></span>
                                                     </span>
                                                     <span id="manage-rel-holder-${slug}" class="groups-rel-holder"></span>
@@ -210,7 +210,7 @@
                                                     @csrf
                                                     <span class="position-relative">
                                                         <h6 class="mt-2">Selected User</h6>
-                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember('${slug}')"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember('${slug}')"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                                                         <span id="submit-rel-add-btn-holder-${slug}"></span>
                                                     </span>
                                                     <input hidden name="selected_member" id="selected_member-${slug}" value="">

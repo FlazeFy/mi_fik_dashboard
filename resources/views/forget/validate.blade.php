@@ -173,7 +173,7 @@
                     document.getElementById("final_username").value = validate_username.value;
                     document.getElementById("final_token").value = validate_token.value;
                     document.getElementById("token-validation-holder").setAttribute('class', 'd-none');
-                    document.getElementById("btn-next-finish-holder").innerHTML = "<button class='btn-next-steps' id='btn-next-terms' onclick='editPass()'><i class='fa-solid fa-paper-plane'></i> Submit</button>";
+                    document.getElementById("btn-next-finish-holder").innerHTML = `<button class='btn-next-steps' id='btn-next-terms' onclick='editPass()'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.submit') }}</button>`;
                 }
             },
             error: function(response, jqXHR, textStatus, errorThrown) {

@@ -32,11 +32,11 @@
                 validate("profiledata");
             } else {
                 btn.innerHTML = " ";
-                btn.innerHTML = `<a class='btn btn-submit-form' onclick='addType()' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</a>`;
+                btn.innerHTML = `<a class='btn btn-submit-form' onclick='addType()' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.submit') }}</a>`;
             }
         } else {
             if(typeof val1 === 'undefined'){ 
-                btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>`;
+                btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> {{ __('messages.locked') }}</button>`;
             } else {
                 val1 = false;
                 validate("profiledata");
@@ -59,7 +59,7 @@
                         <label for="help_type">Help Type</label>
                         <a id="help_type_msg" class="input-warning text-danger"></a>
                     </div>
-                    <span id="submit_holder_type"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder_type"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                 </form>
             </div>
         </div>

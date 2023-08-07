@@ -42,7 +42,7 @@
     <a class="btn btn-primary d-block mx-auto mt-4" onclick="check_user()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>
 </div>
 <span id="btn-next-validate-holder" class="d-flex justify-content-end mt-3">
-    <button class="btn-next-steps locked" id="btn-next-validate" onclick="warn('recovery')"><i class="fa-solid fa-lock"></i> Locked</button>
+    <button class="btn-next-steps locked" id="btn-next-validate" onclick="warn('recovery')"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>
 </span>
 
 <script>

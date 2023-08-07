@@ -16,7 +16,6 @@
 .fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary{
     padding: 6px var(--spaceXSM) !important;
     border: 1.75px solid var(--primaryLightBG) !important;
-    padding: 6px var(--spaceXSM) !important;
     background: transparent;
     color: var(--primaryColor);
 }
@@ -57,7 +56,8 @@
     height: 25px;
     margin: var(--spaceMini);
     color: var(--whiteColor) !important;
-    padding-top: 2px !important; 
+    padding-top: calc(var(--spaceMini) - 1px)!important; 
+    padding-inline: calc(var(--spaceMini) + 3.5px)!important; 
 }
 a.fc-daygrid-day-number{
     font-size: var(--textXMD); 

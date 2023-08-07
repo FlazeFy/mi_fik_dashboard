@@ -86,7 +86,7 @@
                 <label for="question_body">Question Body</label>
                 <a id="question_body_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
-            <span id="submit_holder_second"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+            <span id="submit_holder_second"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
         </form>
     </div>
 </div>

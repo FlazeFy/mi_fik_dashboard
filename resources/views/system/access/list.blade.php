@@ -78,7 +78,7 @@
                         }
                         return tags
                     } else {
-                        return '<span class="status-info bg-danger">No Role</span>';
+                        return `<div class="status-info bg-danger text-center mt-1">No Role</div>`;
                     }
                 }
 

@@ -41,5 +41,5 @@
     </div>
 </div>
 <span id="btn-next-profile-data-holder" class="d-flex justify-content-end">
-    <button class="btn-next-steps locked" id="btn-next-profile-data" onclick="warn('terms')"><i class="fa-solid fa-lock"></i> Locked</button>
+    <button class="btn-next-steps locked" id="btn-next-profile-data" onclick="warn('terms')"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>
 </span>

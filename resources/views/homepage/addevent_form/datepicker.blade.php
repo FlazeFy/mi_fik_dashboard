@@ -1,4 +1,4 @@
-<label class="input-title">Set Date Start</label>
+<label class="input-title">{{ __('messages.set_date_start') }}</label>
 <div class="row mt-2">
     <div class="col-6">
         <input type="date" name="content_date_start" id="date_start_event" onchange="validateDateEvent()" class="form-control">
@@ -9,7 +9,7 @@
 </div>
 <p id="dateStart_event_msg" class="input-warning text-danger"></p>
 
-<label class="input-title">Set Date End</label>
+<label class="input-title">{{ __('messages.set_date_end') }}</label>
 <div class="row mt-2">
     <div class="col-6">
         <input type="date" name="content_date_end" id="date_end_event" onchange="validateDateEvent()" class="form-control">

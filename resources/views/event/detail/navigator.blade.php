@@ -40,7 +40,7 @@
                         <span id="msg-validation-title" class="float-start"><label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label></span><br>
                         
                         @include('components.infobox', ['info' => $info, 'location'=> "delete_event"])
-                        <span id="btn-delete-holder"><button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-trash"></i> Locked</button></span>
+                        <span id="btn-delete-holder"><button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-trash"></i> {{ __('messages.locked') }}</button></span>
                     </form>
                 </div>
             </div>
@@ -55,11 +55,11 @@
             var btn_delete = document.getElementById('btn-delete-holder');
 
             if(val.value != check){
-                msg.innerHTML = '<label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label>';
-                btn_delete.innerHTML = '<button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-lock"></i> Locked</button>';
+                msg.innerHTML = `<label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label>`;
+                btn_delete.innerHTML = `<button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`;
             } else {
-                msg.innerHTML = '<label style="font-size:12px;" class="text-success fw-bold">Event title is valid</label>';
-                btn_delete.innerHTML = '<button class="btn btn-delete-custom float-end" type="submit"><i class="fa-solid fa-trash"></i> Delete</button>';
+                msg.innerHTML = `<label style="font-size:12px;" class="text-success fw-bold">Event title is valid</label>`;
+                btn_delete.innerHTML = `<button class="btn btn-delete-custom float-end" type="submit"><i class="fa-solid fa-trash"></i> Delete</button>`;
             }   
         }
     </script>

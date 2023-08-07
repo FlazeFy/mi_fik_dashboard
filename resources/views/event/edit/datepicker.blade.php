@@ -243,7 +243,7 @@
      
 
         if(!error){
-            $("#btn-submit-holder-date").html('<a onclick="submitEdit()" class="btn btn-submit"><i class="fa-solid fa-paper-plane"></i> Submit</a>');
+            $("#btn-submit-holder-date").html(`<a onclick="submitEdit()" class="btn btn-submit"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.submit') }}</a>`);
         } else {
             $("#btn-submit-holder-date").html("");
         }

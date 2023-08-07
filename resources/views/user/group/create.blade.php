@@ -56,7 +56,7 @@
 
                             <span class="position-relative">
                                 <h6 class="mt-2">Selected User</h6>
-                                <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                                <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                             </span>
                             <span id="user-selected-holder"></span>
 
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <input hidden name="selected_user" id="selected_user" value="">
-                    <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                 </form>
             </div>
         </div>

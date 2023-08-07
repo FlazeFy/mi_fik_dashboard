@@ -25,7 +25,7 @@
     <span id="load_acc_with_role" style="display: flex; justify-content:center;"></span>  
 </div>
 
-<label class="input-title">Selected Role</label>
+<label class="input-title">{{ __('messages.slct_role') }}</label>
 <div id="slct_acc_role_holder"></div>
 
 <script type="text/javascript">

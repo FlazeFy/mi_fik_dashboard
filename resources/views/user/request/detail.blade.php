@@ -196,7 +196,7 @@
                             </div>
                             <div id="empty_item_holder_manage_tag"></div>
                             <span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span>
-                            <h6 class="text-secondary mt-3">Selected Role</h6>
+                            <h6 class="text-secondary mt-3">{{ __('messages.slct_role') }}</h6>
                             <div id="slct_holder"></div>
                         `;
                     } else if(type == "old"){
@@ -446,7 +446,7 @@
                                 <h6 class="fw-normal">Are you sure want to assign ${tags} to this User</h6>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" class="btn btn-success">Submit</button>
+                                <button type="submit" class="btn btn-success">{{ __('messages.submit') }}</button>
                             </div>
                         </div>
                     </div>

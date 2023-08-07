@@ -73,37 +73,37 @@
                 <div class="row px-2">
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
                         <button class="btn-quick-action-notif" onclick="setType('All User')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/global.png'); ?>"); background-color:#FB5E5B;'
-                            data-bs-target="#addModal" title="All User" data-bs-toggle="modal">
-                            <h5 class="quick-action-text-notif">All User</h5>
-                            <p class="quick-action-info-notif">Send announcement to all user who is registered and accepted in Mi-FIK App</p>
+                            data-bs-target="#addModal" title="{{ __('messages.all_user') }}" data-bs-toggle="modal">
+                            <h5 class="quick-action-text-notif">{{ __('messages.all_user') }}</h5>
+                            <p class="quick-action-info-notif">{{ __('messages.all_user_desc') }}</p>
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
                         <button class="btn-quick-action-notif" onclick="setType('Role')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/tag.png'); ?>"); background-color:#FB5E5B;'
-                            data-bs-target="#addModal" title="By Role" data-bs-toggle="modal">
-                            <h5 class="quick-action-text-notif">By Role</h5>
-                            <p class="quick-action-info-notif">Send announcement to specific role that containe some user</p>
+                            data-bs-target="#addModal" title="{{ __('messages.by_role') }}" data-bs-toggle="modal">
+                            <h5 class="quick-action-text-notif">{{ __('messages.by_role') }}</h5>
+                            <p class="quick-action-info-notif">{{ __('messages.by_role_desc') }}</p>
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
                         <button class="btn-quick-action-notif" onclick="setType('Grouping')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/group.png'); ?>"); background-color:#FB5E5B;'
-                            data-bs-target="#addModal" title="By Grouping" data-bs-toggle="modal">
-                            <h5 class="quick-action-text-notif">By Grouping</h5>
-                            <p class="quick-action-info-notif">Send announcement to specific group that containe some user</p>
+                            data-bs-target="#addModal" title="{{ __('messages.by_group') }}" data-bs-toggle="modal">
+                            <h5 class="quick-action-text-notif">{{ __('messages.by_group') }}</h5>
+                            <p class="quick-action-info-notif">{{ __('messages.by_group_desc') }}</p>
                         </button>
                     </div>
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
                         <button class="btn-quick-action-notif" onclick="setType('Person')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/person.png'); ?>"); background-color:#FB5E5B;'
-                            data-bs-target="#addModal" title="By Person" data-bs-toggle="modal">
-                            <h5 class="quick-action-text-notif">By Person</h5>
-                            <p class="quick-action-info-notif">Send announcement to one or some user with searching one by one</p>
+                            data-bs-target="#addModal" title="{{ __('messages.by_person') }}" data-bs-toggle="modal">
+                            <h5 class="quick-action-text-notif">{{ __('messages.by_person') }}</h5>
+                            <p class="quick-action-info-notif">{{ __('messages.by_person_desc') }}</p>
                         </button>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 p-2">
                         <button class="btn-quick-action-notif" onclick="setType('Pending')" data-bs-dismiss="modal" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/pending.png'); ?>"); background-color:#FB5E5B;'
-                            data-bs-target="#addModal" title="Pending" data-bs-toggle="modal">
-                            <h5 class="quick-action-text-notif">Or, Pending</h5>
-                            <p class="quick-action-info-notif">Make announcement and send it later with specific time and you can choose the type later</p>
+                            data-bs-target="#addModal" title="{{ __('messages.pending') }}" data-bs-toggle="modal">
+                            <h5 class="quick-action-text-notif">{{ __('messages.pending') }}</h5>
+                            <p class="quick-action-info-notif">{{ __('messages.pending_desc') }}</p>
                         </button>
                     </div>
                 </div>
@@ -119,7 +119,7 @@
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                 <form action="/system/notification/add" method="POST" id="form-add-notif">
                     @csrf
-                    <h5>Add <span id="type-title"></span> Notif</h5>
+                    <h5>{{ __('messages.add') }} <span id="type-title"></span> {{ __('messages.announcement') }}</h5>
                     
                     <span id="section-holder"></span>
                 </form>
@@ -212,12 +212,12 @@
                     <input name="send_to" value="all" hidden>
                     <div class="form-floating mb-2">
                         <input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35">
-                        <label for="notif_title">Title</label>
+                        <label for="notif_title">{{ __('messages.title') }}</label>
                         <a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
                     <div class="form-floating mb-2">
                         <textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea>
-                        <label for="notif_body">Body</label>
+                        <label for="notif_body">{{ __('messages.body') }}</label>
                         <a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
                     <div class="form-floating">
@@ -234,12 +234,12 @@
                                 @endif
                             @endforeach
                         </select>
-                        <label for="notif_type">Type</label>
+                        <label for="notif_type">{{ __('messages.type') }}</label>
                         <a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
                     <div id="datetime-picker-box"></div>
                    
-                    <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                 </div>
             `;
             document.getElementById("modal-dialog").setAttribute('class', 'modal-dialog');
@@ -252,12 +252,12 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-floating mb-2">
                             <input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35">
-                            <label for="notif_title">Title</label>
+                            <label for="notif_title">{{ __('messages.title') }}</label>
                             <a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a>
                         </div>
                         <div class="form-floating mb-2">
                             <textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea>
-                            <label for="notif_body">Body</label>
+                            <label for="notif_body">{{ __('messages.body') }}</label>
                             <a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a>
                         </div>
                         <div class="row mb-2">
@@ -276,7 +276,7 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    <label for="notif_type">Type</label>
+                                    <label for="notif_type">{{ __('messages.type') }}</label>
                                     <a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                 </div>
                             </div>
@@ -287,12 +287,12 @@
                         </div>
                         <hr>
                         <span class="position-relative">
-                            <h6>Selected Group</h6>
-                            <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllGroup()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                            <h6>{{ __('messages.slct_group') }}</h6>
+                            <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllGroup()"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                         </span>
                         <div id="slct-group-list-holder"></div>
                         <div id="slct-group-list-holder_msg" class="input-warning text-danger"></div>
-                        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 position-relative">
                         <input name="list_context" id="list_context_group" value="" hidden>
@@ -322,12 +322,12 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-floating mb-2">
                             <input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35">
-                            <label for="notif_title">Title</label>
+                            <label for="notif_title">{{ __('messages.title') }}</label>
                             <a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a>
                         </div>
                         <div class="form-floating mb-2">
                             <textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea>
-                            <label for="notif_body">Body</label>
+                            <label for="notif_body">{{ __('messages.body') }}</label>
                             <a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a>
                         </div>
                         <div class="row mb-2">
@@ -346,7 +346,7 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    <label for="notif_type">Type</label>
+                                    <label for="notif_type">{{ __('messages.type') }}</label>
                                     <a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                 </div>
                             </div>
@@ -357,12 +357,12 @@
                         </div>
                         <hr>
                         <span class="position-relative">
-                            <h6>Selected Role</h6>
-                            <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRole()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                            <h6>{{ __('messages.slct_role') }}</h6>
+                            <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRole()"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                         </span>
                         <div id="slct-role-list-holder"></div>
                         <div id="slct-role-list-holder_msg" class="input-warning text-danger"></div>
-                        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 position-relative">
                         <div class="position-absolute" style="right:10px; top:-15px;">
@@ -392,12 +392,12 @@
                     <input name="send_to" value="pending" hidden>
                     <div class="form-floating mb-2">
                         <input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35">
-                        <label for="notif_title">Title</label>
+                        <label for="notif_title">{{ __('messages.title') }}</label>
                         <a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
                     <div class="form-floating mb-2">
                         <textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea>
-                        <label for="notif_body">Body</label>
+                        <label for="notif_body">{{ __('messages.body') }}</label>
                         <a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
                     <div class="form-floating">
@@ -414,10 +414,10 @@
                                 @endif
                             @endforeach
                         </select>
-                        <label for="notif_type">Type</label>
+                        <label for="notif_type">{{ __('messages.type') }}</label>
                         <a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
-                    <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                 </div>
             `;
             document.getElementById("modal-dialog").setAttribute('class', 'modal-dialog');
@@ -430,12 +430,12 @@
                     <div class="col-lg-6 col-md-6 col-sm-6">
                         <div class="form-floating mb-2">
                             <input class="form-control" id="notif_title" name="notif_title" oninput="validateForm(validation)" maxlength="35">
-                            <label for="notif_title">Title</label>
+                            <label for="notif_title">{{ __('messages.title') }}</label>
                             <a id="notif_title_msg" class="text-danger my-2" style="font-size:13px;"></a>
                         </div>
                         <div class="form-floating mb-2">
                             <textarea class="form-control" style="height: 100px" id="notif_body" name="notif_body" oninput="validateForm(validation)" maxlength="255"></textarea>
-                            <label for="notif_body">Body</label>
+                            <label for="notif_body">{{ __('messages.body') }}</label>
                             <a id="notif_body_msg" class="text-danger my-2" style="font-size:13px;"></a>
                         </div>
                         <div class="row mb-2">
@@ -454,7 +454,7 @@
                                             @endif
                                         @endforeach
                                     </select>
-                                    <label for="notif_type">Type</label>
+                                    <label for="notif_type">{{ __('messages.type') }}</label>
                                     <a id="notif_type_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                 </div>
                             </div>
@@ -465,11 +465,11 @@
                         <hr>
                         <span class="position-relative">
                             <h6>Selected User</h6>
-                            <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllUser()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                            <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllUser()"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                         </span>
                         <div id="slct-user-list-holder"></div>
                         <div id="slct-user-list-holder_msg" class="input-warning text-danger"></div>
-                        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 position-relative">
                         <input name="list_context" id="list_context"  value="" hidden>

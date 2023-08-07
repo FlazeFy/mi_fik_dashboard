@@ -1,7 +1,7 @@
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/myevent.png'); ?>"); background-color:#FB5E5B;'
     data-bs-target="#myevent" data-bs-toggle="modal">
     <span id="total_my_event"></span>
-    <h5 class="quick-action-text">My Event</h5>
+    <h5 class="quick-action-text">{{ __('messages.my_event') }}</h5>
     <p class="quick-action-info">This will show all event that made by you</p>
 </button>
 
@@ -10,7 +10,7 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>My Event</h5>
+                <h5>{{ __('messages.my_event') }}</h5>
                 @include('homepage.myevent.searchbar')
                 <hr>
                 <div class="event-holder row mt-3"  style="display: flex; flex-direction: column; max-height: 75vh; overflow-y: scroll;">        
@@ -82,7 +82,10 @@
                 return;
             } else {
                 function getContentView(total_views, uname){
-                    (uname == "You" || <?= session()->get("role_key") ?> == 1) ? `<div class='event-views' style='color:var(--darkColor)!important; right:10px;'><i class='fa-solid fa-eye'></i> ${total_views}</div>` : `<div></div>`;
+                    let elmt;
+                    (uname == "You" || <?= session()->get("role_key") ?> == 1) ? elmt = `<div class='event-views' style='color:var(--darkColor)!important; right:10px;'><i class='fa-solid fa-eye'></i> ${total_views}</div>` : elmt = `<div></div>`;
+                    
+                    return elmt;
                 }
 
                 for(var i = 0; i < data.length; i++){

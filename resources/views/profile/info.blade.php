@@ -40,7 +40,7 @@
                                 }
                             }
                         ?>
-                        Awaiting request. Please wait some moment or try to contact the Admin"><i class="fa-solid fa-lock"></i> Locked</a>  
+                        Awaiting request. Please wait some moment or try to contact the Admin"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</a>  
                 @endif
 
                 <div id="my_tag_list">
@@ -90,7 +90,7 @@
                     @csrf
                     <h5 class="text-secondary">Requested Tag</h5>
                     <div id="slct_holder"></div>
-                    <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</a></span>
+                    <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</a></span>
                 </form>
             </div>
         @endif

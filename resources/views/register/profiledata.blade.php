@@ -104,7 +104,7 @@
     </form>
 </div>
 <span id="btn-next-role-holder" class="d-flex justify-content-end">
-    <button class="btn-next-steps locked" id="btn-next-profile-role" onclick="warn('profiledata')"><i class="fa-solid fa-lock"></i> Locked</button>
+    <button class="btn-next-steps locked" id="btn-next-profile-role" onclick="warn('profiledata')"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>
 </span>
 
 <script>
@@ -137,10 +137,10 @@
             check_user();
         } else {
             if(unameVal.length <= 6 || unameVal.length > 30){
-                unameMsg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Username should be around " + unameLengMin + " until " + unameLengMax + " character";
+                unameMsg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Username should be around ${unameLengMin} until ${unameLengMax} character`;
             }
             if(emailVal.length <= 10 || emailVal.length > 75){
-                emailMsg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Email should be around " + emailLengMin + " until " + emailLengMax + " character";
+                emailMsg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Email should be around ${emailLengMin} until ${emailLengMax} character`;
             }
         }
     }
@@ -151,9 +151,9 @@
         var desertRef = storageRef.refFromURL(url);
 
         desertRef.delete().then(() => {
-            document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>';
+            document.getElementById("header-progress").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>`;
         }).catch((error) => {
-            document.getElementById("header-failed").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>'+error+'</h6></span>';
+            document.getElementById("header-failed").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>${error}</h6></span>`;
         });
 
         setTimeout(() => {
@@ -161,10 +161,12 @@
         }, 1500);
         img_src.src = "http://127.0.0.1:8000/assets/default_lecturer.png";
         btn_reset_image.innerHTML = "";
-        btn_add_image.innerHTML = "<label for='file-input'> " +
-            "<img class='btn change-image shadow position-relative p-1' style='bottom:50px; right:-150px;' title='Change Image' src='<?= asset("assets/change_image.png"); ?>'/> " +
-            "</label> " +
-            "<input id='file-input' type='file' accept='image/*' value='' onchange='setValueProfileImage()'/>";
+        btn_add_image.innerHTML = `
+            <label for='file-input'>
+                <img class='btn change-image shadow position-relative p-1' style='bottom:50px; right:-150px;' title='Change Image' src='<?= asset("assets/change_image.png"); ?>'/>
+            </label> 
+            <input id='file-input' type='file' accept='image/*' value='' onchange='setValueProfileImage()'/>
+        `;
         img_url.value = "";
         img_file.value = "";
     }
@@ -172,7 +174,7 @@
     function resetUnameEmail(){
         uname.disabled = false;
         email.disabled = false;
-        document.getElementById("validate-available-section").innerHTML = '<a class="btn btn-primary d-block mx-auto" onclick="routeCheck()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>';
+        document.getElementById("validate-available-section").innerHTML = `<a class="btn btn-primary d-block mx-auto" onclick="routeCheck()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>`;
         document.getElementById("prevent-data-section").setAttribute('class', '');
         document.getElementById("detail-data-section").setAttribute('class', 'd-none');
         document.getElementById("reset-uname-holder").setAttribute('class', 'd-none');
@@ -191,10 +193,10 @@
 
             uploadTask.on('state_changed',function (snapshot) {
                 var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
-                document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
+                document.getElementById('header-progress').innerHTML = `<span class="box-loading"><div role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="${progress}" style="--value: ${progress}"></div></span>`;
             }, 
             function (error) {
-                document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is " + error.message + "</h6></span>";
+                document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is ${error.message}</h6></span>`;
             }, 
             function () {
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
@@ -205,14 +207,14 @@
                     document.getElementById("header-progress").innerHTML = "";
                 }, 1500);
                 setTimeout(() => {
-                    success_img_check.innerHTML = '<lottie-player src="https://assets7.lottiefiles.com/packages/lf20_lg6lh7fp.json" background="transparent" speed="0.5"  style="width: 230px; height:230px;" autoplay></lottie-player>';
+                    success_img_check.innerHTML = `<lottie-player src="https://assets7.lottiefiles.com/packages/lf20_lg6lh7fp.json" background="transparent" speed="0.5"  style="width: 230px; height:230px;" autoplay></lottie-player>`;
                 }, 250);
                 success_img_check.innerHTML = "";
-                btn_reset_image.innerHTML = '<a class="btn btn-icon-reset-image shadow" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>';
+                btn_reset_image.innerHTML = `<a class="btn btn-icon-reset-image shadow" title="Reset to default image" onclick="clearImage()"><i class="fa-solid fa-trash-can fa-lg"></i></a>`;
                 btn_add_image.innerHTML = '';
             });
         } else {
-            document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is " + maxSize + " mb </h6></span>";
+            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is ${maxSize} mb </h6></span>`;
         }
     }
 
@@ -307,7 +309,7 @@
                 btn_reset_image.innerHTML = "";
                 btn_add_image.innerHTML = "";
                 document.getElementById("reset-uname-holder").innerHTML = "";
-                document.getElementById("registered-msg").innerHTML = "<i class='fa-solid fa-check'></i> Your account has been registered";
+                document.getElementById("registered-msg").innerHTML = `<i class='fa-solid fa-check'></i> Your account has been registered`;
                 registered = true;
                 validate("profiledata");
             },
@@ -319,7 +321,7 @@
                 var lnameMsg = null;
                 var passMsg = null;
                 var allMsg = null;
-                var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
+                var icon = `<i class='fa-solid fa-triangle-exclamation'></i> `;
                 console.log(response.responseJSON)
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   

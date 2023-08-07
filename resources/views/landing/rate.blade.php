@@ -34,7 +34,7 @@
                 <label for="feedback_rate">Rate us from scale (1-5)</label>
                 <input type="range" class="form-range" min="1" max="5" value="4" id="feedback_rate" name="feedback_rate" oninput="setrate(this.value)" required/>
             </div>
-            <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+            <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
             <span class="text-success" style="font-weight:500;" id="feedback_rate_show"></span>
         </form>
     </div>

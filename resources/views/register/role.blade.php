@@ -57,7 +57,7 @@
 </div>
 
 <span id="btn-next-ready-holder" class="d-flex justify-content-end">
-    <button class="btn-next-steps locked" id="btn-next-ready" onclick="warn('role')"><i class="fa-solid fa-lock"></i> Locked</button>
+    <button class="btn-next-steps locked" id="btn-next-ready" onclick="warn('role')"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>
 </span>
 
 <script type="text/javascript">
@@ -121,7 +121,7 @@
                                         "<div class='mt-3 mb-2 mb-0 d-flex justify-content-between px-2'> " +
                                             "<div></div> " +
                                             "<div> " +
-                                                "<h6 class=''>Selected Role</h6> " +
+                                                "<h6 class=''>{{ __('messages.slct_role') }}</h6> " +
                                             "</div> " +
                                             "<div class='position-relative'> " +
                                                 "<a class='btn btn-danger py-1 position-absolute' style='right:0; top:-8px; width:90px;' onclick='abortTagPicker()'><i class='fa-solid fa-rotate-right'></i> Abort</a> " +

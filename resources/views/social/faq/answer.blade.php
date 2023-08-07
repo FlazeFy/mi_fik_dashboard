@@ -30,7 +30,7 @@
                 <label class="form-check-label" for="suggestion_search">Show Suggestion</label>
             </div>
         </div>
-        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
     </form>
     <button class="btn btn-danger float-end" data-bs-target="#deleteModal" data-bs-toggle="modal" style="margin-top:-60px; margin-right:10px;"><i class="fa-solid fa-trash"></i></button>
 

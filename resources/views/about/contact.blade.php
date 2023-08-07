@@ -66,7 +66,7 @@
                 <label for="email">Email</label>
                 <a id="email_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
-            <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+            <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
         </form>
     </div>
 @else 

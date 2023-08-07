@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App;
 
 class MultiController extends Controller
 {
@@ -31,5 +32,13 @@ class MultiController extends Controller
         Session::flush();
 
         return redirect()->route('landing')->with('success_message', 'Successfully sign out'); 
+    }
+
+    public function switchLang(Request $request)
+    {
+        App::setLocale($request->lang);
+        session()->put('locale', $request->lang);
+  
+        return redirect()->back()->with('success_message', 'Language has change'); 
     }
 }
