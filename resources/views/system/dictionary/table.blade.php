@@ -48,7 +48,7 @@
                                         <form action="/system/dictionary/update/type/{{$dc->id}}" method="POST">
                                             @csrf
                                             <input hidden id="dct_type_{{$dc->id}}" name="dct_type" value="">
-                                            <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> Save Changes</button>
+                                            <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.save') }}</button>
                                         </form>
                                     </div>
                                 </div>

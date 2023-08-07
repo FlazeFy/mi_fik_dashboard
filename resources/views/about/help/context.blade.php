@@ -11,7 +11,7 @@
         @csrf
         <input name="help_body" id="about_body_help" hidden>
         <input name="help_category" id="about_category" hidden>
-        <button class="btn btn-success rounded-pill mt-3 px-3 py-2" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        <button class="btn btn-success rounded-pill mt-3 px-3 py-2" onclick="getRichTextHelpDesc(id_body)"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>
     </form>
     <form class="d-none" id="form-delete-cat" method="POST" action="">
         @csrf

@@ -1,10 +1,10 @@
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold">Most Assigned Role</h5>
+    <h5 class="text-secondary fw-bold">{{ __('messages.mar') }}</h5>
     @if(count($mostRole) != 0)
         <div id="MOR_pie_chart"></div>
     @else
         <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-        <h6 class="text-center">No Data Available</h6>
+        <h6 class="text-center">{{ __('messages.no_data') }}</h6>
     @endif
 </div>
 

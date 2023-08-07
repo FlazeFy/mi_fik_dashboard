@@ -55,7 +55,7 @@
                                             <form action="/system/info/update/type/{{$in->id}}" method="POST">
                                                 @csrf
                                                 <input hidden id="dct_name_{{$in->id}}" name="info_type" value="">
-                                                <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> Save Changes</button>
+                                                <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.save') }}</button>
                                             </form>
                                         </div>
                                     </div>
@@ -194,7 +194,7 @@
                     @csrf
                     <input name='info_body' id='info_body_${id}' hidden>
                     <button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("${id}")'>
-                        <i class='fa-solid fa-floppy-disk'></i> Save Changes
+                        <i class='fa-solid fa-floppy-disk'></i> {{ __('messages.save') }}
                     </button>
                 </form>
             `;
@@ -211,7 +211,7 @@
                         <label for="titleInput_event">Info Location</label>
                         <a id="info_location_msg_${id}" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
-                    <button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
+                    <button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> {{ __('messages.save') }}</button>
                 </form>
             `;
             

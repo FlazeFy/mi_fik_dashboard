@@ -6,7 +6,7 @@
     </div>
     <div id="rich_box" style="height:55vh !important;"><?php echo $c->content_desc; ?></div>
     <input name="content_desc" id="content_desc" hidden>
-    <button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+    <button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>
 </form>
 
 <script type="text/javascript">

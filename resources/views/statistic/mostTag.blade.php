@@ -21,7 +21,7 @@
         <div id="MOT_pie_chart"></div>
     @else
         <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-        <h6 class="text-center">No Data Available</h6>
+        <h6 class="text-center">{{ __('messages.no_data') }}</h6>
     @endif
 
     @include('popup.mini_help', ['id' => 'mtChart', 'title'=> 'Most Tag / Role Chart', 'location'=>'most_tag_chart'])

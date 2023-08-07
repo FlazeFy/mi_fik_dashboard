@@ -36,7 +36,7 @@
                     </script>
                 @endforeach
                 <input name="help_body" id="about_body" hidden>
-                <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:110px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) Save Changes @endif</button>
+                <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:110px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) {{ __('messages.save') }} @endif</button>
             </form><br><br>
             <div id="rich_box">
                 <?php

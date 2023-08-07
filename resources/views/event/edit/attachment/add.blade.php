@@ -107,7 +107,7 @@
                             attach_list[objIndex]['is_add_more'] = true;
                             document.getElementById('attach_name_'+id).disabled = false;
                             att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;";
-                            submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
+                            submitHolder.html(`<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>`);
                         } else {
                             attach_list[objIndex]['is_add_more'] = false;
                             document.getElementById('attach_name_'+id).disabled = true;
@@ -185,7 +185,7 @@
                         att_cont.style = "border-left: 3.5px solid var(--primaryColor) !important; --circle-attach-color-var:var(--primaryColor) !important;";
                         warningAttMsg.innerHTML = "URL isn't not valid!";
                     }
-                    submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
+                    submitHolder.html(`<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>`);
                 } else {
                     warningAttMsg.innerHTML = "";
                     att_cont.style = "border-left: 3.5px solid var(--shadowColor) !important; --circle-attach-color-var:var(--shadowColor) !important;";
