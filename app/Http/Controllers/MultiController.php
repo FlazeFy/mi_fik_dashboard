@@ -24,7 +24,7 @@ class MultiController extends Controller
 
         session()->put($menu.'_menu', $body_menu);
 
-        return redirect()->back()->with('success_message', 'Section has sorted'); 
+        return redirect()->back()->with('success_mini_message', 'Section has sorted'); 
     }
 
     public function sign_out()

@@ -259,7 +259,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h6 class="fw-normal">Are you sure want to request ${tags}</h6>
+                                <h6 class="fw-normal">{{ __('messages.req_validation') }} ${tags}</h6>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-submit-form" onclick="submitAddForm()">

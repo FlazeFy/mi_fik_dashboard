@@ -50,19 +50,16 @@
     },
     labels: [
         <?php 
-            //Initial variable
             $val = [];
 
             foreach($mostRole as $mr){
                 $role = count($mr->role);
                 
                 for($i = 0; $i < $role; $i++){
-                    //Insert role name to new array
                     array_push($val, $mr->role[$i]['tag_name']);
                 }   
             }
 
-            //Check if chart range is greater than location total
             foreach($setting as $set){
                 if(count($val) > $set->MOT_range){
                     $max = $set->MOT_range; //Max loc to show.
@@ -71,11 +68,9 @@
                 }
             }
 
-            //Count duplicate value w/ DESC keys sorting
             $result = array_count_values($val);
             arsort($result);
 
-            //Get array keys
             $new_arr = array_keys($result);
             if($max != null){
                 for($i = 0; $i < $max; $i++){

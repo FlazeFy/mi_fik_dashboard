@@ -2,7 +2,7 @@
     data-bs-target="#myevent" data-bs-toggle="modal">
     <span id="total_my_event"></span>
     <h5 class="quick-action-text">{{ __('messages.my_event') }}</h5>
-    <p class="quick-action-info">This will show all event that made by you</p>
+    <p class="quick-action-info">{{ __('messages.my_event_desc') }}</p>
 </button>
 
 <div class="modal fade" id="myevent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

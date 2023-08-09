@@ -27,7 +27,7 @@
             <a id="question_answer_msg" class="text-danger my-2" style="font-size:13px;"></a>
             <div class="form-check form-switch position-absolute" style="right: 60px; bottom: -40px;">
                 <input class="form-check-input me-2" type="checkbox" id="suggestion_search" style="width:40px; height: 20px;">
-                <label class="form-check-label" for="suggestion_search">Show Suggestion</label>
+                <label class="form-check-label" for="suggestion_search">{{ __('messages.show_suggest') }}</label>
             </div>
         </div>
         <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>

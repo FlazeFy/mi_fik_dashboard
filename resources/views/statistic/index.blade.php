@@ -109,7 +109,7 @@
                        @include('statistic.mostViewedEvent')
                     </div>
                     <div class="content-section">
-                        <h5 class="text-secondary fw-bold">Most Suggestion Feedback</h5>
+                        <h5 class="text-secondary fw-bold">{{ __('messages.msf') }}</h5>
                         @include('social.feedback.mostsuggest')
                     </div>
                 </div>
@@ -118,6 +118,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.success_mini')
         @include('popup.failed')
 
         <!--Sidebar-->

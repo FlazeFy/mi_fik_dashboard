@@ -385,9 +385,9 @@ class AboutController extends Controller
         session()->put('toogle_edit_'.$ctx, $switch);
 
         if($switch == "true"){
-            return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom","You're in edit mode",null));
+            return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom","You're in edit mode",null));
         } else {
-            return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom","You're in view mode",null));
+            return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom","You're in view mode",null));
         }
     }
 }

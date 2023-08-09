@@ -85,7 +85,7 @@
         </ul>
     </div>
     <div class="d-inline float-end">
-        <button class="btn-lang" type="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-globe fa-lg"></i> @if(session()->get('locale') == "en") EN @else ID @endif</button>
+        <button class="btn-lang" type="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-globe fa-lg"></i> @if(session()->get('locale') == "en" || session()->get('locale') == null) EN @else ID @endif</button>
         <ul class="dropdown-menu p-0 shadow" style="width:240px;" aria-labelledby="dropdownLanguage" id="dropdownLanguage">
             <li class="position-relative">
                 <form action="/lang" method="POST">

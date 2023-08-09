@@ -10,7 +10,7 @@
             @foreach($setting as $set)
                 <form action="/statistic/update_mot/{{$set->id}}" method="POST">
                     @csrf
-                    <label for="floatingInputValue" style="font-size:12px;">Chart Range</label>
+                    <label for="floatingInputValue" style="font-size:12px;">{{ __('messages.chart_range')}}</label>
                     <input type="number" class="form-control py-1" name="MOT_range" min="3" max="10" value="{{$set->MOT_range}}" onblur="this.form.submit()" required>
                 </form>
             @endforeach

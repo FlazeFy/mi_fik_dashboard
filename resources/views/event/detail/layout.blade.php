@@ -97,8 +97,8 @@
                     </div>    
                     @if($isMobile)
                         <div>
-                            <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i> Delete</a>
-                            <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                            <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i> {{ __('messages.delete') }}</a>
+                            <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i> {{ __('messages.edit') }}</a>
                         </div>
                     @endif
                 </div>
@@ -128,13 +128,13 @@
                     <span id="desc-holder"><?php echo $c->content_desc; ?></span><br>
                 @else
                     <img src="{{asset('assets/nodesc.png')}}" class="img nodata-icon" style="height:18vh;">
-                    <h6 class="text-center text-secondary">This Event doesn't have description</h6>
+                    <h6 class="text-center text-secondary">{{ __('messages.no_desc') }}</h6>
                 @endif
 
-                <hr><h5>Attachment</h5>
+                <hr><h5>{{ __('messages.att') }}</h5>
                 @include('event.detail.attachment')
 
-                <hr><h5>Location</h5>
+                <hr><h5>{{ __('messages.event_loc') }}</h5>
                 @include('event.detail.maps')
             </div>
             <div class="col-lg-4">

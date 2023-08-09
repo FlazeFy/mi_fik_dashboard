@@ -112,7 +112,7 @@
                                 <div class="modal-content">
                                     <div class="modal-body text-center pt-4">
                                         <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                                        <p style="font-weight:500;">Are you sure want to delete "${name}" group</p>
+                                        <p style="font-weight:500;">{{ __('messages.del_validation') }} "${name}" group</p>
                                         @if($info)
                                             @foreach($info as $in)
                                                 @if($in->info_location == "delete_group")
