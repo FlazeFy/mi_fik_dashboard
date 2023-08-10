@@ -18,7 +18,7 @@
                 <h5 class="modal-title mt-4" id="exampleModalLabel">{{ __('messages.success') }}</h5>
                 <h7 class="m-2 text-secondary">{{ Session::get('success_message') }}</h7>
                 <hr>
-                <button class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">Continue</button>
+                <button class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">{{ __('messages.continue') }}</button>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 <div class="incoming-req-box">
-    <h5 class="section-title"><span class="text-primary" id="total_new_req"></span> New User</h5>
+    <h5 class="section-title"><span class="text-primary" id="total_new_req"></span> {{ __('messages.new_user') }}</h5>
     
     @if(!$isMobile)
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0;" type="button" id="section-more-new-req" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -83,9 +83,9 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_holder_new_req').html('<button class="btn content-more-floating" onclick="loadmore_new_req()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>');
+                $('#load_more_holder_new_req').html(`<button class="btn content-more-floating" onclick="loadmore_new_req()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder_new_req').html('<h6 class="content-last">No more item to show</h6>');
+                $('#load_more_holder_new_req').html(`<h6 class="content-last">{{ __('messages.no_more') }}</h6>`);
             }
 
             $('#total_new_req').text(total);
@@ -94,27 +94,26 @@
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Request found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-new').html("<h5 class='text-primary'>Woah!, You have see all the newest request</h5>");
+                $('.auto-load-new').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getApprovedButton(acc){
                     if(!acc){
-                        return '<a class="btn btn-icon-rounded success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a>'
+                        return `<a class="btn btn-icon-rounded success" style="position:absolute; right: 55px; top:15px;" title="Accept Request"><i class="fa-solid fa-check"></i></a>`;
                     } else {
-                        return ''
+                        return '';
                     }
                 }
 
                 function getContext(acc){
                     if(!acc){
-                        return 'Want to join Mi-FIK'
+                        return `{{ __('messages.want_join') }}`;
                     } else {
-                        return "Doesn't have a tag"
+                        return `{{ __('messages.not_have_tag') }}`;
                     }
                 }
 
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var username = data[i].username;
                     var full_name = data[i].full_name;
                     var img = data[i].image_url;

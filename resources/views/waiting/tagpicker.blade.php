@@ -112,16 +112,16 @@
             var start = 0;
 
             if(page != last){
-                $('#load_more').html('<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more').html(`<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
+                $('#load_more').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Tag found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 if(myTag.length == 0){

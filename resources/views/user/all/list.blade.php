@@ -3,11 +3,11 @@
     <table class="table tabular">
         <thead>
             <tr>
-                <th scope="col">Image</th>
+                <th scope="col">{{ __('messages.profile_image') }}</th>
                 <th scope="col">Username @include('user.all.sorting.username')</th>
                 <th scope="col">Email @include('user.all.sorting.email')</th>
-                <th scope="col">Full Name @include('user.all.sorting.fullname')</th>
-                <th scope="col" style="min-width:140px;">Properties @include('user.all.sorting.joined')</th>
+                <th scope="col">{{ __('messages.fullname') }} @include('user.all.sorting.fullname')</th>
+                <th scope="col" style="min-width:140px;">{{ __('messages.props') }} @include('user.all.sorting.joined')</th>
                 <th scope="col" style="width:200px;">Role</th>
                 <th scope="col">Detail</th>
             </tr>
@@ -171,7 +171,7 @@
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getItemBg(date, acc){
@@ -316,9 +316,9 @@
                             <td class="email" title="Send Email" onclick="window.location = 'mailto:${email}'" href="mailto:${email}">${email}</td>
                             <td style="width: 180px;">${fullname}</td>
                             <td class="properties">
-                                <h6>Joined At</h6>
+                                <h6>{{ __('messages.joined_at') }}</h6>
                                 <a>${getDateToContext(createdAt, "datetime")}</a>
-                                <h6>Updated At</h6>
+                                <h6>{{ __('messages.updated_at') }}</h6>
                                 <a>${getDateToContext(updatedAt, "datetime")}</a>
                             </td>
                             <td class="tabular-role-holder">
@@ -498,14 +498,14 @@
             if(page_tag != last){
                 $('#load_more_holder_manage_tag_'+username).html(`<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag('${username}')">Show more <span id="textno"></span></a>`);
             } else {
-                $('#load_more_holder_manage_tag_'+username).html(`<h6 class="text-secondary my-3">No more tag to show</h6>`);
+                $('#load_more_holder_manage_tag_'+username).html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_manage_tag_'+username).html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-tag').html(`<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>`);
+                $('.auto-load-tag').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 $("#empty_item_holder_manage_tag_"+username).empty();

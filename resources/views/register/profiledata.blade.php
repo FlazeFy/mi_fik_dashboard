@@ -12,6 +12,7 @@
     ];
     let validation2 = [
         { id: "password", req: true, len: 75 },
+        { id: "password_valid", req: true, len: 75 },
         { id: "first_name", req: true, len: 75 },
         { id: "last_name", req: false, len: 75 },
     ];
@@ -57,6 +58,11 @@
                 <input type="password" class="form-control nameInput" id="password" name="password" oninput="validateFormSecond(validation2)" maxlength="75" required>
                 <label for="password">Password</label>
                 <a id="password_msg" class="text-danger my-2" style="font-size:13px;"></a>
+            </div>
+            <div class="form-floating my-2">
+                <input type="password" class="form-control nameInput" id="password_valid" name="password_valid" oninput="validateFormSecond(validation2)" maxlength="75" required>
+                <label for="password">{{ __('messages.pass_valid') }}</label>
+                <a id="password_valid_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
         
             <div class="form-floating mb-2">
@@ -116,6 +122,7 @@
     var fname = document.getElementById("first_name");
     var lname = document.getElementById("last_name");
     var pass = document.getElementById("password");
+    var pass_valid = document.getElementById("password_valid");
     var btn_reset_image = document.getElementById("reset_image_holder");
     var img_url = document.getElementById("profile_image_url");
     var img_src = document.getElementById('profile_image_info');
@@ -293,86 +300,90 @@
         $('#last_name_msg').html("");
         $('#password_msg').html("");
 
-        $.ajax({
-            url: '/api/v1/register',
-            type: 'POST',
-            data: $('#form-regis').serialize(),
-            dataType: 'json',
-            success: function(response) {
-                document.getElementById("username_role").value = uname.value;
-                document.getElementById("password_role").value = pass.value;
-                uname.disabled = true;
-                email.disabled = true;
-                fname.disabled = true;
-                lname.disabled = true;
-                pass.disabled = true;
-                btn_reset_image.innerHTML = "";
-                btn_add_image.innerHTML = "";
-                document.getElementById("reset-uname-holder").innerHTML = "";
-                document.getElementById("registered-msg").innerHTML = `<i class='fa-solid fa-check'></i> Your account has been registered`;
-                registered = true;
-                validate("profiledata");
-            },
-            error: function(response, jqXHR, textStatus, errorThrown) {
-                var errorMessage = "Unknown error occurred";
-                var usernameMsg = null;
-                var emailMsg = null;
-                var fnameMsg = null;
-                var lnameMsg = null;
-                var passMsg = null;
-                var allMsg = null;
-                var icon = `<i class='fa-solid fa-triangle-exclamation'></i> `;
-                console.log(response.responseJSON)
+        if(pass_valid.value == pass.value){
+            $.ajax({
+                url: '/api/v1/register',
+                type: 'POST',
+                data: $('#form-regis').serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    document.getElementById("username_role").value = uname.value;
+                    document.getElementById("password_role").value = pass.value;
+                    uname.disabled = true;
+                    email.disabled = true;
+                    fname.disabled = true;
+                    lname.disabled = true;
+                    pass.disabled = true;
+                    btn_reset_image.innerHTML = "";
+                    btn_add_image.innerHTML = "";
+                    document.getElementById("reset-uname-holder").innerHTML = "";
+                    document.getElementById("registered-msg").innerHTML = `<i class='fa-solid fa-check'></i> Your account has been registered`;
+                    registered = true;
+                    validate("profiledata");
+                },
+                error: function(response, jqXHR, textStatus, errorThrown) {
+                    var errorMessage = "Unknown error occurred";
+                    var usernameMsg = null;
+                    var emailMsg = null;
+                    var fnameMsg = null;
+                    var lnameMsg = null;
+                    var passMsg = null;
+                    var allMsg = null;
+                    var icon = `<i class='fa-solid fa-triangle-exclamation'></i> `;
+                    console.log(response.responseJSON)
 
-                if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
-                    //Error validation
-                    if(typeof response.responseJSON.result === "string"){
-                        allMsg = response.responseJSON.result;
+                    if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
+                        //Error validation
+                        if(typeof response.responseJSON.result === "string"){
+                            allMsg = response.responseJSON.result;
+                        } else {
+                            if(response.responseJSON.result.hasOwnProperty('username')){
+                                usernameMsg = response.responseJSON.result.username[0];
+                            }
+                            if(response.responseJSON.result.hasOwnProperty('email')){
+                                emailMsg = response.responseJSON.result.email[0];
+                            }
+                            if(response.responseJSON.result.hasOwnProperty('first_name')){
+                                fnameMsg = response.responseJSON.result.first_name[0];
+                            }
+                            if(response.responseJSON.result.hasOwnProperty('last_name')){
+                                lnameMsg = response.responseJSON.result.last_name[0];
+                            }
+                            if(response.responseJSON.result.hasOwnProperty('password')){
+                                passMsg = response.responseJSON.result.password[0];
+                            }
+                        }
+                        
+                    } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
+                        allMsg += response.responseJSON.errors.result[0]
                     } else {
-                        if(response.responseJSON.result.hasOwnProperty('username')){
-                            usernameMsg = response.responseJSON.result.username[0];
-                        }
-                        if(response.responseJSON.result.hasOwnProperty('email')){
-                            emailMsg = response.responseJSON.result.email[0];
-                        }
-                        if(response.responseJSON.result.hasOwnProperty('first_name')){
-                            fnameMsg = response.responseJSON.result.first_name[0];
-                        }
-                        if(response.responseJSON.result.hasOwnProperty('last_name')){
-                            lnameMsg = response.responseJSON.result.last_name[0];
-                        }
-                        if(response.responseJSON.result.hasOwnProperty('password')){
-                            passMsg = response.responseJSON.result.password[0];
-                        }
+                        allMsg += errorMessage
                     }
-                    
-                } else if(response && response.responseJSON && response.responseJSON.hasOwnProperty('errors')){
-                    allMsg += response.responseJSON.errors.result[0]
-                } else {
-                    allMsg += errorMessage
-                }
 
-                //Set to html
-                if(usernameMsg){
-                    $('#username_msg').html(icon + usernameMsg);
+                    //Set to html
+                    if(usernameMsg){
+                        $('#username_msg').html(icon + usernameMsg);
+                    }
+                    if(emailMsg){
+                        $('#email_msg').html(icon + emailMsg);
+                    }
+                    if(fnameMsg){
+                        $('#first_name_msg').html(icon + fnameMsg);
+                    }
+                    if(lnameMsg){
+                        $('#last_name_msg').html(icon + lnameMsg);
+                    }
+                    if(passMsg){
+                        $('#password_msg').html(icon + passMsg);
+                    }
+                    if(allMsg){
+                        $('#all_user_regis_msg').html(icon + allMsg);
+                    }
                 }
-                if(emailMsg){
-                    $('#email_msg').html(icon + emailMsg);
-                }
-                if(fnameMsg){
-                    $('#first_name_msg').html(icon + fnameMsg);
-                }
-                if(lnameMsg){
-                    $('#last_name_msg').html(icon + lnameMsg);
-                }
-                if(passMsg){
-                    $('#password_msg').html(icon + passMsg);
-                }
-                if(allMsg){
-                    $('#all_user_regis_msg').html(icon + allMsg);
-                }
-            }
-        });
+            });
+        } else {
+            $('#password_valid_msg').html(`<i class='fa-solid fa-triangle-exclamation'></i> {{ __('messages.err_pass_valid') }}`);
+        }
     }
 </script>
 

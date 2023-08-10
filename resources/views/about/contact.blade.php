@@ -30,7 +30,7 @@
         </form>
         <form class="p-2 mt-2" action="/about/edit/contact" method="POST">
             @csrf
-            <h6 class="mx-3 text-secondary fw-bold">Social Media</h6>
+            <h6 class="mx-3 text-secondary fw-bold">{{ __('messages.socmed') }}</h6>
             <div class="mb-1">
                 <label for="basic-url" class="form-label">Instagram</label>
                 <div class="input-group mb-3">
@@ -40,7 +40,7 @@
                 <a id="instagram_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
             <div class="mb-1">
-                <label for="basic-url" class="form-label">Website</label>
+                <label for="basic-url" class="form-label">{{ __('messages.web') }}</label>
                 <div class="input-group mb-3">
                     <input type="text" class="form-control nameInput" id="website" name="website" value="{{$web}}" oninput="validateForm(vldtContact)" maxlength="255" aria-describedby="basic-addon3">
                 </div>
@@ -55,7 +55,7 @@
                 <a id="whatsapp_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
 
-            <h6 class="mx-3 text-secondary fw-bold">Address</h6>
+            <h6 class="mx-3 text-secondary fw-bold">{{ __('messages.addr') }}</h6>
             <div class="form-floating mb-2">
                 <textarea class="form-control" style="height: 100px" id="address" name="address" value="{{$adr}}" oninput="validateForm(vldtContact)" maxlength="255">{{$adr}}</textarea>
                 <label for="address">Address Location</label>
@@ -79,7 +79,7 @@
         @endif  
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12 mx-auto mt-3">
-                <h6 class="fw-bold">Follow us</h6><br>
+                <h6 class="fw-bold">{{ __('messages.contact_us') }}</h6><br>
                 <p><i class="fa-brands fa-instagram fa-lg"></i>
                     <a class="link-external-dark" href="{{implode('/', $ig)}}">{{$ig[3]}}</a>
                 </p>
@@ -92,7 +92,7 @@
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-12 mx-auto mt-3">
-                <h6 class="fw-bold">Contact us</h6><br>
+                <h6 class="fw-bold">{{ __('messages.follow_us') }}</h6><br>
                 <p class="link-external-dark" style="font-size:15px;"><i class="fa-solid fa-house"></i> {{$adr}} </p>
                 <p class="link-external-dark"><i class="fa-solid fa-envelope"></i> {{$email}} </p>
             </div>

@@ -1,5 +1,5 @@
 <div class="incoming-req-box">
-    <h5 class="section-title"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
+    <h5 class="section-title"><span class="text-primary" id="total_old_req"></span> {{ __('messages.role_req') }}</h5>
 
     @if(!$isMobile)
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
@@ -83,9 +83,9 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_holder_old_req').html('<button class="btn content-more-floating" onclick="loadmore_old_req()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>');
+                $('#load_more_holder_old_req').html(`<button class="btn content-more-floating" onclick="loadmore_old_req()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder_old_req').html('<h6 class="content-last">No more item to show</h6>');
+                $('#load_more_holder_old_req').html(`<h6 class="content-last">{{ __('messages.no_more') }}</h6>`);
             }
 
             $('#total_old_req').text(total);
@@ -94,16 +94,16 @@
                 $('#empty_item_holder_old_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Request found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-old').html("<h5 class='text-primary'>Woah!, You have see all the newest request</h5>");
+                $('.auto-load-old').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getContext(type, tag){
                     if(type == "add"){
                         var color = "success";
-                        var ctx = "Requested ";
+                        var ctx = `{{ __('messages.requested') }} `;
                     } else if(type == "remove"){
                         var color = "danger";
-                        var ctx = "Want to remove ";
+                        var ctx = `{{ __('messages.want_remove') }} `;
                     }
 
                     var tags = "";

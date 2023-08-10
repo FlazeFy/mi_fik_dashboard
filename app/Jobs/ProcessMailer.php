@@ -47,7 +47,7 @@ class ProcessMailer implements ShouldQueue
         } catch (\Exception $e) {
             // handle failed job
             $obj = [
-                'message' => $e->getMessage(), 
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null), 
                 'stack_trace' => $e->getTraceAsString(), 
                 'file' => $e->getFile(), 
                 'line' => $e->getLine(), 

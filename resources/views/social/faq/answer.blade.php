@@ -23,7 +23,7 @@
             <input hidden value="" name="question_status" id="question_status">
             <input hidden value="" name="question_owner" id="question_owner">
             <textarea class="form-control" style="height: 270px" id="question_answer" name="question_answer" oninput="infinteLoadSuggest()" maxlength="500"></textarea>
-            <label for="question_answer">FAQ Answer</label>
+            <label for="question_answer">{{ __('messages.faq_answer') }}</label>
             <a id="question_answer_msg" class="text-danger my-2" style="font-size:13px;"></a>
             <div class="form-check form-switch position-absolute" style="right: 60px; bottom: -40px;">
                 <input class="form-check-input me-2" type="checkbox" id="suggestion_search" style="width:40px; height: 20px;">

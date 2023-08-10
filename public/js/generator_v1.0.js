@@ -277,7 +277,7 @@ function setGuidelinesModal(conf, is_show_all){
 
     function getGuideLinesArrow(dir){
         if(dir == "bottom"){
-            return "top:-20px; left:10px;";
+            return "top:-20px; left:20px;";
         } else if(dir == "right"){
             return "top:20px; left:-30px; transform: rotate(270deg);";
         }

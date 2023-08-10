@@ -13,16 +13,16 @@
     use App\Helpers\Generator;
 ?>
 
-<h5 class="section-title">All Dictionary</h5>
+<h5 class="section-title">{{ __('messages.all_dictionary') }}</h5>
 <div class="table-responsive">
     <table class="table table-paginate" id="dctTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.type') }}</th>
                 <th scope="col" style="min-width:var(--tcolMinSM);">Slug</th>
                 <th scope="col" style="min-width:var(--tcolMinJumbo);">Info</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Properties</th>
-                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.props') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody class="tabular-body">
@@ -44,7 +44,7 @@
                                 <div class="modal-content">   
                                     <div class="modal-body text-center pt-4">
                                         <button type="button" class="custom-close-modal" onclick="resetChange('select-{{$dc->id}}', '{{$dct->app_code}}')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                                        <p style="font-weight:500;">Are you sure want to change type to '<span id="dct_name{{$dc->id}}"></span>'</p>
+                                        <p style="font-weight:500;">{{ __('messages.change_type_desc') }} '<span id="dct_name{{$dc->id}}"></span>'</p>
                                         <form action="/system/dictionary/update/type/{{$dc->id}}" method="POST">
                                             @csrf
                                             <input hidden id="dct_type_{{$dc->id}}" name="dct_type" value="">
@@ -58,10 +58,10 @@
                     <td style="min-width:var(--tcolMinSM);">{{$dc->slug_name}}</td>
                     <td style="min-width:var(--tcolMinJumbo);">
                         <span id="dct-holder-show-{{$dc->id}}">
-                            <h6 class="mb-0">Name</h6>
+                            <h6 class="mb-0">{{ __('messages.name') }}</h6>
                             {{$dc->dct_name}}
 
-                            <h6 class="mt-2 mb-0">Description</h6>
+                            <h6 class="mt-2 mb-0">{{ __('messages.description') }}</h6>
                             <div style="word-break: break-all; width: 200px;">
                                 @if($dc->dct_desc)
                                     {{$dc->dct_desc}}

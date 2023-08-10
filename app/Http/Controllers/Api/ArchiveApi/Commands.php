@@ -81,32 +81,7 @@ class Commands extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function addToArchive(Request $request){
-        try{
-            $user_id = $request->user()->id;
-            
-            $relation = ArchiveRelation::create([
-                'id' => Generator::getUUID(),
-                'archive_id' => $request->archive_id,
-                'content_id' => $request->content_id,
-                'created_by' => $user_id,
-                'created_at' => date('Y-m-d H:i:s')
-            ]);
-
-            return response()->json([
-                'status' => 'success',
-                'message' => Generator::getMessageTemplate("custom",'content added to archive',null),
-                'data' => $relation
-            ], Response::HTTP_OK);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -146,30 +121,38 @@ class Commands extends Controller
                             'result' => $errors,
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     } else {
-                        Archive::where('slug_name', $slug)->update([
+                        $rows = Archive::where('slug_name', $slug)->where('created_by', $user_id)->update([
                             'archive_name' => $request->archive_name,
                             'archive_desc' => $request->archive_desc,
                             'updated_at' => date("Y-m-d H:i"),
                             'updated_by' => $user_id
                         ]);
 
-                        $result = Archive::where('slug_name', $slug)->first();
+                        if($rows > 0){
+                            $result = Archive::where('slug_name', $slug)->first();
 
-                        History::create([
-                            'id' => Generator::getUUID(),
-                            'history_type' => $data->history_type, 
-                            'context_id' => $result->id, 
-                            'history_body' => $data->history_body, 
-                            'history_send_to' => null,
-                            'created_at' => date("Y-m-d H:i:s"),
-                            'created_by' => $user_id
-                        ]);
+                            History::create([
+                                'id' => Generator::getUUID(),
+                                'history_type' => $data->history_type, 
+                                'context_id' => $result->id, 
+                                'history_body' => $data->history_body, 
+                                'history_send_to' => null,
+                                'created_at' => date("Y-m-d H:i:s"),
+                                'created_by' => $user_id
+                            ]);
 
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => Generator::getMessageTemplate("business_update",'archive',$request->archive_name),
-                            'data' => $result
-                        ], Response::HTTP_OK);
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => Generator::getMessageTemplate("business_update",'archive',$request->archive_name),
+                                'data' => $result
+                            ], Response::HTTP_OK);
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
+                                'data' => null
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
                     }
                 }
             } else {
@@ -182,7 +165,7 @@ class Commands extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -209,36 +192,45 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                DB::table("archives_relations")
+                $rows = DB::table("archives_relations")
                     ->join('archives', 'archives_relations.archive_id','=','archives.id')
                     ->where('slug_name', $slug)
+                    ->where('created_by', $user_id)
                     ->where('archives_relations.created_by', $user_id)
                     ->delete();
 
-                DB::table("archives")->where('slug_name', $slug)
-                    ->delete();
+                if($rows > 0){
+                    DB::table("archives")->where('slug_name', $slug)
+                        ->delete();
 
-                DB::table("histories")->insert([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type, 
-                    'context_id' => null, 
-                    'history_body' => $data->history_body, 
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
+                    DB::table("histories")->insert([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type, 
+                        'context_id' => null, 
+                        'history_body' => $data->history_body, 
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
 
-                DB::commit();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_delete",'archive',$request->archive_name)
-                ], Response::HTTP_OK);
+                    DB::commit();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("business_delete",'archive',$request->archive_name)
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
+                        'data' => null
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
             }
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -289,9 +281,7 @@ class Commands extends Controller
                             ->where("id",$rel->id)
                             ->delete();
                         $count_job++;
-                    } else {
-                        // Check this
-                    }
+                    } 
                 }
 
                 DB::commit();
@@ -309,7 +299,7 @@ class Commands extends Controller
             DB::rollback();
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

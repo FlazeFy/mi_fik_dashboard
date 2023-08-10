@@ -27,7 +27,7 @@
                             <div class="col-5">
                     @endif
 
-                    <label class="form-label">From</label>
+                    <label class="form-label">{{ __('messages.start_from') }}</label>
                     <input type="date" class="form-control" name="date_start" id="date_filter_start" 
                     value="<?php
                         if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
@@ -43,7 +43,7 @@
                         <div class="col-5">
                     @endif
 
-                    <label class="form-label">Until</label>
+                    <label class="form-label">{{ __('messages.until') }}</label>
                     <input type="date" class="form-control" name="date_end" id="date_filter_end" 
                     value="<?php 
                         if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){

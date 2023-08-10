@@ -48,16 +48,16 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2 d-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_holder').html(`<button class="btn content-more-floating my-3 p-2 d-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder').html('<h6 class="btn text-secondary my-3 p-2 d-block mx-auto">No more item to show</h6>');
+                $('#load_more_holder').html(`<h6 class="btn text-secondary my-3 p-2 d-block mx-auto">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src='http://127.0.0.1:8000/assets/nodata2.png' class='img nodata-icon'><h6 class='text-secondary text-center'>Trash can is empty</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getDaysRemaining(date, range){

@@ -16,17 +16,17 @@
     <form class="d-none" id="form-delete-cat" method="POST" action="">
         @csrf
         <input name="help_category" id="about_category" hidden>
-        <button class="btn btn-danger rounded-pill mt-3 px-3 py-2" onclick="deleteCategory(id_body)"><i class="fa-solid fa-trash"></i> Delete Category</button>
+        <button class="btn btn-danger rounded-pill mt-3 px-3 py-2" onclick="deleteCategory(id_body)"><i class="fa-solid fa-trash"></i> {{ __('messages.delete') }}</button>
     </form>
 @else
     <div class="px-2 position-relative">
         <form class="d-inline position-absolute" style="right:0; top:-25px;" method="POST" action="/about/toogle/help/true">
             @csrf
-            <button class="btn btn-info rounded-pill mt-3 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+            <button class="btn btn-info rounded-pill mt-3 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> {{ __('messages.edit') }}</button>
         </form>
         <div class="position-absolute text-center" id="no_cat_selected" style="top:100px; left:25%;">
             <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:30vh; height:30vh;">
-            <h6 class='text-secondary text-center'>Choose the category in type section to see detail</h6>
+            <h6 class='text-secondary text-center'>{{ __('messages.see_help_type') }}</h6>
         </div>
         <div id="desc_holder_view"></div>
     </div>

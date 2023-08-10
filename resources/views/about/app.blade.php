@@ -50,7 +50,7 @@
         <div class="px-4 position-relative">
             <form class="d-inline" method="POST" action="/about/toogle/app/true">
                 @csrf
-                <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-20px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) Edit @endif</button>
+                <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-20px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) {{ __('messages.edit') }} @endif</button>
             </form><br><br>
             <span id="about-app-holder">
                 <?php

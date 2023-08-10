@@ -37,7 +37,7 @@
 </style>
 
 <div class="mb-5 pb-2 d-block mx-auto text-center" id="role-area-picker">
-    <h2 class="text-primary text-center">{{ __('messages.ava_role') }}</h2><br>
+    <h2 class="text-primary text-center">{{ __('messages.ava_role_tag') }}</h2><br>
     
     <form class="d-inline" id="form-login-role">
         <input hidden name="username" id="username_role">
@@ -237,7 +237,7 @@
             if(page != last){
                 $('#load_more_holder-' + cat).html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more</button>');
             } else {
-                $('#load_more_holder-' + cat).html('<h6 class="btn content-more-floating my-3 p-2">No more role to show</h6>');
+                $('#load_more_holder-' + cat).html(`<h6 class="btn content-more-floating my-3 p-2">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {

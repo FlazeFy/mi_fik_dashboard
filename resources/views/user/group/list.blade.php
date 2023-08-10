@@ -18,16 +18,16 @@
     }
 </style>
 
-<h5 class="section-title">All Group</h5>
+<h5 class="section-title">{{ __('messages.all_group') }}</h5>
 <div class="table-responsive">
     <table class="table tabular">
         <thead>
             <tr>
-                <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Description @include('user.group.sorting.groupdesc')</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Total Member @include('user.group.sorting.total')</th>
-                <th scope="col" style="min-width:var(--tcolMinMD);">Properties @include('user.group.sorting.created')</th>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Manage</th>
+                <th scope="col">{{ __('messages.name') }} @include('user.group.sorting.groupname')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.description') }} @include('user.group.sorting.groupdesc')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.total_member') }} @include('user.group.sorting.total')</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">{{ __('messages.props') }} @include('user.group.sorting.created')</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body w-100" id="group-list-holder">
@@ -94,7 +94,7 @@
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getDateContext(datetime) {
@@ -225,7 +225,7 @@
                                                     </div>
                                                     <div class="col-10 position-relative">
                                                         <i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:var(--darkColor);"></i>
-                                                        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="user_available_search_${slug}" placeholder="Search by fullname" onchange="load_available_user(1, '${slug}')" maxlength="75">
+                                                        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="user_available_search_${slug}" placeholder="{{ __('messages.search_fname') }}" onchange="load_available_user(1, '${slug}')" maxlength="75">
                                                     </div>
                                                 </div>
                                                 <span id="user-ava-holder-${slug}" class="groups-ava-holder"></span>
@@ -348,16 +348,16 @@
             var last = response.data.last_page;
 
             if(pageGroup != last){
-                $('#load_more_rel_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_rel_holder').html(`<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_rel_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+                $('#load_more_rel_holder').html(`<h6 class="btn content-more-floating mb-3 p-2">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $("#manage-rel-holder-"+slug).html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load.group-rel').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load.group-rel').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 for(var i = 0; i < data.length; i++){
@@ -431,25 +431,25 @@
             lastPageUserAva = response.data.last_page;
 
             if(page != lastPageUserAva){
-                $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_holder_new_req').html(`<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+                $('#load_more_holder_new_req').html(`<h6 class="btn content-more-floating mb-3 p-2">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>{{ __('messages.no_role') }}</h5>`);
                 return;
             } else {      
                 $("#err-ava-holder-"+slug).html("");
 
                 function getUserRole(role){
                     if(role){
-                        return '<h6 class="text-secondary fw-bold" style="font-size:13px;">'+role+'</h6>';
+                        return `<h6 class="text-secondary fw-bold" style="font-size:13px;">${role}</h6>`;
                     } else {
-                        return '<h6 class="text-danger" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> This user has no role</h6>';
+                        return `<h6 class="text-danger" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> This user has no role</h6>`;
                     }
                 }
 

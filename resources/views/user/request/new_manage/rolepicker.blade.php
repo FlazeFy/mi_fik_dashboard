@@ -80,16 +80,16 @@
             var last = response.data.last_page;
 
             if(page_tag != last){
-                $('#load_acc_with_role').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadMoreAccRole()">Show more <span id="textno"></span></a>');
+                $('#load_acc_with_role').html(`<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadMoreAccRole()">Show more <span id="textno"></span></a>`);
             } else {
-                $('#load_acc_with_role').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
+                $('#load_acc_with_role').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_acc_with_role').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-acc-role').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
+                $('.auto-load-acc-role').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 $("#empty_item_holder_acc_with_role").empty();

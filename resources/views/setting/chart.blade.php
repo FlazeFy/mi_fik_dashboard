@@ -28,7 +28,7 @@
         <div class="form-floating mb-3">
             <input type="number" class="form-control" name="MVE_range" min="3" max="16" value="{{$stg->MVE_range}}" required>
             <label for="floatingInput">{{ __('messages.mve_range') }}</label>
-        </div><br>
+        </div><br><br>
         <button class="btn btn-submit w-100 py-2 mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>
     </form>
 @endforeach

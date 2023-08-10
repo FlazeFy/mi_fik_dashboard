@@ -39,17 +39,17 @@
     var no_values = {};
 </script>
 
-<h5 class="section-title">All Notification</h5>
+<h5 class="section-title">{{ __('messages.all_notif') }}</h5>
 <div class="table-responsive">
     <table class="table table-paginate" id="notifTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Content</th>
-                <th scope="col" style="<?php if(!$isMobile){ echo'min-width:var(--tcolMinJumbo);'; } else { echo 'min-width:calc(var(--tcolMinSM) + var(--tcolMinMD));'; } ?>">Send To</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.type') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.content') }}</th>
+                <th scope="col" style="<?php if(!$isMobile){ echo'min-width:var(--tcolMinJumbo);'; } else { echo 'min-width:calc(var(--tcolMinSM) + var(--tcolMinMD));'; } ?>">{{ __('messages.send_to') }}</th>
                 <th scope="col" style="min-width:var(--tcolMinSM);">Status</th>
-                <th scope="col" style="min-width:calc(var(--tcolMinJumbo) - 30px);">Manage By</th>
-                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
+                <th scope="col" style="min-width:calc(var(--tcolMinJumbo) - 30px);">{{ __('messages.manage_by') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody>
@@ -149,14 +149,14 @@
                                 <!-- Remove if equal to false later -->
                                 @if(isset($nj['status']) && $nj['status'] != false) 
                                     <div class="notif-result-box mt-2">
-                                        <label><i class="fa-solid fa-circle-info"></i> Summary</label><br>
+                                        <label><i class="fa-solid fa-circle-info"></i> {{ __('messages.summary') }}</label><br>
                                         <h6 class="notif-result mb-0">{{$nj['status']}}</h6>
                                     </div>
                                 @endif
                             @endforeach 
                         @else 
                             <div class="notif-result-box mt-2">
-                                <h6 class="mt-1" style="font-size:16px;">Resume</h6>
+                                <h6 class="mt-1" style="font-size:16px;">{{ __('messages.resume') }}</h6>
                                 <button class="btn btn-icon-preview collapse-group-box-toogle" title="Hide member" data-bs-toggle="collapse" href="#collapseResume_{{$nt['id']}}">
                                     <i class="fa-solid fa-play"></i></button>
                                 <div class="collapse" id="collapseResume_{{$nt['id']}}">
@@ -174,13 +174,13 @@
                             <div class="status-info bg-danger" style="font-size:12px;">Pending until <br>
                                 {{date('Y-m-d H:i', strtotime($nt['pending_until']))}}</div>
                         @elseif($nt['is_pending'] && !$nt['pending_until'])
-                            <div class="status-info bg-danger w-100">Draft</div>
+                            <div class="status-info bg-danger w-100">{{ __('messages.draft') }}</div>
                         @else 
-                            <div class="status-info bg-success w-100">Announced</div>
+                            <div class="status-info bg-success w-100">{{ __('messages.announced') }}</div>
                         @endif
                     </td>
                     <td style="min-width:calc(var(--tcolMinJumbo) - 30px);">
-                        <h6>Created by</h6>
+                        <h6>{{ __('messages.created_at') }}</h6>
                         <div class="">
                             <div class="d-inline-block">
                                 <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($nt['admin_username_created'], null, $nt['admin_image_created'], null)}}" 
@@ -192,7 +192,7 @@
                             </div>
                         </div>    
                         @if($nt['updated_at'])
-                            <h6>Resume at</h6>
+                            <h6>{{ __('messages.resume_at') }}</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($nt['admin_username_updated'], null, $nt['admin_image_updated'], null)}}" 
@@ -205,7 +205,7 @@
                             </div>   
                         @endif
                         @if($nt['deleted_at'])
-                            <h6>Deleted by</h6>
+                            <h6>{{ __('messages.deleted_by') }}</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($nt['admin_username_deleted'], null, $nt['admin_image_deleted'], null)}}" 

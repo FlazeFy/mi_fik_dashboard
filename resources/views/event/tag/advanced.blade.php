@@ -5,7 +5,7 @@
 </style>
 
 <div class="position-relative" style="min-height:25vh;">
-    <h5 class="section-title">Create New Tag (Advanced)</span></h5>
+    <h5 class="section-title">{{ __('messages.new_tag') }} ({{ __('messages.advan') }})</span></h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button" id="section-more-import-tag" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
@@ -19,10 +19,10 @@
             <div class="modal-content">  
                 <div class="modal-body p-4 pb-1">
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                    <h5 class="text-primary">Import Tag</h5><hr>
+                    <h5 class="text-primary">{{ __('messages.import') }}</h5><hr>
                     <div class="info-box tips">
                         <label><i class="fa-solid fa-circle-info"></i> Tips</label><br>
-                        <p>You can import CSV file to generate tag automatically, and after that you just assign the category to each tag. Up to 100 tag per import</p>
+                        <p>{{ __('messages.import_tag_tips') }}</p>
                     </div>
                 </div>
             </div>

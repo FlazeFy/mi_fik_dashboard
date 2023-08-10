@@ -19,11 +19,11 @@
     <table class="table tabular table-paginate" id="infoTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Page / Location</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Body</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Is Active</th>
-                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.type') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.page') }} / {{ __('messages.location') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.body') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.is_active') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody class="tabular-body">

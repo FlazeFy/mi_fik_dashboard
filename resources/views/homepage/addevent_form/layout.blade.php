@@ -54,6 +54,11 @@
         margin:4px;
         color:var(--whiteColor) !important;
     }
+    .custom-submit-modal {
+        position: relative !important; 
+        width: 100%;
+        bottom:0;
+    }
 </style>
 
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/event.png'); ?>"); background-color:#FB5E5B;'
@@ -102,6 +107,8 @@
                             @include('components.infobox',['info'=>$info, 'location'=> 'add_event'])
                         </div>
                         <div class="col-lg-4">
+                            <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal w-100 m-0" style="position:relative !important; bottom:0;"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span><br><br>
+
                             <label class="input-title">{{ __('messages.event_image') }}</label><br>
                             @include('homepage.addevent_form.contentimage')
 
@@ -112,7 +119,6 @@
                             <br>@include('homepage.addevent_form.tagpicker')
                         </div>
                     </div>
-                    <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span><br>
                 </div>
             </form>
         </div>

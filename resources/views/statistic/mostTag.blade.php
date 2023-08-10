@@ -1,5 +1,5 @@
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold">Most Used Tag</h5>
+    <h5 class="text-secondary fw-bold">{{ __('messages.mot') }}</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button" id="section-more-MOT" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>

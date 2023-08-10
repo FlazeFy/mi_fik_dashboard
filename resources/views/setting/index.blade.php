@@ -57,17 +57,17 @@
 
                     @if(!$isMobile)
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:480px;">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:520px;">
                             @endif
                             <div class="content-section h-100 p-0 pt-3">
-                                <h5 class="mx-3">{{ __('messages.chart_range') }}</h5><hr>
+                                <h5 class="mx-3">{{ __('messages.chart_range') }}</h5><hr>  
                                 <div class="px-3">
                                     @include('setting.chart')
                                 </div>
                             </div>
                         @if(!$isMobile)
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:480px;">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:520px;">
                         @endif
                             <div class="content-section h-100 p-0 pt-3">
                                 <h5 class="mx-3">{{ __('messages.ts_range') }}</h5><hr>
@@ -77,7 +77,7 @@
                             </div>
                         @if(!$isMobile)
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:480px;">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:520px;">
                         @endif
                             <div class="content-section h-100 p-0 pt-3">
                                 <h5 class="mx-3">{{ __('messages.lp_range') }}</h5><hr>

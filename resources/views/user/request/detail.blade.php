@@ -170,7 +170,7 @@
                 function manageRole(type, username, id){
                     if(type == "new"){
                         var elmt = `
-                            <h6 class="text-secondary my-4">Manage Role</h6>
+                            <h6 class="text-secondary my-4">{{ __('messages.manage_tag') }}</h6>
                             <div class="position-absolute" style="right:0; top:10px;">
                                 <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" aria-label="Floating label select example" required>
                                     @php($i = 0)
@@ -211,7 +211,7 @@
                         });
 
                         elmt = `
-                            <h6 class="text-secondary mt-3">Requested Role</h6>
+                            <h6 class="text-secondary mt-3">{{ __('messages.reqed_tag') }}</h6>
                             <div class="tag-manage-holder" id="manage-request-tag">${req_hold}</div>
                             <h6 class="text-secondary mt-3">Request Revision</h6>
                             <div id="slct_holder"></div>
@@ -331,14 +331,14 @@
             if(page_tag != last){
                 $('#load_more_holder_manage_tag').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>');
             } else {
-                $('#load_more_holder_manage_tag').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
+                $('#load_more_holder_manage_tag').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_manage_tag').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-tag').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load-tag').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 $("#empty_item_holder_manage_tag").empty();
