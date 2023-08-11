@@ -14,7 +14,7 @@
 </script>
 
 <div class="text-center" style="min-height:50vh;">
-    <h4 class="text-primary">Validate your account</h4>
+    <h4 class="text-primary">{{ __('messages.validate_your_acc') }}</h4>
     <form class="d-inline" id="form-check-user">
         <div class="form-floating mb-2">
             <input type="text" class="form-control nameInput" id="username" name="username" onchange="validateForm(validation)" maxlength="35" required>
@@ -33,16 +33,16 @@
     <div id="success-check"></div>
     <div id="prevent-validation">
         <img class="img img-fluid d-block mx-auto mt-3" style="width: 240px;" src="{{'/assets/check_user.png'}}">
-        <h6 class="text-center">Please tell us your email and username</h6>
+        <h6 class="text-center">{{ __('messages.validate_your_acc') }}</h6>
     </div>
     <div id="success-validate-section" class="d-none">
         <img class="img img-fluid d-block mx-auto mt-3" style="width: 240px;" src="{{'/assets/send_email.png'}}">
-        <h6 class="text-center mb-3">We've send you password recovery token to your email. Please check it and move to next step</h6>
+        <h6 class="text-center mb-3">{{ __('messages.forget_pass_remainder') }}</h6>
     </div>
-    <a class="btn btn-primary d-block mx-auto mt-4" onclick="check_user()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>
+    <a class="btn btn-primary d-block mx-auto mt-4" onclick="check_user()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.validate) }}</a>
 </div>
 <span id="btn-next-validate-holder" class="d-flex justify-content-end mt-3">
-    <button class="btn-next-steps locked" id="btn-next-validate" onclick="warn('recovery')"><i class="fa-solid fa-lock"></i> Locked</button>
+    <button class="btn-next-steps locked" id="btn-next-validate" onclick="warn('recovery')"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>
 </span>
 
 <script>
@@ -78,7 +78,6 @@
                 var emailMsg = null;
                 var allMsg = null;
                 var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
-                console.log(response.responseJSON);
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation

@@ -14,29 +14,6 @@ use App\Models\PersonalAccessTokens;
 
 class QueryNotification extends Controller
 {
-    public function getAllNotification(){
-        $notif = Notification::select('id', 'notif_type', 'notif_title', 'notif_body', 'notif_send_to', 'is_pending','created_at','updated_at')
-            ->where('is_pending', 0)
-            // ->where(function ($query) {
-            //     $query->where('notif_send_to','LIKE','%send_to":"all"%');
-            // })
-            ->get();
-
-        if ($notif->isEmpty()) {
-            return response()->json([
-                'status' => 'success',
-                'message' => Generator::getMessageTemplate("business_read_failed", 'notification', null),
-                'data' => null
-            ], Response::HTTP_NOT_FOUND);
-        } else {
-            return response()->json([
-                'status' => 'success',
-                'message' => Generator::getMessageTemplate("business_read_success", 'notification', null),
-                'data' => $notif
-            ], Response::HTTP_OK);
-        }
-    }
-
     public function getMyNotification(Request $request){
         try {
             $user_id = $request->user()->id;
@@ -77,7 +54,7 @@ class QueryNotification extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

@@ -20,8 +20,8 @@
         </div>
         @if(!$isMobile)
             <div style="white-space:nowrap;">
-                <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i> Delete</a>
-                <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+                <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i> {{ __('messages.delete') }}</a>
+                <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i> {{ __('messages.edit') }}</a>
             </div>
         @endif
     </div>
@@ -32,15 +32,15 @@
                     <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                     <form class="d-inline" action="/event/detail/delete/{{$c->slug_name}}" method="POST">
                         @csrf
-                        <p style="font-weight:500;">Are you sure want to remove "<span class="text-primary">{{$c->content_title}}</span>" event?</p>
+                        <p style="font-weight:500;">{{ __('messages.del_validation') }} "<span class="text-primary">{{$c->content_title}}</span>" event?</p>
                         <div class="form-floating mt-3">
                             <input type="text" name="validation_name" class="form-control" id="validation_name" placeholder="Content Title" oninput="validateDelete()">
-                            <label for="validation_name">Content Title</label>
+                            <label for="validation_name">{{ __('messages.title') }}</label>
                         </div>
-                        <span id="msg-validation-title" class="float-start"><label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label></span><br>
+                        <span id="msg-validation-title" class="float-start"><label style="font-size:12px;" class="text-danger fw-bold">{{ __('messages.retype') }}</label></span><br>
                         
                         @include('components.infobox', ['info' => $info, 'location'=> "delete_event"])
-                        <span id="btn-delete-holder"><button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-trash"></i> Locked</button></span>
+                        <span id="btn-delete-holder"><button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-trash"></i> {{ __('messages.locked') }}</button></span>
                     </form>
                 </div>
             </div>
@@ -55,11 +55,11 @@
             var btn_delete = document.getElementById('btn-delete-holder');
 
             if(val.value != check){
-                msg.innerHTML = '<label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label>';
-                btn_delete.innerHTML = '<button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-lock"></i> Locked</button>';
+                msg.innerHTML = `<label style="font-size:12px;" class="text-danger fw-bold">Please re-type the event title name</label>`;
+                btn_delete.innerHTML = `<button class="btn btn-delete-custom float-end" disabled><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`;
             } else {
-                msg.innerHTML = '<label style="font-size:12px;" class="text-success fw-bold">Event title is valid</label>';
-                btn_delete.innerHTML = '<button class="btn btn-delete-custom float-end" type="submit"><i class="fa-solid fa-trash"></i> Delete</button>';
+                msg.innerHTML = `<label style="font-size:12px;" class="text-success fw-bold">Event title is valid</label>`;
+                btn_delete.innerHTML = `<button class="btn btn-delete-custom float-end" type="submit"><i class="fa-solid fa-trash"></i> Delete</button>`;
             }   
         }
     </script>

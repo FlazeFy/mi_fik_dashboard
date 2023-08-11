@@ -67,8 +67,8 @@
     </script>
 @elseif($c->content_loc && count($c->content_loc) != 2)
     <img src="{{asset('assets/sorry.png')}}" class="img nodata-icon" style="height:18vh;">
-    <h6 class="text-center text-secondary">Something error with event location, please contact admin</h6>
+    <h6 class="text-center text-secondary">{{ __('messages.err_loc') }}</h6>
 @else
     <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon" style="height:18vh;">
-    <h6 class="text-center text-secondary">This Event doesn't have location</h6>
+    <h6 class="text-center text-secondary">{{ __('messages.no_loc') }}</h6>
 @endif

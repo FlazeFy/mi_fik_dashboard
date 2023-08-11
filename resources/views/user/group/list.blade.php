@@ -18,16 +18,16 @@
     }
 </style>
 
-<h5 class="section-title">All Group</h5>
+<h5 class="section-title">{{ __('messages.all_group') }}</h5>
 <div class="table-responsive">
     <table class="table tabular">
         <thead>
             <tr>
-                <th scope="col">Group Name @include('user.group.sorting.groupname')</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Description @include('user.group.sorting.groupdesc')</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Total Member @include('user.group.sorting.total')</th>
-                <th scope="col" style="min-width:var(--tcolMinMD);">Properties @include('user.group.sorting.created')</th>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Manage</th>
+                <th scope="col">{{ __('messages.name') }} @include('user.group.sorting.groupname')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.description') }} @include('user.group.sorting.groupdesc')</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.total_member') }} @include('user.group.sorting.total')</th>
+                <th scope="col" style="min-width:var(--tcolMinMD);">{{ __('messages.props') }} @include('user.group.sorting.created')</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody class="user-holder tabular-body w-100" id="group-list-holder">
@@ -40,7 +40,7 @@
     </table>
     <div id="empty_item_holder"></div>
 </div>
-<h6 class="mt-1">Page</h6>
+<h6 class="mt-1">{{ __('messages.page') }}</h6>
 <div id="group_navigate"></div>
 
 <script>
@@ -94,7 +94,7 @@
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getDateContext(datetime) {
@@ -112,7 +112,7 @@
                                 <div class="modal-content">
                                     <div class="modal-body text-center pt-4">
                                         <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                                        <p style="font-weight:500;">Are you sure want to delete "${name}" group</p>
+                                        <p style="font-weight:500;">{{ __('messages.del_validation') }} "${name}" group</p>
                                         @if($info)
                                             @foreach($info as $in)
                                                 @if($in->info_location == "delete_group")
@@ -149,15 +149,15 @@
                                             <input hidden name="group_name" value="${name}">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control nameInput" id="group_name" name="group_name" value="${name}" maxlength="75" oninput="" required>
-                                                <label for="titleInput_event">Group Name</label>
+                                                <label for="titleInput_event">{{ __('messages.name') }}</label>
                                                 <a id="group_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                             </div>
                                             <div class="form-floating mt-2">
                                                 <textarea class="form-control" id="group_desc" name="group_desc" style="height: 140px" maxlength="255" value="${desc}" oninput="">${desc}</textarea>
-                                                <label for="floatingTextarea2">Description (Optional)</label>
+                                                <label for="floatingTextarea2">{{ __('messages.description') }} ({{ __('messages.optional') }})</label>
                                                 <a id="group_desc_msg" class="input-warning text-danger"></a>
                                             </div>
-                                            <p>Last Updated : ${getDateContext(updated)}</p>
+                                            <p>{{ __('messages.last_updated') }} : ${getDateContext(updated)}</p>
                                             @if($info)
                                                 @foreach($info as $in)
                                                     @if($in->info_location == "edit_group")
@@ -169,7 +169,7 @@
                                                 @endforeach
                                             @endif
                                             <input hidden name="old_group_name" value="${name}">
-                                            <button class="btn btn-submit-form" type="submit" id="btn-submit"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                                            <button class="btn btn-submit-form" type="submit" id="btn-submit"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.submit') }}</button>
                                         </form>
                                     </div>
                                 </div>
@@ -189,13 +189,11 @@
                                         <h5>Manage Group Relation</h5>
                                         <div class="row mt-4">
                                             <div class="col-lg-8 col-md-7 col-sm-12">
-                                                <h6>Engagement</h6>
-
                                                 <form action="/user/group/member/remove/${id}" method="POST">
                                                     @csrf
                                                     <span class="position-relative">
                                                         <h6 class="mt-2">Available Member</h6>
-                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRemoveMember('${slug}')"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllRemoveMember('${slug}')"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                                                         <span id="submit-rel-remove-btn-holder-${slug}"></span>
                                                     </span>
                                                     <span id="manage-rel-holder-${slug}" class="groups-rel-holder"></span>
@@ -210,7 +208,7 @@
                                                     @csrf
                                                     <span class="position-relative">
                                                         <h6 class="mt-2">Selected User</h6>
-                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember('${slug}')"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                                                        <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember('${slug}')"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                                                         <span id="submit-rel-add-btn-holder-${slug}"></span>
                                                     </span>
                                                     <input hidden name="selected_member" id="selected_member-${slug}" value="">
@@ -227,12 +225,12 @@
                                                     </div>
                                                     <div class="col-10 position-relative">
                                                         <i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:var(--darkColor);"></i>
-                                                        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="user_available_search_${slug}" placeholder="Search by fullname" onchange="load_available_user(1, '${slug}')" maxlength="75">
+                                                        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="user_available_search_${slug}" placeholder="{{ __('messages.search_fname') }}" onchange="load_available_user(1, '${slug}')" maxlength="75">
                                                     </div>
                                                 </div>
                                                 <span id="user-ava-holder-${slug}" class="groups-ava-holder"></span>
                                                 <span id="err-ava-holder-${slug}"></span>
-                                                <h6>Page</h6>
+                                                <h6>{{ __('messages.page') }}</h6>
                                                 <div id="user-ava-page-${slug}" class="mt-2"></div>
                                             </div>
                                         </div>
@@ -350,16 +348,16 @@
             var last = response.data.last_page;
 
             if(pageGroup != last){
-                $('#load_more_rel_holder').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_rel_holder').html(`<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_rel_holder').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+                $('#load_more_rel_holder').html(`<h6 class="btn content-more-floating mb-3 p-2">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $("#manage-rel-holder-"+slug).html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load.group-rel').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load.group-rel').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 for(var i = 0; i < data.length; i++){
@@ -433,25 +431,25 @@
             lastPageUserAva = response.data.last_page;
 
             if(page != lastPageUserAva){
-                $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_holder_new_req').html(`<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+                $('#load_more_holder_new_req').html(`<h6 class="btn content-more-floating mb-3 p-2">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>{{ __('messages.no_role') }}</h5>`);
                 return;
             } else {      
                 $("#err-ava-holder-"+slug).html("");
 
                 function getUserRole(role){
                     if(role){
-                        return '<h6 class="text-secondary fw-bold" style="font-size:13px;">'+role+'</h6>';
+                        return `<h6 class="text-secondary fw-bold" style="font-size:13px;">${role}</h6>`;
                     } else {
-                        return '<h6 class="text-danger" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> This user has no role</h6>';
+                        return `<h6 class="text-danger" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> This user has no role</h6>`;
                     }
                 }
 

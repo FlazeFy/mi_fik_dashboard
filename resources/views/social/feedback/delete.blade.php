@@ -3,7 +3,7 @@
         <div class="modal-content">   
             <div class="modal-body text-center pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <p style="font-weight:500;">Are you sure want to delete "{{$fb->feedback_body}}"</p>
+                <p style="font-weight:500;">{{ __('messages.del_validation') }} "{{$fb->feedback_body}}"</p>
                 <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> 
                 
                 <form class="d-inline" action="/social/feedback/delete/{{$fb->id}}" method="POST">

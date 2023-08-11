@@ -101,7 +101,7 @@
 
                                     @if($st == "question") <!--Must be with question container. but first, fix the sticky problem-->
                                         <div class="content-section p-0 p-3" > <!--style="$style2"-->
-                                            <h5 class="text-secondary fw-bold">History</h5>
+                                            <h5 class="text-secondary fw-bold">{{ __('messages.history') }}</h5>
                                             @include('components.history', ['history' => $history])
                                         </div>
                                     @endif
@@ -116,6 +116,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.success_mini')
         @include('popup.failed')
         @include('social.faq.delete')
 

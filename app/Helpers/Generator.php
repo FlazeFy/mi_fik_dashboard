@@ -559,6 +559,8 @@ class Generator
             $res = $ctx." not found"; 
         } else if($type == "failed_exist"){
             $res = "The ".$ctx." ".$obj." is already exist";
+        } else if($type == "failed_owner_exist"){
+            $res = "The ".$ctx." is not yours or it's not exist anymore";
         } else if($type == "custom"){
             $res = $ctx;
         } else {

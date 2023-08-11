@@ -8,7 +8,7 @@
                 <h6 class="dropdown-title">Filter Name</h6>
                 <form action="/user/all/set_filter_name/1/all" method="POST" class="position-absolute" style="right:15px; top:20px;">
                     @csrf
-                    <button class="btn btn-noline text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> Clear All</button>
+                    <button class="btn btn-noline text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</button>
                 </form>
             </div><hr>
             <div class="dropdown-body">

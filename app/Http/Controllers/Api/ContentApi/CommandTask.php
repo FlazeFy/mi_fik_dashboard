@@ -45,37 +45,45 @@ class CommandTask extends Controller
                         'result' => $errors,
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $task = Task::where('id', $id)->update([
-                        'task_title' => $request->task_title,
-                        'task_desc' => $request->task_desc,
-                        'task_date_start' => $request->task_date_start,
-                        'task_date_end' => $request->task_date_end,
-                        'task_reminder' => $request->task_reminder,
-                        'updated_at' => date("Y-m-d H:i"),
-                        'updated_by' => $user_id
+                    $task = Task::where('id', $id)
+                        ->where('created_by', $user_id)
+                        ->update([
+                            'task_title' => $request->task_title,
+                            'task_desc' => $request->task_desc,
+                            'task_date_start' => $request->task_date_start,
+                            'task_date_end' => $request->task_date_end,
+                            'task_reminder' => $request->task_reminder,
+                            'updated_at' => date("Y-m-d H:i"),
+                            'updated_by' => $user_id
                     ]);
 
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => $id, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
+                    if($task > 0){
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => $id, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
+                        ]);
 
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("business_update", 'task', $request->task_title),
-                        'data' => $task
-                    ], Response::HTTP_OK);
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("business_update", 'task', $request->task_title),
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
                 }
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -131,7 +139,7 @@ class CommandTask extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -185,7 +193,7 @@ class CommandTask extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -258,7 +266,7 @@ class CommandTask extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

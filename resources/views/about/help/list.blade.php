@@ -155,7 +155,7 @@
             if(page != last){
                 $('#load_more_holder-'+type.replace(" ", "")).html(`<button class="btn content-more-floating p-1 mt-2" style="max-width:180px;" onclick="loadmore('${id},'${type})">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder-'+type.replace(" ", "")).html('<h6 class="text-secondary" style="font-size:14px;">No more item to show</h6>');
+                $('#load_more_holder-'+type.replace(" ", "")).html(`<h6 class="text-secondary" style="font-size:14px;">{{ __('messages.no_more') }}</h6>`);
             }
 
             $('#total').text(total);

@@ -3,7 +3,7 @@
         <div class="modal-content">   
             <div class="modal-body text-center pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <p style="font-weight:500;">Are you sure want to delete this attachment?</p>
+                <p style="font-weight:500;">{{ __('messages.del_validation') }} attachment?</p>
                 @include('components.infobox', ['info' => $info, 'location'=> "delete_attachment"])
                 <form class="d-inline" action="/event/edit/update/attach/remove/{{$c->slug_name}}" method="POST">
                     @csrf

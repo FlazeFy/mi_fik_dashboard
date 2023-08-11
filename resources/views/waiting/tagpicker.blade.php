@@ -4,8 +4,8 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOL">
-        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
+        <a class="dropdown-item" href=""><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
+        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> {{ __('messages.abort') }}</a>
     </div>
     <div class="position-absolute" style="right:60px; top:10px;">
         <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" 
@@ -112,16 +112,16 @@
             var start = 0;
 
             if(page != last){
-                $('#load_more').html('<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more').html(`<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
+                $('#load_more').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Tag found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 if(myTag.length == 0){
@@ -259,7 +259,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <h6 class="fw-normal">Are you sure want to request ${tags}</h6>
+                                <h6 class="fw-normal">{{ __('messages.req_validation') }} ${tags}</h6>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-submit-form" onclick="submitAddForm()">

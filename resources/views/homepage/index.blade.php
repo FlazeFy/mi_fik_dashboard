@@ -142,6 +142,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.success_mini')
         @include('popup.failed')
         @if(session()->get('role_key') == 1)
             @include('components.recatch')

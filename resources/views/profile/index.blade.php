@@ -105,21 +105,21 @@
                     @include('profile.info')
                     @if(session()->get('role_key') != 0)
                         <button class="btn-quick-action mt-4" onclick="window.location.href = 'http://127.0.0.1:8000/trash';" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/trash_2.png'); ?>"); background-color:#FB5E5B;'>
-                            <h5 class="quick-action-text"><i class="fa-solid fa-trash"></i> Trash</h5>
-                            <p class="quick-action-info">This is the place where the items you have deleted are stored before being permanently deleted. You can recover the item or maybe just permanently deleted right now</p>
+                            <h5 class="quick-action-text"><i class="fa-solid fa-trash"></i> {{ __('messages.trash') }}</h5>
+                            <p class="quick-action-info">{{ __('messages.trash_desc') }}</p>
                         </button>
                     @endif
 
                     @if(session()->get('role_key') == 0)
                         <div class="content-section">
-                            <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
+                            <h5 class="mx-3 text-secondary fw-bold">{{ __('messages.req_tag') }}</h5>
                             @include('profile.tagpicker')
                         </div>
                     @endif
                     @if(session()->get('role_key') == 0)
                         <button class="btn-quick-action mb-2" onclick="window.location.href = 'http://127.0.0.1:8000/trash';" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/trash_2.png'); ?>"); background-color:#FB5E5B;'>
-                            <h5 class="quick-action-text"><i class="fa-solid fa-trash"></i> Trash</h5>
-                            <p class="quick-action-info">This is the place where the items you have deleted are stored before being permanently deleted. You can recover the item or maybe just permanently deleted right now</p>
+                            <h5 class="quick-action-text"><i class="fa-solid fa-trash"></i> {{ __('messages.trash') }}</h5>
+                            <p class="quick-action-info">{{ __('messages.trash_desc') }}</p>
                         </button>
                     @endif
 
@@ -129,7 +129,7 @@
                     @endif
 
                     <div class="content-section">
-                        <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
+                        <h5 class="mx-3 text-secondary fw-bold">{{ __('messages.edit_profile') }}</h5>
                         @include('profile.edit')
                     </div>
 

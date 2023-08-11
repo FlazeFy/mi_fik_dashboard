@@ -12,35 +12,6 @@ use App\Models\DictionaryType;
 
 class QueryDictionary extends Controller
 {
-    public function getAllDictionary() {
-        try{
-            $dictionary = Dictionary::select('slug_name','dct_name','dct_desc','dct_type','dictionaries.created_at','dictionaries.updated_at','dictionaries.deleted_at','dictionaries.created_by','dictionaries.updated_by','dictionaries.deleted_by')
-                ->join('dictionaries_types', 'dictionaries_types.app_code','=','dictionaries.dct_type')
-                ->orderBy('updated_at', 'DESC')
-                ->orderBy('created_at', 'DESC')
-                ->get();
-
-            if ($dictionary->count() > 0) {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read_success", 'dictionary', null),
-                    'data' => $dictionary
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("business_read_failed", 'dictionary', null),
-                    'data' => null
-                ], Response::HTTP_NOT_FOUND);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function getAllDictionaryType() {
         try{
             $dictionary = DictionaryType::select('app_code','type_name')
@@ -63,7 +34,7 @@ class QueryDictionary extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -106,7 +77,7 @@ class QueryDictionary extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

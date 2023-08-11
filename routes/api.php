@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\TagApi\Commands as CommandTagApi;
 use App\Http\Controllers\Api\TagApi\Queries as QueryTagApi;
 use App\Http\Controllers\Api\AuthApi\Commands as CommandAuthApi;
 use App\Http\Controllers\Api\AuthApi\Queries as QueryAuthApi;
@@ -25,7 +24,6 @@ use App\Http\Controllers\Api\TrashApi\Queries as QueryTrashApi;
 use App\Http\Controllers\Api\QuestionApi\Commands as CommandQuestionApi;
 use App\Http\Controllers\Api\QuestionApi\Queries as QueryQuestionApi;
 use App\Http\Controllers\Api\FeedbackApi\Commands as CommandFeedbackApi;
-use App\Http\Controllers\Api\FeedbackApi\Queries as QueryFeedbackApi;
 use App\Http\Controllers\Api\SystemApi\QueryInfo as QueryInfoApi;
 use App\Http\Controllers\Api\SystemApi\QueryHistory as QueryHistoryApi;
 
@@ -35,8 +33,6 @@ Route::post('/v1/login', [CommandAuthApi::class, 'login']);
 Route::post('/v1/register', [CommandUserApi::class, 'register']);
 
 Route::prefix('/v1/dictionaries')->group(function() {
-    Route::get('/', [QueryDictionaryApi::class, 'getAllDictionary']);
-    Route::get('/type', [QueryDictionaryApi::class, 'getAllDictionaryType']);
     Route::get('/type/{dct_type}', [QueryDictionaryApi::class, 'getAllDictionaryByType']);
 });
 
@@ -45,19 +41,16 @@ Route::prefix('/v1/help')->group(function() {
 });
 
 Route::prefix('/v1/info')->group(function() {
-    Route::get('/', [QueryInfoApi::class, 'getAvailableInfoApi']);
     Route::get('/page/{page}/location/{location}', [QueryInfoApi::class, 'getInfoPageAndLocation']);
 });
 
 Route::prefix('/v1/feedback')->group(function() {
     Route::post('/create', [CommandFeedbackApi::class, 'insertFeedback']);
-    Route::get('/', [QueryFeedbackApi::class, 'getAllFeedbackSuggestionApi']);
 });
 
 Route::prefix('/v1/faq')->group(function() {
     Route::get('/question/{limit}', [QueryQuestionApi::class, 'getQuestion']);
     Route::get('/question/active/{limit}', [QueryQuestionApi::class, 'getActiveQuestion']);
-    Route::get('/answer/{id}', [QueryQuestionApi::class, 'getAnswer']);
     Route::get('/answer/like/{answer}', [QueryQuestionApi::class, 'getAnswerSuggestion'])->middleware(['auth:sanctum']);
     Route::get('/question', [QueryQuestionApi::class, 'getMyQuestions'])->middleware(['auth:sanctum']);
     Route::post('/question', [CommandQuestionApi::class, 'createQuestion'])->middleware(['auth:sanctum']);
@@ -91,31 +84,23 @@ Route::prefix('/v1/tag')->group(function () {
     Route::get('/cat/{cat}/{limit}', [QueryTagApi::class, 'getAllTagByCat']);
     Route::get('/{find}/{limit}', [QueryTagApi::class, 'getAllTag']);
     Route::get('/{slug}', [QueryTagApi::class, 'getTotalTagUsed'])->middleware(['auth:sanctum']);
-    Route::post('/create', [CommandTagApi::class, 'addTag'])->middleware(['auth:sanctum']);
-    Route::put('/update/{id}', [CommandTagApi::class, 'updateTag'])->middleware(['auth:sanctum']);
-    Route::delete('/delete/{id}', [CommandTagApi::class, 'deleteTag'])->middleware(['auth:sanctum']);
-    Route::delete('/destroy/{id}', [CommandTagApi::class, 'destroyTag'])->middleware(['auth:sanctum']);
 });
 
 Route::prefix('/v1/notification')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', [QueryNotificationApi::class, 'getAllNotification']);
     Route::get('/my', [QueryNotificationApi::class, 'getMyNotification']);
 });
 
 Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/', [QueryContentApi::class, 'getContentHeader']);
     Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}/{utc}', [QueryContentApi::class, 'getAllContentSchedule']);
     Route::put('/edit/image/{slug}', [CommandContentApi::class, 'editContentImage']);
-    Route::delete('/delete/{id}', [CommandContentApi::class, 'deleteContent']);
-    Route::delete('/destroy/{id}', [CommandContentApi::class, 'destroyContent']);
     Route::post('/create', [CommandContentApi::class, 'addContent']);
     Route::post('/open/{slug_name}', [CommandContentApi::class, 'addView']);
 });
 
 Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/slug/{slug}/order/{order}/date/{date}/{utc}/find/{search}', [QueryContentApi::class, 'getContentBySlugLike']); //*Tag slug
+    Route::get('/slug/{slug}/order/{order}/date/{date}/{utc}/find/{search}', [QueryContentApi::class, 'getContentHeader']); //*Tag slug
     Route::get('/order/{order}/find/{search}', [QueryContentApi::class, 'getFinishedContent']);
 });
 
@@ -123,7 +108,6 @@ Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/{slug}/type/{type}', [QueryArchiveApi::class, 'getArchive']);
     Route::get('/by/{slug}', [QueryArchiveApi::class, 'getContentByArchive']);
     Route::post('/create', [CommandArchiveApi::class, 'createArchive']);
-    Route::post('/createRelation', [CommandArchiveApi::class, 'addToArchive']);
     Route::post('/multirel/{slug}/{type}', [CommandArchiveApi::class, 'multiActionArchiveRelation']);
     Route::put('/edit/{slug}', [CommandArchiveApi::class, 'editArchive']);
     Route::delete('/delete/{slug}', [CommandArchiveApi::class, 'deleteArchive']);
@@ -149,10 +133,6 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/my', [QueryHistoryApi::class, 'getMyHistory']);
-});
-
-Route::prefix('/v1/stats')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/mostviewed', [QueryContentApi::class, 'getStatsMostViewedEvent']);
 });
 
 Route::prefix('/v1/group')->middleware(['auth:sanctum'])->group(function() {

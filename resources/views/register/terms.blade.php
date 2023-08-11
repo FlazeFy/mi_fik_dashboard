@@ -20,7 +20,7 @@
         <li>You are solely responsible for the content you share through this app. We are not responsible for inappropriate user content</li>
     </ol>
 
-    <b>Changes and Updates::</b>
+    <b>Changes and Updates:</b>
     <ol>
         <li>We reserve the right to change or update these terms and conditions from time to time without prior notice. Please be sure to check this page periodically to keep up to date with the latest information</li>
         <li>In case of important changes, we will provide notice to users through appropriate communication channels</li>
@@ -41,5 +41,5 @@
     </div>
 </div>
 <span id="btn-next-profile-data-holder" class="d-flex justify-content-end">
-    <button class="btn-next-steps locked" id="btn-next-profile-data" onclick="warn('terms')"><i class="fa-solid fa-lock"></i> Locked</button>
+    <button class="btn-next-steps locked" id="btn-next-profile-data" onclick="warn('terms')"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>
 </span>

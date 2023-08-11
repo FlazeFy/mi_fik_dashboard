@@ -1,16 +1,16 @@
 @php($str = explode("__", session()->get('ordering_group_list')))
 @if($str[0] == "total" && $str[1] == "ASC")
-    <form class="d-inline" action="/user/group/ordered/DESC/total" title="Sort group name by ascending" method="POST">
+    <form class="d-inline" action="/user/group/ordered/DESC/total" title="{{ __('messages.sort_asc_group') }}" method="POST">
         @csrf
         <button class="btn btn-primary px-2 py-0 ms-2" type="submit"><i class="fa-solid fa-sort fa-sm"></i></button>
     </form>
 @elseif($str[0] == "total" && $str[1] == "DESC")
-    <form class="d-inline" action="/user/group/ordered/ASC/total" title="Sort group name by descending" method="POST">
+    <form class="d-inline" action="/user/group/ordered/ASC/total" title="{{ __('messages.sort_desc_group') }}" method="POST">
         @csrf
         <button class="btn btn-primary px-2 py-0 ms-2" type="submit"><i class="fa-solid fa-sort fa-sm"></i></button>
     </form>
 @else
-    <form class="d-inline" action="/user/group/ordered/ASC/total" title="Sort group name by descending" method="POST">
+    <form class="d-inline" action="/user/group/ordered/ASC/total" title="{{ __('messages.sort_desc_group') }}" method="POST">
         @csrf
         <button class="btn btn-icon px-2 py-0 ms-2" type="submit"><i class="fa-solid fa-sort fa-sm"></i></button>
     </form>

@@ -9,7 +9,7 @@
     <form action="/event/edit/update/date/{{$c->slug_name}}" id="form-edit-date" method="POST">
         @csrf
         <input name="is_end_only" id="is_end_only" value="false" hidden>
-        <label>Date Start</label>    
+        <label>{{ __('messages.set_date_start') }}</label>    
         <div class="row mt-2">
             <div class="col-6">
                 <input type="date" name="content_date_start" id="date_start_event" value="{{date('Y-m-d',strtotime($c->content_date_start))}}" onchange="validateDateEvent()" class="form-control">
@@ -20,7 +20,7 @@
         </div>
         <a id="dateStart_event_msg" class="input-warning text-danger"></a>
 
-        <label>Date End</label>
+        <label>{{ __('messages.set_date_end') }}</label>
         <div class="row mt-2">
             <div class="col-6">
                 <input type="date" name="content_date_end" id="date_end_event" value="{{date('Y-m-d',strtotime($c->content_date_end))}}" onchange="validateDateEvent()" class="form-control">
@@ -243,7 +243,7 @@
      
 
         if(!error){
-            $("#btn-submit-holder-date").html('<a onclick="submitEdit()" class="btn btn-submit"><i class="fa-solid fa-paper-plane"></i> Submit</a>');
+            $("#btn-submit-holder-date").html(`<a onclick="submitEdit()" class="btn btn-submit"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.submit') }}</a>`);
         } else {
             $("#btn-submit-holder-date").html("");
         }

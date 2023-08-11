@@ -1,5 +1,5 @@
 <div>
-    <a class="btn btn-add-att mb-2" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
+    <a class="btn btn-add-att mb-2" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> {{ __('messages.add_att') }}</a>
     <div class="attachment-holder" id="attachment-holder">
     </div>
     <input hidden id="content_attach" name="content_attach">
@@ -30,7 +30,7 @@
                 <div class="attachment-item p-2 shadow" id="attachment_container_${id}" style="--circle-attach-color-var:var(--shadowColor);">
                     <div style="white-space:normal !important;">
                         <span class="d-inline-block me-1">
-                            <h6 class="mt-1">Attachment Type :</h6>
+                            <h6 class="mt-1">{{ __('messages.att_type') }} :</h6>
                         </span>
                         <span class="d-inline-block">
                             <select class="form-select attachment" id="attach_type_${id}" name="attach_type" onChange="getAttachmentGroupFun('${id}', this.value, false)" aria-label="Default select example">
@@ -62,7 +62,7 @@
             `);
             
             add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
-            add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+            add_att_btn.innerHTML = `<i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}`;
         }
     }
 
@@ -111,7 +111,7 @@
                         } else {
                             attach_list[objIndex]['is_add_more'] = false;
                             document.getElementById('attach_name_'+id).disabled = true;
-                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>`);
+                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                         }
                     }, 
                     function (error) {
@@ -120,7 +120,7 @@
                         var att_url = null;
                         if(error.message){
                             att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
-                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>`);
+                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                         }
                     }, 
                     function () {
@@ -175,7 +175,7 @@
                     var att_url = null;
                     if(error.message){
                         att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
-                        submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>`);
+                        submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                     }
                 }
             } else if(att_type == "attachment_url" && att_dsbld != true) {
@@ -233,10 +233,10 @@
 
         if(!found){
             add_att_btn.setAttribute("class","btn btn-add-att mb-2");
-            add_att_btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Attachment';
+            add_att_btn.innerHTML = `<i class="fa-solid fa-plus"></i> {{ __('messages.add_att') }}`;
         } else {
             add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
-            add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+            add_att_btn.innerHTML = `<i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}`;
         }
     }
 

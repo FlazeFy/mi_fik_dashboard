@@ -49,6 +49,8 @@ Route::prefix('/forget')->group(function () {
     Route::get('/', [ForgetController::class, 'index'])->name('forget');
 });
 
+Route::post('/lang', [MultiController::class, 'switchLang'])->name('switchLang');
+
 ######################### Private Route #########################
 
 Route::post('/sign-out', [MultiController::class, 'sign_out'])->middleware(['auth_v2:sanctum']);

@@ -17,7 +17,7 @@
 <body style="background:var(--whiteColor);">
     <div class="container mt-4 pt-3 text-center">
         <img class="w-50 d-block mx-auto" src="{{asset('assets/503_error.png')}}">
-        <p class="display-5 text-danger">Oops! Something is wrong</p>
+        <p class="display-5 text-danger">{{ __('messages.something_is_wrong') }}</p>
     </div>
     <div class="error-page-info">
         <p><i class="fa-solid fa-circle-info"></i> The server is unable to handle the user's request at this time because it is temporarily unavailable</p>

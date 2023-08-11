@@ -25,37 +25,6 @@ use App\Models\Task;
 
 class QueryContent extends Controller
 {
-    public function getContentHeader()
-    {
-        try{
-            $select = Query::getSelectTemplate("content_thumbnail");
-
-            $content = ContentHeader::selectRaw($select)
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->orderBy('contents_headers.content_date_start', 'DESC')
-                ->paginate(12);
-
-            if ($content->isEmpty()) {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
-                    'data' => null
-                ], Response::HTTP_NOT_FOUND);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
-                    'data' => $content
-                ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function getContentBySlug($slug)
     {
         try{
@@ -77,12 +46,12 @@ class QueryContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function getContentBySlugLike(Request $request, $slug, $order, $date, $utc, $search)
+    public function getContentHeader(Request $request, $slug, $order, $date, $utc, $search)
     {
         try{
             $page = 12;
@@ -93,7 +62,7 @@ class QueryContent extends Controller
             $query = null;
 
             $user_id = $request->user()->id;
-            $based_role = Query::getAccessRole($user_id);
+            $based_role = Query::getAccessRole($user_id, false);
 
             if($slug != "all"){
                 $i = 1;
@@ -161,7 +130,7 @@ class QueryContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -175,7 +144,7 @@ class QueryContent extends Controller
             $search = trim($search);
 
             $user_id = $request->user()->id;
-            $based_role = Query::getAccessRole($user_id);
+            $based_role = Query::getAccessRole($user_id, false);
 
             $content = ContentHeader::selectRaw($select.",(DATEDIFF(content_date_end, now()) * -1) as days_passed")
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
@@ -210,7 +179,7 @@ class QueryContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -220,14 +189,13 @@ class QueryContent extends Controller
             $select_content = Query::getSelectTemplate("content_schedule");
             $select_task = Query::getSelectTemplate("task_schedule");
             $user_id = $request->user()->id;
-            $based_role = Query::getAccessRole($user_id);
+            $based_role = Query::getAccessRole($user_id, false);
 
             $content = ContentHeader::selectRaw('content_reminder, '.$select_content.', contents_headers.created_at, contents_headers.updated_at')
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
                 ->whereRaw("DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$utc." HOUR), '%Y-%m-%d') <= '".$date."'
                     AND DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$utc." HOUR), '%Y-%m-%d') >= '".$date."'
                 ")
-                //->whereRaw("date(`content_date_start`) <= '".$date."' AND date(`content_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
@@ -240,7 +208,6 @@ class QueryContent extends Controller
                 ->whereRaw("DATE_FORMAT(DATE_ADD(task_date_start, INTERVAL ".$utc." HOUR), '%Y-%m-%d') <= '".$date."'
                     AND DATE_FORMAT(DATE_ADD(task_date_end, INTERVAL ".$utc." HOUR), '%Y-%m-%d') >= '".$date."'
                 ")
-                //->whereRaw("date(`task_date_start`) <= '".$date."' AND date(`task_date_end`) >= '".$date."'")
                 ->whereNull('deleted_at')
                 ->orderBy('tasks.task_date_start', 'DESC')
                 ->union($content)
@@ -333,33 +300,7 @@ class QueryContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function getStatsMostViewedEvent(){
-        try{
-            $res= ContentDetail::getMostViewedEvent(7);
-
-            if(count($res) > 0){
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read_success", 'stats', null),
-                    'data' => $res
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("business_read_failed", 'stats', null),
-                    'data' => null
-                ], Response::HTTP_NOT_FOUND);
-            }
-
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -401,7 +342,7 @@ class QueryContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

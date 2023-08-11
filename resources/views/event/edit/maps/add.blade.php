@@ -20,12 +20,12 @@
     @if($c->content_loc && $c->content_loc[0]['detail'])
         <div class="form-floating my-2">
             <input type="text" class="form-control" id="content_loc_name" placeholder="{{$c->content_loc[0]['detail']}}" value="{{$c->content_loc[0]['detail']}}" oninput="getContentLocation()">
-            <label for="content_loc_name">Location Name</label>
+            <label for="content_loc_name">{{ __('messages.loc_name') }}</label>
         </div>
     @else
         <div class="form-floating mb-2">
             <input type="text" class="form-control" id="content_loc_name" placeholder="" value="" oninput="getContentLocation()">
-            <label for="content_loc_name">Location Name</label>
+            <label for="content_loc_name">{{ __('messages.loc_name') }}</label>
         </div>
     @endif
 
@@ -142,7 +142,7 @@
                     $("#content_loc_msg").text("Location is valid");
                     $("#content_loc_msg").css({"color":"var(--successBG)"});
                 }
-                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>`; 
+                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>`; 
             } else {
                 loc_obj[1] = {
                     "type": "coordinate", 
@@ -155,7 +155,7 @@
                 
                 $("#content_loc_msg").text("Location coordinate is same as before");
                 $("#content_loc_msg").css({"color":"var(--primaryColor)"});
-                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>`; 
+                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>`; 
 
                 error = true
             }   
@@ -179,7 +179,7 @@
                     $("#content_loc_msg").css({"color":"var(--successBG)"});
                 }
 
-                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>`; 
+                document.getElementById('map-save-button-holder').innerHTML = `<button class="btn btn-submit mt-2" type="submit" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>`; 
             } else {
                 loc_obj[0] = {
                     "type": "name", 

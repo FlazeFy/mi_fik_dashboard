@@ -3,7 +3,7 @@
         <div class="modal-content">   
             <div class="modal-body text-center pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <p style="font-weight:500;">Are you sure want to delete "{{$dtag->dct_name}}" category</p>
+                <p style="font-weight:500;">{{ __('messages.del_validation') }} "{{$dtag->dct_name}}" category</p>
                 <p>If so, please choose where's the tag with these category will move to</p>
                 <form class="d-inline" action="/event/tag/delete/cat/{{$dtag->id}}" method="POST">
                     @csrf

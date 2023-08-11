@@ -18,12 +18,12 @@ class Commands extends Controller
         try{
             $user_id = $request->user()->id;
 
-            $content = Question::where('id', $id)->update([
+            $rows = Question::where('id', $id)->update([
                 'deleted_at' => date("Y-m-d H:i:s"),
                 'deleted_by' => $user_id,
             ]);
 
-            if($content != 0){
+            if($rows != 0){
                 return response()->json([
                     'status' => 'success',
                     'message' => Generator::getMessageTemplate("business_delete", 'question', null),
@@ -32,14 +32,14 @@ class Commands extends Controller
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => Generator::getMessageTemplate("business_read_failed", 'question', null),
+                    'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
                     'data' => null
-                ], Response::HTTP_OK);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -78,7 +78,7 @@ class Commands extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
