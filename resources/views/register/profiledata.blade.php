@@ -221,7 +221,7 @@
                 btn_add_image.innerHTML = '';
             });
         } else {
-            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is ${maxSize} mb </h6></span>`;
+            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>${messages('max_file_size')} ${maxSize} mb </h6></span>`;
         }
     }
 
@@ -314,6 +314,7 @@
                     fname.disabled = true;
                     lname.disabled = true;
                     pass.disabled = true;
+                    pass_valid.disabled = true;
                     btn_reset_image.innerHTML = "";
                     btn_add_image.innerHTML = "";
                     document.getElementById("reset-uname-holder").innerHTML = "";
@@ -330,7 +331,6 @@
                     var passMsg = null;
                     var allMsg = null;
                     var icon = `<i class='fa-solid fa-triangle-exclamation'></i> `;
-                    console.log(response.responseJSON)
 
                     if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                         //Error validation

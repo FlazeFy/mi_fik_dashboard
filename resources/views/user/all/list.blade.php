@@ -22,7 +22,7 @@
     </table>
     <div id="empty_item_holder"></div>
 </div>
-<h6 class="mt-1">Page</h6>
+<h6 class="mt-1">{{ __('messages.page') }}</h6>
 <div id="user_navigate"></div>
 
 <script>
@@ -745,7 +745,6 @@
                 //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                console.log(response)
                 // if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                    
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
@@ -782,7 +781,6 @@
                 //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                console.log(response)
                 // if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                    
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   

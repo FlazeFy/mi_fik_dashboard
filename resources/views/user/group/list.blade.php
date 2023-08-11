@@ -40,7 +40,7 @@
     </table>
     <div id="empty_item_holder"></div>
 </div>
-<h6 class="mt-1">Page</h6>
+<h6 class="mt-1">{{ __('messages.page') }}</h6>
 <div id="group_navigate"></div>
 
 <script>
@@ -149,15 +149,15 @@
                                             <input hidden name="group_name" value="${name}">
                                             <div class="form-floating">
                                                 <input type="text" class="form-control nameInput" id="group_name" name="group_name" value="${name}" maxlength="75" oninput="" required>
-                                                <label for="titleInput_event">Group Name</label>
+                                                <label for="titleInput_event">{{ __('messages.name') }}</label>
                                                 <a id="group_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                             </div>
                                             <div class="form-floating mt-2">
                                                 <textarea class="form-control" id="group_desc" name="group_desc" style="height: 140px" maxlength="255" value="${desc}" oninput="">${desc}</textarea>
-                                                <label for="floatingTextarea2">Description (Optional)</label>
+                                                <label for="floatingTextarea2">{{ __('messages.description') }} ({{ __('messages.optional') }})</label>
                                                 <a id="group_desc_msg" class="input-warning text-danger"></a>
                                             </div>
-                                            <p>Last Updated : ${getDateContext(updated)}</p>
+                                            <p>{{ __('messages.last_updated') }} : ${getDateContext(updated)}</p>
                                             @if($info)
                                                 @foreach($info as $in)
                                                     @if($in->info_location == "edit_group")
@@ -230,7 +230,7 @@
                                                 </div>
                                                 <span id="user-ava-holder-${slug}" class="groups-ava-holder"></span>
                                                 <span id="err-ava-holder-${slug}"></span>
-                                                <h6>Page</h6>
+                                                <h6>{{ __('messages.page') }}</h6>
                                                 <div id="user-ava-page-${slug}" class="mt-2"></div>
                                             </div>
                                         </div>

@@ -165,8 +165,6 @@
                 let indexToRemove = selectedNewUser.findIndex(obj => obj.username == username);
                 if (indexToRemove !== -1) {
                     selectedNewUser.splice(indexToRemove, 1);
-                } else {
-                    console.log('Item not found LOL');
                 }
             } else {
                 selectedNewUser.push({
@@ -175,7 +173,6 @@
                 });
             }
         }
-        console.log(selectedNewUser);
         
         if(selectedNewUser.length > 0){
             ddItemAcc.setAttribute('data-bs-target', '#accNewReqModal');

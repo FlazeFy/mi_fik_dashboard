@@ -31,7 +31,7 @@
                 @if($isMobile && $info)
                 <button type="button" class="custom-close-modal bg-info" data-bs-toggle="collapse" href="#collapseInfo" style="right:65px;" title="Info"><i class="fa-solid fa-info"></i></button>
                 @endif
-                <h5>Add Grouping</h5>
+                <h5>{{ __('messages.add_grouping') }}</h5>
                 
                 <form action="/user/group/add" method="POST" id="form-add-group">
                     @csrf 
@@ -45,12 +45,12 @@
 
                             <div class="form-floating">
                                 <input type="text" class="form-control nameInput" id="group_name" name="group_name" maxlength="75" oninput="validateForm(validation)" required>
-                                <label for="titleInput_event">Group Name</label>
+                                <label for="titleInput_event">{{ __('messages.name') }}</label>
                                 <a id="group_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
                             </div>
                             <div class="form-floating mt-2">
                                 <textarea class="form-control" id="group_desc" name="group_desc" style="height: 140px" maxlength="255" oninput="validateForm(validation)"></textarea>
-                                <label for="floatingTextarea2">Description (Optional)</label>
+                                <label for="floatingTextarea2">{{ __('messages.description') }} ({{ __('messages.optional') }})</label>
                                 <a id="group_desc_msg" class="input-warning text-danger"></a>
                             </div>
 
@@ -65,11 +65,11 @@
                             @endif
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12 position-relative">
-                            <h6>All User</h6>
+                            <h6>{{ __('messages.all_user') }}</h6>
                             @include("user.searchbar")
                             <span id="user-list-holder"></span>
                             <span class="position-absolute">
-                                <h6 class="mt-1">Page</h6> 
+                                <h6 class="mt-1">{{ __('messages.page') }}</h6> 
                                 <div id="all-user-page" class="mt-2"></div> 
                             </span>
                         </div>
@@ -108,7 +108,6 @@
                 
                 if (input.value.trim() !== '' && input.name != "_token" && input.name != "user_username[]") {
                     is_editing = true;
-                    console.log(input.name)
                     break;
                 }
             }
@@ -268,8 +267,6 @@
                 input_holder.value = JSON.stringify(selectedUser);
             }
         }
-        //console.log(input_holder);
-        // console.log(selectedUser);
         refreshList();
     }
 

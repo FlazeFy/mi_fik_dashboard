@@ -63,6 +63,5 @@ function tidyUpQuotes(val){
     if(res != null){
         res = res.trim().replace(/'/g, "\\\'").replace(/"/g, '\\"');
     }
-    console.log(res)
     return res;
 }

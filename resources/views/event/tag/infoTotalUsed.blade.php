@@ -58,7 +58,6 @@
             },
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log(jqXHR.responseJSON.message);
             failResponse(jqXHR, ajaxOptions, thrownError, "#MOT_pie_chart_{{$tg->id}}", false, null, null);
         });;
     }

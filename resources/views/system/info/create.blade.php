@@ -99,7 +99,6 @@
                 
                 if (input.value.trim() !== '' && input.name != "_token") {
                     is_editing = true;
-                    console.log(input.name)
                     break;
                 }
             }

@@ -61,21 +61,27 @@ class Commands extends Controller
                         'updated_by' => $user_id,
                     ]);
 
-                    History::create([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type,
-                        'context_id' => null,
-                        'history_body' => $data->history_body,
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
+                    if($user > 0){
+                        History::create([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type,
+                            'context_id' => null,
+                            'history_body' => $data->history_body,
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
+                        ]);
 
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("business_update", "user profile", null),
-                        'data' => $user." data updated"
-                    ], Response::HTTP_OK);
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("business_update", "user profile", null),
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("failed_owner_exist",'user profile', null),
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
                 }
             }
         } catch(\Exception $e) {
@@ -122,33 +128,40 @@ class Commands extends Controller
                         ->first();
 
                     if($check->tokenable_type === "App\\Models\\User"){ // User
-                        DB::table("users")->where('id', $user_id)->update([
+                        $rows = DB::table("users")->where('id', $user_id)->update([
                             'image_url' => $request->image_url,
                             'updated_at' => date("Y-m-d H:i"),
                             'updated_by' => $user_id,
                         ]);
                     } else {
-                        DB::table("admins")->where('id', $user_id)->update([
+                        $rows = DB::table("admins")->where('id', $user_id)->update([
                             'image_url' => $request->image_url,
                             'updated_at' => date("Y-m-d H:i"),
                         ]);
                     }
 
-                    DB::table("histories")->insert([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type,
-                        'context_id' => null,
-                        'history_body' => $data->history_body,
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
+                    if($rows > 0){
+                        DB::table("histories")->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type,
+                            'context_id' => null,
+                            'history_body' => $data->history_body,
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
+                        ]);
 
-                    DB::commit();
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("business_update", "Profile image", null),
-                    ], Response::HTTP_OK);
+                        DB::commit();
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("business_update", "Profile image", null),
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("failed_owner_exist",'token', null),
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
                 }
             }
         } catch(\Exception $e) {
@@ -202,29 +215,35 @@ class Commands extends Controller
                 $newR = Converter::getTag($newR);
                 $newR = json_decode($newR, true);
 
-                DB::table("users")
+                $rows = DB::table("users")
                     ->where('id', $oldR->id)->update([
                         'role' => $newR,
                         'updated_at' => date("Y-m-d H:i"),
                         'updated_by' => $user_id,
                 ]);
 
-                DB::table("histories")->insert([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $hs->history_type,
-                    'context_id' => null,
-                    'history_body' => $hs->history_body,
-                    'history_send_to' => $oldR->id,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
+                if($rows > 0){
+                    DB::table("histories")->insert([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $hs->history_type,
+                        'context_id' => null,
+                        'history_body' => $hs->history_body,
+                        'history_send_to' => $oldR->id,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
 
-                DB::commit();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_update", "tag", null),
-                    'data' => $newR
-                ], Response::HTTP_OK);
+                    DB::commit();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("business_update", "tag", null),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("failed_owner_exist",'token', null),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
             }
         } catch(\Exception $e) {
             DB::rollback();
@@ -291,29 +310,35 @@ class Commands extends Controller
                     $roles = json_encode(array_values($roles));
                 }
 
-                DB::table("users")
+                $rows = DB::table("users")
                     ->where('id', $oldR->id)->update([
                         'role' => $roles,
                         'updated_at' => date("Y-m-d H:i"),
                         'updated_by' => $user_id,
                 ]);
 
-                DB::table("histories")->insert([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $hs->history_type,
-                    'context_id' => null,
-                    'history_body' => $hs->history_body,
-                    'history_send_to' => $oldR->id,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
+                if($rows > 0){
+                    DB::table("histories")->insert([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $hs->history_type,
+                        'context_id' => null,
+                        'history_body' => $hs->history_body,
+                        'history_send_to' => $oldR->id,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
 
-                DB::commit();
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_update", "tag", null),
-                    'data' => $roles
-                ], Response::HTTP_OK);
+                    DB::commit();
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("business_update", "tag", null),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("failed_owner_exist",'token', null),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
             }
         } catch(\Exception $e) {
             DB::rollback();
@@ -587,15 +612,22 @@ class Commands extends Controller
                         $remaining = Generator::getDateDiffSec($reset->created_at);
                         
                         if($remaining < 920){
-                            DB::table("passwords_resets")->where("id", $reset->id)->update([
+                            $rows = DB::table("passwords_resets")->where("id", $reset->id)->update([
                                 "validated_at" => date("Y-m-d H:i:s")
                             ]);
 
-                            DB::commit();
-                            return response()->json([
-                                'status' => 'success',
-                                'message' => Generator::getMessageTemplate("custom", 'Token valid, now you can set up your new password', null),
-                            ], Response::HTTP_OK);
+                            if($rows > 0){
+                                DB::commit();
+                                return response()->json([
+                                    'status' => 'success',
+                                    'message' => Generator::getMessageTemplate("custom", 'Token valid, now you can set up your new password', null),
+                                ], Response::HTTP_OK);
+                            } else {
+                                return response()->json([
+                                    'status' => 'failed',
+                                    'message' => Generator::getMessageTemplate("failed_owner_exist",'token', null),
+                                ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                            }
                         } else {
                             return response()->json([
                                 'status' => 'failed',
@@ -609,31 +641,38 @@ class Commands extends Controller
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }
                 } else {
-                    DB::table("passwords_resets")->join('users', 'users.id', '=', 'passwords_resets.created_by')
+                    $rows = DB::table("passwords_resets")->join('users', 'users.id', '=', 'passwords_resets.created_by')
                         ->where('username', $request->username)
                         ->where('email', $request->email)
                         ->whereNull('validated_at')
                         ->delete();
 
-                    $token = Generator::getTokenResetPass();
-                    $user = DB::table("users")->select("id")->where("username", $request->username)->first();
+                    if($rows > 0){ 
+                        $token = Generator::getTokenResetPass();
+                        $user = DB::table("users")->select("id")->where("username", $request->username)->first();
 
-                    DB::table("passwords_resets")->insert([
-                        'id' => Generator::getUUID(),
-                        'validation_token' => $token,
-                        'new_password' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user->id,
-                        'validated_at' => null
-                    ]);
+                        DB::table("passwords_resets")->insert([
+                            'id' => Generator::getUUID(),
+                            'validation_token' => $token,
+                            'new_password' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user->id,
+                            'validated_at' => null
+                        ]);
 
-                    dispatch(new RecoverPassMailer($request->username, $request->email, $token));
+                        dispatch(new RecoverPassMailer($request->username, $request->email, $token));
 
-                    DB::commit();
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("custom", 'Token invalid, please try again when Token regenerated', null),
-                    ], Response::HTTP_OK);
+                        DB::commit();
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("custom", 'Token invalid, please try again when Token regenerated', null),
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("failed_owner_exist",'token', null),
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
                 }
             }
         } catch(\Exception $e) {
@@ -676,7 +715,7 @@ class Commands extends Controller
                     $validPass = Validation::hasNumber($request->password);
                     if($validPass) {
                         $password = Hash::make($request->password);
-                        DB::table("passwords_resets")->select("passwords_resets.id")
+                        $rows1 = DB::table("passwords_resets")->select("passwords_resets.id")
                             ->join('users', 'users.id', '=', 'passwords_resets.created_by')
                             ->where('username', $request->username)
                             ->where('validation_token', $request->validation_token)
@@ -685,28 +724,35 @@ class Commands extends Controller
                                 "new_password" => $password
                             ]);
                         
-                        DB::table("users")->where("username", $request->username)->update([
+                        $rows2 = DB::table("users")->where("username", $request->username)->update([
                             "password" => $password,
                             "updated_at" => date("Y-m-d H:i:s")
                         ]);
 
-                        $user = DB::table("users")->select("id")->where("username", $request->username)->first();
+                        if($rows1 > 0 && $rows2 > 0){
+                            $user = DB::table("users")->select("id")->where("username", $request->username)->first();
 
-                        DB::table("histories")->insert([
-                            'id' => Generator::getUUID(),
-                            'history_type' => $hs->history_type,
-                            'context_id' => null,
-                            'history_body' => $hs->history_body,
-                            'history_send_to' => null,
-                            'created_at' => date("Y-m-d H:i:s"),
-                            'created_by' => $user->id
-                        ]);
+                            DB::table("histories")->insert([
+                                'id' => Generator::getUUID(),
+                                'history_type' => $hs->history_type,
+                                'context_id' => null,
+                                'history_body' => $hs->history_body,
+                                'history_send_to' => null,
+                                'created_at' => date("Y-m-d H:i:s"),
+                                'created_by' => $user->id
+                            ]);
 
-                        DB::commit();
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => Generator::getMessageTemplate("custom", 'Password has changed', null),
-                        ], Response::HTTP_OK);
+                            DB::commit();
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => Generator::getMessageTemplate("custom", 'Password has changed', null),
+                            ], Response::HTTP_OK);
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("failed_owner_exist",'token', null),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
                     } else {
                         return response()->json([
                             'status' => 'failed',
@@ -746,14 +792,21 @@ class Commands extends Controller
             } else {
                 $user_id = $request->user()->id;
                 
-                User::where('id',$user_id)->update([
+                $rows = User::where('id',$user_id)->update([
                     "firebase_fcm_token" => $token
                 ]);
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("custom", 'Token updated', null),
-                ], Response::HTTP_OK);
+                if($rows > 0){
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("custom", 'Token updated', null),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("failed_owner_exist",'token', null),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([

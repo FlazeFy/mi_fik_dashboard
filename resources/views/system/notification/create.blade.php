@@ -161,7 +161,6 @@
                 
                 if (input.value.trim() !== '' && input.name != "_token" && input.name != "send_to" && input.name != "slug_name[]" && input.name != "user_username[]") {
                     is_editing = true;
-                    console.log(input.name)
                     break;
                 }
             }
@@ -307,7 +306,7 @@
                             </div>
                         </div>
                         <span id="group-list-holder"></span>
-                        <h6 class="mt-1">Page</h6>
+                        <h6 class="mt-1">{{ __('messages.page') }}</h6>
                         <div id="all-group-page" class="mt-2"></div>
                     </div>
                 </div>
@@ -486,7 +485,7 @@
                         <div id="user-list-holder"></div>
                         <span id="empty_item_holder_user"></span>
                         <span id="load_more_holder_user" style="display: flex; justify-content:center;"></span>
-                        <h6 class="mt-1">Page</h6>
+                        <h6 class="mt-1">{{ __('messages.page') }}</h6>
                         <div id="all-user-page" class="mt-2"></div>
                     </div>
                 </div>
@@ -818,11 +817,10 @@
                 if (indexToRemove !== -1) {
                     selectedRole.splice(indexToRemove, 1);
 
-                    // Make sure the item unchecked by remove from selected role list
                     document.getElementById("check_role_"+slug).checked = false; 
                     input_holder.value = JSON.stringify(selectedRole);
                 } else {
-                    console.log('Item not found LOL');
+                    //
                 }
             } else {
                 selectedRole.push({
@@ -849,12 +847,9 @@
                 if (indexToRemove !== -1) {
                     selectedUser.splice(indexToRemove, 1);
 
-                    // Make sure the item unchecked by remove from selected user list
                     document.getElementById("check_"+username).checked = false; 
                     input_holder.value = JSON.stringify(selectedUser);
-                } else {
-                    console.log('Item not found LOL');
-                }
+                } 
             } else {
                 selectedUser.push({
                     full_name : fullname,
@@ -880,12 +875,9 @@
                 if (indexToRemove !== -1) {
                     selectedGroup.splice(indexToRemove, 1);
 
-                    // Make sure the item unchecked by remove from selected user list
                     document.getElementById("check_group_"+slug).checked = false; 
                     input_holder.value = JSON.stringify(selectedGroup);
-                } else {
-                    console.log('Item not found LOL');
-                }
+                } 
             } else {
                 selectedGroup.push({
                     slug : slug,

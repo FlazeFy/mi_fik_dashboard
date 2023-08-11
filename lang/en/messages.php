@@ -232,4 +232,16 @@ return [
     'joined_at' => 'Joined At',
     'requested' => 'Request',
     'want_remove' => 'Want to delete',
+    'good_morning' => 'Good Morning',
+    'good_afternoon' => 'Good Afternoon',
+    'good_night' => 'Good Night',
+    'no_more' => 'No more item to show',
+    'from_this_event' => 'from this event',
+    'remove_loc' => 'Remove Location',
+    'add_grouping' => 'Add Grouping',
+    'something_is_wrong' => 'Something is wrong. Please contact Admin',
+    'expired_sess' => 'The session or token used by the user has expired',
+    'sign_in_again' => 'Try to Sign-In again',
+    'add_dictionary' => 'Add Dictionary',
+    'optional' => 'Optional'
 ];

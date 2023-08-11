@@ -38,7 +38,13 @@ class MultiController extends Controller
     {
         App::setLocale($request->lang);
         session()->put('locale', $request->lang);
+
+        if($request->lang == "en"){
+            $res = 'Language has change';
+        } else {
+            $res = 'Bahasa diganti';
+        }
   
-        return redirect()->back()->with('success_message', 'Language has change'); 
+        return redirect()->back()->with('success_message', $res); 
     }
 }

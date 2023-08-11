@@ -74,9 +74,8 @@ class CommandTask extends Controller
                         ], Response::HTTP_OK);
                     } else {
                         return response()->json([
-                            'status' => 'success',
-                            'message' => Generator::getMessageTemplate("business_create_failed", "event. You don't have access to use this feature", null),
-                            'data' => null
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }
                 }

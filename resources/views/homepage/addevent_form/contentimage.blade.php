@@ -102,7 +102,6 @@
             document.getElementById('header-progress').innerHTML = `File upload is ${progress}% done`;
         }, 
         function (error) {
-            console.log(error.message);
             document.getElementById('header-failed').innerHTML = `File upload is ${error.message}`;
             var cheader_url = null;
         }, 

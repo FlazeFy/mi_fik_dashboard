@@ -2,7 +2,7 @@
     @csrf
     <div class="form-floating mb-2">
         <input type="text" class="form-control" id="floatingTitle" name="content_title" placeholder="{{$c->content_title}}" value="{{$c->content_title}}" required>
-        <label for="floatingTitle">Content Title</label>
+        <label for="floatingTitle">{{ __('messages.title') }}</label>
     </div>
     <div id="rich_box" style="height:55vh !important;"><?php echo $c->content_desc; ?></div>
     <input name="content_desc" id="content_desc" hidden>

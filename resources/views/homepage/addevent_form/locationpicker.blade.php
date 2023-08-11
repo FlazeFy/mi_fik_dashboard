@@ -96,7 +96,6 @@
 
         if(loc_obj){
             document.getElementById('content_loc').value = JSON.stringify(loc_obj);
-            console.log(loc_obj)
         }
     }
 

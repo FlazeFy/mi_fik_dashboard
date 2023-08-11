@@ -78,7 +78,6 @@
                 var emailMsg = null;
                 var allMsg = null;
                 var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
-                console.log(response.responseJSON);
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation

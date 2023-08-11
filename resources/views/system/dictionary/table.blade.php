@@ -81,12 +81,12 @@
                                 </script>
                                 <div class="form-floating mb-2">
                                     <input type="text" class="form-control nameInput" id="dct_name_{{str_replace('-', '', $dc->id)}}" name="dct_name" value="{{$dc->dct_name}}" maxlength="30" oninput="validateFull(validation<?= str_replace('-', '', $dc->id); ?>, '<?= str_replace('-', '', $dc->id); ?>')" required>
-                                    <label for="dct_name">Dictionary Name</label>
+                                    <label for="dct_name">{{ __('messages.name') }}</label>
                                     <a id="dct_name_{{str_replace('-', '', $dc->id)}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                 </div>
                                 <div class="form-floating">
                                     <textarea class="form-control" style="height: 120px" id="dct_desc_{{str_replace('-', '', $dc->id)}}" name="dct_desc" value="{{$dc->dct_desc}}" oninput="validateFull(validation<?= str_replace('-', '', $dc->id); ?>, '<?= str_replace('-', '', $dc->id); ?>')" maxlength="255">{{$dc->dct_desc}}</textarea>
-                                    <label for="dct_desc">Dictionary Description</label>
+                                    <label for="dct_desc">{{ __('messages.description') }}</label>
                                     <a id="dct_desc_{{str_replace('-', '', $dc->id)}}_msg" class="text-danger my-2" style="font-size:13px;"></a>
                                 </div>
                                 <span id="submit_holder_{{str_replace('-', '', $dc->id)}}"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>

@@ -179,9 +179,7 @@
                 let indexToRemove = selectedOldUser.findIndex(obj => obj.username == username);
                 if (indexToRemove !== -1) {
                     selectedOldUser.splice(indexToRemove, 1);
-                } else {
-                    console.log('Item not found LOL');
-                }
+                } 
             } else {
                 selectedOldUser.push({
                     id : id,
@@ -192,7 +190,6 @@
                 });
             }
         }
-        console.log(selectedOldUser);
         
         if(selectedOldUser.length > 0){
             ddItemAcc.setAttribute('data-bs-target', '#accOldReqModal');

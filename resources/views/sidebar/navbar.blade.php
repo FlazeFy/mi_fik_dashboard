@@ -91,7 +91,7 @@
                 <form action="/lang" method="POST">
                     @csrf
                     <input hidden name="lang" value="en">
-                    <button class="dropdown-item position-relative" type="submit">
+                    <button class="dropdown-item position-relative" onclick="switchLang('en')" type="submit">
                         <div class="d-inline-block position-relative">
                             <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8000/assets/en_lang.png'> 
                         </div>
@@ -105,7 +105,7 @@
                 <form action="/lang" method="POST">
                     @csrf
                     <input hidden name="lang" value="id">
-                    <button class="dropdown-item position-relative" type="submit">
+                    <button class="dropdown-item position-relative" onclick="switchLang('id')" type="submit">
                         <div class="d-inline-block position-relative">
                             <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8000/assets/id_lang.png'> 
                         </div>
@@ -172,11 +172,11 @@
         let greet;
 
         if (hour >= 3 && hour <= 12) {
-            greet = "Good Morning";
+            greet = "{{ __('messages.good_morning') }}";
         } else if (hour > 12 && hour <= 18) {
-            greet = "Good Afternoon";
+            greet = "{{ __('messages.good_afternoon') }}";
         } else if ((hour > 18 && hour <= 23) || (hour >= 0 && hour < 3)) {
-            greet = "Good Night";
+            greet = "{{ __('messages.good_night') }}";
         }
 
         document.getElementById("greet").innerHTML = greet;
@@ -265,7 +265,6 @@
             },
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log(jqXHR.responseJSON.message);
             failResponse(jqXHR, ajaxOptions, thrownError, "#notif_holder_detail", false, null, null);
         });;
     }
@@ -383,5 +382,9 @@
                 }
             }
         });
+    }
+
+    function switchLang(lang) {
+        sessionStorage.setItem('localization', lang);
     }
 </script>

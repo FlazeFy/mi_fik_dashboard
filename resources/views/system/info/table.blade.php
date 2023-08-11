@@ -204,7 +204,7 @@
                     @csrf
                     <div class="form-floating mb-2">
                         <select class="form-select" id="info_type_${id}" style="font-size:14px;" title="Info Page" name="info_page" aria-label="Floating label select example" required></select>
-                        <label for="floatingSelect">Page</label>
+                        <label for="floatingSelect">{{ __('messages.page') }}</label>
                     </div>
                     <div class="form-floating">
                         <input type="text" class="form-control nameInput" id="info_location_${id}" value="${loc}" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required>

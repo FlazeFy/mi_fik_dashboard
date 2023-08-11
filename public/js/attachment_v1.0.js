@@ -22,9 +22,9 @@ function getAttachmentInput(index, val){
     if (val === "attachment_url") {
         $("#preview_att_" + index).empty();
         $("#attach-input-holder-" + index).append(`
-            <h6 class="mt-1">Attachment URL</h6>
+            <h6 class="mt-1">${messages('att_url')}</h6>
             <input type="text" id="attach_url_${index}" name="attach_url" class="form-control m-2" onblur="setValue('${index}', true)" required>
-            <h6 class="mt-1">Attachment Name</h6>
+            <h6 class="mt-1">${messages('att_name')}</h6>
             <input type="text" id="attach_name_${index}" name="attach_name" class="form-control m-2" onblur="setValue('${index}', true)">
         `);
     } else {
@@ -39,7 +39,7 @@ function getAttachmentInput(index, val){
         $("#attach-input-holder-" + index).append(`
             <input type="file" id="attach_url_${index}" name="attach_input" class="form-control m-2" ${allowed} onblur="setValue('${index}', true)">
             <input type="text" id="attach_url_holder_${index}" hidden required>
-            <h6 class="mt-1">Attachment Name</h6>
+            <h6 class="mt-1">${messages('att_name')}</h6>
             <input type="text" id="attach_name_${index}" name="attach_name" class="form-control m-2" onblur="setValue('${index}', true)">
         `);
     }
@@ -64,11 +64,9 @@ function removeAttachment(type, list, idx){
                 var msg = ""
 
                 desertRef.delete().then(() => {
-                    msg = "Attachment has been removed";
-                    //Return msg not finished. i dont know what to do next LOL
+                    msg = `${messages('removed_att')}`;
                 }).catch((error) => {
-                    msg = "Failed to deleted the Attachment";
-                    //Return msg not finished. i dont know what to do next LOL
+                    msg = `${messages('failed_removed')}`;
                 });
             }
         } 
@@ -85,5 +83,5 @@ function doErrorAttachment(id, error){
     document.getElementById('attach_type_'+id).disabled = false;
     document.getElementById('attach_url_'+id).value = null;
     document.getElementById('attach_name_'+id).disabled = true;
-    document.getElementById('attach-failed-'+id).innerHTML = "File upload is " + error.message;
+    document.getElementById('attach-failed-'+id).innerHTML = `${messages('file_upload_is')} ${error.message}`;
 }

@@ -232,4 +232,16 @@ return [
     'joined_at' => 'Bergabung pada',
     'requested' => 'Meminta',
     'want_remove' => 'Ingin menghapus',
+    'good_morning' => 'Selamat Pagi',
+    'good_afternoon' => 'Selamat Siang',
+    'good_night' => 'Selamat Malam',
+    'no_more' => 'Tidak ada item lagi yang perlu ditampilkan',
+    'from_this_event' => 'dari event ini',
+    'remove_loc' => 'Hapus Lokasi',
+    'add_grouping' => 'Tambah Pengelompokan',
+    'something_is_wrong' => 'Terdapat gangguan. Mohon hubungi Admin',
+    'expired_sess' => 'Waktu sesi atau masa token telah habis',
+    'sign_in_again' => 'Silahkan login kembali',
+    'add_dictionary' => 'Tambah Kamus',
+    'optional' => 'Opsional'
 ];

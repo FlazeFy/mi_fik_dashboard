@@ -18,7 +18,6 @@ use App\Models\ArchiveRelation;
 
 class Commands extends Controller
 {
-    //
     public function createArchive(Request $request)
     {
         try{
@@ -150,7 +149,6 @@ class Commands extends Controller
                             return response()->json([
                                 'status' => 'failed',
                                 'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
-                                'data' => null
                             ], Response::HTTP_UNPROCESSABLE_ENTITY);
                         }
                     }
@@ -222,7 +220,6 @@ class Commands extends Controller
                     return response()->json([
                         'status' => 'failed',
                         'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
-                        'data' => null
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }

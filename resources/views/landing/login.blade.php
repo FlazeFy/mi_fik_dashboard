@@ -58,7 +58,6 @@
             data: $('#form-login').serialize(),
             dataType: 'json',
             success: function(response) {
-                //console.log(response.token);
                 var found = false;
                 var is_waiting =  false;
 

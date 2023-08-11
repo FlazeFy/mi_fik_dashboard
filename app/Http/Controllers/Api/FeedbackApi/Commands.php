@@ -12,8 +12,6 @@ use App\Helpers\Validation;
 
 class Commands extends Controller
 {
-    //
-
     public function insertFeedback(Request $request) {
 
         try {

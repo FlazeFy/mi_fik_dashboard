@@ -301,7 +301,6 @@ class CommandContent extends Controller
                     return response()->json([
                         'status' => 'failed',
                         'message' => Generator::getMessageTemplate("failed_owner_exist",'event', null),
-                        'data' => null
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }

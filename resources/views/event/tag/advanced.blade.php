@@ -106,20 +106,22 @@
                                 tag_name = tag_col[0];
                             }
 
-                            if(tag_name != "" && tag_name.length < validation[0]['len']){
-                                $("#imported-tag-holder").append(' ' +
-                                    '<div class="col-lg-4">' +
-                                        '<div class="form-floating mb-2"> ' +
-                                            '<input type="text" class="form-control nameInput" id="tag_name" name="tag_name[]" value="'+tag_name+'" maxlength="30" required> ' +
-                                            '<label for="tag_name">Tag Name</label> ' +
-                                            '<a id="tag_name_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
-                                        '</div>' +
-                                    '</div>');
+                            if (tag_name !== "" && tag_name.length < validation[0]['len']) {
+                                $("#imported-tag-holder").append(`
+                                    <div class="col-lg-4">
+                                        <div class="form-floating mb-2">
+                                            <input type="text" class="form-control nameInput" id="tag_name" name="tag_name[]" value="${tag_name}" maxlength="30" required>
+                                            <label for="tag_name">Tag Name</label>
+                                            <a id="tag_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                                        </div>
+                                    </div>
+                                `);
                             } else {
-                                if(tag_name == ""){
+                                let msg;
+                                if (tag_name === "") {
                                     msg = "Tag name can't be empty";
                                 } else {
-                                    msg = "Tag name must be below "+validation[0]['len']+" character long";
+                                    msg = `Tag name must be below ${validation[0]['len']} characters long`;
                                 }
                                 is_success = false;
                             }
@@ -130,51 +132,68 @@
                                 ttag_desc = tag_col[1];
                             }
 
-                            if(tag_desc.length < validation[1]['len'] && is_success == true){
-                                $("#imported-tag-holder").append(' ' +
-                                    '<div class="col-lg-4">' +
-                                        '<div class="form-floating mb-2"> ' +
-                                            '<textarea class="form-control" id="tag_desc" name="tag_desc[]" value="'+tag_desc+'"  maxlength="255">'+tag_desc+'</textarea> ' +
-                                            '<label for="tag_desc">Tag Description</label> ' +
-                                            '<a id="tag_desc_msg" class="text-danger my-2" style="font-size:13px;"></a> ' +
-                                        '</div>' +
-                                    '</div>');
+                            if (tag_desc.length < validation[1]['len'] && is_success) {
+                                $("#imported-tag-holder").append(`
+                                    <div class="col-lg-4">
+                                        <div class="form-floating mb-2">
+                                            <textarea class="form-control" id="tag_desc" name="tag_desc[]" value="${tag_desc}" maxlength="255">${tag_desc}</textarea>
+                                            <label for="tag_desc">Tag Description</label>
+                                            <a id="tag_desc_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                                        </div>
+                                    </div>
+                                `);
                             } else {
-                                if(is_success == true){
+                                if (is_success) {
                                     $("#imported-tag-holder").children().last().remove();
                                 }
-                                msg = "Tag description must be below "+validation[1]['len']+" character long";
+                                msg = `Tag description must be below ${validation[1]['len']} characters long`;
                                 is_success = false;
                             }
 
-                            if(is_success == true){
+                            if (is_success) {
                                 success++;
-                                $("#imported-tag-holder").append(' ' + 
-                                    '<div class="col-lg-4"> ' +
-                                        '<div class="form-floating"> ' +
-                                            '<select class="form-select" id="tag_category" name="tag_category[]" aria-label="Floating label select example" onchange="validateForm(validation)" required> ' +
-                                                '@php($i = 0) ' +
-                                                '@foreach($dct_tag as $dtag) ' +
-                                                    '@if($i == 0) ' +
-                                                        '<option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option> ' +
-                                                    '@else ' +
-                                                        '<option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option> ' +
-                                                    '@endif ' +
-                                                    '@php($i++) ' +
-                                                '@endforeach ' +
-                                            '</select> ' +
-                                            '<label for="tag_category">Category</label> ' +
-                                            '<a id="tag_category_msg" class="text-danger my-2" style="font-size:13px;"></a>' +
-                                        '</div> ' +
-                                    '</div><hr>');
+                                $("#imported-tag-holder").append(`
+                                    <div class="col-lg-4">
+                                        <div class="form-floating">
+                                            <select class="form-select" id="tag_category" name="tag_category[]" aria-label="Floating label select example" onchange="validateForm(validation)" required>
+                                                @php($i = 0)
+                                                @foreach($dct_tag as $dtag)
+                                                    @if($i == 0)
+                                                        <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
+                                                    @else
+                                                        <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                                                    @endif
+                                                    @php($i++)
+                                                @endforeach
+                                            </select>
+                                            <label for="tag_category">Category</label>
+                                            <a id="tag_category_msg" class="text-danger my-2" style="font-size:13px;"></a>
+                                        </div>
+                                    </div><hr>
+                                `);
                             } else {
-                                $("#imported-tag-holder").append(' ' + 
-                                    '<div class="col-12 py-3"> ' +
-                                        '<h6 class="text-dark">Failed to import at line '+row+' </h6>' +
-                                        '<a class="text-danger err-msg"><i class="fa-solid fa-triangle-exclamation"></i> '+msg+'</a>' +
-                                    '</div><hr>');
+                                $("#imported-tag-holder").append(`
+                                    <div class="col-12 py-3">
+                                        <h6 class="text-dark">Failed to import at line ${row}</h6>
+                                        <a class="text-danger err-msg"><i class="fa-solid fa-triangle-exclamation"></i> ${msg}</a>
+                                    </div><hr>
+                                `);
                                 failed++;
                             }
+
+                            setTimeout(() => {
+                                document.getElementById("success-check").innerHTML = "";
+                                err_import_msg.innerHTML = "";
+                                document.getElementById("init-import").innerHTML = `
+                                    <br><br>
+                                    <h5 class="text-success">${success} Tag imported <span style="color:var(--shadowColor);">/</span> <span class="text-danger" style="font-size:var(--textLG);">${failed} Import failed</span></h5>
+                                    <button class="btn btn-success rounded-pill py-1 mt-1" data-bs-target="#addTagAdvanced" data-bs-toggle="modal"><i class="fa-solid fa-eye"></i> Preview</button>
+                                    <input type="file" id="fileInput" accept=".csv" class="d-none" oninput="importTagFile()">
+                                    <label for="fileInput" class="btn btn-danger py-1 ms-1 mt-1 rounded-pill"><i class="fa-solid fa-cloud"></i> Change File</label>
+                                    <button class="btn btn-danger rounded-pill py-1 mt-1 px-3" onclick="clearImportedTag()"><i class="fa-solid fa-trash"></i></button>
+                                `;
+                            }, 3000);
+
                         }
 
                         setTimeout(() => {
