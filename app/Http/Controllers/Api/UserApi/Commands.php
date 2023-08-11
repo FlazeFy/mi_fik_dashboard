@@ -73,7 +73,7 @@ class Commands extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'User profile updated',
+                        'message' => Generator::getMessageTemplate("business_update", "user profile", null),
                         'data' => $user." data updated"
                     ], Response::HTTP_OK);
                 }
@@ -147,7 +147,7 @@ class Commands extends Controller
                     DB::commit();
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'User profile image updated',
+                        'message' => Generator::getMessageTemplate("business_update", "Profile image", null),
                     ], Response::HTTP_OK);
                 }
             }
@@ -222,7 +222,7 @@ class Commands extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Role has been updated',
+                    'message' => Generator::getMessageTemplate("business_update", "tag", null),
                     'data' => $newR
                 ], Response::HTTP_OK);
             }
@@ -311,7 +311,7 @@ class Commands extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Role has been updated',
+                    'message' => Generator::getMessageTemplate("business_update", "tag", null),
                     'data' => $roles
                 ], Response::HTTP_OK);
             }
@@ -445,12 +445,12 @@ class Commands extends Controller
                     DB::commit();
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Request has been sended',
+                        'message' => Generator::getMessageTemplate("custom", 'request has been sended', null),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => 'Request failed',
+                        'message' => Generator::getMessageTemplate("custom", 'request failed to send', null),
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }
@@ -475,19 +475,20 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $found = User::where('username', $request->username)
+                $username = Converter::getCleanUsername($request->username);
+                $found = User::where('username', $username)
                     ->orWhere('email', $request->email)
                     ->exists();
 
                 if(!$found){
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Validation success',
+                        'message' => Generator::getMessageTemplate("custom", 'validation success', null),
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'result' => 'Validation failed, username or email already registered',
+                        'result' => Generator::getMessageTemplate("custom", 'username or email already registered', null),
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }
@@ -511,7 +512,8 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $user = User::select("id")->where('username', $request->username)
+                $username = Converter::getCleanUsername($request->username);
+                $user = User::select("id")->where('username', $username)
                     ->where('email', $request->email)
                     ->first();
 
@@ -532,22 +534,22 @@ class Commands extends Controller
                             'validated_at' => null
                         ]);
 
-                        dispatch(new RecoverPassMailer($request->username, $request->email, $token));
+                        dispatch(new RecoverPassMailer($username, $request->email, $token));
 
                         return response()->json([
                             'status' => 'success',
-                            'message' => 'We have send you password recovery token to your email. Please check it',
+                            'message' => Generator::getMessageTemplate("custom", 'We have send you password recovery token to your email. Please check it', null),
                         ], Response::HTTP_OK);
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'result' => 'Recovery failed. Your previous recover password has not finished yet',
+                            'result' => Generator::getMessageTemplate("custom", 'Your previous recover password has not finished yet', null),
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'result' => 'Validation failed, username or email does not exist',
+                        'result' => Generator::getMessageTemplate("custom", 'Username or email does not exist', null),
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 }
             }
@@ -592,18 +594,18 @@ class Commands extends Controller
                             DB::commit();
                             return response()->json([
                                 'status' => 'success',
-                                'message' => 'Token valid, now you can set up your new password',
+                                'message' => Generator::getMessageTemplate("custom", 'Token valid, now you can set up your new password', null),
                             ], Response::HTTP_OK);
                         } else {
                             return response()->json([
                                 'status' => 'failed',
-                                'message' => 'Times out',
+                                'message' => Generator::getMessageTemplate("custom", 'times out', null),
                             ], Response::HTTP_UNPROCESSABLE_ENTITY);
                         }
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'result' => 'Token invalid, please try again',
+                            'result' => Generator::getMessageTemplate("custom", 'Token invalid, please try again', null),
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }
                 } else {
@@ -630,7 +632,7 @@ class Commands extends Controller
                     DB::commit();
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Token regenerated',
+                        'message' => Generator::getMessageTemplate("custom", 'Token invalid, please try again when Token regenerated', null),
                     ], Response::HTTP_OK);
                 }
             }
@@ -703,7 +705,7 @@ class Commands extends Controller
                         DB::commit();
                         return response()->json([
                             'status' => 'success',
-                            'message' => 'Password has changed',
+                            'message' => Generator::getMessageTemplate("custom", 'Password has changed', null),
                         ], Response::HTTP_OK);
                     } else {
                         return response()->json([
@@ -750,7 +752,7 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Token updated',
+                    'message' => Generator::getMessageTemplate("custom", 'Token updated', null),
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
@@ -775,8 +777,9 @@ class Commands extends Controller
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
                 $validPass = Validation::hasNumber($request->password);
+                $username = Converter::getCleanUsername($request->username);
                 if($validPass) {
-                    $found = DB::table("users")->where('username', $request->username)
+                    $found = DB::table("users")->where('username', $username)
                         ->orWhere('email', $request->email)
                         ->exists();
 
@@ -790,7 +793,7 @@ class Commands extends Controller
                         $user = DB::table("users")->insert([
                             'id' => $uuid, 
                             'firebase_fcm_token' => null, 
-                            'username' => $request->username, 
+                            'username' => $username, 
                             'email' => $request->email, 
                             'password' => Hash::make($request->password), 
                             'first_name' => $request->first_name, 
@@ -874,7 +877,7 @@ class Commands extends Controller
                                 DB::commit();
                                 return response()->json([
                                     'status' => 'success',
-                                    'message' => 'User registration complete',
+                                    'message' => Generator::getMessageTemplate("business_create", 'user', null),
                                     'data' => $user
                                 ], Response::HTTP_OK);
                             }
@@ -882,7 +885,7 @@ class Commands extends Controller
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'result' => 'Validation failed, username or email already registered',
+                            'result' => Generator::getMessageTemplate("failed_exist", 'user', 'event / task'),
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }
                 } else {

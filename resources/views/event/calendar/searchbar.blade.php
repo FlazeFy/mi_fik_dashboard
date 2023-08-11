@@ -11,33 +11,32 @@
 
 <script type="text/javascript">
     var search = "";
-    const search_storage = sessionStorage.getItem('search_finished')
+    const search_storage = sessionStorage.getItem('search_finished');
 
     if (search_storage == null) {
-        sessionStorage.setItem('search_finished', search)
+        sessionStorage.setItem('search_finished', search);
     } else {
-        document.getElementById('title_search').value = search_storage
+        document.getElementById('title_search').value = search_storage;
     }
 
     function checkTitleSearch() {
-        var input_search = document.getElementById('title_search').value
+        var input_search = document.getElementById('title_search').value;
 
         if(input_search == null || input_search.trim() === ''){
-            sessionStorage.setItem('search_finished', '')
+            sessionStorage.setItem('search_finished', '');
         } else {
-            sessionStorage.setItem('search_finished', input_search.trim())
+            sessionStorage.setItem('search_finished', input_search.trim());
         }
         if(input_search.trim() != search_storage.trim()){
-            location.reload()
+            location.reload();
         }
 
-        search = input_search.trim()
-
+        search = input_search.trim();
     }
 
     function resetTitleSearch(){
-        sessionStorage.setItem('search_finished', '')
-        location.reload()
+        sessionStorage.setItem('search_finished', '');
+        location.reload();
     }
     
     function submitOnEnter(event) {

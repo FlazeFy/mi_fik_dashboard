@@ -1,3 +1,9 @@
+<style>
+    #rich_box {
+        height: 400px !important;
+    }
+</style>
+
 <div id="rich_box"></div>
 <input name="content_desc" id="content_desc" hidden>
 

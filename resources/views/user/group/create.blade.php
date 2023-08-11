@@ -187,7 +187,7 @@
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event</h5>");
                 return;
             } else {                
                 for(var i = 0; i < data.length; i++){
@@ -200,21 +200,23 @@
                     var email = data[i].email;
                     var joined = data[i].accepted_at;
 
-                    var elmt = " " +
-                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
-                            '<div class="row ps-2"> ' +
-                                '<div class="col-2 p-0 py-2 ps-2"> ' +
-                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
-                                '</div> ' +
-                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
-                                    '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
-                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + getRole(grole) + '</h6> ' +
-                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
-                                    '</div> ' +
-                                '</div> ' +
-                            '</div> ' +
-                        '</a>';
+                    const elmt = `
+                            <a class="btn user-box" style="height:80px;" onclick="loadDetailGroup('${img}', '${grole}', '${fullName}', '${username}', '${email}', '${joined}')">
+                                <div class="row ps-2">
+                                    <div class="col-2 p-0 py-2 ps-2">
+                                        <img class="img img-fluid user-image" src="${getUserImage(img, grole)}" alt="username-profile-pic.png">
+                                    </div>
+                                    <div class="col-10 p-0 py-2 ps-2 position-relative">
+                                        <h6 class="text-secondary fw-normal">${fullName}</h6>
+                                        <h6 class="text-secondary fw-bold" style="font-size:13px;">${getRole(grole)}</h6>
+                                        <div class="form-check position-absolute" style="right: 20px; top: 20px;">
+                                            <input class="form-check-input" name="user_username[]" value="${username}" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelected('${username}', '${fullName}', this.checked)" ${getChecked(username)}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+
 
                     $("#user-list-holder").prepend(elmt);
                 }   
@@ -232,9 +234,9 @@
         $("#all-user-page").empty();
         for(var i = 1; i <= lastPageAllUser; i++){
             if(i == page_new_req){
-                var elmt = "<a class='page-holder active'>"+i+"</a>";
+                var elmt = `<a class='page-holder active'>${i}</a>`;
             } else {
-                var elmt = "<a class='page-holder' onclick='infinteLoadMoreUser("+'"'+i+'"'+")'>"+i+"</a>";
+                var elmt = `<a class='page-holder' onclick='infinteLoadMoreUser("${i}")'>${i}</a>`;
             }
             $("#all-user-page").append(elmt);
         }
@@ -257,8 +259,6 @@
                     // Make sure the item unchecked by remove from selected user list
                     document.getElementById("check_"+username).checked = false; 
                     input_holder.value = JSON.stringify(selectedUser);
-                } else {
-                    console.log('Item not found LOL');
                 }
             } else {
                 selectedUser.push({
@@ -278,10 +278,10 @@
         holder.innerHTML = "";
 
         selectedUser.forEach((e) => {
-            var elmt = ' ' +
-                '<a class="remove_suggest" onclick="addSelected('+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
-                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
-                '<a>' + e.full_name + '</a>';
+            var elmt = `
+                <a class="remove_suggest" onclick="addSelected('${e.username}', '${e.fullName}', false)" title="Remove this user"> ' +
+                <i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                <a>${e.full_name}</a>`;
             holder.innerHTML += elmt;
         });
     }
@@ -291,13 +291,13 @@
 
         if(role){
             for(var i = 0; i < role.length; i++){
-                elmnt += "<a class='btn btn-tag'>"+role[i]['tag_name']+"</a>"
+                elmnt += `<a class='btn btn-tag'>${role[i]['tag_name']}</a>`
             }
             return elmnt;
 
         } else {
-            return "<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-role'> " +
-                "<h6 class='text-center'>This user has no tag</h6>" ;
+            return `<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-role'>
+                <h6 class='text-center'>This user has no tag</h6>` ;
         }
     }
 
@@ -312,13 +312,15 @@
     function loadDetailGroup(img, grole, fname, uname, email, join){
         document.getElementById("detail-holder").innerHTML = "";
 
-        var elmt_detail = " " +
-            "<div class='m-2 p-3 text-center'> " +
-                '<img class="img img-fluid rounded-circle shadow" style="width:180px; height:180px;" src="'+getUserImage(img, grole)+'"> ' +
-                '<h5 class="mt-3">'+fname+'</h5>' +
-                '<h6 class="mt-1 text-secondary">@'+uname+', <span style="font-size:13px;">Joined since ' + getDateToContext(join, "full") + '</span></h6>' +
-                '<a class="mt-1 text-secondary link-external" title="Send email" href="mailto:' + email + '">'+email+'</a>' +
-            "</div>";
+        const elmt_detail = `
+            <div class="m-2 p-3 text-center">
+                <img class="img img-fluid rounded-circle shadow" style="width:180px; height:180px;" src="${getUserImage(img, grole)}">
+                <h5 class="mt-3">${fname}</h5>
+                <h6 class="mt-1 text-secondary">@${uname}, <span style="font-size:13px;">Joined since ${getDateToContext(join, "full")}</span></h6>
+                <a class="mt-1 text-secondary link-external" title="Send email" href="mailto:${email}">${email}</a>
+            </div>
+        `;
+
         
         document.getElementById("detail-holder").innerHTML = elmt_detail;
     }

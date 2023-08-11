@@ -73,7 +73,7 @@ class Commands extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Archive Created',
+                        'message' => Generator::getMessageTemplate("business_create",'archive',$request->archive_name),
                         'data' => $archive
                     ], Response::HTTP_OK);
                 }
@@ -87,7 +87,6 @@ class Commands extends Controller
     }
 
     public function addToArchive(Request $request){
-        // This usecase doens't need to include history !
         try{
             $user_id = $request->user()->id;
             
@@ -101,7 +100,7 @@ class Commands extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Content Added to Archive',
+                'message' => Generator::getMessageTemplate("custom",'content added to archive',null),
                 'data' => $relation
             ], Response::HTTP_OK);
         } catch (\Exception $e) {
@@ -168,7 +167,7 @@ class Commands extends Controller
 
                         return response()->json([
                             'status' => 'success',
-                            'message' => 'Archive successfully updated',
+                            'message' => Generator::getMessageTemplate("business_update",'archive',$request->archive_name),
                             'data' => $result
                         ], Response::HTTP_OK);
                     }
@@ -176,7 +175,7 @@ class Commands extends Controller
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'result' => 'Archive name must be unique',
+                    'result' => Generator::getMessageTemplate("failed_exist",'archive',$request->archive_name),
                     'data' => null
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
@@ -232,7 +231,7 @@ class Commands extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Archive deleted'
+                    'message' => Generator::getMessageTemplate("business_delete",'archive',$request->archive_name)
                 ], Response::HTTP_OK);
             }
         } catch (\Exception $e) {
@@ -298,12 +297,12 @@ class Commands extends Controller
                 DB::commit();
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Added to Archive with '.$count_job.' changes',
+                    'message' => Generator::getMessageTemplate("custom", ucfirst($type).' saved', null),
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'result' => 'Not a valid json array',
+                    'result' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         } catch (\Exception $e) {

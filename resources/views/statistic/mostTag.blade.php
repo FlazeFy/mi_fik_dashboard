@@ -31,10 +31,9 @@
     var options = {
         series: [
             <?php 
-                //Initial variable
                 $val = [];
                 foreach($setting as $set){
-                    $max = $set->MOT_range; //Max tag to show.
+                    $max = $set->MOT_range; 
                 }
                 $otherTotal = 0;
 
@@ -42,20 +41,16 @@
                     $tag = json_decode($mt->content_tag);
                     
                     foreach($tag as $tg){
-                        //Insert tag name to new array
                         array_push($val, $tg->tag_name);
                     }   
                 }
 
-                //Count duplicate value w/ DESC sorting
                 $result = array_count_values($val);
                 rsort($result);
 
-                //Separate top used and the others
                 $main = array_slice($result, 0, $max);
                 $others = array_slice($result, $max, count($result));
 
-                //The top used & the others frequency
                 foreach($main as $m){
                     echo $m.",";
                 }
@@ -74,32 +69,27 @@
     },
     labels: [
         <?php 
-            //Initial variable
             $val = [];
 
             foreach($mostTag as $mt){
                 $tag = json_decode($mt->content_tag);
                 
                 foreach($tag as $tg){
-                    //Insert tag name to new array
                     array_push($val, $tg->tag_name);
                 }   
             }
 
-            //Check if chart range is greater than location total
             foreach($setting as $set){
                 if(count($val) > $set->MOT_range){
-                    $max = $set->MOT_range; //Max loc to show.
+                    $max = $set->MOT_range;
                 } else {
                     $max = null;
                 }
             }
 
-            //Count duplicate value w/ DESC keys sorting
             $result = array_count_values($val);
             arsort($result);
 
-            //Get array keys
             $new_arr = array_keys($result);
             if($max != null){
                 for($i = 0; $i < $max; $i++){

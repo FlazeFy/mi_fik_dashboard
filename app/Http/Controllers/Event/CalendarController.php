@@ -57,11 +57,11 @@ class CalendarController extends Controller
                 ->with('mytag', $mytag)
                 ->with('menu', $menu);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 
-    public function set_filter_tag(Request $request, $all)
+    public function set_filter_tag(Request $request, $all, $from)
     {
         if($all == 0){
             $slug = $request->slug_name;
@@ -81,7 +81,7 @@ class CalendarController extends Controller
             $tag_holder = "All";
         }
 
-        session()->put('selected_tag_calendar', $tag_holder);
+        session()->put('selected_tag_'.$from, $tag_holder);
 
         return redirect()->back()->with('success_message', 'Content filtered');
     }

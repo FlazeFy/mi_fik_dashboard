@@ -26,7 +26,7 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 422,
-                    'message' => 'Add tag failed',
+                    'message' => Generator::getMessageTemplate("business_create_failed", 'tag', null),
                     'error' => $errors
                 ], Response::HTTP_BAD_REQUEST);
             } else {
@@ -48,13 +48,13 @@ class Commands extends Controller
     
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Tag created',
+                        'message' => Generator::getMessageTemplate("business_create", 'tag', null),
                         'data' => $tag
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => 'Create tag failed, use unique name',
+                        'message' => Generator::getMessageTemplate("failed_exist", 'tag', $request->tag_name),
                         'data' => null
                     ], Response::HTTP_BAD_REQUEST);
                 }
@@ -86,20 +86,20 @@ class Commands extends Controller
                 if($tag != 0){
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Tag updated',
+                        'message' => Generator::getMessageTemplate("business_update", 'tag', $request->tag_name),
                         'data' => $tag
                     ], Response::HTTP_OK);
                 } else {
                     return response()->json([
                         'status' => 'failed',
-                        'message' => 'Tag not found',
+                        'message' => Generator::getMessageTemplate("business_read_failed", 'tag', $request->tag_name),
                         'data' => null
                     ], Response::HTTP_OK);
                 }
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Updated failed, use unique name',
+                    'message' => Generator::getMessageTemplate("business_update_failed", 'tag', $request->tag_name),
                     'data' => null
                 ], Response::HTTP_OK);
             }
@@ -121,13 +121,13 @@ class Commands extends Controller
             if($tag != 0){
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Tag deleted',
+                    'message' => Generator::getMessageTemplate("business_delete", 'tag', null),
                     'data' => $tag
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Tag not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'tag', null),
                     'data' => null
                 ], Response::HTTP_OK);
             }
@@ -145,7 +145,7 @@ class Commands extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => 'Tag permanentaly deleted',
+                'message' => Generator::getMessageTemplate("custom", 'tag permanentaly deleted', null),
                 'data' => $tag
             ], Response::HTTP_OK);
         } catch(\Exception $e) {

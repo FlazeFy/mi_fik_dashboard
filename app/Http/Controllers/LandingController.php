@@ -40,9 +40,6 @@ class LandingController extends Controller
     }
 
     public function login_admin(Request $request){
-        //Password hash
-        //........
-
         $check = Admin::select('username','image_url')
             ->where('username', $request->username)
             ->where('password', $request->password)
@@ -81,7 +78,7 @@ class LandingController extends Controller
     
                 return redirect()->route('homepage');
             } else {   
-                return redirect()->back()->with('failed_message', 'Wrong username or password');
+                return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
             }
         }
     }
@@ -116,7 +113,7 @@ class LandingController extends Controller
                 'deleted_at' => null,
             ]);
 
-            return redirect()->back()->with('success_message', 'Feedback has been sended');  
+            return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",'feedback has been sended',null));  
         }
     }
 }

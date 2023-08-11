@@ -227,11 +227,11 @@
 
             function warn(now){
                 if(now == "terms"){
-                    msg_check_terms.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You must check this checkbox";
+                    msg_check_terms.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> You must check this checkbox";
                 } else if(now == "profiledata"){
-                    msg_all_input.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Some input may be empty or have reached maximum character";
+                    msg_all_input.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Some input may be empty or have reached maximum character";
                 } else if(now == "role"){
-                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant use Mi-FIK without a tag. And you must select one tag from 'General Role'";
+                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> You cant use Mi-FIK without a tag. And you must select one tag from 'General Role'";
                 } 
             }
 

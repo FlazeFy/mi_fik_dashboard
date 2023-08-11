@@ -48,7 +48,7 @@ class FaqController extends Controller
                     ->with('history', $history)
                     ->with('info',$info);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");
@@ -137,7 +137,7 @@ class FaqController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create faq answer '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 

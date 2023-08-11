@@ -74,14 +74,14 @@ class Commands extends Controller
                 // return redirect()->back()->with('success_message', ucfirst($type)." successfully recover");
                 return response()->json([
                     'status' => 'success',
-                    'message' => ucfirst($type)." successfully recover"
+                    'message' => Generator::getMessageTemplate("custom", ucfirst($type)." successfully recover", null)
                 ], Response::HTTP_OK);
             }
         } else {
             // return redirect()->back()->with('failed_message', ucfirst($type)." recover is failed, the event doesn't exist anymore");
             return response()->json([
                 'status' => 'failed',
-                'message' => ucfirst($type)." recover is failed, the event doesn't exist anymore"
+                'message' => Generator::getMessageTemplate("custom", ucfirst($type)." recover is failed, the event doesn't exist anymore", null)
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
@@ -144,14 +144,14 @@ class Commands extends Controller
                 // return redirect()->back()->with('success_message', ucfirst($type)." successfully destroyed");
                 return response()->json([
                     'status' => 'success',
-                    'message' => ucfirst($type)." successfully destroyed"
+                    'message' => Generator::getMessageTemplate("custom", ucfirst($type)." successfully destroyed", null)
                 ], Response::HTTP_OK);
             }
         } else {
             // return redirect()->back()->with('failed_message', ucfirst($type)." destroy is failed, the event doesn't exist anymore");
             return response()->json([
                 'status' => 'failed',
-                'message' => ucfirst($type)." destroy is failed, the event doesn't exist anymore"
+                'message' => Generator::getMessageTemplate("custom", "the event doesn't exist anymore", null)
             ], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }

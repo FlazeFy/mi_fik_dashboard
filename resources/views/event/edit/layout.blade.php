@@ -102,13 +102,4 @@
 <script>
     var i = 0;
     var j = 0;
-
-    function copylink(id) {
-        var copyText = document.getElementById("copy_url_"+id);
-
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-
-        navigator.clipboard.writeText(copyText.value);
-    }
 </script>

@@ -1,6 +1,6 @@
 <style>
     #map {
-        height:300px;
+        height:400px;
         border-radius: var(--roundedSM);
         margin-top: 6px;
         margin-bottom: 6px;

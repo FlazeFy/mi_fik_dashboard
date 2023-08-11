@@ -2,21 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
-//use App\Http\Controllers\Mifik\HomepageController;
 use App\Http\Controllers\HomepageController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TrashController;
 use App\Http\Controllers\AboutController;
-use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\MultiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\WaitingController;
 
-use App\Http\Controllers\Event\AllEventController;
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
 use App\Http\Controllers\Event\CalendarController;
@@ -25,7 +22,6 @@ use App\Http\Controllers\Event\EditController;
 
 use App\Http\Controllers\System\NotificationController;
 use App\Http\Controllers\System\InfoController;
-use App\Http\Controllers\System\MaintenanceController;
 use App\Http\Controllers\System\DictionaryController;
 use App\Http\Controllers\System\AccessController;
 
@@ -65,7 +61,6 @@ Route::prefix('/homepage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::get('/', [HomepageController::class, 'index'])->name('homepage');
 
     Route::post('/add_event', [HomepageController::class, 'add_event']);
-    Route::post('/add_task', [HomepageController::class, 'add_task']);
     Route::post('/ordered/{order}', [HomepageController::class, 'set_ordering_content']);
     Route::post('/date', [HomepageController::class, 'set_filter_date']);
     Route::post('/date/reset', [HomepageController::class, 'reset_filter_date']);
@@ -88,8 +83,9 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/tag/add_category', [TagController::class, 'add_tag_category']);
     Route::post('/tag/update/{type}/{id}', [TagController::class, 'update_tag']);
     Route::post('/tag/delete/{id}', [TagController::class, 'delete_tag']);
+    Route::post('/tag/delete/cat/{id}', [TagController::class, 'delete_cat_tag']);
 
-    Route::get('/detail/{slug_name}', [DetailController::class, 'index']);
+    Route::get('/detail/{slug_name}', [DetailController::class, 'index'])->name('detail');
     Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
     Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
     Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
@@ -107,7 +103,7 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/edit/update/loc/remove/{slug_name}', [EditController::class, 'update_event_remove_loc']);
 
     Route::get('/calendar', [CalendarController::class, 'index']);
-    Route::post('/calendar/set_filter_tag/{all}', [CalendarController::class, 'set_filter_tag']);
+    Route::post('/calendar/set_filter_tag/{all}/{from}', [CalendarController::class, 'set_filter_tag']);
     Route::post('/calendar/ordered/{order}', [CalendarController::class, 'set_ordering_content']);
     Route::post('/calendar/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
 
@@ -134,8 +130,6 @@ Route::prefix('/system')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/dictionary/update/type/{id}', [DictionaryController::class, 'update_type']);
     Route::post('/dictionary/update/info/{id}', [DictionaryController::class, 'update_info']);
     Route::post('/dictionary/delete/{id}', [DictionaryController::class, 'delete']);
-
-    Route::get('/maintenance', [MaintenanceController::class, 'index']);
 
     Route::get('/access', [AccessController::class, 'index']);
 });
@@ -185,13 +179,10 @@ Route::prefix('/about')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/edit/contact', [AboutController::class, 'edit_about_contact']);
     Route::post('/help/add/type', [AboutController::class, 'add_help_type']);
     Route::post('/help/add/cat', [AboutController::class, 'add_help_cat']);
+    Route::post('/help/delete/cat/{id}', [AboutController::class, 'delete_help_cat']);
     Route::post('/help/edit/body/{id}', [AboutController::class, 'edit_help_body']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']);
     Route::post('/toogle/{ctx}/{switch}', [AboutController::class, 'toogle_edit_app']);
-});
-
-Route::prefix('/history')->middleware(['auth_v2:sanctum'])->group(function () {
-    Route::get('/', [HistoryController::class, 'index']);
 });
 
 Route::prefix('/social')->middleware(['auth_v2:sanctum'])->group(function () {

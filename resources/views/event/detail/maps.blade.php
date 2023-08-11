@@ -28,7 +28,7 @@
                 echo "let longitude= ".$coor[1].";";
                 echo "let markers= [{
                     coords:{lat:".$coor[0].",lng:".$coor[1]."},
-                    content:'<div><h4>".$c->content_title."</h4><p>".$c->content_desc."</p></div>'
+                    content:`<div><h4>".$c->content_title."</h4><p>".$c->content_desc."</p></div>`
                     },];";
             ?>
 

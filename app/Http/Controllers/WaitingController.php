@@ -32,7 +32,7 @@ class WaitingController extends Controller
                 }
 
                 if($found && $user->accepted_at){
-                    return redirect()->route('homepage')->with('granted_message','Your registration process is completed. Welcome to Mi-FIK');
+                    return redirect()->route('homepage')->with('granted_message',Generator::getMessageTemplate("custom",'Your registration process is completed. Welcome to MI-FIK',null));
                 }
             }
         } else {

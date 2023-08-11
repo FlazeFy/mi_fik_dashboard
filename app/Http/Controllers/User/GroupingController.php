@@ -43,7 +43,7 @@ class GroupingController extends Controller
                     ->with('menu', $menu)
                     ->with('info', $info);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");
@@ -157,12 +157,12 @@ class GroupingController extends Controller
                     }
                 }
             } else {
-                return redirect()->back()->with('failed_message', 'Create group failed. Please use unique name');
+                return redirect()->back()->with('failed_message', 'Please use unique name');
             }
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create group failed '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 
@@ -250,7 +250,7 @@ class GroupingController extends Controller
                 }
             }
         } else {
-            return redirect()->back()->with('failed_message', 'Create group failed. Please use unique name');
+            return redirect()->back()->with('failed_message', 'Please use unique name');
         }
     }
 

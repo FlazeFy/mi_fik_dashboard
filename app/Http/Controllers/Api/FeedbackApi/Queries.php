@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\FeedbackApi;
 
+use App\Helpers\Generator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,8 +11,6 @@ use App\Models\Feedback;
 
 class Queries extends Controller
 {
-    //
-
     public function getAllFeedbackSuggestionApi() {
         try {
             $queries = Feedback::selectRaw('dct_name as category, count(1) as total')
@@ -25,13 +24,13 @@ class Queries extends Controller
             if (count($queries) > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Feedback Suggestion Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'feedback suggestion', null),
                     'data' => $queries
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Feedback Suggestion Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'feedback suggestion', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }

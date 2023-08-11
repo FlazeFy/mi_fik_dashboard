@@ -94,7 +94,7 @@
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Request found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-new').html("<h5 class='text-primary'>Woah!, You have see all the newest request :)</h5>");
+                $('.auto-load-new').html("<h5 class='text-primary'>Woah!, You have see all the newest request</h5>");
                 return;
             } else {
                 function getApprovedButton(acc){
@@ -123,22 +123,23 @@
                     var is_accepted = data[i].is_accepted;
                     var accepted_at = data[i].accepted_at;
 
-                    var elmt = " " +
-                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'new'" + ', null); slct_list = [];"> ' +
-                            '<div class="row ps-3"> ' +
-                                '<div class="col-2 p-0 ps-1"> ' +
-                                    '<img class="img img-fluid user-image" style="margin-top:30%;" src="' + getUserImageGeneral(img, role) + '">' +
-                                '</div> ' +
-                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
-                                    '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
-                                    '<h6 class="user-box-desc">' + getContext(is_accepted) + '</h6> ' +
-                                    '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
-                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelectedNew('+"'"+username+"'"+', '+"'"+full_name+"'"+', this.checked)""> ' +
-                                    '</div> ' +
-                                '</div> ' +
-                            '</div> ' +
-                        '</button>';
+                    const elmt = `
+                        <button class="btn user-box request" onclick="loadDetailGroup('${username}', 'new', null); slct_list = [];"> 
+                            <div class="row ps-3">
+                                <div class="col-2 p-0 ps-1">
+                                    <img class="img img-fluid user-image" style="margin-top:30%;" src="${getUserImageGeneral(img, role)}">
+                                </div> 
+                                <div class="col-10 p-0 py-2 ps-2 position-relative">
+                                    <h6 class="text-secondary fw-normal">${full_name}</h6>
+                                    <h6 class="user-box-desc">${getContext(is_accepted)}</h6>
+                                    <h6 class="user-box-date">${getDateToContext(created_at, "full")}</h6>
+                                    <div class="form-check position-absolute" style="right: 20px; top: 20px;">
+                                        <input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelectedNew('${username}', '${full_name}', this.checked)""> 
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    `;
 
                     $("#data_wrapper_new_req").append(elmt);
                 }   

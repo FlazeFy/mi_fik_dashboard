@@ -86,10 +86,10 @@
 
         if(pwd.getAttribute('type') == "text"){
             pwd.setAttribute('type', 'password');
-            btn.innerHTML = '<i class="fa-sharp fa-solid fa-eye-slash"></i>';
+            btn.innerHTML = `<i class="fa-sharp fa-solid fa-eye-slash"></i>`;
         } else {
             pwd.setAttribute('type', 'text');
-            btn.innerHTML = '<i class="fa-sharp fa-solid fa-eye"></i>';
+            btn.innerHTML = `<i class="fa-sharp fa-solid fa-eye"></i>`;
         }
     }
 </script>

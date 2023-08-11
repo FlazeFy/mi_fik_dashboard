@@ -45,7 +45,7 @@ class DictionaryController extends Controller
                     ->with('dictionary', $dictionary)
                     ->with('dictionaryType', $dictionaryType);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");

@@ -5,7 +5,7 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
-        <!--Chart Setting-->
+        <label class="ms-3" style="font-size:12px;">Chart View</label>
         @foreach($setting as $set)
             <form action="/statistic/update_ce/{{$set->id}}" method="POST">
                 @csrf
@@ -53,13 +53,11 @@
             data: [
                 <?php
                     foreach($setting as $set){
-                        $max = $set->CE_range; //Max month to show
+                        $max = $set->CE_range; 
                     }
 
-                    //Helper
                     $arr = App\Helpers\Generator::getMonthList($max, "number");
                     
-                    //Print array from backward.
                     foreach(array_reverse($arr) as $ar => $val){
                         $i=0;
                         foreach($createdEvent as $ce){
@@ -75,7 +73,6 @@
                 ?>
             ]
         }, 
-        //....
     ],
         chart: {
         height: 260,
@@ -93,13 +90,11 @@
         categories: [
             <?php
                 foreach($setting as $set){
-                    $max = $set->CE_range; //Max month to show
+                    $max = $set->CE_range;
                 }
 
-                //Helper
                 $arr = App\Helpers\Generator::getMonthList($max, "name");                
                 
-                //Print array from backward.
                 foreach(array_reverse($arr) as $ar => $val){
                     echo $val;
                 }

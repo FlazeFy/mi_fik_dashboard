@@ -66,7 +66,7 @@
     //Validator
     function lengValidator(id){
         if($("#bodyInput_"+id).val().length >= 255){
-            $("#body_msg_"+id).html("<i class='fa-solid fa-triangle-exclamation'></i> You reaches the maximum character");
+            $("#body_msg_"+id).html("<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length");
         } else {
             $("#body_msg_"+id).text("");
         }

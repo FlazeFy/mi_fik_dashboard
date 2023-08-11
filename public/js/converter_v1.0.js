@@ -104,13 +104,7 @@ function getHourMinute(date){
     return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
 }
 
-function getRole(role){
-    if(role){
-        return role;
-    } else {
-        return '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Has no general role </span>';
-    }
-}
+const getRole = (role) => role ? role : '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Has no general role </span>';
 
 function removeTags(str) {
     if ((str===null) || (str==='')){
@@ -147,6 +141,4 @@ function subtractOffsetFromTime(timeStr) {
     return time;
 }
 
-function getHourFromTime(hr){
-    return parseInt(hr.split(":")[0]);
-}
+const getHourFromTime = (hr) => parseInt(hr.split(":")[0]);

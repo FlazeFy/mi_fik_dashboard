@@ -5,11 +5,7 @@ function isMobile() {
 }
 
 function storeLocal(name,val) {
-    if (Array.isArray(val)) {
-        val = JSON.stringify(val)
-    } else {
-        val = val.trim()
-    }
+    Array.isArray(val) ? val = JSON.stringify(val) : val = val.trim();
     localStorage.setItem(name, val)
 }
 
@@ -18,11 +14,7 @@ function getLocal(name) {
 }
 
 function storeSession(name,val) {
-    if (Array.isArray(val)) {
-        val = JSON.stringify(val)
-    } else {
-        val = val.trim()
-    }
+    Array.isArray(val) ? val = JSON.stringify(val) : val = val.trim()
     sessionStorage.setItem(name, val)
 }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\SystemApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Helpers\Generator;
 
 use App\Models\Dictionary;
 use App\Models\DictionaryType;
@@ -22,13 +23,13 @@ class QueryDictionary extends Controller
             if ($dictionary->count() > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Dictionary Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'dictionary', null),
                     'data' => $dictionary
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Dictionary Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'dictionary', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -49,13 +50,13 @@ class QueryDictionary extends Controller
             if ($dictionary->count() > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Dictionary type Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'dictionary type', null),
                     'data' => $dictionary
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Dictionary type Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'dictionary type', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -92,13 +93,13 @@ class QueryDictionary extends Controller
             if ($dictionary->count() > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Dictionary Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'dictionary', null),
                     'data' => $dictionary
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Dictionary Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'dictionary', null),
                     'data' => null
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }

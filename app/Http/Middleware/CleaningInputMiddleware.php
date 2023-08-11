@@ -4,9 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
-class AuthenticateMiddleware
+class CleaningInputMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,13 +14,14 @@ class AuthenticateMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
-        $token = session()->get('token_key');
+        $input = $request->all();
+        array_walk_recursive($input, function (&$value) {
+            $value = is_string($value) ? trim($value) : $value;
+        });
 
-        if ($token == null) {
-            return redirect()->route('landing')->with('failed_message', 'Session lost, please sign in again');
-        }
+        $request->replace($input);
 
         return $next($request);
     }

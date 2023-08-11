@@ -14,7 +14,6 @@ use App\Helpers\Validation;
 
 class Commands extends Controller
 {
-    //
     public function deleteQuestion(Request $request, $id){
         try{
             $user_id = $request->user()->id;
@@ -27,13 +26,13 @@ class Commands extends Controller
             if($content != 0){
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content deleted',
+                    'message' => Generator::getMessageTemplate("business_delete", 'question', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'question', null),
                     'data' => null
                 ], Response::HTTP_OK);
             }
@@ -72,7 +71,7 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Question created',
+                    'message' => Generator::getMessageTemplate("custom", 'question sended', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
