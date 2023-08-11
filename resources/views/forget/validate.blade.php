@@ -15,7 +15,7 @@
 </script>
 
 <div class="text-center justify-center" style="min-height:50vh;">
-    <h4 class="text-primary text-center mb-4">Set your new password</h4><br>
+    <h4 class="text-primary text-center mb-4">{{ __('messages.set_new_pass') }}</h4><br>
 
     <div id="token-validation-holder">
         <label for="pin-code" style="font-size:var(--textXMD);">Token</label>
@@ -29,8 +29,8 @@
         </div>
         <div id="token_validate_msg" class="text-danger my-2" style="font-size:13px;"></div>
         <div id="timer">15:00</div>
-        <p id="token_msg">You have 15 minutes to validate the token</p>
-        <p>Dont receive any email? <a class="btn btn-success px-4 py-2 mx-2" style="border-radius:var(--roundedLG);" onclick="postValdRecover(true)" id="regenerate-btn"><i class="fa-solid fa-envelope"></i> Resend Email</a></p>
+        <p id="token_msg">{{ __('messages.time_token_validation') }}</p>
+        <p>{{ __('messages.dont_receive_email') }} <a class="btn btn-success px-4 py-2 mx-2" style="border-radius:var(--roundedLG);" onclick="postValdRecover(true)" id="regenerate-btn"><i class="fa-solid fa-envelope"></i> Resend Email</a></p>
     </div>
     <div id="success-validation-token"></div>
     <div id="success-validation-msg"></div>

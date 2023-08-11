@@ -22,6 +22,10 @@ class LandingController extends Controller
     public function index()
     {
         if(!session()->get('slug_key')){
+            if(!session()->get('locale')){
+                session()->put('locale', "id");
+            }
+            
             $faq = Question::getActiveFAQ();
             $ctc = Help::getAboutContact();
             $fbc = Feedback::getRandomFeedback();

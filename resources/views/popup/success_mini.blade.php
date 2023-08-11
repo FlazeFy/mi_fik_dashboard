@@ -15,7 +15,7 @@
         <div class="toast-header">
             <img class="mx-2" src="{{asset('assets/Success.png')}}" alt='success.png' style='width:22px;'>
             <h6 class="me-auto mt-1 ">{{ __('messages.success') }}</h6>
-            <small>Recently</small>
+            <small>{{ __('messages.recently') }}</small>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
         <div class="toast-body rounded-bottom">

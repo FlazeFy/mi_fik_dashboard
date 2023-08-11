@@ -1,9 +1,3 @@
-<style>
-    .form-select {
-        font-size: var(--textSM);
-    }
-</style>
-
 <div class="detail-box">
     <form action="/user/request/manage_role_acc" method="POST">
         @csrf

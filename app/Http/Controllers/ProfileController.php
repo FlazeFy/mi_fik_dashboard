@@ -117,33 +117,46 @@ class ProfileController extends Controller
 
                 return redirect()->back()->with('failed_message', $errors);
             } else {
+                $check = null;
                 if($role_key == 1){
-                    Admin::where('id', $user_id)->update([
-                        'first_name' => $request->first_name,
-                        'last_name' => $request->last_name,
-                        'phone' => $request->phone,
-                        'updated_at' => date("Y-m-d H:i"),
-                    ]);
+                    $check = Admin::selectRaw('1')->where('email', $request->email)->first();
                 } else {
-                    User::where('id', $user_id)->update([
-                        'first_name' => $request->first_name,
-                        'last_name' => $request->last_name,
-                        'updated_at' => date("Y-m-d H:i"),
-                        'updated_by' => $user_id,
-                    ]);
+                    $check = User::selectRaw('1')->where('email', $request->email)->first();
                 }
 
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type,
-                    'context_id' => null,
-                    'history_body' => $data->history_body,
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
+                if($check != null){
+                    if($role_key == 1){
+                        Admin::where('id', $user_id)->update([
+                            'first_name' => $request->first_name,
+                            'last_name' => $request->last_name,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'updated_at' => date("Y-m-d H:i"),
+                        ]);
+                    } else {
+                        User::where('id', $user_id)->update([
+                            'first_name' => $request->first_name,
+                            'email' => $request->email,
+                            'last_name' => $request->last_name,
+                            'updated_at' => date("Y-m-d H:i"),
+                            'updated_by' => $user_id,
+                        ]);
+                    }
 
-                return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'profile',null));
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type,
+                        'context_id' => null,
+                        'history_body' => $data->history_body,
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+
+                    return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'profile',null));
+                } else {
+                    return redirect()->back()->with('failed_message', Generator::getMessageTemplate("business_update_failed",'profile. The email has been used',null));
+                }
             }
         }
     }

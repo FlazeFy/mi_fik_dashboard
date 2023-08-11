@@ -27,7 +27,7 @@
         cursor: pointer;
     }
     .event-tag-box{
-        border-radius: var(--roundedMini);
+        border-radius: var(--roundedSM);
         color:var(--whiteColor) !important;
         background: var(--primaryColor);
     }

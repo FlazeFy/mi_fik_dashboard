@@ -35,7 +35,16 @@
             @foreach($tag as $tg)
                 <tr class="tabular-item normal">
                     <td style="min-width:var(--tcolMinSM);">
-                        <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
+                        <div style="@if(session()->get('role_key') == 1) max-width:160px @else max-width:220px @endif !important; word-break: break-all !important;">
+                            {{$tg->tag_name}}
+                            @if(session()->get('role_key') == 0)
+                                @foreach($mytag as $mt)
+                                    @if($mt['slug_name'] == $tg->slug_name)
+                                        <div class="status-info bg-success d-inline-block py-1 mx-1">{{ __('messages.subscribed') }}</div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </td>
                     <td style="min-width:var(--tcolMinSM);">
                         @foreach($dct_tag as $dtag)

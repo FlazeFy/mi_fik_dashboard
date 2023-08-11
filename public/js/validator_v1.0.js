@@ -9,10 +9,10 @@ function validateForm(rules){
 
         if(e.id != "selected_item"){
             if(input.value.trim().length >= e.len){
-                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length`;
+                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> ${messages('max_char_len')}`;
                 res = false
             } else if(input.value.trim().length == 0 && e.req === true){
-                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Field can't be empty`;
+                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> ${messages('cant_empty')}`;
                 res = false
             } else {
                 msg.innerHTML = ` `;
@@ -22,7 +22,7 @@ function validateForm(rules){
             if(document.getElementById(e.len).hasChildNodes()){
                 msg.innerHTML = ` `;
             } else {
-                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> You have not select any item`;
+                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> ${messages('no_item_selected')}`;
                 res = false
             }
         }
@@ -34,11 +34,11 @@ function validateForm(rules){
             validate("profiledata");
         } else {
             btn.innerHTML = ` `;
-            btn.innerHTML = `<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>`;
+            btn.innerHTML = `<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> ${messages('submit')}</button>`;
         }
     } else {
         if(typeof val1 === 'undefined'){ 
-            btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>`;
+            btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> ${messages('locked')}</button>`;
         } else {
             val1 = false;
             validate("profiledata");
@@ -56,10 +56,10 @@ function validateFormSecond(rules){
         msg = document.getElementById(e.id+"_msg");
 
         if(input.value.trim().length >= e.len){
-            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length`;
+            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> ${messages('max_char_len')}`;
             res = false
         } else if(input.value.trim().length == 0 && e.req === true){
-            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Field can't be empty`;
+            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> ${messages('cant_empty')}`;
             res = false
         } else {
             msg.innerHTML = ` `;
@@ -72,11 +72,11 @@ function validateFormSecond(rules){
             validate("profiledata");
         } else {
             btn.innerHTML = " ";
-            btn.innerHTML = `<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>`;
+            btn.innerHTML = `<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> ${messages('submit')}</button>`;
         }
     } else {
         if(typeof val2 === 'undefined'){ 
-            btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>`;
+            btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> ${messages('locked')}</button>`;
         } else {
             val2 = false;
             validate("profiledata");
@@ -94,10 +94,10 @@ function validateFull(rules, id){
         msg = document.getElementById(e.id+"_msg");
 
         if(input.value.trim().length >= e.len){
-            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length`;
+            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> ${messages('max_char_len')}`;
             res = false
         } else if(input.value.trim().length == 0 && e.req === true){
-            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Field can't be empty`;
+            msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> ${messages('cant_empty')}`;
             res = false
         } else {
             msg.innerHTML = ` `;
@@ -110,11 +110,11 @@ function validateFull(rules, id){
             // validate("profiledata");
         } else {
             btn.innerHTML = ` `;
-            btn.innerHTML = `<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button>`;
+            btn.innerHTML = `<button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> ${messages('submit')}</button>`;
         }
     } else {
         if(typeof val1 === 'undefined'){ 
-            btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>`;
+            btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> ${messages('locked')}</button>`;
         } else {
             val1 = false;
             // validate("profiledata");

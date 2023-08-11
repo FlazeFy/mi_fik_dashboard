@@ -2,6 +2,7 @@
     let validation = [
         { id: "first_name", req: true, len: 35 },
         { id: "last_name", req: false, len: 35 },
+        { id: "email", req: false, len: 75 },
         // { id: "password", req: true, len: 50 },
         <?php
             if(session()->get("role_key") == 1){
@@ -15,9 +16,7 @@
     <form class="p-2 mt-2" action="/profile/edit/profile" method="POST">
         @csrf
         <label class="text-secondary">Username</label>
-        <h6>{{$user->username}}</h6>
-        <label class="text-secondary mt-2">Email</label>
-        <h6>{{$user->email}}</h6>
+        <h6 class="mb-4">{{$user->username}}</h6>
         
         @if(session()->get("role_key") == 1)
             <div class="form-floating mb-2 mt-3">
@@ -26,6 +25,12 @@
                 <a id="phone_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
         @endif
+
+        <div class="form-floating mb-2">
+            <input type="email" class="form-control nameInput" id="email" name="email" oninput="validateForm(validation)" maxlength="75" value="{{$user->email}}" required>
+            <label for="email">Email</label>
+            <a id="email_msg" class="text-danger my-2" style="font-size:13px;"></a>
+        </div>
 
         @if(!$isMobile)
             <div class="row mb-2 mt-4">

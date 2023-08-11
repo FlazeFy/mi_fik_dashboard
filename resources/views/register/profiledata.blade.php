@@ -47,7 +47,7 @@
         <a id="all_user_check_msg" class="text-danger my-2" style="font-size:13px;"></a>
         <div id="prevent-data-section">
             <img class="img img-fluid d-block mx-auto mt-3" style="width: 240px;" src="{{'/assets/check_user.png'}}">
-            <h6 class="text-center">Before you can fill the other form. We must validate your username and email first</h6>
+            <h6 class="text-center">{{ __('messages.validate_desc') }}</h6>
         </div><br>
         <div id="validate-available-section">
             <a class="btn btn-primary d-block mx-auto" onclick="routeCheck()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>
@@ -390,7 +390,6 @@
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 
 <script>
-    // Your web app's Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
         authDomain: "mifik-83723.firebaseapp.com",
@@ -400,6 +399,5 @@
         appId: "1:38302719013:web:23e7dc410514ae43d573cc",
         measurementId: "G-V13CR730JG"
     };
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 </script>

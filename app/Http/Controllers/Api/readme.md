@@ -174,9 +174,135 @@
         Related Test Case   :
 
 # System Module
+    - getAllPersonalAccessToken
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getAllDictionaryType
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getAllDictionaryByType
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getMyHistory
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
 
 # Tag Module
+    - getAllTag
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getTotalTagUsed
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getAllTagByCat
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
 
 # Trash Module
+    - getAllContentTrash
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
 
 # User Module
+    - editUserData
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - editUserImage
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - add_role
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - remove_role
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - request_role_api
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - check_user
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - request_recover_pass
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - recover_pass
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - updateFirebaseToken
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - register
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getNewUserRequest
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getUser
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getOldUserRequest
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getUserRejectedRequest
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getUserDetail
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getMyProfile
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getMyRole
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :
+
+    - getMyRequest
+        Related FR          : 
+        Related Diagram     : 
+        Related Test Case   :

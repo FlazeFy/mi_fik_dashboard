@@ -16,7 +16,7 @@ function getAttachmentInput(index, val){
     } else if(val == 'attachment_video'){
         var allowed = 'accept="video/*"';
     } else if(val == 'attachment_doc'){
-        var allowed = 'accept="application/pdf"'; //Check this again...
+        var allowed = 'accept="application/pdf"';
     }
 
     if (val === "attachment_url") {

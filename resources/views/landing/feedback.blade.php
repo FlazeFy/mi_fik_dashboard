@@ -1,5 +1,5 @@
 <div class="container-fluid my-5 py-4">
-    <h2 class="fw-bold mt-2 mb-5 text-primary text-center">What They Say About Us</h2>
+    <h2 class="fw-bold mt-2 mb-5 text-primary text-center">{{ __('messages.feedback_desc') }}</h2>
     <div class="row">
         @php($i = 1)
         @foreach($fbc as $fc)

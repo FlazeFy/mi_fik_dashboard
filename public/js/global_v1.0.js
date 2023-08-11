@@ -47,6 +47,11 @@ function messages(key){
             too_many_req: "System is busy. Please wait some moment",
             blocked_access: "Sorry. But you don't have access",
             unknown_error: "Unknown error. Please contact Admin",
+            max_char_len: "Reaching maximum character length",
+            cant_empty: "Field can't be empty",
+            no_item_selected: "You have not select any item",
+            submit: "Submit",
+            locked: "Locked"
         },
         id: {
             live: "Berlangsung",
@@ -71,9 +76,14 @@ function messages(key){
             too_many_req: "Sistem sedang sibuk. Mohon menunggu sebentar",
             blocked_access: "Maaf. Tetapi Anda tidak memiliki akses",
             unknown_error: "Error tak dikenal. Segera hubungi Admin",
+            max_char_len: "Mencapai batas maksimum karakter",
+            cant_empty: "Input tidak boleh kosong",
+            no_item_selected: "Anda belum memilih item",
+            submit: "Submit",
+            locked: "Locked"
         }
     };
-    const language = dictionaries[sessionStorage.getItem('localization')] || dictionaries.en;
+    const language = dictionaries[sessionStorage.getItem('locale')] || dictionaries.en;
 
     return language[key] || `Translate not found for : "${key}"`;
 }

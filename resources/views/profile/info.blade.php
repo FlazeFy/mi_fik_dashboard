@@ -22,7 +22,7 @@
 
         @if(session()->get('role_key') == 0)
             <div class="sub-holder text-start position-relative mt-2">
-                <h5 class="text-secondary">My Roles</h5><br>
+                <h5 class="text-secondary">{{ __('messages.my_roles') }}</h5><br>
                 @if(!$myreq)
                     <a class="btn btn-link-danger position-absolute" style="right:0; top:-10px;" onclick="getRequestRemove()"><i class="fa-solid fa-trash-can"></i> Remove</a>
                 @else 

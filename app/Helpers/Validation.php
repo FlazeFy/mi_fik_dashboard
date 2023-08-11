@@ -257,11 +257,13 @@ class Validation
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
                 'phone' => 'required|min:9|max:14|string',
+                'email' => 'required|min:11|max:75|string|email'
             ]);
         } else {
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
+                'email' => 'required|min:11|max:75|string|email'
             ]);
         }
     }

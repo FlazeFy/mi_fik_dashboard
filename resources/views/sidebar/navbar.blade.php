@@ -385,6 +385,6 @@
     }
 
     function switchLang(lang) {
-        sessionStorage.setItem('localization', lang);
+        sessionStorage.setItem('locale', lang);
     }
 </script>
