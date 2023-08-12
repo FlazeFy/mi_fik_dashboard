@@ -19,11 +19,11 @@
     <table class="table tabular table-paginate" id="infoTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Page / Location</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Body</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Is Active</th>
-                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.type') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.page') }} / {{ __('messages.location') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.body') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.is_active') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody class="tabular-body">
@@ -55,7 +55,7 @@
                                             <form action="/system/info/update/type/{{$in->id}}" method="POST">
                                                 @csrf
                                                 <input hidden id="dct_name_{{$in->id}}" name="info_type" value="">
-                                                <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> Save Changes</button>
+                                                <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.save') }}</button>
                                             </form>
                                         </div>
                                     </div>
@@ -194,7 +194,7 @@
                     @csrf
                     <input name='info_body' id='info_body_${id}' hidden>
                     <button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("${id}")'>
-                        <i class='fa-solid fa-floppy-disk'></i> Save Changes
+                        <i class='fa-solid fa-floppy-disk'></i> {{ __('messages.save') }}
                     </button>
                 </form>
             `;
@@ -204,14 +204,14 @@
                     @csrf
                     <div class="form-floating mb-2">
                         <select class="form-select" id="info_type_${id}" style="font-size:14px;" title="Info Page" name="info_page" aria-label="Floating label select example" required></select>
-                        <label for="floatingSelect">Page</label>
+                        <label for="floatingSelect">{{ __('messages.page') }}</label>
                     </div>
                     <div class="form-floating">
                         <input type="text" class="form-control nameInput" id="info_location_${id}" value="${loc}" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required>
                         <label for="titleInput_event">Info Location</label>
                         <a id="info_location_msg_${id}" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
-                    <button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> Save Changes</button>
+                    <button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> {{ __('messages.save') }}</button>
                 </form>
             `;
             

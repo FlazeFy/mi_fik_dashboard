@@ -7,7 +7,7 @@
                 
                 <form action="/system/dictionary/delete/{{$dc->id}}" method="POST">
                     @csrf 
-                    <h6 class="text-center">Are you sure want to delete this '{{$dc->dct_name}}' dictionary with type {{$dc->dct_type}}</h6>
+                    <h6 class="text-center">{{ __('messages.del_validation') }} '{{$dc->dct_name}}' dictionary with type {{$dc->dct_type}}</h6>
                     @include('components.infobox',['info'=>$info, 'location'=> 'delete_dictionary'])
                     <input hidden name="dct_name" value="{{$dc->dct_name}}">
                     <button type="submit" class="btn btn-danger float-end">Delete</button>

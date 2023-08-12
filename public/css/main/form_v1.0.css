@@ -27,3 +27,11 @@
     font-size: var(--textMD); 
     padding: var(--spaceMini) var(--spaceXSM);
 }
+.form-select {
+    font-size: var(--textXMD);
+    border-radius: var(--roundedSM);
+}
+.form-control {
+    font-size: var(--textXMD); 
+    border-radius: var(--roundedSM);
+}

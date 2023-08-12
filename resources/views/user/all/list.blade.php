@@ -3,11 +3,11 @@
     <table class="table tabular">
         <thead>
             <tr>
-                <th scope="col">Image</th>
+                <th scope="col">{{ __('messages.profile_image') }}</th>
                 <th scope="col">Username @include('user.all.sorting.username')</th>
                 <th scope="col">Email @include('user.all.sorting.email')</th>
-                <th scope="col">Full Name @include('user.all.sorting.fullname')</th>
-                <th scope="col" style="min-width:140px;">Properties @include('user.all.sorting.joined')</th>
+                <th scope="col">{{ __('messages.fullname') }} @include('user.all.sorting.fullname')</th>
+                <th scope="col" style="min-width:140px;">{{ __('messages.props') }} @include('user.all.sorting.joined')</th>
                 <th scope="col" style="width:200px;">Role</th>
                 <th scope="col">Detail</th>
             </tr>
@@ -22,7 +22,7 @@
     </table>
     <div id="empty_item_holder"></div>
 </div>
-<h6 class="mt-1">Page</h6>
+<h6 class="mt-1">{{ __('messages.page') }}</h6>
 <div id="user_navigate"></div>
 
 <script>
@@ -171,7 +171,7 @@
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No users found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getItemBg(date, acc){
@@ -202,14 +202,14 @@
                                     tags += `<span class="text-primary fw-bold">#${tag[i].tag_name}</span>`;
                                 }
                             } else {
-                                tags += '<span class="text-primary fw-bold">#...</span>';
+                                tags += `<span class="text-primary fw-bold">#...</span>`;
 
-                                return tags
+                                return tags;
                             }
                         }
-                        return tags
+                        return tags;
                     } else {
-                        return '<span class="status-info bg-danger">No Role</span>';
+                        return `<div class="status-info text-center bg-danger mt-1">No Role</div>`;
                     }
                 }
 
@@ -244,7 +244,7 @@
                         for(var i = 0; i < role.length; i++){
                             elmnt += `<a class='btn btn-tag'>${role[i]['tag_name']}</a>`;
                         }
-                        return elmnt
+                        return elmnt;
 
                     } else {
                         return `<h6 class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> This user has no role</h6>`;
@@ -281,7 +281,7 @@
                             <div id="empty_item_holder_manage_tag_${username}"></div>
                             <span id="load_more_holder_manage_tag_${username}" style="display: flex; justify-content:center;"></span>
                         </div>
-                        <h6 class="text-secondary mt-3"> Selected Role</h6>
+                        <h6 class="text-secondary mt-3"> {{ __('messages.slct_role') }}</h6>
                         <form id="add_role_form_${username}">
                             @csrf
                             <input hidden name="username" value="${real_username}">
@@ -295,7 +295,6 @@
                 $("#empty_item_holder").empty();
 
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var id = data[i].id;
                     var username = data[i].username;
                     var fullname = data[i].full_name;
@@ -317,9 +316,9 @@
                             <td class="email" title="Send Email" onclick="window.location = 'mailto:${email}'" href="mailto:${email}">${email}</td>
                             <td style="width: 180px;">${fullname}</td>
                             <td class="properties">
-                                <h6>Joined At</h6>
+                                <h6>{{ __('messages.joined_at') }}</h6>
                                 <a>${getDateToContext(createdAt, "datetime")}</a>
-                                <h6>Updated At</h6>
+                                <h6>{{ __('messages.updated_at') }}</h6>
                                 <a>${getDateToContext(updatedAt, "datetime")}</a>
                             </td>
                             <td class="tabular-role-holder">
@@ -499,14 +498,14 @@
             if(page_tag != last){
                 $('#load_more_holder_manage_tag_'+username).html(`<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag('${username}')">Show more <span id="textno"></span></a>`);
             } else {
-                $('#load_more_holder_manage_tag_'+username).html(`<h6 class="text-secondary my-3">No more tag to show</h6>`);
+                $('#load_more_holder_manage_tag_'+username).html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_manage_tag_'+username).html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-tag').html(`<h5 class='text-secondary'>Woah!, You have see all the newest event</h5>`);
+                $('.auto-load-tag').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 $("#empty_item_holder_manage_tag_"+username).empty();
@@ -534,7 +533,6 @@
                                 ${d_tag_name}
                             </a>
                         `;
-
 
                         $("#data_wrapper_manage_tag_"+username).append(elmt);
                     }
@@ -682,13 +680,13 @@
 
     function getButtonSubmitTag(username,is_added){
         if(is_added){
-            var ctx = "<i class='fa-solid fa-trash'></i> Remove";
+            var ctx = `<i class='fa-solid fa-trash'></i> {{ __('messages.clear') }}`;
             var bg = "danger";
-            var fun = 'onclick="remove_role(' + "'" + username + "'" + ')"';
+            var fun = `onclick="remove_role('${username}')"`;
         } else {
             var ctx = "<i class='fa-solid fa-plus'></i> Assign";
             var bg = "success";
-            var fun = 'onclick="add_role(' + "'" + username + "'" + ')"';
+            var fun = `onclick="add_role('${username}')"`;
         }
 
         if(slct_list.length > 0){
@@ -696,9 +694,9 @@
 
             for(var i = 0; i < slct_list.length; i++){
                 if(i != slct_list.length - 1){
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>, ';
+                    tags += `<span class="text-primary fw-bold">#${slct_list[i]}</span>, `;
                 } else {
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>';
+                    tags += `<span class="text-primary fw-bold">#${slct_list[i]}</span>`;
                 }
             }
             
@@ -747,7 +745,6 @@
                 //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                console.log(response)
                 // if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                    
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
@@ -784,7 +781,6 @@
                 //document.getElementById("registered-msg_"+username).innerHTML = response.responseJSON.message;
             },
             error: function(response, jqXHR, textStatus, errorThrown) {
-                console.log(response)
                 // if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                    
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   

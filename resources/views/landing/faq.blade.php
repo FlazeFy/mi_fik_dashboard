@@ -1,5 +1,5 @@
 <div class="container-fluid my-5 py-4">
-    <h1 class="fw-bold mt-2 mb-5 text-primary text-center">Frequently Asked Question</h1>
+    <h1 class="fw-bold mt-2 mb-5 text-primary text-center">{{ __('messages.faq') }}</h1>
 	<div class="row">
         @php($i = 0)
         @php($total = count($faq))
@@ -28,7 +28,7 @@
                         </div>
                         <div id="collapse{{$i}}" class="collapse {{$con}}" aria-labelledby="heading{{$i}}" data-bs-parent="#accordion{{$ctx}}">
                             <div class="card-body text-secondary">
-                                <b>Answer :</b>
+                                <b>{{ __('messages.answer') }} :</b>
                                 {{$fq->question_answer}}
                             </div>
                         </div>

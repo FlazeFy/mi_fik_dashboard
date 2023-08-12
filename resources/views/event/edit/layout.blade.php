@@ -69,30 +69,30 @@
             @include('event.edit.titledescinput')<hr>
 
             <div class="position-relative">
-                <h6 class="text-primary mt-3">Manage Attachment</h6>
+                <h6 class="text-primary mt-3">{{ __('messages.att') }}</h6>
                 @include('event.edit.attachment.add')  
                 <br>
                 @include('event.edit.attachment.show')   
             </div>             
         </div>
         <div class="col-lg-4">
-            <h6 class="text-primary mt-3">Tags</h6>
+            <h6 class="text-primary mt-3">{{ __('messages.event_tag') }}</h6>
                 @include('event.edit.tag.show')
                 @include('event.edit.tag.add')
             <hr>
 
-            <h6 class="text-primary mt-3">Date & Time</h6>
+            <h6 class="text-primary mt-3">{{ __('messages.datetime') }}</h6>
                 @include('event.edit.datepicker')
             <hr>
 
             <div class="position-relative">
-                <h6 class="text-primary">Event Location</h6>
+                <h6 class="text-primary">{{ __('messages.event_loc') }}</h6>
                 @include('event.edit.maps.delete')
             </div>
             @include('event.edit.maps.add')
             <hr>
 
-            <h6 class="text-primary mt-3">History</h6>
+            <h6 class="text-primary mt-3">{{ __('messages.history') }}</h6>
                 @include('components.history')
             <hr>
         </div>

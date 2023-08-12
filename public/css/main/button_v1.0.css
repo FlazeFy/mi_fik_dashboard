@@ -1,3 +1,6 @@
+.btn {
+    border-radius: var(--roundedSM);
+}
 .btn-submit{
     background: var(--successBG);
     color: var(--whiteColor) !important;

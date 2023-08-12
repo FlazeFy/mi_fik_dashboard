@@ -367,6 +367,6 @@ class GroupingController extends Controller
         }
         session()->put('ordering_group_list', $res);
 
-        return redirect()->back()->with('success_message', 'Content ordered');
+        return redirect()->back()->with('success_mini_message', 'Content ordered');
     }
 }

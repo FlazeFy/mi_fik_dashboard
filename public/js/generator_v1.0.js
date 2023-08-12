@@ -45,7 +45,7 @@ function getLocationName(loc){
     } else if(loc && loc.length != 2){
         return `
             <span class='loc-limiter px-0 m-0'> 
-                <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> Invalid</a> 
+                <a class='btn-detail' title='Event Location'><i class='fa-solid fa-location-dot'></i> ${messages('invalid')}</a> 
             </span>
         `;
     } else {
@@ -142,18 +142,18 @@ function getUUID() {
 function getUsername(username1, username2){
     if(username1){
         if(username1 == myname){
-            return "You";
+            return `${messages('you')}`;
         } else {
             return "@"+username1;
         }
     } else if (username2){
         if(username2 == myname){
-            return "You";
+            return `${messages('you')}`;
         } else {
             return "@"+username2;
         }
     } else {
-        return "<span class='text-danger'>Unknown User</span>";
+        return `<span class='text-danger'>${messages('unknownuser')}</span>`;
     }
 }
 
@@ -174,20 +174,20 @@ function getEventStatus(start, end){
     const hourDiff_end = Math.round(msDiff_end / (1000 * 60));
 
     if (c_start >= now && c_end >= now && hourDiff_start >= 0 && hourDiff_start <= 15) {
-        return `<div class='event-status bg-primary'><i class='fa-solid fa-circle fa-2xs'></i> About to start</div>`;
+        return `<div class='event-status bg-primary'><i class='fa-solid fa-circle fa-2xs'></i> ${messages('astart')}</div>`;
     } else if (c_start <= now && c_end >= now) {
         if (hourDiff_end > 1 && hourDiff_start > -15) {
-            var ctx_live = " Just Started";
+            var ctx_live = ` ${messages('jstart')}`;
         } else if (hourDiff_end > 15) {
-            var ctx_live = " Live";
+            var ctx_live = ` ${messages('live')}`;
         } else {
-            var ctx_live = " About to end";
+            var ctx_live = ` ${messages('toend')}`;
         }
         return `<div class='event-status bg-danger'><i class='fa-solid fa-circle fa-2xs'></i>${ctx_live}</div>`;
     } else if (c_start <= now && c_end <= now && hourDiff_end <= 0 && hourDiff_end >= -15) {
-        return `<div class='event-status bg-success'><i class='fa-solid fa-circle fa-2xs'></i> Just Ended</div>`;
+        return `<div class='event-status bg-success'><i class='fa-solid fa-circle fa-2xs'></i> ${messages('jend')}</div>`;
     } else if (c_start <= now && c_end <= now && hourDiff_end <= -15){
-        return `<div class='event-status bg-success'><i class='fa-solid fa-check'></i> Finished</div>`;
+        return `<div class='event-status bg-success'><i class='fa-solid fa-check'></i> ${messages('finished')}</div>`;
     } else {
         return "";
     }
@@ -269,7 +269,7 @@ function setGuidelinesModal(conf, is_show_all){
     function getGuidelinesButton(num, is_show_all){
         if(is_show_all == true){
             var numPrev = num - 1;
-            return `<div class='d-flex justify-content-between mt-1 mb-2'><h6 class='mt-2'>${num} / ${total}</h6><a class='btn btn-success py-1' onclick='navigateGuidelines("${numPrev}")'>Next</a></div>`;
+            return `<div class='d-flex justify-content-between mt-1 mb-2'><h6 class='mt-2'>${num} / ${total}</h6><a class='btn btn-success py-1' onclick='navigateGuidelines(${numPrev})'>Next</a></div>`;
         } else {
             return "";
         }
@@ -277,9 +277,9 @@ function setGuidelinesModal(conf, is_show_all){
 
     function getGuideLinesArrow(dir){
         if(dir == "bottom"){
-            return "top:-20px; left:10px;";
+            return "top:-20px; left:20px;";
         } else if(dir == "right"){
-            return "top:20px; left:-30px; transform: rotate(270deg);";
+            return "top:30px; left:-30px; transform: rotate(270deg);";
         }
     }
 

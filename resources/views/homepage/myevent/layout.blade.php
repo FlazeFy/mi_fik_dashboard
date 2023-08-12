@@ -1,8 +1,8 @@
 <button class="btn-quick-action" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/myevent.png'); ?>"); background-color:#FB5E5B;'
     data-bs-target="#myevent" data-bs-toggle="modal">
     <span id="total_my_event"></span>
-    <h5 class="quick-action-text">My Event</h5>
-    <p class="quick-action-info">This will show all event that made by you</p>
+    <h5 class="quick-action-text">{{ __('messages.my_event') }}</h5>
+    <p class="quick-action-info">{{ __('messages.my_event_desc') }}</p>
 </button>
 
 <div class="modal fade" id="myevent" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -10,7 +10,7 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>My Event</h5>
+                <h5>{{ __('messages.my_event') }}</h5>
                 @include('homepage.myevent.searchbar')
                 <hr>
                 <div class="event-holder row mt-3"  style="display: flex; flex-direction: column; max-height: 75vh; overflow-y: scroll;">        
@@ -69,7 +69,7 @@
             if(page != last){
                 $('#load_more_myevent_holder').html(`<button class="btn content-more-floating my-3 p-2 d-inline-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_myevent_holder').html(`<h6 class="btn content-more-floating my-3 p-2 d-inline-block mx-auto">No more item to show</h6>`);
+                $('#load_more_myevent_holder').html(`<h6 class="btn content-more-floating my-3 p-2 d-inline-block mx-auto">{{ __('messages.no_more') }}</h6>`);
             }
 
             $("#total_my_event").html(`<a class="total-my-event" title="You have some draft event"><i class="fa-regular fa-calendar"></i> ${total}</a>`);
@@ -82,7 +82,10 @@
                 return;
             } else {
                 function getContentView(total_views, uname){
-                    (uname == "You" || <?= session()->get("role_key") ?> == 1) ? `<div class='event-views' style='color:var(--darkColor)!important; right:10px;'><i class='fa-solid fa-eye'></i> ${total_views}</div>` : `<div></div>`;
+                    let elmt;
+                    (uname == "You" || <?= session()->get("role_key") ?> == 1) ? elmt = `<div class='event-views' style='color:var(--darkColor)!important; right:10px;'><i class='fa-solid fa-eye'></i> ${total_views}</div>` : elmt = `<div></div>`;
+                    
+                    return elmt;
                 }
 
                 for(var i = 0; i < data.length; i++){

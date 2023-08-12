@@ -1,7 +1,7 @@
 <form class="mb-3" action="/event/edit/update/attach/add/{{$c->slug_name}}" method="POST">
     @csrf
     <input hidden name="content_title" value="{{$c->content_title}}">
-    <a class="btn position-absolute text-info" style="top:-10px; right:0;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
+    <a class="btn position-absolute text-info" style="top:-10px; right:0;" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> {{ __('messages.add_att') }}</a>
     <div class="attachment-holder" id="attachment-holder">
     </div>
     <input hidden id="content_attach" name="content_attach">
@@ -28,15 +28,15 @@
             };
             attach_list.push(obj);
 
-            $("#attachment-holder").append(' ' +
-                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:var(--shadowColor);"> ' + 
-                    '<div style="white-space:normal !important;"> ' +
-                        '<span class="d-inline-block me-1"> ' +
-                            '<h6 class="mt-1">Attachment Type : </h6> ' +
-                        '</span> ' +
-                        '<span class="d-inline-block"> ' +
-                            '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentInput('+"'"+id+"'"+', this.value)" aria-label="Default select example"> ' +
-                                '<option selected>---</option> ' +
+            $("#attachment-holder").append(`
+                <div class="attachment-item p-2 shadow" id="attachment_container_${id}" style="--circle-attach-color-var:var(--shadowColor);">
+                    <div style="white-space:normal !important;">
+                        <span class="d-inline-block me-1">
+                            <h6 class="mt-1">{{ __('messages.att_type') }} : </h6>
+                        </span>
+                        <span class="d-inline-block">
+                            <select class="form-select attachment" id="attach_type_${id}" name="attach_type" onChange="getAttachmentInput('${id}', this.value)" aria-label="Default select example">
+                            <option selected>---</option>
                                 <?php
                                     foreach($dictionary as $dct){
                                         if($dct->type_name == "Attachment"){
@@ -44,19 +44,24 @@
                                         }
                                     }
                                 ?>
-                            '</select> ' +
-                        '</span> ' +
-                    '</div> ' +
-                    '<div id="attach-input-holder-'+id+'"></div> ' +
-                    '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
-                        '<i class="fa-solid fa-trash-can"></i></a> ' +
-                    '<span id="preview_att_'+id+'"><a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
-                        '<i class="fa-regular fa-eye-slash"></i></a></span>' +
-                    '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
-                    '<a class="attach-upload-status failed" id="attach-failed-'+id+'"></a>' +
-                    '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
-                    '<span id="preview_holder_'+id+'"></span> ' +
-                '</div>');
+                            </select>
+                        </span>
+                    </div>
+                    <div id="attach-input-holder-${id}"></div>
+                    <a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('${id}')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                    <span id="preview_att_${id}">
+                        <a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-${id}">
+                            <i class="fa-regular fa-eye-slash"></i>
+                        </a>
+                    </span>
+                    <a class="attach-upload-status success" id="attach-progress-${id}"></a>
+                    <a class="attach-upload-status failed" id="attach-failed-${id}"></a>
+                    <a class="attach-upload-status warning" id="attach-warning-${id}"></a>
+                    <span id="preview_holder_${id}"></span>
+                </div>
+            `);
         }
     }
 
@@ -102,11 +107,11 @@
                             attach_list[objIndex]['is_add_more'] = true;
                             document.getElementById('attach_name_'+id).disabled = false;
                             att_cont.style = "border-left: 3.5px solid var(--successBG) !important; --circle-attach-color-var:var(--successBG) !important;";
-                            submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
+                            submitHolder.html(`<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>`);
                         } else {
                             attach_list[objIndex]['is_add_more'] = false;
                             document.getElementById('attach_name_'+id).disabled = true;
-                            submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
+                            submitHolder.html(`<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                         }
                     }, 
                     function (error) {
@@ -115,7 +120,7 @@
                         attach_list[objIndex]['is_add_more'] = false;
                         if(error.message){
                             att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
-                            submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
+                            submitHolder.html(`<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                         }
                     }, 
                     function () {
@@ -158,7 +163,7 @@
                     var att_url = null;
                     if(error.message){
                         att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
-                        submitHolder.html('<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> Locked</button>');
+                        submitHolder.html(`<button disabled class="btn btn-submit mt-2"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                     }
                 }
             } else if(att_type == "attachment_url" && att_dsbld != true) {
@@ -180,7 +185,7 @@
                         att_cont.style = "border-left: 3.5px solid var(--primaryColor) !important; --circle-attach-color-var:var(--primaryColor) !important;";
                         warningAttMsg.innerHTML = "URL isn't not valid!";
                     }
-                    submitHolder.html('<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>');
+                    submitHolder.html(`<button class="btn btn-submit mt-2" type="submit"><i class="fa-solid fa-floppy-disk"></i> {{ __('messages.save') }}</button>`);
                 } else {
                     warningAttMsg.innerHTML = "";
                     att_cont.style = "border-left: 3.5px solid var(--shadowColor) !important; --circle-attach-color-var:var(--shadowColor) !important;";

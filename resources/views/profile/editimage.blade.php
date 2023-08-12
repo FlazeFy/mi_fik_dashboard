@@ -79,7 +79,6 @@
                 document.getElementById('header-progress').innerHTML = `<span class="box-loading"><div role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="${progress}" style="--value: ${progress}"></div></span>`;
             }, 
             function (error) {
-                console.log(error.message);
                 document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is ${error.message}</h6></span>`;
             }, 
             function () {
@@ -90,7 +89,7 @@
                 });
             });
         } else {
-            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is ${maxSize} mb </h6></span>`;
+            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>${messages('max_file_size')} ${maxSize} mb </h6></span>`;
         }
     }
 

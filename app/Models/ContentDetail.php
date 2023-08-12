@@ -26,7 +26,7 @@ class ContentDetail extends Model
         $select = Query::getSelectTemplate("content_location");
         $based_role = null;
         $user_id = Generator::getUserIdV2(session()->get('role_key'));
-        $based_role = Query::getAccessRole($user_id);
+        $based_role = Query::getAccessRole($user_id, false);
 
         $res = ContentDetail::selectRaw($select)
             ->leftjoin('contents_headers', 'contents_headers.id', '=', 'contents_details.content_id')

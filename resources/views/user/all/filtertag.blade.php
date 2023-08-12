@@ -3,9 +3,9 @@
         ><i class="fa-solid fa-hashtag"></i> 
         @php($tag_coll = session()->get('selected_role_user'))
         @if($tag_coll != "All")
-            {{count($tag_coll)}} Selected Tags
+            {{count($tag_coll)}} {{ __('messages.slct_tag') }}
         @else
-            All Tags
+            {{ __('messages.all_tag') }}
         @endif
     </button>
     <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-select-tag">
@@ -14,7 +14,7 @@
                 <h6 class="dropdown-title">Filter Role</h6>
                 <form action="/user/all/set_filter_role/1" method="POST" class="position-absolute" style="right:15px; top:20px;">
                     @csrf
-                    <button class="btn btn-noline text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> Clear All</button>
+                    <button class="btn btn-noline text-danger" type="submit"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</button>
                 </form>
             </div><hr>
             <div class="dropdown-body">

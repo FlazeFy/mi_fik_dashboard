@@ -78,6 +78,9 @@
     </body>
 
     <script>        
+        if (sessionStorage.getItem("locale") === null) {
+            sessionStorage.setItem('locale', "id");
+        }
         ScrollReveal().reveal('.welcome-container', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
         ScrollReveal().reveal('.faq-first', { delay: 500, distance: '80px', origin: 'left', easing: 'ease-in-out' });
         ScrollReveal().reveal('.faq-second', { delay: 500, distance: '80px', origin: 'right', easing: 'ease-in-out' });

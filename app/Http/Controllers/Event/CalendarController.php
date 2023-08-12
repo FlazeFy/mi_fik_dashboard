@@ -83,13 +83,13 @@ class CalendarController extends Controller
 
         session()->put('selected_tag_'.$from, $tag_holder);
 
-        return redirect()->back()->with('success_message', 'Content filtered');
+        return redirect()->back()->with('success_mini_message', 'Content filtered');
     }
 
     public function set_ordering_content($order)
     {
         session()->put('ordering_finished', $order);
 
-        return redirect()->back()->with('success_message', 'Content ordered');
+        return redirect()->back()->with('success_mini_message', 'Content ordered');
     }
 }

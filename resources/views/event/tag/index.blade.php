@@ -106,7 +106,7 @@
                                         @include('statistic.mostTag')
                                     </div>
                                     <div class="content-section position-relative">
-                                        <h5 class="text-secondary fw-bold">History</h5>
+                                        <h5 class="text-secondary fw-bold">{{ __('messages.history') }}</h5>
                                         @include('components.history', ['history' => $history])
                                     </div>
                                 </div>
@@ -130,6 +130,7 @@
         </div>
 
         <!--Modal-->
+        @include('popup.success_mini')
         @include('popup.success')
         @include('popup.failed')
 

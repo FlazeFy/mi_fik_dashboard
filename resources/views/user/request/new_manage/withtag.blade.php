@@ -16,7 +16,7 @@
                     </div>
 
                     <input hidden name="list_request" id="list_request_acc_new_tag" value="">
-                    <button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button> 
+                    <button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.submit') }}</button> 
                 </form>
             </div>
         </div>

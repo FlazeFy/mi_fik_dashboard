@@ -40,7 +40,7 @@
     @else
         <div class="text-center" id="no_cat_selected" >
             <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:75%; height:90%; max-width:200px;">
-            <h6 class='text-secondary text-center'>No History</h6>
+            <h6 class='text-secondary text-center'>{{ __('messages.no_history') }}</h6>
         </div>
     @endif
 </div>

@@ -124,8 +124,6 @@
                     btn_steps_recovery.style = "background: var(--successBG);";
                 } else if(now == "validate"){
                     now = "finish";
-                    btn_steps_validate.setAttribute('data-bs-target', '#validate');
-                    btn_steps_validate.style = "background: var(--successBG);";
                     btn_steps_finish.setAttribute('data-bs-target', '#finish');
                     btn_steps_finish.style = "background: var(--successBG);";
                 }

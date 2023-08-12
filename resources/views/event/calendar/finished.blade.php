@@ -32,7 +32,7 @@
             $("#data-wrapper").append(elmt);
             infinteLoadMore(pageFinished);
         } else if (pageFinished >= last) {
-            var elmt = `<h6 id='load-page-event-${pageFinished}' class='text-center mt-3'> No more content to show</h6>`;
+            var elmt = `<h6 id='load-page-event-${pageFinished}' class='text-center mt-3'>{{ __('messages.no_more') }}</h6>`;
 
             $("#empty_item_holder").html(elmt);
         }
@@ -66,17 +66,11 @@
             var total = response.data.total;
             last = response.data.last_page;
 
-            // if(page != last){
-            //     $('#load_more_holder').html('<button class="btn content-more-floating my-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
-            // } else {
-            //     $('#load_more_holder').html('<h6 class="btn content-more-floating my-3 p-2">No more item to show</h6>');
-            // }
-
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event</h5>");
+                $('.auto-load').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getContentView(total_views, uname){

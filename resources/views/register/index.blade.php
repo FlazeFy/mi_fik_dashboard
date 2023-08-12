@@ -92,7 +92,7 @@
                             { 
                                 holder: "holder-steps-2", 
                                 target: "selected-role-area", 
-                                title: "Selected Role", 
+                                title: "{{ __('messages.slct_role') }}", 
                                 body: "This section will show all the role you have picked. To remove the role you can click the selected role, or reset to remove all the selected", 
                                 image: 'assets/steps/steps_regis_role_1.gif', 
                                 direction: "right"
@@ -181,47 +181,42 @@
             }
 
             function validate(now){
-                if(now == "terms"){
-                    if(document.getElementById("check-terms").checked == true){
+                if (now == "terms") {
+                    if (document.getElementById("check-terms").checked) {
                         msg_check_terms.innerHTML = "";
-                        btn_profile_holder.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#profiledata' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"terms"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                        btn_profile_holder.innerHTML = `<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#profiledata' onclick='routeStep("next", "terms")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
                     } else {
-                        btn_profile_holder.innerHTML = "<button class='btn-next-steps locked' id='btn-next-profile-data' onclick='warn("+'"'+"terms"+'"'+")'><i class='fa-solid fa-lock'></i> Locked</button>";
-                    }   
-                } else if(now == "profiledata"){
-                    if(val1 == true && val2 == true && registered == false){
-                        msg_all_input.innerHTML = "";
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' onclick='register()'><i class='fa-solid fa-arrow-up'></i> Register Now</button>";
-                    } else if(val1 == true && val2 == true && registered == true){
-                        msg_all_input.innerHTML = "";
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"profiledata"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
-                    } else {
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"profiledata"+'"'+")'></i> Locked</button>";
+                        btn_profile_holder.innerHTML = `<button class='btn-next-steps locked' id='btn-next-profile-data' onclick='warn("terms")'><i class='fa-solid fa-lock'></i> {{ __('messages.locked') }}</button>`;
                     }
-                } else if(now == "role"){
-                    valid = false;
-                    slct_role.map((val, index) => {
-                        if(val.slug_name == "lecturer" || val.slug_name == "staff"){
-                            valid = true;
-                        }
-                    });
+                } else if (now == "profiledata") {
+                    if (val1 && val2 && !registered) {
+                        msg_all_input.innerHTML = "";
+                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps' onclick='register()'><i class='fa-solid fa-arrow-up'></i> Register Now</button>`;
+                    } else if (val1 && val2 && registered) {
+                        msg_all_input.innerHTML = "";
+                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("next", "profiledata")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
+                    } else {
+                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("profiledata")'></i> {{ __('messages.locked') }}</button>`;
+                    }
+                } else if (now == "role") {
+                    let valid = slct_role.some(val => val.slug_name === "lecturer" || val.slug_name === "staff");
 
-                    if(slct_role.length > 0){
-                        document.getElementById("no-tag-selected-msg").style= "display:none;";
-                        if(valid == true && is_requested == true){
+                    if (slct_role.length > 0) {
+                        document.getElementById("no-tag-selected-msg").style.display = "none";
+                        if (valid && is_requested) {
                             msg_all_input.innerHTML = "";
-                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
-                        } else if(valid == true && is_requested == false){
+                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("next", "role")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
+                        } else if (valid && !is_requested) {
                             msg_all_input.innerHTML = "";
-                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='modal' data-bs-target='#requestRoleAdd'><i class='fa-solid fa-paper-plane'></i> Send Request</button>";
+                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='modal' data-bs-target='#requestRoleAdd'><i class='fa-solid fa-paper-plane'></i> Send Request</button>`;
                         } else {
-                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
+                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("role")'></i> {{ __('messages.locked') }}</button>`;
                         }
                         getSubmitButton();
                     } else {
-                        document.getElementById("no-tag-selected-msg").style= "display:normal;";
-                        btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
-                    }                    
+                        document.getElementById("no-tag-selected-msg").style.display = "normal";
+                        btn_ready_holder.innerHTML = `<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("role")'></i> {{ __('messages.locked') }}</button>`;
+                    }
                 }
             }
 

@@ -4,7 +4,7 @@
     </div>
     <div class="col-10 position-relative">
         <i class="fa-solid fa-magnifying-glass position-absolute" style="top:10px; left: 25px; color:var(--darkColor);"></i>
-        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="Search by fullname" onchange="infinteLoadMoreUser(1)" maxlength="75">
+        <input type="text" class="form-control rounded-pill" style="padding-left: 35px;" id="title_search" placeholder="{{ __('messages.search_fname') }}" onchange="infinteLoadMoreUser(1)" maxlength="75">
     </div>
 </div>
 

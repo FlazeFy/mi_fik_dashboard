@@ -1,11 +1,11 @@
 <div class="position-relative ms-1">
     <button class="btn btn-primary px-3 py-2" type="button" id="section-date-picker" data-bs-toggle="dropdown" aria-haspopup="true"
-        aria-expanded="false"><i class="fa-solid fa-calendar"></i>@if(!$isMobile) Filter Date @endif 
+        aria-expanded="false"><i class="fa-solid fa-calendar"></i>@if(!$isMobile) {{ __('messages.filter_date') }} @endif 
     </button>
     <div class="filter-section dropdown-menu dropdown-menu-end shadow" onclick="event.stopPropagation()" aria-labelledby="section-date-picker">
         <span class="filter-section dropdown-item p-0">
             <div class="dropdown-header position-relative">
-                <h6 class="dropdown-title">Filter Date</h6>
+                <h6 class="dropdown-title">{{ __('messages.filter_date') }}</h6>
                 @if($isMobile)
                     <form action="/homepage/date/reset" method="POST">
                         @csrf
@@ -27,7 +27,7 @@
                             <div class="col-5">
                     @endif
 
-                    <label class="form-label">From</label>
+                    <label class="form-label">{{ __('messages.start_from') }}</label>
                     <input type="date" class="form-control" name="date_start" id="date_filter_start" 
                     value="<?php
                         if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){
@@ -43,7 +43,7 @@
                         <div class="col-5">
                     @endif
 
-                    <label class="form-label">Until</label>
+                    <label class="form-label">{{ __('messages.until') }}</label>
                     <input type="date" class="form-control" name="date_end" id="date_filter_end" 
                     value="<?php 
                         if(session()->get('filtering_date') && session()->get('filtering_date') != "all"){

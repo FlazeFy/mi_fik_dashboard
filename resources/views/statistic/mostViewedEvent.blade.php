@@ -17,7 +17,7 @@
 </style>
 
 <div class="position-relative">
-<h5 class="text-secondary fw-bold">Most Viewed Event</h5>
+<h5 class="text-secondary fw-bold">{{ __('messages.mve') }}</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button" id="section-more-MVE" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
@@ -28,13 +28,13 @@
             @foreach($setting as $set)
                 <form action="/statistic/update_mve/{{$set->id}}" method="POST">
                     @csrf
-                    <label for="floatingInputValue" style="font-size:12px;">Chart Range</label>
+                    <label for="floatingInputValue" style="font-size:12px;">{{ __('messages.chart_range') }}</label>
                     <input type="number" class="form-control py-1" name="MVE_range" min="3" max="10" value="{{$set->MVE_range}}" onblur="this.form.submit()" required>
                 </form>
             @endforeach
         </span><hr>
         @php($set = session()->get('selected_view_mve_chart'))
-        <label class="ms-3" style="font-size:12px;">Chart View</label>
+        <label class="ms-3" style="font-size:12px;">{{ __('messages.chart_view') }}</label>
         <form action="/statistic/update_mve_view" method="POST">
             @csrf
             <input hidden name="MVE_view" value="All">
@@ -42,7 +42,7 @@
                 @if($set == "All")
                     <i class="fa-solid fa-check text-success"></i>
                 @endif
-                All</button>
+                {{ __('messages.all') }}</button>
         </form>
         <form action="/statistic/update_mve_view" method="POST">
             @csrf
@@ -51,9 +51,9 @@
                 @if($set == "Separated")
                     <i class="fa-solid fa-check text-success"></i>
                 @endif
-                Separated</button>
+                {{ __('messages.separated') }}</button>
         </form><hr>
-        <a class="dropdown-item" data-bs-target="#mvChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#mvChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
     </div>
     @if(count($mostViewed) != 0)
         @if(!$isMobile)
@@ -65,7 +65,7 @@
         @endif
     @else
         <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-        <h6 class="text-center">No Data Available</h6>
+        <h6 class="text-center">{{ __('messages.no_data') }}</h6>
     @endif
 
     @include('popup.mini_help', ['id' => 'mvChart', 'title'=> 'Most Viewed Chart', 'location'=>'most_viewed_chart'])

@@ -78,6 +78,7 @@
         </div>
 
         <!--Modal-->
+        @include('popup.success_mini')
         @include('popup.success')
         @include('popup.failed')
 

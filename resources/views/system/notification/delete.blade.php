@@ -7,7 +7,7 @@
                 
                 <form action="/system/notification/delete/{{$nt['id']}}" method="POST">
                     @csrf 
-                    <h6 class="text-center">Are you sure want to delete this notification</h6>
+                    <h6 class="text-center">{{ __('messages.del_validation') }} notification</h6>
                     @include('components.infobox',['info'=>$info, 'location'=> 'delete_notification'])           
                     <button type="submit" class="btn btn-danger float-end">Delete</button>
                 </form>

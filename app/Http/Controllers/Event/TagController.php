@@ -12,6 +12,7 @@ use App\Helpers\Validation;
 
 use App\Models\ContentDetail;
 use App\Models\Tag;
+use App\Models\User;
 use App\Models\Menu;
 use App\Models\Setting;
 use App\Models\Dictionary;
@@ -61,10 +62,17 @@ class TagController extends Controller
                     ->with('history', $history)
                     ->with('info', $info);
             } else {
+                $list = User::getUserRole($user_id,$role);
+
+                foreach($list as $l){
+                    $mytag = $l->role;
+                }
+
                 return view ('event.tag.index')
                     ->with('tag', $tag)
                     ->with('dct_tag', $dct_tag)
                     ->with('menu', $menu)
+                    ->with('mytag', $mytag)
                     ->with('info', $info);
             }
         } else {
@@ -453,6 +461,6 @@ class TagController extends Controller
     {
         session()->put('selected_tag_category', $request->tag_category);
 
-        return redirect()->back()->with('success_message', 'Tag filtered');
+        return redirect()->back()->with('success_mini_message', 'Tag filtered');
     }
 }

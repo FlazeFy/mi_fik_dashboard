@@ -109,6 +109,7 @@
         </div>
 
         <!--Modal-->
+        @include('popup.success_mini')
         @include('popup.success')
 
         <!--Sidebar-->

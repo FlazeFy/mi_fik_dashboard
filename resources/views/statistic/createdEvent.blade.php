@@ -1,11 +1,11 @@
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold">Created Event</h5>
+    <h5 class="text-secondary fw-bold">{{ __('messages.ce') }}</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button" id="section-more-MOT" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
-        <label class="ms-3" style="font-size:12px;">Chart View</label>
+        <label class="ms-3" style="font-size:12px;">{{ __('messages.chart_view') }}</label>
         @foreach($setting as $set)
             <form action="/statistic/update_ce/{{$set->id}}" method="POST">
                 @csrf
@@ -23,11 +23,11 @@
                     @if($set->CE_range == 12)
                         <i class="fa-solid fa-check text-success"></i>
                     @endif
-                    Year</button>
+                    {{ __('messages.year') }}</button>
             </form>
         @endforeach
         <hr>
-        <a class="dropdown-item" data-bs-target="#ceChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#ceChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
     </div>
     @if(count($createdEvent) != 0)
         @if(!$isMobile)
@@ -39,7 +39,7 @@
         @endif
     @else
         <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-        <h6 class="text-center">No Data Available</h6>
+        <h6 class="text-center">{{ __('messages.no_data') }}</h6>
     @endif
 
     @include('popup.mini_help', ['id' => 'ceChart', 'title'=> 'Created Event Chart', 'location'=>'created_event_chart'])

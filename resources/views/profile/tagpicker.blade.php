@@ -4,8 +4,8 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu normal dropdown-menu-end shadow" aria-labelledby="section-more-MOL">
-        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
+        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
+        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> {{ __('messages.abort') }}</a>
     </div>
 
     @include('popup.mini_help', ['id' => 'helpRequestTag', 'title'=> 'Request Tag', 'location'=>'request_tag'])
@@ -14,7 +14,7 @@
         <div class="" id="start-section-manage">
             <img class="img img-fluid d-block mx-auto image-msg-md" src="{{ asset('/assets/picker.png')}}">
             <h6 class="text-secondary text-center">In this section, you can request some tag you want to add to your role or maybe you want to remove the tag 
-                <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button>
+                <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> {{ __('messages.browse_tag') }}</button>
             </h6>
         </div>
         @if(session()->get('role_key') != 1)
@@ -26,7 +26,7 @@
                         @if($dtag->slug_name != "general-role")
                             @if($i == 0) 
                                 <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                <option value="all">All</option>
+                                <option value="all">{{ __('messages.all') }}</option>
                             @else 
                                 <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                             @endif
@@ -158,7 +158,7 @@
             if(page != last){
                 $('#load_more').html(`<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more').html(`<h6 class="text-secondary my-3">No more tag to show</h6>`);
+                $('#load_more').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
@@ -315,7 +315,7 @@
                                 <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
                             </div>
                             <div class="modal-body">
-                                <h6 class="fw-normal">Are you sure want to request ${tags}</h6>
+                                <h6 class="fw-normal">{{ __('messages.req_validation') }} ${tags}</h6>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-submit-form" id="btn-submit-form">
