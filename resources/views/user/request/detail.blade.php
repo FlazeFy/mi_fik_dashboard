@@ -343,7 +343,7 @@
 
                     const elmt = `
                         <a class="btn btn-tag" id="tag_collection_${slug_name}" title="Select this tag" 
-                            onclick="addSelectedTag('${slug_name}', '${tag_name}', true, '${slct}')">${tag_name}
+                            onclick="addSelectedTag('${slug_name}', '${tag_name}', true)">${tag_name}
                         </a> 
                     `;
 
@@ -360,14 +360,12 @@
     function addSelectedTag(slug_name, tag_name, is_deleted){
         var found = false;
 
-        //Remove selected tag from tag collection
         if(is_deleted){
             var tag = document.getElementById('tag_collection_'+slug_name);
             tag.parentNode.removeChild(tag);
         }
 
         if(slct_list.length > 0){
-            //Check if tag is exist in selected tag.
             slct_list.map((val, index) => {
                 if(val == slug_name){
                     found = true;
@@ -376,7 +374,6 @@
 
             if(found == false){
                 slct_list.push(slug_name);
-                //Check this append input value again!
                 $("#slct_holder").append(`
                     <div class='d-inline' id='tagger_${slug_name}'>
                         <input hidden name='user_role[]' value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'>

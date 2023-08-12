@@ -202,7 +202,6 @@
 <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
 
 <script>
-    // Your web app's Firebase configuration
     const firebaseConfig = {
         apiKey: "AIzaSyD2gQjgUllPlhU-1GKthMcrArdShT2AIPU",
         authDomain: "mifik-83723.firebaseapp.com",
@@ -212,6 +211,5 @@
         appId: "1:38302719013:web:23e7dc410514ae43d573cc",
         measurementId: "G-V13CR730JG"
     };
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 </script>

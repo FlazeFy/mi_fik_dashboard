@@ -50,7 +50,7 @@
         }
         
         $.ajax({
-            url: "/api/v2/content/order/" + order + "/find/" + getFind(search_storage) + "?page=" + page,
+            url: "/api/v1/content/order/" + order + "/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {

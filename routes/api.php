@@ -29,7 +29,7 @@ use App\Http\Controllers\Api\SystemApi\QueryHistory as QueryHistoryApi;
 
 ######################### Public Route #########################
 
-Route::post('/v1/login', [CommandAuthApi::class, 'login']);
+Route::post('/v1/login/{env}', [CommandAuthApi::class, 'login']);
 Route::post('/v1/register', [CommandUserApi::class, 'register']);
 
 Route::prefix('/v1/dictionaries')->group(function() {
@@ -65,7 +65,7 @@ Route::prefix('/v1/check')->group(function() {
 
 ######################### Private Route #########################
 
-Route::get('/v1/logout', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
+Route::get('/v1/logout/{env}', [QueryAuthApi::class, 'logout'])->middleware(['auth:sanctum']);
 
 Route::prefix('/v1/help')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/', [QueryHelpApi::class, 'getHelpType']);
@@ -94,14 +94,11 @@ Route::prefix('/v1/content')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/my/order/{order}/find/{search}', [QueryContentApi::class, 'getMyContent']);
     Route::get('/slug/{slug}', [QueryContentApi::class, 'getContentBySlug']);
     Route::get('/date/{date}/{utc}', [QueryContentApi::class, 'getAllContentSchedule']);
+    Route::get('/slug/{slug}/order/{order}/date/{date}/{utc}/find/{search}', [QueryContentApi::class, 'getContentHeader']); //*Tag slug
+    Route::get('/order/{order}/find/{search}', [QueryContentApi::class, 'getFinishedContent']);
     Route::put('/edit/image/{slug}', [CommandContentApi::class, 'editContentImage']);
     Route::post('/create', [CommandContentApi::class, 'addContent']);
     Route::post('/open/{slug_name}', [CommandContentApi::class, 'addView']);
-});
-
-Route::prefix('/v2/content')->middleware(['auth:sanctum'])->group(function() {
-    Route::get('/slug/{slug}/order/{order}/date/{date}/{utc}/find/{search}', [QueryContentApi::class, 'getContentHeader']); //*Tag slug
-    Route::get('/order/{order}/find/{search}', [QueryContentApi::class, 'getFinishedContent']);
 });
 
 Route::prefix('/v1/archive')->middleware(['auth:sanctum'])->group(function() {

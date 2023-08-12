@@ -142,7 +142,7 @@
                                         <h6 class="user-box-date">${getDateToContext(created_at, "full")}</h6>
                                     </div>
                                     <div class="form-check position-absolute" style="right: 20px; top: 20px;"> 
-                                        <input hidden id="tag_holder_${username + id}" value="${JSON.stringify(tag)}">
+                                        <input hidden id="tag_holder_${username + id}" value='${JSON.stringify(tag)}'>
                                         <input hidden id="type_holder_${username + id}" value="${type}">
                                         <input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelected('${id}','${username}','${type}', '${full_name}', this.checked)"> 
                                     </div>

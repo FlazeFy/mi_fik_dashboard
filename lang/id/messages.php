@@ -273,7 +273,7 @@ return [
     'validate' => 'Validasi',
     'validate_desc' => 'Sebelum Anda dapat mengisi form lainnya. Kami harus memvalidasi username dan email Anda terlebih dahulu',
     'welcome_back' => 'Selamat datang kembali',
-    'bring_me_there' => 'Bawa Kami Kesana',
+    'bring_me_there' => 'Bawa Saya Kesana',
     'while_you_go' => 'Selama kamu pergi, kamu mempunyai',
     'empty_role_and' => 'tidak memiliki role dan',
     'new_user_waiting' => 'pengguna baru yang ingin bergabung dengan Mi-FIK',

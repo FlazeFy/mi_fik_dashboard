@@ -133,7 +133,7 @@
                                     <h6 class="user-box-desc">${getContext(is_accepted)}</h6>
                                     <h6 class="user-box-date">${getDateToContext(created_at, "full")}</h6>
                                     <div class="form-check position-absolute" style="right: 20px; top: 20px;">
-                                        <input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelectedNew('${username}', '${full_name}', this.checked)""> 
+                                        <input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelectedNew('${username}', '${full_name}', this.checked)"> 
                                     </div>
                                 </div>
                             </div>
