@@ -3,7 +3,7 @@
         <div class="modal-content">   
             <div class="modal-body text-center pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h6>Total <span class="text-primary"><span id="total_used_{{$tg->slug_name}}"></span> {{$tg->tag_name}}</span> tag used in content and user</h6>
+                <h6>Total <span class="text-primary"><span id="total_used_{{$tg->slug_name}}"></span> {{$tg->tag_name}}</span> {{ __('messages.tag_used_desc') }}</h6>
                 <div id="MOT_pie_chart_{{$tg->id}}"></div>
             </div>
         </div>

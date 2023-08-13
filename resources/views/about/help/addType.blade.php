@@ -1,5 +1,5 @@
 <button type="button" class="btn btn-success mb-2 w-100" style="border-radius:10px;" data-bs-toggle="modal" data-bs-target="#addHelpType">
-    <i class="fa-solid fa-plus"></i> Add New Type
+    <i class="fa-solid fa-plus"></i> {{ __('messages.add_new_type') }}
 </button>
 
 <script>
@@ -50,13 +50,13 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>Add Type</h5>
+                <h5>{{ __('messages.add_type') }}</h5>
                 
                 <form id="formAddType">
                     @csrf 
                     <div class="form-floating">
                         <input type="text" class="form-control nameInput" id="help_type" name="help_type" maxlength="30" oninput="validateFormAddType(validation)" onkeydown="return submitTypeOnEnter(event)" required>
-                        <label for="help_type">Help Type</label>
+                        <label for="help_type">{{ __('messages.help_type') }}</label>
                         <a id="help_type_msg" class="input-warning text-danger"></a>
                     </div>
                     <span id="submit_holder_type"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>

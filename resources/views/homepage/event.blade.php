@@ -18,14 +18,14 @@
         var scrollPosition = listEvent.scrollTop + listEvent.clientHeight;
         if (scrollPosition >= listEvent.scrollHeight && page < last) {
             page++;
-            var elmt = " " +
-            "<div class='d-block mx-auto' id='load-page-event-"+page+"'> " +
-                '<div class="row"> ' +
-                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
-                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
-                    '<div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div> ' +
-                '</div> ' +
-            "</div>";
+            var elmt = `
+            <div class='d-block mx-auto' id='load-page-event-${page}'>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div>
+                    <div class="col-lg-4 col-md-6 col-sm-12 pb-3"><div class="skeleton-box event"></div></div>
+                </div> 
+            </div>`;
 
             $("#data-wrapper").append(elmt);
             infinteLoadMore(page);
@@ -47,9 +47,9 @@
 
                 foreach($tags as $tg){
                     if($i != $count_tag){
-                        echo $tg.",";
+                        echo $tg->slug_name.",";
                     } else {
-                        echo $tg;
+                        echo $tg->slug_name.",";
                     }
                     $i++;
                 }
@@ -71,7 +71,7 @@
         }
         
         $.ajax({
-            url: "/api/v2/content/slug/" + tag + "/order/" + order + "/date/" + date + "/"+getUTCHourOffset()+"/find/" + getFind(search_storage) + "?page=" + page,
+            url: "/api/v1/content/slug/" + tag + "/order/" + order + "/date/" + date + "/"+getUTCHourOffset()+"/find/" + getFind(search_storage) + "?page=" + page,
             datatype: "json",
             type: "get",
             beforeSend: function (xhr) {
@@ -103,7 +103,6 @@
                 }
 
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var slug_name = data[i].slug_name;
                     var content_title = data[i].content_title;
                     var content_desc = data[i].content_desc;

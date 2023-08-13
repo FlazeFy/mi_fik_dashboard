@@ -17,15 +17,15 @@
         <div class="position-relative">
             <form class="d-inline position-absolute" style="right: 0; top:-15px;" method="POST" action="/about/toogle/app/false">
                 @csrf
-                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) Close @endif</button>
+                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) {{ __('messages.close') }} @endif</button>
             </form>
             <form class="d-inline @if($isMobile) px-2 @endif" method="POST" action="/about/edit/app">
                 @csrf
                 @foreach($about as $ab)
                     @if(!$isMobile)
-                        <a class="last-updated" style="top:20px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_{{str_replace('-','_', $ab->id)}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                        <a class="last-updated" style="top:20px;"><span class="text-primary">{{ __('messages.last_updated') }} :</span> <span id="date_holder_{{str_replace('-','_', $ab->id)}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @else
-                        <a class="last-updated" style="top:0;"><span class="text-primary">Last Updated :</span></a>
+                        <a class="last-updated" style="top:0;"><span class="text-primary">{{ __('messages.last_updated') }} :</span></a>
                         <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_{{str_replace('-','_', $ab->id)}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @endif
                     <script>

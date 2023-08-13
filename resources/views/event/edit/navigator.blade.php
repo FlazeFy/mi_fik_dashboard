@@ -24,13 +24,13 @@
             @csrf
             @if($c->is_draft == 1)
                 <input hidden name="is_draft" value="0">
-                <button class="btn btn-success navigator-right rounded-pill px-4 py-2" title="Unset draft" type="submit"><i class="fa-regular fa-eye"></i> Set as Public</button>
+                <button class="btn btn-success navigator-right rounded-pill px-4 py-2" title="Unset draft" type="submit"><i class="fa-regular fa-eye"></i> {{ __('messages.set_as_public') }}</button>
             @else 
                 <input hidden name="is_draft" value="1">
-                <button class="btn btn-info navigator-right rounded-pill px-4 py-2" title="Set draft" type="submit"><i class="fa-solid fa-eye-slash"></i> Set as draft</button>
+                <button class="btn btn-info navigator-right rounded-pill px-4 py-2" title="Set draft" type="submit"><i class="fa-solid fa-eye-slash"></i> {{ __('messages.set_as_draft') }}</button>
             @endif
         </form>
-        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Close" ><i class="fa-solid fa-xmark fa-lg"></i> Close</a>
+        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Close" ><i class="fa-solid fa-xmark fa-lg"></i> {{ __('messages.close') }}</a>
     @endif
     </div>
 </div>

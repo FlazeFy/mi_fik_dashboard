@@ -76,7 +76,7 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end shadow p-0" onclick="event.stopPropagation()" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}" style="width:250px !important;">
                                     <span class="dropdown-item p-3">
-                                        <h6>Tag Description</h6>
+                                        <h6>{{ __('messages.description') }}</h6>
                                         <form class="form-custom" method="POST" action="/event/tag/update/desc/{{$tg->id}}">
                                             @csrf
                                             <input name="update_type" value="desc" hidden>
@@ -84,7 +84,7 @@
                                             <textarea class="form-control" style="height: 100px" id="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()" oninput="showSubmitMsg('{{$tg->id}}')" name="tag_desc" maxlength="255">{{$tg->tag_desc}}</textarea>
                                             <span class="warning-input" id="tag-desc-msg-{{$tg->id}}"></span>
                                         </form>
-                                        <h6 class="my-2">{{ __('messages.tag_cat') }}</h6>
+                                        <h6 class="my-2">{{ __('messages.cat') }}</h6>
                                         @if(session()->get('role_key') == 1)
                                             <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
                                                 @csrf

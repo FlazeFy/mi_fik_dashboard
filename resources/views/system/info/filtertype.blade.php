@@ -7,9 +7,9 @@
             @foreach($dct as $dtag)
                 @if($i == 0)
                     @if(session()->get("selected_filter_info_type") == "All")
-                        <option value="All" selected>All</option>
+                        <option value="All" selected>{{ __('messages.all') }}</option>
                     @else
-                        <option value="All">All</option>
+                        <option value="All">{{ __('messages.all') }}</option>
                     @endif
                 @endif
 

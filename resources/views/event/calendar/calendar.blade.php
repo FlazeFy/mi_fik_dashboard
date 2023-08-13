@@ -13,12 +13,13 @@
         var calendarEl = document.getElementById('calendar');
         var offset = getUTCHourOffset();
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            locale: sessionStorage.getItem('locale'),
             initialView: 'dayGridMonth',
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
                 //right: 'dayGridMonth'
-                right: 'dayGridMonth,timeGridDay'
+                right: 'dayGridMonth,timeGridDay',
             },
             selectable: true,
             navLinks: true, 

@@ -2,7 +2,7 @@
     .btn-quick-action-notif{
         border-radius: var(--roundedMini);
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-        height:20vh;
+        height:25vh;
         border:none;
         width:100%;
         background-position: center;
@@ -68,7 +68,7 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>Select Your Notif / Announcement Type</h5>
+                <h5>{{ __('messages.slct_notif_type') }}</h5>
                 
                 <div class="row px-2">
                     <div class="col-lg-6 col-md-12 col-sm-12 p-2">
@@ -295,7 +295,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 position-relative">
                         <input name="list_context" id="list_context_group" value="" hidden>
-                        <h6 class="mb-2">All Group</h6>
+                        <h6 class="mb-2">{{ __('messages.all_group') }}/h6>
                         <div style="max-width:300px; right:10px; top:-15px;" class="row mb-2 position-absolute">
                             <div class="col-2">
                                 <a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupSearch()"><i class="fa-solid fa-xmark"></i></a>
@@ -370,7 +370,7 @@
                                 @foreach($dct_tag as $dtag)
                                     @if($i == 0)
                                         <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                        <option value="all">All</option>
+                                        <option value="all">{{ __('messages.all') }}</option>
                                     @else
                                         <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                                     @endif
@@ -463,7 +463,7 @@
                         </div>
                         <hr>
                         <span class="position-relative">
-                            <h6>Selected User</h6>
+                            <h6>{{ __('messages.slct_user') }}</h6>
                             <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllUser()"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                         </span>
                         <div id="slct-user-list-holder"></div>
@@ -472,7 +472,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 position-relative">
                         <input name="list_context" id="list_context"  value="" hidden>
-                        <h6>All User</h6>
+                        <h6>{{ __('messages.all_user') }}</h6>
                         <div style="max-width:300px; right:10px; top:-15px;" class="row mb-2 position-absolute">
                             <div class="col-2">
                                 <a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></a>
@@ -576,7 +576,6 @@
                 const getTotalMember = total => total > 0 ? `<span class="text-primary" style="font-size:13px; font-weight:500;"><i class="fa-solid fa-user"></i> ${total}</span>` : `<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> No member</span>`;
 
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var slug = data[i].slug_name;
                     var groupName = data[i].group_name;
                     var groupDesc = data[i].group_desc;

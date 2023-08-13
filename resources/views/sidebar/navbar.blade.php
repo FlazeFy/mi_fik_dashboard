@@ -365,7 +365,7 @@
 
     function signout() {
         $.ajax({
-            url: "/api/v1/logout",
+            url: "/api/v1/logout/web",
             type: "GET",
             headers: {
                 "Content-Type": "application/json",

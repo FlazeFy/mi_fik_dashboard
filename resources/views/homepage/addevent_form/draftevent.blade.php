@@ -23,7 +23,7 @@
                         @endif
 
                         <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
-                            <button class='card shadow event-box p-2' style="@if(!$isMobile) height:auto; @else height:180px; @endif" onclick='location.href="/event/detail/{{$md->slug_name}}";'>
+                            <button class='card shadow event-box p-2' style="height:auto;" onclick='location.href="/event/detail/{{$md->slug_name}}";'>
                                 <div class='text-primary' style="font-size:12px;">{{date("Y/m/d H:i", strtotime($md->created_at))}}</div>
                                 <div class='card-body event-body py-2 px-0 w-100'>
                                     <div class='event-heading'>

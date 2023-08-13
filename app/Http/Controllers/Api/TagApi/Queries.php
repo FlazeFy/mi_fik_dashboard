@@ -18,6 +18,7 @@ class Queries extends Controller
             $tag = Tag::select('tags.slug_name', 'tag_name', 'dictionaries.dct_name as tag_category')
                 ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
                 ->whereNull('tags.deleted_at')
+                ->orderBy('tag_name', 'ASC')
                 ->orderBy('tags.created_at', 'DESC')
                 ->orderBy('tags.id', 'DESC');
             if($find != "%20" && trim($find) != ""){
@@ -92,6 +93,7 @@ class Queries extends Controller
             if($cat != "all" && $cat != "All"){
                 $tag = Tag::select('tags.slug_name', 'tag_name', 'tag_desc', 'dictionaries.dct_name as tag_category')
                     ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
+                    ->orderBy('tag_name', 'ASC')
                     ->orderBy('tags.created_at', 'DESC')
                     ->orderBy('tags.id', 'DESC')
                     ->where('tags.tag_category', $cat)
@@ -100,6 +102,7 @@ class Queries extends Controller
             } else {
                 $tag = Tag::select('tags.slug_name', 'tag_name', 'tag_desc', 'dictionaries.dct_name as tag_category')
                     ->leftjoin('dictionaries','dictionaries.slug_name','=','tags.tag_category')
+                    ->orderBy('tag_name', 'DESC')
                     ->orderBy('tags.created_at', 'DESC')
                     ->orderBy('tags.id', 'DESC')
                     ->whereNull('tags.deleted_at')

@@ -105,7 +105,7 @@
                     $('#empty_item_holder_manage_tag').html(`<img src="{{asset('assets/nodata.png')}}" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>`);
                     return;
                 } else if (data.length == 0) {
-                    $('.auto-load-tag').html(`<h5 class='text-secondary'>Woah!, You have see all the tags</h5>`);
+                    $('.auto-load-tag').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                     return;
                 } else {
                     $("#empty_item_holder_manage_tag").empty();
@@ -140,22 +140,34 @@
             tag.parentNode.removeChild(tag);
         }
 
-        if(slct_list.length > 0){
+        if (slct_list.length > 0) {
             slct_list.map((val, index) => {
-                if(val == slug_name){
-                    found = true;
+                if (val == slug_name) {
+                found = true;
                 }
             });
 
-            if(found == false){
+            if (found === false) {
                 slct_list.push(slug_name);
-                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' " + 
-                    "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
+                $("#slct_holder").append(`
+                    <div class='d-inline' id='tagger_${slug_name}'>
+                        <input hidden name='content_tag[]' value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'>
+                        <a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("${slug_name}", "${tag_name}")'>
+                        <i class='fa-solid fa-xmark'></i> ${tag_name}
+                        </a>
+                    </div>
+                `);
             }
         } else {
             slct_list.push(slug_name);
-            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='content_tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' " + 
-                "onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'><i class='fa-solid fa-xmark'></i> "+tag_name+"</a></div>");
+            $("#slct_holder").append(`
+                <div class='d-inline' id='tagger_${slug_name}'>
+                    <input hidden name='content_tag[]' value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'>
+                    <a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("${slug_name}", "${tag_name}")'>
+                        <i class='fa-solid fa-xmark'></i> ${tag_name}
+                    </a>
+                </div>
+            `);
         }
 
         lengValidatorEvent('75', 'title');

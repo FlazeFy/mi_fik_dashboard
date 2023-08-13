@@ -38,13 +38,18 @@
                     ],
                     language: {
                         searchPlaceholder: "By Tag Name",
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
                     }
                 });
                 let extra_control = [
                     { id: "filter-cat"}
                 ];
                 modifyTableControl(tableName, extra_control);
-                $("#tagCatTable").DataTable();
+                $("#tagCatTable").DataTable({
+                    language: {
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
+                    }
+                });
             });
         </script>
 

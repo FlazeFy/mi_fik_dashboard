@@ -47,6 +47,7 @@
                     ],
                     language: {
                         searchPlaceholder: "By Body or Page / Location",
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
                     }
                 });
                 let extra_control = [

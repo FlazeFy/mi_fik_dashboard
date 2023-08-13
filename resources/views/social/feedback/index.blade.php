@@ -47,6 +47,9 @@
                 var tableName = 'feedbackTable';
                 $('#'+tableName).DataTable({
                     searching: false,
+                    language: {
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
+                    }
                 });
                 let extra_control = [
                     { id: "filter-suggest"}
@@ -84,7 +87,12 @@
                     @foreach($sort as $st)
                         <div class="content-section p-0 pt-3">
                             <header>
-                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                <h5 class="mx-3 text-secondary fw-bold" id="section-{{$i}}">{{ucwords($st)}}</h5><hr>
+                                <script>
+                                    if(sessionStorage.getItem('locale') != "en"){
+                                        translator('section-{{$i}}');
+                                    }
+                                </script>
                                 @include('components.controlsection', ['type' => "vertical"])
                             </header>
                             <div class="p-3">

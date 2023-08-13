@@ -1,5 +1,5 @@
 <div class="mb-2" style="font-size:15px;" id="filter-suggest">
-    <label for="tag_category" >Filter Suggestion</label>
+    <label for="tag_category">{{ __('messages.filter_suggest') }}</label>
     <form action="/social/feedback/filter_suggest" method="POST">
         @csrf
         <select class="form-select table-header" id="feedback_suggest" name="feedback_suggest" onchange="this.form.submit()"  aria-label="Floating label select example" required>
@@ -7,9 +7,9 @@
             @foreach($dct as $dtag)
                 @if($i == 0)
                     @if(session()->get("selected_filter_suggest") == "All")
-                        <option value="All" selected>All</option>
+                        <option value="All" selected>{{ __('messages.all') }}</option>
                     @else
-                        <option value="All">All</option>
+                        <option value="All">{{ __('messages.all') }}</option>
                     @endif
                 @endif
 

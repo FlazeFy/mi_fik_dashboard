@@ -1,4 +1,4 @@
-<h5 class="section-title">All User</h5>
+<h5 class="section-title">{{ __('messages.all_user') }}</h5>
 <div class="table-responsive">
     <table class="table tabular">
         <thead>
@@ -209,7 +209,7 @@
                         }
                         return tags;
                     } else {
-                        return `<div class="status-info text-center bg-danger mt-1">No Role</div>`;
+                        return `<div class="status-info text-center bg-danger mt-1">{{ __('messages.no_role') }}</div>`;
                     }
                 }
 
@@ -229,11 +229,11 @@
                             elmt = result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
                         }
 
-                        return `<span class='text-success fw-bold'>Joined since ${elmt}</span>`;
+                        return `<span class='text-success fw-bold'>{{ __('messages.joined_since') }} ${elmt}</span>`;
                     } else if(!acc && !datetime){
-                        return `<span class='text-danger fw-bold'>Waiting for admin approved</span>`;
+                        return `<span class='text-danger fw-bold'>{{ __('messages.wait_approve') }}</span>`;
                     } else if(!acc && datetime){
-                        return `<span class='text-danger fw-bold'>Account suspended</span>`;
+                        return `<span class='text-danger fw-bold'>{{ __('messages.suspended') }}</span>`;
                     }
                 }
 
@@ -247,7 +247,7 @@
                         return elmnt;
 
                     } else {
-                        return `<h6 class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> This user has no role</h6>`;
+                        return `<h6 class='text-danger'><i class='fa-solid fa-triangle-exclamation'></i> {{ __('messages.no_role') }}</h6>`;
                     }
                 }
 
@@ -258,14 +258,14 @@
                    
                     const elmt = `
                         <div id="section-role-picker-${username}">
-                            <h6 class="text-secondary mt-2 mb-4"> Manage Role</h6>
+                            <h6 class="text-secondary mt-2 mb-4"> {{ __('messages.manage_tag') }}</h6>
                             <div class="position-absolute" style="right:10px; top:0;">
                             <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value, '${username}')" name="tag_category" aria-label="Floating label select example" required>
                                 @php($i = 0)
                                 @foreach($dct_tag as $dtag)
                                     @if($i == 0)
                                         <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                        <option value="all">All</option>
+                                        <option value="all">{{ __('messages.all') }}</option>
                                     @else
                                         <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                                     @endif
@@ -333,7 +333,7 @@
                                         <div class="modal-body pt-4 p-0" style="height:90vh;">
                                             <button type="button" class="custom-close-modal" onclick="clean('${unamepreg}'); infinteLoadMoreUser('${pageUser}');" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
                                             <div class="px-3 position-relative">
-                                            <h5>User Profile</h5>
+                                            <h5>{{ __('messages.user_profile') }}</h5>
                                             <div class="row">
                                                 <div class="col-3 p-3">
                                                 <img class="img rounded-circle shadow" style="${getImageStyleBasedDevice()}" src="${getUserImageGeneral(img, role)}">

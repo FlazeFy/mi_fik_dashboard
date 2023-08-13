@@ -115,14 +115,14 @@
                             <td>
                                 <h6 class="m-0">Username :</h6>
                                 <a class="text-secondary text-decoration-none">${getName(admin_username, user_username)}</a>
-                                <h6 class="m-0">Fullname :</h6>
+                                <h6 class="m-0">{{ __('messages.fullname') }} :</h6>
                                 <a class="text-secondary text-decoration-none">${getName(admin_fullname, user_fullname)}</a>
                             </td>
                             <td>${getDateToContext(created_at, "datetime")}</td>
                             <td class="properties">
-                                <h6 class="m-0">Last used at</h6>
+                                <h6 class="m-0">{{ __('messages.last_updated_at') }}</h6>
                                 <a class="text-secondary text-decoration-none">${getDateToContext(last_used_at, "datetime")}</a>
-                                <h6 class="m-0">Updated at</h6>
+                                <h6 class="m-0">{{ __('messages.updated_at') }}</h6>
                                 <a class="text-secondary text-decoration-none">${getDateToContext(updated_at, "datetime")}</a>
                             </td>
                             <td>${getTokenAccessButton(type, id, token)}</td>
