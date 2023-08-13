@@ -94,7 +94,7 @@
                         </span>
                     </td>
                     <td style="min-width:var(--tcolMinJumbo);">
-                        <h6>Created By</h6>
+                        <h6>{{ __('messages.created_at') }}</h6>
                         <div class="">
                             <div class="d-inline-block">
                                 <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($dc->admin_username_created, null, $dc->admin_image_created, null)}}" 
@@ -106,7 +106,7 @@
                             </div>
                         </div>    
                         @if($dc->updated_at)
-                            <h6>Updated By</h6>
+                            <h6>{{ __('messages.updated_at') }}</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($dc->admin_username_updated, null, $dc->admin_image_updated, null)}}" 
@@ -119,7 +119,7 @@
                             </div>   
                         @endif
                         @if($dc->deleted_at)
-                            <h6>Deleted By</h6>
+                            <h6>{{ __('messages.deleted_at') }}</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($dc->admin_username_deleted, null, $dc->admin_image_deleted, null)}}" 
@@ -133,7 +133,7 @@
                         @endif
                     </td>
                     <td style="min-width:var(--tcolMinXSM);">
-                        <button class="btn btn-warning mb-2" onclick='toogleInfoDescEdit("{{$dc->id}}")'><i class="fa-solid fa-edit"></i></button>
+                        <button class="btn btn-info mb-2" onclick='toogleInfoDescEdit("{{$dc->id}}")'><i class="fa-solid fa-edit"></i></button>
                         <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$dc->id}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                         @include('system.dictionary.delete')                            
                     </td>

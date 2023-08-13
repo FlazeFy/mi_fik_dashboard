@@ -53,7 +53,7 @@
         $('#all_msg').html("");
 
         $.ajax({
-            url: '/api/v1/login',
+            url: '/api/v1/login/web',
             type: 'POST',
             data: $('#form-login').serialize(),
             dataType: 'json',

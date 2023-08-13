@@ -12,7 +12,7 @@
         @endforeach
     @endif
     <hr>
-    <h6 class="mt-2">Date & Time</h6>
+    <h6 class="mt-2">{{ __('messages.datetime') }}</h6>
 
     <!--Get event date start-->
     @if($c->content_date_start && $c->content_date_end)
@@ -28,7 +28,7 @@
     <hr>
     <h6 class="text-secondary">{{ __('messages.posted_at') }} : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @if($c->updated_at)
-        <h6 class="text-secondary">{{ __('messages.last_update') }} : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
+        <h6 class="text-secondary">{{ __('messages.last_updated') }} : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @endif
     
     @include('components.infobox', ['info' => $info, 'location'=> "show_date"])

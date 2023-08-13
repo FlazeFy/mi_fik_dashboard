@@ -13,7 +13,7 @@
     use App\Helpers\Generator;
 ?>
 
-<h5 class="section-title">All Info</h5>
+<h5 class="section-title">{{ __('messages.all') }} Info</h5>
 <div class="table-responsive">
     @include('system.info.filtertype')
     <table class="table tabular table-paginate" id="infoTable" cellspacing="0">
@@ -22,7 +22,7 @@
                 <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.type') }}</th>
                 <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.page') }} / {{ __('messages.location') }}</th>
                 <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.body') }}</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.is_active') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.props') }}</th>
                 <th scope="col" style="min-width:var(--tcolMinXSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
@@ -64,8 +64,8 @@
                         </td>
                         <td style="min-width:var(--tcolMinLG);">
                             <div id="info_page_location_holder_{{$in->id}}">
-                                <p class="mb-0">Page : <a class="text-link" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
-                                <p>Location : {{$in->info_location}}</p>
+                                <p class="mb-0">{{ __('messages.page') }} : <a class="text-link" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
+                                <p>{{ __('messages.location') }} : {{$in->info_location}}</p>
                             </div>
                         </td>
                         <td style="min-width:var(--tcolMinJumbo);">
@@ -79,7 +79,7 @@
                             </script>
                         </td>
                         <td style="min-width:var(--tcolMinJumbo);" class="properties">
-                            <h6>Created by</h6>
+                            <h6>{{ __('messages.created_at') }}</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_created, null, $in->admin_image_created, null)}}" 
@@ -91,7 +91,7 @@
                                 </div>
                             </div>    
                             @if($in->updated_at)
-                                <h6>Updated by</h6>
+                                <h6>{{ __('messages.updated_at') }}</h6>
                                 <div class="">
                                     <div class="d-inline-block">
                                         <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_updated, null, $in->admin_image_updated, null)}}" 
@@ -104,7 +104,7 @@
                                 </div>   
                             @endif
                             @if($in->deleted_at)
-                                <h6>Deleted by</h6>
+                                <h6>{{ __('messages.deleted_at') }}</h6>
                                 <div class="">
                                     <div class="d-inline-block">
                                         <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_deleted, null, $in->admin_image_deleted, null)}}" 
@@ -118,7 +118,7 @@
                             @endif
                         </td>
                         <td style="min-width:var(--tcolMinXSM);">
-                            <button class="btn btn-warning mb-2" onclick="toogleInfoDescEdit('{{ addslashes($in->info_body) }}', '{{$in->id}}', '{{$in->info_page}}', '{{$in->info_location}}'); tidyUpRichText('info_body_holder_{{$in->id}}')"
+                            <button class="btn btn-info mb-2" onclick="toogleInfoDescEdit('{{ addslashes($in->info_body) }}', '{{$in->id}}', '{{$in->info_page}}', '{{$in->info_location}}'); tidyUpRichText('info_body_holder_{{$in->id}}')"
                                 ><i class="fa-solid fa-edit"></i></button>
                             @if($in->info_location != "delete_info")
                                 <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
@@ -208,7 +208,7 @@
                     </div>
                     <div class="form-floating">
                         <input type="text" class="form-control nameInput" id="info_location_${id}" value="${loc}" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required>
-                        <label for="titleInput_event">Info Location</label>
+                        <label for="titleInput_event">{{ __('messages.location') }}</label>
                         <a id="info_location_msg_${id}" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
                     <button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> {{ __('messages.save') }}</button>
@@ -233,8 +233,8 @@
             info_body !== null && info_body !== "null" ? (child.innerHTML = info_body) : (child.innerHTML = " ");
         } else {
             pagloc_body.innerHTML = `
-                <p class="mb-0">Page : <a class="text-primary" href="<?php if($info){ url($in->info_page); } ?> " style="cursor:pointer;">${page}</a></p>
-                '<p>Location : ${loc}</p>
+                <p class="mb-0">{{ __('messages.page') }} : <a class="text-primary" href="<?php if($info){ url($in->info_page); } ?> " style="cursor:pointer;">${page}</a></p>
+                <p>{{ __('messages.location') }} : ${loc}</p>
             `;
             holder_body.innerHTML = info_body;
         }

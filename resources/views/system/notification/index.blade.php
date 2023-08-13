@@ -42,7 +42,8 @@
                     ],
                     language: {
                         searchPlaceholder: "By Content",
-                    }
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
+                    },
                 });
                 modifyTableControl(tableName, null);
             });
@@ -108,6 +109,9 @@
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
+            })
+            var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+                trigger: 'focus'
             })
 
             var isFormSubmitted = false;

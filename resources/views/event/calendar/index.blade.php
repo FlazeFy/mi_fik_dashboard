@@ -25,11 +25,7 @@
         <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
         <!--Full calendar.-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.css" />
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/fullcalendar@5.11.2/main.min.css,npm/fullcalendar@5.11.2/main.min.css" />
-        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/main.min.js'></script>
-        <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.2/locales-all.min.js'></script>
-        <script type='text/javascript' src='https://cdn.jsdelivr.net/combine/npm/fullcalendar@5.11.2,npm/fullcalendar@5.11.2/locales-all.min.js,npm/fullcalendar@5.11.2/locales-all.min.js,npm/fullcalendar@5.11.2/main.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
@@ -75,7 +71,12 @@
                     @foreach($sort as $st)
                         <div class="content-section p-0 pt-3">
                             <header>
-                                <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5>
+                                <h5 class="mx-3 text-secondary fw-bold" id="section-{{$i}}">{{ucwords($st)}}</h5>
+                                <script>
+                                    if(sessionStorage.getItem('locale') != "en"){
+                                        translator('section-{{$i}}');
+                                    }
+                                </script>
                                 @if($st == "finished")
                                     @include("event.calendar.searchbar")
                                     @include("event.calendar.sorting")

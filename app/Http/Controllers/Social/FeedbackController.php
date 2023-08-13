@@ -31,6 +31,7 @@ class FeedbackController extends Controller
             if($user_id != null){
                 $menu = Menu::getMenu();
                 $info = Info::getAvailableInfo("statistic");
+                $info2 = Info::getAvailableInfo("social/feedback");
                 $suggestion = Feedback::getAllFeedbackSuggestion();
                 $feedback = Feedback::getAllFeedback(50, session()->get('selected_filter_suggest'));
                 $dct = Dictionary::getDictionaryByType("Feedback");
@@ -43,6 +44,7 @@ class FeedbackController extends Controller
                     ->with('menu', $menu)
                     ->with('dct', $dct)
                     ->with('info', $info)
+                    ->with('info2', $info2)
                     ->with('suggestion', $suggestion)
                     ->with('feedback', $feedback);
             } else {

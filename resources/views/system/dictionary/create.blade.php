@@ -6,7 +6,7 @@
 </script>
 
 @if(!$isMobile)
-    <button class="btn btn-submit mt-4" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Dictionary</button>
+    <button class="btn btn-submit mt-4" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> {{ __('messages.add_dictionary') }}</button>
 @else 
     <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i></button>
 @endif

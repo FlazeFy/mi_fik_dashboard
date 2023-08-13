@@ -16,7 +16,7 @@
             <div class="modal-body text-center">
                 <img src="{{asset('assets/Success.png')}}" alt='success.png' style='width:30%;'><br>
                 <h5 class="modal-title mt-4" id="exampleModalLabel">{{ __('messages.success') }}</h5>
-                <h7 class="m-2 text-secondary">{{ Session::get('success_message') }}</h7>
+                <h7 class="m-2 text-secondary"><?php echo Session::get('success_message'); ?></h7>
                 <hr>
                 <button class="btn btn-success rounded-pill px-4" data-bs-dismiss="modal">{{ __('messages.continue') }}</button>
             </div>

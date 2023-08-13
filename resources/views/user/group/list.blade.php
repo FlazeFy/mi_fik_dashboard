@@ -126,7 +126,7 @@
                                         <form class="d-inline" action="/user/group/delete/${id}" method="POST">
                                             @csrf
                                             <input hidden name="group_name" value="${name}">
-                                            <button class="btn btn-danger float-end" type="submit">Delete</button>
+                                            <button class="btn btn-danger float-end" type="submit">{{ __('messages.delete') }}</button>
                                         </form>
                                     </div>
                                 </div>
@@ -143,7 +143,7 @@
                                 <div class="modal-content">
                                     <div class="modal-body text-left pt-4">
                                         <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                                        <h5>Edit Group</h5>
+                                        <h5>{{ __('messages.edit_group') }}</h5>
                                         <form class="d-inline" action="/user/group/edit/${id}" method="POST">
                                             @csrf
                                             <input hidden name="group_name" value="${name}">
@@ -186,7 +186,7 @@
                                 <div class="modal-content">
                                     <div class="modal-body text-left pt-4">
                                         <button type="button" class="custom-close-modal" onclick="clearAllNewMember('${slug}')" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                                        <h5>Manage Group Relation</h5>
+                                        <h5>{{ __('messages.manage_group_rel') }}</h5>
                                         <div class="row mt-4">
                                             <div class="col-lg-8 col-md-7 col-sm-12">
                                                 <form action="/user/group/member/remove/${id}" method="POST">
@@ -207,7 +207,7 @@
                                                 <form action="/user/group/member/add/${id}" method="POST">
                                                     @csrf
                                                     <span class="position-relative">
-                                                        <h6 class="mt-2">Selected User</h6>
+                                                        <h6 class="mt-2">{{ __('messages.slct_user') }}</h6>
                                                         <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAllNewMember('${slug}')"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                                                         <span id="submit-rel-add-btn-holder-${slug}"></span>
                                                     </span>
@@ -218,7 +218,7 @@
                                                 <span id="user-selected-newmember-holder-${slug}"></span>
                                             </div>
                                             <div class="col-lg-4 col-md-5 col-sm-12">
-                                                <h6>All User</h6>
+                                                <h6>{{ __('messages.all_user') }}</h6>
                                                 <div class="row w-100 mb-2">
                                                     <div class="col-2">
                                                         <a class="btn btn-danger-icon-outlined" title="Reset" onclick="resetGroupFNameSearch('${slug}')"><i class="fa-solid fa-xmark"></i></a>
@@ -258,9 +258,9 @@
                             <td>${groupDesc}</td>
                             <td>${total}</td>
                             <td class="properties">
-                                <h6>Joined At</h6>
+                                <h6>{{ __('messages.created_at') }}</h6>
                                 <a>${getDateContext(createdAt)}</a>
-                                <h6>Updated At</h6>
+                                <h6>{{ __('messages.updated_at') }}</h6>
                                 <a>${getDateContext(updatedAt)}</a>
                             </td>
                             <td>
@@ -570,7 +570,7 @@
 
         var submit_holder = document.getElementById('submit-rel-add-btn-holder-'+slug);
         if(selectedMember.length > 0){
-            submit_holder.innerHTML = `<button onclick="isFormSubmitted = true;" type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;"><i class="fa-solid fa-plus"></i> Assign All</button>`;
+            submit_holder.innerHTML = `<button onclick="isFormSubmitted = true;" type="submit" class="btn btn-noline text-success" style="float:right; margin-top:-35px;"><i class="fa-solid fa-plus"></i> {{ __('messages.assign_all') }}</button>`;
         } else {
             submit_holder.innerHTML = ``;
         }

@@ -73,9 +73,9 @@ class QueryContent extends Controller
                     $stmt = 'content_tag like '."'".'%"slug_name":"'.$ft.'"%'."'";
 
                     if($i != 1){
-                        $query = substr_replace($query, " ".$stmt." OR", 0, 0);
+                        $query = "(".substr_replace($query, " ".$stmt." OR", 0, 0).")";
                     } else {
-                        $query = substr_replace($query, " ".$stmt, 0, 0);
+                        $query = "(".substr_replace($query, " ".$stmt, 0, 0).")";
                     }
                     $i++;
                 }
@@ -109,7 +109,7 @@ class QueryContent extends Controller
             if($filter_date !== null){
                 $content = $content->whereRaw($filter_date);
             }
-            if ($based_role !== null && $based_role != "admin") {
+            if($based_role !== null && $based_role != "admin") {
                 $content = $content->whereRaw($based_role);
             }
             $content = $content->paginate($page);

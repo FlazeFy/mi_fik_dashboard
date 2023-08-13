@@ -41,6 +41,7 @@
                     ],
                     language: {
                         searchPlaceholder: "By Slug or Info",
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
                     }
                 });
                 modifyTableControl(tableName, null);

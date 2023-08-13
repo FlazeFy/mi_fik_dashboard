@@ -54,13 +54,17 @@
     function infinteLoadSuggest() {
         validateForm(validation);
 
-        var search = $("#question_answer").val();
+        var search = $("#question_answer").val().trim();
         var active = $("#suggestion_search").prop('checked');
 
         if(active){
             $("#empty_suggest_holder").empty();
             $("#load_more_suggest").empty();
             $("#answer_suggestion").empty();
+
+            if(search == ""){
+                search = '%20';
+            } 
 
             $.ajax({
                 url: "/api/v1/faq/answer/like/" + search,
@@ -85,14 +89,17 @@
                     return;
                 } else {
                     for(var i = 0; i < data.length; i++){
-                        //Attribute
                         var questionAnswer = data[i].question_answer;
                         var username = data[i].username;
 
-                        var elmt = " " +
-                            '<a class="remove_suggest" onclick="" title="Remove this suggestion"> ' +
-                                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
-                                '<a onclick="loadQuestion(' + "'" + questionAnswer + "'" + ')" title="Use this answer, from ' + username + '">' + questionAnswer + '</a>';
+                        const elmt = `
+                            <a class="remove_suggest" onclick="" title="Remove this suggestion">
+                                <i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i>
+                            </a>
+                            <a onclick="loadQuestion('${questionAnswer}')" title="Use this answer, from ${username}">
+                                ${questionAnswer}
+                            </a>
+                        `;
 
                         $("#answer_suggestion").append(elmt);
                     }   

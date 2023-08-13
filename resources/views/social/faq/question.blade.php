@@ -106,7 +106,6 @@
                 return;
             } else {
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var id = data[i].id;
                     var questionBody = data[i].question_body;
                     var questionType = data[i].question_type;
@@ -126,13 +125,13 @@
                         var status = "";
                     }
 
-                    var elmt = " " +
-                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' + 
-                        "'" + id + "'" + ', ' + "'" + status + "'" + ',' + "'" + ucFirst(questionBody) + "'" + ',' + "'" + username + "'" + ')"> ' +
-                        '<h6>' + ucFirst(questionType) + '</h6> ' +
-                        ucFirst(questionBody) + 
-                        '<p class="m-0 mt-2">' + getDateToContext(createdAt, "full") + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
-                    '</button>';
+                    const elmt = `
+                        <button class="btn question_box ${status}" id="question_${id}" onclick="loadDetailAnswer('${questionAnswer}', '${id}', '${status}', '${ucFirst(questionBody)}', '${username}')">
+                            <h6>${ucFirst(questionType)}</h6>
+                            ${ucFirst(questionBody)}
+                            <p class="m-0 mt-2">${getDateToContext(createdAt, "full")} {{ __('messages.by') }} <span style="font-weight: 500;">${username}</span></p>
+                        </button>
+                    `;
 
                     $("#question_holder").append(elmt);
                 }   

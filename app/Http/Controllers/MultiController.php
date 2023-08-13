@@ -45,6 +45,6 @@ class MultiController extends Controller
             $res = 'Bahasa diganti';
         }
   
-        return redirect()->back()->with('success_message', $res); 
+        return redirect()->back()->with('success_mini_message', $res); 
     }
 }

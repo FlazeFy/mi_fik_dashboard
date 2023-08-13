@@ -79,7 +79,12 @@
                                                 @if($st == "question")
                                                     <span id="total" class="text-primary"></span> 
                                                 @endif
-                                            {{ucwords($st)}}</h5><hr>
+                                            <span id="section-{{$i}}">{{ucwords($st)}}</span></h5><hr>
+                                            <script>
+                                                if(sessionStorage.getItem('locale') != "en"){
+                                                    translator('section-{{$i}}');
+                                                }
+                                            </script>
                                             @include('components.infosection', ['type' => $st])
                                             @if(!$isMobile)
                                                 @include('components.controlsection', ['type' => "horizontal"])
