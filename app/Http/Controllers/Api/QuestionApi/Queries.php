@@ -83,8 +83,8 @@ class Queries extends Controller
 
             if ($answer->isEmpty()) {
                 return response()->json([
-                    'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read_success", 'answer', null),
+                    'status' => 'failed',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'answer', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {

@@ -23,8 +23,8 @@ class Queries extends Controller
                 ->orderBy('tags.id', 'DESC');
             if($find != "%20" && trim($find) != ""){
                 $tag->whereRaw("tag_name LIKE '%".$find."%'");
-            } 
-            
+            }
+
             $tag = $tag->paginate($limit);
 
             if ($tag->isEmpty()) {
@@ -36,7 +36,7 @@ class Queries extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read", 'tag', null),
+                    'message' => Generator::getMessageTemplate("business_read_success", 'tag', null),
                     'data' => $tag
                 ], Response::HTTP_OK);
             }
