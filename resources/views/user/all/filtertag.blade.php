@@ -64,7 +64,7 @@
                     @endforeach
             </div><hr>
             <div class="dropdown-footer">
-                    <button class="btn btn-submit float-end mb-3"><i class="fa-solid fa-filter"></i> Apply Filter</button>
+                    <button class="btn btn-submit float-end mb-3"><i class="fa-solid fa-filter"></i> {{ __('messages.apply_filter') }}</button>
                 </form> 
             </div>
         </span>

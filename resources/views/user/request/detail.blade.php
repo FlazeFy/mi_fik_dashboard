@@ -95,7 +95,7 @@
         `);
     }
 
-    function load_user_detail(username_search, type, id) {      
+    function load_user_detail(username_search, type, id, req_type) {      
         $("#empty_item_holder_user_detail").html("");
 
         $.ajax({
@@ -126,19 +126,19 @@
                         var elmt = ""
                         yesterday.setDate(yesterday.getDate() - 1);
                         
-                        if(result.toDateString() === now.toDateString()){
-                            elmt = "Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                        } else if(result.toDateString() === yesterday.toDateString()){
-                            elmt = "Yesterday at" + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
+                        if (result.toDateString() === now.toDateString()) {
+                            elmt = `${messages('today_at')} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
+                        } else if (result.toDateString() === yesterday.toDateString()) {
+                            elmt = `${messages('yesterday_at')} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
                         } else {
-                            elmt = result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
+                            elmt = `${result.getFullYear()}/${result.getMonth() + 1}/${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
                         }
 
-                        return `<span class='text-success fw-bold'>Joined since ${elmt}</span>`;
+                        return `<span class='text-success fw-bold'>{{ __('messages.joined_since') }} ${elmt}</span>`;
                     } else if(!acc && !datetime){
-                        return `<span class='text-danger fw-bold'>Waiting for admin approved</span>`;
+                        return `<span class='text-danger fw-bold'>{{ __('messages.wait_approve') }}</span>`;
                     } else if(!acc && datetime){
-                        return `<span class='text-danger fw-bold'>Account suspended</span>`;
+                        return `<span class='text-danger fw-bold'>{{ __('messages.suspended') }}</span>`;
                     }
                 }
 
@@ -153,7 +153,7 @@
 
                     } else {
                         return "<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-role'> " +
-                            "<h6 class='text-center'>This user has no tag</h6>" ;
+                            "<h6 class='text-center'>{{ __('messages.no_role_tag') }}</h6>" ;
                     }
                 }
 
@@ -161,17 +161,22 @@
                     return status === 0 ? 1 : 0;
                 }
 
-                function manageRole(type, username, id){
+                function getReqTypeCtx(req_type){
+                    return req_type === "add" ? `<span class="text-success">${messages('add_tag')}</span>` : `<span class="text-danger">${messages('remove_tag')}</span>`;
+                }
+
+                function manageRole(type, username, id, req_type){
                     if(type == "new"){
                         var elmt = `
+                            <hr>
                             <h6 class="text-secondary my-4">{{ __('messages.manage_tag') }}</h6>
-                            <div class="position-absolute" style="right:0; top:10px;">
+                            <div class="position-absolute" style="right:0; top:30px;">
                                 <select class="form-select" id="tag_category" title="Tag Category" onchange="setTagFilter(this.value)" name="tag_category" aria-label="Floating label select example" required>
                                     @php($i = 0)
                                     @foreach($dct_tag as $dtag)
                                     @if($i == 0)
                                         <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                        <option value="all">All</option>
+                                        <option value="all">{{ __('messages.all') }}</option>
                                     @else
                                         <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                                     @endif
@@ -189,7 +194,7 @@
                                 </div>
                             </div>
                             <div id="empty_item_holder_manage_tag"></div>
-                            <span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span>
+                            <span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span><hr>
                             <h6 class="text-secondary mt-3">{{ __('messages.slct_role') }}</h6>
                             <div id="slct_holder"></div>
                         `;
@@ -205,9 +210,11 @@
                         });
 
                         elmt = `
-                            <h6 class="text-secondary mt-3">{{ __('messages.reqed_tag') }}</h6>
+                            <hr>
+                            <h6 class="text-secondary mt-3">{{ __('messages.reqed_tag') }} ${getReqTypeCtx(req_type)}</h6>
                             <div class="tag-manage-holder" id="manage-request-tag">${req_hold}</div>
-                            <h6 class="text-secondary mt-3">Request Revision</h6>
+                            <hr>
+                            <h6 class="text-secondary mt-3">{{ __('messages.revision_tag') }}</h6>
                             <div id="slct_holder"></div>
                         `;
                     }
@@ -217,8 +224,6 @@
 
                 for(var i = 0; i < data.length; i++){
                     $("#data_wrapper_user_detail").empty();
-
-                    //Attribute
                     var username = data[i].username;
                     var full_name = data[i].full_name;
                     var email = data[i].email;
@@ -250,13 +255,13 @@
                                 ${getRoleArea(role)}
                             </div>
                             <div class="position-relative">
-                                ${manageRole(type, username, id)}
+                                ${manageRole(type, username, id, req_type)}
                             </div>
                             </div>
                             <div class="config-btn-group">
                                 <hr>
-                                <a class="btn btn-detail-config primary" title="Manage role" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></a>
-                                <a class="btn btn-detail-config primary" title="Send email" href="mailto:${email}"><i class="fa-solid fa-envelope"></i></a>
+                                <a class="btn btn-detail-config primary" title="{{ __('messages.manage_tag') }}" onclick="infinteLoadMoreTag()"><i class="fa-solid fa-hashtag"></i></a>
+                                <a class="btn btn-detail-config primary" title="{{ __('messages.send_email') }}" href="mailto:${email}"><i class="fa-solid fa-envelope"></i></a>
                                 ${getLifeButton(is_accepted, accepted_at, type, id, username, full_name, null)}
                                 <span id="btn-submit-tag-holder"></span>
                             </div>

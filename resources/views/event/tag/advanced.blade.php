@@ -12,7 +12,7 @@
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-import-tag">
         <a class="dropdown-item" data-bs-target="#helpImport" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
-        <a class="dropdown-item" onclick="getTemplate()"><i class="fa-solid fa-print"></i> Get Template</a>
+        <a class="dropdown-item" onclick="getTemplate()"><i class="fa-solid fa-print"></i> {{ __('messages.get_template') }}</a>
     </div>
     <div class="modal fade" id="helpImport" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -31,9 +31,9 @@
 
     <div class="text-center" id="init-import">
         <img class="img w-50 d-block mx-auto" src="{{asset('assets/import.png')}}">
-        <label>Supported file type is <b>CSV</b></label>
+        <label>{{ __('messages.supported_desc') }} <b>CSV</b></label>
         <input type="file" id="fileInput" accept=".csv" class="d-none" oninput="importTagFile()">
-        <label for="fileInput" class="btn btn-success py-1 ms-1 rounded-pill"><i class="fa-solid fa-cloud"></i> Upload File</label>
+        <label for="fileInput" class="btn btn-success py-1 ms-1 rounded-pill"><i class="fa-solid fa-cloud"></i> {{ __('messages.upload_file') }}</label>
     </div>
     <p class="text-danger my-2" id="err-import-tag-msg"></p>
     <span id="success-check"></span>
@@ -46,9 +46,9 @@
                     <div class="modal-body pt-4 position-relative">
                         <input hidden id="slug_name" name="slug_name">
                         <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                        <h5>Create New Tag</h5>
+                        <h5>{{ __('messages.new_tag') }}</h5>
                         <div class="mt-2 row" id="imported-tag-holder"></div>
-                        <span id="btn-submit-holder-event"><button class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> Submit All</button></span><br>
+                        <span id="btn-submit-holder-event"><button class="custom-submit-modal"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.submit_all') }}</button></span><br>
                     </div>
                 </form>
             </div>

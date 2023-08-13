@@ -7,8 +7,15 @@
         -
     @else
         @if($tag_coll != "All")
+            @php($count_active_tag = count($tag_coll))
+            @php($i = 0)
             @foreach($tag_coll as $tg)
-                {{ucfirst(str_replace("_", " ", $tg))}},
+                @if($count_active_tag - 1 != $i)
+                    {{$tg->tag_name}},
+                @else 
+                    {{$tg->tag_name}}
+                @endif
+                @php($i++)
             @endforeach
         @endif
 
@@ -22,7 +29,7 @@
 </p>
 
 <script>
-    getFilterTitleMsg(search_storage)
+    getFilterTitleMsg(search_storage);
 
     function getFilterTitleMsg(check){
         var res = check

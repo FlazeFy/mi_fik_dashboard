@@ -34,11 +34,11 @@
                         @if(is_array($tag_coll))
                             @foreach($tag_coll as $slct)
                                 @if(is_array($colltag))
-                                    @if($slct == $tg['slug_name'])
+                                    @if($slct['slug_name'] == $tg['slug_name'])
                                         @php($found = true)
                                     @endif
                                 @else 
-                                    @if($slct == $tg->slug_name)
+                                    @if($slct->slug_name == $tg->slug_name)
                                         @php($found = true)
                                     @endif
                                 @endif
@@ -52,10 +52,10 @@
                         <a class="tag-check action">
                             <label>
                                 @if(is_array($colltag))
-                                    <input class="" name="slug_name[]" type="checkbox" value="{{$tg['slug_name']}}" id="flexCheckDefault" <?php echo $check; ?>>
+                                    <input name="tag[]" type="checkbox" value="{{$tg['slug_name']}}__{{$tg['tag_name']}}" id="flexCheckDefault" <?php echo $check; ?>>
                                     <span>{{$tg['tag_name']}}</span>
                                 @else 
-                                    <input class="" name="slug_name[]" type="checkbox" value="{{$tg->slug_name}}" id="flexCheckDefault" <?php echo $check; ?>>
+                                    <input name="tag[]" type="checkbox" value="{{$tg->slug_name}}__{{$tg->tag_name}}" id="flexCheckDefault" <?php echo $check; ?>>
                                     <span>{{$tg->tag_name}}</span>
                                 @endif
                             </label>
@@ -63,7 +63,7 @@
                     @endforeach
             </div><hr>
             <div class="dropdown-footer">
-                    <button class="btn btn-submit float-end mb-3"><i class="fa-solid fa-filter"></i> Apply Filter</button>
+                    <button class="btn btn-submit float-end mb-3"><i class="fa-solid fa-filter"></i> {{ __('messages.apply_filter') }}</button>
                 </form> 
             </div>
         </span>

@@ -97,10 +97,12 @@
                             @include('homepage.addevent_form.titleinput')
             
                             @include('homepage.addevent_form.descinput')
+                            <br>
 
-                            <br><label class="input-title">{{ __('messages.event_loc') }}</label><br>
+                            <hr><label class="input-title">{{ __('messages.event_loc') }}</label><br>
                             @include('homepage.addevent_form.locationpicker')
 
+                            <br><hr>
                             <label class="input-title my-2">{{ __('messages.att') }}</label><br>
                             @include('homepage.addevent_form.attachment')
 
@@ -109,13 +111,16 @@
                         <div class="col-lg-4">
                             <span id="btn-submit-holder-event"><button disabled class="custom-submit-modal w-100 m-0" style="position:relative !important; bottom:0;"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span><br><br>
 
+                            <hr>
                             <label class="input-title">{{ __('messages.event_image') }}</label><br>
                             @include('homepage.addevent_form.contentimage')
 
+                            <hr>
                             @include('homepage.addevent_form.datepicker')
                             <label class="input-title">{{ __('messages.set_reminder') }}</label>
                             <select class="form-select" id="selectReminder" name="content_reminder" aria-label="Floating label select example"></select>
 
+                            <hr>
                             <br>@include('homepage.addevent_form.tagpicker')
                         </div>
                     </div>

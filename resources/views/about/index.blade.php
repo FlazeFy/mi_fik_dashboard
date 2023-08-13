@@ -73,9 +73,19 @@
                         <div class="content-section p-0 pt-3">
                             <header>
                                 @if($st == "helps editor" && session()->get('role_key') == 0)
-                                    <h5 class="mx-3 text-secondary fw-bold">Help Center</h5><hr>
+                                    <h5 class="mx-3 text-secondary fw-bold" id="section-{{$i}}">Help Center</h5><hr>
+                                    <script>
+                                        if(sessionStorage.getItem('locale') != "en"){
+                                            translator('section-{{$i}}');
+                                        }
+                                    </script>
                                 @else
-                                    <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                    <h5 class="mx-3 text-secondary fw-bold" id="section-{{$i}}">{{ucwords($st)}}</h5><hr>
+                                    <script>
+                                        if(sessionStorage.getItem('locale') != "en"){
+                                            translator('section-{{$i}}');
+                                        }
+                                    </script>
                                 @endif
 
                                 @include('components.controlsection', ['type' => "vertical"])

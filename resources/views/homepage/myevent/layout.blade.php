@@ -13,15 +13,17 @@
                 <h5>{{ __('messages.my_event') }}</h5>
                 @include('homepage.myevent.searchbar')
                 <hr>
-                <div class="event-holder row mt-3"  style="display: flex; flex-direction: column; max-height: 75vh; overflow-y: scroll;">        
-                    <div class="row p-0 m-0" id="data-wrapper-my-event"></div>
-                    <!-- Loading -->
-                    <div class="auto-load-my-event text-center">
-                        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+                <div style="display: flex; flex-direction: column; max-height: 75vh; overflow-y: scroll;">
+                    <div class="event-holder row mt-3">        
+                        <div class="row p-0 m-0" id="data-wrapper-my-event"></div>
+                        <!-- Loading -->
+                        <div class="auto-load-my-event text-center">
+                            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> 
+                        </div>
+                        <div id="empty_myevent_holder"></div>
                     </div>
-                    <div id="empty_myevent_holder"></div>
+                    <span id="load_more_myevent_holder" class="text-center d-block mx-auto"></span>
                 </div>
-                <span id="load_more_myevent_holder" class="text-center d-block mx-auto"></span>
             </div>
         </div>
     </div>
@@ -38,7 +40,6 @@
 
     function infinteLoadMyEvent(page) {
         var find = document.getElementById("myevent_search").value;
-        document.getElementById("data-wrapper-my-event").innerHTML = "";
 
         function getFind(check){
             let trim = check.trim();
@@ -67,9 +68,9 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_myevent_holder').html(`<button class="btn content-more-floating my-3 p-2 d-inline-block mx-auto" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
+                $('#load_more_myevent_holder').html(`<button class="btn content-more-floating my-3 p-2 d-inline-block mx-auto" style="max-width:180px;" onclick="loadMyEvent()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_myevent_holder').html(`<h6 class="btn content-more-floating my-3 p-2 d-inline-block mx-auto">{{ __('messages.no_more') }}</h6>`);
+                $('#load_more_myevent_holder').html(`<h6 class="text-secondary">{{ __('messages.no_more') }}</h6>`);
             }
 
             $("#total_my_event").html(`<a class="total-my-event" title="You have some draft event"><i class="fa-regular fa-calendar"></i> ${total}</a>`);
@@ -78,7 +79,7 @@
                 $('#empty_myevent_holder').html("<img src="+'"'+"{{asset('assets/nodata2.png')}}"+'"'+" class='img nodata-icon'><h6 class='text-secondary text-center'>My event is empty</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-my-event').html(`<h5 class='text-secondary'>Woah!, You have see all the event</h5>`);
+                $('.auto-load-my-event').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getContentView(total_views, uname){
@@ -108,12 +109,12 @@
 
                     const elmt = `
                         <div class="col-lg-4 col-md-6 col-sm-12 pb-3">
-                            <button class="card shadow event-box p-2" style="${!isMobile ? 'height:auto;' : 'height:180px;'}" onclick="location.href='/event/detail/${slug_name}'">
+                            <button class="card shadow event-box p-2" style="${!isMobile ? 'height:auto;' : 'height:210px;'}" onclick="location.href='/event/detail/${slug_name}'">
                                 <div class="d-flex justify-content-between w-100">
                                     ${getContentView(total_views, usernameText)}
                                     ${getEventStatus(content_date_start, content_date_end)}
                                 </div>
-                                <div class="card-body event-body py-2 px-0 w-100">
+                                <div class="card-body event-body py-2 px-0 w-100 position-relative">
                                     <div class="event-heading">
                                         <div class="d-inline-block position-relative">
                                             <img class="img user-image-content" src="${getUserImage(admin_image, user_image, admin_username, user_username)}" alt="username-profile-pic.png">
@@ -126,7 +127,7 @@
                                     <div style="height:60px;">
                                         <p class="event-desc my-1">${ucFirst(removeTags(content_desc))}</p>
                                     </div>
-                                    <div class="event-properties row d-inline-block px-2">
+                                    <div class="event-properties row d-inline-block px-2 position-absolute" style="bottom:0;">
                                         ${getLocationName(content_loc)}
                                         ${getEventDate(content_date_start, content_date_end)}
                                         ${getEventTag(content_tag)}

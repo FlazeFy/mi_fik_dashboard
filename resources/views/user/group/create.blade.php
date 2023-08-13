@@ -16,7 +16,7 @@
 </style>
 
 @if(!$isMobile)
-    <button class="btn btn-submit" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Group</button>
+    <button class="btn btn-submit" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> {{ __('messages.add_group') }}</button>
 @else 
     <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#addModal">
         <i class="fa-solid fa-plus"></i>
@@ -55,7 +55,7 @@
                             </div>
 
                             <span class="position-relative">
-                                <h6 class="mt-2">Selected User</h6>
+                                <h6 class="mt-2">{{ __('messages.slct_user') }}</h6>
                                 <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                             </span>
                             <span id="user-selected-holder"></span>
@@ -74,7 +74,7 @@
                             </span>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
-                            <h6>User Detail</h6>
+                            <h6>{{ __('messages.user_detail') }}</h6>
                             <span id="detail-holder"></span>
                         </div>
                     </div>

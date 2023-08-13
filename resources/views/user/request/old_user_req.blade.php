@@ -130,7 +130,7 @@
                     var type = data[i].request_type;
 
                     const elmt = `
-                        <button class="btn user-box request" onclick="loadDetailGroup('${username}', 'old', '${id}'); slct_list = [];"> 
+                        <button class="btn user-box request" onclick="loadDetailGroup('${username}', 'old', '${id}','${type}'); slct_list = [];"> 
                             <div class="row ps-2"> 
                                 <div class="col-2 p-0 ps-1"> 
                                     <img class="img img-fluid user-image" style="margin-top:45%;" src="${getUserImageGeneral(img, role)}">
@@ -209,8 +209,8 @@
         refreshListRej()
     }
 
-    function loadDetailGroup(username, type, id){
-        load_user_detail(username, type, id)
+    function loadDetailGroup(username, type, id, req_type){
+        load_user_detail(username, type, id, req_type)
         infinteLoadMoreTag(1)
     }
 </script>

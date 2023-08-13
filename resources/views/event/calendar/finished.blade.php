@@ -75,7 +75,7 @@
             } else {
                 function getContentView(total_views, uname){
                     if(uname == "You" || <?= session()->get("role_key") ?> == 1){
-                        return `<div class='event-views' style='left:10px;'><i class='fa-solid fa-eye'></i>${total_views}</div> `;
+                        return `<div class='event-views' style='left:10px;'><i class='fa-solid fa-eye'></i> ${total_views}</div> `;
                     } else {
                         return `<div></div>`;
                     }
@@ -115,8 +115,8 @@
                                             <img class='img user-image-content' src='${getUserImage(admin_image, user_image)}' alt='username-profile-pic.png'> 
                                         </div>
                                         <div class='d-inline-block position-relative w-75'> 
-                                            <h6 class='event-title'>${ucEachWord(content_title)}"</h6> 
-                                            <h6 class='event-subtitle'>${usernameText}"</h6> 
+                                            <h6 class='event-title'>${ucEachWord(content_title)}</h6> 
+                                            <h6 class='event-subtitle'>${usernameText}</h6> 
                                         </div>
                                     </div>
                                     <div style='height:60px;'> 

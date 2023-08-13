@@ -312,7 +312,7 @@ class HomepageController extends Controller
                         dispatch(new ProcessMailer($header, $detail, session()->get('email_key')));
                     }
 
-                    return redirect()->route('detail', ['slug_name' => $slug])->with('success_message', Generator::getMessageTemplate("business_create",'event',$request->content_title));
+                    return redirect()->route('detail', ['slug_name' => $slug])->with('success_message', Generator::getMessageTemplate("business_create",'event','<b>'.$request->content_title.'</b>'));
                 }
             }
         } catch(\Exception $e) {

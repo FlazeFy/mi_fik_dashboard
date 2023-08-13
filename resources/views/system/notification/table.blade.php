@@ -63,9 +63,9 @@
                         {{$type}}
                     </td>
                     <td style="min-width:var(--tcolMinSM);">
-                        <h6 class="mb-0">Title</h6>
+                        <h6 class="mb-0">{{ __('messages.title') }}</h6>
                         {{$nt['notif_title']}}
-                        <h6 class="mb-0 mt-2">Body</h6>
+                        <h6 class="mb-0 mt-2">{{ __('messages.body') }}</h6>
                         {{$nt['notif_body']}}
                     </td>
                     <td style="<?php if(!$isMobile){ echo'min-width:var(--tcolMinJumbo);'; } else { echo 'min-width:calc(var(--tcolMinSM) + var(--tcolMinMD));'; } ?>">
@@ -76,18 +76,18 @@
                                 @if($nj['send_to'] == "all")
                                     <h6>Send to {{ucfirst($nj['send_to'])}}</h6>
                                 @elseif($nj['send_to'] == "person")
-                                    <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                    <h6>{{ __('messages.send_by') }} {{ucfirst($nj['send_to'])}} : </h6>
                                     @if(is_array($nj['context_id']))
                                         @php($list_user = $nj['context_id'])
                                         @foreach($list_user as $lu)
-                                            <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                            <a tabindex="0" class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" data-bs-trigger="focus"
                                                 title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
                                         @endforeach
                                     @else
                                         {{$nj['context_id']}}
                                     @endif
                                 @elseif($nj['send_to'] == "grouping")
-                                    <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                    <h6>{{ __('messages.send_by') }} {{ucfirst($nj['send_to'])}} : </h6>
                                     @php($list_group = $nj['context_id'])
                                     @foreach($list_group as $lg)
                                         <div class="group-box-notif">
@@ -99,11 +99,11 @@
                                             <div class="collapse" id="collapse_{{$nt['id']}}_{{$lg['id']}}">
                                                 @if($list_user)
                                                     @foreach($list_user as $lu)
-                                                        <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                                        <a tabindex="0" class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" data-bs-trigger="focus"
                                                             title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
                                                     @endforeach
                                                 @else
-                                                    <a style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> This group has no member</a>
+                                                    <a style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> {{ __('messages.no_member') }}</a>
                                                 @endif
                                             </div>
                                         </div>
@@ -117,7 +117,7 @@
                                         @php($j++)
                                     @endforeach
                                 @elseif($nj['send_to'] == "role")
-                                    <h6>Send by {{ucfirst($nj['send_to'])}} : </h6>
+                                    <h6>{{ __('messages.send_by') }} {{ucfirst($nj['send_to'])}} : </h6>
                                     <div class="group-box-notif">
                                         <div class="mt-1">
                                             @php($tag_list = $nj['context_id']['tag_list'])
@@ -131,7 +131,7 @@
                                         @php($user_list = $nj['context_id']['user_list'])
                                         <div class="collapse" id="collapse_{{$nt['id']}}_role">
                                             @foreach($user_list as $lu)
-                                                <a class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" 
+                                                <a tabindex="0" class="btn btn-tag me-0" style="font-size:12px;" data-bs-toggle="popover" data-bs-trigger="focus"
                                                     title="Username" data-bs-content="<?= "@"; ?>{{$lu['username']}}"><i class="fa-solid fa-user"></i> {{$lu['fullname']}}</a>
                                             @endforeach
                                         </div>
@@ -146,7 +146,6 @@
                                     </div>
                                 @endif
 
-                                <!-- Remove if equal to false later -->
                                 @if(isset($nj['status']) && $nj['status'] != false) 
                                     <div class="notif-result-box mt-2">
                                         <label><i class="fa-solid fa-circle-info"></i> {{ __('messages.summary') }}</label><br>
@@ -220,7 +219,7 @@
                     </td>
                     <td style="min-width:var(--tcolMinXSM);">
                         @if(!$nt['notif_send_to'])
-                            <button class="btn btn-warning mb-2 me-1" data-bs-target="#editModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
+                            <button class="btn btn-info mb-2 me-1" data-bs-target="#editModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-edit"></i></button>
                         @endif
                         <button class="btn btn-danger" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
                     </td>

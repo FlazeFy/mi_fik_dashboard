@@ -64,14 +64,17 @@ class CalendarController extends Controller
     public function set_filter_tag(Request $request, $all, $from)
     {
         if($all == 0){
-            $slug = $request->slug_name;
-            if(is_array($slug)){
-                $tag_count = count($slug);
+            $tag = $request->tag;
+            if(is_array($tag)){
+                $tag_count = count($tag);
                 $tag_holder = [];
 
                 for($i = 0; $i < $tag_count; $i++){
-                    if($request->has('slug_name.'.$i)){
-                        array_push($tag_holder, $slug[$i]);
+                    if($request->has('tag.'.$i)){
+                        $tags = explode("__",$tag[$i]);
+                        array_push($tag_holder, 
+                            (object)['slug_name' => $tags[0], 'tag_name' => $tags[1]],
+                        );
                     } 
                 }
             } else {

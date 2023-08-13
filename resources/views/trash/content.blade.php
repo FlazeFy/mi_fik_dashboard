@@ -147,6 +147,8 @@
                     var ai_deleted = data[i].admin_image_deleted;
                     var ui_deleted = data[i].user_image_deleted;
 
+                    console.log(au_deleted)
+
                     if (data_from === 1) { // Event
                         const elmt = `
                             <div class='pb-3 content-item'>
@@ -189,7 +191,7 @@
                                                     <img class='img img-fluid user-image-content' src='${getUserImage(ai_deleted, ui_deleted, au_deleted, uu_deleted)}' alt='username-profile-pic.png'>
                                                 </div>
                                                 <div class='d-inline-block position-relative w-75'>
-                                                    <h6 class='event-title'>Deleted By ~ Deleted At</h6>
+                                                    <h6 class='event-title'>{{ __('messages.deleted_by') }} ~ {{ __('messages.deleted_at') }}</h6>
                                                     <h6 class='event-subtitle'>${getUsername(au_deleted, uu_deleted)} ~ ${getDateToContext(deleted_at, "full")}</h6>
                                                 </div>
                                             </div>
@@ -289,36 +291,12 @@
                                         </div>
                                         <hr style='margin-bottom:10px; margin-top:10px;'>
                                         <div class='position-relative'>
-                                            <a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_${slug_name}' role='button' aria-expanded='false' aria-controls='collapseInfo'>
-                                                <i class='fa-solid fa-info'></i>
-                                            </a>
                                             <a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recover${type}-${slug_name}'>
                                                 <i class='fa-solid fa-arrow-rotate-right'></i>
                                             </a>
                                             <a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy${type}-${slug_name}'>
                                                 <i class='fa-solid fa-fire-flame-curved'></i>
                                             </a>
-                                        </div>
-                                        <div class='collapse' id='collapseInfo_tag_${slug_name}' data-bs-parent='#data-wrapper'>
-                                            <hr style='margin-bottom:10px; margin-top:10px;'>
-                                            <div>
-                                                <div class='d-inline-block'>
-                                                    <img class='img img-fluid user-image-content' src='${getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>)}'>
-                                                </div>
-                                                <div class='d-inline-block position-relative w-75'>
-                                                    <h6 class='task-title'>Created by ~ Created at</h6>
-                                                    <h6 class='task-subtitle'>${getUsername(au_created, uu_created)} ~ ${getDateToContext(created_at, "full")}</h6>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class='d-inline-block'>
-                                                    <img class='img img-fluid user-image-content' src='${getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>)}'>
-                                                </div>
-                                                <div class='d-inline-block position-relative w-75'>
-                                                    <h6 class='task-title'>Deleted By ~ Deleted At</h6>
-                                                    <h6 class='task-subtitle'>${getUsername(au_deleted, uu_deleted)} ~ ${getDateToContext(deleted_at, "full")}</h6>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </button>
@@ -354,36 +332,12 @@
                                         </div>
                                         <hr style='margin-bottom:10px; margin-top:10px;'>
                                         <div class='position-relative'>
-                                            <a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_${slug_name}' role='button' aria-expanded='false' aria-controls='collapseInfo'>
-                                                <i class='fa-solid fa-info'></i>
-                                            </a>
                                             <a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recover${type}-${slug_name}'>
                                                 <i class='fa-solid fa-arrow-rotate-right'></i>
                                             </a>
                                             <a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy${type}-${slug_name}'>
                                                 <i class='fa-solid fa-fire-flame-curved'></i>
                                             </a>
-                                        </div>
-                                        <div class='collapse' id='collapseInfo_tag_${slug_name}' data-bs-parent='#data-wrapper'>
-                                            <hr style='margin-bottom:10px; margin-top:10px;'>
-                                            <div>
-                                                <div class='d-inline-block'>
-                                                    <img class='img img-fluid user-image-content' src='${getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>)}'>
-                                                </div>
-                                                <div class='d-inline-block position-relative w-75'>
-                                                    <h6 class='task-title'>Created by ~ Created at</h6>
-                                                    <h6 class='task-subtitle'>${getUsername(au_created, uu_created)} ~ ${getDateToContext(created_at, "full")}</h6>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class='d-inline-block'>
-                                                    <img class='img img-fluid user-image-content' src='${getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>)}'>
-                                                </div>
-                                                <div class='d-inline-block position-relative w-75'>
-                                                    <h6 class='task-title'>Deleted by ~ Deleted at</h6>
-                                                    <h6 class='task-subtitle'>${getUsername(au_deleted, uu_deleted)} ~ ${getDateToContext(deleted_at, "full")}</h6>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </button>
@@ -414,36 +368,12 @@
                                         </div>
                                         <hr style='margin-bottom:10px; margin-top:10px;'>
                                         <div class='position-relative'>
-                                            <a class='btn btn-info px-3 me-1' title='See deleted info' data-bs-toggle='collapse' href='#collapseInfo_task_${slug_name}' role='button' aria-expanded='false' aria-controls='collapseInfo'>
-                                                <i class='fa-solid fa-info'></i>
-                                            </a>
                                             <a class='btn btn-submit me-1' role='button' title='Recover this content' data-bs-toggle='modal' data-bs-target='#recover${type}-${slug_name}'>
                                                 <i class='fa-solid fa-arrow-rotate-right'></i>
                                             </a>
                                             <a class='btn btn-danger' role='button' title='Permanently delete' data-bs-toggle='modal' data-bs-target='#destroy${type}-${slug_name}'>
                                                 <i class='fa-solid fa-fire-flame-curved'></i>
                                             </a>
-                                        </div>
-                                        <div class='collapse' id='collapseInfo_tag_${slug_name}' data-bs-parent='#data-wrapper'>
-                                            <hr style='margin-bottom:10px; margin-top:10px;'>
-                                            <div>
-                                                <div class='d-inline-block'>
-                                                    <img class='img img-fluid user-image-content' src='${getUserImageGeneral(ai_created, <?= session()->get('role_key'); ?>)}'>
-                                                </div>
-                                                <div class='d-inline-block position-relative w-75'>
-                                                    <h6 class='task-title'>Created by ~ Created at</h6>
-                                                    <h6 class='task-subtitle'>${getUsername(au_created, uu_created)} ~ ${getDateToContext(created_at, "full")}</h6>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class='d-inline-block'>
-                                                    <img class='img img-fluid user-image-content' src='${getUserImageGeneral(ai_deleted, <?= session()->get('role_key'); ?>)}'>
-                                                </div>
-                                                <div class='d-inline-block position-relative w-75'>
-                                                    <h6 class='task-title'>Deleted by ~ Deleted at</h6>
-                                                    <h6 class='task-subtitle'>${getUsername(au_deleted, uu_deleted)} ~ ${getDateToContext(deleted_at, "full")}</h6>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </button>
