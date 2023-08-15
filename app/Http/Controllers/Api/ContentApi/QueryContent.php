@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api\ContentApi;
-
+use DateTime;
+use DateInterval;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -24,37 +25,6 @@ use App\Models\Task;
 
 class QueryContent extends Controller
 {
-    public function getContentHeader()
-    {
-        try{
-            $select = Query::getSelectTemplate("content_thumbnail");
-
-            $content = ContentHeader::selectRaw($select)
-                ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->orderBy('contents_headers.content_date_start', 'DESC')
-                ->paginate(12);
-
-            if ($content->isEmpty()) {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Content Not Found',
-                    'data' => null
-                ], Response::HTTP_NOT_FOUND);
-            } else {
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content Header Found',
-                    'data' => $content
-                ], Response::HTTP_OK);
-            }
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function getContentBySlug($slug)
     {
         try{
@@ -63,25 +33,25 @@ class QueryContent extends Controller
             if (!$content) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Header Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function getContentBySlugLike(Request $request, $slug, $order, $date, $search)
+    public function getContentHeader(Request $request, $slug, $order, $date, $utc, $search)
     {
         try{
             $page = 12;
@@ -92,7 +62,7 @@ class QueryContent extends Controller
             $query = null;
 
             $user_id = $request->user()->id;
-            $based_role = Query::getAccessRole($user_id);
+            $based_role = Query::getAccessRole($user_id, false);
 
             if($slug != "all"){
                 $i = 1;
@@ -103,9 +73,9 @@ class QueryContent extends Controller
                     $stmt = 'content_tag like '."'".'%"slug_name":"'.$ft.'"%'."'";
 
                     if($i != 1){
-                        $query = substr_replace($query, " ".$stmt." OR", 0, 0);
+                        $query = "(".substr_replace($query, " ".$stmt." OR", 0, 0).")";
                     } else {
-                        $query = substr_replace($query, " ".$stmt, 0, 0);
+                        $query = "(".substr_replace($query, " ".$stmt, 0, 0).")";
                     }
                     $i++;
                 }
@@ -114,7 +84,7 @@ class QueryContent extends Controller
                 $date = explode("_", $date);
                 $ds = $date[0];
                 $de = $date[1];
-                $filter_date = Query::getWhereDateTemplate($ds, $de);
+                $filter_date = Query::getWhereDateTemplate($ds, $de, $utc);
             } 
 
             // General Syntax
@@ -139,7 +109,7 @@ class QueryContent extends Controller
             if($filter_date !== null){
                 $content = $content->whereRaw($filter_date);
             }
-            if ($based_role !== null && $based_role != "admin") {
+            if($based_role !== null && $based_role != "admin") {
                 $content = $content->whereRaw($based_role);
             }
             $content = $content->paginate($page);
@@ -147,20 +117,20 @@ class QueryContent extends Controller
             if ($content->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Header Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -174,7 +144,7 @@ class QueryContent extends Controller
             $search = trim($search);
 
             $user_id = $request->user()->id;
-            $based_role = Query::getAccessRole($user_id);
+            $based_role = Query::getAccessRole($user_id, false);
 
             $content = ContentHeader::selectRaw($select.",(DATEDIFF(content_date_end, now()) * -1) as days_passed")
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
@@ -196,41 +166,48 @@ class QueryContent extends Controller
             if ($content->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Header Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function getAllContentSchedule(Request $request, $date){
+    public function getAllContentSchedule(Request $request, $date, $utc){
         try{
             $select_content = Query::getSelectTemplate("content_schedule");
             $select_task = Query::getSelectTemplate("task_schedule");
             $user_id = $request->user()->id;
+            $based_role = Query::getAccessRole($user_id, false);
 
             $content = ContentHeader::selectRaw('content_reminder, '.$select_content.', contents_headers.created_at, contents_headers.updated_at')
                 ->leftjoin('contents_details', 'contents_headers.id', '=', 'contents_details.content_id')
-                ->whereRaw("date(`content_date_start`) = '".$date."'")
-                //->whereRaw("date(`content_date_start`) <= '".$date."' AND date(`content_date_end`) >= '".$date."'")
+                ->whereRaw("DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$utc." HOUR), '%Y-%m-%d') <= '".$date."'
+                    AND DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$utc." HOUR), '%Y-%m-%d') >= '".$date."'
+                ")
                 ->whereNull('deleted_at')
                 ->orderBy('content_date_start', 'DESC');
 
+            if ($based_role !== null && $based_role != "admin") {
+                $content = $content->whereRaw($based_role);
+            }
+
             $schedule = Task::selectRaw('task_reminder as content_reminder, '.$select_task.', tasks.created_at, tasks.updated_at')
                 ->where('created_by', $user_id)
-                ->whereRaw("date(`task_date_start`) = '".$date."'")
-                //->whereRaw("date(`task_date_start`) <= '".$date."' AND date(`task_date_end`) >= '".$date."'")
+                ->whereRaw("DATE_FORMAT(DATE_ADD(task_date_start, INTERVAL ".$utc." HOUR), '%Y-%m-%d') <= '".$date."'
+                    AND DATE_FORMAT(DATE_ADD(task_date_end, INTERVAL ".$utc." HOUR), '%Y-%m-%d') >= '".$date."'
+                ")
                 ->whereNull('deleted_at')
                 ->orderBy('tasks.task_date_start', 'DESC')
                 ->union($content)
@@ -248,8 +225,17 @@ class QueryContent extends Controller
                 $slug = $result->slug_name;
                 $title = $result->content_title;
                 $desc = $result->content_desc;
+
                 $date_start = $result->content_date_start;
+                $date = new DateTime($date_start);
+                $date->add(new DateInterval('PT' . $utc . 'H'));
+                $date_start = $date->format('Y-m-d H:i:s');
+
                 $date_end = $result->content_date_end;
+                $date = new DateTime($date_end);
+                $date->add(new DateInterval('PT' . $utc . 'H'));
+                $date_end = $date->format('Y-m-d H:i:s');
+
                 $from = $result->data_from;
                 $reminder = $result->content_reminder;
                 $createdAt = $result->created_at;
@@ -282,7 +268,7 @@ class QueryContent extends Controller
             $perPage = 12;
             $page = request()->input('page', 1);
             $paginator = new LengthAwarePaginator(
-                $collection->forPage($page, $perPage),
+                $collection->forPage($page, $perPage)->values(),
                 $collection->count(),
                 $perPage,
                 $page,
@@ -293,7 +279,7 @@ class QueryContent extends Controller
             if ($clean->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'content', null),
                     'total' => [[
                         'content' => $total_content,
                         'task' => $total_task,
@@ -303,7 +289,7 @@ class QueryContent extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'content', null),
                     'total' => [[
                         'content' => $total_content,
                         'task' => $total_task,
@@ -314,33 +300,7 @@ class QueryContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function getStatsMostViewedEvent(){
-        try{
-            $res= ContentDetail::getMostViewedEvent(7);
-
-            if(count($res) > 0){
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Statistic found',
-                    'data' => $res
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Statistic not found',
-                    'data' => null
-                ], Response::HTTP_NOT_FOUND);
-            }
-
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -368,13 +328,13 @@ class QueryContent extends Controller
             if($content->count() > 0) {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'event', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'event', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -382,7 +342,7 @@ class QueryContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

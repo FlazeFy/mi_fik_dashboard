@@ -1,3 +1,11 @@
+@if(session()->get('role_key') == 0)
+    <style>
+        .info-box.profile .body-box {
+            min-height: 30vh;
+        }
+    </style>
+@endif
+
 <div class="info-box-profile" id="info-box-profile">
     @include('profile.editimage')
 
@@ -13,8 +21,8 @@
         </div>
 
         @if(session()->get('role_key') == 0)
-            <div class="sub-holder text-start position-relative">
-                <h5 class="text-secondary">My Roles</h5>
+            <div class="sub-holder text-start position-relative mt-2">
+                <h5 class="text-secondary">{{ __('messages.my_roles') }}</h5><br>
                 @if(!$myreq)
                     <a class="btn btn-link-danger position-absolute" style="right:0; top:-10px;" onclick="getRequestRemove()"><i class="fa-solid fa-trash-can"></i> Remove</a>
                 @else 
@@ -32,7 +40,7 @@
                                 }
                             }
                         ?>
-                        Awaiting request. Please wait some moment or try to contact the Admin"><i class="fa-solid fa-lock"></i> Locked</a>  
+                        Awaiting request. Please wait some moment or try to contact the Admin"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</a>  
                 @endif
 
                 <div id="my_tag_list">
@@ -45,32 +53,32 @@
         @endif
 
         <div class="sub-holder text-start" id="body-eng">
-            <h5 class="text-secondary">Engagement</h5>
+            <h5 class="text-secondary">{{ __('messages.engagement') }}</h5>
             <div class="text-center mt-4">
                 <div class="d-inline-block mx-2">
                     <h4 class="text-center">{{$totalEvent}}</h4>
-                    <h6 class="text-secondary text-center">Posted Event</h6>
+                    <h6 class="text-secondary text-center">{{ __('messages.posted_event') }}</h6>
                 </div>
 
                 @if(session()->get('role_key') == 1)
                     <div class="d-inline-block mx-2">
                         <h4 class="text-center">{{$totalNotif}}</h4>
-                        <h6 class="text-secondary text-center">Posted Notification</h6>
+                        <h6 class="text-secondary text-center">{{ __('messages.sended_ann') }}</h6>
                     </div>
                     <div class="d-inline-block mx-2">
                         <h4 class="text-center">{{$totalAcc}}</h4>
-                        <h6 class="text-secondary text-center">Accepted Request</h6>
+                        <h6 class="text-secondary text-center">{{ __('messages.acc_req') }}</h6>
                     </div>
                     <div class="d-inline-block mx-2">
                         <h4 class="text-center">{{$totalQue}}</h4>
-                        <h6 class="text-secondary text-center">Answered Question</h6>
+                        <h6 class="text-secondary text-center">{{ __('messages.answered_que') }}</h6>
                     </div>
                 @endif
 
                 @if(session()->get('role_key') == 0)
                     <div class="d-inline-block mx-2">
                         <h4 class="text-center">{{$totalTask}}</h4>
-                        <h6 class="text-secondary text-center">Created Task</h6>
+                        <h6 class="text-secondary text-center">{{ __('messages.created_task') }}</h6>
                     </div>
                 @endif
             </div>
@@ -80,9 +88,9 @@
             <div class="sub-holder text-start" id="body-req">
                 <form action="/profile/request" method="POST" id="request_add_form">
                     @csrf
-                    <h5 class="text-secondary">Requested Tag</h5>
+                    <h5 class="text-secondary">{{ __('messages.reqed_tag') }}</h5>
                     <div id="slct_holder"></div>
-                    <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</a></span>
+                    <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</a></span>
                 </form>
             </div>
         @endif

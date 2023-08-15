@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 use App\Models\User;
 use App\Models\UserRequest;
 use App\Helpers\Query;
+use App\Helpers\Generator;
 
 class Queries extends Controller
 {
@@ -28,20 +29,20 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User request Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -67,7 +68,7 @@ class Queries extends Controller
                     }
                     $i++;
                 }
-            } 
+            }
 
             if(strpos($filter_name, "_")){
                 $name = explode("_", $filter_name);
@@ -104,20 +105,20 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User '.count($user).' Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'User '.count($user).' Found', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -132,26 +133,27 @@ class Queries extends Controller
                 ->where('is_rejected', null)
                 ->whereRaw("CONCAT(first_name,' ',COALESCE(last_name, '')) LIKE '%".$fullname."%'")
                 ->where('users_requests.is_accepted', 0)
+                ->where('users.is_accepted', 1)
                 ->orderBy('created_at', 'ASC')
                 ->paginate(12);
 
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User request Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -173,20 +175,20 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User request Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -203,20 +205,20 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -225,7 +227,7 @@ class Queries extends Controller
         try{
             $user_id = $request->user()->id;
 
-            $user = User::select('username', 'email', 'password', 'first_name', 'last_name', 'role', 'image_url', 'valid_until', 'created_at', 'updated_at')
+            $user = User::select('username', 'email', 'password', 'first_name', 'last_name', 'role', 'image_url', 'batch_year', 'created_at', 'updated_at')
                 ->where('id', $user_id)
                 ->limit(1)
                 ->get();
@@ -233,20 +235,20 @@ class Queries extends Controller
             if ($user->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -260,20 +262,20 @@ class Queries extends Controller
             if ($user == null) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'User Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user', null),
                     'data' => $user['role']
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -288,20 +290,20 @@ class Queries extends Controller
             if ($user == null) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Request Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'user request', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Request Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

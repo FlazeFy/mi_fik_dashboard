@@ -30,7 +30,6 @@ class DictionaryController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $dictionary = Dictionary::getAllDictionary();
                 $dictionaryType = DictionaryType::all();
                 $info = Info::getAvailableInfo("system");
@@ -44,10 +43,9 @@ class DictionaryController extends Controller
                     ->with('menu', $menu)
                     ->with('info', $info)
                     ->with('dictionary', $dictionary)
-                    ->with('dictionaryType', $dictionaryType)
-                    ->with('greet',$greet);
+                    ->with('dictionaryType', $dictionaryType);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");

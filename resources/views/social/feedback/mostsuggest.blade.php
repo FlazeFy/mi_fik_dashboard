@@ -4,15 +4,14 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
-        <a class="dropdown-item" data-bs-target="#msChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
+        <a class="dropdown-item" data-bs-target="#msChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
     </div>
 
     @if(count($suggestion) > 0)
         <div id="MS_tree_chart"></div>
     @else
         <img src="{{ asset('/assets/nodata.png')}}" class="img nodata-icon">
-        <h6 class="text-center">No Data Available</h6>
+        <h6 class="text-center">{{ __('messages.no_data') }}</h6>
     @endif
 
     @include('popup.mini_help', ['id' => 'msChart', 'title'=> 'Most Suggestion Chart', 'location'=>'most_suggest_chart'])
@@ -41,7 +40,7 @@
           height: 350,
           type: 'treemap'
         },
-        colors: ['#F9DB00','#009FF9','var(--primaryColor)','var(--infoBG)','#CDD7B6','#C1F666','#D43F97','#1E5D8C','#421243','#7F94B0','#EF6537','#C0ADDB'],
+        colors: ['#F9DB00','#FF8887','var(--primaryColor)','var(--infoBG)','#CDD7B6','#C1F666','#D43F97','#1E5D8C','#421243','#7F94B0','#EF6537','#C0ADDB'],
         plotOptions: {
             treemap: {
                 distributed: true,

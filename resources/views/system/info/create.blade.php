@@ -5,7 +5,7 @@
 </script>
 
 @if(!$isMobile)
-    <button class="btn btn-submit mt-4" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Info</button>
+    <button class="btn btn-submit mt-4" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> {{ __('messages.add') }} Info</button>
 @else 
     <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i></button>
 @endif
@@ -52,7 +52,7 @@
                     <div id="rich_box_create"></div>
                     <input name="info_body" id="info_body" hidden>
                     @include('components.infobox',['info'=>$info, 'location'=> 'add_info'])           
-                    <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                 </form>
             </div>
         </div>
@@ -72,10 +72,7 @@
 
     function getRichTextCreate(){
         var rawText = document.getElementById("rich_box_create").innerHTML;
-
-        var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','').replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">');
-        cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
-        
+        var cleanText = splitOutRichTag(rawText);
         var characterToDeleteAfter = "</div>";
         var modifiedString = deleteAfterCharacterCreate(cleanText, characterToDeleteAfter);
         infobody.value = modifiedString;
@@ -102,7 +99,6 @@
                 
                 if (input.value.trim() !== '' && input.name != "_token") {
                     is_editing = true;
-                    console.log(input.name)
                     break;
                 }
             }

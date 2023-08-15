@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\HelpApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Helpers\Generator;
 use App\Models\PersonalAccessTokens;
 
 use App\Models\Help;
@@ -23,20 +24,20 @@ class Queries extends Controller
             if ($help->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Help category not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'help category', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Help category found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'help category', null),
                     'data' => $help
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -62,20 +63,20 @@ class Queries extends Controller
             if (count($help)==0) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Help type not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'help type', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Help type found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'help type', null),
                     'data' => $help
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

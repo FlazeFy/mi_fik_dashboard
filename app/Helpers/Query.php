@@ -9,7 +9,7 @@ class Query
         if($type == "content_thumbnail"){
             $query = "slug_name,content_title,content_desc,
                 content_loc,content_image,content_date_start,
-                content_date_end,content_tag,contents_headers.created_at,
+                content_date_end,content_tag,
                 admins.username as admin_username_created, users.username as user_username_created, 
                 admins.image_url as admin_image_created, users.image_url as user_image_created, 
                 count(contents_viewers.id) as total_views";
@@ -178,22 +178,20 @@ class Query
                 au.username as admin_username_updated, au.image_url as admin_image_updated,
                 asd.username as admin_username_sended, asd.image_url as admin_image_sended";
         }
-        // Make user's new request dump query
-        // Make user's old request dump query
 
         return $query;
     }
 
     public static function getJoinTemplate($type, $initial){
         if($type == "content_dump"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN users uc ON ".$initial.".created_by = uc.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN users uu ON ".$initial.".updated_by = uu.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id";    
         } else if($type == "content_detail"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN users uc ON ".$initial.".created_by = uc.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN users uu ON ".$initial.".updated_by = uu.id
@@ -201,53 +199,68 @@ class Query
                 LEFT JOIN users ud ON ".$initial.".deleted_by = ud.id
                 LEFT JOIN contents_viewers cv ON cv.content_id = ch.id";    
         } else if($type == "tag"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id";
         } else if($type == "notif"){
-            return "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
+            $query = "LEFT JOIN admins ac ON ".$initial.".created_by = ac.id
                 LEFT JOIN admins au ON ".$initial.".updated_by = au.id
                 LEFT JOIN admins ad ON ".$initial.".deleted_by = ad.id
                 LEFT JOIN admins asd ON ".$initial.".sended_by = asd.id";
         }
+        return $query;
     }
 
-    public static function getWhereDateTemplate($date_start, $date_end){
+    public static function getWhereDateTemplate($date_start, $date_end, $offset){
         if($date_start == $date_end){
             $query = "
-                content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'
+                DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_start."'
             ";
         } else {
             $query = "
-                ((content_date_start <= '".$date_start."' and content_date_end >= '".$date_start."')
+                ((DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_start."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') >= '".$date_start."')
                 OR
-                (content_date_start <= '".$date_end."' and content_date_end >= '".$date_end."')
+                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_end."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') >= '".$date_end."')
                 OR
-                (content_date_start >= '".$date_start."' and content_date_end <= '".$date_end."'))
+                (DATE_FORMAT(DATE_ADD(content_date_start, INTERVAL ".$offset." HOUR), '%Y-%m-%d') >= '".$date_start."' 
+                    and DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$offset." HOUR), '%Y-%m-%d') <= '".$date_end."'))
             ";
         }
         
         return $query;
     }
 
-    public static function getAccessRole($user_id){
+    public static function getAccessRole($user_id, $is_general){
         $based_role = null;
         
         $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
         if($check->tokenable_type === "App\\Models\\User"){ // User
-            $user = User::where('id',$user_id)->first();
-
+            $user = User::select('role')->where('id', $user_id)->first();
             $roles = $user->role;
-            $arr_roles = "";
-            $total = count($roles);
-            for($i = 0; $i < $total; $i++){
-                $end = "";
-                if($i != $total - 1){
-                    $end = "|";
-                } 
-                $arr_roles .= $roles[$i]['slug_name'].$end;
+
+            if($is_general){    
+                foreach($roles as $rl){
+                    if($rl['slug_name'] == 'student'){
+                        $based_role = "student";
+                    } else if($rl['slug_name'] == 'lecturer' || $rl['slug_name'] == 'staff'){
+                        $based_role = "lecturer";
+                    }
+                }
+            } else {
+                $user = User::where('id',$user_id)->first();
+                $arr_roles = "";
+                $total = count($roles);
+                for($i = 0; $i < $total; $i++){
+                    $end = "";
+                    if($i != $total - 1){
+                        $end = "|";
+                    } 
+                    $arr_roles .= $roles[$i]['slug_name'].$end;
+                }
+                $based_role = "JSON_EXTRACT(content_tag, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
             }
-            $based_role = "JSON_EXTRACT(content_tag, '$[*].slug_name') REGEXP '(".$arr_roles.")'";
         } else {
             $based_role = "admin";
         }

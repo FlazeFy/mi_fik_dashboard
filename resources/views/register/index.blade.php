@@ -53,51 +53,64 @@
         ?>  
         @php($isMobile = Generator::isMobileDevice())   
         
-        <div class="d-block mx-auto p-0 pt-5" style="max-width:1360px;">
+        <div class="d-block mx-auto p-0 pt-5" style="max-width:1080px; width:100%;">
             <div class="accordion" id="accordionExample">
-                <div class="row w-100">
-                    <div class="col-lg-4 col-md-5 col-sm-12">
+                <div class="d-flex justify-content-between">
+                    <div>
                         <a class="btn btn-close-register" href="/"><i class="fa-solid fa-arrow-left"></i> Back to Sign In</a>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-welcome">
-                            Hello, welcome to Mi-FIK
-                            <h6 class="text-secondary">Before begin, let us to introduce ourself</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-terms">
-                            Our Terms & Condition
-                            <h6 class="text-secondary">Please read and accept our rules</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-profiledata">
-                            Let Us know you
-                            <h6 class="text-secondary">Please provide some of information about you</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-role">
-                            Choose your role
-                            <h6 class="text-secondary">As we tell you before. We need you to pick some role for our event's grouping</h6>
-                        </button>
-                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-ready">
-                            I'm ready to join!
-                            <h6 class="text-secondary">Finally, you can finished your register steps. And waiting for admin approval</h6>
-                        </button>
                     </div>
-                    <div class="col-lg-8 col-md-7 col-sm-12 p-5">
-                        <div class="section-register">
-                            <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
-                                @include('register.welcoming')
-                            </div>
-                            <div class="collapse" id="terms" data-bs-parent="#accordionExample">
-                                @include('register.terms')
-                            </div>
-                            <div class="collapse" id="profiledata" data-bs-parent="#accordionExample">
-                                @include('register.profiledata')
-                            </div>
-                            <div class="collapse" id="role" data-bs-parent="#accordionExample">
-                                @include('register.role')
-                            </div>
-                            <div class="collapse" id="ready" data-bs-parent="#accordionExample">
-                                @include('register.ready')
-                            </div>
-                        </div>
+                    <div>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-welcome"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-terms"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-profiledata"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-role"></button>
+                        <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-ready"></button>
                     </div>
+                </div><hr>
+               
+                <div class="collapse show" id="welcoming" data-bs-parent="#accordionExample">
+                    @include('register.welcoming')
+                </div>
+                <div class="collapse" id="terms" data-bs-parent="#accordionExample">
+                    @include('register.terms')
+                </div>
+                <div class="collapse" id="profiledata" data-bs-parent="#accordionExample">
+                    @include('register.profiledata')
+                </div>
+                <div class="collapse" id="role" data-bs-parent="#accordionExample">
+                    <script>
+                        let is_show_all_guidelines = true;
+                        let guidelines = [
+                            { 
+                                holder: "holder-steps-1", 
+                                target: "general-role-area", 
+                                title: "General Role", 
+                                body: "Please choose based on your academic situation right now. This role is required and you can choose one or maybe two", 
+                                image: null, 
+                                direction: "bottom"
+                            },
+                            { 
+                                holder: "holder-steps-2", 
+                                target: "selected-role-area", 
+                                title: "{{ __('messages.slct_role') }}", 
+                                body: "This section will show all the role you have picked. To remove the role you can click the selected role, or reset to remove all the selected", 
+                                image: 'assets/steps/steps_regis_role_1.gif', 
+                                direction: "right"
+                            },
+                            { 
+                                holder: "holder-steps-3", 
+                                target: "secondary-role-area", 
+                                title: "Secondary Role", 
+                                body: "This role is optional, but the event you will see in the future based on this role. But dont worry, you can change it in the future to", 
+                                image: null, 
+                                direction: "right"
+                            },
+                        ];
+                    </script>
+                    @include('register.role')
+                </div>
+                <div class="collapse" id="ready" data-bs-parent="#accordionExample">
+                    @include('register.ready')
                 </div>
             </div>
         </div>
@@ -114,6 +127,15 @@
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
             })
+            //Tooltip
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+
+            $(document).ready(function() {
+                tidyUpRichText("about-app-holder");
+            });
 
             var nextStep = "welcoming";
             var slct_role = [];
@@ -139,77 +161,72 @@
                 if(now == "welcoming"){
                     now = "terms";
                     btn_steps_welcome.setAttribute('data-bs-target', '#welcoming');
-                    btn_steps_welcome.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_welcome.style = "background: var(--successBG);";
                 } else if(now == "terms"){
                     now = "profiledata";
                     btn_steps_terms.setAttribute('data-bs-target', '#terms');
-                    btn_steps_terms.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_terms.style = "background: var(--successBG);";
                 } else if(now == "profiledata"){
                     now = "role";
-                    if(is_requested == false){
-                        loadTag();
-                    }
+                    // if(is_requested == false){
+                    //     loadTag();
+                    // }
                     btn_steps_profiledata.setAttribute('data-bs-target', '#profiledata');
-                    btn_steps_profiledata.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_profiledata.style = "background: var(--successBG);";
                 } else if(now == "role"){
                     now = "ready";
                     btn_steps_role.setAttribute('data-bs-target', '#role');
-                    btn_steps_ready.style = "border-left: 6px solid var(--successBG);";
+                    btn_steps_ready.style = "background: var(--successBG);";
                 }
             }
 
             function validate(now){
-                if(now == "terms"){
-                    if(document.getElementById("check-terms").checked == true){
+                if (now == "terms") {
+                    if (document.getElementById("check-terms").checked) {
                         msg_check_terms.innerHTML = "";
-                        btn_profile_holder.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#profiledata' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"terms"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                        btn_profile_holder.innerHTML = `<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#profiledata' onclick='routeStep("next", "terms")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
                     } else {
-                        btn_profile_holder.innerHTML = "<button class='btn-next-steps locked' id='btn-next-profile-data' onclick='warn("+'"'+"terms"+'"'+")'><i class='fa-solid fa-lock'></i> Locked</button>";
-                    }   
-                } else if(now == "profiledata"){
-                    if(val1 == true && val2 == true && registered == false){
-                        msg_all_input.innerHTML = "";
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' onclick='register()'><i class='fa-solid fa-arrow-up'></i> Register Now</button>";
-                    } else if(val1 == true && val2 == true && registered == true){
-                        msg_all_input.innerHTML = "";
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"profiledata"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
-                    } else {
-                        btn_role_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"profiledata"+'"'+")'></i> Locked</button>";
+                        btn_profile_holder.innerHTML = `<button class='btn-next-steps locked' id='btn-next-profile-data' onclick='warn("terms")'><i class='fa-solid fa-lock'></i> {{ __('messages.locked') }}</button>`;
                     }
-                } else if(now == "role"){
-                    valid = false;
-                    slct_role.map((val, index) => {
-                        if(val.slug_name == "lecturer" || val.slug_name == "staff"){
-                            valid = true;
-                        }
-                    });
+                } else if (now == "profiledata") {
+                    if (val1 && val2 && !registered) {
+                        msg_all_input.innerHTML = "";
+                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps' onclick='register()'><i class='fa-solid fa-arrow-up'></i> Register Now</button>`;
+                    } else if (val1 && val2 && registered) {
+                        msg_all_input.innerHTML = "";
+                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("next", "profiledata")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
+                    } else {
+                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("profiledata")'></i> {{ __('messages.locked') }}</button>`;
+                    }
+                } else if (now == "role") {
+                    let valid = slct_role.some(val => val.slug_name === "lecturer" || val.slug_name === "staff");
 
-                    if(slct_role.length > 0){
-                        document.getElementById("slct-box").style= "display:normal;";
-                        if(valid == true && is_requested == true){
+                    if (slct_role.length > 0) {
+                        document.getElementById("no-tag-selected-msg").style.display = "none";
+                        if (valid && is_requested) {
                             msg_all_input.innerHTML = "";
-                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"role"+'"'+")'><i class='fa-solid fa-arrow-right'></i> Next</button>";
-                        } else if(valid == true && is_requested == false){
+                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("next", "role")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
+                        } else if (valid && !is_requested) {
                             msg_all_input.innerHTML = "";
-                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='modal' data-bs-target='#requestRoleAdd'><i class='fa-solid fa-paper-plane'></i> Send Request</button>";
+                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='modal' data-bs-target='#requestRoleAdd'><i class='fa-solid fa-paper-plane'></i> Send Request</button>`;
                         } else {
-                            btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
+                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("role")'></i> {{ __('messages.locked') }}</button>`;
                         }
                         getSubmitButton();
                     } else {
-                        document.getElementById("slct-box").style= "display:none;";
-                        btn_ready_holder.innerHTML = "<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("+'"'+"role"+'"'+")'></i> Locked</button>";
-                    }                    
+                        document.getElementById("no-tag-selected-msg").style.display = "normal";
+                        btn_ready_holder.innerHTML = `<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("role")'></i> {{ __('messages.locked') }}</button>`;
+                    }
                 }
             }
 
             function warn(now){
                 if(now == "terms"){
-                    msg_check_terms.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You must check this checkbox";
+                    msg_check_terms.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> You must check this checkbox";
                 } else if(now == "profiledata"){
-                    msg_all_input.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Some input may be empty or have reached maximum character";
+                    msg_all_input.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Some input may be empty or have reached maximum character";
                 } else if(now == "role"){
-                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. You cant use Mi-FIK without a tag. And you must select one tag from 'General Role'";
+                    msg_all_role.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> You cant use Mi-FIK without a tag. And you must select one tag from 'General Role'";
                 } 
             }
 

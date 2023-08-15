@@ -46,6 +46,7 @@
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
+        <script src="{{ asset('/js/manage_user_v1.0.js')}}"></script>
     </head>
 
     <body>
@@ -60,7 +61,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -94,6 +95,7 @@
         </div>
 
         <!--Modal-->
+        @include('popup.success_mini')
         @include('popup.success')
 
         <script>

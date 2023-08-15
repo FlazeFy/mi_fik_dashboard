@@ -7,7 +7,7 @@
                 
                 <form action="/system/info/delete/{{$in->id}}" method="POST">
                     @csrf 
-                    <h6 class="text-center">Are you sure want to delete this info</h6>
+                    <h6 class="text-center">{{ __('messages.del_validation') }} info</h6>
                     @include('components.infobox',['info'=>$info, 'location'=> 'delete_info'])           
                     <button type="submit" class="btn btn-danger float-end">Delete</button>
                 </form>

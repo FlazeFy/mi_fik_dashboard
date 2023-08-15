@@ -70,21 +70,21 @@
             <div class="d-block mx-auto p-0" style="max-width:1080px;">
                 <div class="container mt-4 pt-3 text-center">
                     @include('waiting.prevent')
-                    <button class="btn btn-submit mt-2" onclick='is_finished = true; location.href="/"'><i class="fa-solid fa-arrow-left"></i> Back to login</button>
+                    <button class="btn btn-submit mt-2" onclick='is_finished = true; location.href="/"'><i class="fa-solid fa-arrow-left"></i> {{ __('messages.back_login') }}</button>
                 </div>
             </div>
         @elseif(!$found) 
             <div class="d-block mx-auto p-0" style="max-width:1080px;">
                 <div class="container mt-4 pt-3 text-center">
                     <div class="" id="start-section-manage">
-                        <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button> to send request to Admin.
+                        <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> {{ __('messages.browse_tag') }}</button> {{ __('messages.browse_tag_desc') }}
                     </div>
                     <div class="sub-holder text-center" id="body-req">
                         <form action="/profile/request" method="POST" id="request_add_form">
                             @csrf
-                            <h5 class="text-secondary">Requested Tag</h5>
+                            <h5 class="text-secondary">{{ __('messages.slct_tag') }}</h5>
                             <div id="slct_holder"></div>
-                            <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</a></span>
+                            <span id="btn-submit-tag-holder"><a disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</a></span>
                         </form>
                     </div>  
                     @include('waiting.tagpicker')

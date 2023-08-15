@@ -1,9 +1,9 @@
 <div class="container-fluid rounded my-4 py-5 text-start welcome-container" style="max-width:450px;">
     <form action="/v2/login" method="POST" id="form-login">
         @csrf
-        <h1 class="fw-bold mt-4 text-primary">Welcome to Mi-FIK</h1>
-        <h6 class="mb-4">Mi-Fik is an app made for event organizing and announcement that will be used for lecturer, staff, and student of 
-            <a class="link-external" href="https://ifik.telkomuniversity.ac.id/">School of Creative Industries Telkom University</a></h6>
+        <h1 class="fw-bold mt-4 text-primary">{{ __('messages.welcome_app') }}</h1>
+        <h6 class="mb-4">{{ __('messages.welcome_app_desc') }} 
+            <a class="link-external" href="https://ifik.telkomuniversity.ac.id/">{{ __('messages.fik') }}</a></h6>
         <div class="form-floating mt-1">
             <input type="text" class="form-control login" placeholder="Username" name="username" id="username" onkeydown="return submitOnEnter(event)" required>
             <label for="floatingUsername">Username</label>
@@ -17,7 +17,7 @@
         </div>
         <a class="error_input" id="all_msg"></a><br>
 
-        <a class="btn btn-forgot-password mt-3">Forgot Password ?</a>
+        <a class="btn btn-forgot-password mt-3" href="/forget">{{ __('messages.forgot') }}</a>
 
         <input hidden name="token" value="" id="token">
         <input hidden name="role" value="" id="role">
@@ -25,8 +25,8 @@
         <input hidden name="profile_pic" value="" id="profile_pic">
         <input hidden name="is_waiting" value="" id="is_waiting">
         <div class="position-relative mt-3 mb-2">
-            <a onclick="login()" class="btn btn-submit-form px-5 rounded-pill">Sign In</a>
-            <a href="/register" class="btn btn-primary-outlined position-absolute px-5 rounded-pill" style="right:0; top:7.5px;">Register</a>
+            <a onclick="login()" class="btn btn-submit-form px-5 rounded-pill">{{ __('messages.sign_in') }}</a>
+            <a href="/register" class="btn btn-primary-outlined position-absolute px-5 rounded-pill" style="right:0; top:7.5px;">{{ __('messages.register') }}</a>
         </div>
     </form>
 </div>
@@ -53,12 +53,11 @@
         $('#all_msg').html("");
 
         $.ajax({
-            url: '/api/v1/login',
+            url: '/api/v1/login/web',
             type: 'POST',
             data: $('#form-login').serialize(),
             dataType: 'json',
             success: function(response) {
-                //console.log(response.token);
                 var found = false;
                 var is_waiting =  false;
 
@@ -99,7 +98,7 @@
                 var usernameMsg = null;
                 var passMsg = null;
                 var allMsg = null;
-                var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
+                var icon = `<i class='fa-solid fa-triangle-exclamation'></i> `;
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation

@@ -3,7 +3,7 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>Edit Notification</h5>
+                <h5>{{ __('messages.edit_notif') }}</h5>
                 <div class="row my-2">
                     <form action="/system/notification/update" method="POST">
                         @csrf 
@@ -11,7 +11,7 @@
                             <div class="col-lg-8 pb-2">
                                 <div class="form-floating">
                                     <textarea class="form-control" id="bodyInput_{{$i}}" style="height:180px;" onkeyup="lengValidator(<?= $i; ?>)" onchange="lengValidator(<?= $i; ?>)">{{$nt['notif_body']}}</textarea>
-                                    <label for="floatingTextarea2">Notification Body</label>
+                                    <label for="floatingTextarea2">{{ __('messages.body') }}</label>
                                 </div>
                                 <a id="body_msg" class="input-warning text-danger"></a>
                             </div>
@@ -31,11 +31,11 @@
                                 <div class="form-floating mb-3">
                                     <select class="form-select" id="floatingSelect" name="is_pending" aria-label="Floating label select example" onchange="getPendingDate(this.value, <?= $i; ?>)">
                                         @if($nt['is_pending'] == 1)
-                                            <option value="1" selected>Pending</option>
-                                            <option value="0">Announced</option>
+                                            <option value="1" selected>{{ __('messages.pending') }}</option>
+                                            <option value="0">{{ __('messages.announced') }}</option>
                                         @else
-                                            <option value="1">Pending</option>
-                                            <option value="0" selected>Announced</option>
+                                            <option value="1">{{ __('messages.pending') }}</option>
+                                            <option value="0" selected>{{ __('messages.announced') }}</option>
                                         @endif
                                     </select>
                                     <label for="floatingSelect">Status</label>
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     
-                        <label class="input-title">Send To</label>
+                        <label class="input-title">{{ __('messages.send_to') }}</label>
                         <p style="font-weight:400;"><i class="fa-solid fa-circle-info text-primary"></i> ...</p>
                         <span id="btn-submit-holder-{{$i}}"></span>
                     </form>
@@ -66,7 +66,7 @@
     //Validator
     function lengValidator(id){
         if($("#bodyInput_"+id).val().length >= 255){
-            $("#body_msg_"+id).html("<i class='fa-solid fa-triangle-exclamation'></i> You reaches the maximum character");
+            $("#body_msg_"+id).html("<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length");
         } else {
             $("#body_msg_"+id).text("");
         }

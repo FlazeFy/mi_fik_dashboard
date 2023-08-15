@@ -66,23 +66,23 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
-                    <div class="container-fluid bg-white rounded my-3 mt-5 p-2">
+                    <div class="content-section mb-0">
                         @include('statistic.createdEvent')
                     </div>
 
                     @if(!$isMobile)
                         <div class="row p-0 m-0">
                             <div class="col-lg-4 col-md-6 col-sm-12 ps-0 py-0 my-0">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                <div class="content-section mb-0">
                                     @include('statistic.mostLoc')
                                 </div>
                             </div>
                             <div class="col-lg-8 col-md-6 col-sm-12 pe-0 py-0 my-0">
-                                <div class="container-fluid bg-white rounded my-3 p-2">
+                                <div class="content-section mb-0">
                                     <div class="row p-0 m-0">
                                         <div class="col-lg-6 col-md-12 col-sm-12">
                                             @include('statistic.mostRole')
@@ -95,21 +95,21 @@
                             </div>
                         </div>
                     @else
-                        <div class="container-fluid bg-white rounded my-3 p-2">
+                        <div class="content-section">
                             @include('statistic.mostLoc')
                         </div>
-                        <div class="container-fluid bg-white rounded my-3 p-2">
+                        <div class="content-section">
                             @include('statistic.mostTag')
                             <br>
                             @include('statistic.mostRole')
                         </div>
                     @endif
 
-                    <div class="container-fluid bg-white rounded mb-3 mt-2 p-2">
+                    <div class="content-section">
                        @include('statistic.mostViewedEvent')
                     </div>
-                    <div class="container-fluid bg-white rounded mb-3 mt-2 p-2">
-                        <h5 class="text-secondary fw-bold">Most Suggestion Feedback</h5>
+                    <div class="content-section">
+                        <h5 class="text-secondary fw-bold">{{ __('messages.msf') }}</h5>
                         @include('social.feedback.mostsuggest')
                     </div>
                 </div>
@@ -118,6 +118,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.success_mini')
         @include('popup.failed')
 
         <!--Sidebar-->

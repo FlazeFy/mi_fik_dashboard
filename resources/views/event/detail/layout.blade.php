@@ -1,6 +1,6 @@
 <style>
     .box-event-detail{
-        margin: 20px 0 20px 0;
+        margin: var(--spaceLG) 0 var(--spaceLG) 0;
         min-height: 80vh;
     }
     .event-detail-img-header{
@@ -24,38 +24,16 @@
         color: var(--primaryColor) !important;
         background: none;
         border: none;
-        position: absolute;
-        top: 15px;
-        left: 15px;
         cursor: pointer;
     }
     .event-tag-box{
-        border-radius: var(--roundedMini);
+        border-radius: var(--roundedSM);
         color:var(--whiteColor) !important;
         background: var(--primaryColor);
     }
     .event-detail{
         color: var(--primaryColor) !important;
         text-decoration:none;
-    }
-    .archive-holder{
-        display: flex;
-        flex-direction: column;
-        height: 300px;
-        padding-inline: 10px;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-    }
-    .archive-box{
-        padding: 10px;
-        margin-top: 14px;
-        width: 200px !important;
-    }
-    .archive-count{
-        font-size: 12px;
-        font-weight: 400;
     }
     .dropdown-menu{
         border: none;
@@ -65,44 +43,6 @@
     }
     .dropdown-menu-end .dropdown-item.active, .dropdown-menu-end .dropdown-item:active, .dropdown-menu-end .dropdown-item:hover{
         background: none !important;
-    }
-
-    .btn.archive-box{
-        position: relative;
-    }
-    .btn.archive-box .icon-holder{
-        display: none;
-        color: var(--whiteColor);
-        position: absolute;
-        top: 20px;
-        left: -32.5px; 
-    }
-    .btn.archive-box:hover{
-        border-left: 50px solid var(--successBG);
-        transition: all .30s linear;
-    }
-    .btn.archive-box:hover .icon-holder{
-        display: inline;
-    }
-    .btn.archive-box.active{
-        color: var(--whiteColor);
-        background: var(--primaryColor);
-        border: none !important;
-    }
-    .btn.archive-box.active h6{
-        color: var(--whiteColor) !important;
-    }
-    .btn.archive-box.active:hover{
-        border-left: 50px solid var(--warningBG) !important;
-        transition: all .30s linear;
-    }
-    .btn-add-archive{
-        margin-top: 10px;
-        font-size: 13px;
-        color: var(--darkColor);
-    }
-    .btn-add-archive:hover{
-        color: var(--primaryColor);
     }
   
     ::-webkit-scrollbar {
@@ -133,13 +73,39 @@
     <div class="box-event-detail">
         @if($c->content_image)
             <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('{{$c->content_image}}');" id="event-header-image">
-                <button class="event-header-size-toogle" title="Resize image" onclick="resize('<?= $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
-                <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
+                <div class="d-flex justify-content-between py-3 px-2">
+                    <div>
+                        <button class="event-header-size-toogle" title="Resize image" onclick="resize('<?= $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+                    </div>
+                    @if($isMobile)
+                        <div>
+                            <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i></a>
+                            <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i></a>
+                        </div>
+                    @endif
+                </div>
+
+                @if(session()->get('role_key') == 1 || $c->user_username_created == session()->get('username_key'))
+                    <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
+                @endif
             </div>
         @else
             <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});" id="event-header-image">
-                <button class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
-                <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
+                <div class="d-flex justify-content-between py-3 px-2">
+                    <div>
+                        <button class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></button>
+                    </div>    
+                    @if($isMobile)
+                        <div>
+                            <a class="btn btn-danger navigator-right rounded-pill px-4" style="right:0" title="Delete event" data-bs-toggle="modal" data-bs-target="#deleteEvent-{{$c->slug_name}}"><i class="fa-solid fa-trash"></i> {{ __('messages.delete') }}</a>
+                            <a class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:130px" title="Switch to edit mode" onclick="location.href='/event/edit/{{$c->slug_name}}'"><i class="fa-regular fa-pen-to-square"></i> {{ __('messages.edit') }}</a>
+                        </div>
+                    @endif
+                </div>
+
+                @if(session()->get('role_key') == 1 || $c->user_username_created == session()->get('username_key'))
+                    <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
+                @endif
             </div>
         @endif
         <div class="row p-3">
@@ -149,7 +115,7 @@
                     use App\Helpers\Generator;
                 ?>  
                 @php($image_profile = Generator::getUserImage($c->admin_image_created, $c->user_image_created, $c->admin_username_created))
-                <div class="p-0 m-0" style="display: flex;">
+                <div class="p-0 m-0 mb-3" style="display: flex;">
                     <div class="d-inline-block me-2">
                         <img class="img rounded-circle" style="width:55px; height:55px; border:2px solid var(--primaryColor);" src="{{$image_profile}}" alt="username-profile-pic.png">
                     </div>
@@ -162,13 +128,13 @@
                     <span id="desc-holder"><?php echo $c->content_desc; ?></span><br>
                 @else
                     <img src="{{asset('assets/nodesc.png')}}" class="img nodata-icon" style="height:18vh;">
-                    <h6 class="text-center text-secondary">This Event doesn't have description</h6>
+                    <h6 class="text-center text-secondary">{{ __('messages.no_desc') }}</h6>
                 @endif
 
-                <hr><h5>Attachment</h5>
+                <hr><h5>{{ __('messages.att') }}</h5>
                 @include('event.detail.attachment')
 
-                <hr><h5>Location</h5>
+                <hr><h5>{{ __('messages.event_loc') }}</h5>
                 @include('event.detail.maps')
             </div>
             <div class="col-lg-4">
@@ -181,20 +147,11 @@
     var i = 0;
     var j = 0;
 
-    function copylink(id) {
-        var copyText = document.getElementById("copy_url_"+id);
-
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); // For mobile devices
-
-        navigator.clipboard.writeText(copyText.value);
-    }
-
     function resize(img){
         if(img){
-            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('" + img + "');";
+            var img_url = `background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('${img}');`;
         } else {
-            var img_url = "background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');";
+            var img_url = `background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('http://127.0.0.1:8000/assets/default_content.jpg');`;
         }
 
         if(i % 2 == 0){

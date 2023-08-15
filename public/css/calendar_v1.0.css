@@ -16,7 +16,6 @@
 .fc-toolbar-chunk .fc-button-group button, .fc-today-button.fc-button.fc-button-primary{
     padding: 6px var(--spaceXSM) !important;
     border: 1.75px solid var(--primaryLightBG) !important;
-    padding: 6px var(--spaceXSM) !important;
     background: transparent;
     color: var(--primaryColor);
 }
@@ -57,7 +56,8 @@
     height: 25px;
     margin: var(--spaceMini);
     color: var(--whiteColor) !important;
-    padding-top: var(--spaceMini) / 2; 
+    padding-top: calc(var(--spaceMini) - 1px)!important; 
+    padding-inline: calc(var(--spaceMini) + 3.5px)!important; 
 }
 a.fc-daygrid-day-number{
     font-size: var(--textXMD); 
@@ -165,18 +165,12 @@ td.fc-daygrid-day.fc-day{
     z-index: 999;
     overflow-y: scroll;
 }
-.fc-popover-close.fc-icon.fc-icon-x{
-    border: 1.75px solid var(--warningBG);
-    padding: 1.25px;
-    width: 25px !important;
-    height: 25px !important;
-    border-radius: var(--roundedMini);
-    color: var(--warningBG) !important; 
-    margin: var(--spaceXXSM);
-}
-.fc-popover-close.fc-icon.fc-icon-x:hover{
-    background: var(--warningBG) !important; 
-    color: var(--whiteColor) !important; 
+.fc-popover-close.fc-icon.fc-icon-x {
+    width: 35px !important;
+    height: 35px !important;
+    padding: calc(var(--spaceMini) + 2px) !important;
+    box-shadow: none;
+    border: 1.5px solid var(--warningBG);
 }
 .fc-daygrid-more-link.fc-more-link{
     color: var(--darkColor) !important; 

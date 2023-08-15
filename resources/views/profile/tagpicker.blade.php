@@ -4,17 +4,17 @@
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu normal dropdown-menu-end shadow" aria-labelledby="section-more-MOL">
-        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> Abort</a>
+        <a class="dropdown-item" data-bs-target="#helpRequestTag" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
+        <a class="dropdown-item text-danger" onclick="abortTagPicker()"><i class="fa-solid fa-xmark"></i> {{ __('messages.abort') }}</a>
     </div>
 
     @include('popup.mini_help', ['id' => 'helpRequestTag', 'title'=> 'Request Tag', 'location'=>'request_tag'])
 
     @if(!$myreq)
         <div class="" id="start-section-manage">
-            <img class="img img-fluid d-block mx-auto" style="max-width: 70%;" src="{{ asset('/assets/picker.png')}}">
+            <img class="img img-fluid d-block mx-auto image-msg-md" src="{{ asset('/assets/picker.png')}}">
             <h6 class="text-secondary text-center">In this section, you can request some tag you want to add to your role or maybe you want to remove the tag 
-                <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> Browse Available Tag</button>
+                <button class="btn btn-link py-1 px-2" onclick="infinteLoadMore(1)"><i class="fa-solid fa-magnifying-glass"></i> {{ __('messages.browse_tag') }}</button>
             </h6>
         </div>
         @if(session()->get('role_key') != 1)
@@ -26,7 +26,7 @@
                         @if($dtag->slug_name != "general-role")
                             @if($i == 0) 
                                 <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                                <option value="all">All</option>
+                                <option value="all">{{ __('messages.all') }}</option>
                             @else 
                                 <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                             @endif
@@ -49,7 +49,7 @@
         <span id="load_more" style="display: flex; justify-content:center;"></span>
     @else 
         <div class="" id="start-section-manage">
-            <img class="img img-fluid d-block mx-auto" style="max-width: 70%;" src="{{ asset('/assets/sorry.png')}}">
+            <img class="img img-fluid d-block mx-auto image-msg-md" src="{{ asset('/assets/sorry.png')}}">
             <h6 class="text-secondary text-center">You can't request to modify your tag, because you still have 
                 <a class="text-danger" title="Awaiting Request" data-bs-toggle="popover" title="Popover title" style="cursor: pointer;"
                 data-bs-content="You have requested to {{$myreq[0]['request_type']}} 
@@ -74,6 +74,7 @@
 
 <script>
     var slct_list = [];
+    var page = 0;
     var start_section = document.getElementById("start-section-manage");
     var load_section = document.getElementById("start-load");
     $("#body-req").css({"display":"none"});
@@ -155,16 +156,16 @@
             var start = 0;
 
             if(page != last){
-                $('#load_more').html('<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more').html(`<button class="btn content-more-floating mt-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
+                $('#load_more').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Tag found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
+                $('.auto-load').html(`<h5 class='text-secondary'>Woah!, You have see all the tags</h5>`);
                 return;
             } else {
                 if(myTag.length == 0){
@@ -174,9 +175,12 @@
                         var tag_name = data[i].tag_name;
 
                         if(slug_name != "lecturer" && slug_name != "staff" && slug_name != "student"){
-                            var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                                'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
-                        
+                            const elmt = `
+                                <a class="btn btn-tag" id="tag_collection_${slug_name}" title="Select this tag" 
+                                    onclick="addSelectedTag('${slug_name}', '${tag_name}', true, '${type}')">
+                                    ${tag_name}
+                                </a>
+                            `;
 
                             $("#data_wrapper_manage_tag").append(elmt);
                         }
@@ -197,8 +201,12 @@
                             if(!found){
                                 var tag_name = data[i].tag_name;
 
-                                var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                                'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'add'+"'"+')">' + tag_name + '</a> ';
+                                const elmt = `
+                                    <a class="btn btn-tag" id="tag_collection_${slug_name}" title="Select this tag" 
+                                        onclick="addSelectedTag('${slug_name}', '${tag_name}', true, '${type}')">
+                                        ${tag_name}
+                                    </a>
+                                `;
 
                                 $("#data_wrapper_manage_tag").append(elmt);
                                 start++;
@@ -223,7 +231,6 @@
     function addSelectedTag(slug_name, tag_name, is_deleted, type){
         var found = false;
 
-        //Remove selected tag from tag collection
         if(is_deleted){
             var tag = document.getElementById('tag_collection_'+slug_name);
             tag.parentNode.removeChild(tag);
@@ -236,7 +243,6 @@
         }
 
         if(slct_list.length > 0){
-            //Check if tag is exist in selected tag.
             slct_list.map((val, index) => {
                 if(val['slug_name'] == slug_name){
                     found = true;
@@ -249,8 +255,15 @@
                     "tag_name": tag_name,
                     "type": type
                 });
-                //Check this append input value again!
-                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected "+bg+"' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder").append(`
+                    <div class="d-inline" id="tagger_${slug_name}">
+                        <input hidden name="req_type[]" value="${type}">
+                        <input hidden name="user_role[]" value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'>
+                        <a class="btn btn-tag-selected ${bg}" title="Select this tag" onclick="removeSelectedTag('${slug_name}', '${tag_name}', '${type}')">
+                            <i class="fa-solid fa-xmark"></i> ${tag_name}
+                        </a>
+                    </div>
+                `);
             }
         } else {
             slct_list.push({
@@ -258,7 +271,15 @@
                 "tag_name": tag_name,
                 "type": type
             });
-            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='req_type[]' value='"+type+"'><input hidden name='user_role[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected "+bg+"' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", "+'"'+type+'"'+")'>"+tag_name+"</a></div>");
+            $("#slct_holder").append(`
+                <div class="d-inline" id="tagger_${slug_name}">
+                    <input hidden name="req_type[]" value="${type}">
+                    <input hidden name="user_role[]" value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'>
+                    <a class="btn btn-tag-selected ${bg}" title="Unselect this tag" onclick="removeSelectedTag('${slug_name}', '${tag_name}', '${type}')">
+                        <i class="fa-solid fa-xmark"></i> ${tag_name}
+                    </a>
+                </div>
+            `);
         }
 
         getButtonSubmitTag();
@@ -276,46 +297,53 @@
                 }
 
                 if(i != slct_list.length - 1){
-                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>, ';
+                    tags += `<span class="${color} fw-bold">#${slct_list[i]['tag_name']}</span>, `;
                 } else {
-                    tags += '<span class="' + color + ' fw-bold">#' + slct_list[i]['tag_name'] + '</span>';
+                    tags += `<span class="${color} fw-bold">#${slct_list[i]['tag_name']}</span>`;
                 }
             }
             
-            $("#btn-submit-tag-holder").html(''+
-                '<a class="btn btn-submit-form mt-3" title="Submit Role"  data-bs-toggle="modal" href="#requestRoleAdd"><i class="fa-solid fa-paper-plane"></i> Request</a> ' +
-                '<div class="modal fade" id="requestRoleAdd" tabindex="-1" aria-labelledby="requestRoleAddLabel" aria-hidden="true"> ' +
-                '<div class="modal-dialog"> ' +
-                    '<div class="modal-content"> ' +
-                    '<div class="modal-header"> ' +
-                        '<h5 class="modal-title" id="requestRoleAddLabel">Request Selected Tags</h5> ' +
-                        '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
-                    '</div> ' +
-                    '<div class="modal-body"> ' +
-                        '<h6 class="fw-normal">Are you sure want to request ' + tags + '</h6> ' +
-                    '</div> ' +
-                    '<div class="modal-footer"> ' +
-                        '<button type="submit" class="btn btn-submit-form" onclick="submitAddForm()"><i class="fa-solid fa-paper-plane"></i> Send</button> ' +
-                    '</div> ' +
-                    '</div> ' +
-                '</div> ' +
-                '</div>') ;
+            $("#btn-submit-tag-holder").html(`
+                <a class="btn btn-submit-form mt-3" title="Submit Role" data-bs-toggle="modal" href="#requestRoleAdd">
+                    <i class="fa-solid fa-paper-plane"></i> Request
+                </a>
+                <div class="modal fade" id="requestRoleAdd" tabindex="-1" aria-labelledby="requestRoleAddLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="requestRoleAddLabel">Request Selected Tags</h5>
+                                <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
+                            </div>
+                            <div class="modal-body">
+                                <h6 class="fw-normal">{{ __('messages.req_validation') }} ${tags}</h6>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-submit-form" id="btn-submit-form">
+                                    <i class="fa-solid fa-paper-plane"></i> Send
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `);
         } else {
             return $("#btn-submit-tag-holder").text('')
         }
     }
 
     function removeSelectedTag(slug_name, tag_name, type){
-        //Remove selected tag
         var tag = document.getElementById('tagger_'+slug_name);
         slct_list = slct_list.filter(function(e) { return e['slug_name'] !== slug_name })
         tag.parentNode.removeChild(tag);
 
-        //Return selected tag to tag collection
         if(type == "add"){
-            $("#data_wrapper_manage_tag").append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+type+'"'+")'>"+tag_name+"</a>");
+            $("#data_wrapper_manage_tag").append(`
+                <a class='btn btn-tag' id='tag_collection_${slug_name}' title='Select this tag' onclick='addSelectedTag("${slug_name}", "${tag_name}", true, "${type}")'>${tag_name}</a>
+            `);
         } else if(type == "remove"){
-            $("#my_tag_list").append("<a class='btn btn-danger mb-2 me-1' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+type+'"'+")'>"+tag_name+"</a>");
+            $("#my_tag_list").append(`
+                <a class='btn btn-danger mb-2 me-1' id='tag_collection_${slug_name}' title='Select this tag' onclick='addSelectedTag("${slug_name}", "${tag_name}", true, "${type}")'>${tag_name}</a>
+            `);
         }
 
         getButtonSubmitTag();

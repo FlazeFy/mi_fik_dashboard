@@ -92,21 +92,20 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_question').html('<button class="btn content-more-floating" onclick="loadmore()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>');
+                $('#load_more_question').html(`<button class="btn content-more-floating" onclick="loadmore()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_question').html('<h6 class="content-last">No more item to show</h6>');
+                $('#load_more_question').html(`<h6 class="content-last">{{ __('messages.no_more') }}</h6>`);
             }
 
             $('#total').text(total);
 
             if (total == 0) {
-                $('#empty_question_holder').html("<img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Category found</h6>");
+                $('#empty_question_holder').html(`<img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Category found</h6>`);
             } else if (data.length == 0) {
-                $('.auto-load_question').html("<h5 class='text-primary'>Woah!, You have see all the question</h5>");
+                $('.auto-load_question').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var id = data[i].id;
                     var questionBody = data[i].question_body;
                     var questionType = data[i].question_type;
@@ -126,13 +125,13 @@
                         var status = "";
                     }
 
-                    var elmt = " " +
-                    '<button class="btn question_box ' + status + '" id="question_'+ id +'" onclick="loadDetailAnswer(' + "'" + questionAnswer + "'" + ', ' + 
-                        "'" + id + "'" + ', ' + "'" + status + "'" + ',' + "'" + ucFirst(questionBody) + "'" + ',' + "'" + username + "'" + ')"> ' +
-                        '<h6>' + ucFirst(questionType) + '</h6> ' +
-                        ucFirst(questionBody) + 
-                        '<p class="m-0 mt-2">' + getDateToContext(createdAt, "full") + ' by <span style="font-weight: 500;">' + username + '</span></p> ' +
-                    '</button>';
+                    const elmt = `
+                        <button class="btn question_box ${status}" id="question_${id}" onclick="loadDetailAnswer('${questionAnswer}', '${id}', '${status}', '${ucFirst(questionBody)}', '${username}')">
+                            <h6>${ucFirst(questionType)}</h6>
+                            ${ucFirst(questionBody)}
+                            <p class="m-0 mt-2">${getDateToContext(createdAt, "full")} {{ __('messages.by') }} <span style="font-weight: 500;">${username}</span></p>
+                        </button>
+                    `;
 
                     $("#question_holder").append(elmt);
                 }   

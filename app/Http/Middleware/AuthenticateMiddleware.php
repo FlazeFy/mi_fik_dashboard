@@ -20,7 +20,7 @@ class AuthenticateMiddleware
         $token = session()->get('token_key');
 
         if ($token == null) {
-            return redirect()->route('landing')->with('failed_message', 'Your session time is expired. Please login again!');
+            return redirect()->route('landing')->with('failed_message', 'Session lost, please sign in again');
         }
 
         return $next($request);

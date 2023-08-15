@@ -2,46 +2,35 @@ function getDateToContext(datetime, type){
     if(datetime){
         const result = new Date(datetime);
 
-        if(type == "full"){
+        if (type == "full") {
             const now = new Date(Date.now());
             const yesterday = new Date();
             const tomorrow = new Date();
             yesterday.setDate(yesterday.getDate() - 1);
             tomorrow.setDate(tomorrow.getDate() + 1);
             
-            //FIx this!!!
-            if(result.toDateString() === now.toDateString()){
-                // $start_date = new DateTime(datetime);
-                // $since_start = $start_date->diff(new DateTime(Date.now()));
-
-                // if(result.getHours() == now.getHours()){
-                //     const min = result.getMinutes() - now.getMinutes();
-                //     if(min <= 10 && min > 0){
-                //         return $since_start->m;
-                //     } else {
-                //         return  min + " minutes ago";    
-                //     }
-                // } else if(now.getHours() - result.getHours() <= 6){
-                //     return now.getHours() - result.getHours() + " hours ago";    
-                // } else {
-                    return " Today at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-                //}
-            } else if(result.toDateString() === yesterday.toDateString()){
-                return " Yesterday at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-            } else if(result.toDateString() === tomorrow.toDateString()){
-                return " Tomorrow at " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
+            if (result.toDateString() === now.toDateString()) {
+                return ` ${messages('today_at')} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
+            } else if (result.toDateString() === yesterday.toDateString()) {
+                return ` ${messages('yesterday_at')} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
+            } else if (result.toDateString() === tomorrow.toDateString()) {
+                return ` ${messages('tommorow_at')} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
             } else {
-                return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
+                return ` ${result.getFullYear()}/${(result.getMonth() + 1)}/${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
             }
-        } else if(type == "24h"){
-            return ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);
-        } else if(type == "12h"){
-            return ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2); // Check this
-        } else if(type == "datetime"){
-            return " " + result.getFullYear() + "/" + (result.getMonth() + 1) + "/" + ("0" + result.getDate()).slice(-2) + " " + ("0" + result.getHours()).slice(-2) + ":" + ("0" + result.getMinutes()).slice(-2);  
-        } else if(type == "date"){
-            return result.getFullYear() + "-" + ("0" + (result.getMonth() + 1)).slice(-2) + "-" + ("0" + result.getDate()).slice(-2);  
-        }
+        } else if (type == "24h" || type == "12h") {
+            return `${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
+        } else if (type == "datetime") {
+            return ` ${result.getFullYear()}/${(result.getMonth() + 1)}/${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}`;
+        } else if (type == "date") {
+            return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(-2)}-${("0" + result.getDate()).slice(-2)}`;
+        } else if (type == "calendar") {
+            const result = new Date(datetime);
+            const offsetHours = getUTCHourOffset();
+            result.setUTCHours(result.getUTCHours() + offsetHours);
+        
+            return `${result.getFullYear()}-${("0" + (result.getMonth() + 1)).slice(-2)}-${("0" + result.getDate()).slice(-2)} ${("0" + result.getHours()).slice(-2)}:${("0" + result.getMinutes()).slice(-2)}:00`;
+        }        
     } else {
         return "-";
     }
@@ -55,33 +44,17 @@ function getEventDate(dateStart, dateEnd){
         ds.setUTCHours(ds.getUTCHours() + offsetHours);
         de.setUTCHours(de.getUTCHours() + offsetHours);
 
-        if(ds.getFullYear() !== de.getFullYear()){
-            //Event year not same
-            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
-                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
-                " - " +
-                getDateMonth(de) + " " + de.getFullYear() + " " + getHourMinute(de) + "</a>";
-
-        } else if(ds.getMonth() !== de.getMonth()){
-            //If month not same
-            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
-                getDateMonth(ds) + " " + ds.getFullYear() + " " + getHourMinute(ds) + 
-                " - " +
-                getDateMonth(de) + " " + getHourMinute(de) + "</a>";
-
-        } else if(ds.getDate() !== de.getDate()){
-            //If date not same
-            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
-                getDateMonth(ds) + " " + getHourMinute(ds) + 
-                " - " +
-                getDateMonth(de) + " " + ("0" + de.getDate()).slice(-2) + " " + getHourMinute(de) + "</a>";
-
-        } else if(ds.getDate() === de.getDate()){
-            return "<a class='btn-detail' title='Event Date'><i class='fa-regular fa-clock'></i> "+ 
-                getDateMonth(ds) + " " + getHourMinute(ds) + 
-                " - " +
-                getHourMinute(de) + "</a>";
-
+        if (ds.getFullYear() !== de.getFullYear()) {
+            // Event year not same
+            return `<a class='btn-detail' title='${messages('event_date')}'><i class='fa-regular fa-clock'></i> ${getDateMonth(ds)} ${ds.getFullYear()} ${getHourMinute(ds)} - ${getDateMonth(de)} ${de.getFullYear()} ${getHourMinute(de)}</a>`;
+        } else if (ds.getMonth() !== de.getMonth()) {
+            // If month not same
+            return `<a class='btn-detail' title='${messages('event_date')}'><i class='fa-regular fa-clock'></i> ${getDateMonth(ds)} ${ds.getFullYear()} ${getHourMinute(ds)} - ${getDateMonth(de)} ${getHourMinute(de)}</a>`;
+        } else if (ds.getDate() !== de.getDate()) {
+            // If date not same
+            return `<a class='btn-detail' title='${messages('event_date')}'><i class='fa-regular fa-clock'></i> ${getDateMonth(ds)} ${getHourMinute(ds)} - ${getDateMonth(de)} ${('0' + de.getDate()).slice(-2)} ${getHourMinute(de)}</a>`;
+        } else if (ds.getDate() === de.getDate()) {
+            return `<a class='btn-detail' title='${messages('event_date')}'><i class='fa-regular fa-clock'></i> ${getDateMonth(ds)} ${getHourMinute(ds)} - ${getHourMinute(de)}</a>`;
         }
     } else {
         return "";
@@ -98,13 +71,7 @@ function getHourMinute(date){
     return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
 }
 
-function getRole(role){
-    if(role){
-        return role;
-    } else {
-        return '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Has no general role </span>';
-    }
-}
+const getRole = (role) => role ? role : '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Has no general role </span>';
 
 function removeTags(str) {
     if ((str===null) || (str==='')){
@@ -141,6 +108,4 @@ function subtractOffsetFromTime(timeStr) {
     return time;
 }
 
-function getHourFromTime(hr){
-    return parseInt(hr.split(":")[0]);
-}
+const getHourFromTime = (hr) => parseInt(hr.split(":")[0]);

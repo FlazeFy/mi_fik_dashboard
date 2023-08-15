@@ -3,7 +3,7 @@
         <button class="btn btn-danger-icon-outlined" title="Reset" onclick="resetTitleSearch()"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="d-inline-block" style="width:240px;">
-        <input type="text" class="form-control rounded-pill" id="title_search" placeholder="Search by event title" onkeydown="return submitOnEnter(event)"
+        <input type="text" class="form-control rounded-pill" id="title_search" placeholder="{{ __('messages.search_event_title') }}" onkeydown="return submitOnEnter(event)"
             onblur="checkTitleSearch()" maxlength="150">
     </div>
 </div>
@@ -29,26 +29,26 @@
         var title_search = document.getElementById("title_search");
         if(role_key == 0){
             if(count_plc % 2 == 0){
-                title_search.placeholder = "Search by event title";
+                title_search.placeholder = "{{ __('messages.search_event_title') }}";
             } else {
-                title_search.placeholder = "Search by task title";
+                title_search.placeholder = "{{ __('messages.search_task_title') }}";
             }
             count_plc++;
         } else {
             if(count_plc == 0){
-                title_search.placeholder = "Search by event title";
+                title_search.placeholder = "{{ __('messages.search_event_title') }}";
             } else if(count_plc == 1){
-                title_search.placeholder = "Search by tag name";
+                title_search.placeholder = "{{ __('messages.search_tag_name') }}";
             } else if(count_plc == 2){
-                title_search.placeholder = "Search by group name";
+                title_search.placeholder = "{{ __('messages.search_group_name') }}";
             } else if(count_plc == 3){
-                title_search.placeholder = "Search by info type";
+                title_search.placeholder = "{{ __('messages.search_info_type') }}";
             } else if(count_plc == 4){
-                title_search.placeholder = "Search by feedback rate";
+                title_search.placeholder = "{{ __('messages.search_feedback_rate') }}";
             } else if(count_plc == 5){
-                title_search.placeholder = "Search by question type";
+                title_search.placeholder = "{{ __('messages.search_question_type') }}";
             } else if(count_plc == 6){
-                title_search.placeholder = "Search by dictionary name";
+                title_search.placeholder = "{{ __('messages.search_dictionary_name') }}";
             }
             count_plc++;
 

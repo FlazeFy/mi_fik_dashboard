@@ -18,7 +18,7 @@
         @foreach($att as $at)
             <div class="attachment-item mb-3 p-3 shadow" style="--circle-attach-color-var:var(--infoBG); border-left: 3.5px solid var(--infoBG);"> 
                 <div class="attachment-edit-header">
-                    <label class="mt-1 fw-bold">Attachment Type : {{ucfirst(trim($at['attach_type']." ", "attachment_"))}}</label>
+                    <label class="mt-1 fw-bold">{{ __('messages.att_type') }} : {{ucfirst(trim($at['attach_type']." ", "attachment_"))}}</label>
                     <div class="end-section">
                         <a class="btn btn-icon-delete" title="Delete" data-bs-toggle="modal" data-bs-target="#deleteModal-{{$at['id']}}"><i class="fa-solid fa-trash-can"></i></a>
                         @if($at['attach_type'] != "attachment_url")
@@ -31,7 +31,7 @@
 
                 @if($at['attach_type'] == "attachment_image")
                     <div class='collapse show' id="collapsePreview{{$at['id']}}">
-                        <h6>{{$at['attach_name']}}</h6>
+                        <p>{{$at['attach_name']}}</p>
                         <span id="attach_image_holder_{{$at['id']}}" class="d-block mx-auto">
                             <lottie-player id="lottie_animation_{{$at['id']}}" src="https://assets8.lottiefiles.com/packages/lf20_tsxbtrcu.json" background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay></lottie-player>
                         </span>
@@ -56,17 +56,17 @@
                     </div>
                 @elseif($at['attach_type'] == "attachment_video")
                     <div class='collapse show' id="collapsePreview{{$at['id']}}">
-                        <h6>{{$at['attach_name']}}</h6>
+                        <p>{{$at['attach_name']}}</p>
                         <video controls class="rounded w-100 mx-auto mb-2" alt="{{$at['attach_url']}}">
                             <source src="{{$at['attach_url']}}">
                         </video>
                     </div>
                 @elseif($at['attach_type'] == "attachment_url")
-                    <h6>{{$at['attach_name']}}</h6>
+                    <p>{{$at['attach_name']}}</p>
                     <a>{{$at['attach_url']}}</a><br>
                 @elseif($at['attach_type'] == "attachment_doc")
                     <div class='collapse show' id="collapsePreview{{$at['id']}}">
-                        <h6>{{$at['attach_name']}}</h6>
+                        <p>{{$at['attach_name']}}</p>
                         <span id="attach_doc_holder_{{$at['id']}}" class="d-block mx-auto">
                             <lottie-player id="lottie_animation_{{$at['id']}}" src="https://assets8.lottiefiles.com/packages/lf20_tsxbtrcu.json" background="transparent" speed="1" style="width: 250px; height: 250px;" loop autoplay></lottie-player>
                             <embed class="document-grid mb-2 rounded" id="embed_holder_{{$at['id']}}" alt="{{$at['attach_url']}}" style="height: 250px;" src=""/>

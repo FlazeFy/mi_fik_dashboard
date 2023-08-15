@@ -39,3 +39,29 @@ function tidyUpRichText(id){
         }
     }
 }
+
+function splitOutRichTag(text){
+    var res = text.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','')
+        .replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">','')
+        .replace('<div class="ql-editor" data-gramm="false" contenteditable="true" data-dl-input-translation="true">','')
+        .replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true" data-dl-input-translation="true">','')
+        .replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','')
+        .replace('<deepl-inline-translate style="z-index: 1999999999;"></deepl-inline-translate>','');
+    return res;
+}
+
+function validateTextNull(val, msg){
+    if(val != null && val.trim() != ""){
+        return val;
+    } else {
+        return msg;
+    }
+}
+
+function tidyUpQuotes(val){
+    var res = val;
+    if(res != null){
+        res = res.trim().replace(/'/g, "\\\'").replace(/"/g, '\\"');
+    }
+    return res;
+}

@@ -50,6 +50,9 @@ class HomepageController extends Controller
             if(!session()->get('selected_tag_calendar')){
                 session()->put('selected_tag_calendar', "All");
             }
+            if(!session()->get('selected_tag_home')){
+                session()->put('selected_tag_home', "All");
+            }
             if(!session()->get('selected_role_user')){
                 session()->put('selected_role_user', "All");
             }
@@ -75,7 +78,7 @@ class HomepageController extends Controller
                 session()->put('toogle_edit_contact', 'false');
             }
             if(!session()->get('ordering_event')){
-                session()->put('ordering_event', "DESC");
+                session()->put('ordering_event', "ASC");
             }
             if(!session()->get('ordering_finished')){
                 session()->put('ordering_finished', "ASC");
@@ -122,8 +125,6 @@ class HomepageController extends Controller
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("homepage");
             $dictionary = Dictionary::getDictionaryByType($type);
-            //$archive = Archive::getMyArchive($user_id, "DESC");
-            $greet = Generator::getGreeting(date('h'));
 
             if(Session::has('recatch_message') && $role == 1){
                 $count = [
@@ -166,11 +167,9 @@ class HomepageController extends Controller
                 ->with('mydraft', $mydraft)
                 ->with('dct_tag', $dct_tag)
                 ->with('dictionary', $dictionary)
-                ->with('count', $count)
-                //->with('archive', $archive)
-                ->with('greet',$greet);
+                ->with('count', $count);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 
@@ -293,7 +292,8 @@ class HomepageController extends Controller
                                             ->withBody(strtoupper($data->history_type)." ".$notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => $slug,
+                                            'module' => 'event'
                                         ]);
                                     $response = $messaging->send($message);
                                 } else {
@@ -312,86 +312,13 @@ class HomepageController extends Controller
                         dispatch(new ProcessMailer($header, $detail, session()->get('email_key')));
                     }
 
-                    return redirect()->back()->with('success_message', 'Create content success');
+                    return redirect()->route('detail', ['slug_name' => $slug])->with('success_message', Generator::getMessageTemplate("business_create",'event','<b>'.$request->content_title.'</b>'));
                 }
             }
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
-        }
-    }
-
-    public function add_task(Request $request){
-        $slug = Generator::getSlugName($request->task_title, "task");
-
-        $fulldate_start = Converter::getFullDate($request->task_date_start, $request->task_time_start);
-        $fulldate_end = Converter::getFullDate($request->task_date_end, $request->task_time_end);
-        $user_id = Generator::getUserIdV2(session()->get('role_key'));
-        $uuid = Generator::getUUID();
-
-        $header = Task::create([
-            'id' => $uuid,
-            'slug_name' => $slug,
-            'task_title' => $request->task_title,
-            'task_desc' => $request->task_desc,
-            'task_date_start' => $fulldate_start,
-            'task_date_end' => $fulldate_end,
-            'task_reminder' => $request->task_reminder,
-
-            'created_at' => date("Y-m-d H:i"),
-            'created_by' => $user_id, //for now
-            'updated_at' => null,
-            'updated_by' => null,
-            'deleted_at' => null,
-            'deleted_by' => null
-        ]);
-
-        if(is_countable($request->archive_rel)){
-            $ar_count = count($request->archive_rel);
-
-            for($i = 0; $i < $ar_count; $i++){
-                if($request->has('archive_rel.'.$i)){
-                    ArchiveRelation::create([
-                        'id' => Generator::getUUID(),
-                        'archive_id' => $request->archive_rel[$i],
-                        'content_id' => $uuid,
-                        'created_at' => date("Y-m-d H:i"),
-                        'created_by' => $user_id
-                    ]);
-                }
-            }
-        }
-
-        return redirect()->back()->with('success_message', 'Create item success');
-    }
-
-    public function add_content_task_relation(Request $request, $slug_name, $type){
-        if($type == 0){
-            $content = ContentHeader::select('id')
-                ->where('slug_name', $slug_name)
-                ->get();
-
-            if(count($content) > 0){
-                $id = $content['id'][0];
-                $user_id = Generator::getUserIdV2(session()->get('role_key'));
-
-                ArchiveRelation::create([
-                    'id' => Generator::getUUID(),
-                    'archive_id' => $request->archive_id,
-                    'content_id' => $id,
-                    'created_at' => date("Y-m-d H:i"),
-                    'created_by' =>  $user_id
-                ]);
-
-                return redirect()->back()->with('success_message', 'Update item success');
-            } else {
-                return redirect()->back()->with('failed_message', 'Update item failed');
-            }
-        } else {
-            ArchiveRelation::destroy($slug_name);
-
-            return redirect()->back()->with('success_message', 'Create item success');
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 
@@ -421,20 +348,20 @@ class HomepageController extends Controller
     {
         session()->put('ordering_event', $order);
 
-        return redirect()->back()->with('success_message', 'Content ordered');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom",'event ordered',null));
     }
 
     public function set_filter_date(Request $request)
     {
         session()->put('filtering_date', $request->date_start."_".$request->date_end);
 
-        return redirect()->back()->with('success_message', 'Content filtered');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom",'event filtered',null));
     }
 
     public function reset_filter_date()
     {
         session()->put('filtering_date', 'all');
 
-        return redirect()->back()->with('success_message', 'Content filtered');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("custom",'event filtered',null));
     }
 }

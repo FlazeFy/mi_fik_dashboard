@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Models\History;
+use App\Helpers\Generator;
 
 class QueryHistory extends Controller
 {
@@ -61,20 +62,20 @@ class QueryHistory extends Controller
             if(count($clean) == 0) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'History Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'history', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'History Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'history', null),
                     'data' => $clean
                 ], Response::HTTP_OK);
             }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage(),
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

@@ -1,11 +1,11 @@
 <div class="position-relative">
-    <h5 class="text-secondary fw-bold">Created Event</h5>
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-MOT" data-bs-toggle="dropdown" aria-haspopup="true"
+    <h5 class="text-secondary fw-bold">{{ __('messages.ce') }}</h5>
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button" id="section-more-MOT" data-bs-toggle="dropdown" aria-haspopup="true"
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="section-more-MOT">
-        <!--Chart Setting-->
+        <label class="ms-3" style="font-size:12px;">{{ __('messages.chart_view') }}</label>
         @foreach($setting as $set)
             <form action="/statistic/update_ce/{{$set->id}}" method="POST">
                 @csrf
@@ -23,12 +23,11 @@
                     @if($set->CE_range == 12)
                         <i class="fa-solid fa-check text-success"></i>
                     @endif
-                    Year</button>
+                    {{ __('messages.year') }}</button>
             </form>
         @endforeach
         <hr>
-        <a class="dropdown-item" data-bs-target="#ceChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
-        <a class="dropdown-item" href=""><i class="fa-solid fa-print"></i> Print</a>
+        <a class="dropdown-item" data-bs-target="#ceChart" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
     </div>
     @if(count($createdEvent) != 0)
         @if(!$isMobile)
@@ -40,7 +39,7 @@
         @endif
     @else
         <img src="{{asset('assets/nodata.png')}}" class="img nodata-icon">
-        <h6 class="text-center">No Data Available</h6>
+        <h6 class="text-center">{{ __('messages.no_data') }}</h6>
     @endif
 
     @include('popup.mini_help', ['id' => 'ceChart', 'title'=> 'Created Event Chart', 'location'=>'created_event_chart'])
@@ -54,13 +53,11 @@
             data: [
                 <?php
                     foreach($setting as $set){
-                        $max = $set->CE_range; //Max month to show
+                        $max = $set->CE_range; 
                     }
 
-                    //Helper
                     $arr = App\Helpers\Generator::getMonthList($max, "number");
                     
-                    //Print array from backward.
                     foreach(array_reverse($arr) as $ar => $val){
                         $i=0;
                         foreach($createdEvent as $ce){
@@ -76,7 +73,6 @@
                 ?>
             ]
         }, 
-        //....
     ],
         chart: {
         height: 260,
@@ -94,13 +90,11 @@
         categories: [
             <?php
                 foreach($setting as $set){
-                    $max = $set->CE_range; //Max month to show
+                    $max = $set->CE_range;
                 }
 
-                //Helper
                 $arr = App\Helpers\Generator::getMonthList($max, "name");                
                 
-                //Print array from backward.
                 foreach(array_reverse($arr) as $ar => $val){
                     echo $val;
                 }

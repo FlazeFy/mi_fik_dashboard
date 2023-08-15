@@ -51,33 +51,39 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
                     @if(!$isMobile)
                     <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:520px;">
                             @endif
-                            <div class="content-section p-0 pt-3">
-                                <h5 class="mx-3">Chart Range</h5><hr>
-                                @include('setting.chart')
+                            <div class="content-section h-100 p-0 pt-3">
+                                <h5 class="mx-3">{{ __('messages.chart_range') }}</h5><hr>  
+                                <div class="px-3">
+                                    @include('setting.chart')
+                                </div>
                             </div>
                         @if(!$isMobile)
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:520px;">
                         @endif
-                            <div class="content-section p-0 pt-3">
-                                <h5 class="mx-3">Task Scheduling Range</h5><hr>
-                                @include('setting.jobs')
+                            <div class="content-section h-100 p-0 pt-3">
+                                <h5 class="mx-3">{{ __('messages.ts_range') }}</h5><hr>
+                                <div class="px-3">
+                                    @include('setting.jobs')
+                                </div>
                             </div>
                         @if(!$isMobile)
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12 py-2" style="height:520px;">
                         @endif
-                            <div class="content-section p-0 pt-3">
-                                <h5 class="mx-3">LandingPage Range</h5><hr>
-                                @include('setting.landing')
+                            <div class="content-section h-100 p-0 pt-3">
+                                <h5 class="mx-3">{{ __('messages.lp_range') }}</h5><hr>
+                                <div class="px-3">
+                                    @include('setting.landing')
+                                </div>
                             </div>
                         @if(!$isMobile)
                         </div>

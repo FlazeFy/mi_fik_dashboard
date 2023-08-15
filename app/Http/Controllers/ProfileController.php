@@ -34,7 +34,6 @@ class ProfileController extends Controller
         $user_id = Generator::getUserIdV2($role);
 
         if($user_id != null){
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
             $info = Info::getAvailableInfo("profile");
 
@@ -81,10 +80,9 @@ class ProfileController extends Controller
                 ->with('faq', $faq)
                 ->with('dct_tag', $dct_tag)
                 ->with('info', $info)
-                ->with('myreq', $myreq)
-                ->with('greet',$greet);
+                ->with('myreq', $myreq);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 
@@ -119,33 +117,46 @@ class ProfileController extends Controller
 
                 return redirect()->back()->with('failed_message', $errors);
             } else {
+                $check = null;
                 if($role_key == 1){
-                    Admin::where('id', $user_id)->update([
-                        'first_name' => $request->first_name,
-                        'last_name' => $request->last_name,
-                        'phone' => $request->phone,
-                        'updated_at' => date("Y-m-d H:i"),
-                    ]);
+                    $check = Admin::selectRaw('1')->where('email', $request->email)->first();
                 } else {
-                    User::where('id', $user_id)->update([
-                        'first_name' => $request->first_name,
-                        'last_name' => $request->last_name,
-                        'updated_at' => date("Y-m-d H:i"),
-                        'updated_by' => $user_id,
-                    ]);
+                    $check = User::selectRaw('1')->where('email', $request->email)->first();
                 }
 
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type,
-                    'context_id' => null,
-                    'history_body' => $data->history_body,
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
+                if($check != null){
+                    if($role_key == 1){
+                        Admin::where('id', $user_id)->update([
+                            'first_name' => $request->first_name,
+                            'last_name' => $request->last_name,
+                            'email' => $request->email,
+                            'phone' => $request->phone,
+                            'updated_at' => date("Y-m-d H:i"),
+                        ]);
+                    } else {
+                        User::where('id', $user_id)->update([
+                            'first_name' => $request->first_name,
+                            'email' => $request->email,
+                            'last_name' => $request->last_name,
+                            'updated_at' => date("Y-m-d H:i"),
+                            'updated_by' => $user_id,
+                        ]);
+                    }
 
-                return redirect()->back()->with('success_message', 'Profile updated');
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type,
+                        'context_id' => null,
+                        'history_body' => $data->history_body,
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
+
+                    return redirect()->back()->with('success_message', Generator::getMessageTemplate("business_update",'profile',null));
+                } else {
+                    return redirect()->back()->with('failed_message', Generator::getMessageTemplate("business_update_failed",'profile. The email has been used',null));
+                }
             }
         }
     }
@@ -252,15 +263,15 @@ class ProfileController extends Controller
                     }
 
                     DB::commit();
-                    return redirect()->back()->with('success_message', "Request sended");
+                    return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",'request sended',null));
                 } else {
-                    return redirect()->back()->with('failed_message', "Request failed to sended. Format not valid");
+                    return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'format not valid',null));
                 }
             }
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Request failed to sended. '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 
@@ -288,7 +299,7 @@ class ProfileController extends Controller
                 'deleted_at' => null,
                 'deleted_by' => null,
             ]);
-            return redirect()->back()->with('success_message', "Question has sended");
+            return redirect()->back()->with('success_message', Generator::getMessageTemplate("custom",'question sended',null));
         }
     }
 }

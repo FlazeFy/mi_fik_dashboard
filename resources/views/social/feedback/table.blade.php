@@ -3,11 +3,11 @@
     <table class="table tabular table-paginate " id="feedbackTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col">Feedback</th>
-                <th scope="col">Rating</th>
-                <th scope="col">Suggestion</th>
-                <th scope="col">Created At</th>
-                <th scope="col">Delete</th>
+                <th scope="col">{{ __('messages.feedback') }}</th>
+                <th scope="col">{{ __('messages.rating') }}</th>
+                <th scope="col">{{ __('messages.suggestion') }}</th>
+                <th scope="col">{{ __('messages.created_at') }}</th>
+                <th scope="col">{{ __('messages.delete') }}</th>
             </tr>
         </thead>
         <tbody class="tabular-body">

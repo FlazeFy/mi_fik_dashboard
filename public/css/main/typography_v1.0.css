@@ -1,3 +1,7 @@
+p {
+    margin-bottom: 0.45em;
+}
+
 .fw-bold { 
     font-weight: 500 !important;
 }
@@ -67,5 +71,12 @@
 @media (max-width: 767px) {
     .status-info {
         font-size: var(--textMD);
+    }
+}
+
+/* Mobile & Tablet style */
+@media screen and (max-width: 1023px) {
+    p {
+        margin-bottom: 0.25em;
     }
 }

@@ -45,7 +45,7 @@ class UserFactory extends Factory
             'last_name' => $split[1], 
             'role' => $role, 
             'image_url' => null, 
-            'valid_until' => $year, 
+            'batch_year' => $year, 
             'created_at' => Generator::getRandomDate(0), 
             'updated_at' => Generator::getRandomDate($ran), 
             'updated_by' => Generator::getRandomAdmin($ran), 

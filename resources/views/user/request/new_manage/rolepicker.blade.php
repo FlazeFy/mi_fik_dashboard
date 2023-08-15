@@ -8,7 +8,7 @@
             @foreach($dct_tag as $dtag) 
                 @if($i == 0) 
                     <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                    <option value="all">All</option>
+                    <option value="all">{{ __('messages.all') }}</option>
                 @else 
                     <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                 @endif
@@ -25,7 +25,7 @@
     <span id="load_acc_with_role" style="display: flex; justify-content:center;"></span>  
 </div>
 
-<label class="input-title">Selected Role</label>
+<label class="input-title">{{ __('messages.slct_role') }}</label>
 <div id="slct_acc_role_holder"></div>
 
 <script type="text/javascript">
@@ -80,16 +80,16 @@
             var last = response.data.last_page;
 
             if(page_tag != last){
-                $('#load_acc_with_role').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadMoreAccRole()">Show more <span id="textno"></span></a>');
+                $('#load_acc_with_role').html(`<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadMoreAccRole()">Show more <span id="textno"></span></a>`);
             } else {
-                $('#load_acc_with_role').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
+                $('#load_acc_with_role').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_acc_with_role').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-acc-role').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
+                $('.auto-load-acc-role').html(`<h5 class='text-secondary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 $("#empty_item_holder_acc_with_role").empty();

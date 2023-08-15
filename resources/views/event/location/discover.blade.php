@@ -6,6 +6,13 @@
         margin-bottom: 6px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     }
+
+    /* Mobile style */
+    @media (max-width: 767px) {
+        #map-discover {
+            height:80vh;
+        }
+    }
 </style>
 
 <div class="position-relative">
@@ -13,12 +20,12 @@
         @if($location)
             {{count($location)}}
         @endif
-    </span> Event Location</h5>
+    </span> {{ __('messages.event_loc') }}</h5>
     @if(count($location) != 0)
         <div id="map-discover"></div>
     @else 
         <img src="{{asset('assets/noloc.png')}}" class="img nodata-icon">
-        <h6 class="text-center text-secondary">You have no event to see with location</h6>
+        <h6 class="text-center text-secondary">{{ __('messages.no_loc_all') }}</h6>
     @endif
 </div>
 
@@ -44,7 +51,7 @@
                                 $coor = explode(", ", $fc->detail);
                                 echo '{
                                     coords: {lat: '.$coor[0].', lng: '.$coor[1].'},
-                                    content: \'<div><h6>'.str_replace("'", "\'", $loc->content_title).'</h6><p>'.str_replace("'", "\'", $loc->content_desc).'</p><b><i class="fa-solid fa-house"></i> '.$name.'</b><br><b><i class="fa-regular fa-circle-dot"></i> '.$coor[0].', '.$coor[0].'</b><hr><a class="btn btn-primary py-1 px-2" onclick="location.href=`/event/detail/'.$loc->slug_name.'`;">See Detail</a></div>\'
+                                    content: `<div><h6>'.str_replace("'", "\'", $loc->content_title).'</h6><p>'.str_replace("'", "\'", $loc->content_desc).'</p><b><i class="fa-solid fa-house"></i> '.$name.'</b><br><b><i class="fa-regular fa-circle-dot"></i> '.$coor[0].', '.$coor[0].'</b><hr><a class="btn btn-primary py-1 px-2" onclick="location.href=\'/event/detail/'.$loc->slug_name.'\';">See Detail</a></div>`
                                 },';
                             }
                         }

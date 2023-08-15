@@ -14,33 +14,32 @@ use App\Helpers\Validation;
 
 class Commands extends Controller
 {
-    //
     public function deleteQuestion(Request $request, $id){
         try{
             $user_id = $request->user()->id;
 
-            $content = Question::where('id', $id)->update([
+            $rows = Question::where('id', $id)->update([
                 'deleted_at' => date("Y-m-d H:i:s"),
                 'deleted_by' => $user_id,
             ]);
 
-            if($content != 0){
+            if($rows != 0){
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content deleted',
+                    'message' => Generator::getMessageTemplate("business_delete", 'question', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Content not found',
+                    'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
                     'data' => null
-                ], Response::HTTP_OK);
+                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,14 +71,14 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Question created',
+                    'message' => Generator::getMessageTemplate("custom", 'question sended', null),
                     'data' => $content
                 ], Response::HTTP_OK);
             }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

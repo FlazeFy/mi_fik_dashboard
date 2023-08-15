@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Helpers\Query;
+use App\Helpers\Generator;
 use Carbon\Carbon;
 
 use App\Models\Task;
@@ -39,80 +40,80 @@ class Queries extends Controller
 
             $where_from = "WHERE ";
             $search = trim($search);
-            
+
             if($category != "all"){
                 $where_from = "WHERE data_from = ".$category." AND";
-            } 
+            }
 
             $user_id = $request->user()->id;
             $check = PersonalAccessTokens::where('tokenable_id', $user_id)->first();
             if($check->tokenable_type === "App\\Models\\User"){ // User
                 $content = DB::select(DB::raw("
                     SELECT * FROM (
-                        SELECT 
-                            ".$select_content." 
+                        SELECT
+                            ".$select_content."
                         FROM contents_headers ch
                         JOIN contents_details cd ON ch.id = cd.content_id
                         ".$join_content."
                         WHERE ch.deleted_at IS NOT NULL
                         AND ch.created_by = '".$user_id."'
                     UNION
-                        SELECT 
-                            ".$select_task." 
+                        SELECT
+                            ".$select_task."
                         FROM tasks ts
                         ".$join_task."
                         WHERE ts.deleted_at IS NOT NULL
                         AND ts.created_by = '".$user_id."'
                     ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
-                "));      
+                "));
             } else {
                 $content = DB::select(DB::raw("
                     SELECT * FROM (
-                        SELECT 
-                            ".$select_content." 
+                        SELECT
+                            ".$select_content."
                         FROM contents_headers ch
                         JOIN contents_details cd ON ch.id = cd.content_id
                         ".$join_content."
                         WHERE ch.deleted_at IS NOT NULL
-                    UNION 
-                        SELECT 
-                            ".$select_tag." 
+                    UNION
+                        SELECT
+                            ".$select_tag."
                         FROM tags tg
                         ".$join_tag."
                         JOIN dictionaries dt ON tg.tag_category = dt.slug_name
                         WHERE tg.deleted_at IS NOT NULL
-                    UNION 
-                        SELECT 
-                            ".$select_group." 
+                    UNION
+                        SELECT
+                            ".$select_group."
                         FROM users_groups ug
                         ".$join_group."
                         LEFT JOIN groups_relations gr ON ug.id = gr.group_id
                         WHERE ug.deleted_at IS NOT NULL
                         GROUP BY ug.id
-                    UNION 
-                        SELECT 
-                            ".$select_info." 
+                    UNION
+                        SELECT
+                            ".$select_info."
                         FROM infos inf
                         ".$join_info."
                         WHERE inf.deleted_at IS NOT NULL
-                    UNION 
-                        SELECT 
-                            ".$select_fbc." 
+                    UNION
+                        SELECT
+                            ".$select_fbc."
                         FROM feedbacks fb
                         WHERE fb.deleted_at IS NOT NULL
-                    UNION 
-                        SELECT 
-                            ".$select_qt." 
+                    UNION
+                        SELECT
+                            ".$select_qt."
                         FROM questions qt
                         WHERE qt.deleted_at IS NOT NULL
-                    UNION 
-                        SELECT 
-                            ".$select_dct." 
+                    UNION
+                        SELECT
+                            ".$select_dct."
                         FROM dictionaries dct
                         WHERE dct.deleted_at IS NOT NULL
                     ) as q ".$where_from." content_title LIKE '%".$search."%' ORDER BY deleted_at ".$order."
-                "));      
-            }    
+                "));
+            }
 
             $clean = [];
             foreach ($content as $result) {
@@ -120,26 +121,26 @@ class Queries extends Controller
                 $tag = json_decode($result->content_tag, true);
                 if (json_last_error() !== JSON_ERROR_NONE && !is_array($tag)) {
                     $tag = $result->content_tag;
-                } 
-            
+                }
+
                 $slug = $result->slug_name;
-                $title = $result->content_title; 
-                $desc = $result->content_desc; 
-                $au_created = $result->admin_username_created; 
-                $uu_created = $result->user_username_created; 
-                $ai_created = $result->admin_image_created; 
-                $ui_created = $result->user_image_created; 
-                $ai_deleted = $result->admin_image_deleted; 
-                $ui_deleted = $result->user_image_deleted; 
-                $au_updated = $result->admin_username_updated; 
-                $uu_updated = $result->user_username_updated; 
-                $au_deleted = $result->admin_username_deleted; 
-                $uu_deleted = $result->user_username_deleted; 
-                $date_start = $result->content_date_start; 
-                $date_end = $result->content_date_end; 
+                $title = $result->content_title;
+                $desc = $result->content_desc;
+                $au_created = $result->admin_username_created;
+                $uu_created = $result->user_username_created;
+                $ai_created = $result->admin_image_created;
+                $ui_created = $result->user_image_created;
+                $ai_deleted = $result->admin_image_deleted;
+                $ui_deleted = $result->user_image_deleted;
+                $au_updated = $result->admin_username_updated;
+                $uu_updated = $result->user_username_updated;
+                $au_deleted = $result->admin_username_deleted;
+                $uu_deleted = $result->user_username_deleted;
+                $date_start = $result->content_date_start;
+                $date_end = $result->content_date_end;
                 $created_at = Carbon::parse($result->created_at)->toIso8601String();
                 $deleted_at = Carbon::parse($result->deleted_at)->toIso8601String();
-                $from = $result->data_from; 
+                $from = $result->data_from;
 
                 $clean[] = [
                     'slug_name' => $slug,
@@ -181,20 +182,20 @@ class Queries extends Controller
             if (count($clean) == 0) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Item Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", "item", null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Item Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", "item", null),
                     'data' => $clean
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

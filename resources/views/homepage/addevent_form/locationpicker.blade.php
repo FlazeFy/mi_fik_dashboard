@@ -1,6 +1,6 @@
 <style>
     #map {
-        height:300px;
+        height:400px;
         border-radius: var(--roundedSM);
         margin-top: 6px;
         margin-bottom: 6px;
@@ -14,7 +14,7 @@
 
     <div class="form-floating mt-3">
         <input type="text" class="form-control nameInput" id="content_loc_name" oninput="getContentLocation()">
-        <label for="titleInput_event">Location Name</label>
+        <label for="titleInput_event">{{ __('messages.loc_name') }}</label>
     </div>
     <input hidden name="content_loc" id="content_loc">
 </div>
@@ -96,7 +96,6 @@
 
         if(loc_obj){
             document.getElementById('content_loc').value = JSON.stringify(loc_obj);
-            console.log(loc_obj)
         }
     }
 

@@ -3,14 +3,15 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>Draft Event</h5>
-                <p class="text-secondary">You still have some unfinished event, you can resume these event</p>
+                <h5>{{ __('messages.draft_event') }}</h5>
+                <p class="text-secondary">{{ __('messages.draft_event_desc') }}</p>
                 <div class="row p-0">
                     <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
                         <button class="container shadow bg-primary w-100 h-100 border-0" style="border-radius:var(--roundedMD);" @if(!$isMobile) data-bs-dismiss="modal" @endif data-bs-target="#addEventModal" data-bs-toggle="modal"
-                            onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event')">
+                            onclick="setDatePickerMinNow('date_start_event'); setDatePickerMinNow('date_end_event'); loadReminder(null,null);">
                             <h5 class="text-white"><i class="fa-solid fa-plus text-white"></i><br>
-                                Create a new one</h5>
+                                {{ __('messages.make_new') }}
+                            </h5>
                         </button>
                     </div>
 
@@ -22,7 +23,7 @@
                         @endif
 
                         <div class='col-lg-4 col-md-6 col-sm-12 pb-3'>
-                            <button class='card shadow event-box p-2' style="@if(!$isMobile) height:auto; @else height:180px; @endif" onclick='location.href="/event/detail/{{$md->slug_name}}";'>
+                            <button class='card shadow event-box p-2' style="height:auto;" onclick='location.href="/event/detail/{{$md->slug_name}}";'>
                                 <div class='text-primary' style="font-size:12px;">{{date("Y/m/d H:i", strtotime($md->created_at))}}</div>
                                 <div class='card-body event-body py-2 px-0 w-100'>
                                     <div class='event-heading'>

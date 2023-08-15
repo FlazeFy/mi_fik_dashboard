@@ -38,7 +38,6 @@ class StatisticController extends Controller
                 $mostRole = User::getMostUsedRole();
                 $menu = Menu::getMenu();
                 $info = Info::getAvailableInfo("statistic");
-                $greet = Generator::getGreeting(date('h'));
                 $suggestion = Feedback::getAllFeedbackSuggestion();
 
                 foreach($setting as $set){
@@ -60,10 +59,9 @@ class StatisticController extends Controller
                     ->with('menu', $menu)
                     ->with('info', $info)
                     ->with('suggestion', $suggestion)
-                    ->with('createdEvent', $createdEvent)
-                    ->with('greet',$greet);
+                    ->with('createdEvent', $createdEvent);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");
@@ -77,7 +75,7 @@ class StatisticController extends Controller
             'updated_at' => date("Y-m-d H:i"),
         ]);
 
-        return redirect()->back()->with('success_message', 'Chart range updated');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("business_update",'chart range',null));
     }
 
     public function update_mol(Request $request, $id)
@@ -87,7 +85,7 @@ class StatisticController extends Controller
             'updated_at' => date("Y-m-d H:i"),
         ]);
 
-        return redirect()->back()->with('success_message', 'Chart range updated');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("business_update",'chart range',null));
     }
 
     public function update_ce(Request $request, $id)
@@ -97,7 +95,7 @@ class StatisticController extends Controller
             'updated_at' => date("Y-m-d H:i"),
         ]);
 
-        return redirect()->back()->with('success_message', 'Chart range updated');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("business_update",'chart range',null));
     }
 
     public function update_mve(Request $request, $id)
@@ -107,13 +105,13 @@ class StatisticController extends Controller
             'updated_at' => date("Y-m-d H:i"),
         ]);
 
-        return redirect()->back()->with('success_message', 'Chart range updated');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("business_update",'chart range',null));
     }
 
     public function update_mve_view(Request $request)
     {
         session()->put('selected_view_mve_chart', $request->MVE_view);
 
-        return redirect()->back()->with('success_message', 'Chart view updated');
+        return redirect()->back()->with('success_mini_message', Generator::getMessageTemplate("business_update",'chart view',null));
     }
 }

@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use Transliterator;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -17,13 +18,13 @@ use DateTime;
 
 class Generator
 {
-    // Get slug name from content title, username, etc.
-    // In : Leonardho R Sitanggang-01/02
-    // Out : leonardho_r_sitanggang_0102
     public static function getSlugName($val, $type){ 
+        $translator = Transliterator::create('Any-Latin; Latin-ASCII');
+        $val = $translator->transliterate($val);
         $replace = str_replace(" ","-", $val);
         $replace = str_replace("_","-", $replace);
         $replace = preg_replace('/[!:\\\[\/"`;.\'^£$%&*()}{@#~?><>,|=+¬\]]/', '', $replace);
+        
 
         if($type == "content"){
             $check = ContentHeader::select('slug_name')
@@ -70,12 +71,10 @@ class Generator
         return strtolower($replace);
     }
 
-    // Array to store month. First month is the current month.
     public static function getMonthList($max, $type){
         $date = new DateTime(date("Y/m/d")); 
 
         if($type == "number"){
-            // Out : ['01', '02', '03']
             $arr = [$date->format('m')];
 
             for ($i = 1; $i < $max; $i++) {
@@ -84,7 +83,6 @@ class Generator
             }
             
         } else if($type == "name"){
-            // Out : ['Jan', 'Feb', 'Mar']
             $arr = ["'".substr($date->format('F'), 0, 3)."', ", ];
 
             for ($i = 1; $i < $max; $i++) {
@@ -97,7 +95,6 @@ class Generator
     }
 
     public static function getRandomReminder(){
-        //Get random reminder
         $collection = [
             'reminder_1_day_before',
             'reminder_3_day_before',
@@ -264,20 +261,6 @@ class Generator
         }
 
         return $res;
-    }
-
-    public static function getGreeting($datetime){
-        $hour = date('H', $datetime);
-
-        if ($hour >= 3 && $hour <= 12) {
-            $greet = "Good Morning";
-        } else if ($hour > 12 && $hour <= 17) {
-            $greet = "Good Evening";
-        } else if (($hour > 17 && $hour <= 24) || ($hour >= 0 && $hour < 3)) {
-            $greet = "Good Night";
-        }
-
-        return $greet;
     }
 
     public static function getUUID(){
@@ -457,7 +440,6 @@ class Generator
     }
 
     public static function getMyImage($id, $role){
-        //This query must directly return at least 10 most used tag
         if($role == 0){
             $res = User::select('image_url')
                 ->where('id', $id)
@@ -480,8 +462,8 @@ class Generator
             return "https://www.instagram.com/";
         } else if($cat == "whatsapp"){
             return "https://wa.me/";
-        } else if($cat == "twitter"){
-            return "https://www.twitter.com/";
+        } else if($cat == "website"){
+            return "";
         } else {
             return "";
         }
@@ -525,5 +507,66 @@ class Generator
             return $matches[1];
         }
         return null;
+    }
+
+    public static function getTokenResetPass(){
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $res = '';
+        
+        $charCount = strlen($characters);
+        for ($i = 0; $i < 6; $i++) {
+            $res .= $characters[rand(0, $charCount - 1)];
+        }
+        
+        return $res;
+    }
+    
+    public static function getDateDiffSec($date){
+        $ds = $date;
+        $de = date("Y-m-d H:i:s");
+
+        $dt1 = new DateTime($ds);
+        $dt2 = new DateTime($de);
+
+        $diff = $dt1->diff($dt2);
+        $res = $diff->days * 24 * 60 * 60 + $diff->h * 60 * 60 + $diff->i * 60 + $diff->s;
+
+        return $res;  
+    }
+
+    public static function getMessageTemplate($type, $ctx, $obj){
+        if($obj != null){
+            $obj = "called ".$obj;
+        } else {
+            $obj = "";
+        }
+
+        if($type == "lost_session"){
+            $res = "Session lost, please sign in again";
+        } else if($type == "business_create"){
+            $res = "New ".$ctx." ".$obj." has been created";
+        } else if($type == "business_create_failed"){
+            $res = "Failed to create ".$ctx;
+        } else if($type == "business_update"){
+            $res = $ctx." ".$obj." has been updated";
+        } else if($type == "business_update_failed"){
+            $res = "Failed to update ".$ctx;
+        } else if($type == "business_delete"){
+            $res = $ctx." ".$obj." has been deleted";
+        } else if($type == "business_read_success"){
+            $res = $ctx." found"; 
+        } else if($type == "business_read_failed"){
+            $res = $ctx." not found"; 
+        } else if($type == "failed_exist"){
+            $res = "The ".$ctx." ".$obj." is already exist";
+        } else if($type == "failed_owner_exist"){
+            $res = "The ".$ctx." is not yours or it's not exist anymore";
+        } else if($type == "custom"){
+            $res = $ctx;
+        } else {
+            $res = "Failed to get respond message";
+        }
+
+        return ucfirst(trim($res));
     }
 }

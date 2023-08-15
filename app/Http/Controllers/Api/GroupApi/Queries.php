@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\GroupApi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Helpers\Generator;
 
 use App\Models\UserGroup;
 use App\Models\User;
@@ -40,20 +41,20 @@ class Queries extends Controller
             if ($group->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Group Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'group', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Group Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'group', null),
                     'data' => $group
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -72,20 +73,20 @@ class Queries extends Controller
             if ($group->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Group Relation Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'group relation', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Group Relation Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'group relation', null),
                     'data' => $group
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -149,20 +150,20 @@ class Queries extends Controller
             if ($group->isEmpty()) {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Group Relation Not Found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'group relation', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Group Relation Found',
+                    'message' => Generator::getMessageTemplate("business_read_success", 'group relation', null),
                     'data' => $group
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

@@ -13,17 +13,17 @@
     use App\Helpers\Generator;
 ?>
 
-<h5 class="section-title">All Info</h5>
+<h5 class="section-title">{{ __('messages.all') }} Info</h5>
 <div class="table-responsive">
     @include('system.info.filtertype')
     <table class="table tabular table-paginate" id="infoTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Type</th>
-                <th scope="col" style="min-width:var(--tcolMinLG);">Page / Location</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Body</th>
-                <th scope="col" style="min-width:var(--tcolMinJumbo);">Is Active</th>
-                <th scope="col" style="min-width:var(--tcolMinXSM);">Action</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.type') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinLG);">{{ __('messages.page') }} / {{ __('messages.location') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.body') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinJumbo);">{{ __('messages.props') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinXSM);">{{ __('messages.action') }}</th>
             </tr>
         </thead>
         <tbody class="tabular-body">
@@ -55,7 +55,7 @@
                                             <form action="/system/info/update/type/{{$in->id}}" method="POST">
                                                 @csrf
                                                 <input hidden id="dct_name_{{$in->id}}" name="info_type" value="">
-                                                <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> Save Changes</button>
+                                                <button class='btn btn-submit-form' type='submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.save') }}</button>
                                             </form>
                                         </div>
                                     </div>
@@ -64,8 +64,8 @@
                         </td>
                         <td style="min-width:var(--tcolMinLG);">
                             <div id="info_page_location_holder_{{$in->id}}">
-                                <p class="mb-0">Page : <a class="text-link" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
-                                <p>Location : {{$in->info_location}}</p>
+                                <p class="mb-0">{{ __('messages.page') }} : <a class="text-link" href="{{url($in->info_page)}}" style="cursor:pointer;">{{$in->info_page}}</a></p>
+                                <p>{{ __('messages.location') }} : {{$in->info_location}}</p>
                             </div>
                         </td>
                         <td style="min-width:var(--tcolMinJumbo);">
@@ -79,46 +79,46 @@
                             </script>
                         </td>
                         <td style="min-width:var(--tcolMinJumbo);" class="properties">
-                            <h6>Created By</h6>
+                            <h6>{{ __('messages.created_at') }}</h6>
                             <div class="">
                                 <div class="d-inline-block">
                                     <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_created, null, $in->admin_image_created, null)}}" 
                                         alt="{{Generator::getProfileImageContent($in->admin_username_created, null, $in->admin_image_created, null)}}">
                                 </div>
                                 <div class="d-inline-block position-relative w-75">
-                                    <h5 class="user-username-mini">{{$in->admin_username_created}}</h5>
+                                    <h5 class="user-username-mini">{{"@"}}{{$in->admin_username_created}}</h5>
                                     <h6 class="properties-date date_holder_1">{{Carbon::parse($in->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                 </div>
                             </div>    
                             @if($in->updated_at)
-                                <h6>Updated By</h6>
+                                <h6>{{ __('messages.updated_at') }}</h6>
                                 <div class="">
                                     <div class="d-inline-block">
                                         <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_updated, null, $in->admin_image_updated, null)}}" 
                                             alt="{{Generator::getProfileImageContent($in->admin_username_updated, null, $in->admin_image_updated, null)}}">
                                     </div>
                                     <div class="d-inline-block position-relative w-75">
-                                        <h5 class="user-username-mini">{{$in->admin_username_updated}}</h5>
+                                        <h5 class="user-username-mini">{{"@"}}{{$in->admin_username_updated}}</h5>
                                         <h6 class="properties-date date_holder_2">{{Carbon::parse($in->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                     </div>
                                 </div>   
                             @endif
                             @if($in->deleted_at)
-                                <h6>Deleted By</h6>
+                                <h6>{{ __('messages.deleted_at') }}</h6>
                                 <div class="">
                                     <div class="d-inline-block">
                                         <img class="img img-fluid user-image" src="{{Generator::getProfileImageContent($in->admin_username_deleted, null, $in->admin_image_deleted, null)}}" 
                                             alt="{{Generator::getProfileImageContent($in->admin_username_deleted, null, $in->admin_image_deleted, null)}}">
                                     </div>
                                     <div class="d-inline-block position-relative w-75">
-                                        <h5 class="user-username-mini">{{$in->admin_username_deleted}}</h5>
+                                        <h5 class="user-username-mini">{{"@"}}{{$in->admin_username_deleted}}</h5>
                                         <h6 class="properties-date date_holder_3">{{Carbon::parse($in->deleted_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</h6>
                                     </div>
                                 </div>   
                             @endif
                         </td>
                         <td style="min-width:var(--tcolMinXSM);">
-                            <button class="btn btn-warning mb-2" onclick="toogleInfoDescEdit('{{ addslashes($in->info_body) }}', '{{$in->id}}', '{{$in->info_page}}', '{{$in->info_location}}'); tidyUpRichText('info_body_holder_{{$in->id}}')"
+                            <button class="btn btn-info mb-2" onclick="toogleInfoDescEdit('{{ addslashes($in->info_body) }}', '{{$in->id}}', '{{$in->info_page}}', '{{$in->info_location}}'); tidyUpRichText('info_body_holder_{{$in->id}}')"
                                 ><i class="fa-solid fa-edit"></i></button>
                             @if($in->info_location != "delete_info")
                                 <button class="btn btn-danger mb-2" data-bs-target="#deleteModal-{{$i}}" data-bs-toggle="modal"><i class="fa-solid fa-trash"></i></button>
@@ -188,35 +188,40 @@
         var pagloc_body = document.getElementById("info_page_location_holder_"+id);
 
         if(toogle % 2 == 0){
-            holder_body.innerHTML = " <div id='rich_box_" + id + "' style='height: 200px !important;'></div> " +
-            "<form class='d-inline' id='form-edit-desc_" + id + "' method='POST' action=''> " +
-                '@csrf ' +
-                "<input name='info_body' id='info_body_" + id + "' hidden> " +
-                "<button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("+ '"' + id + '"' +")'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
-            "</form> ";
+            holder_body.innerHTML = `
+                <div id='rich_box_${id}' style='height: 200px !important;'></div>
+                <form class='d-inline' id='form-edit-desc_${id}' method='POST' action=''>
+                    @csrf
+                    <input name='info_body' id='info_body_${id}' hidden>
+                    <button class='btn btn-success mt-3' onclick='getRichTextHelpDesc("${id}")'>
+                        <i class='fa-solid fa-floppy-disk'></i> {{ __('messages.save') }}
+                    </button>
+                </form>
+            `;
 
-            pagloc_body.innerHTML = " " +
-                "<form class='d-inline' method='POST' action='/system/info/update/pagloc/" + id + "'> " +
-                    '@csrf ' +
-                    '<div class="form-floating mb-2"> ' +
-                        '<select class="form-select" id="info_type_' + id + '" style="font-size:14px;" title="Info Page" name="info_page" aria-label="Floating label select example" required></select> ' +
-                        '<label for="floatingSelect">Page</label> ' +
-                    '</div> ' +
-                    '<div class="form-floating"> ' +
-                        '<input type="text" class="form-control nameInput" id="info_location_' + id + '" value="' + loc + '" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required> ' +
-                        '<label for="titleInput_event">Info Location</label> ' +
-                        '<a id="info_location_msg_' + id + '" class="text-danger my-2" style="font-size:13px;"></a> ' +
-                    '</div> ' +
-                    "<button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> Save Chages</button> " +
-                "</form> ";
-                
-                menus.forEach(e => {
-                    if(e == page){
-                        $("#info_type_" + id).append('<option value="'+e+'" selected>'+e+'</option>');
-                    } else {
-                        $("#info_type_" + id).append('<option value="'+e+'">'+e+'</option>');
-                    }
-                });
+            pagloc_body.innerHTML = `
+                <form class='d-inline' method='POST' action='/system/info/update/pagloc/${id}'>
+                    @csrf
+                    <div class="form-floating mb-2">
+                        <select class="form-select" id="info_type_${id}" style="font-size:14px;" title="Info Page" name="info_page" aria-label="Floating label select example" required></select>
+                        <label for="floatingSelect">{{ __('messages.page') }}</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control nameInput" id="info_location_${id}" value="${loc}" style="font-size:14px;" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required>
+                        <label for="titleInput_event">{{ __('messages.location') }}</label>
+                        <a id="info_location_msg_${id}" class="text-danger my-2" style="font-size:13px;"></a>
+                    </div>
+                    <button class='btn btn-success mt-3'><i class='fa-solid fa-floppy-disk'></i> {{ __('messages.save') }}</button>
+                </form>
+            `;
+            
+            menus.forEach(e => {
+                if(e == page){
+                    $("#info_type_" + id).append(`<option value="${e}" selected>${e}</option>`);
+                } else {
+                    $("#info_type_" + id).append(`<option value="${e}">${e}</option>`);
+                }
+            });
             
             var quill<?php if($info){str_replace("-", "", $in->id);} ?> = new Quill('#rich_box_' + id, {
                 theme: 'snow'
@@ -225,14 +230,12 @@
             var info_input = document.getElementById("info_body_" + id);
             var parent = document.getElementById("rich_box_" + id);
             var child = parent.getElementsByClassName("ql-editor")[0];
-            if(info_body != null || info_body != "null"){
-                child.innerHTML = info_body;
-            } else {
-                child.innerHTML = " ";
-            }
+            info_body !== null && info_body !== "null" ? (child.innerHTML = info_body) : (child.innerHTML = " ");
         } else {
-            pagloc_body.innerHTML = '<p class="mb-0">Page : <a class="text-primary" href="<?php if($info){ url($in->info_page); } ?> " style="cursor:pointer;">' + page + '</a></p> ' +
-                '<p>Location : ' + loc + '</p>';
+            pagloc_body.innerHTML = `
+                <p class="mb-0">{{ __('messages.page') }} : <a class="text-primary" href="<?php if($info){ url($in->info_page); } ?> " style="cursor:pointer;">${page}</a></p>
+                <p>{{ __('messages.location') }} : ${loc}</p>
+            `;
             holder_body.innerHTML = info_body;
         }
         toogle++;
@@ -242,13 +245,7 @@
         var rawText = document.getElementById("rich_box_"+ id).innerHTML;
         var input_body = document.getElementById("info_body_"+id);
         var form = document.getElementById("form-edit-desc_" + id);
-
-        //Remove quills element from raw text
-        var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','').replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">');
-        //Check this clean text 2!!!
-        cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
-        
-        //Pass html quilss as input value
+        var cleanText = splitOutRichTag(rawText);
         var characterToDeleteAfter = "</div>";
         var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
         input_body.value = modifiedString;

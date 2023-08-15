@@ -62,7 +62,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -73,9 +73,19 @@
                         <div class="content-section p-0 pt-3">
                             <header>
                                 @if($st == "helps editor" && session()->get('role_key') == 0)
-                                    <h5 class="mx-3 text-secondary fw-bold">Help Center</h5><hr>
+                                    <h5 class="mx-3 text-secondary fw-bold" id="section-{{$i}}">Help Center</h5><hr>
+                                    <script>
+                                        if(sessionStorage.getItem('locale') != "en"){
+                                            translator('section-{{$i}}');
+                                        }
+                                    </script>
                                 @else
-                                    <h5 class="mx-3 text-secondary fw-bold">{{ucwords($st)}}</h5><hr>
+                                    <h5 class="mx-3 text-secondary fw-bold" id="section-{{$i}}">{{ucwords($st)}}</h5><hr>
+                                    <script>
+                                        if(sessionStorage.getItem('locale') != "en"){
+                                            translator('section-{{$i}}');
+                                        }
+                                    </script>
                                 @endif
 
                                 @include('components.controlsection', ['type' => "vertical"])
@@ -89,7 +99,7 @@
                                                     @include('about.app')
                                                 </div>
                                                 <div class="col-lg-3 col-md-4 col-sm-12">
-                                                    <h5 class="text-secondary fw-bold">History</h5>
+                                                    <h5 class="text-secondary fw-bold">{{ __('messages.history') }}</h5>
                                                     @include('components.history', ['history' => $h_about])
                                                 </div>
                                             @else 
@@ -105,7 +115,7 @@
                                             @if(!$isMobile)
                                                 <div class="col-lg-4 col-md-5 col-sm-12">
                                                     @include('about.help.list')
-                                                    <h5 class="text-secondary fw-bold mt-2">History</h5>
+                                                    <h5 class="text-secondary fw-bold mt-2">{{ __('messages.history') }}</h5>
                                                     @include('components.history', ['history' => $h_help, 'second'=> true])
                                                 </div>
                                                 <div class="col-lg-8 col-md-7 col-sm-12">
@@ -123,7 +133,7 @@
                                             <div class="col-lg-8 col-md-7 col-sm-12">
                                                 <div class="position-absolute text-center" id="no_cat_selected" style="top:100px; left:45%;">
                                                     <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:30vh; height:30vh;">
-                                                    <h6 class='text-secondary text-center'>Choose the category in type section to see detail</h6>
+                                                    <h6 class='text-secondary text-center'>{{ __('messages.see_help_type') }}</h6>
                                                 </div>
                                                 <span id="desc_holder_view"></span>
                                             </div>
@@ -135,7 +145,7 @@
                                                     @include('about.contact')
                                                 </div>
                                                 <div class="col-lg-3 col-md-4 col-sm-12">
-                                                    <h5 class="text-secondary fw-bold">History</h5>
+                                                    <h5 class="text-secondary fw-bold">{{ __('messages.history') }}</h5>
                                                     @include('components.history', ['history' => $h_contact, 'third'=> true])
                                                 </div>
                                             @else 
@@ -158,6 +168,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.success_mini')
         @include('popup.failed')
 
         <script>

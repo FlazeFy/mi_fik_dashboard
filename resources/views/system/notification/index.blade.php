@@ -42,7 +42,8 @@
                     ],
                     language: {
                         searchPlaceholder: "By Content",
-                    }
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
+                    },
                 });
                 modifyTableControl(tableName, null);
             });
@@ -82,12 +83,12 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
                     @if(!$isMobile)
-                        <button class="btn btn-submit mt-4" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i> Add Notification</button>
+                        <button class="btn btn-submit mt-4" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i> {{ __('messages.add_announcement') }}</button>
                     @else 
                         <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#selectTypeModal"><i class="fa-solid fa-plus"></i></button>
                     @endif
@@ -108,6 +109,9 @@
             var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
             var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
+            })
+            var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+                trigger: 'focus'
             })
 
             var isFormSubmitted = false;

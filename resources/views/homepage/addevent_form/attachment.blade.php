@@ -1,13 +1,12 @@
 <div>
-    <a class="btn btn-add-att mb-2" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> Add Attachment</a>
+    <a class="btn btn-add-att mb-2" style="float:none;" id="add_att_btn" onclick="addAttachmentForm()"><i class="fa-solid fa-plus"></i> {{ __('messages.add_att') }}</a>
     <div class="attachment-holder" id="attachment-holder">
     </div>
     <input hidden id="content_attach" name="content_attach">
 </div>
 
 <script>
-    //Initial variable.
-    var attach_list = []; //Store all attachment.
+    var attach_list = [];
     var maxSizeImage = 4; // Mb
     var maxSizeVideo = 20; // Mb
     var maxSizeDoc = 15; // Mb
@@ -27,15 +26,15 @@
             };
             attach_list.push(obj);
 
-            $("#attachment-holder").append(' ' +
-                '<div class="attachment-item p-2 shadow" id="attachment_container_'+id+'" style="--circle-attach-color-var:var(--shadowColor);"> ' + 
-                    '<div style="white-space:normal !important;"> ' +
-                        '<span class="d-inline-block me-1"> ' +
-                            '<h6 class="mt-1">Attachment Type : </h6> ' +
-                        '</span> ' +
-                        '<span class="d-inline-block"> ' +
-                            '<select class="form-select attachment" id="attach_type_'+id+'" name="attach_type" onChange="getAttachmentGroupFun('+"'"+id+"'"+', this.value, false)" aria-label="Default select example"> ' +
-                                '<option selected>---</option> ' +
+            $("#attachment-holder").append(`
+                <div class="attachment-item p-2 shadow" id="attachment_container_${id}" style="--circle-attach-color-var:var(--shadowColor);">
+                    <div style="white-space:normal !important;">
+                        <span class="d-inline-block me-1">
+                            <h6 class="mt-1">{{ __('messages.att_type') }} :</h6>
+                        </span>
+                        <span class="d-inline-block">
+                            <select class="form-select attachment" id="attach_type_${id}" name="attach_type" onChange="getAttachmentGroupFun('${id}', this.value, false)" aria-label="Default select example">
+                                <option selected>---</option> 
                                 <?php
                                     foreach($dictionary as $dct){
                                         if($dct->type_name == "Attachment"){
@@ -43,22 +42,27 @@
                                         }
                                     }
                                 ?>
-                            '</select> ' +
-                        '</span> ' +
-                    '</div> ' +
-                    '<div id="attach-input-holder-'+id+'"></div> ' +
-                    '<a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('+"'"+id+"'"+')"> ' +
-                        '<i class="fa-solid fa-trash-can"></i></a> ' +
-                    '<span id="preview_att_'+id+'"><a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-'+id+'"> ' +
-                        '<i class="fa-regular fa-eye-slash"></i></a></span>' +
-                    '<a class="attach-upload-status success" id="attach-progress-'+id+'"></a>' +
-                    '<a class="attach-upload-status failed" id="attach-failed-'+id+'"></a>' +
-                    '<a class="attach-upload-status warning" id="attach-warning-'+id+'"></a>' +
-                    '<span id="preview_holder_'+id+'"></span> ' +
-                '</div>');
+                            </select>
+                        </span>
+                    </div>
+                    <div id="attach-input-holder-${id}"></div>
+                    <a class="btn btn-icon-delete" title="Delete" onclick="deleteAttachmentForm('${id}')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                    <span id="preview_att_${id}">
+                        <a class="btn btn-icon-preview" title="Preview Attachment" data-bs-toggle="collapse" href="#collapsePreview-${id}">
+                            <i class="fa-regular fa-eye-slash"></i>
+                        </a>
+                    </span>
+                    <a class="attach-upload-status success" id="attach-progress-${id}"></a>
+                    <a class="attach-upload-status failed" id="attach-failed-${id}"></a>
+                    <a class="attach-upload-status warning" id="attach-warning-${id}"></a>
+                    <span id="preview_holder_${id}"></span>
+                </div>
+            `);
             
             add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
-            add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+            add_att_btn.innerHTML = `<i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}`;
         }
     }
 
@@ -107,7 +111,7 @@
                         } else {
                             attach_list[objIndex]['is_add_more'] = false;
                             document.getElementById('attach_name_'+id).disabled = true;
-                            submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
+                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                         }
                     }, 
                     function (error) {
@@ -116,7 +120,7 @@
                         var att_url = null;
                         if(error.message){
                             att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
-                            submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
+                            submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                         }
                     }, 
                     function () {
@@ -126,20 +130,26 @@
                             attach_list[objIndex]['attach_url'] =  downloadUrl;
                             
                             if(att_type == "attachment_image"){
-                                var att_preview_elmt = "<img class='img img-fluid mx-auto rounded mt-2' src='" + downloadUrl + "' alt='" + downloadUrl + "'>";
+                                var att_preview_elmt = `<img class='img img-fluid mx-auto rounded mt-2' src='${downloadUrl}' alt='${downloadUrl}'>`;
                             } else if(att_type == "attachment_video"){
-                                var att_preview_elmt = "<video controls class='rounded w-100 mx-auto mt-2' alt='" + downloadUrl + "'> " +
-                                    "<source src='" + downloadUrl + "'> " +
-                                "</video>";
+                                var att_preview_elmt = `
+                                    <video controls class='rounded w-100 mx-auto mt-2' alt='${downloadUrl}'>
+                                        <source src='${downloadUrl}'>
+                                    </video>
+                                `;
                             } else if(att_type == "attachment_doc"){
-                                var att_preview_elmt = "<embed class='document-grid mb-2 rounded' alt='" + downloadUrl + "' style='height: 450px;' src='" + downloadUrl + "'/>";
+                                var att_preview_elmt = `
+                                    <embed class='document-grid mb-2 rounded' alt='${downloadUrl}' style='height: 450px;' src='${downloadUrl}'/>
+                                `;
                             }
 
-                            var preview_elmt = "<div class='collapse' id='collapsePreview-" + id + "'> " +
-                                    "<div class='container w-100 m-0 p-0'> " +
-                                        att_preview_elmt +
-                                    "</div> " +
-                                "</div>";
+                            var preview_elmt = `
+                                <div class='collapse' id='collapsePreview-${id}'> 
+                                    <div class='container w-100 m-0 p-0'> 
+                                        ${att_preview_elmt}
+                                    </div>
+                                </div>
+                            `;
                             document.getElementById('preview_holder_' + id).innerHTML = preview_elmt;
                             document.getElementById('attach_url_holder_'+id).value = downloadUrl;
 
@@ -161,11 +171,11 @@
                     add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
                     add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
 
-                    document.getElementById('attach-failed-'+id).innerHTML = "Upload failed. Maximum file size is " + max + " mb";
+                    document.getElementById('attach-failed-'+id).innerHTML = `Maximum file size is ${max} mb`;
                     var att_url = null;
                     if(error.message){
                         att_cont.style = "border-left: 3.5px solid var(--warningBG) !important; --circle-attach-color-var:var(--warningBG) !important;";
-                        submitHolder.html('<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> Locked</button>');
+                        submitHolder.html(`<button disabled class="custom-submit-modal"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>`);
                     }
                 }
             } else if(att_type == "attachment_url" && att_dsbld != true) {
@@ -223,10 +233,10 @@
 
         if(!found){
             add_att_btn.setAttribute("class","btn btn-add-att mb-2");
-            add_att_btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Attachment';
+            add_att_btn.innerHTML = `<i class="fa-solid fa-plus"></i> {{ __('messages.add_att') }}`;
         } else {
             add_att_btn.setAttribute("class","btn btn-add-att disabled mb-2");
-            add_att_btn.innerHTML = '<i class="fa-solid fa-lock"></i> Locked';
+            add_att_btn.innerHTML = `<i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}`;
         }
     }
 

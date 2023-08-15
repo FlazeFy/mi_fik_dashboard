@@ -38,12 +38,18 @@
                     ],
                     language: {
                         searchPlaceholder: "By Tag Name",
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
                     }
                 });
                 let extra_control = [
                     { id: "filter-cat"}
                 ];
                 modifyTableControl(tableName, extra_control);
+                $("#tagCatTable").DataTable({
+                    language: {
+                        <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
+                    }
+                });
             });
         </script>
 
@@ -84,7 +90,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -96,19 +102,25 @@
                                         @include('event.tag.add')
                                     </div>
                                     <div class="content-section">
+                                        @include('event.tag.advanced')
+                                    </div>
+                                    <div class="content-section">
                                         @include('event.tag.category')
                                     </div>
                                     <div class="content-section">
                                         @include('statistic.mostTag')
+                                    </div>
+                                    <div class="content-section position-relative">
+                                        <h5 class="text-secondary fw-bold">{{ __('messages.history') }}</h5>
+                                        @include('components.history', ['history' => $history])
                                     </div>
                                 </div>
                                 <div class="col-lg-7 col-md-7 col-sm-12">
                                     <div class="content-section">
                                         @include('event.tag.table')
                                     </div>
-                                    <div class="content-section position-relative">
-                                        <h5 class="text-secondary fw-bold">History</h5>
-                                        @include('components.history', ['history' => $history])
+                                    <div class="content-section">
+                                        @include('event.tag.catTable')
                                     </div>
                                 </div>
                             </div>
@@ -123,6 +135,7 @@
         </div>
 
         <!--Modal-->
+        @include('popup.success_mini')
         @include('popup.success')
         @include('popup.failed')
 
@@ -142,5 +155,6 @@
             }
         </script>
         <script src="{{ asset('/js/sidebar_v1.0.js')}}"></script>
+        <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     </body>
 </html>

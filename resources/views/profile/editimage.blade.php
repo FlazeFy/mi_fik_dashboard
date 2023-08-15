@@ -76,11 +76,10 @@
 
             uploadTask.on('state_changed',function (snapshot) {
                 var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
-                document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
+                document.getElementById('header-progress').innerHTML = `<span class="box-loading"><div role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="${progress}" style="--value: ${progress}"></div></span>`;
             }, 
             function (error) {
-                console.log(error.message);
-                document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is " + error.message + "</h6></span>";
+                document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is ${error.message}</h6></span>`;
             }, 
             function () {
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
@@ -90,7 +89,7 @@
                 });
             });
         } else {
-            document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is " + maxSize + " mb </h6></span>";
+            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>${messages('max_file_size')} ${maxSize} mb </h6></span>`;
         }
     }
 
@@ -99,9 +98,9 @@
         var desertRef = storageRef.refFromURL('<?= session()->get("profile_pic"); ?>');
 
         desertRef.delete().then(() => {
-            document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>';
+            document.getElementById("header-progress").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>Profile image has been set to default</h6></span>`;
         }).catch((error) => {
-            document.getElementById("header-failed").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>'+error+'</h6></span>';
+            document.getElementById("header-failed").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Failed.png"><h6>${error}</h6></span>`;
         });
 
         document.getElementById("profile_image_url").value = null;
@@ -119,7 +118,7 @@
                 xhr.setRequestHeader("Authorization", "Bearer <?= session()->get("token_key"); ?>");
             },
             success: function(response) {
-                document.getElementById("header-progress").innerHTML = '<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>'+response.message+'</h6></span>';
+                document.getElementById("header-progress").innerHTML = `<span class="box-loading"><img class="d-inline mx-auto img img-fluid" src="http://127.0.0.1:8000/assets/Success.png"><h6>${response.message}</h6></span>`;
                 setTimeout(() => {
                     document.getElementById("header-progress").innerHTML = "";
                     location.reload();

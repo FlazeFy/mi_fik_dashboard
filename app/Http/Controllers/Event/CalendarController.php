@@ -33,7 +33,6 @@ class CalendarController extends Controller
 
             $content = ContentHeader::getAllContentFilter(session()->get('selected_tag_calendar'), $role);       
             $tag = Tag::getFullTag("DESC", "DESC");
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
 
             if($role == 1){
@@ -56,24 +55,26 @@ class CalendarController extends Controller
                 ->with('content', $content)
                 ->with('tag', $tag)
                 ->with('mytag', $mytag)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
+                ->with('menu', $menu);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 
-    public function set_filter_tag(Request $request, $all)
+    public function set_filter_tag(Request $request, $all, $from)
     {
         if($all == 0){
-            $slug = $request->slug_name;
-            if(is_array($slug)){
-                $tag_count = count($slug);
+            $tag = $request->tag;
+            if(is_array($tag)){
+                $tag_count = count($tag);
                 $tag_holder = [];
 
                 for($i = 0; $i < $tag_count; $i++){
-                    if($request->has('slug_name.'.$i)){
-                        array_push($tag_holder, $slug[$i]);
+                    if($request->has('tag.'.$i)){
+                        $tags = explode("__",$tag[$i]);
+                        array_push($tag_holder, 
+                            (object)['slug_name' => $tags[0], 'tag_name' => $tags[1]],
+                        );
                     } 
                 }
             } else {
@@ -83,15 +84,15 @@ class CalendarController extends Controller
             $tag_holder = "All";
         }
 
-        session()->put('selected_tag_calendar', $tag_holder);
+        session()->put('selected_tag_'.$from, $tag_holder);
 
-        return redirect()->back()->with('success_message', 'Content filtered');
+        return redirect()->back()->with('success_mini_message', 'Content filtered');
     }
 
     public function set_ordering_content($order)
     {
         session()->put('ordering_finished', $order);
 
-        return redirect()->back()->with('success_message', 'Content ordered');
+        return redirect()->back()->with('success_mini_message', 'Content ordered');
     }
 }

@@ -1,3 +1,6 @@
+.btn {
+    border-radius: var(--roundedSM);
+}
 .btn-submit{
     background: var(--successBG);
     color: var(--whiteColor) !important;
@@ -71,9 +74,10 @@
 }
 
 .btn-submit-form:disabled, .btn-submit-form{
-    color: var(--successBG);
+    color: var(--whiteColor);
     border-radius: var(--roundedMini);
     border: solid 1.75px var(--successBG);
+    background: var(--successBG);
     margin-top: var(--spaceSM);
     margin-bottom: var(--spaceSM);
     opacity: 1;
@@ -82,7 +86,7 @@
     cursor: pointer;
 }
 .btn-submit-form:hover{
-    background:var(--successBG);
+    background:var(--successDarkBG);
     color: var(--whiteColor);
 }
 .btn-msg{
@@ -131,7 +135,7 @@
 .btn-detail-config.primary{
     background:var(--primaryColor);
 }
-.btn-detail-config.danger, .hover-danger:hover{
+.btn-detail-config.danger, .hover-danger:hover, .btn-tag-selected:hover{
     background: var(--warningDarkBG);
 }
 .btn-detail-config.success{
@@ -407,5 +411,9 @@
 @media (max-width: 767px) {
     .btn-danger, .btn-success, .btn-info {
         font-size: var(--textXMD) !important;
+    }
+    .btn-msg {
+        bottom: 60px;
+        right: 30px;
     }
 }

@@ -13,7 +13,7 @@
                 @foreach($dct_tag as $dtag) 
                     @if($i == 0) 
                         <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option> 
-                        <option value="all">All</option> 
+                        <option value="all">{{ __('messages.all') }}</option> 
                     @else 
                         <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option> 
                     @endif 
@@ -33,7 +33,7 @@
             <div id="empty_item_holder_manage_tag"></div>
             <span id="load_more_holder_manage_tag" style="display: flex; justify-content:center;"></span>
 
-            <h6 class="text-secondary"> Selected Tag</h6>
+            <h6 class="text-secondary"> {{ __('messages.slct_tag') }}</h6>
             <div id="slct_holder"></div>
 
             <div id="slct_tag_submit_holder"></div>
@@ -62,7 +62,7 @@
                 @endforeach
             </div>
 
-            <h6 class="text-secondary"> Selected Tag</h6>
+            <h6 class="text-secondary"> {{ __('messages.slct_tag') }}</h6>
             <div id="slct_holder"></div>
 
             <div id="slct_tag_submit_holder"></div>
@@ -74,7 +74,7 @@
     var page = 1;
     var open = false;
     var role = <?= session()->get("role_key"); ?>;
-    var slct_list = []; //Store all tag's id.
+    var slct_list = [];
 
     if(role == 1){
         infinteLoadMoreTag(page);
@@ -84,8 +84,7 @@
             infinteLoadMoreTag(page);
         }
 
-        //Initial variable.
-        var tag_list = []; //Store all tag from db to js arr.
+        var tag_list = [];
         var tag_cat = "<?= $dct_tag[0]['slug_name'] ?>";
 
         function setTagFilter(tag){
@@ -96,7 +95,6 @@
         }
 
         function infinteLoadMoreTag(page) { 
-
             $.ajax({
                 url: "/api/v1/tag/cat/" + tag_cat + "/12"+ "?page=" + page,
                 datatype: "json",
@@ -114,16 +112,16 @@
                 var last = response.data.last_page;
 
                 if(page != last){
-                    $('#load_more_holder_manage_tag').html('<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>');
+                    $('#load_more_holder_manage_tag').html(`<a class="btn content-more my-3 p-2" style="max-width:180px;" onclick="loadmoretag()">Show more <span id="textno"></span></a>`);
                 } else {
-                    $('#load_more_holder_manage_tag').html('<h6 class="text-secondary my-3">No more tag to show</h6>');
+                    $('#load_more_holder_manage_tag').html(`<h6 class="text-secondary my-3">{{ __('messages.no_more') }}</h6>`);
                 }
 
                 if (total == 0) {
-                    $('#empty_item_holder_manage_tag').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
+                    $('#empty_item_holder_manage_tag').html(`<img src="${imgSrc}" class="img nodata-icon-req"><h6 class="text-secondary text-center">No Event's found</h6>`);
                     return;
                 } else if (data.length == 0) {
-                    $('.auto-load-tag').html("<h5 class='text-secondary'>Woah!, You have see all the tags</h5>");
+                    $('.auto-load-tag').html(`<h5 class='text-secondary'>Woah!, You have see all the tags</h5>`);
                     return;
                 } else {
                     $("#empty_item_holder_manage_tag").empty();
@@ -140,7 +138,6 @@
 
                     if(selected_before.length > 0){
                         for(var i = 0; i < data.length; i++){
-                            //Attribute
                             var slug_name = data[i].slug_name;
                             var tag_name = data[i].tag_name;
                             var found = false;
@@ -151,26 +148,21 @@
                             }
 
                             if(!found){
-                                var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                                    'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'slct'+"'"+')">' + tag_name + '</a> ';
+                                var elmt = `<a class="btn btn-tag" id="tag_collection_${slug_name}" title="Select this tag" onclick="addSelectedTag('${slug_name}', '${tag_name}', true, 'slct')">${tag_name}</a>`;
 
                                 $("#data_wrapper_manage_tag").append(elmt);
                             }
                         }  
                     } else {
                         for(var i = 0; i < data.length; i++){
-                            //Attribute
                             var slug_name = data[i].slug_name;
                             var tag_name = data[i].tag_name;
 
-
-                            var elmt = '<a class="btn btn-tag" id="tag_collection_' + slug_name +'" title="Select this tag" ' + 
-                                'onclick="addSelectedTag('+"'"+ slug_name +"'"+', '+"'"+tag_name+"'"+', true, '+"'"+'slct'+"'"+')">' + tag_name + '</a> ';
+                            var elmt = `<a class="btn btn-tag" id="tag_collection_${slug_name}" title="Select this tag" onclick="addSelectedTag('${slug_name}', '${tag_name}', true, 'slct')">${tag_name}</a> `;
 
                             $("#data_wrapper_manage_tag").append(elmt);
                         }  
                     }
-                    
                 }
             })
             .fail(function (jqXHR, ajaxOptions, thrownError) {
@@ -187,25 +179,23 @@
         if(open == true){
             open = false;
             tag_btn_toogle.setAttribute("class","btn btn-info");
-            tag_btn_toogle.innerHTML = '<i class="fa-solid fa-magnifying-glass"></i>';
+            tag_btn_toogle.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i>`;
         } else {
             open = true;
             tag_btn_toogle.setAttribute("class","btn btn-danger");
-            tag_btn_toogle.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+            tag_btn_toogle.innerHTML = `<i class="fa-solid fa-xmark"></i>`;
         }
     }
 
     function addSelectedTag(slug_name, tag_name, is_deleted){
         var found = false;
 
-        //Remove selected tag from tag collection
         if(is_deleted){
             var tag = document.getElementById('tag_collection_'+slug_name);
             tag.parentNode.removeChild(tag);
         }
 
         if(slct_list.length > 0){
-            //Check if tag is exist in selected tag.
             slct_list.map((val, index) => {
                 if(val == slug_name){
                     found = true;
@@ -214,29 +204,24 @@
 
             if(found == false){
                 slct_list.push(slug_name);
-                //Check this append input value again!
-                $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+                $("#slct_holder").append(`<div class='d-inline' id='tagger_${slug_name}'><input hidden name='tag[]' value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("${slug_name}", "${tag_name}")'>${tag_name}</a></div>`);
             }
         } else {
             slct_list.push(slug_name);
-            $("#slct_holder").append("<div class='d-inline' id='tagger_"+slug_name+"'><input hidden name='tag[]' value='{"+'"'+"slug_name"+'"'+":"+'"'+slug_name+'"'+", "+'"'+"tag_name"+'"'+":"+'"'+tag_name+'"'+"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+")'>"+tag_name+"</a></div>");
+            $("#slct_holder").append(`<div class='d-inline' id='tagger_${slug_name}'><input hidden name='tag[]' value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'><a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("${slug_name}", "${tag_name}")'>${tag_name}</a></div>`);
         }
 
-        getButtonSubmitTag()
-        console.log(slct_list)
+        getButtonSubmitTag();
     }
 
     function removeSelectedTag(slug_name, tag_name){
-        //Remove selected tag
         var tag = document.getElementById('tagger_'+slug_name);
         slct_list = slct_list.filter(function(e) { return e !== slug_name })
         tag.parentNode.removeChild(tag);
 
-        //Return selected tag to tag collection
-        $("#data_wrapper_manage_tag").append("<a class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+"slct"+'"'+")'>"+tag_name+"</a>");
+        $("#data_wrapper_manage_tag").append(`<a class='btn btn-tag' id='tag_collection_${slug_name}' title='Select this tag' onclick='addSelectedTag("${slug_name}", "${tag_name}", true, "slct")'>${tag_name}</a>`);
 
-        getButtonSubmitTag()
-        console.log(slct_list)
+        getButtonSubmitTag();
     }
 
     function getButtonSubmitTag(){
@@ -245,30 +230,33 @@
 
             for(var i = 0; i < slct_list.length; i++){
                 if(i != slct_list.length - 1){
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>, ';
+                    tags += `<span class="text-primary fw-bold">#${slct_list[i]}</span>, `;
                 } else {
-                    tags += '<span class="text-primary fw-bold">#' + slct_list[i] + '</span>';
+                    tags += `<span class="text-primary fw-bold">#${slct_list[i]}'</span>`;
                 }
             }
             
-            $("#slct_tag_submit_holder").html(''+
-                '<a class="btn btn-submit mt-3" title="Submit Tag"  data-bs-toggle="modal" href="#addTag"><i class="fa-solid fa-plus"></i> Add Tag</a> ' +
-                '<div class="modal fade" id="addTag" tabindex="-1" aria-labelledby="addTagLabel" aria-hidden="true"> ' +
-                '<div class="modal-dialog"> ' +
-                    '<div class="modal-content"> ' +
-                    '<div class="modal-header"> ' +
-                        '<h5 class="modal-title" id="addTagLabel">Add Selected Tags</h5> ' +
-                        '<a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a> ' +
-                    '</div> ' +
-                    '<div class="modal-body"> ' +
-                        '<h6 class="fw-normal">Are you sure want to add ' + tags + ' to this Event</h6> ' +
-                    '</div> ' +
-                    '<div class="modal-footer"> ' +
-                        '<button type="submit" class="btn btn-success">Submit</button> ' +
-                    '</div> ' +
-                    '</div> ' +
-                '</div> ' +
-                '</div>') ;
+            $("#slct_tag_submit_holder").html(`
+                <a class="btn btn-submit mt-3" title="Submit Tag" data-bs-toggle="modal" href="#addTag">
+                    <i class="fa-solid fa-plus"></i> Add Tag
+                </a>
+                <div class="modal fade" id="addTag" tabindex="-1" aria-labelledby="addTagLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addTagLabel">Add Selected Tags</h5>
+                                <a type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></a>
+                            </div>
+                            <div class="modal-body">
+                                <h6 class="fw-normal">Are you sure want to add ${tags} to this Event</h6>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">{{ __('messages.submit') }}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `) ;
         } else {
             return $("#slct_tag_submit_holder").text('')
         }

@@ -8,10 +8,9 @@
                 style='display: block; margin-left: auto; margin-right: auto;'>
         </div>
         <div class="col-8 pt-2">
-            <h1>Mi-FIK</h1>
+            <h1>MI-FIK</h1>
         </div>
     </div>
-    <!--Main Navbar.-->
     <div class="accordion" id="accordionExample">
         <ul class="list-unstyled components my-5">
             @php($group = false)
@@ -22,13 +21,17 @@
             @foreach($menu as $mn)
                 @if(!$mn->menu_name)
                     <li class="<?php if(session()->get('active_nav') == $mn->menu_group){ echo " active"; }?>">
-                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> {{ucfirst($mn->menu_group)}}</a>
+                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> <span id="menu-name-{{$i}}">{{ucfirst($mn->menu_group)}}</span></a>
+                        <script>
+                            if(sessionStorage.getItem('locale') != "en"){
+                                translator('menu-name-{{$i}}');
+                            }
+                        </script>
                     </li>
                     @php($group = false)
                 @else 
                     @php($menu_group = str_replace(' ', '', $mn->menu_group))
 
-                    <!-- Fix this -->
                     @if($menu_group == "event")
                         <?php $icon = '<i class="fa-regular fa-calendar me-3"></i>'; ?>
                     @elseif($menu_group == "system")
@@ -41,7 +44,12 @@
                     
                     @if(!$group)
                         <li class="accordion-header <?php if(session()->get('active_nav') == $menu_group){ echo " active"; }?>">
-                            <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clps{{$menu_group}}"><?= $icon; ?> {{ucfirst($mn->menu_group)}}</button>
+                            <button class="btn btn-accordion-custom" type="button" data-bs-toggle="collapse" data-bs-target="#clps{{$menu_group}}"><?= $icon; ?> <span id="menu-name-{{$i}}">{{ucwords($mn->menu_group)}}</span></button>
+                            <script>
+                                if(sessionStorage.getItem('locale') != "en"){
+                                    translator('menu-name-{{$i}}');
+                                }
+                            </script>
                         </li>
                         @php($group = true)
                     @endif
@@ -63,7 +71,12 @@
                         @php($active = "")
                     @endif
                     <li class="sub {{$active}}">
-                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> {{ucfirst($mn->menu_name)}}</a>
+                        <a href="{{ url($mn->menu_url) }}"><?= $mn->menu_icon; ?> <span id="menu-sub-name-{{$i}}">{{ucwords($mn->menu_name)}}</span></a>
+                        <script>
+                            if(sessionStorage.getItem('locale') != "en"){
+                                translator('menu-sub-name-{{$i}}');
+                            }
+                        </script>
                     </li>
                    
                     @if($i <= $total)
@@ -77,8 +90,5 @@
                 @php($i++)
             @endforeach
         </ul>
-        <!-- <button class="btn btn-transparent text-secondary position-absolute" style='bottom:20px;' title="Setting"><i class="fa-solid fa-gear"></i></button> -->
-        <!-- <button class="btn btn-transparent text-danger fw-bolder position-absolute" style='bottom:20px; right:10px;' title="Sign Out"
-            data-bs-toggle="modal" data-bs-target="#sign-out-modal"><i class="fa-solid fa-arrow-right-from-bracket"></i> Sign-Out</button> -->
     </div>
 </nav>

@@ -29,9 +29,9 @@ class FeedbackController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $menu = Menu::getMenu();
                 $info = Info::getAvailableInfo("statistic");
+                $info2 = Info::getAvailableInfo("social/feedback");
                 $suggestion = Feedback::getAllFeedbackSuggestion();
                 $feedback = Feedback::getAllFeedback(50, session()->get('selected_filter_suggest'));
                 $dct = Dictionary::getDictionaryByType("Feedback");
@@ -44,11 +44,11 @@ class FeedbackController extends Controller
                     ->with('menu', $menu)
                     ->with('dct', $dct)
                     ->with('info', $info)
+                    ->with('info2', $info2)
                     ->with('suggestion', $suggestion)
-                    ->with('feedback', $feedback)
-                    ->with('greet',$greet);
+                    ->with('feedback', $feedback);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");

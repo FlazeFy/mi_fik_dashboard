@@ -27,8 +27,10 @@
     .btn.change-image{
         width:40px; 
         height:40px; 
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        transition: all 0.4s;
         background:var(--primaryColor);
-        border-radius: var(--roundedCircle);
         display: block;
         margin-inline: auto;
     }
@@ -38,6 +40,9 @@
         left: 10px;
         background: var(--warningBG) !important;
         color:var(--whiteColor) !important;
+        -webkit-transition: all 0.4s;
+        -o-transition: all 0.4s;
+        transition: all 0.4s;
     }
     .content-image-holder .status-holder{
         position: absolute; 
@@ -75,10 +80,10 @@
             var desertRef = storageRef.refFromURL(uploadedContentImageUrl);
 
             desertRef.delete().then(() => {
-                document.getElementById('header-progress').innerHTML = "Content image has been removed";
+                document.getElementById('header-progress').innerHTML = `Content image has been removed`;
                 uploadedContentImageUrl = ""
             }).catch((error) => {
-                document.getElementById('header-failed').innerHTML = "Failed to deleted the image";
+                document.getElementById('header-failed').innerHTML = `Failed to deleted the image`;
             });
         }        
     }
@@ -94,11 +99,10 @@
         //Do upload
         uploadTask.on('state_changed',function (snapshot) {
             var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
-            document.getElementById('header-progress').innerHTML = "File upload is " + progress + "% done";
+            document.getElementById('header-progress').innerHTML = `File upload is ${progress}% done`;
         }, 
         function (error) {
-            console.log(error.message);
-            document.getElementById('header-failed').innerHTML = "File upload is " + error.message;
+            document.getElementById('header-failed').innerHTML = `File upload is ${error.message}`;
             var cheader_url = null;
         }, 
         function () {

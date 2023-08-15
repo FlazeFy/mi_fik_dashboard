@@ -57,7 +57,7 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
 
@@ -79,7 +79,12 @@
                                                 @if($st == "question")
                                                     <span id="total" class="text-primary"></span> 
                                                 @endif
-                                            {{ucwords($st)}}</h5><hr>
+                                            <span id="section-{{$i}}">{{ucwords($st)}}</span></h5><hr>
+                                            <script>
+                                                if(sessionStorage.getItem('locale') != "en"){
+                                                    translator('section-{{$i}}');
+                                                }
+                                            </script>
                                             @include('components.infosection', ['type' => $st])
                                             @if(!$isMobile)
                                                 @include('components.controlsection', ['type' => "horizontal"])
@@ -101,7 +106,7 @@
 
                                     @if($st == "question") <!--Must be with question container. but first, fix the sticky problem-->
                                         <div class="content-section p-0 p-3" > <!--style="$style2"-->
-                                            <h5 class="text-secondary fw-bold">History</h5>
+                                            <h5 class="text-secondary fw-bold">{{ __('messages.history') }}</h5>
                                             @include('components.history', ['history' => $history])
                                         </div>
                                     @endif
@@ -116,6 +121,7 @@
 
         <!--Modal-->
         @include('popup.success')
+        @include('popup.success_mini')
         @include('popup.failed')
         @include('social.faq.delete')
 

@@ -105,7 +105,7 @@
     @endforeach
 @else 
     <img src="{{asset('assets/attachment.png')}}" class="img nodata-icon" style="height:18vh;">
-    <h6 class="text-center text-secondary">This Event doesn't have attachment</h6>
+    <h6 class="text-center text-secondary">{{ __('messages.no_att') }}</h6>
 @endif
 
 

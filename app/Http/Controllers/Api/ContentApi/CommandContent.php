@@ -27,56 +27,6 @@ use Kreait\Firebase\Messaging\Notification as FireNotif;
 
 class CommandContent extends Controller
 {
-    public function deleteContent(Request $request, $id){
-        try{
-            $user_id = $request->user()->id;
-
-            $content = ContentHeader::where('id', $id)->update([
-                'deleted_at' => date("Y-m-d H:i:s"),
-                'deleted_by' => $user_id,
-            ]);
-
-            if($content != 0){
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content deleted',
-                    'data' => $content
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Content not found',
-                    'data' => null
-                ], Response::HTTP_OK);
-            }
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function destroyContent($id){
-        try{
-            $content = ContentHeader::destroy($id);
-
-            ContentDetail::where('content_id', $id)
-                ->delete();
-
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Content permanentaly deleted',
-                'data' => $content
-            ], Response::HTTP_OK);
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function addContent(Request $request){
         $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
         $messaging = $factory->createMessaging();
@@ -84,267 +34,163 @@ class CommandContent extends Controller
         DB::beginTransaction();
 
         try{
-            $data = new Request();
-            $obj = [
-                'history_type' => "event",
-                'history_body' => "has created an event"
-            ];
-            $data->merge($obj);
+            $user_id = $request->user()->id;
+            $grole = Query::getAccessRole($user_id, true);
 
-            $validatorHistory = Validation::getValidateHistory($data);
-            if ($validatorHistory->fails()) {
-                $errors = $validatorHistory->messages();
+            if($grole != "student" || $grole == null){
+                $data = new Request();
+                $obj = [
+                    'history_type' => "event",
+                    'history_body' => "has created an event"
+                ];
+                $data->merge($obj);
 
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Add content failed',
-                    'result' => $errors
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
-            } else {
-                //Inital variable
-                $draft = 0;
-                $user_id = $request->user()->id;
-
-                //Helpers
-                $validator = Validation::getValidateEvent($request);
-
-                if ($validator->fails()) {
-                    $errors = $validator->messages();
+                $validatorHistory = Validation::getValidateHistory($data);
+                if ($validatorHistory->fails()) {
+                    $errors = $validatorHistory->messages();
 
                     return response()->json([
                         'status' => 'failed',
-                        'message' => 'Add content failed',
+                        'message' => Generator::getMessageTemplate("business_create_failed", 'event', null),
                         'result' => $errors
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $tag = null;
+                    //Inital variable
+                    $draft = 0;
 
-                    if(is_array($request->content_tag) && $request->content_tag != null){
-                        $tag = Converter::getTag($request->content_tag);
-                        $tag = json_decode($tag, true);
-                    } else if($request->content_tag != null){
-                        // $tag = Converter::getTag(json_decode($request->content_tag));
-                        // $tag = json_decode($tag, true);
-                        $tag = $request->content_tag;
-                    }
+                    //Helpers
+                    $validator = Validation::getValidateEvent($request);
 
-                    $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
-                    $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-                    $slug = Generator::getSlugName($request->content_title, "content");
-                    $uuid = Generator::getUUID();
+                    if ($validator->fails()) {
+                        $errors = $validator->messages();
 
-                    if($request->content_image || $request->content_image != ""){
-                        $imageURL = $request->content_image;
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("business_create_failed", 'event', null),
+                            'result' => $errors
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     } else {
-                        $imageURL = null;
-                    }
+                        $tag = null;
 
-                    $header = [
-                        'id' => $uuid,
-                        'slug_name' => $slug,
-                        'content_title' => $request->content_title,
-                        'content_desc' => $request->content_desc,
-                        'content_date_start' => $fulldate_start,
-                        'content_date_end' => $fulldate_end,
-                        'content_reminder' => $request->content_reminder,
-                        'content_image' => $imageURL,
-                        'is_draft' => $draft,
-                        'created_at' => date("Y-m-d H:i"),
-                        'created_by' => $user_id, //for now
-                        'updated_at' => null,
-                        'updated_by' => null,
-                        'deleted_at' => null,
-                        'deleted_by' => null
-                    ];
+                        if(is_array($request->content_tag) && $request->content_tag != null){
+                            $tag = Converter::getTag($request->content_tag);
+                            $tag = json_decode($tag, true);
+                        } else if($request->content_tag != null){
+                            // $tag = Converter::getTag(json_decode($request->content_tag));
+                            // $tag = json_decode($tag, true);
+                            $tag = $request->content_tag;
+                        }
 
-                    DB::table("contents_headers")->insert($header);
+                        $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
+                        $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
+                        $slug = Generator::getSlugName($request->content_title, "content");
+                        $uuid = Generator::getUUID();
 
-                    if($tag != null || $request->has('content_attach')){
-                        $detail = [
-                            'id' => Generator::getUUID(),
-                            'content_id' => $uuid,
-                            'content_attach' => $request->content_attach,
-                            'content_tag' => $tag,
-                            'content_loc' => $request->content_loc,
+                        if($request->content_image || $request->content_image != ""){
+                            $imageURL = $request->content_image;
+                        } else {
+                            $imageURL = null;
+                        }
+
+                        $header = [
+                            'id' => $uuid,
+                            'slug_name' => $slug,
+                            'content_title' => $request->content_title,
+                            'content_desc' => $request->content_desc,
+                            'content_date_start' => $fulldate_start,
+                            'content_date_end' => $fulldate_end,
+                            'content_reminder' => $request->content_reminder,
+                            'content_image' => $imageURL,
+                            'is_draft' => $draft,
                             'created_at' => date("Y-m-d H:i"),
-                            'updated_at' => null
+                            'created_by' => $user_id, //for now
+                            'updated_at' => null,
+                            'updated_by' => null,
+                            'deleted_at' => null,
+                            'deleted_by' => null
                         ];
 
-                        DB::table("contents_details")->insert($detail);
-                    }
+                        DB::table("contents_headers")->insert($header);
 
-                    $full_result = ([
-                        "header" => $header,
-                        "detail" => $detail
-                    ]);
+                        if($tag != null || $request->has('content_attach')){
+                            $detail = [
+                                'id' => Generator::getUUID(),
+                                'content_id' => $uuid,
+                                'content_attach' => $request->content_attach,
+                                'content_tag' => $tag,
+                                'content_loc' => $request->content_loc,
+                                'created_at' => date("Y-m-d H:i"),
+                                'updated_at' => null
+                            ];
 
-                    DB::table("histories")->insert([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type,
-                        'context_id' => $uuid,
-                        'history_body' => $data->history_body,
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
+                            DB::table("contents_details")->insert($detail);
+                        }
 
-                    $users = DB::table("users")->select("username", "firebase_fcm_token","email")
-                        ->where("id",$user_id)
-                        ->first();
+                        $full_result = ([
+                            "header" => $header,
+                            "detail" => $detail
+                        ]);
 
-                    if($users){
-                        $notif_body = "You has been created an event called '".$request->content_title."'";
-                        $firebase_token = $users->firebase_fcm_token;
-                        if($firebase_token){
-                            $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+                        DB::table("histories")->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type,
+                            'context_id' => $uuid,
+                            'history_body' => $data->history_body,
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
+                        ]);
 
-                            if($validateRegister['valid'] != null){
-                                $notif_title = "Hello ".$users->username.", you got an information";
-                                $message = CloudMessage::withTarget('token', $firebase_token)
-                                    ->withNotification(
-                                        FireNotif::create($notif_body)
-                                        ->withTitle($notif_title)
-                                        ->withBody(strtoupper($data->history_type)." ".$notif_body)
-                                    )
-                                    ->withData([
-                                        'by' => 'person'
+                        $users = DB::table("users")->select("username", "firebase_fcm_token","email")
+                            ->where("id",$user_id)
+                            ->first();
+
+                        if($users){
+                            $notif_body = "You has been created an event called '".$request->content_title."'";
+                            $firebase_token = $users->firebase_fcm_token;
+                            if($firebase_token){
+                                $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
+
+                                if($validateRegister['valid'] != null){
+                                    $notif_title = "Hello ".$users->username.", you got an information";
+                                    $message = CloudMessage::withTarget('token', $firebase_token)
+                                        ->withNotification(
+                                            FireNotif::create($notif_body)
+                                            ->withTitle($notif_title)
+                                            ->withBody(strtoupper($data->history_type)." ".$notif_body)
+                                        )
+                                        ->withData([
+                                            'slug' => $slug,
+                                            'module' => 'event'
+                                        ]);
+                                    $response = $messaging->send($message);
+                                } else {
+                                    DB::table("users")->where('id', $user_id)->update([
+                                        "firebase_fcm_token" => null
                                     ]);
-                                $response = $messaging->send($message);
-                            } else {
-                                DB::table("users")->where('id', $user_id)->update([
-                                    "firebase_fcm_token" => null
-                                ]);
+                                }
                             }
                         }
-                    }
-        
-                    DB::commit();
+            
+                        DB::commit();
 
-                    if($users->email){
-                        //Mail::to($users->email)->send(new OrganizerEmail($header, $detail));
-                        dispatch(new ProcessMailer($header, $detail, $users->email));
-                    }
+                        if($users->email){
+                            //Mail::to($users->email)->send(new OrganizerEmail($header, $detail));
+                            dispatch(new ProcessMailer($header, $detail, $users->email));
+                        }
 
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => 'Content created',
-                        'data' => $full_result
-                    ], Response::HTTP_OK);
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("business_create", 'event', null),
+                            'data' => $full_result
+                        ], Response::HTTP_OK);
+                    }
                 }
-            }
-        } catch(\Exception $e) {
-            DB::rollback();
-
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function addDraft(Request $request){
-        DB::beginTransaction();
-
-        try{
-            //Inital variable
-            $draft = 1;
-            $user_id = $request->user()->id;
-
-            //Helpers
-            $validator = Validation::getValidateEventDraft($request);
-
-            if ($validator->fails()) {
-                $errors = $validator->messages();
-
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Add content failed',
-                    'result' => $errors
-                ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $tag = null;
-
-                if($request->slug_name){
-                    $header = [
-                        'content_title' => $request->content_title,
-                        'content_desc' => $request->content_desc,
-                        'content_date_start' => $fulldate_start,
-                        'content_date_end' => $fulldate_end,
-                        'content_reminder' => $request->content_reminder,
-                        'content_image' => $imageURL
-                    ];
-                    $detail = [];
-
-                    DB::table("contents_headers")
-                        ->where('slug_name',$request->slug_name)
-                        ->update($header);
-                    
-                } else {
-                    $tags = null;
-                    if(is_array($request->content_tag) && $request->content_tag != null){
-                        $tags = Converter::getTag($request->content_tag);
-                        $tag = json_decode($tags, true);
-                    } else if($request->content_tag != null){
-                        // $tag = Converter::getTag(json_decode($request->content_tag));
-                        // $tag = json_decode($tag, true);
-                        $tags = $request->content_tag;
-                    }
-
-                    $fulldate_start = Converter::getFullDate($request->content_date_start, $request->content_time_start);
-                    $fulldate_end = Converter::getFullDate($request->content_date_end, $request->content_time_end);
-                    $slug = Generator::getSlugName($request->content_title, "content");
-                    $uuid = Generator::getUUID();
-
-                    if($request->content_image || $request->content_image != ""){
-                        $imageURL = $request->content_image;
-                    } else {
-                        $imageURL = null;
-                    }
-
-                    $header = [
-                        'id' => $uuid,
-                        'slug_name' => $slug,
-                        'content_title' => $request->content_title,
-                        'content_desc' => $request->content_desc,
-                        'content_date_start' => $fulldate_start,
-                        'content_date_end' => $fulldate_end,
-                        'content_reminder' => $request->content_reminder,
-                        'content_image' => $imageURL,
-                        'is_draft' => $draft,
-                        'created_at' => date("Y-m-d H:i"),
-                        'created_by' => $user_id, //for now
-                        'updated_at' => null,
-                        'updated_by' => null,
-                        'deleted_at' => null,
-                        'deleted_by' => null
-                    ];
-
-                    DB::table("contents_headers")->insert($header);
-
-                    $detail = [
-                        'id' => Generator::getUUID(),
-                        'content_id' => $uuid,
-                        'content_attach' => $request->content_attach,
-                        'content_tag' => $tags,
-                        'content_loc' => $request->content_loc,
-                        'created_at' => date("Y-m-d H:i"),
-                        'updated_at' => null
-                    ];
-                    DB::table("contents_details")->insert($detail);
-                
-
-                    DB::commit();
-                }
-                
-                $full_result = ([
-                    "header" => $header,
-                    "detail" => $detail
-                ]);
-    
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Content drafted',
-                    'data' => $full_result
+                    'message' => Generator::getMessageTemplate("business_create_failed", "event. You don't have access to use this feature", null),
+                    'data' => null
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
@@ -352,15 +198,14 @@ class CommandContent extends Controller
 
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
     public function addView($slug_name, Request $request){
         try{
-            $content_id = Generator::getContentId($slug_name); //Fix this
-            // $user_id = Generator::getUserId($user_slug, $user_role);
+            $content_id = Generator::getContentId($slug_name);
             $user_id = $request->user()->id;
             $viewer = ContentViewer::getViewByContentIdUserId($content_id, $user_id);
 
@@ -372,7 +217,7 @@ class CommandContent extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Content views updated',
+                        'message' => Generator::getMessageTemplate("business_update", 'content view', null),
                     ], Response::HTTP_OK);
                 } else {
                     $res = ContentViewer::create([
@@ -385,14 +230,14 @@ class CommandContent extends Controller
 
                     return response()->json([
                         'status' => 'success',
-                        'message' => 'Content views created',
+                        'message' => Generator::getMessageTemplate("business_create", 'content view', null),
                         'data' => $res
                     ], Response::HTTP_OK);
                 }
             } else {
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'User or content not found',
+                    'message' => Generator::getMessageTemplate("business_read_failed", 'content or user', null),
                     'data' => null
                 ], Response::HTTP_NOT_FOUND);
             }
@@ -400,33 +245,7 @@ class CommandContent extends Controller
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function getStatsMostViewedEvent(){
-        try{
-            $res= ContentDetail::getMostViewedEvent(7);
-
-            if(count($res) > 0){
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Statistic found',
-                    'data' => $res
-                ], Response::HTTP_OK);
-            } else {
-                return response()->json([
-                    'status' => 'failed',
-                    'message' => 'Statistic not found',
-                    'data' => null
-                ], Response::HTTP_OK);
-            }
-
-        } catch(\Exception $e) {
-            return response()->json([
-                'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -446,7 +265,7 @@ class CommandContent extends Controller
 
                 return response()->json([
                     'status' => 'failed',
-                    'message' => 'Edit event image failed',
+                    'message' => Generator::getMessageTemplate("business_update_failed", 'event image', null),
                     'result' => $errors
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
@@ -456,31 +275,39 @@ class CommandContent extends Controller
                     ->where("slug_name",$slug)
                     ->first();
 
-                ContentHeader::where("id",$content->id)->update([
-                    'content_image'=> $request->content_image,
-                    'updated_at' => date("Y-m-d H:i:s"),
-                    'updated_by' => $user_id
+                $rows = ContentHeader::where("id",$content->id)->where('created_by', $user_id)
+                    ->update([
+                        'content_image'=> $request->content_image,
+                        'updated_at' => date("Y-m-d H:i:s"),
+                        'updated_by' => $user_id,
                 ]);
 
-                History::create([
-                    'id' => Generator::getUUID(),
-                    'history_type' => $data->history_type,
-                    'context_id' => $content->id,
-                    'history_body' => $data->history_body,
-                    'history_send_to' => null,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    'created_by' => $user_id
-                ]);
+                if($rows > 0){
+                    History::create([
+                        'id' => Generator::getUUID(),
+                        'history_type' => $data->history_type,
+                        'context_id' => $content->id,
+                        'history_body' => $data->history_body,
+                        'history_send_to' => null,
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'created_by' => $user_id
+                    ]);
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Content image updated',
-                ], Response::HTTP_OK);
+                    return response()->json([
+                        'status' => 'success',
+                        'message' => Generator::getMessageTemplate("business_update", 'event image', null),
+                    ], Response::HTTP_OK);
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'message' => Generator::getMessageTemplate("failed_owner_exist",'event', null),
+                    ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                }
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

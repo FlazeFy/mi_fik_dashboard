@@ -4,6 +4,7 @@
 
 <div class="p-0 m-0">
     <!--Get event tag-->
+    <h6 class="mt-2">{{ __('messages.event_tag') }}</h6>
     @if($c->content_tag)
         @php($tag = $c->content_tag)
         @foreach($tag as $tg)
@@ -11,7 +12,7 @@
         @endforeach
     @endif
     <hr>
-    <h6 class="mt-2">Date & Time</h6>
+    <h6 class="mt-2">{{ __('messages.datetime') }}</h6>
 
     <!--Get event date start-->
     @if($c->content_date_start && $c->content_date_end)
@@ -21,13 +22,13 @@
             <span class="date-event">{{Carbon::parse($c->content_date_end)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
     @else
         <img src="{{asset('assets/nodate.png')}}" class="img nodata-icon" style="height:18vh;">
-        <h6 class="text-center text-secondary">This Event doesn't have date</h6>
+        <h6 class="text-center text-secondary">{{ __('messages.no_date') }}</h6>
     @endif
 
     <hr>
-    <h6 class="text-secondary">Posted At : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
+    <h6 class="text-secondary">{{ __('messages.posted_at') }} : <span class="date-event">{{Carbon::parse($c->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @if($c->updated_at)
-        <h6 class="text-secondary">Last Update : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
+        <h6 class="text-secondary">{{ __('messages.last_updated') }} : <span class="date-event">{{Carbon::parse($c->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></h6>
     @endif
     
     @include('components.infobox', ['info' => $info, 'location'=> "show_date"])

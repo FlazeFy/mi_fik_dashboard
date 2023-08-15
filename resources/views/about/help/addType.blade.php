@@ -1,5 +1,5 @@
 <button type="button" class="btn btn-success mb-2 w-100" style="border-radius:10px;" data-bs-toggle="modal" data-bs-target="#addHelpType">
-    <i class="fa-solid fa-plus"></i> Add New Type
+    <i class="fa-solid fa-plus"></i> {{ __('messages.add_new_type') }}
 </button>
 
 <script>
@@ -16,13 +16,13 @@
             msg = document.getElementById(e.id+"_msg");
 
             if(input.value.trim().length >= e.len){
-                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Reaching maximum character length";
-                res = false
+                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Reaching maximum character length`;
+                res = false;
             } else if(input.value.trim().length == 0 && e.req === true){
-                msg.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Failed. Field can't be empty";
-                res = false
+                msg.innerHTML = `<i class='fa-solid fa-triangle-exclamation'></i> Field can't be empty`;
+                res = false;
             } else {
-                msg.innerHTML = " "
+                msg.innerHTML = " ";
             }
         });
 
@@ -32,11 +32,11 @@
                 validate("profiledata");
             } else {
                 btn.innerHTML = " ";
-                btn.innerHTML = "<a class='btn btn-submit-form' onclick='addType()' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</a>";
+                btn.innerHTML = `<a class='btn btn-submit-form' onclick='addType()' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.submit') }}</a>`;
             }
         } else {
             if(typeof val1 === 'undefined'){ 
-                btn.innerHTML = "<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> Locked</button>";
+                btn.innerHTML = `<button disabled class='btn btn-submit-form'><i class='fa-solid fa-lock'></i> {{ __('messages.locked') }}</button>`;
             } else {
                 val1 = false;
                 validate("profiledata");
@@ -50,16 +50,16 @@
         <div class="modal-content">  
             <div class="modal-body pt-4">
                 <button type="button" class="custom-close-modal" data-bs-dismiss="modal" aria-label="Close" title="Close pop up"><i class="fa-solid fa-xmark"></i></button>
-                <h5>Add Type</h5>
+                <h5>{{ __('messages.add_type') }}</h5>
                 
                 <form id="formAddType">
                     @csrf 
                     <div class="form-floating">
                         <input type="text" class="form-control nameInput" id="help_type" name="help_type" maxlength="30" oninput="validateFormAddType(validation)" onkeydown="return submitTypeOnEnter(event)" required>
-                        <label for="help_type">Help Type</label>
+                        <label for="help_type">{{ __('messages.help_type') }}</label>
                         <a id="help_type_msg" class="input-warning text-danger"></a>
                     </div>
-                    <span id="submit_holder_type"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder_type"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                 </form>
             </div>
         </div>
@@ -95,7 +95,6 @@
                 var errorMessage = "Unknown error occurred";
                 var typeMsg = null;
                 var icon = "<i class='fa-solid fa-triangle-exclamation'></i> ";
-                console.log(response.responseJSON)
 
                 if (response && response.responseJSON && response.responseJSON.hasOwnProperty('result')) {   
                     //Error validation

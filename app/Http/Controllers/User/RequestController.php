@@ -36,7 +36,6 @@ class RequestController extends Controller
 
         if($role == 1){
             if($user_id != null){
-                $greet = Generator::getGreeting(date('h'));
                 $dct_tag = Dictionary::getDictionaryByType("Tag");
                 $info = Info::getAvailableInfo("user/request");
                 $menu = Menu::getMenu();
@@ -48,10 +47,9 @@ class RequestController extends Controller
                 return view('user.request.index')
                     ->with('menu', $menu)
                     ->with('info', $info)
-                    ->with('dct_tag', $dct_tag)
-                    ->with('greet',$greet);
+                    ->with('dct_tag', $dct_tag);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");
@@ -202,7 +200,8 @@ class RequestController extends Controller
                                             ->withBody("REJECTED"." ".$notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => null,
+                                            'module' => 'request'
                                         ]);
                                     $response = $messaging->send($message);
                                 } else {
@@ -231,7 +230,7 @@ class RequestController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 
@@ -379,7 +378,8 @@ class RequestController extends Controller
                                             ->withBody("APPROVED"." ".$notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => null,
+                                            'module' => 'user'
                                         ]);
                                     $response = $messaging->send($message);
                                 } else {
@@ -406,7 +406,7 @@ class RequestController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 
@@ -444,13 +444,14 @@ class RequestController extends Controller
                     foreach ($listreq as $key => $val) {
                         $status = false;
                         $user_id = DB::table("users")
-                            ->select('id','firebase_fcm_token')
+                            ->select('id','firebase_fcm_token','username','password')
                             ->where('username',$val['username'])
                             ->first();
 
                         if($user_id != null){
                             if($isrole){
                                 $role = Converter::getTag($request->role);
+                                $notif_module = "home";
                                 
                                 DB::table("users")->
                                     where("id",$user_id->id)->update([
@@ -460,6 +461,8 @@ class RequestController extends Controller
                                         'is_accepted' => 1
                                 ]);
                             } else {
+                                $notif_module = "landing";
+
                                 DB::table("users")
                                     ->where("id",$user_id->id)->update([
                                         'accepted_at' => date("Y-m-d H:i:s"),
@@ -500,7 +503,10 @@ class RequestController extends Controller
                                             ->withBody("APPROVED"." ".$notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => null,
+                                            'module' => $notif_module,
+                                            'username' => $user_id->username,
+                                            'password' => $user_id->password
                                         ]);
                                     $response = $messaging->send($message);
                                 } else {
@@ -527,7 +533,7 @@ class RequestController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 
@@ -605,7 +611,8 @@ class RequestController extends Controller
                                             ->withBody("APPROVED"." ".$notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => null,
+                                            'module' => 'landing'
                                         ]);
                                     $response = $messaging->send($message);
                                 } else {
@@ -632,7 +639,7 @@ class RequestController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create content failed '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 }

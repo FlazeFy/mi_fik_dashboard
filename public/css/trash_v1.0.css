@@ -14,10 +14,17 @@
     color: var(--primaryColor) !important;
     height: 50px;
     width: 50px;
+    position: absolute !important;
     border-radius: var(--roundedMD);
     margin: var(--spaceSM);
     padding: var(--spaceSM);
     opacity: 1;
+}
+.carousel-control-prev {
+    left: -70px !important;
+}
+.carousel-control-next {
+    right: -70px !important;
 }
 .carousel-control-prev:hover, .carousel-control-next:hover{
     background: var(--primaryLightBG);

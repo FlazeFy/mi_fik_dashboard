@@ -23,14 +23,14 @@
             <input hidden value="" name="question_status" id="question_status">
             <input hidden value="" name="question_owner" id="question_owner">
             <textarea class="form-control" style="height: 270px" id="question_answer" name="question_answer" oninput="infinteLoadSuggest()" maxlength="500"></textarea>
-            <label for="question_answer">FAQ Answer</label>
+            <label for="question_answer">{{ __('messages.faq_answer') }}</label>
             <a id="question_answer_msg" class="text-danger my-2" style="font-size:13px;"></a>
             <div class="form-check form-switch position-absolute" style="right: 60px; bottom: -40px;">
                 <input class="form-check-input me-2" type="checkbox" id="suggestion_search" style="width:40px; height: 20px;">
-                <label class="form-check-label" for="suggestion_search">Show Suggestion</label>
+                <label class="form-check-label" for="suggestion_search">{{ __('messages.show_suggest') }}</label>
             </div>
         </div>
-        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+        <span id="submit_holder"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
     </form>
     <button class="btn btn-danger float-end" data-bs-target="#deleteModal" data-bs-toggle="modal" style="margin-top:-60px; margin-right:10px;"><i class="fa-solid fa-trash"></i></button>
 
@@ -54,13 +54,17 @@
     function infinteLoadSuggest() {
         validateForm(validation);
 
-        var search = $("#question_answer").val();
+        var search = $("#question_answer").val().trim();
         var active = $("#suggestion_search").prop('checked');
 
         if(active){
             $("#empty_suggest_holder").empty();
             $("#load_more_suggest").empty();
             $("#answer_suggestion").empty();
+
+            if(search == ""){
+                search = '%20';
+            } 
 
             $.ajax({
                 url: "/api/v1/faq/answer/like/" + search,
@@ -85,14 +89,17 @@
                     return;
                 } else {
                     for(var i = 0; i < data.length; i++){
-                        //Attribute
                         var questionAnswer = data[i].question_answer;
                         var username = data[i].username;
 
-                        var elmt = " " +
-                            '<a class="remove_suggest" onclick="" title="Remove this suggestion"> ' +
-                                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
-                                '<a onclick="loadQuestion(' + "'" + questionAnswer + "'" + ')" title="Use this answer, from ' + username + '">' + questionAnswer + '</a>';
+                        const elmt = `
+                            <a class="remove_suggest" onclick="" title="Remove this suggestion">
+                                <i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i>
+                            </a>
+                            <a onclick="loadQuestion('${questionAnswer}')" title="Use this answer, from ${username}">
+                                ${questionAnswer}
+                            </a>
+                        `;
 
                         $("#answer_suggestion").append(elmt);
                     }   

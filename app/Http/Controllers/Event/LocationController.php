@@ -28,7 +28,6 @@ class LocationController extends Controller
         if($user_id != null){
             //Chart query
             $location = ContentDetail::getContentLocation();
-            $greet = Generator::getGreeting(date('h'));
             $menu = Menu::getMenu();
 
             //Set active nav
@@ -37,10 +36,9 @@ class LocationController extends Controller
 
             return view ('event.location.index')
                 ->with('location', $location)
-                ->with('menu', $menu)
-                ->with('greet',$greet);
+                ->with('menu', $menu);
         } else {
-            return redirect("/")->with('failed_message','Session lost, please sign in again');
+            return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }
     }
 

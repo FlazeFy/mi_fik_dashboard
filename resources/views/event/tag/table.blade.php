@@ -14,20 +14,20 @@
     }    
 </style>
 
-<h5 class="section-title">All Tag</h5>
+<h5 class="section-title">{{ __('messages.all_tag') }}</h5>
 <div class="@if(!$isMobile) table-responsive @endif ">
     @include('event.tag.filterCategory')
     <table class="table table-paginate" id="tagTable" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Tag Name</th>
-                <th scope="col" style="min-width:var(--tcolMinSM);">Category</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.tag_name') }}</th>
+                <th scope="col" style="min-width:var(--tcolMinSM);">{{ __('messages.cat') }}</th>
                 @if(session()->get('role_key') == 1)
                     <th scope="col" style="min-width:var(--tcolMinXSM);">Total</th>
-                    <th scope="col" style="min-width:var(--tcolMinXSM);">Delete</th>
+                    <th scope="col" style="min-width:var(--tcolMinXSM);">{{ __('messages.delete') }}</th>
                     <th scope="col" style="min-width:var(--tcolMinXSM);">Info</th>
                 @else 
-                    <th scope="col" style="min-width:240px;">Description</th>
+                    <th scope="col" style="min-width:240px;">{{ __('messages.description') }}</th>
                 @endif  
             </tr>
         </thead>
@@ -35,7 +35,16 @@
             @foreach($tag as $tg)
                 <tr class="tabular-item normal">
                     <td style="min-width:var(--tcolMinSM);">
-                        <div style="max-width:160px !important; word-break: break-all !important;">{{$tg->tag_name}}</div>
+                        <div style="@if(session()->get('role_key') == 1) max-width:160px @else max-width:220px @endif !important; word-break: break-all !important;">
+                            {{$tg->tag_name}}
+                            @if(session()->get('role_key') == 0)
+                                @foreach($mytag as $mt)
+                                    @if($mt['slug_name'] == $tg->slug_name)
+                                        <div class="status-info bg-success d-inline-block py-1 mx-1">{{ __('messages.subscribed') }}</div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </td>
                     <td style="min-width:var(--tcolMinSM);">
                         @foreach($dct_tag as $dtag)
@@ -61,13 +70,13 @@
                         </td>
                         <td style="min-width:var(--tcolMinXSM);">
                             <div class="position-relative">
-                                <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0px;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
+                                <button class="btn btn-primary px-3 position-absolute" style="right:10px; top:0;" type="button" id="section-more-tag-desc-{{$tg->tag_desc}}" data-bs-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                     <i class="fa-solid fa-ellipsis-vertical more"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-end shadow p-0" onclick="event.stopPropagation()" aria-labelledby="section-more-tag-desc-{{$tg->tag_desc}}" style="width:250px !important;">
                                     <span class="dropdown-item p-3">
-                                        <h6>Tag Description</h6>
+                                        <h6>{{ __('messages.description') }}</h6>
                                         <form class="form-custom" method="POST" action="/event/tag/update/desc/{{$tg->id}}">
                                             @csrf
                                             <input name="update_type" value="desc" hidden>
@@ -75,7 +84,7 @@
                                             <textarea class="form-control" style="height: 100px" id="tag_desc" value="{{$tg->tag_desc}}" onblur="this.form.submit()" oninput="showSubmitMsg('{{$tg->id}}')" name="tag_desc" maxlength="255">{{$tg->tag_desc}}</textarea>
                                             <span class="warning-input" id="tag-desc-msg-{{$tg->id}}"></span>
                                         </form>
-                                        <h6 class="my-2">Tag Category</h6>
+                                        <h6 class="my-2">{{ __('messages.cat') }}</h6>
                                         @if(session()->get('role_key') == 1)
                                             <form action="/event/tag/update/cat/{{$tg->id}}" method="POST">
                                                 @csrf
@@ -94,10 +103,10 @@
                                         @endif
                                     </span>
                                     <span class="dropdown-item properties-box">
-                                        <h6 class="">Properties</h6>
-                                        <p>Created At : <span class="date_holder_1">{{($tg->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
+                                        <h6 class="">{{ __('messages.props') }}</h6>
+                                        <p>{{ __('messages.created_at') }} : <span class="date_holder_1">{{($tg->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @if($tg->updated_at)
-                                            <p>Updated At : <span class="date_holder_2">{{($tg->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
+                                            <p>{{ __('messages.updated_at') }} : <span class="date_holder_2">{{($tg->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></p>
                                         @else
                                             <p>-</p>
                                         @endif

@@ -7,6 +7,7 @@ use App\Rules\TypeInfo;
 use App\Rules\TypeDictionary;
 use App\Rules\TypeSuggest;
 use App\Rules\TypeQuestion;
+use App\Rules\TypeValidateRecover;
 use Illuminate\Support\Str;
 
 class Validation
@@ -24,6 +25,14 @@ class Validation
     public static function getValidateLogin($request){
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',
+            'password' => 'required|min:6|string'
+        ]);
+    }
+
+    public static function getValidateNewPass($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:30|string',
+            'validation_token' => 'required|min:6|max:6|string',
             'password' => 'required|min:6|string'
         ]);
     }
@@ -172,7 +181,7 @@ class Validation
         return Validator::make($request->all(), [
             'instagram' => 'required|min:3|max:75|string',
             'whatsapp' => 'required|min:8|max:14|string',
-            'twitter' => 'required|min:3|max:75|string',
+            'website' => 'required|min:3|max:75|string',
             'address' => 'required|min:3|max:255|string',
             'email' => 'required|min:10|max:75|string',
         ]);
@@ -247,14 +256,14 @@ class Validation
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:6|max:50|string',
                 'phone' => 'required|min:9|max:14|string',
+                'email' => 'required|min:11|max:75|string|email'
             ]);
         } else {
             return Validator::make($request->all(), [
                 'first_name' => 'required|min:2|max:35|string',
                 'last_name' => 'nullable|min:2|max:35|string',
-                'password' => 'required|min:6|max:50|string',
+                'email' => 'required|min:11|max:75|string|email'
             ]);
         }
     }
@@ -311,13 +320,22 @@ class Validation
         ]);
     }
 
+    public static function getValidatePassRecover($request){
+        return Validator::make($request->all(), [
+            'username' => 'required|min:6|max:30|string',
+            'email' => 'required|min:11|max:75|string|email',
+            'validation_token' => 'nullable|min:6|max:6',
+            'type' => ['required', new TypeValidateRecover],
+        ]);
+    }
+
     public static function getValidateUserRegister($request){
         return Validator::make($request->all(), [
             'username' => 'required|min:6|max:30|string',
             'first_name' => 'required|min:2|max:35|string',
             'last_name' => 'nullable|min:2|max:35|string',
             'password' => 'required|min:6|max:50|string',
-            'valid_until' => 'required|numeric', // Make this year for 6 year after & before
+            'batch_year' => 'nullable|numeric', // Make this year for 6 year after & before
             'email' => 'required|min:11|max:75|string|email'
             // 'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
             //     if (!Str::endsWith($val, '@gmail.com')) {

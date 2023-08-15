@@ -39,7 +39,6 @@ class NotificationController extends Controller
 
                 $notification = Notification::getAllNotification();
                 $dictionary = Dictionary::getDictionaryByType($select_1);
-                $greet = Generator::getGreeting(date('h'));
                 $dct_tag = Dictionary::getDictionaryByType("Tag");
                 $menu = Menu::getMenu();
                 $info = Info::getAvailableInfo("system");
@@ -53,10 +52,9 @@ class NotificationController extends Controller
                     ->with('dictionary', $dictionary)
                     ->with('info', $info)
                     ->with('dct_tag', $dct_tag)
-                    ->with('menu', $menu)
-                    ->with('greet',$greet);
+                    ->with('menu', $menu);
             } else {
-                return redirect("/")->with('failed_message','Session lost, please sign in again');
+                return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
             }
         } else {
             return view("errors.403");
@@ -158,7 +156,8 @@ class NotificationController extends Controller
                                             ->withBody(strtoupper($type)." ".$request->notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'person'
+                                            'slug' => null,
+                                            'module' => 'announcement'
                                         ]);
 
                                     if($request->send_time != "now"){
@@ -214,7 +213,8 @@ class NotificationController extends Controller
                                                     ->withBody(strtoupper($type)." ".$request->notif_body)
                                                 )
                                                 ->withData([
-                                                    'by' => 'grouping'
+                                                    'slug' => null,
+                                                    'module' => 'announcement'
                                                 ]);
                                             
                                             if($request->send_time != "now"){
@@ -285,7 +285,8 @@ class NotificationController extends Controller
                                                 ->withBody(strtoupper($type)." ".$request->notif_body)
                                             )
                                             ->withData([
-                                                'by' => 'grouping'
+                                                'slug' => null,
+                                                'module' => 'announcement'
                                             ]);
                                         
                                         if($request->send_time != "now"){
@@ -335,7 +336,8 @@ class NotificationController extends Controller
                                             ->withBody(strtoupper($type)." ".$request->notif_body)
                                         )
                                         ->withData([
-                                            'by' => 'all'
+                                            'slug' => null,
+                                            'module' => 'announcement'
                                         ]);
 
                                     if($request->send_time != "now"){
@@ -431,7 +433,7 @@ class NotificationController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
 
-            return redirect()->back()->with('failed_message', 'Create notification failed '.$e);
+            return redirect()->back()->with('failed_message', Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null));
         }
     }
 }

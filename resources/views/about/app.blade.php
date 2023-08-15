@@ -17,20 +17,26 @@
         <div class="position-relative">
             <form class="d-inline position-absolute" style="right: 0; top:-15px;" method="POST" action="/about/toogle/app/false">
                 @csrf
-                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) Cancel Edit @endif</button>
+                <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" style="font-size: var(--textLG) !important;" type="submit"><i class="fa-solid fa-xmark"></i>@if(!$isMobile) {{ __('messages.close') }} @endif</button>
             </form>
             <form class="d-inline @if($isMobile) px-2 @endif" method="POST" action="/about/edit/app">
                 @csrf
                 @foreach($about as $ab)
                     @if(!$isMobile)
-                        <a class="last-updated" style="top:20px;"><span class="text-primary">Last Updated :</span> <span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                        <a class="last-updated" style="top:20px;"><span class="text-primary">{{ __('messages.last_updated') }} :</span> <span id="date_holder_{{str_replace('-','_', $ab->id)}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @else
-                        <a class="last-updated" style="top:0;"><span class="text-primary">Last Updated :</span></a>
-                        <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_1">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
+                        <a class="last-updated" style="top:0;"><span class="text-primary">{{ __('messages.last_updated') }} :</span></a>
+                        <a class="last-updated" style="top:25px;"><span class="text-primary"><span id="date_holder_{{str_replace('-','_', $ab->id)}}">{{($ab->updated_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span></a>
                     @endif
+                    <script>
+                        const date_holder_<?= str_replace("-","_", $ab->id); ?> = document.getElementById("date_holder_{{str_replace('-','_', $ab->id)}}");
+
+                        const date = new Date(date_holder_<?= str_replace("-","_", $ab->id); ?>.textContent);
+                        date_holder_<?= str_replace("-","_", $ab->id); ?>.textContent = getDateToContext(date, "datetime");
+                    </script>
                 @endforeach
                 <input name="help_body" id="about_body" hidden>
-                <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:160px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) Save Changes @endif</button>
+                <button class="btn btn-success rounded-pill toogle-edit-about" style="@if(!$isMobile) right:110px; @else right: 55px; @endif top:-15px;" onclick="getRichText()"><i class="fa-solid fa-floppy-disk"></i>@if(!$isMobile) {{ __('messages.save') }} @endif</button>
             </form><br><br>
             <div id="rich_box">
                 <?php
@@ -44,8 +50,8 @@
         <div class="px-4 position-relative">
             <form class="d-inline" method="POST" action="/about/toogle/app/true">
                 @csrf
-                <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-20px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) Edit @endif</button>
-            </form>
+                <button class="btn btn-info rounded-pill toogle-edit-about" type="submit" style="@if(!$isMobile) right:10px; @else right:0; @endif top:-20px;"><i class="fa-regular fa-pen-to-square"></i>@if(!$isMobile) {{ __('messages.edit') }} @endif</button>
+            </form><br><br>
             <span id="about-app-holder">
                 <?php
                     foreach($about as $ab){ 
@@ -60,13 +66,7 @@
         function getRichText(){
             var rawText = document.getElementById("rich_box").innerHTML;
             var desc = document.getElementById("about_body");
-
-            //Remove quills element from raw text
-            var cleanText = rawText.replace('<div class="ql-editor" data-gramm="false" contenteditable="true">','').replace('<div class="ql-editor ql-blank" data-gramm="false" contenteditable="true">');
-            //Check this clean text 2!!!
-            cleanText = cleanText.replace('</div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>','');
-            
-            //Pass html quilss as input value
+            var cleanText = splitOutRichTag(rawText);
             var characterToDeleteAfter = "</div>";
             var modifiedString = deleteAfterCharacter(cleanText, characterToDeleteAfter);
             desc.value = modifiedString;
@@ -89,10 +89,3 @@
         ?>
     </div>
 @endif
-
-<script>
-    const date_holder_1 = document.getElementById('date_holder_1');
-
-    const date = new Date(date_holder_1.textContent);
-    date_holder_1.textContent = getDateToContext(date, "datetime");
-</script>

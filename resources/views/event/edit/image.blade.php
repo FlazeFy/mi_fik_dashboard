@@ -34,12 +34,51 @@
 <div class="position-relative">
     @if($c->content_image)
         <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url('{{$c->content_image}}');" id="event-header-image">
-            <a class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
+            <div class="d-flex justify-content-between py-3 px-2">
+                <div>
+                    <a class="event-header-size-toogle" title="Resize image" onclick="resize('<?php echo $c->content_image; ?>')"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
+                </div>
+                @if($isMobile)
+                    <div style="white-space:nowrap;">
+                        <form action="/event/edit/update/draft/{{$c->slug_name}}" method="POST" class="d-inline">
+                            <input hidden name="content_title" value="{{$c->content_title}}">
+                            @csrf
+                            @if($c->is_draft == 1)
+                                <input hidden name="is_draft" value="0">
+                                <button class="btn btn-success navigator-right rounded-pill px-4 py-2" style="right:0" title="Unset draft" type="submit"><i class="fa-regular fa-eye"></i> Public</button>
+                            @else 
+                                <input hidden name="is_draft" value="1">
+                                <button class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:0" title="Set draft" type="submit"><i class="fa-solid fa-eye-slash"></i> Draft</button>
+                            @endif
+                        </form>
+                        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" style="right:170px" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Close" ><i class="fa-solid fa-xmark fa-lg"></i></a>
+                    </div>
+                @endif
             <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
         </div>
     @else
         <div class="event-detail-img-header" style="background-image: linear-gradient(rgba(0, 0, 0, 0.6),rgba(0, 0, 0, 0.55)), url({{asset('assets/default_content.jpg')}});" id="event-header-image">
-            <a class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
+            <div class="d-flex justify-content-between py-3 px-2">
+                <div>
+                    <a class="event-header-size-toogle" title="Resize image" onclick="resize(null)"> <i class="fa-solid fa-up-right-and-down-left-from-center fa-lg"></i></a>
+                </div>
+                @if($isMobile)
+                    <div style="white-space:nowrap;">
+                        <form action="/event/edit/update/draft/{{$c->slug_name}}" method="POST" class="d-inline">
+                            <input hidden name="content_title" value="{{$c->content_title}}">
+                            @csrf
+                            @if($c->is_draft == 1)
+                                <input hidden name="is_draft" value="0">
+                                <button class="btn btn-success navigator-right rounded-pill px-4 py-2" style="right:0" title="Unset draft" type="submit"><i class="fa-regular fa-eye"></i> Set as Public</button>
+                            @else 
+                                <input hidden name="is_draft" value="1">
+                                <button class="btn btn-info navigator-right rounded-pill px-4 py-2" style="right:0" title="Set draft" type="submit"><i class="fa-solid fa-eye-slash"></i> Set as draft</button>
+                            @endif
+                        </form>
+                        <a class="btn btn-danger navigator-right rounded-pill px-4 py-2" style="right:170px" onclick="location.href='/event/detail/{{$c->slug_name}}'" title="Close" ><i class="fa-solid fa-xmark fa-lg"></i></a>
+                    </div>
+                @endif
+            </div>
             <div class="content-detail-views"><i class='fa-solid fa-eye'></i> {{$c->total_views}}</div>
         </div>
     @endif
@@ -75,11 +114,10 @@
 
             uploadTask.on('state_changed',function (snapshot) {
                 var progress = Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100);
-                document.getElementById('header-progress').innerHTML = '<span class="box-loading"><div role="progressbar" aria-valuenow="'+progress+'" aria-valuemin="0" aria-valuemax="'+progress+'" style="--value: '+progress+'"></div></span>';
+                document.getElementById('header-progress').innerHTML = `<span class="box-loading"><div role="progressbar" aria-valuenow="${progress}" aria-valuemin="0" aria-valuemax="${progress}" style="--value: ${progress}"></div></span>`;
             }, 
             function (error) {
-                console.log(error.message);
-                document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>File upload is " + error.message + "</h6></span>";
+                document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>${messages('file_upload_is')} ${error.message}</h6></span>`;
             }, 
             function () {
                 uploadTask.snapshot.ref.getDownloadURL().then(function (downloadUrl) {
@@ -88,7 +126,7 @@
                 });
             });
         } else {
-            document.getElementById('header-failed').innerHTML = "<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>Upload failed. Maximum file size is " + maxSize + " mb </h6></span>";
+            document.getElementById('header-failed').innerHTML = `<span class='box-loading'><img class='d-inline mx-auto img img-fluid' src='http://127.0.0.1:8000/assets/Failed.png'><h6>${messages('max_file_size')} ${maxSize} mb </h6></span>`;
         }
     }
 

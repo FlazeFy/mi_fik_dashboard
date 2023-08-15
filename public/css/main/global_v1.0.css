@@ -40,6 +40,7 @@
     /* Color Pallete */
     --primaryLightBG : #FADFB9;
     --successBG : #00C363;
+    --successDarkBG : #00b35a;
     --warningBG : #F85D59;
     --warningDarkBG : #D5534C;
     --infoBG : #009FF9;
@@ -59,6 +60,10 @@
 
 /* Mobile style */
 @media (max-width: 767px) {
+    #content {
+        padding: 0 !important;
+    }
+    
     p, p span, h6 span, a.from-them-clock, .from-them, a.from-me-clock, .from-me, .input-group-text {
         font-size: var(--textSM) !important;
     }
@@ -86,10 +91,6 @@
     }
     .img.nodata-icon {
         height: 160px !important;
-    }
-
-    .btn-config-holder{
-        display: inline-block !important;
     }
 
     .modal {
@@ -176,15 +177,6 @@
         height: 70px !important;
     }
 
-    .toast {
-        position: fixed;
-        top: 120px;
-        width: 90%;
-        margin-inline: var(--spaceLG);
-        left: 0;
-        z-index: 999 !important;
-    }
-
     .page-holder {
         font-size: var(--textMD) !important;
     }
@@ -196,11 +188,64 @@
         top: calc(var(--spaceMD) + 2px);
         right: calc(0px - var(--spaceSM));
     }
+
+    .err-msg {
+        font-size: var(--textSM);
+    }
 }
 
 /* Tablet style */
 @media (min-width: 768px) and (max-width: 1023px) {
-    
+    #content {
+        padding: 0 !important;
+    }
+
+    .event-heading {
+        position: absolute;
+        top: 35px;
+        width: 100%;
+    }
+    .event-heading .user-image-content {
+        position: absolute;
+        top: -5px;
+        left: 5px;
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .event-heading .event-title, .event-heading .event-subtitle {
+        position: absolute;
+        top: 0;
+        left: 50px;
+    }
+    .event-body .event-desc {
+        position: absolute;
+        top: 50px;
+    }
+    .event-body .event-properties {
+        position: absolute;
+        bottom: 5px !important;
+    }
+    .modal-xl {
+        width: 100% !important;
+    }
+    .content-body {
+        padding-inline: var(--spaceMD);
+    }
+}
+
+/* Mobile & Tablet style */
+@media screen and (max-width: 1023px) {
+    .user-image-content{ 
+        position: absolute;
+        margin-top: -37.5px;
+        margin-left: 35%;
+    }
+    .home-content {
+        padding: var(--spaceMini) var(--spaceMD) !important;
+    }
+    .event-navigator {
+        padding-inline: var(--spaceMD);
+    }
 }
 
 body{
@@ -210,8 +255,14 @@ body{
     opacity: 1 !important;
     background: var(--whiteColor);
 }
+.toast {
+    border-left: 6px solid var(--successBG) !important;
+}
 .modal {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+b {
+    font-weight: 600 !important;
 }
 
 /* Background */
@@ -274,6 +325,7 @@ th{
     height: 100vh;
     width: 100%;
     overflow: auto;
+    padding: var(--spaceLG);
 }
 .content-title{
     font-weight: 500;
@@ -291,19 +343,26 @@ th{
     border-radius: var(--roundedMini);
 }
 .content-add:hover, .content-more:hover{
-    color:var(--whiteColor);
-    background:var(--primaryColor);
+    color: var(--whiteColor);
+    background: var(--primaryColor);
 }           
 .content-body{
-    max-width:1080px;
-    display:block;
-    margin-inline:auto;
+    max-width: 1080px;
+    display: block;
+    margin-inline: auto;
+}
+.home-content {
+    padding: var(--spaceXSM) 0;
+}
+.err-msg {
+    color: var(--warningBG);
+    font-size: var(--textMD);
 }
 
 .control-holder{
     position: absolute;
     right: 10px;
-    top:-5px;
+    top: -5px;
 }
 .skeleton-box {
     display: inline-block;
@@ -368,6 +427,11 @@ th{
     border: 1.5px solid var(--successBG);
 }
 
+.image-msg-md {
+    width: 70%;
+    max-width: 220px;
+}
+
 /* Drop down */
 .dd-profil .dropdown-menu hr{
     margin: var(--spaceMD) 0 var(--spaceMD) 0;
@@ -423,10 +487,6 @@ th{
     color: var(--darkColor) !important;
     font-size: 15px;
 }
-.user-username-mini:hover {
-    color:var(--primaryColor) !important; 
-    cursor: pointer;
-}
 
 /* Tip / Warning box */
 .info-box{
@@ -468,15 +528,20 @@ th{
 .link-external:hover, .link-external-white:hover{
     text-decoration: underline !important;
 }
+.triangle-container {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid white;
+}
 
-/* Check this */
 thead.thead-sticky{
     position:sticky !important; 
     top:80px; 
     background: var(--whiteColor);
 }
 
-/* Check this */
 .box-loading {
     position: fixed;
     width: 160px;

@@ -61,7 +61,7 @@ class ContentHeader extends Model
             
             foreach($filter_tag as $ft){
                 //$stmt = "JSON_EXTRACT(replace(replace(content_tag, '[', ''), ']', ''), '$.slug_name') = '".$ft."'";
-                $stmt = 'content_tag like '."'".'%"slug_name":"'.$ft.'"%'."'";
+                $stmt = 'content_tag like '."'".'%"slug_name":"'.$ft->slug_name.'"%'."'";
 
                 if($i != 1){
                     $query = substr_replace($query, " ".$stmt." OR", 0, 0);

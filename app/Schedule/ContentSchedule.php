@@ -70,12 +70,12 @@ class ContentSchedule
             $factory = (new Factory)->withServiceAccount(base_path('/secret/firebase_admin/mifik-83723-firebase-adminsdk-ejmwj-29f65d3ea6.json'));
             $messaging = $factory->createMessaging();
 
-            $content = ContentHeader::select("contents_headers.id","content_title","content_tag","content_date_start","content_date_end","content_reminder")
+            $content = ContentHeader::select("contents_headers.id","slug_name","content_title","content_tag","content_date_start","content_date_end","content_reminder")
                 ->join("contents_details","contents_headers.id","=","contents_details.content_id")
                 ->orderBy('contents_headers.content_date_start', "DESC")
                 ->where('is_draft', 0)
                 ->where('content_reminder','!=','reminder_none')
-                ->whereRaw('(DATEDIFF(content_date_start, now()) * -1) < 3') // Give max range based on reminder opt
+                ->whereRaw("TIMESTAMPDIFF(HOUR,content_date_start, '".date("Y-m-d H:i:s")."') <= 36") // Give max range based on reminder opt
                 ->whereNull('contents_headers.deleted_at')
                 ->whereNotNull('content_tag')
                 ->get();
@@ -97,20 +97,23 @@ class ContentSchedule
                 $content_start = new DateTime($ct->content_date_start);
                 $diff = $content_start->diff($now);
                 $hours = $diff->h;
-                $hours = $hours + ($diff -> days * 24) - 7;
                 $is_remind = false;
 
-                if($hours >= 1 && $hours < 73){
-                    if($ct->content_reminder == "reminder_3_hour_before" && $hours < 3){
+                if($hours >= 1 && $hours <= 73){
+                    if($ct->content_reminder == "reminder_1_hour_before" && $hours <= 2){
+                        $context_start = "1 hour";
                         $is_remind = true;
                         $threeHr++;
-                    } else if($ct->content_reminder == "reminder_1_hour_before" && $hours < 2){
+                    } else if($ct->content_reminder == "reminder_3_hour_before" && $hours <= 4){
+                        $context_start = "3 hour";
                         $is_remind = true;
                         $oneHr++;
-                    } else if($ct->content_reminder == "reminder_1_day_before" && $hours < 24){
+                    } else if($ct->content_reminder == "reminder_1_day_before" && $hours <= 25){
+                        $context_start = "1 day";
                         $is_remind = true;
                         $oneDay++;
-                    } else if($ct->content_reminder == "reminder_3_day_before" && $hours < 73){
+                    } else if($ct->content_reminder == "reminder_3_day_before" && $hours <= 73){
+                        $context_start = "3 day";
                         $is_remind = true;
                         $threeDay++;
                     }
@@ -137,13 +140,14 @@ class ContentSchedule
                                         $validateRegister = $messaging->validateRegistrationTokens($firebase_token);
 
                                         if($validateRegister['valid'] != null){
-                                            if($hours < 24){
-                                                $notif_body = "The '".$ct->content_title."' is about to start in ".$hours." hours";
-                                            } else {
-                                                $days = intval($hours / 24);
-                                                $remainHr = 24 - $hours;
-                                                $notif_body = "The '".$ct->content_title."' is about to start in ".$days." days and ".$remainHr." hours";
-                                            }
+                                            // if($hours < 24){
+                                            //     $notif_body = "The '".$ct->content_title."' is about to start in ".$hours." hours";
+                                            // } else {
+                                            //     $days = intval($hours / 24);
+                                            //     $remainHr = 24 - $hours;
+                                            //     $notif_body = "The '".$ct->content_title."' is about to start in ".$days." days and ".$remainHr." hours";
+                                            // }
+                                            $notif_body = "The '".$ct->content_title."' is about to start in ".$context_start;
 
                                             $notif_title = "Hello ".$us->username.", you got an information";
                                             $message = CloudMessage::withTarget('token', $firebase_token)
@@ -153,7 +157,12 @@ class ContentSchedule
                                                     ->withBody($notif_body)
                                                 )
                                                 ->withData([
-                                                    'by' => 'person'
+                                                    'slug' => $ct->slug_name,
+                                                    'module' => 'reminder',
+                                                    'type' => 'event',
+                                                    'content_title' => $ct->content_title,
+                                                    'content_date_start' => $ct->content_date_start,
+                                                    'content' => null
                                                 ]);
                                             $response = $messaging->send($message);
                                             $userReminded++;
@@ -202,7 +211,7 @@ class ContentSchedule
         } catch (\Exception $e) {
             // handle failed job
             $obj = [
-                'message' => $e->getMessage(), 
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null), 
                 'stack_trace' => $e->getTraceAsString(), 
                 'file' => $e->getFile(), 
                 'line' => $e->getLine(), 

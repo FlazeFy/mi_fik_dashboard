@@ -41,6 +41,45 @@
         <script src="{{ asset('/js/generator_v1.0.js')}}"></script>
         <script src="{{ asset('/js/typography_v1.0.js')}}"></script>
         <script src="{{ asset('/js/response_v1.0.js')}}"></script>
+
+        <style>
+            .btn-quick-action{
+                border-radius: var(--roundedMini);
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                height: 15vh;
+                border: none;
+                width: 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                position: relative;
+                background-size: cover;
+                transition: 0.5s;
+                text-align: left;
+                padding: 10px;
+            }
+            .btn-quick-action:hover{
+                background: var(--primaryColor) !important;
+                background-image: none !important;
+            }
+            .quick-action-text{
+                font-size: 24px;
+                color:var(--whiteColor);
+                transition: 0.5s;
+                margin-top: 9vh;
+            }
+            .quick-action-info{
+                font-size: var(--textXMD);
+                color:var(--whiteColor);
+                transition: 0.5s;
+                display: none;
+            }
+            .btn-quick-action:hover .quick-action-text{
+                margin-top:-10px;
+            }
+            .btn-quick-action:hover .quick-action-info{
+                display: block;
+            }
+        </style>
     </head>
 
     <body>
@@ -55,22 +94,33 @@
             @include('sidebar.leftbar')
 
             <!-- Page Content  -->
-            <div id="content" class="@if(!$isMobile) p-4 @endif">
+            <div id="content">
                 <div class="content-body">
                     @include('sidebar.navbar')
-
                    
                     @if(!$isMobile)
                         <div class="row">
                             <div class="col-lg-5 col-md-6 col-sm-12">
                     @endif
                     @include('profile.info')
+                    @if(session()->get('role_key') != 0)
+                        <button class="btn-quick-action mt-4" onclick="window.location.href = 'http://127.0.0.1:8000/trash';" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/trash_2.png'); ?>"); background-color:#FB5E5B;'>
+                            <h5 class="quick-action-text"><i class="fa-solid fa-trash"></i> {{ __('messages.trash') }}</h5>
+                            <p class="quick-action-info">{{ __('messages.trash_desc') }}</p>
+                        </button>
+                    @endif
 
                     @if(session()->get('role_key') == 0)
                         <div class="content-section">
-                            <h5 class="mx-3 text-secondary fw-bold">Request Tag</h5>
+                            <h5 class="mx-3 text-secondary fw-bold">{{ __('messages.req_tag') }}</h5>
                             @include('profile.tagpicker')
                         </div>
+                    @endif
+                    @if(session()->get('role_key') == 0)
+                        <button class="btn-quick-action mb-2" onclick="window.location.href = 'http://127.0.0.1:8000/trash';" style='background-image: linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.45)), url("<?= asset('/assets/trash_2.png'); ?>"); background-color:#FB5E5B;'>
+                            <h5 class="quick-action-text"><i class="fa-solid fa-trash"></i> {{ __('messages.trash') }}</h5>
+                            <p class="quick-action-info">{{ __('messages.trash_desc') }}</p>
+                        </button>
                     @endif
 
                     @if(!$isMobile)
@@ -79,7 +129,7 @@
                     @endif
 
                     <div class="content-section">
-                        <h5 class="mx-3 text-secondary fw-bold">Edit Profile</h5>
+                        <h5 class="mx-3 text-secondary fw-bold">{{ __('messages.edit_profile') }}</h5>
                         @include('profile.edit')
                     </div>
 

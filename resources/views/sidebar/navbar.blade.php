@@ -13,6 +13,14 @@
         max-height: 75vh;
         overflow-y: scroll;
     }
+    .btn-lang {
+        background: transparent;
+        border: none;
+        color: var(--whiteColor) !important;
+        padding: 0;
+        margin-top: 20%;
+        font-size: var(--textLG);
+    }
 </style>
 
 <div class="navbar-holder">
@@ -21,9 +29,9 @@
         <span class="sr-only">Toggle Menu</span>
     </button>
     <div class="navbar-title">
-        <h5>{{$greet}}</h5>
+        <h5 id="greet"></h5>
     </div>
-    <div class="dropdown dd-profil">
+    <div class="dropdown dd-profil ms-5">
         <div class="btn btn-transparent" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             @if(!$isMobile)
                 <div class="row p-0 m-0">
@@ -43,7 +51,7 @@
                         @if(session()->get("role_key") == 1)
                             <h6 class="user-role">Admin</h6>
                         @else 
-                            <h6 class="user-role">Lecturer</h6>
+                            <h6 class="user-role">Lecturer / Staff</h6>
                         @endif
                     </div>
                 </div>    
@@ -63,17 +71,50 @@
         </div>
         <ul class="dropdown-menu p-0 shadow" aria-labelledby="dropdownMenuButton1" id="dd-menu-profile">
             <li class="position-relative">
-                <a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i> Profile</a>
+                <a class="dropdown-item" href="/profile"><i class="fa-solid fa-user me-2"></i> {{ __('messages.profile') }}</a>
             </li>
             <li>
-                <a class="dropdown-item" data-bs-toggle='modal' href="#history-modal" onclick="toogleHistory()"><i class="fa-solid fa-clock-rotate-left me-2"></i> History</a>
+                <a class="dropdown-item" data-bs-toggle='modal' href="#history-modal" onclick="toogleHistory()"><i class="fa-solid fa-clock-rotate-left me-2"></i> {{ __('messages.history') }}</a>
             </li>
             <li>
-                <a class="dropdown-item" data-bs-toggle='modal' href="#notif-modal" onclick="toogleDetail()"><i class="fa-solid fa-bell me-2"></i> Notification</a>
+                <a class="dropdown-item" data-bs-toggle='modal' href="#notif-modal" onclick="toogleDetail()"><i class="fa-solid fa-bell me-2"></i> {{ __('messages.notification') }}</a>
             </li>
             <button class="sign-out-area" data-bs-toggle='modal' data-bs-target='#sign-out-modal'>
-                <li><a class="dropdown-item danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign-Out</a></li>
+                <li><a class="dropdown-item danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> {{ __('messages.signout') }}</a></li>
             </button>
+        </ul>
+    </div>
+    <div class="d-inline float-end">
+        <button class="btn-lang" type="button" id="dropdownLanguage" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-globe fa-lg"></i> @if(session()->get('locale') == "en" || session()->get('locale') == null) EN @else ID @endif</button>
+        <ul class="dropdown-menu p-0 shadow" style="width:240px;" aria-labelledby="dropdownLanguage" id="dropdownLanguage">
+            <li class="position-relative">
+                <form action="/lang" method="POST">
+                    @csrf
+                    <input hidden name="lang" value="en">
+                    <button class="dropdown-item position-relative" onclick="switchLang('en')" type="submit">
+                        <div class="d-inline-block position-relative">
+                            <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8000/assets/en_lang.png'> 
+                        </div>
+                        <div class="d-inline-block position-absolute" style="top:15px; margin-left:10px;">
+                            English
+                        </div>
+                    </button>
+                </form>
+            </li>
+            <li>
+                <form action="/lang" method="POST">
+                    @csrf
+                    <input hidden name="lang" value="id">
+                    <button class="dropdown-item position-relative" onclick="switchLang('id')" type="submit">
+                        <div class="d-inline-block position-relative">
+                            <img class='img rounded-circle shadow p-0' style="width:35px; height:35px;" src='http://127.0.0.1:8000/assets/id_lang.png'> 
+                        </div>
+                        <div class="d-inline-block position-absolute" style="top:15px; margin-left:10px;">
+                            Bahasa Indonesia
+                        </div>
+                    </button>
+                </form>
+            </li>
         </ul>
     </div>
 </div>
@@ -109,8 +150,8 @@
                 <button type='button' class='custom-close-modal' data-bs-dismiss='modal' aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
                 <form class='d-inline' action='/sign-out' method='POST' id="form-signout">
                     @csrf
-                    <p style='font-weight:500;'>Are you sure want to sign out?</p>
-                    <a onclick="signout()" class='btn btn-danger'>Sign Out</a>
+                    <p style='font-weight:500;'>{{ __('messages.signout_confirm') }}</p>
+                    <a onclick="signout()" class='btn btn-danger'>{{ __('messages.signout') }}</a>
                 </form>
             </div>
         </div>
@@ -123,6 +164,23 @@
     var showHistory = false;
     var pageHistory = 1;
     var pageNotif = 1;
+
+    getGreeting();
+    function getGreeting() {
+        const date = new Date();
+        const hour = date.getHours();
+        let greet;
+
+        if (hour >= 3 && hour <= 12) {
+            greet = "{{ __('messages.good_morning') }}";
+        } else if (hour > 12 && hour <= 18) {
+            greet = "{{ __('messages.good_afternoon') }}";
+        } else if ((hour > 18 && hour <= 23) || (hour >= 0 && hour < 3)) {
+            greet = "{{ __('messages.good_night') }}";
+        }
+
+        document.getElementById("greet").innerHTML = greet;
+    }
 
     $(document).ready(function() {
         clear();
@@ -187,27 +245,26 @@
                         var createdAt = response[i].created_at;
                         var notifBody = response[i].notif_body;
 
-                        var elmt = " " +
-                            "<div class='p-3 rounded shadow mb-3 text-start'> " +
-                                "<h6>" + notifTitle + "</h6> " +
-                                "<p class='mb-0'>" + notifBody + "</p> " +
-                                "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
-                            "</div>";
+                        const elmt = `
+                            <div class='p-3 rounded shadow mb-3 text-start'>
+                                <h6>${notifTitle}</h6> 
+                                <p class='mb-0'>${notifBody}</p>
+                                <p class='text-secondary m-0' style='font-size:13px;'>${getDateToContext(createdAt,"full")}</p> 
+                            </div>
+                        `;
 
                         $("#notif_holder_detail").append(elmt);
                     }    
                 }else{
-                    var elmt = 
-                        "<span>" +
-                            " " + //Check this again
-                        "</span>";
+                    const elmt = `
+                        <span></span>
+                    `;
 
                     $("#notif_holder_detail").append(elmt);
                 }
             },
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            console.log(jqXHR.responseJSON.message);
             failResponse(jqXHR, ajaxOptions, thrownError, "#notif_holder_detail", false, null, null);
         });;
     }
@@ -219,10 +276,11 @@
         if (scrollPosition >= listNotif.scrollHeight) {
             pageNotif++;
 
-            var elmt = " " +
-                "<div class='d-block mx-auto' id='load-page-"+pageNotif+"'> " +
-                    '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
-                "</div>";
+            var elmt = `
+                <div class='d-block mx-auto' id='load-page-${pageNotif}'>
+                    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player>
+                </div>
+            `;
 
             $("#notif_holder_detail").append(elmt);
             notifDetail();
@@ -236,10 +294,11 @@
         if (scrollPosition >= listItem.scrollHeight) {
             pageHistory++;
 
-            var elmt = " " +
-                "<div class='d-block mx-auto' id='load-page-"+pageHistory+"'> " +
-                    '<lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player> ' +
-                "</div>";
+            var elmt = `
+                <div class='d-block mx-auto' id='load-page-${pageHistory}'>
+                    <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_7fwvvesa.json" background="transparent" speed="1" style="width: 320px; height: 320px; display:block; margin-inline:auto;" loop autoplay></lottie-player>
+                </div>
+            `;
 
             $("#history_holder_detail").append(elmt);
             historyDetail();
@@ -279,21 +338,21 @@
                         var createdAt = response[i].created_at;
                         var historyBody = response[i].history_body;
 
-                        var elmt = " " +
-                            "<div class='p-3 rounded shadow mb-3 text-start'> " +
-                                "<h6>" + historyType + "</h6> " +
-                                "<p class='mb-0'>" + historyBody + "</p> " +
-                                "<p class='text-secondary m-0' style='font-size:13px;'>" + getDateToContext(createdAt,"full") + "</p> " +
-                            "</div>";
+                        const elmt = `
+                            <div class='p-3 rounded shadow mb-3 text-start'> 
+                                <h6>${historyType}</h6> 
+                                <p class='mb-0'>${historyBody}</p> 
+                                <p class='text-secondary m-0' style='font-size:13px;'>${getDateToContext(createdAt,"full")}</p> 
+                            </div>
+                        `;
 
                         $("#history_holder_detail").append(elmt);
                     }
                         
                 }else{
-                    var elmt = 
-                        "<span>" +
-                            " " + //Check this again
-                        "</span>";
+                    var elmt = `
+                        <span></span>
+                    `;
 
                     $("#history_holder_detail").append(elmt);
                 }
@@ -306,7 +365,7 @@
 
     function signout() {
         $.ajax({
-            url: "/api/v1/logout",
+            url: "/api/v1/logout/web",
             type: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -323,5 +382,9 @@
                 }
             }
         });
+    }
+
+    function switchLang(lang) {
+        sessionStorage.setItem('locale', lang);
     }
 </script>

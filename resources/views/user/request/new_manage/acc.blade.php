@@ -8,7 +8,7 @@
                 <form class="d-inline" action="/user/request/accept_join/false" method="POST">
                     @csrf
                     <input hidden name="list_request" id="list_request_acc_new" value="">
-                    <button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> Submit</button> 
+                    <button class='btn btn-submit-form' type='submit' id='btn-submit'><i class='fa-solid fa-paper-plane'></i> {{ __('messages.submit') }}</button> 
                 </form>
             </div>
         </div>

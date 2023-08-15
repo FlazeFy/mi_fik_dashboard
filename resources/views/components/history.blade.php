@@ -1,17 +1,17 @@
 <style>
-    .history-holder{
+    .history-holder {
         display: flex;
         flex-direction: column;
+        height: auto;
         max-height: 300px;
         overflow-y: auto !important;
     }
-    .history-holder .container-fluid{
-        font-size: 14px !important;
-        white-space:nowrap !important; 
+    .history-holder {
+        font-size: var(--textMD) !important;
     }
-    .history-date{
-        font-size: 12px !important;
-        color: grey;
+    .history-date {
+        font-size: var(--textSM) !important;
+        color: var(--shadowColor);
     }
 </style>
 <?php
@@ -21,17 +21,17 @@
 <div class="history-holder">
     @if(count($history) != 0)
         @foreach($history as $hs)
-            <div class="container-fluid p-1 mb-1">
-                <span class="d-inline-block">
+            <div class="d-flex justify-content-start p-1 mb-1">
+                <span class="">
                     @if($hs->history_type == "about" || $hs->history_type == "help" || $hs->history_type == "group" || $hs->history_type == "tag" || $hs->history_type == "info" || $hs->history_type == "notification" || $hs->history_type == "faq" || $hs->history_type == "feedback" || $hs->history_type == "event" || $hs->history_type == "contact")
                         @if($hs->admin_image)
-                            <img class="img img-fluid user-image" style="margin-bottom: -8px;" src="{{$hs->admin_image}}" alt="{{$hs->admin_image}}">
+                            <img class="img img-fluid user-image" style="min-width:45px;" src="{{$hs->admin_image}}" alt="{{$hs->admin_image}}">
                         @else 
-                            <img class="img img-fluid user-image" style="margin-bottom: -8px;" src="{{ asset('/assets/default_admin.png')}}" alt="{{ asset('/assets/default_admin.png')}}">
+                            <img class="img img-fluid user-image" style="min-width:45px;" src="{{ asset('/assets/default_admin.png')}}" alt="{{ asset('/assets/default_admin.png')}}">
                         @endif            
                     @endif
                 </span>
-                <span class="d-inline-block">
+                <span class="ps-2">
                     <span><b>{{$hs->admin_username}}{{$hs->user_username}}</b> {{$hs->history_body}}</span><br>
                     <span class="history-date">{{Carbon::parse($hs->created_at)->format('Y-m-d\TH:i:s.\0\0\0\0\0\0\Z')}}</span>
                 </span>
@@ -40,7 +40,7 @@
     @else
         <div class="text-center" id="no_cat_selected" >
             <img src="{{ asset('/assets/editor.png')}}" class='img nodata-icon-req' style="width:75%; height:90%; max-width:200px;">
-            <h6 class='text-secondary text-center'>No History</h6>
+            <h6 class='text-secondary text-center'>{{ __('messages.no_history') }}</h6>
         </div>
     @endif
 </div>

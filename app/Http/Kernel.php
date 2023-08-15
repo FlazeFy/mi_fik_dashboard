@@ -36,13 +36,16 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\CleaningInputMiddleware::class,
+            \App\Http\Middleware\LanguageManager::class,
         ],
 
         'api' => [
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
-            'throttle:200,1', //Check this
+            'throttle:2000,1', //Check this
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\CleaningInputMiddleware::class,
         ],
     ];
 

@@ -12,8 +12,6 @@ use App\Helpers\Validation;
 
 class Commands extends Controller
 {
-    //
-
     public function insertFeedback(Request $request) {
 
         try {
@@ -37,14 +35,14 @@ class Commands extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => 'Feedback Created',
+                    'message' => Generator::getMessageTemplate("custom", 'feedback sended', null),
                     'data' => $feedback
                 ], Response::HTTP_OK);
             }
         } catch(\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => Generator::getMessageTemplate("custom",'something wrong. Please contact admin',null),
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }

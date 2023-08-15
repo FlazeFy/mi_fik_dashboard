@@ -16,7 +16,7 @@
 </style>
 
 @if(!$isMobile)
-    <button class="btn btn-submit" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> Add Group</button>
+    <button class="btn btn-submit" data-bs-toggle="modal" style="height:40px; padding:0 15px !important;" data-bs-target="#addModal"><i class="fa-solid fa-plus"></i> {{ __('messages.add_group') }}</button>
 @else 
     <button type="button" class="btn btn-mobile-control bg-success" data-bs-toggle="modal" data-bs-target="#addModal">
         <i class="fa-solid fa-plus"></i>
@@ -31,7 +31,7 @@
                 @if($isMobile && $info)
                 <button type="button" class="custom-close-modal bg-info" data-bs-toggle="collapse" href="#collapseInfo" style="right:65px;" title="Info"><i class="fa-solid fa-info"></i></button>
                 @endif
-                <h5>Add Grouping</h5>
+                <h5>{{ __('messages.add_grouping') }}</h5>
                 
                 <form action="/user/group/add" method="POST" id="form-add-group">
                     @csrf 
@@ -45,18 +45,18 @@
 
                             <div class="form-floating">
                                 <input type="text" class="form-control nameInput" id="group_name" name="group_name" maxlength="75" oninput="validateForm(validation)" required>
-                                <label for="titleInput_event">Group Name</label>
+                                <label for="titleInput_event">{{ __('messages.name') }}</label>
                                 <a id="group_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
                             </div>
                             <div class="form-floating mt-2">
                                 <textarea class="form-control" id="group_desc" name="group_desc" style="height: 140px" maxlength="255" oninput="validateForm(validation)"></textarea>
-                                <label for="floatingTextarea2">Description (Optional)</label>
+                                <label for="floatingTextarea2">{{ __('messages.description') }} ({{ __('messages.optional') }})</label>
                                 <a id="group_desc_msg" class="input-warning text-danger"></a>
                             </div>
 
                             <span class="position-relative">
-                                <h6 class="mt-2">Selected User</h6>
-                                <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> Clear All</a>
+                                <h6 class="mt-2">{{ __('messages.slct_user') }}</h6>
+                                <a class="btn btn-noline text-danger" style="float:right; margin-top:-35px;" onclick="clearAll()"><i class="fa-regular fa-trash-can"></i> {{ __('messages.filter_tag') }}</a>
                             </span>
                             <span id="user-selected-holder"></span>
 
@@ -65,21 +65,21 @@
                             @endif
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12 position-relative">
-                            <h6>All User</h6>
+                            <h6>{{ __('messages.all_user') }}</h6>
                             @include("user.searchbar")
                             <span id="user-list-holder"></span>
                             <span class="position-absolute">
-                                <h6 class="mt-1">Page</h6> 
+                                <h6 class="mt-1">{{ __('messages.page') }}</h6> 
                                 <div id="all-user-page" class="mt-2"></div> 
                             </span>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
-                            <h6>User Detail</h6>
+                            <h6>{{ __('messages.user_detail') }}</h6>
                             <span id="detail-holder"></span>
                         </div>
                     </div>
                     <input hidden name="selected_user" id="selected_user" value="">
-                    <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> Locked</button></span>
+                    <span id="submit_holder" class="float-end"><button disabled class="btn btn-submit-form"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button></span>
                 </form>
             </div>
         </div>
@@ -108,7 +108,6 @@
                 
                 if (input.value.trim() !== '' && input.name != "_token" && input.name != "user_username[]") {
                     is_editing = true;
-                    console.log(input.name)
                     break;
                 }
             }
@@ -178,16 +177,16 @@
             lastPageAllUser = response.data.last_page;
 
             if(page != lastPageAllUser){
-                $('#load_more_holder_new_req').html('<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>');
+                $('#load_more_holder_new_req').html(`<button class="btn content-more-floating mb-3 p-2" style="max-width:180px;" onclick="loadmore()">Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder_new_req').html('<h6 class="btn content-more-floating mb-3 p-2">No more item to show</h6>');
+                $('#load_more_holder_new_req').html(`<h6 class="btn content-more-floating mb-3 p-2">{{ __('messages.no_more') }}</h6>`);
             }
 
             if (total == 0) {
                 $('#empty_item_holder_new_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Event's found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load').html("<h5 class='text-primary'>Woah!, You have see all the newest event :)</h5>");
+                $('.auto-load').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {                
                 for(var i = 0; i < data.length; i++){
@@ -200,21 +199,23 @@
                     var email = data[i].email;
                     var joined = data[i].accepted_at;
 
-                    var elmt = " " +
-                        '<a class="btn user-box" style="height:80px;" onclick="loadDetailGroup(' + "'" + img + "'" + ',' + "'" + grole + "'" + ', ' + "'" + fullName + "'" + ',' + "'" + username + "'" + ',' + "'" + email + "'" + ',' + "'" + joined + "'" + ')"> ' +
-                            '<div class="row ps-2"> ' +
-                                '<div class="col-2 p-0 py-2 ps-2"> ' +
-                                    '<img class="img img-fluid user-image" src="'+getUserImage(img, grole)+'" alt="username-profile-pic.png"> ' +
-                                '</div> ' +
-                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
-                                    '<h6 class="text-secondary fw-normal">' + fullName + '</h6> ' +
-                                    '<h6 class="text-secondary fw-bold" style="font-size:13px;">' + getRole(grole) + '</h6> ' +
-                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input class="form-check-input" name="user_username[]" value="' + username + '" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+username+"'"+', '+"'"+fullName+"'"+', this.checked)" '+ getChecked(username) +'> ' +
-                                    '</div> ' +
-                                '</div> ' +
-                            '</div> ' +
-                        '</a>';
+                    const elmt = `
+                            <a class="btn user-box" style="height:80px;" onclick="loadDetailGroup('${img}', '${grole}', '${fullName}', '${username}', '${email}', '${joined}')">
+                                <div class="row ps-2">
+                                    <div class="col-2 p-0 py-2 ps-2">
+                                        <img class="img img-fluid user-image" src="${getUserImage(img, grole)}" alt="username-profile-pic.png">
+                                    </div>
+                                    <div class="col-10 p-0 py-2 ps-2 position-relative">
+                                        <h6 class="text-secondary fw-normal">${fullName}</h6>
+                                        <h6 class="text-secondary fw-bold" style="font-size:13px;">${getRole(grole)}</h6>
+                                        <div class="form-check position-absolute" style="right: 20px; top: 20px;">
+                                            <input class="form-check-input" name="user_username[]" value="${username}" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelected('${username}', '${fullName}', this.checked)" ${getChecked(username)}>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        `;
+
 
                     $("#user-list-holder").prepend(elmt);
                 }   
@@ -232,9 +233,9 @@
         $("#all-user-page").empty();
         for(var i = 1; i <= lastPageAllUser; i++){
             if(i == page_new_req){
-                var elmt = "<a class='page-holder active'>"+i+"</a>";
+                var elmt = `<a class='page-holder active'>${i}</a>`;
             } else {
-                var elmt = "<a class='page-holder' onclick='infinteLoadMoreUser("+'"'+i+'"'+")'>"+i+"</a>";
+                var elmt = `<a class='page-holder' onclick='infinteLoadMoreUser("${i}")'>${i}</a>`;
             }
             $("#all-user-page").append(elmt);
         }
@@ -257,8 +258,6 @@
                     // Make sure the item unchecked by remove from selected user list
                     document.getElementById("check_"+username).checked = false; 
                     input_holder.value = JSON.stringify(selectedUser);
-                } else {
-                    console.log('Item not found LOL');
                 }
             } else {
                 selectedUser.push({
@@ -268,8 +267,6 @@
                 input_holder.value = JSON.stringify(selectedUser);
             }
         }
-        //console.log(input_holder);
-        // console.log(selectedUser);
         refreshList();
     }
 
@@ -278,10 +275,10 @@
         holder.innerHTML = "";
 
         selectedUser.forEach((e) => {
-            var elmt = ' ' +
-                '<a class="remove_suggest" onclick="addSelected('+"'"+e.username+"'"+', '+"'"+e.fullName+"'"+', false)" title="Remove this user"> ' +
-                '<i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
-                '<a>' + e.full_name + '</a>';
+            var elmt = `
+                <a class="remove_suggest" onclick="addSelected('${e.username}', '${e.fullName}', false)" title="Remove this user"> ' +
+                <i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i></a> ' +
+                <a>${e.full_name}</a>`;
             holder.innerHTML += elmt;
         });
     }
@@ -291,13 +288,13 @@
 
         if(role){
             for(var i = 0; i < role.length; i++){
-                elmnt += "<a class='btn btn-tag'>"+role[i]['tag_name']+"</a>"
+                elmnt += `<a class='btn btn-tag'>${role[i]['tag_name']}</a>`
             }
             return elmnt;
 
         } else {
-            return "<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-role'> " +
-                "<h6 class='text-center'>This user has no tag</h6>" ;
+            return `<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-role'>
+                <h6 class='text-center'>This user has no tag</h6>` ;
         }
     }
 
@@ -312,13 +309,15 @@
     function loadDetailGroup(img, grole, fname, uname, email, join){
         document.getElementById("detail-holder").innerHTML = "";
 
-        var elmt_detail = " " +
-            "<div class='m-2 p-3 text-center'> " +
-                '<img class="img img-fluid rounded-circle shadow" style="width:180px; height:180px;" src="'+getUserImage(img, grole)+'"> ' +
-                '<h5 class="mt-3">'+fname+'</h5>' +
-                '<h6 class="mt-1 text-secondary">@'+uname+', <span style="font-size:13px;">Joined since ' + getDateToContext(join, "full") + '</span></h6>' +
-                '<a class="mt-1 text-secondary link-external" title="Send email" href="mailto:' + email + '">'+email+'</a>' +
-            "</div>";
+        const elmt_detail = `
+            <div class="m-2 p-3 text-center">
+                <img class="img img-fluid rounded-circle shadow" style="width:180px; height:180px;" src="${getUserImage(img, grole)}">
+                <h5 class="mt-3">${fname}</h5>
+                <h6 class="mt-1 text-secondary">@${uname}, <span style="font-size:13px;">Joined since ${getDateToContext(join, "full")}</span></h6>
+                <a class="mt-1 text-secondary link-external" title="Send email" href="mailto:${email}">${email}</a>
+            </div>
+        `;
+
         
         document.getElementById("detail-holder").innerHTML = elmt_detail;
     }

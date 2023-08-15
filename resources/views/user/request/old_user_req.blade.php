@@ -1,8 +1,8 @@
 <div class="incoming-req-box">
-    <h5 class="section-title"><span class="text-primary" id="total_old_req"></span> Role Request</h5>
+    <h5 class="section-title"><span class="text-primary" id="total_old_req"></span> {{ __('messages.role_req') }}</h5>
 
     @if(!$isMobile)
-    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0px;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
+    <button class="btn btn-transparent px-2 py-0 position-absolute" style="@if(!$isMobile) right:var(--spaceXMD); @else right:var(--spaceJumbo); @endif top:0;" type="button" id="section-more-old-req" data-bs-toggle="dropdown" aria-haspopup="true"
         onclick="cleanReq()" aria-expanded="false">
         <i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
@@ -13,7 +13,7 @@
     @endif
 
     <div class="dropdown-menu dropdown-menu-end @if($isMobile) mobile-control @endif" aria-labelledby="section-more-old-req">
-        <a class="dropdown-item" data-bs-target="#roleRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> Help</a>
+        <a class="dropdown-item" data-bs-target="#roleRequest" data-bs-toggle="modal"><i class="fa-solid fa-circle-info"></i> {{ __('messages.help') }}</a>
         <a class="dropdown-item" href="" data-bs-toggle="modal" id="acc_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-check text-success"></i> <span class="text-success" id="total_acc">Accept Selected</span></a>
         <a class="dropdown-item" href="" data-bs-toggle="modal" id="rej_all_btn" data-bs-target="#preventModal"><i class="fa-solid fa-xmark text-danger"></i> <span class="text-danger" id="total_reject">Reject Selected</span></a>
     </div>
@@ -46,14 +46,6 @@
     var selectedOldUser = []; 
 
     infinteLoadMore_old_req(page_old_req);
-
-    //Fix the sidebar & content page_old_req FE first to use this feature
-    // window.onscroll = function() { 
-    //     if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-    //         page_old_req++;
-    //         infinteLoadMore(page_old_req);
-    //     } 
-    // };
 
     function loadmore_old_req(){
         page_old_req++;
@@ -91,9 +83,9 @@
             var last = response.data.last_page;
 
             if(page != last){
-                $('#load_more_holder_old_req').html('<button class="btn content-more-floating" onclick="loadmore_old_req()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>');
+                $('#load_more_holder_old_req').html(`<button class="btn content-more-floating" onclick="loadmore_old_req()"><i class="fa-solid fa-magnifying-glass"></i> Show more <span id="textno"></span></button>`);
             } else {
-                $('#load_more_holder_old_req').html('<h6 class="content-last">No more item to show</h6>');
+                $('#load_more_holder_old_req').html(`<h6 class="content-last">{{ __('messages.no_more') }}</h6>`);
             }
 
             $('#total_old_req').text(total);
@@ -102,25 +94,25 @@
                 $('#empty_item_holder_old_req').html("<img src="+'"'+"{{asset('assets/nodata.png')}}"+'"'+" class='img nodata-icon-req'><h6 class='text-secondary text-center'>No Request found</h6>");
                 return;
             } else if (data.length == 0) {
-                $('.auto-load-old').html("<h5 class='text-primary'>Woah!, You have see all the newest request :)</h5>");
+                $('.auto-load-old').html(`<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>`);
                 return;
             } else {
                 function getContext(type, tag){
                     if(type == "add"){
                         var color = "success";
-                        var ctx = "Requested ";
+                        var ctx = `{{ __('messages.requested') }} `;
                     } else if(type == "remove"){
                         var color = "danger";
-                        var ctx = "Want to remove ";
+                        var ctx = `{{ __('messages.want_remove') }} `;
                     }
 
                     var tags = "";
 
                     for(var i = 0; i < tag.length; i++){
                         if(i != tag.length - 1){
-                            tags += '<span class="text-' + color + ' fw-bold">#' + tag[i].tag_name + '</span>, ';
+                            tags += `<span class="text-${color} fw-bold">#${tag[i].tag_name}</span>, `;
                         } else {
-                            tags += '<span class="text-' + color + ' fw-bold">#' + tag[i].tag_name + '</span>';
+                            tags += `<span class="text-${color} fw-bold">#${tag[i].tag_name}</span>`;
                         }
                     }
 
@@ -128,7 +120,6 @@
                 }
 
                 for(var i = 0; i < data.length; i++){
-                    //Attribute
                     var id = data[i].id;
                     var username = data[i].username;
                     var img = data[i].image_url;
@@ -138,26 +129,27 @@
                     var tag = data[i].tag_slug_name;
                     var type = data[i].request_type;
 
-                    var elmt = " " +
-                        '<button class="btn user-box request" onclick="loadDetailGroup(' + "'" + username + "'" + ', ' + "'old'" + ', ' + "'" + id + "'" + ')"> ' +
-                            '<div class="row ps-2"> ' +
-                                '<div class="col-2 p-0 ps-1"> ' +
-                                    '<img class="img img-fluid user-image" style="margin-top:45%;" src="' + getUserImageGeneral(img, role) + '">' +
-                                '</div> ' +
-                                '<div class="col-10 p-0 py-2 ps-2 position-relative"> ' +
-                                    '<h6 class="text-secondary fw-normal">' + full_name + '</h6> ' +
-                                    '<div style="width: 80%;"> ' +
-                                        '<h6 class="user-box-desc">' + getContext(type, tag) + '</h6> ' +
-                                        '<h6 class="user-box-date">' + getDateToContext(created_at, "full") + '</h6> ' +
-                                    '</div> ' +
-                                    '<div class="form-check position-absolute" style="right: 20px; top: 20px;"> ' +
-                                        '<input hidden id="tag_holder_' + username + id + '" value=' + "'" + JSON.stringify(tag) + "'" + '>' +
-                                        '<input hidden id="type_holder_' + username + id + '" value=' + "'" + type + "'" + '>' +
-                                        '<input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_'+ username +'" onclick="addSelected('+"'"+id+"'"+','+"'"+username+"'"+','+"'"+type+"'"+', '+"'"+full_name+"'"+', this.checked)"> ' +
-                                    '</div> ' +
-                                '</div> ' +
-                            '</div> ' +
-                        '</button>';
+                    const elmt = `
+                        <button class="btn user-box request" onclick="loadDetailGroup('${username}', 'old', '${id}','${type}'); slct_list = [];"> 
+                            <div class="row ps-2"> 
+                                <div class="col-2 p-0 ps-1"> 
+                                    <img class="img img-fluid user-image" style="margin-top:45%;" src="${getUserImageGeneral(img, role)}">
+                                </div> 
+                                <div class="col-10 p-0 py-2 ps-2 position-relative"> 
+                                    <h6 class="text-secondary fw-normal">${full_name}</h6>
+                                    <div style="width: 80%;">
+                                        <h6 class="user-box-desc">${getContext(type, tag)}</h6>
+                                        <h6 class="user-box-date">${getDateToContext(created_at, "full")}</h6>
+                                    </div>
+                                    <div class="form-check position-absolute" style="right: 20px; top: 20px;"> 
+                                        <input hidden id="tag_holder_${username + id}" value='${JSON.stringify(tag)}'>
+                                        <input hidden id="type_holder_${username + id}" value="${type}">
+                                        <input class="form-check-input" type="checkbox" style="width: 25px; height:25px;" id="check_${username}" onclick="addSelected('${id}','${username}','${type}', '${full_name}', this.checked)"> 
+                                    </div>
+                                </div>
+                            </div>
+                        </button>
+                    `;
 
                     $("#data_wrapper_old_req").append(elmt);
                 }   
@@ -187,9 +179,7 @@
                 let indexToRemove = selectedOldUser.findIndex(obj => obj.username == username);
                 if (indexToRemove !== -1) {
                     selectedOldUser.splice(indexToRemove, 1);
-                } else {
-                    console.log('Item not found LOL');
-                }
+                } 
             } else {
                 selectedOldUser.push({
                     id : id,
@@ -200,7 +190,6 @@
                 });
             }
         }
-        console.log(selectedOldUser);
         
         if(selectedOldUser.length > 0){
             ddItemAcc.setAttribute('data-bs-target', '#accOldReqModal');
@@ -220,8 +209,8 @@
         refreshListRej()
     }
 
-    function loadDetailGroup(username, type, id){
-        load_user_detail(username, type, id)
+    function loadDetailGroup(username, type, id, req_type){
+        load_user_detail(username, type, id, req_type)
         infinteLoadMoreTag(1)
     }
 </script>
