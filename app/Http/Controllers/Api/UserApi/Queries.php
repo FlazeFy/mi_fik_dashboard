@@ -35,7 +35,7 @@ class Queries extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read", 'user request', null),
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -68,7 +68,7 @@ class Queries extends Controller
                     }
                     $i++;
                 }
-            } 
+            }
 
             if(strpos($filter_name, "_")){
                 $name = explode("_", $filter_name);
@@ -111,7 +111,7 @@ class Queries extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read_failed", 'User '.count($user).' Found', null),
+                    'message' => Generator::getMessageTemplate("business_read_success", 'User '.count($user).' Found', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
@@ -146,7 +146,7 @@ class Queries extends Controller
             } else {
                 return response()->json([
                     'status' => 'success',
-                    'message' => Generator::getMessageTemplate("business_read", 'user request', null),
+                    'message' => Generator::getMessageTemplate("business_read_success", 'user request', null),
                     'data' => $user
                 ], Response::HTTP_OK);
             }
