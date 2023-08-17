@@ -10,8 +10,8 @@
                 @php($i = 0) 
                 @foreach($dct_tag as $dtag) 
                     @if($i == 0) 
-                        <option value="{{$dtag->slug_name}}" selected>{{$dtag->dct_name}}</option>
-                        <option value="all">{{ __('messages.all') }}</option>
+                        <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
+                        <option value="all" selected>{{ __('messages.all') }}</option>
                     @else 
                         <option value="{{$dtag->slug_name}}">{{$dtag->dct_name}}</option>
                     @endif

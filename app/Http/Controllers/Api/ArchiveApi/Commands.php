@@ -190,32 +190,44 @@ class Commands extends Controller
                     'result' => $errors,
                 ], Response::HTTP_UNPROCESSABLE_ENTITY);
             } else {
-                $rows = DB::table("archives_relations")
-                    ->join('archives', 'archives_relations.archive_id','=','archives.id')
-                    ->where('slug_name', $slug)
+                $archive = DB::table("archives")
+                    ->select('id')
                     ->where('created_by', $user_id)
-                    ->where('archives_relations.created_by', $user_id)
-                    ->delete();
-
-                if($rows > 0){
-                    DB::table("archives")->where('slug_name', $slug)
+                    ->where('slug_name', $slug)
+                    ->first();
+                    
+                if($archive != null){
+                    $rows = DB::table("archives")
+                        ->where('id', $archive->id)
                         ->delete();
-
-                    DB::table("histories")->insert([
-                        'id' => Generator::getUUID(),
-                        'history_type' => $data->history_type, 
-                        'context_id' => null, 
-                        'history_body' => $data->history_body, 
-                        'history_send_to' => null,
-                        'created_at' => date("Y-m-d H:i:s"),
-                        'created_by' => $user_id
-                    ]);
-
-                    DB::commit();
-                    return response()->json([
-                        'status' => 'success',
-                        'message' => Generator::getMessageTemplate("business_delete",'archive',$request->archive_name)
-                    ], Response::HTTP_OK);
+    
+                    if($rows > 0){
+                        DB::table("archives_relations")
+                            ->where('archive_id', $archive->id)
+                            ->where('created_by', $user_id)
+                            ->delete();
+    
+                        DB::table("histories")->insert([
+                            'id' => Generator::getUUID(),
+                            'history_type' => $data->history_type, 
+                            'context_id' => null, 
+                            'history_body' => $data->history_body, 
+                            'history_send_to' => null,
+                            'created_at' => date("Y-m-d H:i:s"),
+                            'created_by' => $user_id
+                        ]);
+    
+                        DB::commit();
+                        return response()->json([
+                            'status' => 'success',
+                            'message' => Generator::getMessageTemplate("business_delete",'archive',$request->archive_name)
+                        ], Response::HTTP_OK);
+                    } else {
+                        return response()->json([
+                            'status' => 'failed',
+                            'message' => Generator::getMessageTemplate("failed_owner_exist",'archive', null),
+                        ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                    }
                 } else {
                     return response()->json([
                         'status' => 'failed',

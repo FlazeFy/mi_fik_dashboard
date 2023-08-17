@@ -147,8 +147,6 @@
                     var ai_deleted = data[i].admin_image_deleted;
                     var ui_deleted = data[i].user_image_deleted;
 
-                    console.log(au_deleted)
-
                     if (data_from === 1) { // Event
                         const elmt = `
                             <div class='pb-3 content-item'>

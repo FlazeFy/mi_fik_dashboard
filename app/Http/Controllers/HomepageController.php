@@ -308,7 +308,6 @@ class HomepageController extends Controller
                     DB::commit();
 
                     if(session()->get('email_key')){
-                        // Mail::to(session()->get('email_key'))->send(new OrganizerEmail($header, $detail));
                         dispatch(new ProcessMailer($header, $detail, session()->get('email_key')));
                     }
 

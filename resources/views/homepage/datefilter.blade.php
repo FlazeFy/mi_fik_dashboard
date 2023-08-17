@@ -88,9 +88,8 @@
         var de = new Date(date_filter_end);
 
         function finalValidate(){
-            //Event date start and date end validator if all date is filled
             if(de < ds ){
-                $("#date_filter_msg_all").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event's end time earlier than the start time"); //Check this poor grammar LOL
+                $("#date_filter_msg_all").html(`<i class='fa-solid fa-triangle-exclamation'></i> ${messages('end_date_invalid')}`);
                 error = true;
             } else {
                 $("#date_filter_msg_all").text("");
@@ -98,9 +97,7 @@
             }
         }
 
-        //Check if empty.
         if(!date_filter_start || !date_filter_end){
-            //Highlight input if empty.
             if(!date_filter_start){
                 $("#date_filter_start").css({"border":"2px solid var(--warningBG)"});
                 error = true;
@@ -115,36 +112,31 @@
                 $("#date_filter_end").css({"border":"1.5px solid #CCCCCC"});
             }
 
-            //Event date and today validator if only one datetime is filled
             if(ds < today){
-                $("#date_filter_msg_start").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#date_filter_msg_start").html(`<i class='fa-solid fa-triangle-exclamation'></i> ${messages('end_date_now_invalid')}`); 
                 error = true;
             } else {
                 $("#date_filter_msg_start").text("");
             }
             if(de < today){
-                $("#date_filter_msg_end").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#date_filter_msg_end").html(`<i class='fa-solid fa-triangle-exclamation'></i> ${messages('end_date_now_invalid')}`); 
                 error = true;
             } else {
                 $("#date_filter_msg_end").text("");
             }
         } else {
-            //Event datetime and today validator
-
-            //Unhighlight all filled input
             $("#date_filter_start").css({"border":"1.5px solid #CCCCCC"});
             $("#date_filter_end").css({"border":"1.5px solid #CCCCCC"});
             
-            //Event date and today validator if only all datetime is filled
             if(ds < today){
-                $("#date_filter_msg_start").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#date_filter_msg_start").html(`<i class='fa-solid fa-triangle-exclamation'></i> ${messages('end_date_now_invalid')}`); 
                 error = true;
             } else {
                 $("#date_filter_msg_start").text("");
                 finalValidate();
             }
             if(de < today){
-                $("#date_filter_msg_end").html("<i class='fa-solid fa-triangle-exclamation'></i> Unable to set event to a past date"); //Check this poor grammar LOL
+                $("#date_filter_msg_end").html(`<i class='fa-solid fa-triangle-exclamation'></i> ${messages('end_date_now_invalid')}`); 
                 error = true;
             } else {
                 $("#date_filter_msg_end").text("");

@@ -1,11 +1,11 @@
 
 @if(session()->get('toogle_edit_help') == "true")
     <div id="rich_box_desc" style="height: 40vh !important;"></div>
-    <h6 class="fst-italic mt-2" style="font-size:14px;">Last Updated By : <span class="text-primary" id="desc_updated"></span> </h6>
+    <h6 class="fst-italic mt-2" style="font-size:14px;">{{ __('messages.last_updated') }} : <span class="text-primary" id="desc_updated"></span> </h6>
 
     <form class="d-inline" method="POST" action="/about/toogle/help/false">
         @csrf
-        <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> Close</button>
+        <button class="btn btn-danger rounded-pill mt-3 me-2 px-3 py-2" type="submit"><i class="fa-regular fa-pen-to-square"></i> {{ __('messages.close') }}</button>
     </form>
     <form class="d-none" id="form-edit-desc" method="POST" action="">
         @csrf

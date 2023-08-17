@@ -54,32 +54,42 @@ class Commands extends Controller
                         'result' => $errors,
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $user = User::where('id', $user_id)->update([
-                        'first_name' => $request->first_name,
-                        'last_name' => $request->last_name,
-                        'updated_at' => date("Y-m-d H:i"),
-                        'updated_by' => $user_id,
-                    ]);
+                    $check = User::selectRaw('1')->where('email', $request->email)->first();
 
-                    if($user > 0){
-                        History::create([
-                            'id' => Generator::getUUID(),
-                            'history_type' => $data->history_type,
-                            'context_id' => null,
-                            'history_body' => $data->history_body,
-                            'history_send_to' => null,
-                            'created_at' => date("Y-m-d H:i:s"),
-                            'created_by' => $user_id
+                    if($check == null){
+                        $user = User::where('id', $user_id)->update([
+                            'first_name' => $request->first_name,
+                            'last_name' => $request->last_name,
+                            'email' => $request->email,
+                            'updated_at' => date("Y-m-d H:i"),
+                            'updated_by' => $user_id,
                         ]);
 
-                        return response()->json([
-                            'status' => 'success',
-                            'message' => Generator::getMessageTemplate("business_update", "user profile", null),
-                        ], Response::HTTP_OK);
+                        if($user > 0){
+                            History::create([
+                                'id' => Generator::getUUID(),
+                                'history_type' => $data->history_type,
+                                'context_id' => null,
+                                'history_body' => $data->history_body,
+                                'history_send_to' => null,
+                                'created_at' => date("Y-m-d H:i:s"),
+                                'created_by' => $user_id
+                            ]);
+
+                            return response()->json([
+                                'status' => 'success',
+                                'message' => Generator::getMessageTemplate("business_update", "user profile", null),
+                            ], Response::HTTP_OK);
+                        } else {
+                            return response()->json([
+                                'status' => 'failed',
+                                'message' => Generator::getMessageTemplate("failed_owner_exist",'user profile', null),
+                            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+                        }
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'message' => Generator::getMessageTemplate("failed_owner_exist",'user profile', null),
+                            'message' => Generator::getMessageTemplate("business_update_failed",'profile. The email has been used',null),
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }
                 }
@@ -938,7 +948,7 @@ class Commands extends Controller
                     } else {
                         return response()->json([
                             'status' => 'failed',
-                            'result' => Generator::getMessageTemplate("failed_exist", 'user', 'event / task'),
+                            'result' => Generator::getMessageTemplate("failed_exist", 'user', $username),
                         ], Response::HTTP_UNPROCESSABLE_ENTITY);
                     }
                 } else {

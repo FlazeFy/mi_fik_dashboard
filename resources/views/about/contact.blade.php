@@ -58,7 +58,7 @@
             <h6 class="mx-3 text-secondary fw-bold">{{ __('messages.addr') }}</h6>
             <div class="form-floating mb-2">
                 <textarea class="form-control" style="height: 100px" id="address" name="address" value="{{$adr}}" oninput="validateForm(vldtContact)" maxlength="255">{{$adr}}</textarea>
-                <label for="address">Address Location</label>
+                <label for="address">{{ __('messages.addr') }} {{ __('messages.location') }}</label>
                 <a id="address_msg" class="text-danger my-2" style="font-size:13px;"></a>
             </div>
             <div class="form-floating mb-2">

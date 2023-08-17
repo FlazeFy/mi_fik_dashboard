@@ -38,13 +38,25 @@ class Commands extends Controller
                 }
 
                 $allow = true;
-                if($role == 0){
-                    foreach($user->role as $rl){
-                        if($rl['slug_name'] == "student" && $env == "web"){
-                            $allow = false;
-                            break;
+                if($role == 0 && $user){
+                    if($user->role != null){
+                        foreach($user->role as $rl){
+                            if($rl['slug_name'] == "student" && $env == "web"){
+                                $allow = false;
+                                break;
+                            }
                         }
+                    } else {
+                        $allow = true;
                     }
+                } else if($role == 1 && $user){
+                    $allow = true;
+                } else {
+                    return response()->json([
+                        'status' => 'failed',
+                        'result' => Generator::getMessageTemplate("business_read_failed", 'user', null),
+                        'token' => null,                
+                    ], Response::HTTP_UNAUTHORIZED);
                 }
 
                 if($allow){

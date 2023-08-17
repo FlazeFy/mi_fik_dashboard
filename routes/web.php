@@ -66,7 +66,6 @@ Route::prefix('/homepage')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/ordered/{order}', [HomepageController::class, 'set_ordering_content']);
     Route::post('/date', [HomepageController::class, 'set_filter_date']);
     Route::post('/date/reset', [HomepageController::class, 'reset_filter_date']);
-    Route::post('/open/{slug_name}', [HomepageController::class, 'add_content_view']);
 });
 
 Route::prefix('/statistic')->middleware(['auth_v2:sanctum'])->group(function () {
@@ -88,9 +87,6 @@ Route::prefix('/event')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/tag/delete/cat/{id}', [TagController::class, 'delete_cat_tag']);
 
     Route::get('/detail/{slug_name}', [DetailController::class, 'index'])->name('detail');
-    Route::post('/detail/add_relation/{slug_name}', [DetailController::class, 'add_relation']);
-    Route::post('/detail/delete_relation/{id}', [DetailController::class, 'delete_relation']);
-    Route::post('/detail/add_archive', [DetailController::class, 'add_archive']);
     Route::post('/detail/delete/{slug_name}', [DetailController::class, 'delete_event']);
 
     Route::get('/edit/{slug_name}', [EditController::class, 'index']);

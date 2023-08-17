@@ -195,7 +195,7 @@ return [
     'addr' => 'Alamat',
     'web' => 'Situs Web',
     'see_help_type' => 'Pilih kategori pada bagian tipe untuk melihat detail',
-    'continue' => 'Lanjutkan',
+    'continue' => 'Oke',
     'new_tag' => 'Buat Tag Baru',
     'new_tag_cat' => 'Buat Kategori Tag Baru',
     'advan' => 'Lanjutan',
