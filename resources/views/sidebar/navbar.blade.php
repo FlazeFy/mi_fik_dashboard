@@ -124,7 +124,7 @@
         <div class='modal-content'>
             <div class='modal-body text-start pt-4'>
                 <button type='button' class='custom-close-modal' data-bs-dismiss='modal' onclick="cleanHistory()" aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
-                <h5>History</h5>
+                <h5>{{ __('messages.history') }}</h5>
                 <div id="history_holder_detail"></div>
             </div>
         </div>
@@ -136,7 +136,7 @@
         <div class='modal-content'>
             <div class='modal-body text-start pt-4'>
                 <button type='button' class='custom-close-modal' data-bs-dismiss='modal'onclick="cleanNotif()" aria-label='Close' title='Close pop up'><i class='fa-solid fa-xmark'></i></button>
-                <h5>Notification</h5>
+                <h5>{{ __('messages.notification') }}</h5>
                 <div id="notif_holder_detail"></div>
             </div>
         </div>

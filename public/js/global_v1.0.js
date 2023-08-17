@@ -79,7 +79,13 @@ const dictionaries_collection = {
         most_suggest: "Most Suggest",
         about_us: "About Us",
         helps_editor: "Helps Editor",
-        contact_us: "Contact Us"
+        contact_us: "Contact Us",
+        end_date_invalid: "The date end must after date start",
+        end_date_now_invalid: "Unable to set content date to a past date",
+        esc_submit:"Click outside the input to submit",
+        no_cat_in_type:"No category on this type",
+        cat_no_help:"This category has no help",
+        help_detail:"Help Detail"
     },
     id: {
         live: "Berlangsung",
@@ -111,7 +117,7 @@ const dictionaries_collection = {
         locked: "Terkunci",
         add_tag: "Tambah Tag",
         remove_tag: "Hapus Tag",
-        homepage: "Homepage",
+        homepage: "Beranda",
         event: "Event",
         manage_user: "Kelola Pengguna",
         system: "Sistem",
@@ -137,9 +143,19 @@ const dictionaries_collection = {
         most_suggest: "Masukan Terbanyak",
         about_us: "Tentang Kami",
         helps_editor: "Manajemen Bantuan",
-        contact_us: "Hubungi Kami"
+        contact_us: "Hubungi Kami",
+        end_date_invalid: "Tanggal berakhir harus sesudah tanggal mulai",
+        end_date_now_invalid: "Gagal memilih tanggal konten untuk tanggal yang sudah lewat",
+        esc_submit:"Klik diluar input untuk submit",
+        no_cat_in_type:"Tidak ada kategori didalam tipe ini",
+        cat_no_help:"Kategori ini tidak memiliki bantuan",
+        help_detail:"Detail Bantuan"
     }
 };
+
+if(sessionStorage.getItem('locale') === null){
+    sessionStorage.setItem('locale', 'id');
+}
 
 function translator(target){
     var text = document.getElementById(target).textContent;

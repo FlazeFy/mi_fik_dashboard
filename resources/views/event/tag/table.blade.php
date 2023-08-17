@@ -140,6 +140,6 @@
     });
 
     function showSubmitMsg(id){
-        document.getElementById("tag-desc-msg-"+id).innerHTML = '<i class="fa-solid fa-triangle-exclamation text-primary"></i> Press esc or click outside the input to submit';
+        document.getElementById("tag-desc-msg-"+id).innerHTML = '<i class="fa-solid fa-triangle-exclamation text-primary"></i>  or click outside the input to submit';
     }
 </script>

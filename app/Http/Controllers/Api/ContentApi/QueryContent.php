@@ -154,6 +154,7 @@ class QueryContent extends Controller
                 ->groupBy('contents_headers.id')
                 ->orderBy('days_passed', $order)
                 ->whereNull('contents_headers.deleted_at')
+                ->where('is_draft',0)
                 ->whereRaw('(DATEDIFF(content_date_end, now()) * -1) > 1')
                 ->where('content_title', 'LIKE', '%' . $search . '%');
 
@@ -197,6 +198,7 @@ class QueryContent extends Controller
                     AND DATE_FORMAT(DATE_ADD(content_date_end, INTERVAL ".$utc." HOUR), '%Y-%m-%d') >= '".$date."'
                 ")
                 ->whereNull('deleted_at')
+                ->where('is_draft',0)
                 ->orderBy('content_date_start', 'DESC');
 
             if ($based_role !== null && $based_role != "admin") {

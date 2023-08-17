@@ -335,13 +335,8 @@ class Validation
             'first_name' => 'required|min:2|max:35|string',
             'last_name' => 'nullable|min:2|max:35|string',
             'password' => 'required|min:6|max:50|string',
-            'batch_year' => 'nullable|numeric', // Make this year for 6 year after & before
+            'batch_year' => 'nullable|numeric', 
             'email' => 'required|min:11|max:75|string|email'
-            // 'email' => ['required', 'min:11', 'max:75', 'string', 'email', function ($attr, $val, $err) {
-            //     if (!Str::endsWith($val, '@gmail.com')) {
-            //         $err('The '.$attr.' must be a valid Gmail address');
-            //     }
-            // }],
         ]);
     }
 

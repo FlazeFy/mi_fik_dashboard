@@ -70,6 +70,6 @@ class FeedbackController extends Controller
     {
         session()->put('selected_filter_suggest', $request->feedback_suggest);
 
-        return redirect()->back()->with('success_message', 'Suggestion filtered');
+        return redirect()->back()->with('success_mini_message', 'Suggestion filtered');
     }
 }

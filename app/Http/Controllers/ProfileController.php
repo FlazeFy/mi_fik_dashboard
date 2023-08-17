@@ -124,7 +124,7 @@ class ProfileController extends Controller
                     $check = User::selectRaw('1')->where('email', $request->email)->first();
                 }
 
-                if($check != null){
+                if($check == null){
                     if($role_key == 1){
                         Admin::where('id', $user_id)->update([
                             'first_name' => $request->first_name,

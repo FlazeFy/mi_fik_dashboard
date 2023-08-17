@@ -327,6 +327,6 @@ class InfoController extends Controller
     {
         session()->put('selected_filter_info_type', $request->info_type);
 
-        return redirect()->back()->with('success_message', 'Info filtered');
+        return redirect()->back()->with('success_mini_message', 'Info filtered');
     }
 }

@@ -195,7 +195,7 @@ return [
     'addr' => 'Address',
     'web' => 'Website',
     'see_help_type' => 'Choose the category in type section to see detail',
-    'continue' => 'Continue',
+    'continue' => 'OK',
     'new_tag' => 'Create New Tag',
     'new_tag_cat' => 'Create New Tag Category',
     'advan' => 'Advanced',

@@ -206,7 +206,7 @@
                 var elmt = `
                     <div class="position-relative" style="height:50px;"> 
                         <button class="btn btn-icon-rounded success position-absolute" style="left:10px;" onclick="getInputHelpCat('${type}')" title="Add new category"><i class="fa-solid fa-plus"></i></button> 
-                        <h6 class="text-center text-secondary position-absolute" style="top:10px; left:60px;">No category on this type</h6> 
+                        <h6 class="text-center text-secondary position-absolute" style="top:10px; left:60px;">${messages('no_cat_in_type')}</h6> 
                     </div>`;
                 $("#category_holder-"+type.replace(" ", "")).append(elmt);
             } else {
@@ -223,7 +223,7 @@
                 <div class="btn btn-category-help add"> 
                     <input name="help_type" value="${type}" hidden> 
                     <input class="form-control" name="help_category" id="help_category_input" type="text" maxlength="75" onblur="this.form.submit(); isFormSubmitted=true" required> 
-                    <a class="warning-input"><i class="fa-solid fa-triangle-exclamation text-primary"></i> Press esc or click outside the input to submit</a> 
+                    <a class="warning-input"><i class="fa-solid fa-triangle-exclamation text-primary"></i> ${messages('esc_submit')}</a> 
                 </div> 
             </form>`;
         $("#category_holder-"+type.replace(" ", "")).append(elmt);
@@ -254,11 +254,11 @@
         document.getElementById("no_cat_selected").hidden = true;
         desc_holder.innerHTML = " ";
         if(desc != "null"){
-            desc_holder.innerHTML = `<h5>Help Detail</h5><br>${desc}`;
+            desc_holder.innerHTML = `<h5>${messages('help_detail')}</h5><br>${desc}`;
         } else {
-            desc_holder.innerHTML = `<h5>Help Detail</h5><br>
+            desc_holder.innerHTML = `<h5>${messages('help_detail')}</h5><br>
                 <img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req' style='height:25vh;'><br> 
-                <h6 class='text-secondary text-center'>This category has no help</h6>`;
+                <h6 class='text-secondary text-center'>${messages('cat_no_help')}</h6>`;
         }
     }
 </script>
