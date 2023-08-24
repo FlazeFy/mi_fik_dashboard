@@ -262,7 +262,7 @@ return [
     'rate_us_scale' => 'Rate us from scale (1-5)',
     'type_of_user' => '2 Type Of Users',
     'lecturer_desc' => 'Active lecturers and staff of the Faculty of Creative Industries Telkom University. Lecturers and staff are "special" users who can manage events and information on the MI-FIK application',
-    'student_desc' => 'Students are general users who can see events / information that has been published by the admin',
+    'student_desc' => 'Students are general users who can see events / information that has been published by the admin or lecturer',
     'faq' => 'Frequently Asked Question',
     'answer' => 'Answer',
     'feedback_desc' => 'What They Say About Us',
@@ -317,5 +317,16 @@ return [
     'random_name' => 'Random Name',
     'random' => 'Random',
     'start_with' => 'Start With',
-    'tag_used_desc' => 'tag used in event and user'
+    'tag_used_desc' => 'tag used in event and user',
+    'back_to_sign_in' => 'Back to Sign In',
+    'most_tag_role' => 'Most Tag / Role Chart',
+    'new_tag_cat_desc' => 'This category will grouping the tag into more complex functionality',
+    'tag_cat_name' => 'Tag Category Name',
+    'website' => 'Website',
+    'new_tag_desc' => 'Tag is like a label where you can define who should view event by matching the role of user',
+    'no_user_selected' => "You haven't selected any user",
+    'acc_selected' => 'Accept Selected',
+    'rej_selected' => 'Reject Selected',
+    'acc_w_tag' => 'Accept Selected & With Tag',
+    'info_loc' => 'Info Location'
 ];

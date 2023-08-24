@@ -1,9 +1,9 @@
 <style>
-    .answer_suggestion a{
+    .answer_suggestion li{
         cursor: pointer;  
         padding: 4px;
     }
-    .answer_suggestion a:hover{
+    .answer_suggestion li:hover{
         background: var(--primaryLightBG);  
         border-radius: var(--roundedMini);
     }
@@ -83,9 +83,9 @@
                 var last = response.data.last_page;
 
                 if (total == 0) {
-                    $('#empty_suggest_holder').html("<img src='{{ asset('/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No suggestion found</h6>");
+                    $('#empty_suggest_holder').html("<img src='{{ asset('/public/assets/nodata.png')}}' class='img nodata-icon-req'><h6 class='text-secondary text-center'>No suggestion found</h6>");
                 } else if (data.length == 0) {
-                    $('.auto-load_suggest').html("<h5 class='text-primary'>Woah!, You have see all the suggest</h5>");
+                    $('.auto-load_suggest').html("<h5 class='text-primary'>{{ __('messages.all_viewed') }}</h5>");
                     return;
                 } else {
                     for(var i = 0; i < data.length; i++){
@@ -93,12 +93,9 @@
                         var username = data[i].username;
 
                         const elmt = `
-                            <a class="remove_suggest" onclick="" title="Remove this suggestion">
-                                <i class="fa-sharp fa-solid fa-xmark me-2 ms-1"></i>
-                            </a>
-                            <a onclick="loadQuestion('${questionAnswer}')" title="Use this answer, from ${username}">
+                            <li onclick="loadQuestion('${questionAnswer}')" title="Use this answer, from ${username}">
                                 ${questionAnswer}
-                            </a>
+                            </li>
                         `;
 
                         $("#answer_suggestion").append(elmt);

@@ -14,13 +14,13 @@
 <div class="position-relative">
     <h5 class="section-title">{{ __('messages.new_tag_cat')}}</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button"
-        data-bs-toggle="popover" title="Info" data-bs-content="This category will grouping the tag into more complex functionality."><i class="fa-solid fa-ellipsis-vertical more"></i>
+        data-bs-toggle="popover" title="Info" data-bs-content="{{ __('messages.new_tag_cat_desc') }}"><i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <form class="p-2 mt-2" action="/event/tag/add_category" method="POST" id="form-add-cat">
         @csrf
         <div class="form-floating mb-2">
             <input type="text" class="form-control nameInput" id="dct_name" name="dct_name" oninput="validateFormSecond(validation2)" maxlength="35" required>
-            <label for="dct_name">Tag Category Name</label>
+            <label for="dct_name">{{ __('messages.tag_cat_name')}}</label>
             <a id="dct_name_msg" class="text-danger my-2" style="font-size:13px;"></a>
         </div>
         <div class="form-floating">

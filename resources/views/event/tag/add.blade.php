@@ -15,7 +15,7 @@
 <div class="position-relative">
     <h5 class="section-title">{{ __('messages.new_tag') }}</h5>
     <button class="btn btn-transparent px-2 py-0 position-absolute" style="right:10px; top:0;" type="button"
-        data-bs-toggle="popover" title="Info" data-bs-content="Tag is like a category or label where you can define who should view event by matching the role of user."><i class="fa-solid fa-ellipsis-vertical more"></i>
+        data-bs-toggle="popover" title="Info" data-bs-content="{{ __('messages.new_tag_desc') }}"><i class="fa-solid fa-ellipsis-vertical more"></i>
     </button>
     <form class="p-2 mt-2" action="/event/tag/add" method="POST" id="form-add-tag">
         @csrf

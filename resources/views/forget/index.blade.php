@@ -58,7 +58,7 @@
             <div class="accordion" id="accordionExample">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <a class="btn btn-close-register" href="/"><i class="fa-solid fa-arrow-left"></i> Back to Sign In</a>
+                        <a class="btn btn-close-register" href="/"><i class="fa-solid fa-arrow-left"></i> {{ __('messages.back_to_sign_in') }}</a>
                     </div>
                     <div>
                         <button class="btn btn-register-steps" data-bs-toggle="collapse" id="btn-steps-recovery"></button>

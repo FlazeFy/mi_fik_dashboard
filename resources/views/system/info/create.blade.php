@@ -40,13 +40,13 @@
                                     <option value="event/detail">event/detail</option>
                                     <option value="event/edit">event/edit</option>
                                 </select> 
-                                <label for="titleInput_event">Info Page</label>
+                                <label for="titleInput_event">{{ __('messages.info_page') }}</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-floating mb-2">
                         <input type="text" class="form-control nameInput" id="info_location" name="info_location" maxlength="75" oninput="validateForm(validationAdd)" required>
-                        <label for="titleInput_event">Info Location</label>
+                        <label for="titleInput_event">{{ __('messages.info_loc') }}</label>
                         <a id="info_location_msg" class="text-danger my-2" style="font-size:13px;"></a>
                     </div>
                     <div id="rich_box_create"></div>

@@ -284,7 +284,7 @@
             }
         })
         .fail(function (jqXHR, ajaxOptions, thrownError) {
-            failResponse(jqXHR, ajaxOptions, thrownError, "#data_wrapper_user_detail", false, "You haven't selected any user", "http://127.0.0.1:8000/assets/nodata3.png");
+            failResponse(jqXHR, ajaxOptions, thrownError, "#data_wrapper_user_detail", false, "{{ __('messages.no_user_selected') }}", "http://127.0.0.1:8000/assets/nodata3.png");
         });
     }
 

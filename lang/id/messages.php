@@ -262,7 +262,7 @@ return [
     'rate_us_scale' => 'Nilai dari skala (1-5)',
     'type_of_user' => '2 Tipe Pengguna',
     'lecturer_desc' => "Dosen aktif dan penguji dari Fakultas Industri Kreatif. Lecturer dan Staff memiliki fitur 'spesial' yang memungkinkan mereka untuk membuat event dan membagikannya",
-    'student_desc' => 'Students are general users who can see events / information that has been published by the admin',
+    'student_desc' => 'Mahasiswa adalah pengguna aplikasi MI-FIK yang hanya dapat melihat informasi event yang telah dipublikasikan oleh Admin ataupun Dosen',
     'faq' => 'Pertanyaan Yang Sering Ditanyakan',
     'answer' => 'Jawaban',
     'feedback_desc' => 'Apa yang mereka katakan mengenai kami',
@@ -317,5 +317,17 @@ return [
     'random_name' => 'Nama Acak',
     'random' => 'Acak',
     'start_with' => 'Diawali',
-    'tag_used_desc' => 'tag digunakan pada event dan pengguna'
+    'tag_used_desc' => 'tag digunakan pada event dan pengguna',
+    'back_to_sign_in' => 'Kembali ke Sign In',
+    'most_tag_role' => 'Grafik Tag / Role yang populer',
+    'new_tag_cat_desc' => 'Kategori ini akan mengelompokkan tag kedalam fungsionalitas yang lebih kompleks',
+    'tag_cat_name' => 'Nama Kategori Tag',
+    'website' => 'Situs Web',
+    'new_tag_desc' => 'Tag adalah sebuah label dimana Anda dapat mendefenisikan akses event berdasarkan role pengguna',
+    'no_user_selected' => "Anda belum memilih pengguna",
+    'acc_selected' => 'Terima yang dipilih',
+    'rej_selected' => 'Tolak yang dipilih',
+    'acc_w_tag' => 'Terima yang dipilih beserta dengan Tag',
+    'info_loc' => 'Lokasi Info',
+    'info_page' => 'Halaman Info'
 ];

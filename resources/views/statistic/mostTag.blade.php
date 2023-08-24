@@ -24,7 +24,7 @@
         <h6 class="text-center">{{ __('messages.no_data') }}</h6>
     @endif
 
-    @include('popup.mini_help', ['id' => 'mtChart', 'title'=> 'Most Tag / Role Chart', 'location'=>'most_tag_chart'])
+    @include('popup.mini_help', ['id' => 'mtChart', 'title'=> __('messages.most_tag_role'), 'location'=>'most_tag_chart'])
 </div>
 
 <script type="text/javascript">

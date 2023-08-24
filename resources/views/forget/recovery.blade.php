@@ -39,7 +39,7 @@
         <img class="img img-fluid d-block mx-auto mt-3" style="width: 240px;" src="{{'/assets/send_email.png'}}">
         <h6 class="text-center mb-3">{{ __('messages.forget_pass_remainder') }}</h6>
     </div>
-    <a class="btn btn-primary d-block mx-auto mt-4" onclick="check_user()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.validate) }}</a>
+    <a class="btn btn-primary d-block mx-auto mt-4" onclick="check_user()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.validate') }}</a>
 </div>
 <span id="btn-next-validate-holder" class="d-flex justify-content-end mt-3">
     <button class="btn-next-steps locked" id="btn-next-validate" onclick="warn('recovery')"><i class="fa-solid fa-lock"></i> {{ __('messages.locked') }}</button>
