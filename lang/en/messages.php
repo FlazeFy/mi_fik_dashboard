@@ -28,8 +28,6 @@ return [
     'pending_desc' => 'Make announcement and send it later with specific time and you can choose the type later',
     'add' => 'Add',
     'announcement' => 'Announcement',
-
-    // Form & Filter section
     'title' => 'Title',
     'body' => 'Body',
     'type' => 'Type',
@@ -136,7 +134,6 @@ return [
     'show_suggest' => 'Show Suggestion',
     'ts_range' => 'Task Scheduling Range',
     'lp_range' => 'LandingPage Range',
-
     'year' => 'Year',
     'congrats' => 'Congratulation',
     'congrats_regis_desc' => 'You registration process has completed. You can back to landing page, login using your new account, and wait for Admin to approve your account',
@@ -147,20 +144,16 @@ return [
     'welcome_app' => 'Welcome to MI-FIK',
     'welcome_app_desc' => 'MI-FIK is an app made for event organizing and announcement that will be used for lecturer, staff, and student of',
     'fik' => 'School of Creative Industries Telkom University',
-
     'no_data' => 'No data available', 
     'no_faq' => 'You have no question yet', 
     'no_faq_desc' => 'You can ask about our app, and our admin will be respond your question. Your question may be public to other user, but it will anonym',
     'ask_question' => 'Ask Question',
     'edit_profile' => 'Edit Profile',
     'granted' => 'Access Granted',
-
     'no_history' => 'No history',
     'engagement' => 'Engagement',
-
     'help' => 'Help',
     'abort' => 'Abort',
-
     'about_us' => 'About Us',
     'about_us_desc' => 'Welcome to the Faculty of Creative Industries Information Management Application (MI-FIK), an innovative solution to improve the efficiency and accessibility of information for the entire community at the Faculty of Creative Industries Telkom University',
     'follow_us' => 'Follow Us',
@@ -328,5 +321,32 @@ return [
     'acc_selected' => 'Accept Selected',
     'rej_selected' => 'Reject Selected',
     'acc_w_tag' => 'Accept Selected & With Tag',
-    'info_loc' => 'Info Location'
+    'info_loc' => 'Info Location',
+    'info_page' => 'Info Page',
+    'avai_tag' => 'Available Tag',
+    'by_tag_name' => 'Tag Name',
+    'by_all_col' => 'All Column',
+    'welcome_to_mifik' => 'Welcome to MI-FIK',
+    'tnc' => 'Terms & Condition',
+    'legal_compliance' => 'Legal Compliance:',
+    'priv_sec' => 'Privacy and Security:',
+    'user_content' => 'User Content:',
+    'change_update' => 'Changes and Updates:',
+    'limit_liability' => 'Limitation of Liability:',
+    'tnc_desc' => 'Welcome to the Faculty of Creative Industries Information Management Application (MI-FIK). Before using this application, please read and understand carefully the following terms and conditions of use:',
+    'legal_compliance_1' => 'By Using this application, you agree to comply with all applicable laws and regulations in your jurisdiction related to the use of this application',
+    'legal_compliance_2' => 'Take full responsibility for any activities conducted through your account in this app',
+    'priv_sec_1' => 'We respect your privacy and are committed to protecting the personal data you provide',
+    'priv_sec_2' => 'You are responsible for maintaining the confidentiality and security of your account. Do not provide your login information to other parties and be sure to log out of your account when finished using the application',
+    'user_content_1' => 'When using this app, you agree not to upload, share, or distribute content that is unlawful, infringes intellectual property rights, or violates the privacy of others',
+    'user_content_2' => 'You are solely responsible for the content you share through this app. We are not responsible for inappropriate user content',
+    'change_update_1' => 'We reserve the right to change or update these terms and conditions from time to time without prior notice. Please be sure to check this page periodically to keep up to date with the latest information',
+    'change_update_2' => 'In case of important changes, we will provide notice to users through appropriate communication channels',
+    'limit_liability_1' => 'This app is provided "as is" and we do not make any warranties or representations regarding the accuracy, reliability, or availability of this app',
+    'limit_liability_2' => 'We are not liable for any loss or damage arising from the use of this app or the inability to use it',
+    'acc_tnc' => 'By agreeing to the terms and conditions in using the MI-FIK application, you agree and accept all the terms and conditions listed above. If you do not agree with these terms and conditions, please stop using this application. If you have any questions or concerns, please feel free to contact our support team.',
+    'i_acc_tnc' => 'I agree to the terms and condition on this app',
+    'i_acc_tnc_2' => 'Thank you for your understanding and cooperation',
+    'next' => 'Next',
+    'reset_uname_email' => 'Reset username and email'
 ];

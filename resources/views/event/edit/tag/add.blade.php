@@ -4,7 +4,7 @@
 </a>
 
 <div class="card p-2 my-2 collapse" id="collapseManageTag">
-    <h6 class="text-secondary mt-2"> Available Tag</h6>
+    <h6 class="text-secondary mt-2"> {{ __('messages.avai_tag') }}</h6>
 
     @if(session()->get("role_key") == 1)
         <div class="position-absolute" style="right:10px; top:10px;">

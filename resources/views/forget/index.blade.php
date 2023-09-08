@@ -132,9 +132,9 @@
             function validate(now){
                 if(now == "recovery"){
                     if(val1 == true){
-                        btn_next_recovery.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#validate' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"recovery"+'"'+"); startTimer(900);'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                        btn_next_recovery.innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#validate' onclick='routeStep("+'"'+"next"+'"'+", "+'"'+"recovery"+'"'+"); startTimer(900);'><i class='fa-solid fa-arrow-right'></i> {{ __('messages.next') }}</button>";
                     } else {
-                        btn_next_recovery.innerHTML = "<button class='btn-next-steps locked' id='btn-next-validate' onclick='warn("+'"'+"recovery"+'"'+"); is_start = true;'><i class='fa-solid fa-lock'></i> Next</button>";
+                        btn_next_recovery.innerHTML = "<button class='btn-next-steps locked' id='btn-next-validate' onclick='warn("+'"'+"recovery"+'"'+"); is_start = true;'><i class='fa-solid fa-lock'></i> {{ __('messages.next') }}</button>";
                     }   
                 } 
             }

@@ -34,7 +34,7 @@
                         @if(is_array($tag_coll))
                             @foreach($tag_coll as $slct)
                                 @if(is_array($colltag))
-                                    @if($slct['slug_name'] == $tg['slug_name'])
+                                    @if($slct->slug_name == $tg['slug_name'])
                                         @php($found = true)
                                     @endif
                                 @else 

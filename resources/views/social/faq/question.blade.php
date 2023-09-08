@@ -35,7 +35,7 @@
         font-size: 14px;
     }
     .question_holder .question_box:hover h6, .question_holder .question_box:hover p{
-        color: var(--whiteColor);
+        color: var(--whiteColor) !important;
     }
 </style>
 
@@ -143,9 +143,29 @@
     }
 
     function loadDetailAnswer(answer, id, status, que, username){
+        const hsx = document.getElementById('question_'+ id).querySelector('h6');
+        const pg = document.getElementById('question_'+ id).querySelector('p');
+        const childQBox = document.getElementById('question_holder').querySelectorAll('button');
+
+        childQBox.forEach(el => {        
+            if(el.getAttribute('id') != 'question_'+ id){ 
+                el.querySelector('p').style = 'color:var(--darkColor)';
+                if(el.classList.contains('answered')) {
+                    el.querySelector('h6').style = 'color:var(--successBG)';
+                } else {
+                    el.querySelector('h6').style = 'color:var(--primaryColor)';
+                }
+                console.log(el.getAttribute('id'))
+            }
+        });
+
         if(status == "answered"){
+            hsx.style = "color: var(--whiteColor);";
+            pg.style = "color: var(--whiteColor);";
             setSelectedBtnStyle("background: var(--successBG); color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
         } else {
+            hsx.style = "color: var(--whiteColor);";
+            pg.style = "color: var(--whiteColor);";
             setSelectedBtnStyle("background: var(--primaryColor); color: var(--whiteColor); border-radius: 10px;", "question_box", " ", 'question_'+ id);
         }
         

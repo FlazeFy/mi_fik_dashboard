@@ -37,7 +37,7 @@
                         { targets: '_all', orderable: false, searchable: false}
                     ],
                     language: {
-                        searchPlaceholder: "By Tag Name",
+                        searchPlaceholder: "{{ __('messages.by_tag_name') }}",
                         <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
                     }
                 });
@@ -47,6 +47,7 @@
                 modifyTableControl(tableName, extra_control);
                 $("#tagCatTable").DataTable({
                     language: {
+                        searchPlaceholder: "{{ __('messages.by_all_col') }}",
                         <?php if(session()->get("locale") == "id") { echo "url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json',"; } ?>
                     }
                 });

@@ -61,7 +61,7 @@
     <input hidden name="type" id="validate_type">
 </form>
 <span id="btn-next-finish-holder" class="d-flex justify-content-end mt-3">
-    <button class="btn-next-steps locked" id="btn-next-finish" onclick="warn('validate')"><i class="fa-solid fa-lock"></i> Next</button>
+    <button class="btn-next-steps locked" id="btn-next-finish" onclick="warn('validate')"><i class="fa-solid fa-lock"></i> {{ __('messages.next') }}</button>
 </span>
 
 <script>
@@ -238,7 +238,7 @@
                 success: function(response) {
                     is_finished = true;
                     document.getElementById("password").disabled = true;
-                    document.getElementById("btn-next-finish-holder").innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#finish'><i class='fa-solid fa-arrow-right'></i> Next</button>";
+                    document.getElementById("btn-next-finish-holder").innerHTML = "<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#finish'><i class='fa-solid fa-arrow-right'></i> {{ __('messages.next') }}</button>";
                     routeStep("next", "validate");
                     $('#finish').collapse('show');
                 },

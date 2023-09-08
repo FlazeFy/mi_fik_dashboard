@@ -207,7 +207,7 @@
                 var tag_desc = data[i].tag_desc;
 
                 if(slug_name != "student"){
-                    var elmt = `<button class="btn btn-tag" id="tag_collection_${slug_name}" title="${validateTextNull(tag_desc, "-No description provided-")}" onclick="addSelectedTag('${slug_name}', '${tag_name}', true, '${cat}')">${tag_name}</button>`;
+                    var elmt = `<button class="btn btn-tag" id="tag_collection_${slug_name}" title="${validateTextNull(tag_desc, "-No description provided-")}" onclick="addSelectedTag('${slug_name}', '${tag_name}', true, '${cat}', '${tag_desc}')">${tag_name}</button>`;
 
                     $("#tag-cat-holder-" + cat).append(elmt); 
                 }
@@ -265,7 +265,7 @@
         });
     }
 
-    function addSelectedTag(slug_name, tag_name, is_deleted, cat){
+    function addSelectedTag(slug_name, tag_name, is_deleted, cat, tag_desc){
         var found = false;
 
         if(is_deleted){
@@ -284,7 +284,7 @@
                 $("#slct_holder").append(`
                     <div class='d-inline' id='tagger_${slug_name}'>
                         <input hidden name='user_role[]' value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'>
-                        <a class='btn btn-tag-selected' title='Select this tag' onclick='removeSelectedTag("${slug_name}", "${tag_name}", "${cat}")'>
+                        <a class='btn btn-tag-selected' title="${validateTextNull(tag_desc, "-No description provided-")}" onclick='removeSelectedTag("${slug_name}", "${tag_name}", "${cat}", "${tag_desc}")'>
                             <i class='fa-solid fa-xmark'></i> ${tag_name}
                         </a>
                     </div>
@@ -298,7 +298,7 @@
             $("#slct_holder").append(`
                 <div class='d-inline' id='tagger_${slug_name}'>
                     <input hidden name='user_role[]' value='{"slug_name":"${slug_name}", "tag_name":"${tag_name}"}'>
-                    <a class='btn btn-tag-selected' title='Unselect this tag' onclick='removeSelectedTag("${slug_name}", "${tag_name}", "${cat}")'>
+                    <a class='btn btn-tag-selected' title="${validateTextNull(tag_desc, "-No description provided-")}" onclick='removeSelectedTag("${slug_name}", "${tag_name}", "${cat}", "${tag_desc}")'>
                         <i class='fa-solid fa-xmark'></i> ${tag_name}
                     </a>
                 </div>
@@ -347,7 +347,7 @@
     function submitAddReq(){
         var msg_error = "<i class='fa-solid fa-triangle-exclamation'></i> Something wrong when sending request. Try contact the Admin";
         $.ajax({
-            url: '/api/v1/login',
+            url: '/api/v1/login/web',
             type: 'POST',
             data: $('#form-login-role').serialize(),
             dataType: 'json',
@@ -375,7 +375,7 @@
 
                             btn_ready_holder.innerHTML = `
                                 <button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("next", "role")'>
-                                    <i class='fa-solid fa-arrow-right'></i> Next
+                                    <i class='fa-solid fa-arrow-right'></i> {{ __('messages.next') }}
                                 </button>
                             `;
 
@@ -398,12 +398,12 @@
         });
     }
 
-    function removeSelectedTag(slug_name, tag_name, cat){
+    function removeSelectedTag(slug_name, tag_name, cat, tag_desc){
         var tag = document.getElementById('tagger_'+slug_name);
         slct_role = slct_role.filter(function(e) { return e.slug_name !== slug_name })
         tag.parentNode.removeChild(tag);
 
-        $("#tag-cat-holder-" + cat).append("<button class='btn btn-tag' id='tag_collection_"+slug_name+"' title='Select this tag' onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+cat+'"'+")'>"+tag_name+"</button>");
+        $("#tag-cat-holder-" + cat).append("<button class='btn btn-tag' id='tag_collection_"+slug_name+"' title="+validateTextNull(tag_desc, "-No description provided-")+" onclick='addSelectedTag("+'"'+slug_name+'"'+", "+'"'+tag_name+'"'+", true, "+'"'+cat+'"'+", "+'"'+tag_desc+'"'+")'>"+tag_name+"</button>");
 
         validate("role");
     }

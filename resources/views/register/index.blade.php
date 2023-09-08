@@ -184,7 +184,7 @@
                 if (now == "terms") {
                     if (document.getElementById("check-terms").checked) {
                         msg_check_terms.innerHTML = "";
-                        btn_profile_holder.innerHTML = `<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#profiledata' onclick='routeStep("next", "terms")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
+                        btn_profile_holder.innerHTML = `<button class='btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#profiledata' onclick='routeStep("next", "terms")'><i class='fa-solid fa-arrow-right'></i> {{ __('messages.next') }}</button>`;
                     } else {
                         btn_profile_holder.innerHTML = `<button class='btn-next-steps locked' id='btn-next-profile-data' onclick='warn("terms")'><i class='fa-solid fa-lock'></i> {{ __('messages.locked') }}</button>`;
                     }
@@ -194,7 +194,7 @@
                         btn_role_holder.innerHTML = `<button class='btn btn-next-steps' onclick='register()'><i class='fa-solid fa-arrow-up'></i> Register Now</button>`;
                     } else if (val1 && val2 && registered) {
                         msg_all_input.innerHTML = "";
-                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("next", "profiledata")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
+                        btn_role_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#role' onclick='routeStep("next", "profiledata")'><i class='fa-solid fa-arrow-right'></i> {{ __('messages.next') }}</button>`;
                     } else {
                         btn_role_holder.innerHTML = `<button class='btn btn-next-steps locked'><i class='fa-solid fa-lock' onclick='warn("profiledata")'></i> {{ __('messages.locked') }}</button>`;
                     }
@@ -205,7 +205,7 @@
                         document.getElementById("no-tag-selected-msg").style.display = "none";
                         if (valid && is_requested) {
                             msg_all_input.innerHTML = "";
-                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("next", "role")'><i class='fa-solid fa-arrow-right'></i> Next</button>`;
+                            btn_ready_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='collapse' data-bs-target='#ready' onclick='routeStep("next", "role")'><i class='fa-solid fa-arrow-right'></i> {{ __('messages.next') }}</button>`;
                         } else if (valid && !is_requested) {
                             msg_all_input.innerHTML = "";
                             btn_ready_holder.innerHTML = `<button class='btn btn-next-steps' id='btn-next-terms' data-bs-toggle='modal' data-bs-target='#requestRoleAdd'><i class='fa-solid fa-paper-plane'></i> Send Request</button>`;

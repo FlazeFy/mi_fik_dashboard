@@ -74,7 +74,7 @@ function getHourMinute(date){
 const getRole = (role) => role ? role : '<span class="text-danger fw-bold" style="font-size:13px;"><i class="fa-solid fa-triangle-exclamation"></i> Has no general role </span>';
 
 function removeTags(str) {
-    if ((str===null) || (str==='')){
+    if ((str===null) || (str==='') || (str === '<p><br></p>')){
         return "<span class='fst-italic'>No description provided</span>";
     } else {
         str = str.toString();

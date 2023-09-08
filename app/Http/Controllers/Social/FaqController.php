@@ -40,8 +40,7 @@ class FaqController extends Controller
                 
                 //Set active nav
                 session()->put('active_nav', 'social');
-                session()->put('active_subnav', 'faq');
-
+                session()->put('active_subnav', 'FAQ');
 
                 return view ('social.faq.index')
                     ->with('menu', $menu)

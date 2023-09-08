@@ -42,7 +42,7 @@
         <input hidden name="email" id="email_final">
 
         <span id="reset-uname-holder" class="d-none">
-            <a class="btn btn-noline p-0 my-2" style="color:#D5534C !important;" onclick="resetUnameEmail()"><i class="fa-solid fa-rotate-right"></i> Reset username and email</a>
+            <a class="btn btn-noline p-0 my-2" style="color:#D5534C !important;" onclick="resetUnameEmail()"><i class="fa-solid fa-rotate-right"></i> {{ __('messages.reset_uname_email') }}</a>
         </span>
         <a id="all_user_check_msg" class="text-danger my-2" style="font-size:13px;"></a>
         <div id="prevent-data-section">
@@ -50,7 +50,7 @@
             <h6 class="text-center">{{ __('messages.validate_desc') }}</h6>
         </div><br>
         <div id="validate-available-section">
-            <a class="btn btn-primary d-block mx-auto" onclick="routeCheck()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> Validate</a>
+            <a class="btn btn-primary d-block mx-auto" onclick="routeCheck()" id="validate-recovery-btn" style="border-radius:var(--roundedLG); width:160px;"><i class="fa-solid fa-paper-plane"></i> {{ __('messages.validate') }}</a>
         </div>
 
         <div id="detail-data-section" class="d-none">
@@ -236,7 +236,9 @@
             data: $('#form-check-user').serialize(),
             dataType: 'json',
             success: function(response) {
+                let croppedUname = uname.value.replace(" ", "");
                 document.getElementById("validate-available-section").innerHTML = "";
+                uname.value = croppedUname;
                 setTimeout(() => {
                     document.getElementById("success-check").innerHTML = '<lottie-player class="d-block mx-auto" src="https://assets7.lottiefiles.com/packages/lf20_fbwbq3um.json"  background="transparent" speed="0.75" style="width: 420px; height: 420px;" autoplay></lottie-player>';
                 }, 500);
@@ -246,7 +248,7 @@
                     document.getElementById("reset-uname-holder").setAttribute('class', '');
                     document.getElementById("detail-data-section").setAttribute('class', '');
                 }, 3000);
-                document.getElementById("username_final").value = uname.value;
+                document.getElementById("username_final").value = croppedUname;
                 document.getElementById("email_final").value = email.value;
                 uname.disabled = true;
                 email.disabled = true;
