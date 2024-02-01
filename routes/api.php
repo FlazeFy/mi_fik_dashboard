@@ -137,6 +137,7 @@ Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function() {
 Route::prefix('/v1/attendance')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/my/{limit}', [QueryAttendanceApi::class, 'getAllAttendance']);
     Route::delete('/destroy/{id}', [CommandAttendanceApi::class, 'destroyAttendance']);
+    Route::post('/create', [CommandAttendanceApi::class, 'postAttendance']);
 });
 
 Route::prefix('/v1/group')->middleware(['auth:sanctum'])->group(function() {

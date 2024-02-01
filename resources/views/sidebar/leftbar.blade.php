@@ -40,6 +40,10 @@
                         <?php $icon = '<i class="fa-solid fa-user-pen me-3"></i>'; ?>
                     @elseif($menu_group == "social")
                         <?php $icon = '<i class="fa-regular fa-comments me-3"></i>'; ?>
+                    @elseif($menu_group == "attendance")
+                        <?php $icon = '<i class="fa-solid fa-user-clock me-3"></i>'; ?>
+                    @elseif($menu_group == "gallery")
+                        <?php $icon = '<i class="fa-solid fa-palette me-3"></i>'; ?>
                     @endif
                     
                     @if(!$group)

@@ -13,6 +13,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ForgetController;
 use App\Http\Controllers\WaitingController;
+use App\Http\Controllers\AttendanceController;
 
 use App\Http\Controllers\Event\TagController;
 use App\Http\Controllers\Event\DetailController;
@@ -201,4 +202,8 @@ Route::prefix('/profile')->middleware(['auth_v2:sanctum'])->group(function () {
     Route::post('/request', [ProfileController::class, 'request_role']);
     Route::post('/faq', [ProfileController::class, 'add_faq']);
     Route::post('/sortsection/{menu}/{navigation}', [MultiController::class, 'sort_section']); // Not finished
+});
+
+Route::prefix('/attendance')->middleware(['auth_v2:sanctum'])->group(function () {
+    Route::get('/', [AttendanceController::class, 'index']);
 });

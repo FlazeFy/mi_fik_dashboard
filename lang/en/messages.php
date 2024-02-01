@@ -317,5 +317,7 @@ return [
     'random_name' => 'Random Name',
     'random' => 'Random',
     'start_with' => 'Start With',
-    'tag_used_desc' => 'tag used in event and user'
+    'tag_used_desc' => 'tag used in event and user',
+    'Attendance' => 'Attendance',
+    'Gallery' => 'Gallery'
 ];
