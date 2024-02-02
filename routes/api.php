@@ -26,6 +26,8 @@ use App\Http\Controllers\Api\QuestionApi\Queries as QueryQuestionApi;
 use App\Http\Controllers\Api\FeedbackApi\Commands as CommandFeedbackApi;
 use App\Http\Controllers\Api\SystemApi\QueryInfo as QueryInfoApi;
 use App\Http\Controllers\Api\SystemApi\QueryHistory as QueryHistoryApi;
+use App\Http\Controllers\Api\AttendanceApi\Queries as QueryAttendanceApi;
+use App\Http\Controllers\Api\AttendanceApi\Commands as CommandAttendanceApi;
 
 ######################### Public Route #########################
 
@@ -130,6 +132,12 @@ Route::prefix('/v1/user')->middleware(['auth:sanctum'])->group(function() {
 
 Route::prefix('/v1/history')->middleware(['auth:sanctum'])->group(function() {
     Route::get('/my', [QueryHistoryApi::class, 'getMyHistory']);
+});
+
+Route::prefix('/v1/attendance')->middleware(['auth:sanctum'])->group(function() {
+    Route::get('/my', [QueryAttendanceApi::class, 'getAllAttendanceHeaders']);
+    Route::delete('/destroy/{id}', [CommandAttendanceApi::class, 'destroyAttendance']);
+    Route::post('/create', [CommandAttendanceApi::class, 'postAttendance']);
 });
 
 Route::prefix('/v1/group')->middleware(['auth:sanctum'])->group(function() {

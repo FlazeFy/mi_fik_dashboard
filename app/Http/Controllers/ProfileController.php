@@ -119,9 +119,9 @@ class ProfileController extends Controller
             } else {
                 $check = null;
                 if($role_key == 1){
-                    $check = Admin::selectRaw('1')->where('email', $request->email)->first();
+                    $check = Admin::selectRaw('1')->where('email', $request->email)->whereNot('id',$user_id)->first();
                 } else {
-                    $check = User::selectRaw('1')->where('email', $request->email)->first();
+                    $check = User::selectRaw('1')->where('email', $request->email)->whereNot('id',$user_id)->first();
                 }
 
                 if($check == null){

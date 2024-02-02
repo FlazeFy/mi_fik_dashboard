@@ -317,5 +317,11 @@ return [
     'random_name' => 'Nama Acak',
     'random' => 'Acak',
     'start_with' => 'Diawali',
-    'tag_used_desc' => 'tag digunakan pada event dan pengguna'
+    'tag_used_desc' => 'tag digunakan pada event dan pengguna',
+    'attendance' => 'Kehadiran',
+    'gallery' => 'Galeri',
+    'no_desc_attd' => "Kehadiran ini tidak memiliki deskripsi",
+    'attd_confirm' => "Anda mengonfirmasi  ",
+    'at' => 'pada',
+    'attendance_response' => 'Respon Kehadiran'
 ];

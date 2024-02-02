@@ -85,7 +85,9 @@ const dictionaries_collection = {
         esc_submit:"Click outside the input to submit",
         no_cat_in_type:"No category on this type",
         cat_no_help:"This category has no help",
-        help_detail:"Help Detail"
+        help_detail:"Help Detail",
+        attendance:"Attendance",
+        gallery:"Gallery"
     },
     id: {
         live: "Berlangsung",
@@ -149,7 +151,9 @@ const dictionaries_collection = {
         esc_submit:"Klik diluar input untuk submit",
         no_cat_in_type:"Tidak ada kategori didalam tipe ini",
         cat_no_help:"Kategori ini tidak memiliki bantuan",
-        help_detail:"Detail Bantuan"
+        help_detail:"Detail Bantuan",
+        attendance:"Kehadiran",
+        gallery:"Galeri"
     }
 };
 

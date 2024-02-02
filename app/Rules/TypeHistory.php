@@ -21,7 +21,7 @@ class TypeHistory implements Rule
         $type = ['event', 'archive', 'user', 'task', 'maintenance', 
             'info', 'group', 'admin', 'scheduling', 'about', 'help', 
             'tag', 'request', 'faq', 'notification', 'dictionary','contact',
-            'feedback','question'];
+            'feedback','question','attendance'];
 
         foreach ($type as $format) {
             if ($format === $value) {

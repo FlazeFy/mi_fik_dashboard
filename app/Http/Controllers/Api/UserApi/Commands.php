@@ -54,7 +54,7 @@ class Commands extends Controller
                         'result' => $errors,
                     ], Response::HTTP_UNPROCESSABLE_ENTITY);
                 } else {
-                    $check = User::selectRaw('1')->where('email', $request->email)->first();
+                    $check = User::selectRaw('1')->where('email', $request->email)->whereNot('id',$user_id)->first();
 
                     if($check == null){
                         $user = User::where('id', $user_id)->update([

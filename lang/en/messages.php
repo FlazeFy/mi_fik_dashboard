@@ -317,5 +317,11 @@ return [
     'random_name' => 'Random Name',
     'random' => 'Random',
     'start_with' => 'Start With',
-    'tag_used_desc' => 'tag used in event and user'
+    'tag_used_desc' => 'tag used in event and user',
+    'attendance' => 'Attendance',
+    'gallery' => 'Gallery',
+    'no_desc_attd' => "This Attendance doesn't have description",
+    'attd_confirm' => "You marked as ",
+    'at' => 'at',
+    'attendance_response' => 'Attendance Response'
 ];
