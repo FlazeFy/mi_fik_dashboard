@@ -25,9 +25,36 @@
             navLinks: true, 
             eventLimit: true,
             dayMaxEvents: 4,
-            events: [],
+            events: [
+                <?php
+                    $i = 0;
+                    
+                    foreach($attd as $at){
+                        echo "
+                            {
+                                groupId: '".$i."',
+                                title: '";
+                                if($at->content_title){
+                                    echo $at->content_title." | ";
+                                }
+                                echo $at->attendance_title."',
+                                start: getDateToContext('".$at->attendance_time_start."','calendar'),";
+
+                                if($at->attendance_time_end){
+                                    echo "end: getDateToContext('".$at->attendance_time_end."','calendar'),";
+                                }
+                                echo "extendedProps: {
+                                    slug: '".$at->id."'
+                                }
+                            },
+                        ";
+                        $i++;
+                    }
+                    
+                ?>
+            ],
             eventClick:  function(info, jsEvent, view) {
-                window.location.href = "http://127.0.0.1:8000/attendance/detail/" +info.event.extendedProps.id;
+                window.location.href = "http://127.0.0.1:8000/attendance/detail/" +info.event.extendedProps.slug;
             },
         });
         calendar.render();

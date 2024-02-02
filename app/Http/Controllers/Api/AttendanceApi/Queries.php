@@ -11,17 +11,9 @@ use App\Models\Attendance;
 
 class Queries extends Controller
 {
-    public function getAllAttendance($limit){
+    public function getAllAttendanceHeaders(){
         try{
-            $atd = Attendance::select('attendance.id as id', 'contents_headers.content_slug', 'contents_headers.content_title', 'attendance_title', 'attendance_desc', 'is_view', 'attendance_time_start',
-                    'attendance_time_end', 'created_at', 'users.username as created_by_user', 'admins.username as created_by_admin')
-                ->leftjoin('contents_headers','contents_headers.id','=','attendance.content_id')
-                ->leftjoin('admins', 'admins.id', '=', 'attendance.created_by')
-                ->leftjoin('users', 'users.id', '=', 'attendance.created_by')
-                ->orderBy('created_at', 'ASC')
-                ->orderBy('attendance_title', 'DESC');
-
-            $atd = $atd->paginate($limit);
+            $atd = Attendance::getAllAttendanceHeaders();
 
             if ($atd->isEmpty()) {
                 return response()->json([
