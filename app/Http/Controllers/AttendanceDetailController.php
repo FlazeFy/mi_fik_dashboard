@@ -24,7 +24,8 @@ class AttendanceDetailController extends Controller
         if($user_id != null){
             $menu = Menu::getMenu();
 
-            $attendance = Attendance::getAttendanceDetail($id);
+            $attendance = Attendance::getAttendanceDetail($role, $id);
+            $attresponse = Attendance::getAttendanceResponse($role, $id);
 
             //Set active nav
             session()->put('active_nav', 'attendance');
@@ -32,7 +33,8 @@ class AttendanceDetailController extends Controller
 
             return view ('attendance.detail.index')
                 ->with('menu',$menu)
-                ->with('attd',$attendance);
+                ->with('attd',$attendance)
+                ->with('atrs',$attresponse);
         } else {
             return redirect("/")->with('failed_message',Generator::getMessageTemplate("lost_session", null, null));
         }

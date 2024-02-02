@@ -29,7 +29,7 @@
 
 <div class="box-attd-detail shadow">
     <div class="row p-3">
-        <div class="col-lg-8">
+        <div class="col-lg-8 col-md-9 col-sm-6">
             <!-- PHP Helpers -->
             <?php
                 use App\Helpers\Generator;
@@ -72,6 +72,9 @@
                     @endif
                 </div>
             </div>
+        </div>
+        <div class="col-lg-4 col-md-3 col-sm-6">
+            @include('attendance.detail.attendance')
         </div>
     </div>
 </div>

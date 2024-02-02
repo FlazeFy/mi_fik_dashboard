@@ -322,5 +322,6 @@ return [
     'gallery' => 'Gallery',
     'no_desc_attd' => "This Attendance doesn't have description",
     'attd_confirm' => "You marked as ",
-    'at' => 'at'
+    'at' => 'at',
+    'attendance_response' => 'Attendance Response'
 ];

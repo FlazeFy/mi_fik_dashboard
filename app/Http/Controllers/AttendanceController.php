@@ -19,11 +19,11 @@ class AttendanceController extends Controller
     {
         $role = session()->get('role_key');
         $user_id = Generator::getUserIdV2($role);
-
+        
         if($user_id != null){
             $menu = Menu::getMenu();
 
-            $attendance = Attendance::getAllAttendanceHeaders();
+            $attendance = Attendance::getAllAttendanceHeaders($role, $user_id);
 
             //Set active nav
             session()->put('active_nav', 'attendance');

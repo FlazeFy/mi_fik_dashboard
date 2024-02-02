@@ -322,5 +322,6 @@ return [
     'gallery' => 'Galeri',
     'no_desc_attd' => "Kehadiran ini tidak memiliki deskripsi",
     'attd_confirm' => "Anda mengonfirmasi  ",
-    'at' => 'pada'
+    'at' => 'pada',
+    'attendance_response' => 'Respon Kehadiran'
 ];
