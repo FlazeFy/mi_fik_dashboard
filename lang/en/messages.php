@@ -325,5 +325,8 @@ return [
     'at' => 'at',
     'attendance_response' => 'Attendance Response',
     'people' => 'People',
-    'tac' => 'Total Attendance Chart'
+    'tac' => 'Total Attendance Chart',
+    'created_by' => 'Created By',
+    'you' => 'You',
+    'from_event' => 'From Event'
 ];

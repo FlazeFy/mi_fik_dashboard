@@ -340,6 +340,13 @@ class Validation
         ]);
     }
 
+    public static function getValidateAttendanceInfo($request){
+        return Validator::make($request->all(), [
+            'attendance_title' => 'required|min:6|max:75|string',
+            'attendance_desc' => 'nullable|string|max:500'
+        ]);
+    }
+
     public static function hasNumber($val) {
         $pattern = '/\d/';
       

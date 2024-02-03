@@ -325,5 +325,8 @@ return [
     'at' => 'pada',
     'attendance_response' => 'Respon Kehadiran',
     'people' => 'Orang',
-    'tac' => 'Total Kehadiran'
+    'tac' => 'Total Kehadiran',
+    'created_by' => 'Dibuat oleh',
+    'you' => 'Anda',
+    'from_event' => 'Dari Event'
 ];

@@ -23,7 +23,7 @@
                         }
                     ?> px-2 py-1" style="font-size:var(--textSM);">
                         @if($atr->attendance_answer)
-                            {{$atr->attendance_answer}}
+                            {{ucFirst($atr->attendance_answer)}}
                         @else 
                             Not response yet
                         @endif
