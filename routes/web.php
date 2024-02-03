@@ -209,4 +209,6 @@ Route::prefix('/attendance')->middleware(['auth_v2:sanctum'])->group(function ()
     Route::get('/', [AttendanceController::class, 'index']);
 
     Route::get('/detail/{id}', [AttendanceDetailController::class, 'index']);
+    Route::post('/toogle/{ctx}/{switch}', [AttendanceDetailController::class, 'toogle_edit_attendance']);
+    Route::post('/edit/info/{id}', [AttendanceDetailController::class, 'update_attendance_info']);
 });

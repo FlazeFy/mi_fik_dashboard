@@ -36,37 +36,25 @@ class Attendance extends Model
         return $res->get();
     }
 
-    public static function getAttendanceDetail($role, $id){
-        $where = "attendance.id";
-
-        if($role == 0){
-            $where = "attendance_relations.id";
-        } 
-
+    public static function getAttendanceDetail($id){
         $res = Attendance::select('attendance.id as id', 'contents_headers.slug_name', 'contents_headers.content_title', 'attendance_title', 'attendance_desc', 'is_view', 'attendance_time_start',
             'attendance_time_end', 'attendance.created_at', 'attendance_relations.created_at as answered_at', 'users.username as created_by_user', 'admins.username as created_by_admin', 'attendance_relations.attendance_answer')
             ->leftjoin('contents_headers','contents_headers.id','=','attendance.content_id')
             ->leftjoin('attendance_relations','attendance.id','=','attendance_relations.attendance_id')
             ->leftjoin('admins', 'admins.id', '=', 'attendance.created_by')
             ->leftjoin('users', 'users.id', '=', 'attendance.created_by')
-            ->where($where,$id)
+            ->where("attendance.id",$id)
             ->first();
 
         return $res;
     }
 
-    public static function getAttendanceResponse($role, $id){
-        $where = "attendance.id";
-
-        if($role == 0){
-            $where = "attendance_relations.id";
-        } 
-        
+    public static function getAttendanceResponse($id){    
         $res = AttendanceRelation::select('attendance_relations.created_at as answered_at','attendance_answer','users.username as user_username','users.image_url as user_image')
             ->leftjoin('attendance', 'attendance.id', '=', 'attendance_relations.attendance_id')
             ->leftjoin('users', 'users.id', '=', 'attendance_relations.users_id')
             ->orderby('attendance_relations.created_at','DESC')
-            ->where($where,$id);
+            ->where("attendance.id",$id);
 
         return $res->get();
     }
