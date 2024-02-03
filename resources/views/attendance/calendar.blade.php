@@ -44,13 +44,7 @@
                                     echo "end: getDateToContext('".$at->attendance_time_end."','calendar'),";
                                 }
                                 echo "extendedProps: {
-                                    slug: '"; 
-                                        if(session()->get("role_key") != 1){
-                                            echo $at->id;
-                                        } else {
-                                            echo $at->id_attendance;
-                                        }
-                                    echo"'
+                                    slug: '".$at->id_attendance."'
                                 }
                             },
                         ";

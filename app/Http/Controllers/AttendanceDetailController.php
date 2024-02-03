@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Helpers\Generator;
 use App\Models\Attendance;
+use App\Models\Info;
 use App\Models\Menu;
 
 class AttendanceDetailController extends Controller
@@ -24,8 +25,9 @@ class AttendanceDetailController extends Controller
         if($user_id != null){
             $menu = Menu::getMenu();
 
-            $attendance = Attendance::getAttendanceDetail($role, $id);
-            $attresponse = Attendance::getAttendanceResponse($role, $id);
+            $attendance = Attendance::getAttendanceDetail($id);
+            $attresponse = Attendance::getAttendanceResponse($id);
+            $info = Info::getAvailableInfo("attendance");
 
             //Set active nav
             session()->put('active_nav', 'attendance');
@@ -33,6 +35,7 @@ class AttendanceDetailController extends Controller
 
             return view ('attendance.detail.index')
                 ->with('menu',$menu)
+                ->with('info', $info)
                 ->with('attd',$attendance)
                 ->with('atrs',$attresponse);
         } else {

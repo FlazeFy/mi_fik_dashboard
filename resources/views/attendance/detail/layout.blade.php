@@ -76,6 +76,12 @@
         <div class="col-lg-4 col-md-3 col-sm-6">
             @include('attendance.detail.attendance')
         </div>
+        @if(session()->get('role_key') == 1 || session()->get("username_key") == $attd->created_by_user)
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <br>
+                @include('attendance.detail.totalattendancechart')
+            </div>
+        @endif
     </div>
 </div>
 

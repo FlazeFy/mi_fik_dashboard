@@ -323,5 +323,7 @@ return [
     'no_desc_attd' => "Kehadiran ini tidak memiliki deskripsi",
     'attd_confirm' => "Anda mengonfirmasi  ",
     'at' => 'pada',
-    'attendance_response' => 'Respon Kehadiran'
+    'attendance_response' => 'Respon Kehadiran',
+    'people' => 'Orang',
+    'tac' => 'Total Kehadiran'
 ];

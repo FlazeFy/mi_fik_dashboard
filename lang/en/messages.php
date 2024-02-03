@@ -323,5 +323,7 @@ return [
     'no_desc_attd' => "This Attendance doesn't have description",
     'attd_confirm' => "You marked as ",
     'at' => 'at',
-    'attendance_response' => 'Attendance Response'
+    'attendance_response' => 'Attendance Response',
+    'people' => 'People',
+    'tac' => 'Total Attendance Chart'
 ];

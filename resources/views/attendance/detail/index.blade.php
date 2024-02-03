@@ -27,6 +27,9 @@
         <!--Full calendar.-->
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
 
+        <!--Apex Chart-->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
         <!--CSS Collection-->
         <link rel="stylesheet" href="{{ asset('/css/main/button_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/modal_v1.0.css') }}"/>
@@ -37,6 +40,7 @@
         <link rel="stylesheet" href="{{ asset('/css/main/navbar_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/main/dropdown_v1.0.css') }}"/>
         <link rel="stylesheet" href="{{ asset('/css/profile_v1.0.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('/css/statistic_v1.0.css') }}"/>
 
         <!-- JS Collection -->
         <script src="{{ asset('/js/converter_v1.0.js')}}"></script>
